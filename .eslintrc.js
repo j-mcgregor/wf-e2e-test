@@ -38,6 +38,7 @@ module.exports = {
     'unicorn/filename-case': 'off',
     // look into how to turn this actually off
     'next/no-img-element': 'off',
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'jsx-a11y/anchor-is-valid': [
       'error',
       {
