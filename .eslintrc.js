@@ -34,9 +34,14 @@ module.exports = {
     'no-console': 'error',
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
+    'react-hooks/exhaustive-deps': [
+      'warn',
+      {
+        additionalHooks: 'useRecoilCallback|useRecoilTransaction_UNSTABLE'
+      }
+    ],
     'simple-import-sort/imports': 'error',
     'unicorn/filename-case': 'off',
-    // look into how to turn this actually off
     'next/no-img-element': 'off',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'jsx-a11y/anchor-is-valid': [
