@@ -1,7 +1,6 @@
 export default {
-  title: 'Wiserfunding Platform',
+  title: 'Wiserfunding',
   description: 'Site description',
-  siteName: 'Wiserfunding Platform',
   siteUrl: 'wiserfunding-platform.vercel.app',
   twitterUsername: '@wiserfunding'
 }
