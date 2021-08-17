@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import Nav from './Nav';
 import Seo from './Seo';
 
-
 type LayoutProps = {
   children: React.ReactNode
   noNav?: boolean | undefined
