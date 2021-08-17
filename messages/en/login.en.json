@@ -1,4 +1,11 @@
 {
   "sign into account": "Sign into your account",
-  "register for demo": "Or <a>register for a demo and access</a>"
+  "register for demo": "Or <a>register for a demo and access</a>",
+  "sign in with": "Sign in with",
+  "continue with": "Or continue with",
+  "email": "Email address",
+  "password": "Password",
+  "remember me": "Remember me",
+  "forgot password": "Forgot your password?",
+  "sign in": "Sign in"
 }

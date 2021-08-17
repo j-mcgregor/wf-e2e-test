@@ -2,11 +2,12 @@ import React from 'react';
 import Layout from '../components/layout/Layout';
 import Link from '../components/elements/Link';
 import LoginForm from '../components/forms/LoginForm';
-import Logo from '../components/login/Logo';
-import LoginContainer from '../components/login/LoginContainer';
+import Logo from '../components/elements/Logo';
+import LoginContainer from '../components/containers/LoginContainer';
 
 import { useTranslations } from 'next-intl';
 import { GetStaticPropsContext } from 'next';
+import LoginSSO from '../components/forms/LoginSSO';
 
 const Login = () => {
   const t = useTranslations();
@@ -16,6 +17,7 @@ const Login = () => {
       <LoginContainer>
         <div>
           <Logo />
+
           <div>
             <div className="bg-secondary">
               <h1 className="text-3xl font-bold py-3">
@@ -37,7 +39,7 @@ const Login = () => {
               </p>
             </div>
           </div>
-
+          <LoginSSO />
           <LoginForm />
         </div>
       </LoginContainer>
