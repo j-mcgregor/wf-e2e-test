@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import Nav from './Nav';
 import Seo from './Seo';
 
-// type LayoutProps = {
-//   children: React.ReactNode
-//   noNav?: boolean | undefined
-//   title?: string
-//   description?: string
-// }
+type LayoutProps = {
+  children: React.ReactNode
+  noNav?: boolean | undefined
+  title?: string
+  description?: string
+}
 
 const Layout = ({ children, noNav, title, description }: LayoutProps) => {
   const router = useRouter();
