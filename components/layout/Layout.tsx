@@ -19,7 +19,7 @@ const Layout = ({ children, noNav, title, description }: LayoutProps) => {
     <div>
       <Seo title={title} description={description} path={path} />
       { !noNav && <Nav path={path} /> }
-      <main className="relative">{children}</main>;
+      <main className="relative">{children}</main>
     </div>
   );
 };
