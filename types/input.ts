@@ -8,5 +8,16 @@ export interface InputProps {
   autoComplete?: string;
   isRequired?: boolean;
   className?: string;
+  value?: string;
+  onChangeValue?: (e: any) => void;
 }
 
+export interface CheckboxProps {
+  label: ReactNode;
+  inputId: string;
+  inputName: string;
+  inputType: string;
+  isRequired?: boolean;
+  isChecked?: boolean;
+  onToggleChecked?: () => void;
+}

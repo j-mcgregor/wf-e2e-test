@@ -6,7 +6,9 @@ const TextInput = ({
   inputName,
   inputType,
   autoComplete,
-  isRequired
+  isRequired,
+  value,
+  onChangeValue
 }: InputProps) => {
   {
   }
@@ -22,6 +24,8 @@ const TextInput = ({
           type={inputType}
           autoComplete={autoComplete}
           required={isRequired}
+          value={value}
+          onChange={onChangeValue}
           className="appearance-none block w-full px-3 py-2 rounded-md focus:outline-none placeholder-gray-400 focus:ring-highlight focus:border-highlight sm:text-sm text-black"
         />
       </div>

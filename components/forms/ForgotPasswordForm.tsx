@@ -27,14 +27,7 @@ const ForgotPasswordForm = () => {
       </div>
       <div>
         <Link linkTo="#">
-          <Button
-            buttonType="submit"
-            backgroundColor="highlight"
-            hoverColor="yellow-500"
-            focusColor="yellow-500"
-          >
-            {t('sign in')}
-          </Button>
+          <Button buttonType="submit">{t('sign in')}</Button>
         </Link>
       </div>
 

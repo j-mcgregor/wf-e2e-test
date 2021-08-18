@@ -1,3 +1,5 @@
+import useLocalStorage from '../../hooks/useLocalStorage';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import Link from '../elements/Link';
@@ -6,7 +8,22 @@ import TextInput from '../elements/TextInput';
 import Button from '../elements/Button';
 
 const LoginForm = () => {
+  const [checked, setChecked] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | undefined>();
+  const [activeUser, setActiveUser] = useLocalStorage('user_email', userEmail);
+
   const t = useTranslations();
+
+  // if checkbox is true, set userEmail in local storage with 'user_email' key
+  const handleSaveUser = (): void => {
+    checked ? setActiveUser(userEmail) : null;
+  };
+
+  // useEffect(() => {
+  //   console.log(userEmail);
+  //   console.log(checked);
+  //   console.log(activeUser);
+  // }, [userEmail, checked]);
 
   return (
     <form>
@@ -30,6 +47,9 @@ const LoginForm = () => {
                 inputId="email"
                 inputName="email"
                 inputType="email"
+                autoComplete="email"
+                value={userEmail}
+                onChangeValue={e => setUserEmail(e.target.value)}
                 isRequired
               />
               <div className="space-y-1">
@@ -49,6 +69,8 @@ const LoginForm = () => {
                   inputId="remember-me"
                   inputName="remember-me"
                   inputType="checkbox"
+                  onToggleChecked={() => setChecked(!checked)}
+                  isChecked={checked}
                 />
 
                 <div className="text-sm">
@@ -62,12 +84,7 @@ const LoginForm = () => {
               </div>
 
               <div>
-                <Button
-                  buttonType="submit"
-                  backgroundColor="highlight"
-                  hoverColor="yellow-500"
-                  focusColor="yellow-500"
-                >
+                <Button buttonType={'submit'} handleClicked={handleSaveUser}>
                   {t('sign in')}
                 </Button>
               </div>

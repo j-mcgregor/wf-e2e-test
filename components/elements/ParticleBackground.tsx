@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-
 import Particles from 'react-particles-js';
 
 interface ParticleProps {
