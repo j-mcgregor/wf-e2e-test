@@ -16,7 +16,7 @@ module.exports = {
         secondary: '#000000', // black
         alt: '#005889', // blue
         highlight: '#E58A2E', // orange
-        bg: '#F3F4F6'
+        bg: '#F3F4F6' // light gray
       },
       opacity: {
         10: '0.1',
