@@ -6,43 +6,40 @@ import LoginForm from '../components/forms/LoginForm';
 import Logo from '../components/elements/Logo';
 import LoginContainer from '../components/containers/LoginContainer';
 import LoginSSO from '../components/forms/LoginSSO';
-import ParticleBackground from '../components/elements/ParticleBackground';
 
 const Login = () => {
   const t = useTranslations();
 
   return (
     <Layout noNav={true} title="Login">
-      <ParticleBackground>
-        <LoginContainer>
+      <LoginContainer>
+        <div>
+          <Logo />
           <div>
-            <Logo />
-            <div>
-              <div className="bg-secondary">
-                <h1 className="text-3xl font-bold py-3">
-                  {t('sign into account')}
-                </h1>
-                <p className="text-sm text-highlight">
-                  {t('register for demo', {
-                    a: function Linked(children: React.ReactNode) {
-                      return (
-                        <Link
-                          className="text-highlight"
-                          linkTo="https://wiserfunding.com/free-trial"
-                        >
-                          {children}
-                        </Link>
-                      );
-                    }
-                  })}
-                </p>
-              </div>
+            <div className="bg-secondary">
+              <h1 className="text-3xl font-bold py-3">
+                {t('sign into account')}
+              </h1>
+              <p className="text-sm text-highlight">
+                {t('register for demo', {
+                  a: function Linked(children: React.ReactNode) {
+                    return (
+                      <Link
+                        className="text-highlight"
+                        linkTo="https://wiserfunding.com/free-trial"
+                      >
+                        {children}
+                      </Link>
+                    );
+                  }
+                })}
+              </p>
             </div>
-            <LoginSSO />
-            <LoginForm />
           </div>
-        </LoginContainer>
-      </ParticleBackground>
+          <LoginSSO />
+          <LoginForm />
+        </div>
+      </LoginContainer>
     </Layout>
   );
 };

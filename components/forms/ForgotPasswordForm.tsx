@@ -17,11 +17,11 @@ const ForgotPasswordForm = () => {
         <div className="mt-6">
           <TextInput
             label={t('email address')}
-            inputId="email"
-            inputName="email"
-            inputType="email"
+            id="email"
+            name="email"
+            type="email"
             autoComplete="email"
-            isRequired
+            required
           />
         </div>
       </div>
