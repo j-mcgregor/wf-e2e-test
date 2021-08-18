@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import Link from '../elements/Link';
 import Checkbox from '../elements/Checkbox';
 import TextInput from '../elements/TextInput';
+import Button from '../elements/Button';
 
 const LoginForm = () => {
   const t = useTranslations();
@@ -61,12 +62,14 @@ const LoginForm = () => {
               </div>
 
               <div>
-                <button
-                  type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-highlight hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                <Button
+                  buttonType="submit"
+                  backgroundColor="highlight"
+                  hoverColor="yellow-500"
+                  focusColor="yellow-500"
                 >
                   {t('sign in')}
-                </button>
+                </Button>
               </div>
             </form>
           </div>

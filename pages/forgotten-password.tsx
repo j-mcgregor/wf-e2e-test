@@ -1,15 +1,19 @@
 import { GetStaticPropsContext } from 'next';
 
 import LoginContainer from '../components/containers/LoginContainer';
+import ParticleBackground from '../components/elements/ParticleBackground';
 import ForgotPasswordForm from '../components/forms/ForgotPasswordForm';
-
+import Layout from '../components/layout/Layout';
 
 const forgotPassword = () => {
-
   return (
-    <LoginContainer>
-      <ForgotPasswordForm/>
-    </LoginContainer>
+    <Layout noNav={true} title="Forgotten Password">
+      <ParticleBackground>
+        <LoginContainer>
+          <ForgotPasswordForm />
+        </LoginContainer>
+      </ParticleBackground>
+    </Layout>
   );
 };
 

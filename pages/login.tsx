@@ -1,48 +1,48 @@
-import React from 'react';
+import { useTranslations } from 'next-intl';
+import { GetStaticPropsContext } from 'next';
 import Layout from '../components/layout/Layout';
 import Link from '../components/elements/Link';
 import LoginForm from '../components/forms/LoginForm';
 import Logo from '../components/elements/Logo';
 import LoginContainer from '../components/containers/LoginContainer';
-
-import { useTranslations } from 'next-intl';
-import { GetStaticPropsContext } from 'next';
 import LoginSSO from '../components/forms/LoginSSO';
+import ParticleBackground from '../components/elements/ParticleBackground';
 
 const Login = () => {
   const t = useTranslations();
 
   return (
     <Layout noNav={true} title="Login">
-      <LoginContainer>
-        <div>
-          <Logo />
-
+      <ParticleBackground>
+        <LoginContainer>
           <div>
-            <div className="bg-secondary">
-              <h1 className="text-3xl font-bold py-3">
-                {t('sign into account')}
-              </h1>
-              <p className="text-sm text-highlight">
-                {t('register for demo', {
-                  a: function Linked(children: React.ReactNode) {
-                    return (
-                      <Link
-                        className="text-highlight"
-                        linkTo="https://wiserfunding.com/free-trial"
-                      >
-                        {children}
-                      </Link>
-                    );
-                  }
-                })}
-              </p>
+            <Logo />
+            <div>
+              <div className="bg-secondary">
+                <h1 className="text-3xl font-bold py-3">
+                  {t('sign into account')}
+                </h1>
+                <p className="text-sm text-highlight">
+                  {t('register for demo', {
+                    a: function Linked(children: React.ReactNode) {
+                      return (
+                        <Link
+                          className="text-highlight"
+                          linkTo="https://wiserfunding.com/free-trial"
+                        >
+                          {children}
+                        </Link>
+                      );
+                    }
+                  })}
+                </p>
+              </div>
             </div>
+            <LoginSSO />
+            <LoginForm />
           </div>
-          <LoginSSO />
-          <LoginForm />
-        </div>
-      </LoginContainer>
+        </LoginContainer>
+      </ParticleBackground>
     </Layout>
   );
 };
