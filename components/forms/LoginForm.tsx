@@ -44,33 +44,33 @@ const LoginForm = () => {
             <form action="#" method="POST" className="space-y-6">
               <TextInput
                 label={t('email')}
-                inputId="email"
-                inputName="email"
-                inputType="email"
+                id="email"
+                name="email"
+                type="email"
                 autoComplete="email"
                 value={userEmail}
-                onChangeValue={e => setUserEmail(e.target.value)}
-                isRequired
+                onChange={e => setUserEmail(e.target.value)}
+                required
               />
               <div className="space-y-1">
                 <TextInput
                   label={t('password')}
-                  inputId="password"
-                  inputName="password"
-                  inputType="password"
+                  id="password"
+                  name="password"
+                  type="password"
                   autoComplete="password"
-                  isRequired
+                  required
                 />
               </div>
 
               <div className="flex items-center justify-between">
                 <Checkbox
                   label={t('remember me')}
-                  inputId="remember-me"
-                  inputName="remember-me"
-                  inputType="checkbox"
-                  onToggleChecked={() => setChecked(!checked)}
-                  isChecked={checked}
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  onChange={() => setChecked(!checked)}
+                  checked={checked}
                 />
 
                 <div className="text-sm">

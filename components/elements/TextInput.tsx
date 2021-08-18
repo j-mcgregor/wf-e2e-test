@@ -1,14 +1,24 @@
-import { InputProps } from '../../types/input';
+export interface InputProps {
+  label: React.ReactNode;
+  id: string;
+  name: string;
+  type: string;
+  autoComplete?: string;
+  required?: boolean;
+  className?: string;
+  value?: string;
+  onChange?: (e: any) => void;
+}
 
 const TextInput = ({
   label,
-  inputId,
-  inputName,
-  inputType,
+  id,
+  name,
+  type,
   autoComplete,
-  isRequired,
+  required,
   value,
-  onChangeValue
+  onChange
 }: InputProps) => {
   {
   }
@@ -19,13 +29,13 @@ const TextInput = ({
       </label>
       <div className="mt-1">
         <input
-          id={inputId}
-          name={inputName}
-          type={inputType}
+          id={id}
+          name={name}
+          type={type}
           autoComplete={autoComplete}
-          required={isRequired}
+          required={required}
           value={value}
-          onChange={onChangeValue}
+          onChange={onChange}
           className="appearance-none block w-full px-3 py-2 rounded-md focus:outline-none placeholder-gray-400 focus:ring-highlight focus:border-highlight sm:text-sm text-black"
         />
       </div>
