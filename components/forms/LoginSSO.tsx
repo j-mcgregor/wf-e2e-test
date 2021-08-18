@@ -1,5 +1,4 @@
 import { useTranslations } from 'next-intl';
-
 import MicrosoftIcon from '../icons/MicrosoftIcon';
 import GoogleIcon from '../icons/GoogleIcon';
 
@@ -7,7 +6,7 @@ const LoginSSO = () => {
   const t = useTranslations();
   return (
     <div className="pt-8">
-      <p className="text-sm pb-1">
+      <p className="text-sm pb-1 ">
         {t('sign in with', {
           a: function Linked(children: React.ReactNode) {
             return children;

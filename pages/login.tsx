@@ -23,12 +23,12 @@ const Login = () => {
               <h1 className="text-3xl font-bold py-3">
                 {t('sign into account')}
               </h1>
-              <p className="text-sm">
+              <p className="text-sm text-highlight">
                 {t('register for demo', {
                   a: function Linked(children: React.ReactNode) {
                     return (
                       <Link
-                        className="text-secondary"
+                        className="text-highlight"
                         linkTo="https://wiserfunding.com/free-trial"
                       >
                         {children}
