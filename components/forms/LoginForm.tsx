@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
-
+// import { Children } from 'react';
+import { CheckboxInput, TextInput } from '../elements/Input';
 const LoginForm = () => {
   const t = useTranslations();
 
@@ -20,50 +21,31 @@ const LoginForm = () => {
 
           <div className="mt-6">
             <form action="#" method="POST" className="space-y-6">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium">
-                  {t('email')}
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="appearance-none block w-full px-3 py-2 rounded-md focus:outline-none placeholder-gray-400 focus:ring-highlight focus:border-highlight sm:text-sm text-black"
-                  />
-                </div>
-              </div>
-
+              <TextInput
+                label={t('email')}
+                inputId="email"
+                inputName="email"
+                inputType="email"
+                isRequired
+              />
               <div className="space-y-1">
-                <label htmlFor="password" className="block text-sm font-medium">
-                  {t('password')}
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="appearance-none block w-full px-3 py-2 rounded-md focus:outline-none focus:ring-highlight focus:border-highlight sm:text-sm text-black"
-                  />
-                </div>
+                <TextInput
+                  label={t('password')}
+                  inputId="password"
+                  inputName="password"
+                  inputType="password"
+                  autoComplete="password"
+                  isRequired
+                />
               </div>
 
               <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 text-highlight focus:ring-highlight rounded"
-                  />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm">
-                    {t('remember me')}
-                  </label>
-                </div>
+                <CheckboxInput
+                  label={t('remember me')}
+                  inputId="remember-me"
+                  inputName="remember-me"
+                  inputType="checkbox"
+                />
 
                 <div className="text-sm">
                   <a
