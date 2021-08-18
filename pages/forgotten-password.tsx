@@ -3,10 +3,12 @@ import { GetStaticPropsContext } from 'next';
 import LoginContainer from '../components/containers/LoginContainer';
 import ForgotPasswordForm from '../components/forms/ForgotPasswordForm';
 
+
 const forgotPassword = () => {
+
   return (
     <LoginContainer>
-      <ForgotPasswordForm />
+      <ForgotPasswordForm/>
     </LoginContainer>
   );
 };

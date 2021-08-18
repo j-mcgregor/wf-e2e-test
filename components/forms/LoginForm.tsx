@@ -1,6 +1,9 @@
 import { useTranslations } from 'next-intl';
-// import { Children } from 'react';
-import { CheckboxInput, TextInput } from '../elements/Input';
+
+import Link from '../elements/Link';
+import Checkbox from '../elements/Checkbox';
+import TextInput from '../elements/TextInput';
+
 const LoginForm = () => {
   const t = useTranslations();
 
@@ -40,7 +43,7 @@ const LoginForm = () => {
               </div>
 
               <div className="flex items-center justify-between">
-                <CheckboxInput
+                <Checkbox
                   label={t('remember me')}
                   inputId="remember-me"
                   inputName="remember-me"
@@ -48,12 +51,12 @@ const LoginForm = () => {
                 />
 
                 <div className="text-sm">
-                  <a
-                    href="#"
+                  <Link
+                    linkTo="/forgotten-password"
                     className="font-medium text-highlight hover:text-yellow-500"
                   >
                     {t('forgot password')}
-                  </a>
+                  </Link>
                 </div>
               </div>
 
