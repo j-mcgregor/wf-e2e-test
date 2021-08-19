@@ -1,49 +1,45 @@
-import React from 'react';
+import { useTranslations } from 'next-intl';
+import { GetStaticPropsContext } from 'next';
 import Layout from '../components/layout/Layout';
 import Link from '../components/elements/Link';
 import LoginForm from '../components/forms/LoginForm';
-import Image from 'next/image';
-import WiserfundingLogo from '../public/images/logos/wiserfunding-logo-dark.png'
-
-import { useTranslations } from 'next-intl';
-import { GetStaticPropsContext } from 'next';
+import Logo from '../components/elements/Logo';
+import LoginContainer from '../components/containers/LoginContainer';
+import LoginSSO from '../components/forms/LoginSSO';
 
 const Login = () => {
-  const t = useTranslations()
+  const t = useTranslations();
 
   return (
     <Layout noNav={true} title="Login">
-      <div className="max-w-sm">
-        <Image
-          src={WiserfundingLogo}
-          layout="fill"
-          alt="Wiserfunding Logo"
-          objectFit="contain"
-          placeholder="blur"
-        />
-      </div>
-
-      <LoginForm />
-
-      <div>
-        <div className="bg-secondary">
-          <h1>{t('sign into account')}</h1>
-          <p>
-            {t('register for demo', {
-              a: function Linked(children: React.ReactNode) {
-                return (
-                  <Link
-                    className="text-secondary"
-                    linkTo="https://wiserfunding.com/free-trial"
-                  >
-                    {children}
-                  </Link>
-                );
-              }
-            })}
-          </p>
+      <LoginContainer>
+        <div>
+          <Logo />
+          <div>
+            <div className="bg-secondary">
+              <h1 className="text-3xl font-bold py-3">
+                {t('sign into account')}
+              </h1>
+              <p className="text-sm text-highlight">
+                {t('register for demo', {
+                  a: function Linked(children: React.ReactNode) {
+                    return (
+                      <Link
+                        className="text-highlight"
+                        linkTo="https://wiserfunding.com/free-trial"
+                      >
+                        {children}
+                      </Link>
+                    );
+                  }
+                })}
+              </p>
+            </div>
+          </div>
+          <LoginSSO />
+          <LoginForm />
         </div>
-      </div>
+      </LoginContainer>
     </Layout>
   );
 };
