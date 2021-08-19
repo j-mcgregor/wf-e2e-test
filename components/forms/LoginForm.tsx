@@ -1,3 +1,4 @@
+import { signIn, useSession } from 'next-auth/client';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import useLocalStorage from '../../hooks/useLocalStorage';
@@ -14,12 +15,10 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    watch,
     clearErrors,
+    getValues,
     formState: { errors }
   } = useForm<FormValues>();
-
-  console.log(watch());
 
   const [activeUser, setActiveUser] = useLocalStorage<string | null>(
     'user',
@@ -31,7 +30,6 @@ const LoginForm = () => {
   const onSubmit = handleSubmit(data => {
     // if checkbox is ticked, run setLocalStorage hook for user email
     data.remember && setActiveUser(data.email);
-    console.log(data);
   });
 
   // regex to validate email address
@@ -125,7 +123,17 @@ const LoginForm = () => {
             </div>
 
             <div>
-              <Button buttonType={'submit'}>{t('sign in')}</Button>
+              <Button
+                type={'submit'}
+                onClick={() =>
+                  signIn('credentials', {
+                    email: getValues('email'),
+                    password: getValues('password')
+                  })
+                }
+              >
+                {t('sign in')}
+              </Button>
             </div>
           </form>
         </div>

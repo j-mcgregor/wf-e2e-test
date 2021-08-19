@@ -1,44 +1,44 @@
-export interface InputProps {
+import { useForm } from 'react-hook-form';
+
+interface InputProps {
   label: React.ReactNode;
-  id: string;
+  placeholder: string;
   name: string;
   type: string;
-  autoComplete?: string;
-  required?: boolean;
-  className?: string;
-  value?: string;
+  customCSS: string;
+  require: boolean;
   onChange?: (e: any) => void;
 }
 
 const TextInput = ({
   label,
-  id,
   name,
   type,
-  autoComplete,
-  required,
-  value,
+  placeholder,
+  customCSS,
+  require,
   onChange
 }: InputProps) => {
   {
   }
+
+  const {
+    register,
+    formState: { errors }
+  } = useForm();
+
   return (
     <div>
-      <label htmlFor="email" className="block text-sm font-medium">
+      <label htmlFor={name} className="block text-sm font-medium">
         {label}
       </label>
-      <div className="mt-1">
-        <input
-          id={id}
-          name={name}
-          type={type}
-          autoComplete={autoComplete}
-          required={required}
-          value={value}
-          onChange={onChange}
-          className="appearance-none block w-full px-3 py-2 rounded-md focus:outline-none placeholder-gray-400 focus:ring-highlight focus:border-highlight sm:text-sm text-black"
-        />
-      </div>
+      <input
+        {...register(name, { required: require })}
+        onChange={onChange}
+        type={type}
+        placeholder={placeholder}
+        className={`${customCSS} appearance-none block w-full px-3 py-2 my-2 rounded-md focus:outline-none placeholder-gray-400 sm:text-sm text-black`}
+      />
     </div>
   );
 };
