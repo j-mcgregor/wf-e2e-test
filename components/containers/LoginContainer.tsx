@@ -1,5 +1,7 @@
 import Particles from 'react-particles-js';
 
+// just commenting out particles while developing
+
 type LayoutProps = {
   children: React.ReactNode;
 };
