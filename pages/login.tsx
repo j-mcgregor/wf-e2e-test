@@ -17,7 +17,7 @@ const Login = () => {
           <Logo />
           <div>
             <div className="bg-secondary">
-              <h1 className="text-3xl font-bold py-3">
+              <h1 className="text-xl md:text-3xl font-bold py-3">
                 {t('sign into account')}
               </h1>
               <p className="text-sm text-highlight">

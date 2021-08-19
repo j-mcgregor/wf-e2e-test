@@ -1,4 +1,5 @@
-import { signIn, useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/client';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import useLocalStorage from '../../hooks/useLocalStorage';
@@ -28,7 +29,10 @@ const LoginForm = () => {
 
   // only runs if form is valid
   const onSubmit = handleSubmit(data => {
-    // if checkbox is ticked, run setLocalStorage hook for user email
+    signIn('credentials', {
+      email: getValues('email'),
+      password: getValues('password')
+    });
     data.remember && setActiveUser(data.email);
   });
 
@@ -36,6 +40,7 @@ const LoginForm = () => {
   const validEmail =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+  // variables for conditionally rendering styles for input focus when errors
   const validFocus = 'focus:ring-highlight focus:border-highlight';
   const errorFocus = 'focus:ring-red-400 focus:border-red-400';
 
@@ -44,12 +49,12 @@ const LoginForm = () => {
       <div className="mt-8">
         <div>
           <div className="mt-6 relative flex items-center">
-            <div className="w-full border-t border-white" />
+            <div className="sm:w-full w-1/4 border-t border-white" />
 
-            <div className="relative flex justify-center text-sm w-full">
+            <div className="relative flex justify-center text-sm w-full text-center">
               <span className="px-2">{t('continue with')}</span>
             </div>
-            <div className="w-full border-t border-white" />
+            <div className="sm:w-full w-1/4 border-t border-white" />
           </div>
         </div>
 
@@ -60,6 +65,7 @@ const LoginForm = () => {
                 {t('email')}
               </label>
 
+              {/* inputs need breaking out into own components - WIP */}
               <input
                 {...register('email', {
                   required: true,
@@ -68,6 +74,7 @@ const LoginForm = () => {
                 onChange={() => clearErrors('email')}
                 type="email"
                 placeholder="Email"
+                // render error styles if input name has an error object associated with it
                 className={`${
                   errors?.email ? errorFocus : validFocus
                 } appearance-none block w-full px-3 py-2 my-2 rounded-md focus:outline-none placeholder-gray-40 sm:text-sm text-black`}
@@ -99,8 +106,8 @@ const LoginForm = () => {
               )}
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
+            <div className="flex items-center justify-between text-left">
+              <div className="flex items-center w-full sm:w-auto">
                 <input
                   {...register('remember')}
                   id="remember"
@@ -112,7 +119,7 @@ const LoginForm = () => {
                 </label>
               </div>
 
-              <div className="text-sm">
+              <div className="text-sm ">
                 <Link
                   linkTo="/forgotten-password"
                   className="font-medium text-highlight hover:text-yellow-500"
@@ -123,17 +130,9 @@ const LoginForm = () => {
             </div>
 
             <div>
-              <Button
-                type={'submit'}
-                onClick={() =>
-                  signIn('credentials', {
-                    email: getValues('email'),
-                    password: getValues('password')
-                  })
-                }
-              >
-                {t('sign in')}
-              </Button>
+              {/* Button component might need changing or replacing soon */}
+              {/* onClick runs signIn function from next-auth with credentials from form  */}
+              <Button>{t('sign in')}</Button>
             </div>
           </form>
         </div>

@@ -1,6 +1,6 @@
 import Particles from 'react-particles-js';
 
-import tailwindConfig from '../../tailwind.config.js'
+import tailwindConfig from '../../tailwind.config.js';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -8,9 +8,9 @@ type LayoutProps = {
 
 const LoginContainer = ({ children }: LayoutProps) => {
   return (
-    <div className="fixed h-screen w-screen left-0 bg-alt z-10 flex justify-center items-center">
+    <div className="absolute min-h-screen w-screen left-0 bg-alt z-10 flex justify-center items-center">
       <Particles
-        className="h-full fixed bg-gray-300"
+        className="h-full min-h-screen fixed top-0 bg-gray-300"
         params={{
           particles: {
             color: { value: tailwindConfig.theme.extend.colors.primary },
@@ -21,7 +21,7 @@ const LoginContainer = ({ children }: LayoutProps) => {
               value: 50
             },
             size: {
-              value:4
+              value: 4
             }
           },
           interactivity: {
@@ -34,8 +34,10 @@ const LoginContainer = ({ children }: LayoutProps) => {
           }
         }}
       />
-      <div className="relative z-20">
-        <div className="w-11/12 md:w-136 bg-black text-white flex flex-col mx-auto px-10 md:px-20 py-14">
+
+      {/* w-11/12 md:w-136 bg-black text-white flex flex-col mx-auto px-10 md:px-20 py-14 */}
+      <div className="z-20">
+        <div className="w-full sm:w-136 bg-black text-white flex mx-auto flex-col px-6 sm:px-20 py-6 sm:py-14 sm:text-left my-4">
           {children}
         </div>
       </div>
