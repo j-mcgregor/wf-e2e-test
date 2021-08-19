@@ -1,3 +1,6 @@
+
+import { signOut } from 'next-auth/client';
+
 import {
   AdjustmentsIcon,
   ChipIcon,
@@ -9,8 +12,6 @@ import {
   SearchCircleIcon,
   SupportIcon
 } from '@heroicons/react/outline';
-const logout = (): void =>
-  alert('<<<<<<<=====!!!!!!youve been logged out !!!!!!=====>>>>>');
 
   type IconProps = {
     className?: string;
@@ -51,7 +52,7 @@ export const siteNavigation = {
     { name: 'Support', href: '/support', icon: SupportIcon },
     {
       name: 'Log Out',
-      authAction: () => logout(),
+      onClick: () => signOut({ callbackUrl: '/login' }),
       icon: LogoutIcon
     }
   ]

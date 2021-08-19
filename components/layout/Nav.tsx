@@ -17,7 +17,7 @@ interface NavigationProps {
   icon?: HeroIcon | undefined
   current?: boolean;
   title?: boolean;
-  authAction?: () => void | undefined;
+  onClick?: () => Promise<undefined> | void;
 }
 
 interface NavStyleProps {
@@ -211,7 +211,7 @@ export default Nav;
 const NavItems = ({ path, navigation, noText }: NavListProps) => {
   return (
     <nav className={'flex-1 bg-primary px-2 space-y-1'}>
-      {navigation.map(({title, name, href, ...item}) => {
+      {navigation.map(({title, name, href, onClick, ...item}) => {
 
         if (title && !noText) {
           return (
@@ -230,12 +230,13 @@ const NavItems = ({ path, navigation, noText }: NavListProps) => {
           <Link
             key={name}
             linkTo={href}
+            onClick={onClick}
             className={`
               ${
                 href === path
                   ? 'bg-secondary text-white '
                   : 'text-white hover:bg-secondary '
-              } group rounded-md py-2 px-2 flex items-center text-sm font-medium relative
+              } group rounded-md py-2 px-2 flex items-center text-sm font-medium relative w-full
 
             `}
           >
