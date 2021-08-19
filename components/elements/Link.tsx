@@ -6,11 +6,16 @@ interface LinkProps {
   linkTo?: string;
   className?: string;
   style?: React.CSSProperties;
+  onClick?: () => void
 }
-const Link = ({ children, linkTo, className, style }: LinkProps) => {
-
+const Link = ({ children, linkTo, className, style, onClick }: LinkProps) => {
+  if (onClick) {
+    return <button className={className} style={style} onClick={onClick}>
+      {children}
+    </button>
+  }
   if (!linkTo) {
-    return <a className={className} style={style}>
+    return <a >
     {children}
   </a>
   }
