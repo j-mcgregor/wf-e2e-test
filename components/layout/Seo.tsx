@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 
-import siteSettings from '../../lib/siteSettings';
+import siteSettings from '../../lib/settings/site.settings';
 import ogImage from '../../public/images/og-image.jpg';
 
 type SEOProps = {

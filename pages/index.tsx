@@ -1,8 +1,13 @@
 import { GetStaticPropsContext } from 'next';
+import { useSession } from "next-auth/client"
 import Layout from '../components/layout/Layout';
 
 export default function Home() {
-  return <Layout title="Dashboard" >Wiserfunding's new platform</Layout>;
+
+  const [session, loading] = useSession()
+
+  console.log(session)
+  return <Layout title="Dashboard" >{ session ? `Logged in as ${session?.user?.name}` : "Not Logged in"}</Layout>;
 }
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
