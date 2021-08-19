@@ -3,11 +3,17 @@ import NextLink from 'next/link';
 import React from 'react';
 interface LinkProps {
   children: React.ReactNode;
-  linkTo: string;
+  linkTo?: string;
   className?: string;
   style?: React.CSSProperties;
 }
 const Link = ({ children, linkTo, className, style }: LinkProps) => {
+
+  if (!linkTo) {
+    return <a className={className} style={style}>
+    {children}
+  </a>
+  }
   const regex = new RegExp('https?|wwww');
   const mailRegex = new RegExp('mailto');
   const phoneRegex = new RegExp('tel');
