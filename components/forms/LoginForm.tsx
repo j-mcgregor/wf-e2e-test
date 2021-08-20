@@ -106,7 +106,7 @@ const LoginForm = () => {
               )}
             </div>
 
-            <div className="flex items-center justify-between text-left">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-left">
               <div className="flex items-center w-full sm:w-auto">
                 <input
                   {...register('remember')}
@@ -119,7 +119,7 @@ const LoginForm = () => {
                 </label>
               </div>
 
-              <div className="text-sm ">
+              <div className="text-sm hidden sm:block ">
                 <Link
                   linkTo="/forgotten-password"
                   className="font-medium text-highlight hover:text-yellow-500"
@@ -134,6 +134,15 @@ const LoginForm = () => {
               {/* onClick runs signIn function from next-auth with credentials from form  */}
               <Button>{t('sign in')}</Button>
             </div>
+
+            <div className="text-sm text-center pb-3 sm:hidden  ">
+                <Link
+                  linkTo="/forgotten-password"
+                  className="font-medium text-highlight hover:text-yellow-500"
+                >
+                  {t('forgot password')}
+                </Link>
+              </div>
           </form>
         </div>
       </div>

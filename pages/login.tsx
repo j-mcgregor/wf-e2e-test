@@ -11,7 +11,7 @@ const Login = () => {
   const t = useTranslations();
 
   return (
-    <Layout noNav={true} title="Login">
+    <Layout noNav={true}>
       <LoginContainer>
         <div>
           <Logo />
