@@ -225,7 +225,7 @@ const NavItems = ({ path, navigation, noText }: NavListProps) => {
             </div>
           );
         }
-        if (title && noText) return <hr />
+        if (title && noText) return <hr key={name} />
         return (
           <Link
             key={name}

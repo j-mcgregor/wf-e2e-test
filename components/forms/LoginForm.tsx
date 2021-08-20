@@ -5,6 +5,9 @@ import { useForm } from 'react-hook-form';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import Link from '../elements/Link';
 import Button from '../elements/Button';
+import React, { useState } from 'react';
+import ErrorMessage from '../elements/ErrorMessage';
+import Input from '../elements/Input';
 
 type FormValues = {
   email: string;
@@ -12,12 +15,14 @@ type FormValues = {
   remember: boolean;
 };
 
+
 const LoginForm = () => {
+  const t = useTranslations();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
-    clearErrors,
-    getValues,
     formState: { errors }
   } = useForm<FormValues>();
 
@@ -25,24 +30,27 @@ const LoginForm = () => {
     'user',
     null
   );
-  const t = useTranslations();
+  const [authError, setAuthError] = useState(false);
 
   // only runs if form is valid
-  const onSubmit = handleSubmit(data => {
-    signIn('credentials', {
-      email: getValues('email'),
-      password: getValues('password')
+  const onSubmit = async (data: FormValues) => {
+    const authenticated = await signIn('credentials', {
+      email: data.email,
+      password: data.password,
+      redirect: false
     });
-    data.remember && setActiveUser(data.email);
-  });
+
+    if (authenticated?.ok) {
+      data.remember && setActiveUser(data.email);
+      return router.push('/');
+    }
+    return setAuthError(true);
+  };
 
   // regex to validate email address
   const validEmail =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  // variables for conditionally rendering styles for input focus when errors
-  const validFocus = 'focus:ring-highlight focus:border-highlight';
-  const errorFocus = 'focus:ring-red-400 focus:border-red-400';
 
   return (
     <div>
@@ -59,52 +67,46 @@ const LoginForm = () => {
         </div>
 
         <div className="mt-6">
-          <form className="space-y-6" onSubmit={onSubmit} noValidate>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium">
-                {t('email')}
-              </label>
 
-              {/* inputs need breaking out into own components - WIP */}
-              <input
-                {...register('email', {
-                  required: true,
-                  pattern: validEmail
-                })}
-                onChange={() => clearErrors('email')}
-                type="email"
-                placeholder="Email"
-                // render error styles if input name has an error object associated with it
-                className={`${
-                  errors?.email ? errorFocus : validFocus
-                } appearance-none block w-full px-3 py-2 my-2 rounded-md focus:outline-none placeholder-gray-40 sm:text-sm text-black`}
-              />
-              {errors.email?.type === 'required' && (
-                <p className="text-sm text-red-400">
-                  Email address is required
-                </p>
-              )}
-              {errors.email?.type === 'pattern' && (
-                <p className="text-sm text-red-400">
-                  Please enter a valid email
-                </p>
-              )}
-              <label htmlFor="password" className="block text-sm font-medium">
-                {t('password')}
-              </label>
-              <input
-                {...register('password', { required: true })}
-                onChange={() => clearErrors('password')}
-                type="password"
-                placeholder="Password"
-                className={`${
-                  errors.password ? errorFocus : validFocus
-                } appearance-none block w-full px-3 py-2 my-2 rounded-md focus:outline-none placeholder-gray-400 sm:text-sm text-black`}
-              />
-              {errors.password?.type === 'required' && (
-                <p className="text-sm text-red-400">Password is required</p>
-              )}
+              <div>
+                <Input
+                  {...register('email', {
+                    required: true,
+                    pattern: validEmail
+                  })}
+                  label={`${t('email')}`}
+                  type="email"
+                  // requires a string to be passed
+                  placeholder={`${t('placeholders.email')}`}
+                />
+                {errors.email?.type === 'required' && (
+                  <ErrorMessage text={t('errors.email required')} />
+                )}
+                {errors.email?.type === 'pattern' && (
+                  <ErrorMessage text={t('errors.valid email')} />
+                )}
+              </div>
+
+              <div>
+                <Input
+                  {...register('password', { required: true })}
+                  type="password"
+                  label={`${t('password')}`}
+                  placeholder={`${t('placeholders.password')}`}
+                />
+                {errors.password?.type === 'required' && (
+                  <ErrorMessage text={t('errors.password required')} />
+                )}
+              </div>
             </div>
+
+            {authError && (
+              <p className="text-sm text-red-400 mb-4">
+                <ErrorMessage text={t('errors.incorrect details')} />
+              </p>
+            )}
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-left">
               <div className="flex items-center w-full sm:w-auto">
@@ -130,19 +132,19 @@ const LoginForm = () => {
             </div>
 
             <div>
-              {/* Button component might need changing or replacing soon */}
-              {/* onClick runs signIn function from next-auth with credentials from form  */}
-              <Button>{t('sign in')}</Button>
+              <Button type="submit">
+                {t('sign in')}
+              </Button>
             </div>
 
             <div className="text-sm text-center pb-3 sm:hidden  ">
-                <Link
-                  linkTo="/forgotten-password"
-                  className="font-medium text-highlight hover:text-yellow-500"
-                >
-                  {t('forgot password')}
-                </Link>
-              </div>
+              <Link
+                linkTo="/forgotten-password"
+                className="font-medium text-highlight hover:text-yellow-500"
+              >
+                {t('forgot password')}
+              </Link>
+            </div>
           </form>
         </div>
       </div>

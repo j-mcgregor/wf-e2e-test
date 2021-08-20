@@ -7,5 +7,15 @@
   "password": "Password",
   "remember me": "Remember me",
   "forgot password": "Forgot your password?",
-  "sign in": "Sign in"
+  "sign in": "Sign in",
+  "errors": {
+    "incorrect details": "Your details are incorrect. Please try again.",
+    "password required": "Your password is required.",
+    "email required": "Your email is required.",
+    "valid email": "Please enter a valid email."
+  },
+  "placeholders": {
+    "email": "you@example.com",
+    "password": "Password"
+  }
 }
