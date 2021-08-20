@@ -20,6 +20,8 @@ export default NextAuth({
         },
         password: { label: 'Password', type: 'password' }
       },
+
+      
       async authorize(credentials, _req) {
         // You need to provide your own logic here that takes the credentials
         // submitted and returns either a object representing a user or value
