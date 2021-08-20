@@ -41,7 +41,7 @@ export default NextAuth({
         //   return user;
         // }
 
-        let user = mockUsers[credentials.email];
+        const user = mockUsers[credentials.email];
 
         if (user) {
           return user;
