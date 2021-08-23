@@ -17,7 +17,7 @@ const Stats = ({ stats }: StatsProps) => {
         {stats.map((item, i) => (
           <div
             key={i}
-            className={`px-4 py-5 bg-white shadow  overflow-hidden sm:p-6 ${
+            className={`px-4 py-5 bg-white shadow overflow-hidden sm:p-6 ${
               i === 0
                 ? 'rounded-l'
                 : i === stats.length - 1

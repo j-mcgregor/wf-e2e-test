@@ -13,6 +13,7 @@ import {
 import Stats from '../components/elements/Stats';
 
 import mockUsers from '../lib/mock-data/users';
+
 import React from 'react';
 
 // issue getting full object from session so temporarily pulling usage in directly
