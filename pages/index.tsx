@@ -1,24 +1,58 @@
+import { useTranslations } from 'next-intl';
 import { GetStaticPropsContext } from 'next';
 import { useSession } from 'next-auth/client';
 import Layout from '../components/layout/Layout';
 import LinkCard from '../components/elements/LinkCard';
-import { LightningBoltIcon } from '@heroicons/react/outline';
+import {
+  LightningBoltIcon,
+  SearchCircleIcon,
+  DocumentDuplicateIcon,
+  ChipIcon
+} from '@heroicons/react/outline';
 
 export default function Home() {
   const [session, loading] = useSession();
+  const t = useTranslations();
 
   console.log(session);
   return (
     <Layout title="Dashboard">
       {session ? `Logged in as ${session?.user?.name}` : 'Not Logged in'}
 
-      <LinkCard
-        icon={<LightningBoltIcon className='className="h-6 w-6 text-white ' />}
-        iconColor="highlight"
-        header="Create an Automated Report"
-        description="With only a company number, automatically source data from millions of SME’s. Take this data and generate a credit risk report using Wiserfunding’s SME Z-Score. "
-        linkTo="#"
-      />
+      <div className="flex w-full">
+        <LinkCard
+          icon={
+            <LightningBoltIcon className='className="h-6 w-6 text-white ' />
+          }
+          iconColor="bg-highlight"
+          header={t('automated report header')}
+          description={t('automated report description')}
+          linkTo="#"
+        />
+        <LinkCard
+          icon={<SearchCircleIcon className='className="h-6 w-6 text-white' />}
+          iconColor="bg-highlight-2"
+          header={t('sme prospector header')}
+          description={t('sme prospector description')}
+          linkTo="#"
+        />
+        <LinkCard
+          icon={
+            <DocumentDuplicateIcon className='className="h-6 w-6 text-white ' />
+          }
+          iconColor="bg-highlight-3"
+          header={t('batch reports header')}
+          description={t('batch reports description')}
+          linkTo="#"
+        />
+        <LinkCard
+          icon={<ChipIcon className='className="h-6 w-6 text-white ' />}
+          iconColor="bg-highlight-4"
+          header={t('automated report header')}
+          description={t('automated report description')}
+          linkTo="#"
+        />
+      </div>
     </Layout>
   );
 }
