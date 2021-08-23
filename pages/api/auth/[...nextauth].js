@@ -21,7 +21,6 @@ export default NextAuth({
         password: { label: 'Password', type: 'password' }
       },
 
-      
       async authorize(credentials, _req) {
         // You need to provide your own logic here that takes the credentials
         // submitted and returns either a object representing a user or value
@@ -56,6 +55,14 @@ export default NextAuth({
   pages: {
     signIn: '/login'
     // signOut: '/auth/signout'
+  },
+  callbacks: {
+    async session(session, _token) {
+      // add the mock user data in the use session hook
+      const user = mockUsers[session?.user?.email];
+      session.user = user;
+      return session;
+    }
   }
   // A database is optional, but required to persist accounts in a database
 });

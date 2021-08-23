@@ -3,6 +3,9 @@ import { useRouter } from 'next/router';
 
 import Nav from './Nav';
 import Seo from './Seo';
+import { useSession } from 'next-auth/client';
+import { atom, useRecoilState } from 'recoil';
+import initialAppState from '../../lib/appState';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -22,6 +25,16 @@ const Layout = ({
 }: LayoutProps) => {
   const router = useRouter();
   const path: string = router.pathname;
+
+  const [session, loading] = useSession();
+  const [appState, setAppState] = useRecoilState(initialAppState);
+
+
+
+  React.useEffect(() => {
+  setAppState({ ...appState, user: session?.user})
+
+  }, [ session ])
 
   return (
     <div>

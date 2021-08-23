@@ -15,26 +15,29 @@ import Stats from '../components/elements/Stats';
 import mockUsers from '../lib/mock-data/users';
 
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import initialAppState from '../lib/appState';
 
-// issue getting full object from session so temporarily pulling usage in directly
-const recentUsage = mockUsers['test@test.com'].recent_usage;
 
-export default function Home() {
+export default function Dashboard() {
   const [session, loading] = useSession();
+
   const t = useTranslations();
 
-  console.log(session);
+  const { user } = useRecoilValue(initialAppState)
+
+
   return (
     <Layout title="Dashboard">
       {session ? `Logged in as ${session?.user?.name}` : 'Not Logged in'}
 
       <Stats
         stats={[
-          { header: t('total reports'), data: recentUsage.reports_ran },
-          { header: t('api requests'), data: recentUsage.api_requests },
+          { header: t('total reports'), data: user?.recent_usage?.reports_ran },
+          { header: t('api requests'), data: user?.recent_usage?.api_requests },
           {
             header: t('last login'),
-            data: recentUsage.last_login,
+            data: user?.recent_usage?.api_requests,
             timeAgo: true
           }
         ]}
