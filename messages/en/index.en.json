@@ -1,5 +1,8 @@
 {
   "home": "Home",
+  "welcome back": "Welcome back,",
+  "last 7 days": "Last 7 days",
+  "updates": "Updates",
   "automated report header": "Create an Automated Report",
   "automated report description": "With only a company number, automatically source data from millions of SME’s. Take this data and generate a credit risk report using Wiserfunding’s SME Z-Score.",
   "sme prospector header": "SME Prospector",
