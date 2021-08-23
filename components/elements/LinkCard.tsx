@@ -20,7 +20,7 @@ const LinkCard = ({
 }: LinkCardProps) => {
   return (
     <div className="w-full flex flex-wrap justify-between py-8">
-      <div className="shadow w-52 h-52">
+      <div className="shadow w-52 h-52 bg-white rounded">
         <div className="w-full flex justify-between">
           <div className={`${iconColor} m-2 p-2 `}>{icon}</div>
           <Link linkTo={linkTo}>

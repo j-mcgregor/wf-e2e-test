@@ -9,6 +9,7 @@ import {
   DocumentDuplicateIcon,
   ChipIcon
 } from '@heroicons/react/outline';
+import Stats from '../components/elements/Stats';
 
 export default function Home() {
   const [session, loading] = useSession();
@@ -19,6 +20,9 @@ export default function Home() {
     <Layout title="Dashboard">
       {session ? `Logged in as ${session?.user?.name}` : 'Not Logged in'}
 
+      <Stats />
+
+      {/* link cards */}
       <div className="flex w-full">
         <LinkCard
           icon={
