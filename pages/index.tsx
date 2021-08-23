@@ -11,8 +11,6 @@ import {
 
 import Stats from '../components/elements/Stats';
 
-import mockUsers from '../lib/mock-data/users';
-
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import initialAppState from '../lib/appState';
