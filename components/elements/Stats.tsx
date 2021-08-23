@@ -18,13 +18,13 @@ const Stats = ({ stats }: StatsProps) => {
         {stats.map((item, i) => (
           <div
             key={i}
-            className={`px-4 py-5 bg-white shadow overflow-hidden sm:p-6 first:rounded-l last:rounded-r `}
+            className={`px-4 py-5 bg-white shadow overflow-hidden sm:p-4 first:rounded-l last:rounded-r `}
           >
-            <dt className="text-3xl font-medium text-highlight truncate before">
+            <dt className="text-2xl font-medium text-highlight truncate before">
               {item.timeAgo && item.data ? <ReactTimeAgo date={item.data} /> : <p className="before:content-['l'] before:ml-[-5px] before:opacity-0">{item.data}</p> }
             </dt>
 
-            <dd className="mt-1 text-lg  font-semibold text-gray-900">
+            <dd className="mt-1 text-base   text-gray-900">
               {item.header}
             </dd>
           </div>
