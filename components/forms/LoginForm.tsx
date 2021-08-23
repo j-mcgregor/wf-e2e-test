@@ -8,6 +8,7 @@ import Button from '../elements/Button';
 import React, { useState } from 'react';
 import ErrorMessage from '../elements/ErrorMessage';
 import Input from '../elements/Input';
+import { validEmailRegex } from '../../lib/regexes';
 
 type FormValues = {
   email: string;
@@ -26,7 +27,7 @@ const LoginForm = () => {
     formState: { errors }
   } = useForm<FormValues>();
 
-  const [activeUser, setActiveUser] = useLocalStorage<string | null>(
+  const [_activeUser, setActiveUser] = useLocalStorage<string | null>(
     'user',
     null
   );
@@ -46,10 +47,6 @@ const LoginForm = () => {
     }
     return setAuthError(true);
   };
-
-  // regex to validate email address
-  const validEmail =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 
   return (
@@ -74,7 +71,7 @@ const LoginForm = () => {
                 <Input
                   {...register('email', {
                     required: true,
-                    pattern: validEmail
+                    pattern: validEmailRegex
                   })}
                   label={`${t('email')}`}
                   type="email"

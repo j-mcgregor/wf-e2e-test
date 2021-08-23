@@ -41,8 +41,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     }: InputProps,
     ref
   ) => {
-
-    console.log(ref)
     return (
       <>
         {label && (
