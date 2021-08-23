@@ -9,7 +9,14 @@ import {
   DocumentDuplicateIcon,
   ChipIcon
 } from '@heroicons/react/outline';
+
 import Stats from '../components/elements/Stats';
+
+import mockUsers from '../lib/mock-data/users';
+import React from 'react';
+
+// issue getting full object from session so temporarily pulling usage in directly
+const recentUsage = mockUsers['test@test.com'].recent_usage;
 
 export default function Home() {
   const [session, loading] = useSession();
@@ -20,14 +27,22 @@ export default function Home() {
     <Layout title="Dashboard">
       {session ? `Logged in as ${session?.user?.name}` : 'Not Logged in'}
 
-      <Stats />
+      <Stats
+        stats={[
+          { header: t('total reports'), data: recentUsage.reports_ran },
+          { header: t('api requests'), data: recentUsage.api_requests },
+          {
+            header: t('last login'),
+            data: recentUsage.last_login,
+            timeAgo: true
+          }
+        ]}
+      />
 
       {/* link cards */}
       <div className="flex w-full">
         <LinkCard
-          icon={
-            <LightningBoltIcon className='className="h-6 w-6 text-white ' />
-          }
+          icon={<LightningBoltIcon className='className="h-6 w-6 text-white' />}
           iconColor="bg-highlight"
           header={t('automated report header')}
           description={t('automated report description')}
@@ -42,7 +57,7 @@ export default function Home() {
         />
         <LinkCard
           icon={
-            <DocumentDuplicateIcon className='className="h-6 w-6 text-white ' />
+            <DocumentDuplicateIcon className='className="h-6 w-6 text-white' />
           }
           iconColor="bg-highlight-3"
           header={t('batch reports header')}

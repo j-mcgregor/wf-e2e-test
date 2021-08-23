@@ -7,6 +7,8 @@
   "batch reports header": "Batch Reports",
   "batch reports description": "Got a lot of reports to run? You bring the company IDs and we’ll run them and let you know when every single report has been compiled for you and your team.",
   "api docs header": "API Documentation",
-  "api docs description": "Do you have a large list of companies to analyse? Or want to integrate our technology into your own. Integrate with our API to achieve all of this and more."
-
+  "api docs description": "Do you have a large list of companies to analyse? Or want to integrate our technology into your own. Integrate with our API to achieve all of this and more.",
+  "total reports": "Total Reports",
+  "api requests": "API Requests",
+  "last login": "Last Login"
 }
