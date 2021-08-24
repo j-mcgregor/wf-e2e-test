@@ -46,6 +46,17 @@ const mockUsers =  {
       },
     ]
    
+  },
+  'new@test.com': {
+    name: 'Jane Doe (new user)',
+    email: 'new@test.com',
+    id: 2,
+    recent_usage: {
+      last_login: null,
+      api_requests: 0,
+      reports_ran: 0
+    },
+    reports: []
   }
 }
 
