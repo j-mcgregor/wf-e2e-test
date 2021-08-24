@@ -1,39 +1,33 @@
+import React from 'react'
+
 interface CheckboxProps {
-  label: React.ReactNode;
+  label?: React.ReactNode | string;
   id: string;
   name: string;
-  type: string;
-  required?: boolean;
-  checked?: boolean;
-  onChange?: () => void;
 }
 
 
-const CheckboxInput = ({
+const CheckboxInput = React.forwardRef<HTMLInputElement, CheckboxProps>(({
   label,
   id,
   name,
-  type,
-  required,
-  checked,
-  onChange
-}: CheckboxProps) => {
+  ...restProps
+}: CheckboxProps, ref) => {
   return (
-    <div className="flex items-center">
+    <>
       <input
         id={id}
+        ref={ref}
         name={name}
-        type={type}
-        required={required}
-        checked={checked}
-        onChange={onChange}
-        className="h-4 w-4 text-highlight focus:ring-highlight rounded"
+        type="checkbox"
+        className="h-4 w-4 text-highlight focus:ring-highlight rounded cursor-pointer"
+        {...restProps}
       />
-      <label htmlFor="remember-me" className="ml-2 block text-sm">
+      <label htmlFor={name} className="ml-2 block text-sm">
         {label}
       </label>
-    </div>
+    </>
   );
-};
+});
 
 export default CheckboxInput;
