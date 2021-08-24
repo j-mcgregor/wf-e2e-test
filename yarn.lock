@@ -2422,6 +2422,11 @@ loader-utils@1.2.3:
     emojis-list "^2.0.0"
     json5 "^1.0.1"
 
+loadjs@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/loadjs/-/loadjs-4.2.0.tgz#2a0336376397a6a43edf98c9ec3229ddd5abb6f6"
+  integrity sha512-AgQGZisAlTPbTEzrHPb6q+NYBMD+DP9uvGSIjSUM5uG+0jG15cb8axWpxuOIqrmQjn6scaaH8JwloiP27b2KXA==
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
@@ -3386,6 +3391,13 @@ react-timeago@^6.2.1:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/react-timeago/-/react-timeago-6.2.1.tgz#f19716811156617ceb9c9f9a44315d85197c7fba"
   integrity sha512-b9EObWO8wy4qwfOzj+g/RQZRrPvtMv1Pz12FCdAWKWCXbDGt0rZLyiyTGEr0Lh1O8w5xa48CtRpl3LI+CtGCyw==
+
+react-twitter-widgets@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/react-twitter-widgets/-/react-twitter-widgets-1.10.0.tgz#f5395c25b954631b5a2532cdb48005f7db61d370"
+  integrity sha512-K7MAREhkKJxrhoiNWricKs1O++NyElnVpcplLzZ67gDrmeIsD3E4TUzlt0/nTZAHPOPPc86V4kEd4KIg4de7cQ==
+  dependencies:
+    loadjs "^4.2.0"
 
 react@17.0.2:
   version "17.0.2"

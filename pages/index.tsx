@@ -36,6 +36,7 @@ export default function Dashboard() {
           </div>
 
           <Stats
+          className="mt-4 mb-4"
             stats={[
               {
                 header: t('total reports'),
@@ -57,12 +58,12 @@ export default function Dashboard() {
 
         <div className="col-span-2">
           <h3 className="font-semibold">{t('updates')}</h3>
-          <TwitterFeed />
+          <TwitterFeed className="mt-6" />
         </div>
       </div>
 
       {/* link cards */}
-      <div className="grid xl:grid-cols-4 grid-cols-2 gap-4 mt-8">
+      <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none">
         <LinkCard
           icon={<LightningBoltIcon className='className="h-6 w-6 text-white' />}
           iconColor="bg-highlight"

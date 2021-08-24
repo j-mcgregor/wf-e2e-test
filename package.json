@@ -21,6 +21,7 @@
     "react-hook-form": "^7.12.2",
     "react-particles-js": "^3.5.3",
     "react-timeago": "^6.2.1",
+    "react-twitter-widgets": "^1.10.0",
     "recoil": "^0.4.0",
     "tsparticles": "^1.33.3"
   },
