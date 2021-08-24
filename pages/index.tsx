@@ -8,14 +8,14 @@ import {
   DocumentDuplicateIcon,
   ChipIcon
 } from '@heroicons/react/outline';
+import initialAppState from '../lib/appState';
 
 import Stats from '../components/elements/Stats';
+import Layout from '../components/layout/Layout';
+import LinkCard from '../components/cards/LinkCard';
 
-import React from 'react';
-import { useRecoilValue } from 'recoil';
-import appState from '../lib/appState';
-import { getSession } from 'next-auth/client';
-import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
+import ReportTable from '../components/elements/ReportTable';
+import TwitterFeed from '../components/elements/TwitterFeed';
 
 export default function Dashboard() {
   const t = useTranslations();
@@ -34,6 +34,7 @@ export default function Dashboard() {
               <p className="font-semibold">{t('last 7 days')}</p>
             </div>
           </div>
+
           <Stats
             stats={[
               {
@@ -46,17 +47,17 @@ export default function Dashboard() {
               },
               {
                 header: t('last login'),
-                data: user?.recent_usage?.api_requests,
+                data: user?.recent_usage?.last_login,
                 timeAgo: true
               }
             ]}
           />
-
-          {/* Report table goes here */}
+          <ReportTable reports={user?.reports} />
         </div>
+
         <div className="col-span-2">
           <h3 className="font-semibold">{t('updates')}</h3>
-          {/* Twitter page goes here */}
+          <TwitterFeed />
         </div>
       </div>
 
