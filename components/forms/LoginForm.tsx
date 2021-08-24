@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import ErrorMessage from '../elements/ErrorMessage';
 import Input from '../elements/Input';
 import { validEmailRegex } from '../../lib/regexes';
+import CheckboxInput from '../elements/Checkbox';
 
 type FormValues = {
   email: string;
@@ -100,22 +101,16 @@ const LoginForm = () => {
             </div>
 
             {authError && (
-              <p className="text-sm text-red-400 mb-4">
                 <ErrorMessage text={t('errors.incorrect details')} />
-              </p>
             )}
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-left">
               <div className="flex items-center w-full sm:w-auto">
-                <input
+                <CheckboxInput
                   {...register('remember')}
                   id="remember"
-                  type="checkbox"
-                  className="h-4 w-4 text-highlight focus:ring-highlight rounded cursor-pointer"
+                  label={`${t('remember me')}`}
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm">
-                  {t('remember me')}
-                </label>
               </div>
 
               <div className="text-sm hidden sm:block ">
