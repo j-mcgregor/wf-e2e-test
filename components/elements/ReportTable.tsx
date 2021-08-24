@@ -1,18 +1,11 @@
 import ReactTimeAgo from 'react-timeago';
 import { useTranslations } from 'use-intl';
 import { ArrowNarrowUpIcon } from '@heroicons/react/solid';
+import { Report } from '../../types/global';
 import Link from '../elements/Link';
 
-type Report = {
-  id: number;
-  company_Name: string;
-  sme_zscore: number;
-  bond_rating: number;
-  created_at: number;
-};
-
 interface ReportProps {
-  reports?: [] | null;
+  reports?: Report[] | null;
 }
 
 const ReportTable = ({ reports }: ReportProps) => {

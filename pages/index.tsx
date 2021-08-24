@@ -21,6 +21,7 @@ export default function Dashboard() {
   const t = useTranslations();
 
   const { user } = useRecoilValue(initialAppState);
+  console.log(user);
 
   return (
     <Layout title="Dashboard">
