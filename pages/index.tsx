@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { GetStaticPropsContext } from 'next';
+import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import Layout from '../components/layout/Layout';
 import LinkCard from '../components/cards/LinkCard';
 import {
@@ -13,12 +13,14 @@ import Stats from '../components/elements/Stats';
 
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import initialAppState from '../lib/appState';
+import appState from '../lib/appState';
+import { getSession } from 'next-auth/client';
+import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 
 export default function Dashboard() {
   const t = useTranslations();
 
-  const { user } = useRecoilValue(initialAppState);
+  const { user } = useRecoilValue(appState);
 
   return (
     <Layout title="Dashboard">
@@ -28,10 +30,9 @@ export default function Dashboard() {
             <p className="text-base h-6 -mt-6">{t('welcome back')}</p>
 
             <div className="flex justify-between">
-            <h1 className="text-2xl font-semibold">{user && user.name}</h1>
-            <p className="font-semibold">{t('last 7 days')}</p>
+              <h1 className="text-2xl font-semibold">{user && user.name}</h1>
+              <p className="font-semibold">{t('last 7 days')}</p>
             </div>
-          
           </div>
           <Stats
             stats={[
@@ -96,16 +97,18 @@ export default function Dashboard() {
   );
 }
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
-  return {
-    props: {
-      messages: {
-        // You can get the messages from anywhere you like, but the recommended
-        // pattern is to put them in JSON files separated by language and read
-        // the desired one based on the `locale` received from Next.js.
-        // eslint-disable-next-line security/detect-non-literal-require
-        ...require(`../messages/${locale}/index.${locale}.json`)
+export const getServerSideProps = getServerSidePropsWithAuth(
+  ({ locale }: GetServerSidePropsContext) => {
+    return {
+      props: {
+        messages: {
+          // You can get the messages from anywhere you like, but the recommended
+          // pattern is to put them in JSON files separated by language and read
+          // the desired one based on the `locale` received from Next.js.
+          // eslint-disable-next-line security/detect-non-literal-require
+          ...require(`../messages/${locale}/index.${locale}.json`)
+        }
       }
-    }
-  };
-}
+    };
+  }
+);
