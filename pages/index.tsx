@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import Layout from '../components/layout/Layout';
 import LinkCard from '../components/cards/LinkCard';
 import {
@@ -8,14 +8,14 @@ import {
   DocumentDuplicateIcon,
   ChipIcon
 } from '@heroicons/react/outline';
-import initialAppState from '../lib/appState';
+import appState from '../lib/appState';
 
 import Stats from '../components/elements/Stats';
-import Layout from '../components/layout/Layout';
-import LinkCard from '../components/cards/LinkCard';
 
 import ReportTable from '../components/elements/ReportTable';
 import TwitterFeed from '../components/elements/TwitterFeed';
+import { useRecoilValue } from 'recoil';
+import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 
 export default function Dashboard() {
   const t = useTranslations();
