@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 
 import Nav from './Nav';
 import Seo from './Seo';
 import { useSession } from 'next-auth/client';
-import { atom, useRecoilState } from 'recoil';
-import initialAppState from '../../lib/appState';
+import {  useSetRecoilState } from 'recoil';
+import appState from '../../lib/appState';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -27,12 +27,12 @@ const Layout = ({
   const path: string = router.pathname;
 
   const [session, loading] = useSession();
-  const [appState, setAppState] = useRecoilState(initialAppState);
+  const setState = useSetRecoilState(appState);
 
 
 
   React.useEffect(() => {
-  setAppState({ ...appState, user: session?.user})
+    setState({ ...appState, user: session?.user})
 
   }, [ session ])
 

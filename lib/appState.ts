@@ -14,11 +14,15 @@ interface SessionUser {
     };
   };
 } 
-const initialAppState = atom<SessionUser>({
+
+// https://github.com/facebookexperimental/Recoil/issues/733
+// separate files for state issues NextJS
+
+const appState = atom<SessionUser>({
   key: 'appState',
   default: {
     user: {}
   }
 });
 
-export default initialAppState;
+export default appState;
