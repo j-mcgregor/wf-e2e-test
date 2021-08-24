@@ -1,5 +1,4 @@
 import { atom } from 'recoil';
-import { DefaultSession } from 'next-auth';
 import { StatDataType } from '../types/global';
 
 interface SessionUser {
@@ -12,8 +11,19 @@ interface SessionUser {
       api_requests: StatDataType;
       last_login: StatDataType;
     };
+    reports?:
+      | [
+          // {
+        // id: number;
+        // company_name: string;
+        // sme_zscore: number;
+        // bond_rating: number;
+        // created_at: number;
+        // }
+        ]
+      | undefined;
   };
-} 
+}
 const initialAppState = atom<SessionUser>({
   key: 'appState',
   default: {

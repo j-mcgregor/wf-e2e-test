@@ -1,19 +1,20 @@
 import { useTranslations } from 'next-intl';
 import { GetStaticPropsContext } from 'next';
-import Layout from '../components/layout/Layout';
-import LinkCard from '../components/cards/LinkCard';
+import { useRecoilValue } from 'recoil';
+
 import {
   LightningBoltIcon,
   SearchCircleIcon,
   DocumentDuplicateIcon,
   ChipIcon
 } from '@heroicons/react/outline';
+import initialAppState from '../lib/appState';
 
 import Stats from '../components/elements/Stats';
+import Layout from '../components/layout/Layout';
+import LinkCard from '../components/cards/LinkCard';
 
-import React from 'react';
-import { useRecoilValue } from 'recoil';
-import initialAppState from '../lib/appState';
+import ReportTable from '../components/elements/ReportTable';
 
 export default function Dashboard() {
   const t = useTranslations();
@@ -28,11 +29,11 @@ export default function Dashboard() {
             <p className="text-base h-6 -mt-6">{t('welcome back')}</p>
 
             <div className="flex justify-between">
-            <h1 className="text-2xl font-semibold">{user && user.name}</h1>
-            <p className="font-semibold">{t('last 7 days')}</p>
+              <h1 className="text-2xl font-semibold">{user && user.name}</h1>
+              <p className="font-semibold">{t('last 7 days')}</p>
             </div>
-          
           </div>
+
           <Stats
             stats={[
               {
@@ -45,13 +46,14 @@ export default function Dashboard() {
               },
               {
                 header: t('last login'),
-                data: user?.recent_usage?.api_requests,
+                data: user?.recent_usage?.last_login,
                 timeAgo: true
               }
             ]}
           />
 
           {/* Report table goes here */}
+          <ReportTable reports={user?.reports} />
         </div>
         <div className="col-span-2">
           <h3 className="font-semibold">{t('updates')}</h3>
