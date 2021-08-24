@@ -74,6 +74,20 @@ const ReportTable = ({ reports }: ReportProps) => {
                 ))}
               </tbody>
             </table>
+
+            {/* work in progress... */}
+            {/* reports array is empty - show empty report */}
+            {reports?.length === 0 && (
+              <div className="flex items-center justify-center bg-gray-300 text-white">
+                <div className="my-4 mx-10 p-10 bg-primary flex flex-col items-center">
+                  <h2 className=" text-xl">No reports generated yet</h2>
+                  <p>Get started with your first report today</p>
+                  <button className="bg-highlight px-8 py-2 my-4">
+                    Generate report
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
