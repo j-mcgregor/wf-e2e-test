@@ -8,12 +8,13 @@ type StatType = {
 
 interface StatsProps {
   stats: StatType[];
+  className?: string;
 }
 
-const Stats = ({ stats }: StatsProps) => {
+const Stats = ({ stats, className }: StatsProps) => {
   return (
-    <div className="my-8">
-      <dl className="mt-5 grid grid-cols-1 sm:grid-cols-3">
+    <div className={className}>
+      <dl className="grid grid-cols-1 sm:grid-cols-3">
         {stats.map((item, i) => (
           <div
             key={i}
