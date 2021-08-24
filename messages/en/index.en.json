@@ -13,5 +13,9 @@
   "api docs description": "Do you have a large list of companies to analyse? Or want to integrate our technology into your own. Integrate with our API to achieve all of this and more.",
   "total reports": "Total Reports",
   "api requests": "API Requests",
-  "last login": "Last Login"
+  "last login": "Last Login",
+  "company name": "Company Name",
+  "sme z-score": "SME Z-Score",
+  "bond rating": "Bond Rating",
+  "created": "Created"
 }

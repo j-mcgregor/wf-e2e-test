@@ -11,17 +11,7 @@ interface SessionUser {
       api_requests: StatDataType;
       last_login: StatDataType;
     };
-    reports?:
-      | [
-          // {
-        // id: number;
-        // company_name: string;
-        // sme_zscore: number;
-        // bond_rating: number;
-        // created_at: number;
-        // }
-        ]
-      | undefined;
+    reports?: [] | null;
   };
 }
 const initialAppState = atom<SessionUser>({
