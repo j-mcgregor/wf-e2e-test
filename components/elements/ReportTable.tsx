@@ -75,8 +75,8 @@ const ReportTable = ({ reports }: ReportProps) => {
               </tbody>
             </table>
 
-            {/* work in progress... */}
-            {/* reports array is empty - show empty report */}
+            {/* when reports array is empty - show empty report */}
+            {/* work in progress... placeholder bits for the moment */}
             {reports?.length === 0 && (
               <div className="flex items-center justify-center bg-gray-300 text-white">
                 <div className="my-4 mx-10 p-10 bg-primary flex flex-col items-center">
