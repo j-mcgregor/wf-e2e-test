@@ -19,39 +19,37 @@ const ReportTable = ({ reports }: ReportProps) => {
   const t = useTranslations();
   return (
     <div className="flex flex-col">
-      <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-          <div className="shadow overflow-hidden border-b-2 border-gray-200 sm:rounded-lg">
+      <div className="overflow-x-auto -mx-6">
+        <div className="py-2 align-middle min-w-full min-h-full px-6">
+          <div className="shadow overflow-hidden rounded">
             <table className="min-w-full divide-y-2 divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-sm font-medium   tracking-wider border-r-2"
+                    className="px-6 py-3 text-left text-sm font-medium tracking-wider border-r-2"
                   >
                     {t('company name')}
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-sm font-medium   tracking-wider border-r-2"
+                    className="px-6 py-3 text-left text-sm font-medium tracking-wider border-r-2"
                   >
                     {t('sme z-score')}
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-sm font-medium   tracking-wider border-r-2"
+                    className="px-6 py-3 text-left text-sm font-medium tracking-wider border-r-2"
                   >
                     {t('bond rating')}
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-sm font-medium   tracking-wider"
+                    className="px-6 py-3 text-left text-sm font-medium tracking-wider"
                   >
                     {t('created')}
                   </th>
-                  <th scope="col" className="relative px-6 py-3">
-                    <span className="sr-only">Edit</span>
-                  </th>
+                  <th />
                 </tr>
               </thead>
               <tbody>

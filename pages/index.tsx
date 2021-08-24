@@ -15,6 +15,7 @@ import Layout from '../components/layout/Layout';
 import LinkCard from '../components/cards/LinkCard';
 
 import ReportTable from '../components/elements/ReportTable';
+import TwitterFeed from '../components/elements/TwitterFeed';
 
 export default function Dashboard() {
   const t = useTranslations();
@@ -51,13 +52,12 @@ export default function Dashboard() {
               }
             ]}
           />
-
-          {/* Report table goes here */}
           <ReportTable reports={user?.reports} />
         </div>
+
         <div className="col-span-2">
           <h3 className="font-semibold">{t('updates')}</h3>
-          {/* Twitter page goes here */}
+          <TwitterFeed />
         </div>
       </div>
 
