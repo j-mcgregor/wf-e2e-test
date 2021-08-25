@@ -36,7 +36,7 @@ export default function Dashboard() {
           </div>
 
           <Stats
-          className="mt-4 mb-4"
+            className="mt-4 mb-4"
             stats={[
               {
                 header: t('total reports'),
@@ -53,7 +53,7 @@ export default function Dashboard() {
               }
             ]}
           />
-          <ReportTable reports={user?.reports} />
+          <ReportTable  />
         </div>
 
         <div className="col-span-2">

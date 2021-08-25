@@ -9,6 +9,30 @@ interface ReportProps {
 }
 
 const ReportTable = ({ reports }: ReportProps) => {
+  const isLoading = !reports;
+
+  const emptyCell: JSX.Element = <td className="px-6 py-4" />;
+
+  const emptyRowGrey: JSX.Element = (
+    <tr className="bg-grey-50 h-[72px] animate-pulse">
+      {emptyCell}
+      {emptyCell}
+      {emptyCell}
+      {emptyCell}
+      {emptyCell}
+    </tr>
+  );
+
+  const emptyRowWhite: JSX.Element = (
+    <tr className="bg-white h-[72px] animate-pulse">
+      {emptyCell}
+      {emptyCell}
+      {emptyCell}
+      {emptyCell}
+      {emptyCell}
+    </tr>
+  );
+
   const t = useTranslations();
   return (
     <div className="flex flex-col">
@@ -72,6 +96,16 @@ const ReportTable = ({ reports }: ReportProps) => {
                     </td>
                   </tr>
                 ))}
+
+                {isLoading && (
+                  <>
+                    {emptyRowWhite}
+                    {emptyRowGrey}
+                    {emptyRowWhite}
+                    {emptyRowGrey}
+                    {emptyRowWhite}
+                  </>
+                )}
               </tbody>
             </table>
 
@@ -88,6 +122,8 @@ const ReportTable = ({ reports }: ReportProps) => {
                 </div>
               </div>
             )}
+
+            {/* <div className="h-[360px] bg-red-500 min-w-full" /> */}
           </div>
         </div>
       </div>
