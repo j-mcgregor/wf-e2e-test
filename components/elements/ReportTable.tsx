@@ -1,18 +1,19 @@
 import ReactTimeAgo from 'react-timeago';
 import { useTranslations } from 'use-intl';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
+import { ExternalLinkIcon, DocumentReportIcon } from '@heroicons/react/outline';
 import { Report } from '../../types/global';
 import Link from '../elements/Link';
 
 interface ReportProps {
   reports?: Report[] | null;
+  limit: number;
 }
 
-const ReportTable = ({ reports }: ReportProps) => {
+const ReportTable = ({ reports, limit }: ReportProps) => {
   const isLoading = !reports;
 
-  // quantity of blank rows to fill if less than 5
-  const blankReportsQty: number | undefined = 5 - reports?.length;
+  // quantity of blank rows to fill if less than report limit prop
+  const blankReportsQty: number | undefined = limit - reports?.length; // can't fix ts error but working?
 
   // jsx elements for use in empty row loading state
   const emptyCell: JSX.Element = <td className="px-6 py-4" />;
@@ -74,35 +75,42 @@ const ReportTable = ({ reports }: ReportProps) => {
                 </tr>
               </thead>
               <tbody>
-                {reports?.map((report: Report, i: number) => (
-                  <tr
-                    key={report.id}
-                    className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {report.company_Name}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                      {report.sme_zscore}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                      {report.bond_rating}
-                    </td>
+                {reports?.map(
+                  (report: Report, i: number) =>
+                    // only shows first reports up to limit specified via props
+                    i < limit && (
+                      <tr
+                        key={report.id}
+                        className={`${
+                          i % 2 === 0 ? 'bg-white ' : 'bg-gray-50'
+                        } hover:bg-gray-400 cursor-default`}
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {report.company_Name}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                          {report.sme_zscore}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                          {report.bond_rating}
+                        </td>
 
-                    <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                      <ReactTimeAgo date={report.created_at} />
-                    </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                          <ReactTimeAgo date={report.created_at} />
+                        </td>
 
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link linkTo="#">
-                        <ExternalLinkIcon className="h-6 w-6 m-2 text-gray-400 " />
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <Link linkTo="#">
+                            <ExternalLinkIcon className="h-6 w-6 m-2 text-gray-700 " />
+                          </Link>
+                        </td>
+                      </tr>
+                    )
+                )}
 
-                {blankReportsQty >= 1 && (
-                  // if less than 5 reports, fill blank spots with remaining quantity of blank rows
+                {/* if quantity of empty reports = less than limit props & not negative */}
+                {/* fill remaining empty spots with blank filler */}
+                {blankReportsQty > 0 && blankReportsQty < limit && (
                   <>
                     {Array(blankReportsQty).fill(
                       <tr className="bg-gray-300 h-[72px]">
@@ -116,6 +124,8 @@ const ReportTable = ({ reports }: ReportProps) => {
                   </>
                 )}
 
+                {/* when loading state, show empty rows */}
+                {/* currently always 5 - need to update to respond to limit p */}
                 {isLoading && (
                   <>
                     {emptyRowWhite}
@@ -131,13 +141,18 @@ const ReportTable = ({ reports }: ReportProps) => {
             {/* when reports array is empty - show empty report */}
             {/* work in progress... placeholder bits for the moment */}
             {reports?.length === 0 && (
-              <div className="flex items-center justify-center bg-gray-300 text-white">
-                <div className="my-4 mx-10 p-10 bg-primary flex flex-col items-center">
-                  <h2 className=" text-xl">No reports generated yet</h2>
-                  <p>Get started with your first report today</p>
-                  <button className="bg-highlight px-8 py-2 my-4">
-                    Generate report
-                  </button>
+              <div className="flex items-center justify-center text-center bg-gray-300 text-white">
+                <div className="my-8 mx-8 md:mx-14 py-6 px-4 sm:px-6 md:px-14 bg-primary flex flex-col items-center">
+                  <DocumentReportIcon className="h-10 w-10 mb-2" />
+
+                  <h2 className="text-xl my-2">{t('no reports generated')}</h2>
+                  <p>{t('get started with new report')}</p>
+
+                  <Link>
+                    <button className="bg-highlight px-8 py-2 my-4">
+                      {t('generate report')}
+                    </button>
+                  </Link>
                 </div>
               </div>
             )}

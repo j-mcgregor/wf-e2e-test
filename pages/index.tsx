@@ -53,7 +53,7 @@ export default function Dashboard() {
               }
             ]}
           />
-          <ReportTable reports={user?.reports} />
+          <ReportTable reports={user?.reports} limit={5} />
         </div>
 
         <div className="col-span-2">

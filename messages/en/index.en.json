@@ -17,5 +17,9 @@
   "company name": "Company Name",
   "sme z-score": "SME Z-Score",
   "bond rating": "Bond Rating",
-  "created": "Created"
+  "created": "Created",
+  "never": "Never",
+  "no reports generated": "No reports generated yet",
+  "get started with new report": "Get started with your first report today",
+  "generate report": "Generate report"
 }
