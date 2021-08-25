@@ -18,7 +18,7 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
   const isLoading = !reports;
 
   // number of blank reports, if reports are less than the limit prop
-  const blankReports: number | undefined = limit - reports?.length; // can't fix ts error but working?
+  const blankReports: number | undefined = limit - (reports?.length || 0); // can't fix ts error but working?
 
   // jsx elements for use in empty row loading state
   const emptyCell: JSX.Element = <td className="px-6 py-4" />;
