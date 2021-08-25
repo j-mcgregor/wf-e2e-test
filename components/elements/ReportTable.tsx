@@ -12,7 +12,7 @@ interface ReportProps {
 const ReportTable = ({ reports, limit }: ReportProps) => {
   const isLoading = !reports;
 
-  // quantity of blank rows to fill if less than report limit prop
+  // number of blank reports, if reports are less than the limit prop
   const blankReports: number | undefined = limit - reports?.length; // can't fix ts error but working?
 
   // jsx elements for use in empty row loading state
@@ -36,29 +36,17 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
           <div className="shadow overflow-hidden rounded">
             <table className="min-w-full divide-y-2 divide-gray-200">
               <thead className="bg-gray-50">
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-sm font-medium tracking-wider border-r-2"
-                  >
+                <tr className="text-left text-sm tracking-wider">
+                  <th scope="col" className="px-6 py-3 font-medium border-r-2">
                     {t('company name')}
                   </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-sm font-medium tracking-wider border-r-2"
-                  >
+                  <th scope="col" className="px-6 py-3 font-medium border-r-2">
                     {t('sme z-score')}
                   </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-sm font-medium tracking-wider border-r-2"
-                  >
+                  <th scope="col" className="px-6 py-3 font-medium border-r-2">
                     {t('bond rating')}
                   </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-sm font-medium tracking-wider"
-                  >
+                  <th scope="col" className="px-6 py-3 font-medium ">
                     {t('created')}
                   </th>
                   <th />
@@ -67,13 +55,11 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
               <tbody>
                 {reports?.map(
                   (report: Report, i: number) =>
-                    // display reports only up until limit specified in props
+                    // display reports only up until quantity limit specified in props
                     i < limit && (
                       <tr
                         key={report.id}
-                        className={`${
-                          i % 2 === 0 ? 'bg-white ' : 'bg-gray-50'
-                        } hover:bg-gray-300 cursor-default`}
+                        className="bg-white odd:bg-gray-50 hover:bg-gray-300 cursor-default"
                       >
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {report.company_Name}
@@ -98,7 +84,7 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                     )
                 )}
 
-                {/* if quantity of empty reports = less than limit props & not negative */}
+                {/* if quantity of empty reports is less than limit & not negative */}
                 {/* fill remaining empty spots with blank filler */}
                 {blankReports > 0 && blankReports < limit && (
                   <>
@@ -113,7 +99,6 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                     )}
                   </>
                 )}
-
                 {/* when loading state, show qty of empty rows based on limit prop */}
                 {isLoading && <>{Array(limit).fill(emptyRow)}</>}
               </tbody>
