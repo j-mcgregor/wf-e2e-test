@@ -42,7 +42,7 @@ const Layout = ({
             <Seo title={title} description={description} path={path}/>
             <div className="h-screen bg-bg overflow-hidden flex ">
                 {!noNav && <Nav path={path}/>}
-                <SecondaryLayout children={<ReportNav/>}/>
+                <SecondaryLayout children={<ReportNav />}/>
                 <main className={`flex-1 relative overflow-y-auto focus:outline-none ${!noNav && 'pt-12'}`}>
                     <div className={` ${!noNav && 'py-6'}`}>
                         <div className="px-4 sm:px-6 md:px-0">
