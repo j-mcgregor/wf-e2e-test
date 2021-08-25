@@ -25,7 +25,7 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm<FormValues>();
 
   const [_activeUser, setActiveUser] = useLocalStorage<string | null>(
@@ -124,7 +124,7 @@ const LoginForm = () => {
             </div>
 
             <div>
-              <Button type="submit">
+              <Button type="submit" loading={isSubmitting} variant="highlight">
                 {t('sign in')}
               </Button>
             </div>

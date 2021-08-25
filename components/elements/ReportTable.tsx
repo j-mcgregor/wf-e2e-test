@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/client';
 import Link from '../elements/Link';
 
 import RowFiller from './RowFiller';
+import Button from './Button';
 
 interface ReportProps {
   reports?: Report[] | null;
@@ -109,9 +110,9 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                   <h2 className="text-xl my-2">{t('no reports generated')}</h2>
                   <p>{t('get started with new report')}</p>
                   <Link>
-                    <button className="bg-highlight px-8 py-2 my-4">
+                    <Button className="max-w-xxs mt-4" variant="highlight" linkTo="/sme-calc">
                       {t('generate report')}
-                    </button>
+                    </Button>
                   </Link>
                 </div>
               </div>
