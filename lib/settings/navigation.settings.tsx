@@ -1,5 +1,3 @@
-import { signOut } from 'next-auth/client';
-
 import {
   AdjustmentsIcon,
   ChipIcon,
@@ -11,6 +9,7 @@ import {
   SearchCircleIcon,
   SupportIcon
 } from '@heroicons/react/outline';
+import { signOut } from 'next-auth/client';
 
 
 export const siteNavigation = {

@@ -11,6 +11,10 @@ module.exports = {
     node: true,
     es6: true
   },
+  globals: {
+     JSX: true,
+     React: true
+  },
   plugins: ['simple-import-sort', 'prettier'],
   settings: {
     react: {
@@ -40,10 +44,10 @@ module.exports = {
         additionalHooks: 'useRecoilCallback|useRecoilTransaction_UNSTABLE'
       }
     ],
-    'simple-import-sort/imports': 'error',
+    'simple-import-sort/imports': 'warn',
     'unicorn/filename-case': 'off',
     'next/no-img-element': 'off',
-    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     'jsx-a11y/anchor-is-valid': [
       'error',
       {

@@ -110,7 +110,11 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                   <h2 className="text-xl my-2">{t('no reports generated')}</h2>
                   <p>{t('get started with new report')}</p>
                   <Link>
-                    <Button className="max-w-xxs mt-4" variant="highlight" linkTo="/sme-calc">
+                    <Button
+                      className="max-w-xxs mt-4"
+                      variant="highlight"
+                      linkTo="/sme-calc"
+                    >
                       {t('generate report')}
                     </Button>
                   </Link>

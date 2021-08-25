@@ -1,15 +1,16 @@
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/client';
 import { useTranslations } from 'next-intl';
-import { useForm } from 'react-hook-form';
-import useLocalStorage from '../../hooks/useLocalStorage';
-import Link from '../elements/Link';
-import Button from '../elements/Button';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import useLocalStorage from '../../hooks/useLocalStorage';
+import { validEmailRegex } from '../../lib/regexes';
+import Button from '../elements/Button';
+import CheckboxInput from '../elements/Checkbox';
 import ErrorMessage from '../elements/ErrorMessage';
 import Input from '../elements/Input';
-import { validEmailRegex } from '../../lib/regexes';
-import CheckboxInput from '../elements/Checkbox';
+import Link from '../elements/Link';
 
 type FormValues = {
   email: string;
@@ -128,7 +129,7 @@ const LoginForm = () => {
               </Button>
             </div>
 
-            <div className="text-sm text-center pb-3 sm:hidden  ">
+            <div className="text-sm text-center pb-3 sm:hidden">
               <Link
                 linkTo="/forgotten-password"
                 className="font-medium text-highlight hover:text-yellow-500"

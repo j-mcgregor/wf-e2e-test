@@ -3,7 +3,7 @@ import Link from './Link';
 import LoadingIcon from '../svgs/LoadingIcon';
 
 interface ButtonProps {
-  variant: 'primary' | 'secondary' | 'highlight' | 'alt';
+  variant: 'primary' | 'secondary' | 'highlight' | 'alt' | 'none';
   children: ReactNode;
   loading?: boolean;
   className?: string;
@@ -19,7 +19,8 @@ const buttonClassName = {
   secondary: 'bg-secondary hover:bg-gray-800 focus:gray-800 text-white ', // black
   alt: 'bg-alt hover:bg-blue-800 focus:bg-blue-800 text-white', // lighter blue
   highlight:
-    'bg-highlight hover:bg-yellow-500 focus:ring-yellow-500 text-white ' // orange
+    'bg-highlight hover:bg-yellow-500 focus:ring-yellow-500 text-white ', // orange
+    none: '' 
 };
 
 const Button = ({

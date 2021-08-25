@@ -1,11 +1,11 @@
-import { useTranslations } from 'next-intl';
 import { GetServerSidePropsContext } from 'next';
+import { useTranslations } from 'next-intl';
 
-import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
-import Layout from '../components/layout/Layout';
 import BookmarkCard from '../components/cards/BookmarkCard';
+import Layout from '../components/layout/Layout';
+import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 
-const reports = () => {
+const Reports = () => {
   const t = useTranslations();
   return (
     <Layout noNav={false} title="Reports">
@@ -66,7 +66,7 @@ const reports = () => {
   );
 };
 
-export default reports;
+export default Reports;
 
 export const getServerSideProps = getServerSidePropsWithAuth(
   ({ locale }: GetServerSidePropsContext) => {

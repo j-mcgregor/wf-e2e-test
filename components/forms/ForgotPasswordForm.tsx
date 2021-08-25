@@ -1,12 +1,13 @@
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { validEmailRegex } from '../../lib/regexes';
+import Button from '../elements/Button';
+import ErrorMessage from '../elements/ErrorMessage';
+import Input from '../elements/Input';
 import Link from '../elements/Link';
 import Logo from '../elements/Logo';
-import Button from '../elements/Button';
-import { useForm } from 'react-hook-form';
-import Input from '../elements/Input';
-import { validEmailRegex } from '../../lib/regexes';
-import { useState } from 'react';
-import ErrorMessage from '../elements/ErrorMessage';
 
 type FormValues = {
   email: string;
@@ -42,7 +43,6 @@ const ForgotPasswordForm = () => {
 
       return setSubmitError(true);
     } catch (e) {
-      console.warn(e);
       // log the details of the error to the logger
 
       return setSubmitError(true);
@@ -82,7 +82,9 @@ const ForgotPasswordForm = () => {
                 )}
               </div>
               <div className="mt-6">
-                <Button variant="highlight" type="submit">{t('sign in')}</Button>
+                <Button variant="highlight" type="submit">
+                  {t('sign in')}
+                </Button>
               </div>
             </form>
           </>

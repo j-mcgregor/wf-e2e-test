@@ -1,21 +1,18 @@
-import React, { Fragment } from 'react';
-import Image from 'next/image';
-import { Transition, Dialog } from '@headlessui/react';
-import { MenuAlt2Icon } from '@heroicons/react/solid';
+import { Dialog,Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
-import WiserfundingLogo from '../../public/images/logos/wiserfunding-logo.svg';
-import WFLogo from '../../public/images/logos/wf-logo.svg';
+import { MenuAlt2Icon } from '@heroicons/react/solid';
+import React, { Fragment } from 'react';
+
 import { siteNavigation } from '../../lib/settings/navigation.settings';
-import Link from '../elements/Link';
+import Button from '../elements/Button';
+import WF from '../elements/WFLogo';
 
-export type HeroIcon = (props: React.ComponentProps<'svg'>) => JSX.Element;
-export type IconProps = (props: React.ComponentProps<'svg'>) => React.ReactNode;
+export type HeroIcon = (_props: React.ComponentProps<'svg'>) => JSX.Element;
 
-interface NavigationProps {
+interface NavItemProps {
   name: string;
   href?: string;
   icon?: HeroIcon | undefined
-  current?: boolean;
   title?: boolean;
   onClick?: () => Promise<undefined> | void;
 }
@@ -29,7 +26,7 @@ interface NavStyleProps {
 
 interface NavListProps {
   path: string;
-  navigation: NavigationProps[];
+  navigation: NavItemProps[];
   navStyle?: NavStyleProps;
   noText?: boolean;
 }
@@ -44,6 +41,7 @@ const Nav = ({ path }: NavProps) => {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const openSidebar = () => setSidebarOpen(true);
   const closeSidebar = () => setSidebarOpen(false);
+
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -95,12 +93,7 @@ const Nav = ({ path }: NavProps) => {
               </Transition.Child>
               <div className="flex-shrink-0 px-4 flex items-center">
                 <div className="relative w-40 h-10">
-                  <Image
-                    alt={'Wiserfunding Logo'}
-                    layout="fill"
-                    objectFit="contain"
-                    src={WiserfundingLogo}
-                  />
+                  <WF />
                 </div>
               </div>
               <div className="mt-5 flex-1 h-0 overflow-y-auto">
@@ -132,12 +125,7 @@ const Nav = ({ path }: NavProps) => {
           <div className="border-r border-gray-200 pt-5 pb-4 flex flex-col flex-grow overflow-y-auto">
             <div className="flex-shrink-0 px-4 flex items-center relative">
               <div className="relative w-40 h-10">
-                <Image
-                  alt={'Wiserfunding Logo'}
-                  layout="fill"
-                  objectFit="contain"
-                  src={WiserfundingLogo}
-                />
+              <WF />
               </div>
             </div>
             <div className="flex-grow mt-5 flex flex-col">
@@ -156,12 +144,7 @@ const Nav = ({ path }: NavProps) => {
           <div className="border-r border-gray-200 pt-5 pb-4 flex flex-col flex-grow overflow-y-auto">
             <div className="flex-shrink-0 px-3 flex items-center relative">
               <div className="relative w-20 h-10">
-                <Image
-                  alt={'Wiserfunding Logo'}
-                  layout="fill"
-                  objectFit="contain"
-                  src={WFLogo}
-                />
+              <WF />
               </div>
             </div>
             <div className="flex-grow mt-5 flex flex-col">
@@ -193,12 +176,7 @@ const Nav = ({ path }: NavProps) => {
             <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
           </button>
           <div className="ml-auto mt-2 relative w-12 h-8 ">
-            <Image
-              alt={'Wiserfunding Logo'}
-              layout="fill"
-              objectFit="contain"
-              src={WFLogo}
-            />
+          <WF />
           </div>
         </div>
       </div>
@@ -221,17 +199,18 @@ const NavItems = ({ path, navigation, noText }: NavListProps) => {
                 'text-white rounded-md group py-2 px-2 flex items-center text-sm font-medium'
               }
             >
-              {name && name}
+              {name}
             </div>
           );
         }
         if (title && noText) return <hr key={name} />
         return (
-          <Link
+          <Button
+            variant="none"
             key={name}
             linkTo={href}
             onClick={onClick}
-            className={`
+            newClassName={`
               ${
                 href === path
                   ? 'bg-secondary text-white '
@@ -247,7 +226,7 @@ const NavItems = ({ path, navigation, noText }: NavListProps) => {
               />
             )}
             {!noText && name}
-          </Link>
+          </Button>
         );
       })}
     </nav>

@@ -1,11 +1,11 @@
-import React from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/client';
+import React from 'react';
+import {  useSetRecoilState } from 'recoil';
 
+import appState from '../../lib/appState';
 import Nav from './Nav';
 import Seo from './Seo';
-import { useSession } from 'next-auth/client';
-import {  useSetRecoilState } from 'recoil';
-import appState from '../../lib/appState';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -26,7 +26,7 @@ const Layout = ({
   const router = useRouter();
   const path: string = router.pathname;
 
-  const [session, loading] = useSession();
+  const [session] = useSession();
   const setState = useSetRecoilState(appState);
 
 
