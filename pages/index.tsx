@@ -25,7 +25,7 @@ export default function Dashboard() {
   return (
     <Layout title="Dashboard">
       <div className="grid grid-cols-7 gap-x-4 text-primary">
-        <div className=" col-span-5 ">
+        <div className="col-span-5 ">
           <div>
             <p className="text-base h-6 -mt-6">{t('welcome back')}</p>
 

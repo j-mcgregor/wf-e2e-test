@@ -23,7 +23,7 @@ const LinkCard = ({
       <div className="shadow hover:shadow-xl h-full duration-300 transition-shadow max-w-xxs bg-white rounded p-3">
         <div className="w-full flex justify-between ">
           <div className={`${iconColor}  p-2 `}>{icon}</div>
-          <ArrowNarrowUpIcon className="h-6 w-6 m-2 rotate-45        text-gray-400 cursor-pointer" />
+          <ArrowNarrowUpIcon className="h-6 w-6 m-2 rotate-45 text-gray-400 cursor-pointer" />
         </div>
         <div className="text-sm pt-2 w-full flex flex-col">
           <p className="font-bold w-full">{header}</p>

@@ -43,14 +43,14 @@ const mockUsers = {
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000
+      },
+      {
+        id: 6,
+        company_Name: 'Dove Feeding Corp',
+        sme_zscore: 222,
+        bond_rating: 'D',
+        created_at: 1629657000000
       }
-      // {
-      //   id: 6,
-      //   company_Name: 'Dove Feeding Corp',
-      //   sme_zscore: 222,
-      //   bond_rating: 'D',
-      //   created_at: 1629657000000
-      // }
     ]
   },
   'new@test.com': {

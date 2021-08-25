@@ -2,7 +2,10 @@ import ReactTimeAgo from 'react-timeago';
 import { useTranslations } from 'use-intl';
 import { ExternalLinkIcon, DocumentReportIcon } from '@heroicons/react/outline';
 import { Report } from '../../types/global';
+import { useSession } from 'next-auth/client';
 import Link from '../elements/Link';
+
+import RowFiller from './RowFiller';
 
 interface ReportProps {
   reports?: Report[] | null;
@@ -10,6 +13,7 @@ interface ReportProps {
 }
 
 const ReportTable = ({ reports, limit }: ReportProps) => {
+  const session = useSession();
   const isLoading = !reports;
 
   // number of blank reports, if reports are less than the limit prop
@@ -87,17 +91,10 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                 {/* if quantity of empty reports is less than limit & not negative */}
                 {/* fill remaining empty spots with blank filler */}
                 {blankReports > 0 && blankReports < limit && (
-                  <>
-                    {Array(blankReports).fill(
-                      <tr className="bg-gray-200 h-[72px]">
-                        {emptyCell}
-                        {emptyCell}
-                        {emptyCell}
-                        {emptyCell}
-                        {emptyCell}
-                      </tr>
-                    )}
-                  </>
+                  <RowFiller
+                    className="bg-gray-200 h-[72px]"
+                    rowQty={blankReports}
+                  />
                 )}
                 {/* when loading state, show qty of empty rows based on limit prop */}
                 {isLoading && <>{Array(limit).fill(emptyRow)}</>}
@@ -105,7 +102,7 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
             </table>
 
             {/* display when reports array is empty */}
-            {reports?.length === 0 && (
+            {!isLoading && reports?.length === 0 && (
               <div className="flex items-center justify-center text-center bg-gray-300 text-white">
                 <div className="my-8 mx-8 md:mx-14 py-6 px-4 sm:px-6 md:px-14 bg-primary flex flex-col items-center">
                   <DocumentReportIcon className="h-10 w-10 mb-2" />
