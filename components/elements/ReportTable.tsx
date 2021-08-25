@@ -1,6 +1,6 @@
 import ReactTimeAgo from 'react-timeago';
 import { useTranslations } from 'use-intl';
-import { ArrowNarrowUpIcon } from '@heroicons/react/solid';
+import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Report } from '../../types/global';
 import Link from '../elements/Link';
 
@@ -11,10 +11,14 @@ interface ReportProps {
 const ReportTable = ({ reports }: ReportProps) => {
   const isLoading = !reports;
 
+  // quantity of blank rows to fill if less than 5
+  const blankReportsQty: number | undefined = 5 - reports?.length;
+
+  // jsx elements for use in empty row loading state
   const emptyCell: JSX.Element = <td className="px-6 py-4" />;
 
   const emptyRowGrey: JSX.Element = (
-    <tr className="bg-grey-50 h-[72px] animate-pulse">
+    <tr className="bg-gray-100 h-[72px] animate-pulse">
       {emptyCell}
       {emptyCell}
       {emptyCell}
@@ -91,11 +95,26 @@ const ReportTable = ({ reports }: ReportProps) => {
 
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link linkTo="#">
-                        <ArrowNarrowUpIcon className="h-6 w-6 m-2 rotate-45 text-gray-400 " />
+                        <ExternalLinkIcon className="h-6 w-6 m-2 text-gray-400 " />
                       </Link>
                     </td>
                   </tr>
                 ))}
+
+                {blankReportsQty >= 1 && (
+                  // if less than 5 reports, fill blank spots with remaining quantity of blank rows
+                  <>
+                    {Array(blankReportsQty).fill(
+                      <tr className="bg-gray-300 h-[72px]">
+                        {emptyCell}
+                        {emptyCell}
+                        {emptyCell}
+                        {emptyCell}
+                        {emptyCell}
+                      </tr>
+                    )}
+                  </>
+                )}
 
                 {isLoading && (
                   <>
@@ -122,8 +141,6 @@ const ReportTable = ({ reports }: ReportProps) => {
                 </div>
               </div>
             )}
-
-            {/* <div className="h-[360px] bg-red-500 min-w-full" /> */}
           </div>
         </div>
       </div>

@@ -53,7 +53,7 @@ export default function Dashboard() {
               }
             ]}
           />
-          <ReportTable  />
+          <ReportTable reports={user?.reports} />
         </div>
 
         <div className="col-span-2">
