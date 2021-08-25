@@ -82,7 +82,7 @@ const ForgotPasswordForm = () => {
                 )}
               </div>
               <div className="mt-6">
-                <Button type="submit">{t('sign in')}</Button>
+                <Button variant="highlight" type="submit">{t('sign in')}</Button>
               </div>
             </form>
           </>

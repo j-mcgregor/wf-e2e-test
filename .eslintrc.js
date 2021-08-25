@@ -21,14 +21,14 @@ module.exports = {
     'eslint:recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:react/recommended',
-    'plugin:prettier/recommended',
+    // 'plugin:prettier/recommended',
     'plugin:sonarjs/recommended',
     // 'plugin:unicorn/recommended',
     'plugin:security/recommended',
     'plugin:react-hooks/recommended',
-    // 'next',
-    // 'next/core-web-vitals',
-    'prettier'
+    'next',
+    'next/core-web-vitals'
+    // 'prettier'
   ],
   rules: {
     'no-console': 'error',

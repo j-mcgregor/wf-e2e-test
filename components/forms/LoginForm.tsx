@@ -17,7 +17,6 @@ type FormValues = {
   remember: boolean;
 };
 
-
 const LoginForm = () => {
   const t = useTranslations();
   const router = useRouter();
@@ -49,7 +48,6 @@ const LoginForm = () => {
     return setAuthError(true);
   };
 
-
   return (
     <div>
       <div className="mt-8">
@@ -65,9 +63,12 @@ const LoginForm = () => {
         </div>
 
         <div className="mt-6">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <form
+            className="space-y-6"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+          >
             <div className="space-y-2">
-
               <div>
                 <Input
                   {...register('email', {
@@ -100,9 +101,7 @@ const LoginForm = () => {
               </div>
             </div>
 
-            {authError && (
-                <ErrorMessage text={t('errors.incorrect details')} />
-            )}
+            {authError && <ErrorMessage text={t('errors.incorrect details')} />}
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-left">
               <div className="flex items-center w-full sm:w-auto">
