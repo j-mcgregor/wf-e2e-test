@@ -7,6 +7,7 @@ import {
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRecoilValue } from 'recoil';
+
 import LinkCard from '../components/cards/LinkCard';
 import ReportTable from '../components/elements/ReportTable';
 import Stats from '../components/elements/Stats';
