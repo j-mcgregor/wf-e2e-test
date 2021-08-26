@@ -1,20 +1,18 @@
-import { useTranslations } from 'next-intl';
-import { GetServerSidePropsContext } from 'next';
-import Layout from '../components/layout/Layout';
-import LinkCard from '../components/cards/LinkCard';
 import {
-  LightningBoltIcon,
-  SearchCircleIcon,
+  ChipIcon,
   DocumentDuplicateIcon,
-  ChipIcon
-} from '@heroicons/react/outline';
-import appState from '../lib/appState';
-
-import Stats from '../components/elements/Stats';
-
-import ReportTable from '../components/elements/ReportTable';
-import TwitterFeed from '../components/elements/TwitterFeed';
+  LightningBoltIcon,
+  SearchCircleIcon} from '@heroicons/react/outline';
+import { GetServerSidePropsContext } from 'next';
+import { useTranslations } from 'next-intl';
 import { useRecoilValue } from 'recoil';
+
+import LinkCard from '../components/cards/LinkCard';
+import ReportTable from '../components/elements/ReportTable';
+import Stats from '../components/elements/Stats';
+import TwitterFeed from '../components/elements/TwitterFeed';
+import Layout from '../components/layout/Layout';
+import appState from '../lib/appState';
 import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 
 export default function Dashboard() {
@@ -25,7 +23,7 @@ export default function Dashboard() {
   return (
     <Layout title="Dashboard">
       <div className="grid grid-cols-7 gap-x-4 text-primary">
-        <div className=" col-span-5 ">
+        <div className="col-span-5 ">
           <div>
             <p className="text-base h-6 -mt-6">{t('welcome back')}</p>
 
@@ -36,7 +34,7 @@ export default function Dashboard() {
           </div>
 
           <Stats
-          className="mt-4 mb-4"
+            className="mt-4 mb-4"
             stats={[
               {
                 header: t('total reports'),
@@ -53,7 +51,7 @@ export default function Dashboard() {
               }
             ]}
           />
-          <ReportTable reports={user?.reports} />
+          <ReportTable reports={user?.reports} limit={5} />
         </div>
 
         <div className="col-span-2">

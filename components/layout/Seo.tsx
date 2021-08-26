@@ -47,10 +47,26 @@ const Seo = ({ title, description, article, path }: SEOProps) => {
 
       <meta charSet="UTF-8" />
 
-      <link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png" />
-      <link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png" />
-      <link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png" />
-      <link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-icon-76x76.png" />
+      <link
+        rel="apple-touch-icon"
+        sizes="57x57"
+        href="/favicon/apple-icon-57x57.png"
+      />
+      <link
+        rel="apple-touch-icon"
+        sizes="60x60"
+        href="/favicon/apple-icon-60x60.png"
+      />
+      <link
+        rel="apple-touch-icon"
+        sizes="72x72"
+        href="/favicon/apple-icon-72x72.png"
+      />
+      <link
+        rel="apple-touch-icon"
+        sizes="76x76"
+        href="/favicon/apple-icon-76x76.png"
+      />
       <link
         rel="apple-touch-icon"
         sizes="114x114"
@@ -102,7 +118,10 @@ const Seo = ({ title, description, article, path }: SEOProps) => {
       />
       <link rel="manifest" href="/favicon/manifest.json" />
       <meta name="msapplication-TileColor" content="#ffffff" />
-      <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png" />
+      <meta
+        name="msapplication-TileImage"
+        content="/favicon/ms-icon-144x144.png"
+      />
       <meta name="theme-color" content="#ffffff"></meta>
     </Head>
   );

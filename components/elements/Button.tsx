@@ -1,31 +1,66 @@
 import { ReactNode } from 'react';
 
+import LoadingIcon from '../svgs/LoadingIcon';
+import Link from './Link';
+
 interface ButtonProps {
-  type?: 'button' | 'submit' | 'reset' | undefined;
+  variant: 'primary' | 'secondary' | 'highlight' | 'alt' | 'none';
   children: ReactNode;
-  // backgroundColor: string;
-  // hoverColor?: string;
-  // focusColor?: string;
+  loading?: boolean;
+  className?: string;
+  newClassName?: string;
   onClick?: () => void;
+  linkTo?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
-// having issue with passing custom colors into classnames as props
-// was working initially but have reverted to hardcoded bg-color temporarily
+const buttonClassName = {
+  base: 'last:w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2',
+  primary: 'bg-primary hover:bg-indigo-800 focus:ring-indigo-800 text-white ', // dark blue
+  secondary: 'bg-secondary hover:bg-gray-800 focus:gray-800 text-white ', // black
+  alt: 'bg-alt hover:bg-blue-800 focus:bg-blue-800 text-white', // lighter blue
+  highlight:
+    'bg-highlight hover:bg-yellow-500 focus:ring-yellow-500 text-white ', // orange
+  none: '' 
+};
+
 const Button = ({
-  // backgroundColor,
-  // hoverColor,
-  // focusColor,
+  className,
+  newClassName,
+  variant,
+  loading,
   type,
+  linkTo,
   children,
   onClick
 }: ButtonProps) => {
+  if (linkTo) {
+    return (
+      <Link
+        linkTo={linkTo}
+        className={
+          newClassName
+            ? newClassName
+            : `${buttonClassName.base} ${buttonClassName[variant]} ${className}`
+        }
+      >
+        {children}
+      </Link>
+    );
+  }
+
   return (
     <button
       onClick={onClick}
       type={type}
-      className="bg-highlight hover:bg-yellow-500 focus:ring-yellow-500 last:w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+      className={
+        newClassName
+          ? newClassName
+          : `${buttonClassName.base} ${buttonClassName[variant]} ${className}`
+      }
     >
-      {children}
+      {loading && <LoadingIcon />}
+      {!loading && children}
     </button>
   );
 };

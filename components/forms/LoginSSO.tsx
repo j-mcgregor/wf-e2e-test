@@ -1,6 +1,8 @@
 import { useTranslations } from 'next-intl';
-import MicrosoftIcon from '../icons/MicrosoftIcon';
+
+import Button from '../elements/Button';
 import GoogleIcon from '../icons/GoogleIcon';
+import MicrosoftIcon from '../icons/MicrosoftIcon';
 
 const LoginSSO = () => {
   const t = useTranslations();
@@ -16,21 +18,21 @@ const LoginSSO = () => {
 
       <div className="mt-1 grid grid-cols-2 gap-3">
         <div>
-          <a
-            href="#"
-            className="w-full inline-flex justify-center py-2 px-4 rounded-md shadow-sm bg-white text-sm font-medium hover:bg-gray-50"
+          <Button
+            variant="none"
+            newClassName="w-full inline-flex justify-center py-2 px-4 rounded-md shadow-sm bg-white text-sm font-medium hover:bg-gray-50"
           >
             <GoogleIcon />
-          </a>
+          </Button>
         </div>
 
         <div>
-          <a
-            href="#"
-            className="w-full inline-flex justify-center py-2 px-4 rounded-md shadow-sm bg-white text-sm font-medium hover:bg-gray-50"
+          <Button
+            variant="none"
+            newClassName="w-full inline-flex justify-center py-2 px-4 rounded-md shadow-sm bg-white text-sm font-medium hover:bg-gray-50"
           >
             <MicrosoftIcon />
-          </a>
+          </Button>
         </div>
       </div>
     </div>

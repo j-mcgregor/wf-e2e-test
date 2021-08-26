@@ -3,7 +3,7 @@ import '../styles/globals.css';
 import { Provider } from 'next-auth/client';
 import { NextIntlProvider } from 'next-intl';
 import { RecoilRoot } from 'recoil';
-import type { AppProps} from 'next/app'
+import { AppProps } from 'next/app';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

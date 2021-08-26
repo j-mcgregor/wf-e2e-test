@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+
 import { StatDataType } from '../types/global';
 
 interface SessionUser {
@@ -13,7 +14,7 @@ interface SessionUser {
     };
     reports?: [] | null;
   };
-} 
+}
 
 // https://github.com/facebookexperimental/Recoil/issues/733
 // separate files for state issues NextJS

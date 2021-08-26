@@ -1,22 +1,22 @@
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/client';
 import { useTranslations } from 'next-intl';
-import { useForm } from 'react-hook-form';
-import useLocalStorage from '../../hooks/useLocalStorage';
-import Link from '../elements/Link';
-import Button from '../elements/Button';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import useLocalStorage from '../../hooks/useLocalStorage';
+import { validEmailRegex } from '../../lib/regexes';
+import Button from '../elements/Button';
+import CheckboxInput from '../elements/Checkbox';
 import ErrorMessage from '../elements/ErrorMessage';
 import Input from '../elements/Input';
-import { validEmailRegex } from '../../lib/regexes';
-import CheckboxInput from '../elements/Checkbox';
+import Link from '../elements/Link';
 
 type FormValues = {
   email: string;
   password: string;
   remember: boolean;
 };
-
 
 const LoginForm = () => {
   const t = useTranslations();
@@ -25,7 +25,7 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm<FormValues>();
 
   const [_activeUser, setActiveUser] = useLocalStorage<string | null>(
@@ -49,7 +49,6 @@ const LoginForm = () => {
     return setAuthError(true);
   };
 
-
   return (
     <div>
       <div className="mt-8">
@@ -65,9 +64,12 @@ const LoginForm = () => {
         </div>
 
         <div className="mt-6">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <form
+            className="space-y-6"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+          >
             <div className="space-y-2">
-
               <div>
                 <Input
                   {...register('email', {
@@ -100,9 +102,7 @@ const LoginForm = () => {
               </div>
             </div>
 
-            {authError && (
-                <ErrorMessage text={t('errors.incorrect details')} />
-            )}
+            {authError && <ErrorMessage text={t('errors.incorrect details')} />}
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-left">
               <div className="flex items-center w-full sm:w-auto">
@@ -124,12 +124,12 @@ const LoginForm = () => {
             </div>
 
             <div>
-              <Button type="submit">
+              <Button type="submit" loading={isSubmitting} variant="highlight">
                 {t('sign in')}
               </Button>
             </div>
 
-            <div className="text-sm text-center pb-3 sm:hidden  ">
+            <div className="text-sm text-center pb-3 sm:hidden">
               <Link
                 linkTo="/forgotten-password"
                 className="font-medium text-highlight hover:text-yellow-500"

@@ -1,5 +1,7 @@
 import ReactTimeAgo from 'react-timeago'; //unsure of ts/linting error - is working?
 
+import { useTranslations } from 'next-intl';
+
 type StatType = {
   header: React.ReactNode;
   data?: number | string | Date;
@@ -12,6 +14,7 @@ interface StatsProps {
 }
 
 const Stats = ({ stats, className }: StatsProps) => {
+  const t = useTranslations();
   return (
     <div className={className}>
       <dl className="grid grid-cols-1 sm:grid-cols-3">
@@ -27,7 +30,7 @@ const Stats = ({ stats, className }: StatsProps) => {
                 </p>
               )}
               {item.timeAgo && item.data && <ReactTimeAgo date={item.data} />}
-              {item.timeAgo && !item.data && <p>Never</p>}
+              {item.timeAgo && !item.data && <p>{t('never')}</p>}
             </dt>
             <dd className="mt-1 text-base text-gray-900">{item.header}</dd>
           </div>
