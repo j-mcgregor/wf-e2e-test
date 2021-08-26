@@ -25,32 +25,34 @@ const BookmarkCard = ({
   const t = useTranslations();
   return (
     <Link linkTo={linkTo}>
-      <div key={key} className="bg-white shadow p-4 rounded w-full">
-        <div className="flex w-full justify-between pb-2">
-          <Link linkTo="#">
-            <div className="bg-yellow-100 p-1">
-              <DocumentReportIcon className="h-5 w-5" />
+      <div key={key} className="bg-white shadow rounded w-full flex flex-col">
+        <div className="flex w-full justify-between p-2 ">
+          <Link linkTo={linkTo}>
+            <div className="bg-highlight p-1 rounded-sm">
+              <DocumentReportIcon className="h-5 w-5 text-white" />
             </div>
           </Link>
 
           <Link>
-            <ArrowNarrowUpIcon className="h-6 w-6 rotate-45 text-gray-400 cursor-pointer" />
+            <ArrowNarrowUpIcon className="h-7 w-7 rotate-45 text-gray-400 cursor-pointer" />
           </Link>
         </div>
-        <p className="font-semibold pb-4">{company_name}</p>
+        <div className="flex flex-col">
+          <p className="font-semibold px-2 pb-1 truncate">{company_name}</p>
 
-        <div className="flex bg-bg rounded my-2">
-          <div className="flex flex-col items-center justify-center text-center p-3">
-            <p className="font-bold text-lg py-1">{sme_zscore}</p>
-            <p className="text-sm">{t('sme score')}</p>
-          </div>
-          <div className="flex flex-col items-center justify-center text-center p-3 border-l-2 border-r-2 border-gray-300">
-            <p className="font-bold text-lg py-1">{bond_rating}</p>
-            <p className="text-sm">{t('bond rating')}</p>
-          </div>
-          <div className="flex flex-col items-center justify-center text-center p-3">
-            <p className="font-bold text-lg py-1">{pd_ratio}%</p>
-            <p className="text-sm">{t('pd ratio')}</p>
+          <div className="flex bg-bg rounded m-2 text-sm">
+            <div className="flex flex-col items-center justify-center text-center px-0.5 py-2 w-full">
+              <p className="font-bold py-1">{sme_zscore}</p>
+              <p className="text-[10px]">{t('sme score')}</p>
+            </div>
+            <div className="flex flex-col items-center justify-center text-center px-0.5 py-2 border-l-2 border-r-2 border-gray-300 w-full">
+              <p className="font-bold py-1">{bond_rating}</p>
+              <p className="text-[10px]">{t('bond rating')}</p>
+            </div>
+            <div className="flex flex-col items-center justify-center text-center px-0.5 py-2 w-full">
+              <p className="font-bold py-1">{pd_ratio}%</p>
+              <p className="text-[10px]">{t('pd ratio')}</p>
+            </div>
           </div>
         </div>
       </div>

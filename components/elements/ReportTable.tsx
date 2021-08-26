@@ -10,15 +10,20 @@ import RowFiller from './RowFiller';
 interface ReportProps {
   reports?: Report[] | null;
   limit: number;
+  shadow: boolean;
+  borders: boolean;
 }
 
-const ReportTable = ({ reports, limit }: ReportProps) => {
+const ReportTable = ({ reports, limit, shadow, borders }: ReportProps) => {
   const isLoading = !reports;
 
   // number of blank reports, if reports are less than the limit prop
   const blankReports: number = limit - (reports?.length || 0);
 
   const t = useTranslations();
+
+  const borderClasses = `${borders && 'border-r-2'}`;
+  const shadowClasses = `${shadow && 'shadow'}`;
 
   // total number reports might be less than limit
   // const limitedReports = (reports && reports.splice(0, limit)) || [];
@@ -27,17 +32,26 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
     <div className="flex flex-col">
       <div className="overflow-x-auto -mx-6">
         <div className="py-2 align-middle min-w-full min-h-full px-6">
-          <div className="shadow overflow-hidden rounded">
+          <div className={`${shadowClasses} overflow-hidden rounded`}>
             <table className="min-w-full divide-y-2 divide-gray-200">
               <thead className="bg-gray-50">
                 <tr className="text-left text-sm tracking-wider">
-                  <th scope="col" className="px-6 py-3 font-medium border-r-2">
+                  <th
+                    scope="col"
+                    className={`${borderClasses} px-6 py-3 font-medium`}
+                  >
                     {t('company name')}
                   </th>
-                  <th scope="col" className="px-6 py-3 font-medium border-r-2">
+                  <th
+                    scope="col"
+                    className={`${borderClasses} px-6 py-3 font-medium`}
+                  >
                     {t('sme z-score')}
                   </th>
-                  <th scope="col" className="px-6 py-3 font-medium border-r-2">
+                  <th
+                    scope="col"
+                    className={`${borderClasses} px-6 py-3 font-medium`}
+                  >
                     {t('bond rating')}
                   </th>
                   <th scope="col" className="px-6 py-3 font-medium ">

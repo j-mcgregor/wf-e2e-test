@@ -5,10 +5,11 @@ import appState from '../lib/appState';
 import Bookmarks from '../components/elements/Bookmarks';
 import Layout from '../components/layout/Layout';
 import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
+import RecentReports from '../components/elements/RecentReports';
 
 const Reports = () => {
   const { user } = useRecoilValue(appState);
-  // console.log(user);
+
   const t = useTranslations();
   return (
     <Layout noNav={false} title="Reports">
@@ -21,6 +22,8 @@ const Reports = () => {
 
         {/* temp bookmark cards */}
         <Bookmarks reports={user?.reports} />
+
+        <RecentReports reports={user?.reports} />
       </div>
     </Layout>
   );
