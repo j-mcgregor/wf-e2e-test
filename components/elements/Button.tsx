@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
-import Link from './Link';
+
 import LoadingIcon from '../svgs/LoadingIcon';
+import Link from './Link';
 
 interface ButtonProps {
   variant: 'primary' | 'secondary' | 'highlight' | 'alt' | 'none';
@@ -20,7 +21,7 @@ const buttonClassName = {
   alt: 'bg-alt hover:bg-blue-800 focus:bg-blue-800 text-white', // lighter blue
   highlight:
     'bg-highlight hover:bg-yellow-500 focus:ring-yellow-500 text-white ', // orange
-    none: '' 
+  none: '' 
 };
 
 const Button = ({

@@ -1,20 +1,15 @@
 interface RowFillerProps {
   rowQty: number;
   className: string;
+  cellQty: number;
 }
 
-const RowFiller = ({ rowQty, className }: RowFillerProps) => {
-  const emptyCell: JSX.Element = <td className="px-6 py-4" />;
+const RowFiller = ({ rowQty, className, cellQty }: RowFillerProps) => {
   return (
     <>
       {Array(rowQty).fill(
         <tr className={className}>
-          <td className="px-6 py-4" />
-          {emptyCell}
-          {emptyCell}
-          {emptyCell}
-          {emptyCell}
-          {emptyCell}
+          { Array(cellQty).fill(<td className="px-6 py-4" />) } 
         </tr>
       )}
     </>

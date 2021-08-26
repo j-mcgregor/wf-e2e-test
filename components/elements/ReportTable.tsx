@@ -1,12 +1,11 @@
+import { DocumentReportIcon,ExternalLinkIcon } from '@heroicons/react/outline';
 import ReactTimeAgo from 'react-timeago';
 import { useTranslations } from 'use-intl';
-import { ExternalLinkIcon, DocumentReportIcon } from '@heroicons/react/outline';
-import { Report } from '../../types/global';
-import { useSession } from 'next-auth/client';
-import Link from '../elements/Link';
 
-import RowFiller from './RowFiller';
+import { Report } from '../../types/global';
+import Link from '../elements/Link';
 import Button from './Button';
+import RowFiller from './RowFiller';
 
 interface ReportProps {
   reports?: Report[] | null;
@@ -14,26 +13,16 @@ interface ReportProps {
 }
 
 const ReportTable = ({ reports, limit }: ReportProps) => {
-  const session = useSession();
   const isLoading = !reports;
 
   // number of blank reports, if reports are less than the limit prop
-  const blankReports: number | undefined = limit - (reports?.length || 0); // can't fix ts error but working?
-
-  // jsx elements for use in empty row loading state
-  const emptyCell: JSX.Element = <td className="px-6 py-4" />;
-
-  const emptyRow: JSX.Element = (
-    <tr className="bg-white h-[72px] animate-pulse odd:bg-gray-100">
-      {emptyCell}
-      {emptyCell}
-      {emptyCell}
-      {emptyCell}
-      {emptyCell}
-    </tr>
-  );
+  const blankReports: number = limit - (reports?.length || 0); // can't fix ts error but working?
 
   const t = useTranslations();
+
+  // total number reports might be less than limit
+  const limitedReports = reports && reports.splice(0, limit) || []
+
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto -mx-6">
@@ -93,12 +82,17 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                 {/* fill remaining empty spots with blank filler */}
                 {blankReports > 0 && blankReports < limit && (
                   <RowFiller
+                    cellQty={5}
                     className="bg-gray-200 h-[72px]"
                     rowQty={blankReports}
                   />
                 )}
                 {/* when loading state, show qty of empty rows based on limit prop */}
-                {isLoading && <>{Array(limit).fill(emptyRow)}</>}
+                {isLoading && <>{Array(limit).fill(  <RowFiller
+                    cellQty={5}
+                    className="bg-gray-200 h-[72px]"
+                    rowQty={blankReports}
+                  />)}</>}
               </tbody>
             </table>
 
@@ -109,7 +103,6 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                   <DocumentReportIcon className="h-10 w-10 mb-2" />
                   <h2 className="text-xl my-2">{t('no reports generated')}</h2>
                   <p>{t('get started with new report')}</p>
-                  <Link>
                     <Button
                       className="max-w-xxs mt-4"
                       variant="highlight"
@@ -117,7 +110,6 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                     >
                       {t('generate report')}
                     </Button>
-                  </Link>
                 </div>
               </div>
             )}
