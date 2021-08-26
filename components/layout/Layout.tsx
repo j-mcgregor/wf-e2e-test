@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useRouter} from 'next/router';
 
 import Nav from './Nav';
@@ -37,12 +37,17 @@ const Layout = ({
 
     }, [session])
 
+
+    const navItems: string[] = ['Summary', 'Risk Metrics', 'Highlights',
+        'Financial trends', 'Corporate Governance', 'Legal Events',
+        'Macro Economics Trends', 'ESG', 'News']
+
     return (
         <div>
             <Seo title={title} description={description} path={path}/>
             <div className="h-screen bg-bg overflow-hidden flex ">
                 {!noNav && <Nav path={path}/>}
-                <SecondaryLayout children={<ReportNav />}/>
+                <SecondaryLayout children={[<ReportNav navItems={navItems}/>]} content={navItems}/>
                 <main className={`flex-1 relative overflow-y-auto focus:outline-none ${!noNav && 'pt-12'}`}>
                     <div className={` ${!noNav && 'py-6'}`}>
                         <div className="px-4 sm:px-6 md:px-0">
