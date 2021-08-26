@@ -87,17 +87,14 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                     rowQty={blankReports}
                   />
                 )}
+
                 {/* when loading state, show qty of empty rows based on limit prop */}
                 {isLoading && (
-                  <>
-                    {Array(limit).fill(
-                      <RowFiller
-                        cellQty={5}
-                        className="bg-gray-200 h-[72px]"
-                        rowQty={blankReports}
-                      />
-                    )}
-                  </>
+                  <RowFiller
+                    cellQty={5}
+                    className="bg-white odd:bg-gray-100 h-[48px]"
+                    rowQty={blankReports}
+                  />
                 )}
               </tbody>
             </table>
