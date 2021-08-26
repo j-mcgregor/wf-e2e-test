@@ -11,6 +11,7 @@ interface BookmarkCardProps {
   sme_zscore: number;
   bond_rating: string;
   pd_ratio: number;
+  key: number;
 }
 
 const BookmarkCard = ({
@@ -18,12 +19,13 @@ const BookmarkCard = ({
   sme_zscore,
   bond_rating,
   pd_ratio,
-  linkTo
+  linkTo,
+  key
 }: BookmarkCardProps) => {
   const t = useTranslations();
   return (
     <Link linkTo={linkTo}>
-      <div className="bg-white shadow p-4 rounded w-full">
+      <div key={key} className="bg-white shadow p-4 rounded w-full">
         <div className="flex w-full justify-between pb-2">
           <Link linkTo="#">
             <div className="bg-yellow-100 p-1">

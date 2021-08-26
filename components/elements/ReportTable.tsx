@@ -16,12 +16,12 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
   const isLoading = !reports;
 
   // number of blank reports, if reports are less than the limit prop
-  const blankReports: number = limit - (reports?.length || 0); // can't fix ts error but working?
+  const blankReports: number = limit - (reports?.length || 0);
 
   const t = useTranslations();
 
   // total number reports might be less than limit
-  // const limitedReports = reports && reports.splice(0, limit) || []
+  // const limitedReports = (reports && reports.splice(0, limit)) || [];
 
   return (
     <div className="flex flex-col">

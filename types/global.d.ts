@@ -15,6 +15,6 @@ export type Report = {
   id: number;
   company_Name: string;
   sme_zscore: number;
-  bond_rating: number;
+  bond_rating: string;
   created_at: number;
 };
