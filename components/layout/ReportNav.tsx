@@ -1,5 +1,4 @@
 import React, {FC, useState} from 'react';
-import {useRouter} from "next/router";
 
 interface ReportNavProps {
     navItems: string[]

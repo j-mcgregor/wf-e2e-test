@@ -21,7 +21,7 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
   const t = useTranslations();
 
   // total number reports might be less than limit
-  const limitedReports = reports && reports.splice(0, limit) || []
+  // const limitedReports = reports && reports.splice(0, limit) || []
 
   return (
     <div className="flex flex-col">

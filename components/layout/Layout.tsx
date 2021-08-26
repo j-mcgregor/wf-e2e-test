@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
 import {useRouter} from 'next/router';
-
-import Nav from './Nav';
-import Seo from './Seo';
 import {useSession} from 'next-auth/client';
+import React, {useState} from 'react';
 import {useSetRecoilState} from 'recoil';
+
 import appState from '../../lib/appState';
-import SecondaryLayout from "./SecondaryLayout";
+import Nav from './Nav';
 import ReportNav from "./ReportNav";
+import SecondaryLayout from "./SecondaryLayout";
+import Seo from './Seo';
 
 type LayoutProps = {
     children: React.ReactNode;
@@ -47,7 +47,6 @@ const Layout = ({
             <Seo title={title} description={description} path={path}/>
             <div className="h-screen bg-bg overflow-hidden flex ">
                 {!noNav && <Nav path={path}/>}
-                <SecondaryLayout children={[<ReportNav navItems={navItems}/>]} content={navItems}/>
                 <main className={`flex-1 relative overflow-y-auto focus:outline-none ${!noNav && 'pt-12'}`}>
                     <div className={` ${!noNav && 'py-6'}`}>
                         <div className="px-4 sm:px-6 md:px-0">
