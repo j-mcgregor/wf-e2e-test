@@ -11,6 +11,7 @@ interface LinkCardProps {
   header: React.ReactNode;
   description: React.ReactNode;
   linkTo: string;
+  className?: string
 }
 
 const LinkCard = ({
@@ -18,10 +19,11 @@ const LinkCard = ({
   iconColor,
   header,
   description,
-  linkTo
+  linkTo,
+  className
 }: LinkCardProps) => {
   return (
-    <Link linkTo={linkTo} className="block text-primary">
+    <Link linkTo={linkTo} className={`block text-primary ${className}`}>
       <div className="shadow hover:shadow-xl h-full duration-300 transition-shadow max-w-xxs bg-white rounded p-3">
         <div className="w-full flex justify-between ">
           <div className={`${iconColor}  p-2 `}>{icon}</div>

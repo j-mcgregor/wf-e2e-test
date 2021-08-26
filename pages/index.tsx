@@ -23,9 +23,9 @@ export default function Dashboard() {
   return (
     <Layout title="Dashboard">
       <div className="grid grid-cols-7 gap-x-4 text-primary">
-        <div className="col-span-5 ">
+        <div className="col-span-7 md:col-span-5 ">
           <div>
-            <p className="text-base h-6 -mt-6">{t('welcome back')}</p>
+            <p className="text-base h-6 md:-mt-6">{t('welcome back')}</p>
 
             <div className="flex justify-between">
               <h1 className="text-2xl font-semibold">{user && user.name}</h1>
@@ -54,15 +54,16 @@ export default function Dashboard() {
           <ReportTable reports={user?.reports} limit={5} />
         </div>
 
-        <div className="col-span-2">
+        <div className="md:col-span-2 md:block hidden">
           <h3 className="font-semibold">{t('updates')}</h3>
-          <TwitterFeed className="mt-6" />
+          <TwitterFeed className="mt-6 h-[400px]" />
         </div>
       </div>
 
       {/* link cards */}
-      <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none">
+      <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-auto md:mr-auto ">
         <LinkCard
+          className="mx-auto"
           icon={<LightningBoltIcon className='className="h-6 w-6 text-white' />}
           iconColor="bg-highlight"
           header={t('automated report header')}
@@ -70,6 +71,7 @@ export default function Dashboard() {
           linkTo="#"
         />
         <LinkCard
+         className="mx-auto"
           icon={<SearchCircleIcon className='className="h-6 w-6 text-white' />}
           iconColor="bg-highlight-2"
           header={t('sme prospector header')}
@@ -77,6 +79,7 @@ export default function Dashboard() {
           linkTo="#"
         />
         <LinkCard
+         className="mx-auto"
           icon={
             <DocumentDuplicateIcon className='className="h-6 w-6 text-white' />
           }
@@ -86,6 +89,7 @@ export default function Dashboard() {
           linkTo="#"
         />
         <LinkCard
+         className="mx-auto"
           icon={<ChipIcon className='className="h-6 w-6 text-white ' />}
           iconColor="bg-highlight-4"
           header={t('automated report header')}
@@ -93,6 +97,11 @@ export default function Dashboard() {
           linkTo="#"
         />
       </div>
+
+      <div className="md:hidden max-w-lg mx-auto mt-8">
+          <h3 className="font-semibold">{t('updates')}</h3>
+          <TwitterFeed className="mt-6 h-[600px]" />
+        </div>
     </Layout>
   );
 }
