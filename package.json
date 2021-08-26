@@ -12,7 +12,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged && yarn lint"
-     }
+    }
   },
   "dependencies": {
     "@headlessui/react": "^1.4.0",
@@ -31,7 +31,8 @@
     "react-timeago": "^6.2.1",
     "react-twitter-widgets": "^1.10.0",
     "recoil": "^0.4.0",
-    "tsparticles": "^1.33.3"
+    "tsparticles": "^1.33.3",
+    "underscore": "^1.13.1"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.2.1",
