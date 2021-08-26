@@ -1,4 +1,4 @@
-import { DocumentReportIcon,ExternalLinkIcon } from '@heroicons/react/outline';
+import { DocumentReportIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import ReactTimeAgo from 'react-timeago';
 import { useTranslations } from 'use-intl';
 
@@ -21,7 +21,7 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
   const t = useTranslations();
 
   // total number reports might be less than limit
-  const limitedReports = reports && reports.splice(0, limit) || []
+  // const limitedReports = reports && reports.splice(0, limit) || []
 
   return (
     <div className="flex flex-col">
@@ -55,21 +55,21 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                         key={report.id}
                         className="bg-white odd:bg-gray-50 hover:bg-gray-300 cursor-default"
                       >
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900">
                           {report.company_Name}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                        <td className="px-6 py-1 whitespace-nowrap text-sm ">
                           {report.sme_zscore}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                        <td className="px-6 py-1 whitespace-nowrap text-sm ">
                           {report.bond_rating}
                         </td>
 
-                        <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                        <td className="px-6 py-1 whitespace-nowrap text-sm ">
                           <ReactTimeAgo date={report.created_at} />
                         </td>
 
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <td className="px-6 py-1 whitespace-nowrap text-right text-sm font-medium">
                           <Link linkTo="#">
                             <ExternalLinkIcon className="h-6 w-6 m-2 text-gray-700 " />
                           </Link>
@@ -83,16 +83,22 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                 {blankReports > 0 && blankReports < limit && (
                   <RowFiller
                     cellQty={5}
-                    className="bg-gray-200 h-[72px]"
+                    className="bg-gray-200 h-[48px]"
                     rowQty={blankReports}
                   />
                 )}
                 {/* when loading state, show qty of empty rows based on limit prop */}
-                {isLoading && <>{Array(limit).fill(  <RowFiller
-                    cellQty={5}
-                    className="bg-gray-200 h-[72px]"
-                    rowQty={blankReports}
-                  />)}</>}
+                {isLoading && (
+                  <>
+                    {Array(limit).fill(
+                      <RowFiller
+                        cellQty={5}
+                        className="bg-gray-200 h-[72px]"
+                        rowQty={blankReports}
+                      />
+                    )}
+                  </>
+                )}
               </tbody>
             </table>
 
@@ -103,13 +109,13 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                   <DocumentReportIcon className="h-10 w-10 mb-2" />
                   <h2 className="text-xl my-2">{t('no reports generated')}</h2>
                   <p>{t('get started with new report')}</p>
-                    <Button
-                      className="max-w-xxs mt-4"
-                      variant="highlight"
-                      linkTo="/sme-calc"
-                    >
-                      {t('generate report')}
-                    </Button>
+                  <Button
+                    className="max-w-xxs mt-4"
+                    variant="highlight"
+                    linkTo="/sme-calc"
+                  >
+                    {t('generate report')}
+                  </Button>
                 </div>
               </div>
             )}

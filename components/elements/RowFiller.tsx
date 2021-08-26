@@ -9,7 +9,7 @@ const RowFiller = ({ rowQty, className, cellQty }: RowFillerProps) => {
     <>
       {Array(rowQty).fill(
         <tr className={className}>
-          { Array(cellQty).fill(<td className="px-6 py-4" />) } 
+          {Array(cellQty).fill(<td className="px-6 py-1" />)}
         </tr>
       )}
     </>
