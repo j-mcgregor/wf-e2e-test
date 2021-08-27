@@ -10,7 +10,8 @@ import Link from '../elements/Link';
 import Logo from '../elements/Logo';
 
 type FormProps = {
-  email: string;
+  email?: string;
+  isValid?: boolean;
 };
 
 type FormValues = {
@@ -18,10 +19,10 @@ type FormValues = {
   confirmPassword: string;
 };
 
-const ResetPasswordForm = ({ email }: FormProps) => {
+const ResetPasswordForm = ({ email, isValid }: FormProps) => {
   const t = useTranslations();
 
-  const [submittedState, setSubmittedState] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
 
 
@@ -45,7 +46,7 @@ const ResetPasswordForm = ({ email }: FormProps) => {
       });
 
       if (req.ok) {
-        return setSubmittedState(true);
+        return setFormSubmitted(true);
       }
 
       return setSubmitError(true);
@@ -63,7 +64,15 @@ const ResetPasswordForm = ({ email }: FormProps) => {
         <h1 className="text-3xl font-bold py-3 my-2">
           {t('reset password')}
         </h1>
-        {!submittedState ? (
+        { !isValid &&  <div>
+            <p className="mb-2">{t('valid link required')}</p>
+            <p className="mb-4">{t('go to forgotten password')}</p>
+            <Button variant="highlight" linkTo="/forgot-password" >{t('forgot password')}</Button>
+          </div>}
+
+        { formSubmitted && <p>{t('password sent')}</p> }
+
+        {!formSubmitted &&  isValid && (
           <>
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               <p>{t('enter new password')}</p>
@@ -103,6 +112,9 @@ const ResetPasswordForm = ({ email }: FormProps) => {
                   <ErrorMessage text={t('errors.required')} />
                 )}
               </div>
+              {submitError && (
+                  <ErrorMessage text={t('errors.submit error')} />
+                )}
               <div className="mt-6">
                 <Button variant="highlight" type="submit">
                   {t('change password')}
@@ -110,8 +122,6 @@ const ResetPasswordForm = ({ email }: FormProps) => {
               </div>
             </form>
           </>
-        ) : (
-          <p>{t('password sent')}</p>
         )}
       </div>
 

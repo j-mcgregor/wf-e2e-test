@@ -5,11 +5,11 @@ import ResetPasswordForm from '../components/forms/ResetPasswordForm';
 import Layout from '../components/layout/Layout';
 import { validEmailRegex } from '../lib/regexes';
 
-const PasswordReset = ({ email }: { email: string}) => {
+const PasswordReset = ({ email, isValid }: { email: string, isValid: boolean}) => {
   return (
     <Layout noNav={true} title="Password Reset">
       <LoginContainer>
-        <ResetPasswordForm email={email} />
+        <ResetPasswordForm email={email} isValid={isValid} />
       </LoginContainer>
     </Layout>
   );
@@ -27,18 +27,10 @@ export async function getServerSideProps({ locale, query }: GetServerSidePropsCo
   // make a request to determine if the token is valid on the backend
   // const isValidToken = await validateToken(token)
 
-  if (!isValidEmail || !token) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false
-      }
-    }
-  }
-
   return {
     props: {
       email,
+      isValid: (isValidEmail && token),
       messages: {
         // You can get the messages from anywhere you like, but the recommended
         // pattern is to put them in JSON files separated by language and read
