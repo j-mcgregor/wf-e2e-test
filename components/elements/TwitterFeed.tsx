@@ -13,7 +13,7 @@ const TwitterFeed = ({ className }: { className?: string }) => {
             sourceType: 'profile',
             screenName: 'Wiserfunding'
           }}
-          options={{ height: 402 }}
+          options={{ height: 398 }}
         />
       </div>
       <div className="block md:hidden absolute z-10 h-full w-full top-0">

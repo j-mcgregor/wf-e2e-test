@@ -11,14 +11,10 @@ interface RecentReportProps {
 const RecentReports = ({ reports }: RecentReportProps) => {
   const t = useTranslations();
   return (
-    <div className="bg-white p-8 my-8 flex flex-col">
-      <p className="text-2xl font-semibold">{t('recent reports')}</p>
-      <ReportTable
-        reports={reports}
-        limit={reports ? reports.length : 0}
-        shadow={false}
-        borders={false}
-      />
+    <div className="bg-white my-6 py-6  flex flex-col">
+      <p className="text-2xl p-4 font-semibold">{t('recent reports')}</p>
+
+      <ReportTable reports={reports} limit={10} shadow={true} borders={true} />
 
       <Button
         variant="none"

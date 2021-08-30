@@ -23,7 +23,7 @@ const Reports = () => {
         {/* temp bookmark cards */}
         <Bookmarks reports={user?.reports} />
 
-        <RecentReports reports={user?.reports} />
+        <RecentReports reports={user?.reports}  />
       </div>
     </Layout>
   );

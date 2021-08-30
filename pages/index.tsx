@@ -62,7 +62,7 @@ export default function Dashboard() {
 
         <div className="md:col-span-2 md:block hidden">
           <h3 className="font-semibold">{t('updates')}</h3>
-          <TwitterFeed className="mt-6 h-[400px]" />
+          <TwitterFeed className="mt-6 h-[398px]" />
         </div>
       </div>
 

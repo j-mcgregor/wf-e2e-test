@@ -57,7 +57,6 @@ const ReportTable = ({ reports, limit, shadow, borders }: ReportProps) => {
                   <th scope="col" className="px-3 sm:px-6 py-3 font-medium ">
                     {t('created')}
                   </th>
-                  <th />
                 </tr>
               </thead>
               <tbody>
