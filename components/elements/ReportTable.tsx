@@ -107,7 +107,7 @@ const ReportTable = ({ reports, limit, shadow, borders }: ReportProps) => {
                   <RowFiller
                     cellQty={5}
                     className="bg-white odd:bg-gray-100 h-[48px]"
-                    rowQty={blankReports}
+                    rowQty={limit}
                   />
                 )}
               </tbody>
