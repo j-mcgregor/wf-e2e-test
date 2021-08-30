@@ -77,7 +77,7 @@ export default function Dashboard() {
           linkTo="#"
         />
         <LinkCard
-         className="mx-auto"
+          className="mx-auto"
           icon={<SearchCircleIcon className='className="h-6 w-6 text-white' />}
           iconColor="bg-highlight-2"
           header={t('sme prospector header')}
@@ -85,7 +85,7 @@ export default function Dashboard() {
           linkTo="#"
         />
         <LinkCard
-         className="mx-auto"
+          className="mx-auto"
           icon={
             <DocumentDuplicateIcon className='className="h-6 w-6 text-white' />
           }
@@ -95,7 +95,7 @@ export default function Dashboard() {
           linkTo="#"
         />
         <LinkCard
-         className="mx-auto"
+          className="mx-auto"
           icon={<ChipIcon className='className="h-6 w-6 text-white ' />}
           iconColor="bg-highlight-4"
           header={t('automated report header')}
@@ -105,9 +105,9 @@ export default function Dashboard() {
       </div>
 
       <div className="md:hidden max-w-lg mx-auto mt-8">
-          <h3 className="font-semibold">{t('updates')}</h3>
-          <TwitterFeed className="mt-6 h-[600px]" />
-        </div>
+        <h3 className="font-semibold">{t('updates')}</h3>
+        <TwitterFeed className="mt-6 h-[600px]" />
+      </div>
     </Layout>
   );
 }

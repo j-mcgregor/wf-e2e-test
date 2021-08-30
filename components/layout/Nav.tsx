@@ -1,7 +1,7 @@
-import { Dialog,Transition } from '@headlessui/react';
+import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { MenuAlt2Icon } from '@heroicons/react/solid';
-import React, { Fragment } from 'react';
+import React, { Fragment, useRef } from 'react';
 
 import { siteNavigation } from '../../lib/settings/navigation.settings';
 import Button from '../elements/Button';
@@ -12,7 +12,7 @@ export type HeroIcon = (_props: React.ComponentProps<'svg'>) => JSX.Element;
 interface NavItemProps {
   name: string;
   href?: string;
-  icon?: HeroIcon | undefined
+  icon?: HeroIcon | undefined;
   title?: boolean;
   onClick?: () => Promise<undefined> | void;
 }
@@ -32,8 +32,8 @@ interface NavListProps {
 }
 
 type NavProps = {
-  path: string
-}
+  path: string;
+};
 
 const { primaryNavigation, secondaryNavigation } = siteNavigation;
 
@@ -41,14 +41,16 @@ const Nav = ({ path }: NavProps) => {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const openSidebar = () => setSidebarOpen(true);
   const closeSidebar = () => setSidebarOpen(false);
+  const sidebarRef = useRef(null);
 
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed inset-0 z-40 flex md:hidden"
+          className="fixed inset-0 z-40 flex lg:hidden"
           onClose={setSidebarOpen}
+          initialFocus={sidebarRef}
         >
           <Transition.Child
             as={Fragment}
@@ -125,7 +127,7 @@ const Nav = ({ path }: NavProps) => {
           <div className="border-r border-gray-200 pt-5 pb-4 flex flex-col flex-grow overflow-y-auto">
             <div className="flex-shrink-0 px-4 flex items-center relative">
               <div className="relative w-40 h-10">
-              <WF />
+                <WF />
               </div>
             </div>
             <div className="flex-grow mt-5 flex flex-col">
@@ -137,14 +139,24 @@ const Nav = ({ path }: NavProps) => {
           </div>
         </div>
       </div>
-
       {/* Menu for Tablet */}
+
       <div className="hidden bg-primary sm:flex sm:flex-shrink-0 lg:hidden">
+        {/* expand menu button */}
+
+        <button
+          ref={sidebarRef}
+          type="button"
+          className="z-10  bg-primary absolute left-[55px] p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-highlight"
+          onClick={openSidebar}
+        >
+          <MenuAlt2Icon className="text-bg w-8 h-8" />
+        </button>
         <div className="w-14 flex flex-col">
           <div className="border-r border-gray-200 pt-5 pb-4 flex flex-col flex-grow overflow-y-auto">
             <div className="flex-shrink-0 px-3 flex items-center relative">
               <div className="relative w-20 h-10">
-              <WF />
+                <WF />
               </div>
             </div>
             <div className="flex-grow mt-5 flex flex-col">
@@ -165,18 +177,18 @@ const Nav = ({ path }: NavProps) => {
         </div>
       </div>
 
-      <div className="absolute w-full   md:px-8 xl:px-0 sm:hidden">
+      <div className="absolute w-full md:px-8 xl:px-0 sm:hidden">
         <div className="relative z-10 flex-shrink-0 h-12 bg-primary border-gray-200 flex">
           <button
             type="button"
-            className="px-4 text-bg focus:outline-none focus:ring-2 focus:ring-inset focus:ring-highlight md:hidden"
+            className="px-4 text-bg focus:outline-none focus:ring-2 focus:ring-inset focus:ring-highlight md:hidden "
             onClick={openSidebar}
           >
             <span className="sr-only">Open sidebar</span>
             <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
           </button>
           <div className="ml-auto mt-2 relative w-12 h-8 ">
-          <WF />
+            <WF />
           </div>
         </div>
       </div>
@@ -189,8 +201,7 @@ export default Nav;
 const NavItems = ({ path, navigation, noText }: NavListProps) => {
   return (
     <nav className={'flex-1 bg-primary px-2 space-y-1'}>
-      {navigation.map(({title, name, href, onClick, ...item}) => {
-
+      {navigation.map(({ title, name, href, onClick, ...item }) => {
         if (title && !noText) {
           return (
             <div
@@ -203,7 +214,7 @@ const NavItems = ({ path, navigation, noText }: NavListProps) => {
             </div>
           );
         }
-        if (title && noText) return <hr key={name} />
+        if (title && noText) return <hr key={name} />;
         return (
           <Button
             variant="none"

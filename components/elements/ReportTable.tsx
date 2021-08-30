@@ -32,29 +32,29 @@ const ReportTable = ({ reports, limit, shadow, borders }: ReportProps) => {
     <div className="flex flex-col">
       <div className="overflow-x-auto -mx-6">
         <div className="py-2 align-middle min-w-full min-h-full px-6">
-          <div className={`${shadowClasses} overflow-hidden rounded`}>
+          <div className={`${shadowClasses} overflow-auto rounded`}>
             <table className="min-w-full divide-y-2 divide-gray-200">
               <thead className="bg-gray-50">
-                <tr className="text-left text-sm tracking-wider">
+                <tr className="text-left text-[10px] px-2 lg:text-xs tracking-wider">
                   <th
                     scope="col"
-                    className={`${borderClasses} px-6 py-3 font-medium`}
+                    className={`${borderClasses} px-3 sm:px-6 py-2 font-medium`}
                   >
                     {t('company name')}
                   </th>
                   <th
                     scope="col"
-                    className={`${borderClasses} px-6 py-3 font-medium`}
+                    className={`${borderClasses} px-3 sm:px-6  py-2 font-medium`}
                   >
                     {t('sme z-score')}
                   </th>
                   <th
                     scope="col"
-                    className={`${borderClasses} px-6 py-3 font-medium`}
+                    className={`${borderClasses} px-3 sm:px-6 py-3 font-medium`}
                   >
                     {t('bond rating')}
                   </th>
-                  <th scope="col" className="px-6 py-3 font-medium ">
+                  <th scope="col" className="px-3 sm:px-6 py-3 font-medium ">
                     {t('created')}
                   </th>
                   <th />
@@ -67,26 +67,20 @@ const ReportTable = ({ reports, limit, shadow, borders }: ReportProps) => {
                     i < limit && (
                       <tr
                         key={report.id}
-                        className="bg-white odd:bg-gray-50 hover:bg-gray-300 cursor-default"
+                        className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm"
                       >
-                        <td className="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="h-12 px-3 sm:px-6 py-1 whitespace-nowrap font-medium text-gray-900">
                           {report.company_Name}
                         </td>
-                        <td className="px-6 py-1 whitespace-nowrap text-sm ">
+                        <td className="px-3 sm:px-6 py-1  whitespace-nowrap  ">
                           {report.sme_zscore}
                         </td>
-                        <td className="px-6 py-1 whitespace-nowrap text-sm ">
+                        <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
                           {report.bond_rating}
                         </td>
 
-                        <td className="px-6 py-1 whitespace-nowrap text-sm ">
+                        <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
                           <ReactTimeAgo date={report.created_at} />
-                        </td>
-
-                        <td className="px-6 py-1 whitespace-nowrap text-right text-sm font-medium">
-                          <Link linkTo="#">
-                            <ExternalLinkIcon className="h-6 w-6 m-2 text-gray-700 " />
-                          </Link>
                         </td>
                       </tr>
                     )
