@@ -1,11 +1,15 @@
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
-
-import BookmarkCard from '../components/cards/BookmarkCard';
+import { useRecoilValue } from 'recoil';
+import appState from '../lib/appState';
+import Bookmarks from '../components/elements/Bookmarks';
 import Layout from '../components/layout/Layout';
 import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
+import RecentReports from '../components/elements/RecentReports';
 
 const Reports = () => {
+  const { user } = useRecoilValue(appState);
+
   const t = useTranslations();
   return (
     <Layout noNav={false} title="Reports">
@@ -15,52 +19,11 @@ const Reports = () => {
           <p className="text-base py-2">{t('see all your recent reports')}</p>
           <h2 className="text-lg font-semibold py-2">Bookmarked Reports</h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 first: gap-2">
-          {/* temp bookmark card */}
 
-          <BookmarkCard
-            linkTo="#"
-            company_name="Scottish Seabird Center LTD"
-            sme_zscore={244}
-            bond_rating="AA"
-            pd_ratio={12}
-          />
-          <BookmarkCard
-            linkTo="#"
-            company_name="Scottish Seabird Center LTD"
-            sme_zscore={244}
-            bond_rating="AA"
-            pd_ratio={12}
-          />
-          <BookmarkCard
-            linkTo="#"
-            company_name="Scottish Seabird Center LTD"
-            sme_zscore={244}
-            bond_rating="AA"
-            pd_ratio={12}
-          />
-          <BookmarkCard
-            linkTo="#"
-            company_name="Scottish Seabird Center LTD"
-            sme_zscore={244}
-            bond_rating="AA"
-            pd_ratio={12}
-          />
-          <BookmarkCard
-            linkTo="#"
-            company_name="Scottish Seabird Center LTD"
-            sme_zscore={244}
-            bond_rating="AA"
-            pd_ratio={12}
-          />
-          <BookmarkCard
-            linkTo="#"
-            company_name="Scottish Seabird Center LTD"
-            sme_zscore={244}
-            bond_rating="AA"
-            pd_ratio={12}
-          />
-        </div>
+        {/* temp bookmark cards */}
+        <Bookmarks reports={user?.reports} />
+
+        <RecentReports reports={user?.reports} />
       </div>
     </Layout>
   );

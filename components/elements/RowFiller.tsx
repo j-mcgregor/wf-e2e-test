@@ -7,11 +7,13 @@ interface RowFillerProps {
 const RowFiller = ({ rowQty, className, cellQty }: RowFillerProps) => {
   return (
     <>
-      {Array(rowQty).fill(
-        <tr className={className}>
-          { Array(cellQty).fill(<td className="px-6 py-4" />) } 
-        </tr>
-      )}
+      {[...Array(rowQty).keys()].map(row => {
+        <tr key={row} className={className}>
+          {[...Array(cellQty).keys()].map(cell => {
+            return <td key={cell} className="px-6 py-1" />;
+          })}
+        </tr>;
+      })}
     </>
   );
 };

@@ -2,7 +2,8 @@ import {
   ChipIcon,
   DocumentDuplicateIcon,
   LightningBoltIcon,
-  SearchCircleIcon} from '@heroicons/react/outline';
+  SearchCircleIcon
+} from '@heroicons/react/outline';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRecoilValue } from 'recoil';
@@ -51,7 +52,12 @@ export default function Dashboard() {
               }
             ]}
           />
-          <ReportTable reports={user?.reports} limit={5} />
+          <ReportTable
+            reports={user?.reports}
+            limit={5}
+            shadow={true}
+            borders={true}
+          />
         </div>
 
         <div className="md:col-span-2 md:block hidden">

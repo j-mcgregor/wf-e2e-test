@@ -1,4 +1,4 @@
-import { DocumentReportIcon,ExternalLinkIcon } from '@heroicons/react/outline';
+import { DocumentReportIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import ReactTimeAgo from 'react-timeago';
 import { useTranslations } from 'use-intl';
 
@@ -10,34 +10,48 @@ import RowFiller from './RowFiller';
 interface ReportProps {
   reports?: Report[] | null;
   limit: number;
+  shadow: boolean;
+  borders: boolean;
 }
 
-const ReportTable = ({ reports, limit }: ReportProps) => {
+const ReportTable = ({ reports, limit, shadow, borders }: ReportProps) => {
   const isLoading = !reports;
 
   // number of blank reports, if reports are less than the limit prop
-  const blankReports: number = limit - (reports?.length || 0); // can't fix ts error but working?
+  const blankReports: number = limit - (reports?.length || 0);
 
   const t = useTranslations();
 
+  const borderClasses = `${borders && 'border-r-2'}`;
+  const shadowClasses = `${shadow && 'shadow'}`;
+
   // total number reports might be less than limit
-  // const limitedReports = reports && reports.splice(0, limit) || []
+  // const limitedReports = (reports && reports.splice(0, limit)) || [];
 
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto -mx-6">
         <div className="py-2 align-middle min-w-full min-h-full px-6">
-          <div className="shadow overflow-hidden rounded">
+          <div className={`${shadowClasses} overflow-hidden rounded`}>
             <table className="min-w-full divide-y-2 divide-gray-200">
               <thead className="bg-gray-50">
                 <tr className="text-left text-sm tracking-wider">
-                  <th scope="col" className="px-6 py-3 font-medium border-r-2">
+                  <th
+                    scope="col"
+                    className={`${borderClasses} px-6 py-3 font-medium`}
+                  >
                     {t('company name')}
                   </th>
-                  <th scope="col" className="px-6 py-3 font-medium border-r-2">
+                  <th
+                    scope="col"
+                    className={`${borderClasses} px-6 py-3 font-medium`}
+                  >
                     {t('sme z-score')}
                   </th>
-                  <th scope="col" className="px-6 py-3 font-medium border-r-2">
+                  <th
+                    scope="col"
+                    className={`${borderClasses} px-6 py-3 font-medium`}
+                  >
                     {t('bond rating')}
                   </th>
                   <th scope="col" className="px-6 py-3 font-medium ">
@@ -55,21 +69,21 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                         key={report.id}
                         className="bg-white odd:bg-gray-50 hover:bg-gray-300 cursor-default"
                       >
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900">
                           {report.company_Name}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                        <td className="px-6 py-1 whitespace-nowrap text-sm ">
                           {report.sme_zscore}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                        <td className="px-6 py-1 whitespace-nowrap text-sm ">
                           {report.bond_rating}
                         </td>
 
-                        <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                        <td className="px-6 py-1 whitespace-nowrap text-sm ">
                           <ReactTimeAgo date={report.created_at} />
                         </td>
 
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <td className="px-6 py-1 whitespace-nowrap text-right text-sm font-medium">
                           <Link linkTo="#">
                             <ExternalLinkIcon className="h-6 w-6 m-2 text-gray-700 " />
                           </Link>
@@ -83,16 +97,19 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                 {blankReports > 0 && blankReports < limit && (
                   <RowFiller
                     cellQty={5}
-                    className="bg-gray-200 h-[72px]"
+                    className="bg-gray-200 h-[48px]"
                     rowQty={blankReports}
                   />
                 )}
+
                 {/* when loading state, show qty of empty rows based on limit prop */}
-                {isLoading && <>{Array(limit).fill(  <RowFiller
+                {isLoading && (
+                  <RowFiller
                     cellQty={5}
-                    className="bg-gray-200 h-[72px]"
+                    className="bg-white odd:bg-gray-100 h-[48px]"
                     rowQty={blankReports}
-                  />)}</>}
+                  />
+                )}
               </tbody>
             </table>
 
@@ -103,13 +120,13 @@ const ReportTable = ({ reports, limit }: ReportProps) => {
                   <DocumentReportIcon className="h-10 w-10 mb-2" />
                   <h2 className="text-xl my-2">{t('no reports generated')}</h2>
                   <p>{t('get started with new report')}</p>
-                    <Button
-                      className="max-w-xxs mt-4"
-                      variant="highlight"
-                      linkTo="/sme-calc"
-                    >
-                      {t('generate report')}
-                    </Button>
+                  <Button
+                    className="max-w-xxs mt-4"
+                    variant="highlight"
+                    linkTo="/sme-calc"
+                  >
+                    {t('generate report')}
+                  </Button>
                 </div>
               </div>
             )}
