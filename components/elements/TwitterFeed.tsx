@@ -8,16 +8,14 @@ const TwitterFeed = ({ className }: { className?: string }) => {
       <div className="animate-pulse bg-gray-300 h-full w-full relative -z-10" />
 
       <div className="absolute z-10 h-full w-full top-0">
-      <Timeline
-        dataSource={{
-          sourceType: 'profile',
-          screenName: 'Wiserfunding'
-        }}
-
-        options={{ height: 402 }}
-      />
+        <Timeline
+          dataSource={{
+            sourceType: 'profile',
+            screenName: 'Wiserfunding'
+          }}
+          options={{ height: 402 }}
+        />
       </div>
-     
     </div>
   );
 };
