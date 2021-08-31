@@ -13,6 +13,7 @@ interface ReportProps {
   shadow: boolean;
   borders: boolean;
   fillerRows: boolean;
+  headerSize: string;
 }
 
 const ReportTable = ({
@@ -20,7 +21,8 @@ const ReportTable = ({
   limit,
   shadow,
   borders,
-  fillerRows
+  fillerRows,
+  headerSize
 }: ReportProps) => {
   const isLoading = !reports;
 
@@ -36,6 +38,8 @@ const ReportTable = ({
   const sortedReports =
     reports && Array.from(reports).sort((a, b) => b.created_at - a.created_at);
 
+  // text-[10px] px-2 lg:text-xs
+
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto -mx-6">
@@ -43,7 +47,7 @@ const ReportTable = ({
           <div className={`${shadowClasses} overflow-auto rounded`}>
             <table className="min-w-full divide-y-2 divide-gray-200">
               <thead className="bg-gray-50">
-                <tr className="text-left text-[10px] px-2 lg:text-xs tracking-wider">
+                <tr className={`${headerSize} text-left  tracking-wider`}>
                   <th
                     scope="col"
                     className={`${borderClasses} px-3 sm:px-6 py-2 font-medium`}
@@ -72,7 +76,7 @@ const ReportTable = ({
                   (report: Report, i: number) =>
                     // display reports only up until quantity limit specified in props
                     i < limit && (
-                      <Link href={`reports/${report.id}`}>
+                      <Link href={`report/${report.id}`}>
                         <tr
                           key={report.id}
                           className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm cursor-pointer"

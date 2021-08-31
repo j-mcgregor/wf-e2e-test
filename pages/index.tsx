@@ -58,6 +58,7 @@ export default function Dashboard() {
             shadow={true}
             borders={true}
             fillerRows={true}
+            headerSize="text-[10px] md:text-xs xl:text-sm"
           />
         </div>
 
