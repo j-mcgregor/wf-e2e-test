@@ -34,10 +34,7 @@ const ReportTable = ({
 
   // reports sorted by descending created_at date
   const sortedReports =
-    reports &&
-    Array.from(reports)
-      .sort((a, b) => a.created_at - b.created_at)
-      .reverse();
+    reports && Array.from(reports).sort((a, b) => b.created_at - a.created_at);
 
   return (
     <div className="flex flex-col">
@@ -75,7 +72,7 @@ const ReportTable = ({
                   (report: Report, i: number) =>
                     // display reports only up until quantity limit specified in props
                     i < limit && (
-                      <Link href={`reports/${report.company_Name}`}>
+                      <Link href={`reports/${report.id}`}>
                         <tr
                           key={report.id}
                           className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm cursor-pointer"

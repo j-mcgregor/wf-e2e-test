@@ -4,7 +4,6 @@ import { useTranslations } from 'use-intl';
 
 import ReportTable from './ReportTable';
 import Button from './Button';
-import { report } from 'process';
 
 interface RecentReportProps {
   reports?: Report[] | null;
