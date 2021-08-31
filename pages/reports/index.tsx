@@ -16,11 +16,10 @@ const Reports = () => {
       <div className="text-primary">
         <div>
           <h1 className="text-3xl font-semibold py-2">{t('reports')}</h1>
-          <p className="text-base py-2">{t('see all your recent reports')}</p>
-          <h2 className="text-lg font-semibold py-2">Bookmarked Reports</h2>
+          <p className="text-base py-4">{t('see all your recent reports')}</p>
+          <h2 className="text-2xl font-semibold py-6">Bookmarked Reports</h2>
         </div>
 
-        {/* temp bookmark cards */}
         <Bookmarks reports={user?.reports} qty={6} />
 
         <RecentReports reports={user?.reports} />

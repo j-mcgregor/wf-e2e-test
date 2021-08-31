@@ -32,8 +32,12 @@ const ReportTable = ({
   const borderClasses = `${borders && 'border-r-2'}`;
   const shadowClasses = `${shadow && 'shadow'}`;
 
-  // total number reports might be less than limit
-  // const limitedReports = (reports && reports.splice(0, limit)) || [];
+  // reports sorted by descending created_at date
+  const sortedReports =
+    reports &&
+    Array.from(reports)
+      .sort((a, b) => a.created_at - b.created_at)
+      .reverse();
 
   return (
     <div className="flex flex-col">
@@ -67,7 +71,7 @@ const ReportTable = ({
                 </tr>
               </thead>
               <tbody>
-                {reports?.map(
+                {sortedReports?.map(
                   (report: Report, i: number) =>
                     // display reports only up until quantity limit specified in props
                     i < limit && (

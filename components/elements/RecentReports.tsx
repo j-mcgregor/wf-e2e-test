@@ -4,23 +4,24 @@ import { useTranslations } from 'use-intl';
 
 import ReportTable from './ReportTable';
 import Button from './Button';
+import { report } from 'process';
 
 interface RecentReportProps {
   reports?: Report[] | null;
 }
 
 const RecentReports = ({ reports }: RecentReportProps) => {
-  const [reportLimit, setReportLimit] = useState(10);
+  const [reportLimit, setReportLimit] = useState(10); // initial limit of 10 reports
   const t = useTranslations();
 
-  // load 5 more reports until max 30
+  // loads 5 more reports until max 30
   const handleAddReports = (): void => {
     reportLimit < 30 ? setReportLimit(reportLimit + 5) : null;
   };
 
   return (
-    <div className="bg-white my-6 py-6  flex flex-col">
-      <p className="text-2xl p-4 font-semibold">{t('recent reports')}</p>
+    <div className="flex flex-col">
+      <p className="text-2xl py-6 font-semibold">{t('recent reports')}</p>
 
       <ReportTable
         reports={reports}
