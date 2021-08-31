@@ -1,11 +1,11 @@
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRecoilValue } from 'recoil';
-import appState from '../lib/appState';
-import Bookmarks from '../components/elements/Bookmarks';
-import Layout from '../components/layout/Layout';
-import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
-import RecentReports from '../components/elements/RecentReports';
+import appState from '../../lib/appState';
+import Bookmarks from '../../components/elements/Bookmarks';
+import Layout from '../../components/layout/Layout';
+import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
+import RecentReports from '../../components/elements/RecentReports';
 
 const Reports = () => {
   const { user } = useRecoilValue(appState);
@@ -21,9 +21,9 @@ const Reports = () => {
         </div>
 
         {/* temp bookmark cards */}
-        <Bookmarks reports={user?.reports} />
+        <Bookmarks reports={user?.reports} qty={6} />
 
-        <RecentReports reports={user?.reports}  />
+        <RecentReports reports={user?.reports} />
       </div>
     </Layout>
   );
@@ -40,7 +40,7 @@ export const getServerSideProps = getServerSidePropsWithAuth(
           // pattern is to put them in JSON files separated by language and read
           // the desired one based on the `locale` received from Next.js.
           // eslint-disable-next-line security/detect-non-literal-require
-          ...require(`../messages/${locale}/reports.${locale}.json`)
+          ...require(`../../messages/${locale}/reports.${locale}.json`)
         }
       }
     };

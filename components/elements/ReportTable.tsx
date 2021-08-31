@@ -3,7 +3,7 @@ import ReactTimeAgo from 'react-timeago';
 import { useTranslations } from 'use-intl';
 
 import { Report } from '../../types/global';
-import Link from '../elements/Link';
+import Link from 'next/link';
 import Button from './Button';
 import RowFiller from './RowFiller';
 
@@ -12,9 +12,16 @@ interface ReportProps {
   limit: number;
   shadow: boolean;
   borders: boolean;
+  fillerRows: boolean;
 }
 
-const ReportTable = ({ reports, limit, shadow, borders }: ReportProps) => {
+const ReportTable = ({
+  reports,
+  limit,
+  shadow,
+  borders,
+  fillerRows
+}: ReportProps) => {
   const isLoading = !reports;
 
   // number of blank reports, if reports are less than the limit prop
@@ -64,32 +71,35 @@ const ReportTable = ({ reports, limit, shadow, borders }: ReportProps) => {
                   (report: Report, i: number) =>
                     // display reports only up until quantity limit specified in props
                     i < limit && (
-                      <tr
-                        key={report.id}
-                        className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm"
-                      >
-                        <td className="h-12 px-3 sm:px-6 py-1 whitespace-nowrap font-medium text-gray-900">
-                          {report.company_Name}
-                        </td>
-                        <td className="px-3 sm:px-6 py-1  whitespace-nowrap  ">
-                          {report.sme_zscore}
-                        </td>
-                        <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
-                          {report.bond_rating}
-                        </td>
+                      <Link href={`reports/${report.company_Name}`}>
+                        <tr
+                          key={report.id}
+                          className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm cursor-pointer"
+                        >
+                          <td className="h-12 px-3 sm:px-6 py-1 whitespace-nowrap font-medium text-gray-900">
+                            {report.company_Name}
+                          </td>
+                          <td className="px-3 sm:px-6 py-1  whitespace-nowrap  ">
+                            {report.sme_zscore}
+                          </td>
+                          <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
+                            {report.bond_rating}
+                          </td>
 
-                        <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
-                          <ReactTimeAgo date={report.created_at} />
-                        </td>
-                      </tr>
+                          <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
+                            <ReactTimeAgo date={report.created_at} />
+                          </td>
+                        </tr>
+                      </Link>
                     )
                 )}
 
                 {/* if quantity of empty reports is less than limit & not negative */}
                 {/* fill remaining empty spots with blank filler */}
-                {blankReports > 0 && blankReports < limit && (
+
+                {fillerRows && blankReports > 0 && blankReports < limit && (
                   <RowFiller
-                    cellQty={5}
+                    cellQty={4}
                     className="bg-gray-200 h-[48px]"
                     rowQty={blankReports}
                   />
@@ -98,7 +108,7 @@ const ReportTable = ({ reports, limit, shadow, borders }: ReportProps) => {
                 {/* when loading state, show qty of empty rows based on limit prop */}
                 {isLoading && (
                   <RowFiller
-                    cellQty={5}
+                    cellQty={4}
                     className="bg-white odd:bg-gray-100 h-[48px]"
                     rowQty={limit}
                   />

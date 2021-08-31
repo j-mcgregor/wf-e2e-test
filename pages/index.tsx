@@ -57,6 +57,7 @@ export default function Dashboard() {
             limit={5}
             shadow={true}
             borders={true}
+            fillerRows={true}
           />
         </div>
 

@@ -1,7 +1,9 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from 'next';
 // import { getSession } from 'next-auth/client'
-export default async function passwordReset(request: NextApiRequest, response: NextApiResponse) {
-
+export default async function passwordReset(
+  request: NextApiRequest,
+  response: NextApiResponse
+) {
   // example protected API end points
   // const session = await getSession({ req })
 
@@ -11,7 +13,6 @@ export default async function passwordReset(request: NextApiRequest, response: N
   //   res.send({ error: 'You must be sign in to view the protected content on this page.' })
   // }
   // send request to FAST API to send password reset email
-  
-  return response.status(200).send('Success')
 
+  return response.status(200).send('Success');
 }
