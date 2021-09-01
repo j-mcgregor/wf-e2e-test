@@ -69,4 +69,14 @@ const useReportNavItems = () => {
   ]
 }
 
-export { useReportNavItems, useMainNavItems } 
+const useSettingsNavItems = () => {
+  const t = useTranslations()
+  return [
+    `${t('personal information')}`,
+    `${t('specialists')}`,
+    `${t('password')}`,
+    `${t('communication')}`,
+  ]
+}
+
+export { useSettingsNavItems, useReportNavItems, useMainNavItems }

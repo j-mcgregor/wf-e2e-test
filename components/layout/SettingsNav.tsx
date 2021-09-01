@@ -4,15 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { scroller } from 'react-scroll';
 import { useTranslations } from 'use-intl';
 
-import { useReportNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';
+import {useSettingsNavItems} from "../../hooks/useNavigation";
 
 interface ReportNavProps {
     companyName: string;
 }
 
-const ReportNav = ({ companyName }: ReportNavProps) => {
-    const navItems = useReportNavItems();
+const SettingsNav = ({ companyName }: ReportNavProps) => {
+    const navItems = useSettingsNavItems();
 
     const t = useTranslations();
     const router = useRouter();
@@ -115,4 +115,4 @@ const ReportNav = ({ companyName }: ReportNavProps) => {
     );
 };
 
-export default ReportNav;
+export default SettingsNav;
