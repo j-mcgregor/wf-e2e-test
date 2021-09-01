@@ -21,7 +21,7 @@ const ReportNav = ({ companyName }: ReportNavProps) => {
 
   const handleClick = (headerText: string) => {
 
-    const path = router.pathname;
+    const path = router.asPath.replace(/#[\w+ -]+/, '');
     const snakedHeader = headerText.replace(/\s/g, '-').toLowerCase();
     setActiveItem(headerText);
 
@@ -40,7 +40,9 @@ const ReportNav = ({ companyName }: ReportNavProps) => {
 
   // monitor the changes to the # path and update the menu based on the # path ids
   useEffect(() => {
-    const path = router.asPath.replace(`${router.pathname}#`, '');
+    const dynamicPath = router.asPath.replace(/#[\w+ -]+/, '');
+
+    const path = router.asPath.replace(`${dynamicPath}#`, '');
     const header = path.replace(/-/g, ' ').toLowerCase();
     setActiveItem(header);
   }, [router.asPath]);
