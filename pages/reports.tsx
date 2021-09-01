@@ -1,14 +1,14 @@
-import { useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import appState from '../lib/appState';
-import Layout from '../components/layout/Layout';
-import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
-import RecentReports from '../components/elements/RecentReports';
+
 import BookmarkCard from '../components/cards/BookmarkCard';
-import ReportTable from '../components/elements/ReportTable';
 import Button from '../components/elements/Button';
+import ReportTable from '../components/elements/ReportTable';
+import Layout from '../components/layout/Layout';
+import appState from '../lib/appState';
+import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 import { Report } from '../types/global';
 
 const Reports = () => {

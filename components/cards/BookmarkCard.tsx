@@ -1,8 +1,8 @@
-import { useTranslations } from 'use-intl';
 import {
-  DocumentReportIcon,
-  ArrowNarrowUpIcon
-} from '@heroicons/react/outline';
+  ArrowNarrowUpIcon,
+  DocumentReportIcon} from '@heroicons/react/outline';
+import { useTranslations } from 'use-intl';
+
 import Link from '../elements/Link';
 
 interface BookmarkCardProps {

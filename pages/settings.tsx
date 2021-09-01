@@ -1,14 +1,14 @@
 import { GetServerSidePropsContext } from 'next';
 import React from 'react';
 
-import HashHeader from '../../components/elements/HashHeader';
-import Layout from '../../components/layout/Layout';
-import ReportNav from '../../components/layout/ReportNav';
-import SecondaryLayout from '../../components/layout/SecondaryLayout';
-import useReportNavItems from '../../hooks/useReportNavItems';
-import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
+import HashHeader from '../components/elements/HashHeader';
+import Layout from '../components/layout/Layout';
+import ReportNav from '../components/layout/ReportNav';
+import SecondaryLayout from '../components/layout/SecondaryLayout';
+import useReportNavItems from '../hooks/useReportNavItems';
+import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 
-const ReportTemplate = () => {
+const Settings = () => {
   const headings : string[] = useReportNavItems();
   return (
     <Layout title="SME - Calculator " fullWidth>
@@ -30,7 +30,7 @@ const ReportTemplate = () => {
   );
 };
 
-export default ReportTemplate;
+export default Settings;
 
 export const getServerSideProps = getServerSidePropsWithAuth(
   ({ locale }: GetServerSidePropsContext) => {
@@ -41,7 +41,7 @@ export const getServerSideProps = getServerSidePropsWithAuth(
           // pattern is to put them in JSON files separated by language and read
           // the desired one based on the `locale` received from Next.js.
           // eslint-disable-next-line security/detect-non-literal-require
-          ...require(`../../messages/${locale}/report.${locale}.json`)
+          ...require(`../messages/${locale}/report.${locale}.json`)
         }
       }
     };
