@@ -1,11 +1,12 @@
-import { useTranslations } from 'next-intl';
 import { GetStaticPropsContext } from 'next';
-import Layout from '../components/layout/Layout';
-import Link from '../components/elements/Link';
-import LoginForm from '../components/forms/LoginForm';
-import Logo from '../components/elements/Logo';
+import { useTranslations } from 'next-intl';
+
 import LoginContainer from '../components/containers/LoginContainer';
+import Link from '../components/elements/Link';
+import Logo from '../components/elements/Logo';
+import LoginForm from '../components/forms/LoginForm';
 import LoginSSO from '../components/forms/LoginSSO';
+import Layout from '../components/layout/Layout';
 
 const Login = () => {
   const t = useTranslations();
