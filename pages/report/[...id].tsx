@@ -6,7 +6,7 @@ import HashHeader from '../../components/elements/HashHeader';
 import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
-import useReportNavItems from '../../hooks/useReportNavItems';
+import { useReportNavItems } from '../../hooks/useNavigation';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
 
 const ReportTemplate = () => {
@@ -23,7 +23,7 @@ const ReportTemplate = () => {
             key={header}
             className="h-screen text-3xl pt-16"
           >
-            <HashHeader text={header} />
+            <HashHeader text={header}  classname={''}/>
           </div>
         ))}
       </SecondaryLayout>

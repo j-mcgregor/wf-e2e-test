@@ -13,7 +13,6 @@ interface ReportNavProps {
 
 const ReportNav = ({ companyName }: ReportNavProps) => {
   const navItems = useReportNavItems();
-
   const t = useTranslations();
   const router = useRouter();
 
