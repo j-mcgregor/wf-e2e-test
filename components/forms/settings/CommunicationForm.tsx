@@ -2,15 +2,24 @@ import React, {FC} from 'react';
 
 import {useSettingsNavItemsProps} from "../../../hooks/useNavigation";
 import HashHeader from "../../elements/HashHeader";
+import {SubmitHandler, useForm} from "react-hook-form";
 
 interface CommunicationFormProps {
     headings: useSettingsNavItemsProps[]
 
 }
-
+interface CommunicationFormInput {
+    comments:string;
+    candidates:string;
+    offers:string;
+}
 const CommunicationForm: FC<CommunicationFormProps> = ({headings}) => {
+    const { register, handleSubmit } = useForm<CommunicationFormInput>();
+    // eslint-disable-next-line no-console
+    const onSubmit: SubmitHandler<CommunicationFormInput> = data => console.log(data);
+
     return (
-        <form action="#" method="POST">
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div className="shadow sm:rounded-md sm:overflow-hidden">
                 <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
                     <div>
@@ -31,6 +40,8 @@ const CommunicationForm: FC<CommunicationFormProps> = ({headings}) => {
                             <div className="flex items-start">
                                 <div className="h-5 flex items-center">
                                     <input
+                                        {...register("comments")}
+                                        // value={"comments"}
                                         id="comments"
                                         name="comments"
                                         type="checkbox"
@@ -50,6 +61,7 @@ const CommunicationForm: FC<CommunicationFormProps> = ({headings}) => {
                                 <div className="flex items-start">
                                     <div className="h-5 flex items-center">
                                         <input
+                                            {...register("candidates")}
                                             id="candidates"
                                             name="candidates"
                                             type="checkbox"
@@ -70,6 +82,7 @@ const CommunicationForm: FC<CommunicationFormProps> = ({headings}) => {
                                 <div className="flex items-start">
                                     <div className="h-5 flex items-center">
                                         <input
+                                            {...register("offers")}
                                             id="offers"
                                             name="offers"
                                             type="checkbox"
@@ -92,7 +105,10 @@ const CommunicationForm: FC<CommunicationFormProps> = ({headings}) => {
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                     <button
                         type="submit"
-                        className="bg-indigo-600 border border-transparent rounded-none shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+                        className="bg-indigo-600 border border-transparent
+                        rounded-none shadow-sm py-2 px-4 inline-flex justify-center
+                        text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2
+                        focus:ring-offset-2 focus:ring-indigo-600"
                     >
                         Save
                     </button>

@@ -45,9 +45,9 @@ export const SpecialistsForm: FC<SpecialistsFormProps> = ({headings}) => {
                                     autoComplete="localisation"
                                     className="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 >
-                                    <option>English(UK)</option>
-                                    <option>English(US)</option>
-                                    <option>Mexican</option>
+                                    <option value={"english(uK)"}>English(UK)</option>
+                                    <option value={"english(uS)"}>English(US)</option>
+                                    <option value={"mexican"}>Mexican</option>
                                 </select>
                             </div>
                         </div>
@@ -68,8 +68,8 @@ export const SpecialistsForm: FC<SpecialistsFormProps> = ({headings}) => {
                                     className="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 >
                                     <option value={"unitedKingdom"}>United Kingdom</option>
-                                    <option value={'US'}>US</option>
-                                    <option value={"Mexico"}>Mexico</option>
+                                    <option value={'uS'}>US</option>
+                                    <option value={"mexico"}>Mexico</option>
                                 </select>
                             </div>
                             {/*#currency*/}
