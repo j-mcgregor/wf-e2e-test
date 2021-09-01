@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-require */
 import {
   ChipIcon,
   DocumentDuplicateIcon,
@@ -76,7 +77,7 @@ export default function Dashboard() {
           iconColor="bg-highlight"
           header={t('automated report header')}
           description={t('automated report description')}
-          linkTo="#"
+          linkTo="/sme-calculator"
         />
         <LinkCard
           className="mx-auto"
@@ -84,7 +85,7 @@ export default function Dashboard() {
           iconColor="bg-highlight-2"
           header={t('sme prospector header')}
           description={t('sme prospector description')}
-          linkTo="#"
+          linkTo="/sme-prospector"
         />
         <LinkCard
           className="mx-auto"
@@ -94,15 +95,15 @@ export default function Dashboard() {
           iconColor="bg-highlight-3"
           header={t('batch reports header')}
           description={t('batch reports description')}
-          linkTo="#"
+          linkTo="/batched-reports"
         />
         <LinkCard
           className="mx-auto"
           icon={<ChipIcon className='className="h-6 w-6 text-white ' />}
           iconColor="bg-highlight-4"
-          header={t('automated report header')}
-          description={t('automated report description')}
-          linkTo="#"
+          header={t('api docs header')}
+          description={t('api docs description')}
+          linkTo="/api-documentation"
         />
       </div>
 
@@ -122,8 +123,8 @@ export const getServerSideProps = getServerSidePropsWithAuth(
           // You can get the messages from anywhere you like, but the recommended
           // pattern is to put them in JSON files separated by language and read
           // the desired one based on the `locale` received from Next.js.
-          // eslint-disable-next-line security/detect-non-literal-require
-          ...require(`../messages/${locale}/index.${locale}.json`)
+          ...require(`../messages/${locale}/index.${locale}.json`),
+          ...require(`../messages/${locale}/general.${locale}.json`)
         }
       }
     };
