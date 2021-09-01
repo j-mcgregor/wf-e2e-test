@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
+
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
@@ -12,7 +13,6 @@ import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 import { Report } from '../types/global';
 
 const Reports = () => {
-  const [bookmarkQty, setBookmarkQty] = useState(5);
   const [reportLimit, setReportLimit] = useState(10); // initial limit of 10 reports
 
   const { user } = useRecoilValue(appState);
@@ -26,6 +26,9 @@ const Reports = () => {
     reportLimit < 30 ? setReportLimit(reportLimit + 5) : null;
   };
 
+  const hasBookmark =
+    user && reports.filter((report: Report) => report.bookmarked);
+
   return (
     <Layout noNav={false} title="Reports">
       <div className="text-primary">
@@ -38,19 +41,17 @@ const Reports = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 leading-4">
-          {reports.map((report: Report, index: number) => {
-            if (index < bookmarkQty) {
-              return (
-                <BookmarkCard
-                  key={report.id}
-                  linkTo={`/report/${report.id}`}
-                  company_name={report.company_Name}
-                  sme_zscore={report.sme_zscore}
-                  bond_rating={report.bond_rating}
-                  pd_ratio={32.18} // not currently in mock data
-                />
-              );
-            }
+          {hasBookmark?.map((report: Report) => {
+            return (
+              <BookmarkCard
+                key={report.id}
+                linkTo={`/report/${report.id}`}
+                company_name={report.company_Name}
+                sme_zscore={report.sme_zscore}
+                bond_rating={report.bond_rating}
+                pd_ratio={32.18} // not currently in mock data
+              />
+            );
           })}
         </div>
 

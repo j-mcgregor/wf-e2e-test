@@ -15,7 +15,7 @@ const mockUsers = {
         sme_zscore: 456,
         bond_rating: 'AA',
         created_at: 1629660518563,
-        bookmarked: true
+        bookmarked: false
       },
       {
         id: 2,
@@ -63,7 +63,7 @@ const mockUsers = {
         sme_zscore: 456,
         bond_rating: 'AA',
         created_at: 1629660518563,
-        bookmarked: true
+        bookmarked: false
       },
       {
         id: 8,
@@ -126,7 +126,7 @@ const mockUsers = {
         sme_zscore: 345,
         bond_rating: 'A',
         created_at: 1630408290506,
-        bookmarked: true
+        bookmarked: false
       },
       {
         id: 16,
@@ -158,7 +158,7 @@ const mockUsers = {
         sme_zscore: 456,
         bond_rating: 'AA',
         created_at: 1629660518563,
-        bookmarked: true
+        bookmarked: false
       },
       {
         id: 20,
@@ -254,7 +254,7 @@ const mockUsers = {
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
-        bookmarked: true
+        bookmarked: false
       },
       {
         id: 32,
