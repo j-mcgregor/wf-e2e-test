@@ -5,7 +5,7 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { useTranslations } from 'use-intl';
 
-import HashHeader from '../../components/elements/HashHeader';
+import HashHeader from '../../components/elements/HashContainer';
 import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
@@ -70,7 +70,13 @@ const ReportTemplate = () => {
             key={header}
             className="h-screen text-3xl pt-16"
           >
-            <HashHeader text={header}  classname={''}/>
+            <HashHeader name={header}>
+
+            <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
+                {header}
+              </h3>
+              
+            </HashHeader >
           </div>
         ))}
       </SecondaryLayout>

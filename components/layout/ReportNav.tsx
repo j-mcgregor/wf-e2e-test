@@ -30,7 +30,7 @@ const ReportNav = ({ companyName }: ReportNavProps) => {
       delay: 0,
       smooth: true,
       // refers to the container in the secondary layout
-      containerId: 'report-container'
+      containerId: 'secondary-layout-container'
     });
 
     // shallow push to avoid forcing re-render

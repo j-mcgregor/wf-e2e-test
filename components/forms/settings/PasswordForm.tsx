@@ -1,21 +1,17 @@
-import React, {FC} from 'react';
+import React from 'react';
 
-import {useSettingsNavItemsProps} from "../../../hooks/useNavigation";
 import Button from "../../elements/Button";
-import HashHeader from "../../elements/HashHeader";
 
-interface PasswordFormProps {
-    headings: useSettingsNavItemsProps[]
-}
 
-const PasswordForm: FC<PasswordFormProps> = ({headings}) => {
+const PasswordForm = () => {
     return (
         <form action="#" method="POST">
             <div className="shadow sm:rounded-md sm:overflow-hidden">
                 <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
                     <div>
-                        <HashHeader text={headings[2]['title']}
-                                    classname={"text-lg leading-6 font-medium text-gray-900"}/>
+                    <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
+                    Password
+              </h3>
                         <p className="mt-1 text-sm text-gray-500">
                             Handle your authentication details
                         </p>

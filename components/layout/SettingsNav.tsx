@@ -13,20 +13,20 @@ const SettingsNav = () => {
 
     const handleSettingsNavClick = (headerText: string) => {
         const path = router.asPath.replace(/#[\w+ -]+/, '');
-        const snakedHeader = headerText.replace(/\s/g, '-').toLowerCase();
+        const headerId = headerText.replace(/\s/g, '-').toLowerCase();
         setActiveSettingsItem(headerText);
 
         // handles the smooth scrolling
-        scroller.scrollTo(`${snakedHeader}-id`, {
+        scroller.scrollTo(`${headerId}-id`, {
             duration: 400,
             delay: 0,
             smooth: true,
             // refers to the container in the secondary layout
-            containerId: 'report-container'
+            containerId: 'secondary-layout-container'
         });
 
         // shallow push to avoid forcing re-render
-        return router.push(`${path}#${snakedHeader}`, undefined, {shallow: true});
+        return router.push(`${path}#${headerId}`, undefined, {shallow: true});
     };
 
     // monitor the changes to the # path and update the menu based on the # path ids
