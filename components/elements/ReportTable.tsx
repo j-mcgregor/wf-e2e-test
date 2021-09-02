@@ -1,11 +1,11 @@
-import { DocumentReportIcon, ExternalLinkIcon } from '@heroicons/react/outline';
+import { DocumentReportIcon } from '@heroicons/react/outline';
+import Link from 'next/link';
 import ReactTimeAgo from 'react-timeago';
 import { useTranslations } from 'use-intl';
 
 import { Report } from '../../types/global';
-import Link from 'next/link';
+import SkeletonRow from '../skeletons/SkeletonRow';
 import Button from './Button';
-import RowFiller from './RowFiller';
 
 interface ReportProps {
   reports?: Report[] | null;
@@ -73,10 +73,10 @@ const ReportTable = ({
               </thead>
               <tbody>
                 {sortedReports?.map(
-                  (report: Report, i: number) =>
+                  (report: Report, index: number) =>
                     // display reports only up until quantity limit specified in props
-                    i < limit && (
-                      <Link href={`report/${report.id}`}>
+                    index < limit && (
+                      <Link key={index} href={`report/${report.id}`} passHref={true}>
                         <tr
                           key={report.id}
                           className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm cursor-pointer"
@@ -103,7 +103,7 @@ const ReportTable = ({
                 {/* fill remaining empty spots with blank filler */}
 
                 {fillerRows && blankReports > 0 && blankReports < limit && (
-                  <RowFiller
+                  <SkeletonRow
                     cellQty={4}
                     className="bg-gray-200 h-[48px]"
                     rowQty={blankReports}
@@ -112,7 +112,7 @@ const ReportTable = ({
 
                 {/* when loading state, show qty of empty rows based on limit prop */}
                 {isLoading && (
-                  <RowFiller
+                  <SkeletonRow
                     cellQty={4}
                     className="bg-white odd:bg-gray-100 h-[48px]"
                     rowQty={limit}
