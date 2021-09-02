@@ -2,7 +2,8 @@ import React from 'react';
 
 interface SecondaryNavProps {
   children: React.ReactNode;
-  navigation: React.ReactNode;
+  navigation?: React.ReactNode;
+  // ^ I made this optional for empty use in the skeleton report <- dan
 }
 
 const SecondaryNav = ({ navigation, children }: SecondaryNavProps) => {
@@ -18,7 +19,6 @@ const SecondaryNav = ({ navigation, children }: SecondaryNavProps) => {
       >
         {children}
       </div>
-     
     </div>
   );
 };

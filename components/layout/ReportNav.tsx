@@ -19,7 +19,6 @@ const ReportNav = ({ companyName }: ReportNavProps) => {
   const [activeItem, setActiveItem] = useState<string>('summary');
 
   const handleClick = (headerText: string) => {
-
     const path = router.asPath.replace(/#[\w+ -]+/, '');
     const snakedHeader = headerText.replace(/\s/g, '-').toLowerCase();
     setActiveItem(headerText);

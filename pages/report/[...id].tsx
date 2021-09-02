@@ -1,19 +1,18 @@
 /* eslint-disable security/detect-non-literal-require */
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
-import React from 'react';
-import { useRecoilValue } from 'recoil';
 import { useTranslations } from 'use-intl';
+import { useReportNavItems } from '../../hooks/useNavigation';
+import useSWR from 'swr';
+
+import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
 
 import HashHeader from '../../components/elements/HashContainer';
 import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
 import Summary from '../../components/report-sections/Summary';
-import { useReportNavItems } from '../../hooks/useNavigation';
-import appState from '../../lib/appState';
-import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
-import { Report } from '../../types/global';
+import SkeletonReport from '../../components/skeletons/SkeletonReport';
 
 const ReportTemplate = () => {
   const headings: string[] = useReportNavItems();
@@ -22,12 +21,16 @@ const ReportTemplate = () => {
 
   const { id } = router.query;
 
-  const { user } = useRecoilValue(appState);
+  const fetcher = url => fetch(url).then(res => res.json());
 
-  const report =
-    user && user.reports?.find((report: Report) => report.id === Number(id));
+  const { data, error } = useSWR(`/api/report?id=${id}`, fetcher);
+  console.log(data);
 
-  const date = new Date(Number(report?.['created_at']));
+  if (error) return <div>failed to load</div>;
+  if (!data) return <SkeletonReport />;
+  console.log(data);
+
+  const date = new Date(Number(data?.['created_at']));
 
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
 
@@ -39,7 +42,7 @@ const ReportTemplate = () => {
         <div className="py-8">
           <h3 className="text-xl">{t('risk assessment report')}</h3>
           <h1 className="text-3xl font-medium py-4">
-            {report?.['company_Name']}
+            {data?.['company_Name']}
           </h1>
           <p className="text-sm">
             {t('created')}: {created}
@@ -50,19 +53,13 @@ const ReportTemplate = () => {
           info={{
             regNumber: 'SC172288',
             sector: 'Travel, Personal & Leisure',
-            description:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel pharetra faucibus eget nunc. Vulputate at pretium vel amet nunc accumsan elementum ultrices. Neque, enim, vitae aliquet sociis elementum habitant ullamcorper at. Morbi eget turpis erat dignissim.',
-            incorporationDate: '12/02/1997',
+            description: 'info about a company etc...',
+            incorporationDate: data.contact_details.incorporation_date,
             lastAccountDate: '31/01/2020'
           }}
-          contact={{
-            address: 'The Harbour, North Berwick',
-            email: 'info@seabird.org',
-            website: 'www.seabird.org',
-            phone: '+44 1620890202'
-          }}
+          contact={data.contact_details}
         />
-        {/* <p>{date && date.getFullYear()}</p> */}
+
         {headings.map(header => (
           <div
             data-report-section="true"
@@ -71,12 +68,10 @@ const ReportTemplate = () => {
             className="h-screen text-3xl pt-16"
           >
             <HashHeader name={header}>
-
-            <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
+              <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
                 {header}
               </h3>
-              
-            </HashHeader >
+            </HashHeader>
           </div>
         ))}
       </SecondaryLayout>
