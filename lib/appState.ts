@@ -12,7 +12,7 @@ interface SessionUser {
       api_requests: StatDataType;
       last_login: StatDataType;
     };
-    reports?: [] | null;
+    reports?: [];
   };
 }
 

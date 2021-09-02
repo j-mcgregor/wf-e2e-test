@@ -17,4 +17,5 @@ export type Report = {
   sme_zscore: number;
   bond_rating: string;
   created_at: number;
+  bookmarked: boolean;
 };
