@@ -3,11 +3,11 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import Button from '../elements/Button';
-import ErrorMessage from '../elements/ErrorMessage';
-import Input from '../elements/Input';
-import Link from '../elements/Link';
-import Logo from '../elements/Logo';
+import Button from '../../elements/Button';
+import ErrorMessage from '../../elements/ErrorMessage';
+import Input from '../../elements/Input';
+import Link from '../../elements/Link';
+import Logo from '../../elements/Logo';
 
 type FormProps = {
   email?: string;

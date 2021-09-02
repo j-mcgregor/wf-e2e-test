@@ -4,15 +4,15 @@ import { useTranslations } from 'next-intl';
 import LoginContainer from '../components/containers/LoginContainer';
 import Link from '../components/elements/Link';
 import Logo from '../components/elements/Logo';
-import LoginForm from '../components/forms/LoginForm';
-import LoginSSO from '../components/forms/LoginSSO';
+import LoginForm from '../components/forms/login/LoginForm';
+import LoginSSO from '../components/forms/login/LoginSSO';
 import Layout from '../components/layout/Layout';
 
 const Login = () => {
   const t = useTranslations();
 
   return (
-    <Layout noNav={true} title="Login">
+    <Layout noNav={true} title="Login" noAuthRequired={true}>
       <LoginContainer>
         <div>
           <Logo />

@@ -16,17 +16,17 @@ const Settings = () => {
     const headings = useSettingsNavItems();
 
     return (
-        <Layout title="SME - Calculator " fullWidth>
+        <Layout title="Settings" fullWidth>
             <SecondaryLayout
                 navigation={<SettingsNav/>}
             >
 
                 <div className="flex flex-col max-w-3xl mx-auto">
-                    <div className="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
+                    <div className="space-y-24 sm:px-6 lg:px-0 lg:col-span-9 pb-40">
                         <div
                             data-report-section="true"
                             id={`${headings[0]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-                            key={headings[0]['title']}
+                            className="pt-16"
                         >
                             <PersonalInformationForm headings={headings}/>
                         </div>
@@ -34,21 +34,21 @@ const Settings = () => {
                         <div
                             data-report-section="true"
                             id={`${headings[1]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-                            key={headings[1]['title']}
+                            className="pt-16"
                         >
                             <SpecialistsForm headings={headings}/>
                         </div>
                         <div
                             data-report-section="true"
                             id={`${headings[2]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-                            key={headings[2]['title']}
+                            className="pt-16"
                         >
                             <PasswordForm headings={headings} />
                         </div>
                         <div
                             data-report-section="true"
                             id={`${headings[3]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-                            key={headings[3]['title']}
+                            className="pt-16"
                         >
                             <CommunicationForm headings={headings}/>
                         </div>
