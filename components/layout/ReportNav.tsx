@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { scroller } from 'react-scroll';
 import { useTranslations } from 'use-intl';
 
-import useReportNavItems from '../../hooks/useReportNavItems';
+import { useReportNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';
 
 interface ReportNavProps {

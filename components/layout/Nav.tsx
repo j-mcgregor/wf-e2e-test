@@ -3,6 +3,7 @@ import { XIcon } from '@heroicons/react/outline';
 import { MenuAlt2Icon } from '@heroicons/react/solid';
 import React, { Fragment, useRef } from 'react';
 
+import { useMainNavItems } from '../../hooks/useNavigation';
 import { siteNavigation } from '../../lib/settings/navigation.settings';
 import Button from '../elements/Button';
 import WF from '../elements/WFLogo';
@@ -35,9 +36,11 @@ type NavProps = {
   path: string;
 };
 
-const { primaryNavigation, secondaryNavigation } = siteNavigation;
 
 const Nav = ({ path }: NavProps) => {
+
+  const { primaryNavigation, secondaryNavigation }  = useMainNavItems();
+
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const openSidebar = () => setSidebarOpen(true);
   const closeSidebar = () => setSidebarOpen(false);
