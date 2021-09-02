@@ -1,20 +1,19 @@
 /* eslint-disable security/detect-non-literal-require */
 import { GetServerSidePropsContext } from 'next';
-import React from 'react';
-
-import { useTranslations } from 'use-intl';
-import { useRecoilValue } from 'recoil';
 import { useRouter } from 'next/router';
-import appState from '../../lib/appState';
+import React from 'react';
+import { useRecoilValue } from 'recoil';
+import { useTranslations } from 'use-intl';
+
 import HashHeader from '../../components/elements/HashHeader';
 import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
+import Summary from '../../components/report-sections/Summary';
 import { useReportNavItems } from '../../hooks/useNavigation';
+import appState from '../../lib/appState';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
 import { Report } from '../../types/global';
-
-import Summary from '../../components/report-sections/Summary';
 
 const ReportTemplate = () => {
   const headings: string[] = useReportNavItems();
@@ -28,7 +27,6 @@ const ReportTemplate = () => {
   const report =
     user && user.reports?.find((report: Report) => report.id === Number(id));
 
-  // const date = new Date(Number(report?.created_at));
   const date = new Date(Number(report?.['created_at']));
 
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;

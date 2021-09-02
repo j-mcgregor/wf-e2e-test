@@ -1,10 +1,10 @@
-interface RowFillerProps {
+interface SkeletonRowProps {
   rowQty: number;
   className: string;
   cellQty: number;
 }
 
-const RowFiller = ({ rowQty, className, cellQty }: RowFillerProps) => {
+const SkeletonRow = ({ rowQty, className, cellQty }: SkeletonRowProps) => {
   return (
     <>
       {[...Array(rowQty).keys()].map(row => {
@@ -21,4 +21,4 @@ const RowFiller = ({ rowQty, className, cellQty }: RowFillerProps) => {
   );
 };
 
-export default RowFiller;
+export default SkeletonRow;

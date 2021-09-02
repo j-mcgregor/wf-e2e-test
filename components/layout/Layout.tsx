@@ -4,6 +4,7 @@ import React from 'react';
 import { useSetRecoilState } from 'recoil';
 
 import appState from '../../lib/appState';
+import SkeletonLayout from '../skeletons/SkeletonLayout';
 import Nav from './Nav';
 import Seo from './Seo';
 
@@ -14,7 +15,8 @@ type LayoutProps = {
   description?: string;
   noMenu?: boolean | undefined;
   noNav?: boolean | undefined;
-  fullWidth?: boolean
+  fullWidth?: boolean;
+  noAuthRequired?: boolean
 };
 
 const Layout = ({
@@ -23,17 +25,31 @@ const Layout = ({
   title,
   description,
   pageTitle,
-  fullWidth
+  fullWidth,
+  noAuthRequired
 }: LayoutProps) => {
+
+
+
   const router = useRouter();
-  const path: string = router.pathname;
+
+  const path: string = router.asPath;
 
   const [session, loading] = useSession();
+
+  if (!loading && !session && !noAuthRequired) router.push('/login')
+
   const setState = useSetRecoilState(appState);
 
+
   React.useEffect(() => {
-    setState({ ...appState, user: session?.user });
+    if (session && session.user){
+      setState({ ...appState, user: session?.user });
+    }
   }, [session]);
+
+  if (!noAuthRequired && loading) return <SkeletonLayout noNav={noNav} />
+
 
   return (
     <div>
