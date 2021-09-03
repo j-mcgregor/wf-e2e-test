@@ -1,8 +1,7 @@
 import React, {
+  JSXElementConstructor,
   ReactElement,
-  ReactNodeArray,
-  JSXElementConstructor
-} from 'react';
+  ReactNodeArray} from 'react';
 
 export type TranslateInput =
   | string
