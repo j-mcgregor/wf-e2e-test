@@ -19,7 +19,7 @@ const Settings = () => {
   return (
     <Layout title="Settings" fullWidth>
       <SecondaryLayout navigation={<SettingsNav />}>
-        <div className="flex flex-col sm:px-6 lg:px-0 max-w-3xl mx-auto space-y-24 pb-40">
+        <div className="flex flex-col sm:px-6 lg:px-0 max-w-3xl mx-auto space-y-24 pb-12">
             <HashContainer
               data-report-section="true"
               id={`${headings[0]['title'].toLowerCase().replace(/ /g, '-')}-id`}
@@ -28,6 +28,7 @@ const Settings = () => {
             >
               <PersonalInformationForm />
             </HashContainer>
+
             <HashContainer
               data-report-section="true"
               id={`${headings[1]['title'].toLowerCase().replace(/ /g, '-')}-id`}
@@ -36,6 +37,7 @@ const Settings = () => {
             >
               <SpecialistsForm />
             </HashContainer>
+
             <HashContainer
               data-report-section="true"
               id={`${headings[2]['title'].toLowerCase().replace(/ /g, '-')}-id`}
@@ -44,6 +46,7 @@ const Settings = () => {
             >
               <PasswordForm />
             </HashContainer>
+
             <HashContainer
               data-report-section="true"
               id={`${headings[3]['title'].toLowerCase().replace(/ /g, '-')}-id`}
@@ -53,6 +56,7 @@ const Settings = () => {
               <CommunicationForm />
             </HashContainer>
           </div>
+          <div className="h-[50vh]"> </div>
       </SecondaryLayout>
     </Layout>
   );

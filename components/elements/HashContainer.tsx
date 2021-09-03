@@ -7,10 +7,12 @@ const HashContainer = ({
   children,
   name,
   className,
+  id,
   ...restProps
 }: {
   children: ReactNode;
   name: string;
+  id: string;
   className?: string;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -28,7 +30,7 @@ const HashContainer = ({
   }, [isOnScreen]);
 
   return (
-    <div className={className} ref={containerRef} {...restProps}>
+    <div className={className} ref={containerRef} id={id} {...restProps}>
       {children}
     </div>
   );
