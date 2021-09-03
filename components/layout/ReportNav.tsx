@@ -6,12 +6,14 @@ import { useTranslations } from 'use-intl';
 
 import { useReportNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';
+import SkeletonMenu from '../skeletons/SkeletonMenu';
 
 interface ReportNavProps {
   companyName: string;
+  loading?: boolean;
 }
 
-const ReportNav = ({ companyName }: ReportNavProps) => {
+const ReportNav = ({ companyName, loading }: ReportNavProps) => {
   const navItems = useReportNavItems();
   const t = useTranslations();
   const router = useRouter();
@@ -44,6 +46,18 @@ const ReportNav = ({ companyName }: ReportNavProps) => {
     const header = path.replace(/-/g, ' ').toLowerCase();
     setActiveItem(header);
   }, [router.asPath]);
+
+
+  if (loading) {
+    return    <>
+    <aside className="hidden  w-full px-4 bg-gray-200 animate-pulse md:flex flex-col h-full justify-between py-8">
+      <SkeletonMenu items={10} />
+      <SkeletonMenu items={2} />
+    </aside>
+    <aside className="w-full h-12 bg-gray-200 md:hidden">
+    </aside>
+    </>
+  }
 
   return (
     <div className="px-6 pt-8 flex flex-col h-full">

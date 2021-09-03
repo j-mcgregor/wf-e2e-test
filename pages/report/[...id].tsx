@@ -1,18 +1,17 @@
 /* eslint-disable security/detect-non-literal-require */
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
-import { useTranslations } from 'use-intl';
-import { useReportNavItems } from '../../hooks/useNavigation';
 import useSWR from 'swr';
-
-import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
+import { useTranslations } from 'use-intl';
 
 import HashHeader from '../../components/elements/HashContainer';
 import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
-import Summary from '../../components/report-sections/Summary';
+import Summary from '../../components/report-sections/summary/Summary';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
+import { useReportNavItems } from '../../hooks/useNavigation';
+import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
 
 const ReportTemplate = () => {
   const headings: string[] = useReportNavItems();
@@ -27,8 +26,6 @@ const ReportTemplate = () => {
   console.log(data);
 
   if (error) return <div>failed to load</div>;
-  if (!data) return <SkeletonReport />;
-  console.log(data);
 
   const date = new Date(Number(data?.['created_at']));
 
@@ -37,12 +34,15 @@ const ReportTemplate = () => {
   return (
     <Layout title="SME - Calculator " fullWidth>
       <SecondaryLayout
-        navigation={<ReportNav companyName={'Scottish Seabird Company LTD'} />}
+        navigation={<ReportNav companyName={data?.company_name} loading={!data}/>}
+        
       >
+
+        { !data ? <SkeletonReport /> : <>
         <div className="py-8">
           <h3 className="text-xl">{t('risk assessment report')}</h3>
           <h1 className="text-3xl font-medium py-4">
-            {data?.['company_Name']}
+            {data?.company_name}
           </h1>
           <p className="text-sm">
             {t('created')}: {created}
@@ -74,6 +74,8 @@ const ReportTemplate = () => {
             </HashHeader>
           </div>
         ))}
+        </>
+}
       </SecondaryLayout>
     </Layout>
   );
