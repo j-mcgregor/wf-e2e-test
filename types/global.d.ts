@@ -13,7 +13,7 @@ export type StatDataType = string | number | Date;
 
 export type Report = {
   id: number;
-  company_Name: string;
+  company_name: string;
   sme_zscore: number;
   bond_rating: string;
   created_at: number;

@@ -82,7 +82,7 @@ const ReportTable = ({
                           className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm cursor-pointer"
                         >
                           <td className="h-12 px-3 sm:px-6 py-1 whitespace-nowrap font-medium text-gray-900">
-                            {report.company_Name}
+                            {report.company_name}
                           </td>
                           <td className="px-3 sm:px-6 py-1  whitespace-nowrap  ">
                             {report.sme_zscore}
