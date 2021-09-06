@@ -11,8 +11,10 @@ interface SpecialistsFormInput {
 const SpecialistsForm = () => {
   const { register, handleSubmit } = useForm<SpecialistsFormInput>();
   // eslint-disable-next-line no-console
-  const onSubmit: SubmitHandler<SpecialistsFormInput> = data =>
+  const onSubmit: SubmitHandler<SpecialistsFormInput> = data => {
+    // eslint-disable-next-line no-console
     console.log(data);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

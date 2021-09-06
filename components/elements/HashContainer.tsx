@@ -27,7 +27,8 @@ const HashContainer = ({
       push(path, path, { shallow: true });
     }
     //FIXME: linter suggested this, i don't see why, maybe have a look @sam
-  }, [isOnScreen]);
+    // useEffect should include references to any values that might change so it knows when to update
+  }, [asPath, isOnScreen, name, push]);
 
   return (
     <div className={className} ref={containerRef} id={id} {...restProps}>
