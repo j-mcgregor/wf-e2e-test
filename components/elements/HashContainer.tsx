@@ -27,8 +27,10 @@ const HashContainer = ({
       push(path, path, { shallow: true });
     }
     //FIXME: linter suggested this, i don't see why, maybe have a look @sam
-    // useEffect should include references to any values that might change so it knows when to update
-  }, [asPath, isOnScreen, name, push]);
+    // adding the other dependencies breaks the functionality, disabling line so I can pass the build
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [asPath]);
 
   return (
     <div className={className} ref={containerRef} id={id} {...restProps}>

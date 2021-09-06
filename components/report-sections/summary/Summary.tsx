@@ -19,6 +19,8 @@ interface SummaryProps {
   };
 }
 
+// Totally depends on preference but I prefer the following
+// const Summary: React.FC<SummaryProps> = ({ info, contact }) => {
 const Summary = ({ info, contact }: SummaryProps) => {
   return (
     <div className="flex flex-col h-full">

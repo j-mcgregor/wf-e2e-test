@@ -19,6 +19,7 @@ interface PersonalInformationFormInput {
 const PersonalInformationForm: FC = () => {
   const { register, handleSubmit } = useForm<PersonalInformationFormInput>();
 
+  // refactored to pass build; same with others
   const onSubmit: SubmitHandler<PersonalInformationFormInput> = data => {
     // eslint-disable-next-line no-console
     console.log(data);

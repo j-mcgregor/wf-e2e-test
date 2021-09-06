@@ -39,6 +39,7 @@ const Button = ({
     return (
       <Link
         linkTo={linkTo}
+        // I'm personally a big fan of classnames - https://www.npmjs.com/package/classnames
         className={
           newClassName
             ? newClassName

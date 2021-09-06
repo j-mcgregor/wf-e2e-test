@@ -2,11 +2,12 @@ import Particles from 'react-particles-js';
 
 import tailwindConfig from '../../tailwind.config.js';
 
-type LayoutProps = {
-  children: React.ReactNode;
-};
+// type LayoutProps = {
+//   children: React.ReactNode;
+// };
 
-const LoginContainer = ({ children }: LayoutProps) => {
+// using the React.FC or React.FunctionalComponent is easier then writing your own types
+const LoginContainer: React.FC = ({ children }) => {
   return (
     <div className="absolute min-h-screen w-screen left-0 bg-alt z-10 flex justify-center items-center">
       <Particles
