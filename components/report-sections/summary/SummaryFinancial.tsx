@@ -18,144 +18,157 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+                <thead className="border-b border-black">
                   {/* YEARS */}
+
                   <tr>
+                    <td />
                     {years.map(
                       // fix to descend from end of array (reverse array first)
                       (year, i) =>
                         i < 5 && (
-                          <th
+                          <td
                             key={year.year}
                             scope="col"
                             className="relative px-6 py-3"
                           >
                             <p>{year.year}</p>
-                          </th>
+                          </td>
                         )
                     )}
                   </tr>
                 </thead>
 
                 <thead>
-                  {/* TOTAL SHAREHOLDER FUNDS */}
+                  {/* EQUITY SHAREHOLDER FUNDS */}
+
                   <tr>
+                    <td>Equity Shareholder Funds</td>
                     {years.map(
                       // fix to descend from end of array (reverse array first)
                       (year, i) =>
                         i < 5 && (
-                          <th
+                          <td
                             key={year.year}
                             scope="col"
                             className="relative px-6 py-3"
                           >
                             <p>{year.total_shareholder_funds}</p>
-                          </th>
+                          </td>
                         )
                     )}
                   </tr>
 
                   {/* TANGIBLE WORTH / CAPITAL (?) */}
+
                   <tr>
+                    <td>Tangible Worth</td>
                     {years.map(
                       // fix to descend from end of array (reverse array first)
                       (year, i) =>
                         i < 5 && (
-                          <th
+                          <td
                             key={year.year}
                             scope="col"
                             className="relative px-6 py-3"
                           >
                             <p>{year.capital}</p>
-                          </th>
+                          </td>
                         )
                     )}
                   </tr>
 
                   {/* TOTAL FIXED ASSETS */}
                   <tr>
+                    <td>Total Fixed Assets</td>
                     {years.map(
                       // fix to descend from end of array (reverse array first)
                       (year, i) =>
                         i < 5 && (
-                          <th
+                          <td
                             key={year.year}
                             scope="col"
                             className="relative px-6 py-3"
                           >
                             <p>{year.tangible_fixed_assets}</p>
-                          </th>
+                          </td>
                         )
                     )}
                   </tr>
 
                   {/* TOTAL ASSETS */}
                   <tr>
+                    <td>Total Assets</td>
                     {years.map(
                       // fix to descend from end of array (reverse array first)
                       (year, i) =>
                         i < 5 && (
-                          <th
+                          <td
                             key={year.year}
                             scope="col"
                             className="relative px-6 py-3"
                           >
                             <p>{year.total_assets}</p>
-                          </th>
+                          </td>
                         )
                     )}
                   </tr>
 
                   {/* TOTAL CURRENT ASSETS */}
                   <tr>
+                    <td>Total Current Assets</td>
                     {years.map(
                       // fix to descend from end of array (reverse array first)
                       (year, i) =>
                         i < 5 && (
-                          <th
+                          <td
                             key={year.year}
                             scope="col"
                             className="relative px-6 py-3"
                           >
                             <p>{year.current_assets}</p>
-                          </th>
+                          </td>
                         )
                     )}
                   </tr>
                   <tr>
+                    <td>Total Current Liabilities</td>
                     {years.map(
                       // fix to descend from end of array (reverse array first)
                       (year, i) =>
                         i < 5 && (
-                          <th
+                          <td
                             key={year.year}
                             scope="col"
                             className="relative px-6 py-3"
                           >
                             <p>{year.current_liabilities}</p>
-                          </th>
+                          </td>
                         )
                     )}
                   </tr>
 
-                  {/* NET CURRENT ASSESTS */}
+                  {/* NET CURRENT ASSETS */}
                   <tr>
+                    <td>Net Current Assets</td>
                     {years.map(
                       // fix to descend from end of array (reverse array first)
                       (year, i) =>
                         i < 5 && (
-                          <th
+                          <td
                             key={year.year}
                             scope="col"
                             className="relative px-6 py-3"
                           >
                             <p>{year.net_current_assets}</p>
-                          </th>
+                          </td>
                         )
                     )}
                   </tr>
-                  {/* EMPLOYEES*/}
+
+                  {/* EMPLOYEES - NULL */}
                   <tr>
+                    <td>Employees</td>
                     {years.map(
                       // fix to descend from end of array (reverse array first)
                       (year, i) =>
