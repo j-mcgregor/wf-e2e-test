@@ -1,7 +1,11 @@
 import { useTranslations } from 'use-intl';
-import { SummaryProps } from '../../../types/global';
+import { SummaryInfo } from '../../../types/report';
 
-const SummaryDetails = ({ info }: SummaryProps) => {
+interface SummaryDetails {
+  info: SummaryInfo;
+}
+
+const SummaryDetails = ({ info }: SummaryDetails) => {
   const t = useTranslations();
 
   return (

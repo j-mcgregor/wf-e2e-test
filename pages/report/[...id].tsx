@@ -3,13 +3,11 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { useTranslations } from 'use-intl';
-
 import HashHeader from '../../components/elements/HashContainer';
 import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
 import ReportHeader from '../../components/report-sections/ReportHeader';
-
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import { useReportNavItems } from '../../hooks/useNavigation';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
@@ -33,6 +31,16 @@ const ReportTemplate = () => {
   const date = new Date(Number(data?.['created_at']));
 
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+
+  const transformedFinancials =
+    data &&
+    Object.keys(data.financials).map(year => {
+      return { year, ...data.financials[year] };
+    });
+
+  // temporary before data exists
+  const description =
+    'Culpa minim do anim consequat labore amet officia ea mollit veniam velit. Lorem exercitation aute aliqua labore nisi ad enim do sunt do duis culpa. Consectetur excepteur est occaecat anim anim adipisicing magna ut enim adipisicing esse dolore.';
 
   return (
     <Layout title="SME - Calculator " fullWidth>
@@ -58,7 +66,7 @@ const ReportTemplate = () => {
                     info={{
                       regNumber: 'SC172288',
                       sector: 'Travel, Personal & Leisure',
-                      description: 'Description goes here.......',
+                      description: description,
                       incorporationDate:
                         data.contact_details.incorporation_date,
                       lastAccountDate: '31/01/2020'
@@ -70,10 +78,7 @@ const ReportTemplate = () => {
                   <SummaryMap contact={data.contact_details} />
                 </div>
               </div>
-
-              {Object.keys(data.financials).map(year => (
-                <SummaryFinancial employees={year.employees} />
-              ))}
+              <SummaryFinancial years={transformedFinancials} />
             </div>
 
             {headings.map(header => (
