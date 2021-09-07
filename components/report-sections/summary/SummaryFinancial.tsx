@@ -1,5 +1,7 @@
 import { useTranslations } from 'use-intl';
+
 import { FinancialYear } from '../../../types/report';
+import SummaryFinancialRow from './SummaryFinancialRow';
 
 interface SummaryFinancialProps {
   years: FinancialYear[];
@@ -7,9 +9,6 @@ interface SummaryFinancialProps {
 
 const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
   const t = useTranslations();
-
-  console.log(`financial summary:`);
-  console.log(years);
 
   return (
     <div className="p-6 shadow rounded-sm bg-white">
@@ -22,259 +21,70 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                 <thead className="border-b border-black">
                   <tr>
                     <td />
-                    {years.map(
-                      (year, i) =>
-                        i < 5 && (
-                          <td
-                            key={year.year}
-                            scope="col"
-                            className="relative px-6 py-3 text-primary"
-                          >
-                            <p>{year.year}</p>
-                          </td>
-                        )
-                    )}
+                    {years.map((year, i) => (
+                      <td
+                        key={year.year}
+                        scope="col"
+                        className="relative px-6 py-3 text-primary"
+                      >
+                        <p>{year.year}</p>
+                      </td>
+                    ))}
                   </tr>
                 </thead>
 
-                <thead>
-                  <tr>
-                    <td className="min-w-[160px] md:min-w-[180px]">
-                      {t('sales')}
-                    </td>
-                    {years.map(
-                      (year, i) =>
-                        i < 5 && (
-                          <td
-                            key={year.year}
-                            scope="col"
-                            className="relative px-6 py-3"
-                          >
-                            <p
-                              className={`${
-                                parseInt(year.sales) < 0 && 'text-red-400'
-                              }
-                              `}
-                            >
-                              {!year.sales ? '0' : year.sales}
-                            </p>
-                          </td>
-                        )
-                    )}
-                  </tr>
-
-                  <tr>
-                    <td className=" min-w-[160px] md:min-w-[180px]">
-                      {t('profit before taxes')}
-                    </td>
-                    {years.map(
-                      (year, i) =>
-                        i < 5 && (
-                          <td
-                            key={year.year}
-                            scope="col"
-                            className="relative px-6 py-3"
-                          >
-                            <p
-                              className={`${
-                                parseInt(year.profit_and_loss_before_tax) < 0 &&
-                                'text-red-400'
-                              }
-                              `}
-                            >
-                              {!year.profit_and_loss_before_tax
-                                ? '0'
-                                : year.profit_and_loss_before_tax}
-                            </p>
-                          </td>
-                        )
-                    )}
-                  </tr>
-
-                  <tr>
-                    <td className="min-w-[160px] md:min-w-[180px]">
-                      {t('equity shareholder funds')}
-                    </td>
-                    {years.map(
-                      (year, i) =>
-                        i < 5 && (
-                          <td
-                            key={year.year}
-                            scope="col"
-                            className="relative px-6 py-3"
-                          >
-                            <p
-                              className={`${
-                                parseInt(year.total_shareholder_funds) < 0 &&
-                                'text-red-400'
-                              }
-                              `}
-                            >
-                              {year.total_shareholder_funds}
-                            </p>
-                          </td>
-                        )
-                    )}
-                  </tr>
-
-                  <tr>
-                    <td>{t('tangible worth')}</td>
-                    {years.map(
-                      (year, i) =>
-                        i < 5 && (
-                          <td
-                            key={year.year}
-                            scope="col"
-                            className="relative px-6 py-3"
-                          >
-                            <p
-                              className={`${
-                                parseInt(year.capital) < 0 && 'text-red-400'
-                              }
-                              `}
-                            >
-                              {year.capital}
-                            </p>
-                          </td>
-                        )
-                    )}
-                  </tr>
-
-                  <tr>
-                    <td>{t('total fixed assets')}</td>
-                    {years.map(
-                      (year, i) =>
-                        i < 5 && (
-                          <td
-                            key={year.year}
-                            scope="col"
-                            className="relative px-6 py-3"
-                          >
-                            <p
-                              className={`${
-                                parseInt(year.tangible_fixed_assets) < 0 &&
-                                'text-red-400'
-                              }
-                              `}
-                            >
-                              {year.tangible_fixed_assets}
-                            </p>
-                          </td>
-                        )
-                    )}
-                  </tr>
-
-                  <tr>
-                    <td>{t('total assets')}</td>
-                    {years.map(
-                      (year, i) =>
-                        i < 5 && (
-                          <td
-                            key={year.year}
-                            scope="col"
-                            className="relative px-6 py-3"
-                          >
-                            <p
-                              className={`${
-                                parseInt(year.total_assets) < 0 &&
-                                'text-red-400'
-                              }
-                              `}
-                            >
-                              {year.total_assets}
-                            </p>
-                          </td>
-                        )
-                    )}
-                  </tr>
-
-                  <tr>
-                    <td>{t('total current assets')}</td>
-                    {years.map(
-                      (year, i) =>
-                        i < 5 && (
-                          <td
-                            key={year.year}
-                            scope="col"
-                            className="relative px-6 py-3"
-                          >
-                            <p
-                              className={`${
-                                parseInt(year.current_assets) < 0 &&
-                                'text-red-400'
-                              }
-                              `}
-                            >
-                              {year.current_assets}
-                            </p>
-                          </td>
-                        )
-                    )}
-                  </tr>
-                  <tr>
-                    <td>{t('total current liabilities')}</td>
-                    {years.map(
-                      (year, i) =>
-                        i < 5 && (
-                          <td
-                            key={year.year}
-                            scope="col"
-                            className="relative px-6 py-3"
-                          >
-                            <p
-                              className={`${
-                                parseInt(year.current_liabilities) < 0 &&
-                                'text-red-400'
-                              }
-                              `}
-                            >
-                              {year.current_liabilities}
-                            </p>
-                          </td>
-                        )
-                    )}
-                  </tr>
-
-                  <tr>
-                    <td>{t('net current assets')}</td>
-                    {years.map(
-                      (year, i) =>
-                        i < 5 && (
-                          <td
-                            key={year.year}
-                            scope="col"
-                            className="relative px-6 py-3"
-                          >
-                            <p
-                              className={`${
-                                parseInt(year.net_current_assets) < 0 &&
-                                'text-red-400'
-                              }
-                              `}
-                            >
-                              {year.net_current_assets}
-                            </p>
-                          </td>
-                        )
-                    )}
-                  </tr>
-
-                  <tr>
-                    <td>{t('employees')}</td>
-                    {years.map(
-                      (year, i) =>
-                        i < 5 && (
-                          <td
-                            key={year.year}
-                            scope="col"
-                            className="relative px-6 py-3"
-                          >
-                            <p>{!year.employees ? '0' : year.employees}</p>
-                          </td>
-                        )
-                    )}
-                  </tr>
-                </thead>
+                <tbody>
+                  <SummaryFinancialRow
+                    rowHeader={t('sales')}
+                    data={years}
+                    rowKey="sales"
+                  />
+                  <SummaryFinancialRow
+                    rowHeader={t('profit before taxes')}
+                    data={years}
+                    rowKey="profit_and_loss_before_tax"
+                  />
+                  <SummaryFinancialRow
+                    rowHeader={t('equity shareholder funds')}
+                    data={years}
+                    rowKey="total_shareholder_funds"
+                  />
+                  <SummaryFinancialRow
+                    rowHeader={t('tangible worth')}
+                    data={years}
+                    rowKey="capital"
+                  />
+                  <SummaryFinancialRow
+                    rowHeader={t('total fixed assets')}
+                    data={years}
+                    rowKey="tangible_fixed_assets"
+                  />
+                  <SummaryFinancialRow
+                    rowHeader={t('total assets')}
+                    data={years}
+                    rowKey="total_assets"
+                  />
+                  <SummaryFinancialRow
+                    rowHeader={t('total current assets')}
+                    data={years}
+                    rowKey="current_assets"
+                  />
+                  <SummaryFinancialRow
+                    rowHeader={t('current_liabilities')}
+                    data={years}
+                    rowKey="total current liabilities"
+                  />
+                  <SummaryFinancialRow
+                    rowHeader={t('net current assets')}
+                    data={years}
+                    rowKey="net_current_assets"
+                  />
+                  <SummaryFinancialRow
+                    rowHeader={t('employees')}
+                    data={years}
+                    rowKey="employees"
+                  />
+                </tbody>
               </table>
             </div>
           </div>

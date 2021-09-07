@@ -3,17 +3,18 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { useTranslations } from 'use-intl';
+
 import HashHeader from '../../components/elements/HashContainer';
 import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
 import ReportHeader from '../../components/report-sections/ReportHeader';
+import SummaryDetails from '../../components/report-sections/summary/SummaryDetails';
+import SummaryFinancial from '../../components/report-sections/summary/SummaryFinancial';
+import SummaryMap from '../../components/report-sections/summary/SummaryMap';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import { useReportNavItems } from '../../hooks/useNavigation';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
-import SummaryDetails from '../../components/report-sections/summary/SummaryDetails';
-import SummaryMap from '../../components/report-sections/summary/SummaryMap';
-import SummaryFinancial from '../../components/report-sections/summary/SummaryFinancial';
 
 const ReportTemplate = () => {
   const headings: string[] = useReportNavItems();
@@ -36,7 +37,10 @@ const ReportTemplate = () => {
     data &&
     Object.keys(data.financials).map(year => {
       return { year, ...data.financials[year] };
-    });
+    }).reverse();
+
+
+    const lastFiveYearsFinancials = transformedFinancials.slice(0, 4)
 
   // temporary before data exists
   const description =
@@ -79,7 +83,7 @@ const ReportTemplate = () => {
                 </div>
               </div>
               <div className="py-4">
-                <SummaryFinancial years={transformedFinancials.reverse()} />
+                <SummaryFinancial years={lastFiveYearsFinancials} />
               </div>
             </div>
 
