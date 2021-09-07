@@ -13,5 +13,15 @@
   "news": "News",
   "export pdf": "Export PDF",
   "export csv": "Export CSV",
-  "created": "Created"
+  "created": "Created",
+  "financial statement overview": "Financial Statement Overview",
+  "registered address": "Registered Address",
+  "email": "Email",
+  "website": "Website",
+  "telephone": "Telephone",
+  "registration number": "Registration Number",
+  "industry sector": "Industry Sector",
+  "incorporation date": "Incorporation Date",
+  "last filed date": "Last Filed Account Date",
+  "company description": "Company Description"
 }

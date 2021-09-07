@@ -12,7 +12,7 @@ const HashContainer = ({
 }: {
   children: ReactNode;
   name: string;
-  id: string;
+  id?: string;
   className?: string;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);

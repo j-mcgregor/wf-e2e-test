@@ -8,10 +8,14 @@ import HashHeader from '../../components/elements/HashContainer';
 import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
-import Summary from '../../components/report-sections/summary/Summary';
+import ReportHeader from '../../components/report-sections/ReportHeader';
+
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import { useReportNavItems } from '../../hooks/useNavigation';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
+import SummaryDetails from '../../components/report-sections/summary/SummaryDetails';
+import SummaryMap from '../../components/report-sections/summary/SummaryMap';
+import SummaryFinancial from '../../components/report-sections/summary/SummaryFinancial';
 
 const ReportTemplate = () => {
   const headings: string[] = useReportNavItems();
@@ -41,27 +45,37 @@ const ReportTemplate = () => {
         {!data ? (
           <SkeletonReport />
         ) : (
-          <>
+          <div className="text-primary">
             <div className="py-8">
-              <h3 className="text-xl">{t('risk assessment report')}</h3>
-              <h1 className="text-3xl font-medium py-4">
-                {data?.company_name}
-              </h1>
-              <p className="text-sm">
-                {t('created')}: {created}
-              </p>
+              <h3 className="text-xl pb-4">{t('risk assessment report')}</h3>
+              <ReportHeader company={data?.company_name} created={created} />
             </div>
 
-            <Summary
-              info={{
-                regNumber: 'SC172288',
-                sector: 'Travel, Personal & Leisure',
-                description: 'info about a company etc...',
-                incorporationDate: data.contact_details.incorporation_date,
-                lastAccountDate: '31/01/2020'
-              }}
-              contact={data.contact_details}
-            />
+            <div className="flex flex-col">
+              <p className="text-3xl py-8 text-primary">{t('summary')}</p>
+              <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm">
+                <div className="flex w-full md:w-1/2 flex-col py-2">
+                  <SummaryDetails
+                    info={{
+                      regNumber: 'SC172288',
+                      sector: 'Travel, Personal & Leisure',
+                      description: 'Description goes here.......',
+                      incorporationDate:
+                        data.contact_details.incorporation_date,
+                      lastAccountDate: '31/01/2020'
+                    }}
+                  />
+                </div>
+
+                <div className="flex w-full md:w-1/2 flex-col py-2">
+                  <SummaryMap contact={data.contact_details} />
+                </div>
+              </div>
+
+              {Object.keys(data.financials).map(year => (
+                <SummaryFinancial employees={year.employees} />
+              ))}
+            </div>
 
             {headings.map(header => (
               <div
@@ -70,17 +84,14 @@ const ReportTemplate = () => {
                 key={header}
                 className="h-screen text-3xl pt-16"
               >
-                <HashHeader
-                  name={header}
-                  id={`${header.toLowerCase().replace(/ /g, '-')}-hash-id`}
-                >
+                <HashHeader name={header}>
                   <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
                     {header}
                   </h3>
                 </HashHeader>
               </div>
             ))}
-          </>
+          </div>
         )}
       </SecondaryLayout>
     </Layout>
