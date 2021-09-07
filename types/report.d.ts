@@ -10,6 +10,7 @@ export type FinancialYear = {
   current_liabilities: string;
   net_current_assets: string;
   employees: string;
+  value: string;
 };
 
 export type SummaryInfo = {

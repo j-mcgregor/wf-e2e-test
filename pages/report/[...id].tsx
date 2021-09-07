@@ -78,7 +78,9 @@ const ReportTemplate = () => {
                   <SummaryMap contact={data.contact_details} />
                 </div>
               </div>
-              <SummaryFinancial years={transformedFinancials} />
+              <div className="py-4">
+                <SummaryFinancial years={transformedFinancials.reverse()} />
+              </div>
             </div>
 
             {headings.map(header => (
