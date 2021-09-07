@@ -35,12 +35,13 @@ const ReportTemplate = () => {
 
   const transformedFinancials =
     data &&
-    Object.keys(data.financials).map(year => {
-      return { year, ...data.financials[year] };
-    }).reverse();
+    Object.keys(data.financials)
+      .map(year => {
+        return { year, ...data.financials[year] };
+      })
+      .reverse();
 
-
-    const lastFiveYearsFinancials = transformedFinancials.slice(0, 4)
+  const lastFiveYearsFinancials = data && transformedFinancials.slice(0, 4);
 
   // temporary before data exists
   const description =

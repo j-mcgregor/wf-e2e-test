@@ -2,6 +2,7 @@ import { useTranslations } from 'use-intl';
 
 import { FinancialYear } from '../../../types/report';
 import SummaryFinancialRow from './SummaryFinancialRow';
+import FinancialTrend from './FinancialTrend';
 
 interface SummaryFinancialProps {
   years: FinancialYear[];
