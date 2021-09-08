@@ -12,7 +12,7 @@ const SummaryFinancialRow = ({ rowHeader, data, rowKey }) => {
             </p>
           </td>
         ))}
-      <FinancialTrend data={[40, 82, -80, -35, 79]} />
+      <FinancialTrend data={[-40, 82, 92, -35, 12]} />
     </tr>
   );
 };
