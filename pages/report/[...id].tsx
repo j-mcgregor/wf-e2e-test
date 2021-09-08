@@ -9,6 +9,7 @@ import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
 import ReportHeader from '../../components/report-sections/ReportHeader';
+import Benchmarks from '../../components/report-sections/risk-metrics/Benchmarks';
 import BondRating from '../../components/report-sections/risk-metrics/BondRating';
 import SummaryDetails from '../../components/report-sections/summary/SummaryDetails';
 import SummaryFinancial from '../../components/report-sections/summary/SummaryFinancial';
@@ -94,7 +95,11 @@ const ReportTemplate = () => {
               <p className="text-2xl font-bold py-8 text-primary">
                 {t('risk metrics')}
               </p>
-              <BondRating score="BB" />
+              <Benchmarks />
+              <BondRating
+                score="B-"
+                description="Cupidatat sit duis minim voluptate labore ea. Esse mollit eu qui anim exercitation. Quis tempor velit et duis commodo."
+              />
             </div>
 
             {headings.map(header => (
