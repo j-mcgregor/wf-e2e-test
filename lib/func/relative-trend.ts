@@ -1,16 +1,22 @@
+const relativeTrend = (data: number[]) => {
 
+  const largestValue = data.reduce((prevValue, value) => {
+    return prevValue > value ? prevValue : value;
+  }, 0);
+  const smallestValue = data.reduce((prevValue, value) => {
+    return prevValue < value ? prevValue : value;
+  }, 0);
 
+  const diffBetweenSmallAndLarge = largestValue - smallestValue;
+  return data.map(value => {
+    const valueSubtractLowestValue =
+      smallestValue >= 0 ? value - smallestValue : value + smallestValue;
 
-const relativeTrend = (data) => {
-  const totalValue = data.reduce((prevValue, value) => {
-    return prevValue + value
-  }, 0)
-  console.log(totalValue)
+    const minValueDivideDiffValue =
+      valueSubtractLowestValue / diffBetweenSmallAndLarge || 0;
+      
+    return minValueDivideDiffValue * 100;
+  });
+};
 
-  const averageValue = parseFloat(totalValue)/parseFloat(data.length)
-  console.log(averageValue)
-  const dataAsPercentage = data.map(value => (value/averageValue) * 100 )
-  console.log(dataAsPercentage)
-}
-
-export default relativeTrend
+export default relativeTrend;

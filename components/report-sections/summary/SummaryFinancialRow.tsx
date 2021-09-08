@@ -1,8 +1,8 @@
 import { JSXElementConstructor, ReactElement, ReactNodeArray } from 'react';
 
-import relativeTrend from '../../../lib/func/relative-trend';
 import { FinancialYear } from '../../../types/report';
 import FinancialTrend from './FinancialTrend';
+import relativeTrend from '../../../lib/func/relative-trend';
 
 
 interface FinancialRowProps {
@@ -12,9 +12,10 @@ interface FinancialRowProps {
 }
 
 const SummaryFinancialRow = ({ rowHeader, data, rowKey }: FinancialRowProps) => {
+  
   const dataAsFloat = data.map( year => (year[rowKey] && parseFloat(year[rowKey]))|| 0)
-
   const relativeTrendData = relativeTrend(dataAsFloat)
+  console.log(relativeTrendData)
   return (
     <tr>
       <td className="min-w-[160px] md:min-w-[180px]">{rowHeader}</td>
