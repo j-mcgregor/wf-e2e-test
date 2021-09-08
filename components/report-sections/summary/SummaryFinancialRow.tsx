@@ -15,7 +15,6 @@ const SummaryFinancialRow = ({ rowHeader, data, rowKey }: FinancialRowProps) => 
   
   const dataAsFloat = data.map( year => (year[rowKey] && parseFloat(year[rowKey]))|| 0)
   const relativeTrendData = relativeTrend(dataAsFloat)
-  console.log(relativeTrendData)
   return (
     <tr>
       <td className="min-w-[160px]">{rowHeader}</td>
@@ -27,7 +26,7 @@ const SummaryFinancialRow = ({ rowHeader, data, rowKey }: FinancialRowProps) => 
             </p>
           </td>
         ))}
-      <FinancialTrend data={[40, 82, -80, -35, 79]} />
+      <FinancialTrend data={relativeTrendData} />
     </tr>
   );
 };

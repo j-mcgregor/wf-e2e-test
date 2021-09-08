@@ -8,13 +8,14 @@ const relativeTrend = (data: number[]) => {
   }, 0);
 
   const diffBetweenSmallAndLarge = largestValue - smallestValue;
+  
   return data.map(value => {
     const valueSubtractLowestValue =
       smallestValue >= 0 ? value - smallestValue : value + smallestValue;
 
     const minValueDivideDiffValue =
       valueSubtractLowestValue / diffBetweenSmallAndLarge || 0;
-      
+
     return minValueDivideDiffValue * 100;
   });
 };
