@@ -20,43 +20,43 @@ const Settings = () => {
     <Layout title="Settings" fullWidth>
       <SecondaryLayout navigation={<SettingsNav />}>
         <div className="flex flex-col sm:px-6 lg:px-0 max-w-3xl mx-auto space-y-24 pb-12">
-            <HashContainer
-              data-report-section="true"
-              id={`${headings[0]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-              className="pt-16"
-              name={headings[0]['title']}
-            >
-              <PersonalInformationForm />
-            </HashContainer>
+          <HashContainer
+            data-report-section="true"
+            id={`${headings[0]['title'].toLowerCase().replace(/ /g, '-')}-id`}
+            className="pt-16"
+            name={headings[0]['title']}
+          >
+            <PersonalInformationForm />
+          </HashContainer>
 
-            <HashContainer
-              data-report-section="true"
-              id={`${headings[1]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-              className="pt-16"
-              name={headings[1]['title']}
-            >
-              <SpecialistsForm />
-            </HashContainer>
+          <HashContainer
+            data-report-section="true"
+            id={`${headings[1]['title'].toLowerCase().replace(/ /g, '-')}-id`}
+            className="pt-16"
+            name={headings[1]['title']}
+          >
+            <SpecialistsForm />
+          </HashContainer>
 
-            <HashContainer
-              data-report-section="true"
-              id={`${headings[2]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-              className="pt-16"
-              name={headings[2]['title']}
-            >
-              <PasswordForm />
-            </HashContainer>
+          <HashContainer
+            data-report-section="true"
+            id={`${headings[2]['title'].toLowerCase().replace(/ /g, '-')}-id`}
+            className="pt-16"
+            name={headings[2]['title']}
+          >
+            <PasswordForm />
+          </HashContainer>
 
-            <HashContainer
-              data-report-section="true"
-              id={`${headings[3]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-              className="pt-16"
-              name={headings[3]['title']}
-            >
-              <CommunicationForm />
-            </HashContainer>
-          </div>
-          <div className="h-[50vh]"> </div>
+          <HashContainer
+            data-report-section="true"
+            id={`${headings[3]['title'].toLowerCase().replace(/ /g, '-')}-id`}
+            className="pt-16"
+            name={headings[3]['title']}
+          >
+            <CommunicationForm />
+          </HashContainer>
+        </div>
+        <div className="h-[50vh]"> </div>
       </SecondaryLayout>
     </Layout>
   );

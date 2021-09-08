@@ -6,18 +6,18 @@ interface LinkProps {
   linkTo?: string;
   className?: string;
   style?: React.CSSProperties;
-  onClick?: () => void
+  onClick?: () => void;
 }
 const Link = ({ children, linkTo, className, style, onClick }: LinkProps) => {
   if (onClick) {
-    return <button className={className} style={style} onClick={onClick}>
-      {children}
-    </button>
+    return (
+      <button className={className} style={style} onClick={onClick}>
+        {children}
+      </button>
+    );
   }
   if (!linkTo) {
-    return <a >
-    {children}
-  </a>
+    return <a>{children}</a>;
   }
   const regex = new RegExp('https?|wwww');
   const mailRegex = new RegExp('mailto');

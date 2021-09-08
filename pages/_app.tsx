@@ -2,8 +2,8 @@ import '../styles/globals.css';
 
 import { Provider } from 'next-auth/client';
 import { NextIntlProvider } from 'next-intl';
-import { RecoilRoot } from 'recoil';
 import { AppProps } from 'next/app';
+import { RecoilRoot } from 'recoil';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

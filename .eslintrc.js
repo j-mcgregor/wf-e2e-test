@@ -12,8 +12,8 @@ module.exports = {
     es6: true
   },
   globals: {
-     JSX: true,
-     React: true
+    JSX: true,
+    React: true
   },
   plugins: ['simple-import-sort', 'prettier'],
   settings: {
@@ -44,7 +44,7 @@ module.exports = {
         additionalHooks: 'useRecoilCallback|useRecoilTransaction_UNSTABLE'
       }
     ],
-    'simple-import-sort/imports': 'warn',
+    // 'simple-import-sort/imports': 'warn',
     'unicorn/filename-case': 'off',
     'next/no-img-element': 'off',
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
