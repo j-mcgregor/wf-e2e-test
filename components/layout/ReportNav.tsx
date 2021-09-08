@@ -6,12 +6,14 @@ import { useTranslations } from 'use-intl';
 
 import { useReportNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';
+import SkeletonMenu from '../skeletons/SkeletonMenu';
 
 interface ReportNavProps {
   companyName: string;
+  loading?: boolean;
 }
 
-const ReportNav = ({ companyName }: ReportNavProps) => {
+const ReportNav = ({ companyName, loading }: ReportNavProps) => {
   const navItems = useReportNavItems();
   const t = useTranslations();
   const router = useRouter();
@@ -19,7 +21,6 @@ const ReportNav = ({ companyName }: ReportNavProps) => {
   const [activeItem, setActiveItem] = useState<string>('summary');
 
   const handleClick = (headerText: string) => {
-
     const path = router.asPath.replace(/#[\w+ -]+/, '');
     const snakedHeader = headerText.replace(/\s/g, '-').toLowerCase();
     setActiveItem(headerText);
@@ -30,7 +31,7 @@ const ReportNav = ({ companyName }: ReportNavProps) => {
       delay: 0,
       smooth: true,
       // refers to the container in the secondary layout
-      containerId: 'report-container'
+      containerId: 'secondary-layout-container'
     });
 
     // shallow push to avoid forcing re-render
@@ -45,6 +46,18 @@ const ReportNav = ({ companyName }: ReportNavProps) => {
     const header = path.replace(/-/g, ' ').toLowerCase();
     setActiveItem(header);
   }, [router.asPath]);
+
+
+  if (loading) {
+    return    <>
+    <aside className="hidden  w-full px-4 bg-gray-200 animate-pulse md:flex flex-col h-full justify-between py-8">
+      <SkeletonMenu items={10} />
+      <SkeletonMenu items={2} />
+    </aside>
+    <aside className="w-full h-12 bg-gray-200 md:hidden">
+    </aside>
+    </>
+  }
 
   return (
     <div className="px-6 pt-8 flex flex-col h-full">

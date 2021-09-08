@@ -1,8 +1,8 @@
 import { useTranslations } from 'next-intl';
 
-import Button from '../elements/Button';
-import GoogleIcon from '../icons/GoogleIcon';
-import MicrosoftIcon from '../icons/MicrosoftIcon';
+import Button from '../../elements/Button';
+import GoogleIcon from '../../icons/GoogleIcon';
+import MicrosoftIcon from '../../icons/MicrosoftIcon';
 
 const LoginSSO = () => {
   const t = useTranslations();

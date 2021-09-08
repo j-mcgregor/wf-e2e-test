@@ -1,6 +1,7 @@
 import {
   ArrowNarrowUpIcon,
-  DocumentReportIcon} from '@heroicons/react/outline';
+  DocumentReportIcon
+} from '@heroicons/react/outline';
 import { useTranslations } from 'use-intl';
 
 import Link from '../elements/Link';
@@ -19,23 +20,18 @@ const BookmarkCard = ({
   sme_zscore,
   bond_rating,
   pd_ratio,
-  linkTo,
-  key
+  linkTo
 }: BookmarkCardProps) => {
   const t = useTranslations();
   return (
     <Link linkTo={linkTo}>
-      <div key={key} className="bg-white shadow rounded w-full flex flex-col">
+      <div className="bg-white shadow rounded w-full flex flex-col">
         <div className="flex w-full justify-between p-2 ">
-          <Link linkTo={linkTo}>
-            <div className="bg-highlight p-1 rounded-sm">
-              <DocumentReportIcon className="h-5 w-5 text-white" />
-            </div>
-          </Link>
+          <div className="bg-highlight p-1 rounded-sm">
+            <DocumentReportIcon className="h-5 w-5 text-white" />
+          </div>
 
-          <Link>
-            <ArrowNarrowUpIcon className="h-7 w-7 rotate-45 text-gray-400 cursor-pointer" />
-          </Link>
+          <ArrowNarrowUpIcon className="h-7 w-7 rotate-45 text-gray-400 cursor-pointer" />
         </div>
         <div className="flex flex-col">
           <p className="font-semibold px-2 pb-1 truncate">{company_name}</p>

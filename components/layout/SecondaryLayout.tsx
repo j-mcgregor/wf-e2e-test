@@ -2,7 +2,8 @@ import React from 'react';
 
 interface SecondaryNavProps {
   children: React.ReactNode;
-  navigation: React.ReactNode;
+  navigation?: React.ReactNode;
+  // ^ I made this optional for empty use in the skeleton report <- dan
 }
 
 const SecondaryNav = ({ navigation, children }: SecondaryNavProps) => {
@@ -12,14 +13,12 @@ const SecondaryNav = ({ navigation, children }: SecondaryNavProps) => {
         <div className="w-64 flex flex-col">{navigation}</div>
       </aside>
 
-     
       <div
-        id="report-container"
+        id="secondary-layout-container"
         className="z-10 bg-gray-100 w-full px-2 sm:px-4 md:px-8 xl:px-20 overflow-y-auto"
       >
         {children}
       </div>
-     
     </div>
   );
 };

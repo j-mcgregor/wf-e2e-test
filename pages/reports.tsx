@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-non-literal-require */
-import { GetServerSidePropsContext } from 'next';
+import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
-
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
@@ -10,7 +9,6 @@ import Button from '../components/elements/Button';
 import ReportTable from '../components/elements/ReportTable';
 import Layout from '../components/layout/Layout';
 import appState from '../lib/appState';
-import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 import { Report } from '../types/global';
 
 const Reports = () => {
@@ -47,7 +45,7 @@ const Reports = () => {
               <BookmarkCard
                 key={report.id}
                 linkTo={`/report/${report.id}`}
-                company_name={report.company_Name}
+                company_name={report.company_name}
                 sme_zscore={report.sme_zscore}
                 bond_rating={report.bond_rating}
                 pd_ratio={32.18} // not currently in mock data
@@ -85,18 +83,16 @@ const Reports = () => {
 
 export default Reports;
 
-export const getServerSideProps = getServerSidePropsWithAuth(
-  ({ locale }: GetServerSidePropsContext) => {
-    return {
-      props: {
-        messages: {
-          // You can get the messages from anywhere you like, but the recommended
-          // pattern is to put them in JSON files separated by language and read
-          // the desired one based on the `locale` received from Next.js.
-          ...require(`../messages/${locale}/reports.${locale}.json`),
-          ...require(`../messages/${locale}/general.${locale}.json`)
-        }
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: {
+        // You can get the messages from anywhere you like, but the recommended
+        // pattern is to put them in JSON files separated by language and read
+        // the desired one based on the `locale` received from Next.js.
+        ...require(`../messages/${locale}/reports.${locale}.json`),
+        ...require(`../messages/${locale}/general.${locale}.json`)
       }
-    };
-  }
-);
+    }
+  };
+}

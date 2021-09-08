@@ -2,6 +2,10 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 type SetValue<T> = Dispatch<SetStateAction<T>>;
 
+/**
+ * If you haven't already seen this site https://usehooks.com/ check it out. Good time saver.
+ */
+
 // Example usage
 
 // export default function Component() {

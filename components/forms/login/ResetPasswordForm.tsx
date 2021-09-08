@@ -1,13 +1,12 @@
-import { useRouter } from 'next/router';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import Button from '../elements/Button';
-import ErrorMessage from '../elements/ErrorMessage';
-import Input from '../elements/Input';
-import Link from '../elements/Link';
-import Logo from '../elements/Logo';
+import Button from '../../elements/Button';
+import ErrorMessage from '../../elements/ErrorMessage';
+import Input from '../../elements/Input';
+import Link from '../../elements/Link';
+import Logo from '../../elements/Logo';
 
 type FormProps = {
   email?: string;
@@ -24,7 +23,6 @@ const ResetPasswordForm = ({ email, isValid }: FormProps) => {
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
-
 
   const {
     register,
@@ -61,18 +59,20 @@ const ResetPasswordForm = ({ email, isValid }: FormProps) => {
     <div className="mt-6">
       <div>
         <Logo />
-        <h1 className="text-3xl font-bold py-3 my-2">
-          {t('reset password')}
-        </h1>
-        { !isValid &&  <div>
+        <h1 className="text-3xl font-bold py-3 my-2">{t('reset password')}</h1>
+        {!isValid && (
+          <div>
             <p className="mb-2">{t('valid link required')}</p>
             <p className="mb-4">{t('go to forgotten password')}</p>
-            <Button variant="highlight" linkTo="/forgot-password" >{t('forgot password')}</Button>
-          </div>}
+            <Button variant="highlight" linkTo="/forgot-password">
+              {t('forgot password')}
+            </Button>
+          </div>
+        )}
 
-        { formSubmitted && <p>{t('password sent')}</p> }
+        {formSubmitted && <p>{t('password sent')}</p>}
 
-        {!formSubmitted &&  isValid && (
+        {!formSubmitted && isValid && (
           <>
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               <p>{t('enter new password')}</p>
@@ -85,10 +85,10 @@ const ResetPasswordForm = ({ email, isValid }: FormProps) => {
                   type="password"
                   placeholder={`${t('placeholders.your new password')}`}
                 />
-                 {errors.newPassword?.type === 'minLength' && (
+                {errors.newPassword?.type === 'minLength' && (
                   <ErrorMessage text={t('errors.min length')} />
                 )}
-                 {errors.newPassword?.type === 'required' && (
+                {errors.newPassword?.type === 'required' && (
                   <ErrorMessage text={t('errors.required')} />
                 )}
               </div>
@@ -99,7 +99,7 @@ const ResetPasswordForm = ({ email, isValid }: FormProps) => {
                   {...register('confirmPassword', {
                     required: true,
                     validate: {
-                      'sameAs': (value ) => getValues("newPassword") === value
+                      sameAs: value => getValues('newPassword') === value
                     }
                   })}
                   type="password"
@@ -112,9 +112,7 @@ const ResetPasswordForm = ({ email, isValid }: FormProps) => {
                   <ErrorMessage text={t('errors.required')} />
                 )}
               </div>
-              {submitError && (
-                  <ErrorMessage text={t('errors.submit error')} />
-                )}
+              {submitError && <ErrorMessage text={t('errors.submit error')} />}
               <div className="mt-6">
                 <Button variant="highlight" type="submit">
                   {t('change password')}

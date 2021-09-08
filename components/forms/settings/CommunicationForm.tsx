@@ -3,7 +3,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useSettingsNavItemsProps } from '../../../hooks/useNavigation';
 import CheckboxInput from '../../elements/Checkbox';
-import HashHeader from '../../elements/HashHeader';
 
 interface CommunicationFormProps {
   headings: useSettingsNavItemsProps[];
@@ -29,14 +28,11 @@ const CommunicationForm: FC<CommunicationFormProps> = ({ headings }) => {
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
-            <div>
-              <HashHeader
-                text={headings[3]['title']}
-                classname={'text-lg leading-6 font-medium text-gray-900'}
-              />
-            </div>
+            <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
+              {headings[3]['title']}
+            </h3>
             <p className="mt-1 text-sm text-gray-500">
-              Decide which communications you would like to receive.
+              Change or update your personal information
             </p>
           </div>
 
