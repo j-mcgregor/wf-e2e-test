@@ -97,7 +97,7 @@ const ReportTemplate = () => {
               </p>
               <Benchmarks />
               <BondRating
-                score="B-"
+                score="B"
                 description="Cupidatat sit duis minim voluptate labore ea. Esse mollit eu qui anim exercitation. Quis tempor velit et duis commodo."
               />
             </div>

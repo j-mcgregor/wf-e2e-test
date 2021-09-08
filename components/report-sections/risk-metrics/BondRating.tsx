@@ -2,20 +2,20 @@ import { useTranslations } from 'use-intl';
 import { bondRatings } from '../../../lib/settings/report.settings';
 
 interface BondRatingProps {
-  // score: Rating;
-  score: string;
+  score: Rating;
   description: string;
 }
-
-enum Rating {
-  CC = 'CC',
-  CCC = 'CCC',
-  B = 'B',
-  BB = 'BB',
-  BBB = 'BBB',
-  A = 'A',
-  AA = 'AA',
-  AAA = 'AAA'
+type Rating = keyof typeof Ratings
+enum Ratings {
+  CC,
+  CCC,
+  "B-",
+  B,
+  BB,
+  BBB,
+  A,
+  AA,
+  AAA,
 }
 
 const BondRating = ({ score, description }: BondRatingProps) => {
@@ -30,14 +30,14 @@ const BondRating = ({ score, description }: BondRatingProps) => {
           return (
             <div
               style={{
-                background: `linear-gradient(to right, ${rating.bgColor})`
+                background: `linear-gradient(to right, ${rating.bgColor})`,
+                width: rating.width
               }}
               key={i}
               className={`${
                 rating.score === score
                   ? 'h-36 text-4xl font-bold'
                   : 'h-28 text-lg font-semibold'
-              } ${rating.width}
               } text-white flex items-center justify-center mx-[1px]`}
             >
               {rating.score}
