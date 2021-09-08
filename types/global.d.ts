@@ -19,25 +19,3 @@ export type Report = {
   created_at: number;
   bookmarked: boolean;
 };
-
-// report page props
-export type SummaryProps = {
-  info?: {
-    regNumber: string;
-    sector: string;
-    description: string;
-    incorporationDate: number | string;
-    lastAccountDate: number | string;
-  };
-
-  contact?: {
-    address_line_1: string | null;
-    address_line_2: string | null;
-    address_line_3: string | null;
-    address_line_4: string | null;
-    postal_code: string | null;
-    phone_numbers: string[];
-    websites: string[];
-    emails: string[];
-  };
-};

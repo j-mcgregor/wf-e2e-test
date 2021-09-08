@@ -28,7 +28,6 @@ const FinancialTrend = ({
       return <div className="h-1/6 w-1/4 bg-red-500 mx-1" />;
     }
   };
-  
 
   const emptyBar = <div className="h-1/6 w-1/4 bg-none mx-1" />;
 
