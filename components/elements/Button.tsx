@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { ReactNode } from 'react';
 
 import LoadingIcon from '../svgs/LoadingIcon';
@@ -21,7 +22,7 @@ const buttonClassName = {
   alt: 'bg-alt hover:bg-blue-800 focus:bg-blue-800 text-white', // lighter blue
   highlight:
     'bg-highlight hover:bg-yellow-500 focus:ring-yellow-500 text-white ', // orange
-  none: '' 
+  none: ''
 };
 
 const Button = ({
@@ -38,6 +39,7 @@ const Button = ({
     return (
       <Link
         linkTo={linkTo}
+        // I'm personally a big fan of classnames - https://www.npmjs.com/package/classnames
         className={
           newClassName
             ? newClassName

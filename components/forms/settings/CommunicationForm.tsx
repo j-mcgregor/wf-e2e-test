@@ -1,7 +1,6 @@
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-
 interface CommunicationFormInput {
   comments: string;
   candidates: string;
@@ -9,9 +8,11 @@ interface CommunicationFormInput {
 }
 const CommunicationForm = () => {
   const { register, handleSubmit } = useForm<CommunicationFormInput>();
-  // eslint-disable-next-line no-console
-  const onSubmit: SubmitHandler<CommunicationFormInput> = data =>
+
+  const onSubmit: SubmitHandler<CommunicationFormInput> = data => {
+    // eslint-disable-next-line no-console
     console.log(data);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

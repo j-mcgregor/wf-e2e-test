@@ -1,8 +1,9 @@
 import { ArrowNarrowUpIcon } from '@heroicons/react/solid';
-import React from 'react'
+import React from 'react';
 
 import Link from '../elements/Link';
 
+// eslint-disable-next-line no-unused-vars
 export type HeroIcon = (props: React.ComponentProps<'svg'>) => JSX.Element;
 
 interface LinkCardProps {
@@ -11,7 +12,7 @@ interface LinkCardProps {
   header: React.ReactNode;
   description: React.ReactNode;
   linkTo: string;
-  className?: string
+  className?: string;
 }
 
 const LinkCard = ({

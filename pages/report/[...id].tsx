@@ -23,9 +23,10 @@ const ReportTemplate = () => {
 
   const { id } = router.query;
 
-  const fetcher = url => fetch(url).then(res => res.json());
+  const fetcher = (url: any) => fetch(url).then(res => res.json());
 
   const { data, error } = useSWR(`/api/report?id=${id}`, fetcher);
+  // console.log(data);
 
   if (error) return <div>failed to load</div>;
 

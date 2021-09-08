@@ -28,10 +28,7 @@ const LoginForm = () => {
     formState: { errors, isSubmitting }
   } = useForm<FormValues>();
 
-  const [_activeUser, setActiveUser] = useLocalStorage<string | null>(
-    'user',
-    null
-  );
+  const [, setActiveUser] = useLocalStorage<string | null>('user', null);
   const [authError, setAuthError] = useState(false);
 
   // only runs if form is valid

@@ -9,6 +9,7 @@ const FinancialTrend = ({ data }: FinancialTrendProps) => {
         {data.map(year => {
           return (
             <div
+              key={year}
               style={{ height: `${year}%` }}
               className={`${year > 0 && 'bg-green-500'} w-1/4 mx-[2px]`}
             />
@@ -19,6 +20,7 @@ const FinancialTrend = ({ data }: FinancialTrendProps) => {
         {data.map(year => {
           return (
             <div
+              key={year}
               style={{ height: `${Math.abs(year)}%` }}
               className={`${year < 0 && 'bg-red-500'} w-1/4 mx-[2px]`}
             />

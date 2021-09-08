@@ -24,7 +24,6 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                     {years.map((year, i) => (
                       <td
                         key={year.year}
-                        scope="col"
                         className="relative px-2 py-3 text-primary"
                       >
                         <p>{year.year}</p>
@@ -70,9 +69,9 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                     rowKey="current_assets"
                   />
                   <SummaryFinancialRow
-                    rowHeader={t('current_liabilities')}
+                    rowHeader={t('total current liabilities')}
                     data={years}
-                    rowKey="total current liabilities"
+                    rowKey="current_liabilities"
                   />
                   <SummaryFinancialRow
                     rowHeader={t('net current assets')}

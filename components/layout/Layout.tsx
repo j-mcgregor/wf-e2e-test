@@ -16,7 +16,7 @@ type LayoutProps = {
   noMenu?: boolean | undefined;
   noNav?: boolean | undefined;
   fullWidth?: boolean;
-  noAuthRequired?: boolean
+  noAuthRequired?: boolean;
 };
 
 const Layout = ({
@@ -28,28 +28,23 @@ const Layout = ({
   fullWidth,
   noAuthRequired
 }: LayoutProps) => {
-
-
-
   const router = useRouter();
 
   const path: string = router.asPath;
 
   const [session, loading] = useSession();
 
-  if (!loading && !session && !noAuthRequired) router.push('/login')
+  if (!loading && !session && !noAuthRequired) router.push('/login');
 
   const setState = useSetRecoilState(appState);
 
-
   React.useEffect(() => {
-    if (session && session.user){
+    if (session && session.user) {
       setState({ ...appState, user: session?.user });
     }
-  }, [session]);
+  }, [session, setState]);
 
-  if (!noAuthRequired && loading) return <SkeletonLayout noNav={noNav} />
-
+  if (!noAuthRequired && loading) return <SkeletonLayout noNav={noNav} />;
 
   return (
     <div>
@@ -69,7 +64,11 @@ const Layout = ({
                 </h1>
               )}
             </div>
-            <div className={`${!fullWidth && "px-4 sm:px-6 max-w-5xl mx-auto"}`}>{children}</div>
+            <div
+              className={`${!fullWidth && 'px-4 sm:px-6 max-w-5xl mx-auto'}`}
+            >
+              {children}
+            </div>
           </div>
         </main>
       </div>

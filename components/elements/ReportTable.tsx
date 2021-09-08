@@ -76,7 +76,11 @@ const ReportTable = ({
                   (report: Report, index: number) =>
                     // display reports only up until quantity limit specified in props
                     index < limit && (
-                      <Link key={index} href={`report/${report.id}`} passHref={true}>
+                      <Link
+                        key={index}
+                        href={`report/${report.id}`}
+                        passHref={true}
+                      >
                         <tr
                           key={report.id}
                           className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm cursor-pointer"

@@ -1,4 +1,9 @@
+
+
+
+
 export type FinancialYear = {
+  [index: string]: string;
   year: string;
   sales: string;
   profit_and_loss_before_tax: string;

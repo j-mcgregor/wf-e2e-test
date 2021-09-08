@@ -1,3 +1,11 @@
+const MockCompanyNames = {
+  BIRD: 'Bird Feeding Corp',
+  SWAN: 'Swan Feeding Corp',
+  GEESE: 'Geese Feeding Corp',
+  PIGEON: 'Pigeon Feeding Corp',
+  DOVE: 'Dove Feeding Corp'
+};
+
 const mockUsers = {
   'test@test.com': {
     name: 'John Doe',
@@ -11,7 +19,7 @@ const mockUsers = {
     reports: [
       {
         id: 1,
-        company_name: 'Bird Feeding Corp',
+        company_name: MockCompanyNames.BIRD,
         sme_zscore: 456,
         bond_rating: 'AA',
         created_at: 1629660518563,
@@ -19,7 +27,7 @@ const mockUsers = {
       },
       {
         id: 2,
-        company_name: 'Swan Feeding Corp',
+        company_name: MockCompanyNames.SWAN,
         sme_zscore: 322,
         bond_rating: 'A-',
         created_at: 1629660001000,
@@ -27,7 +35,7 @@ const mockUsers = {
       },
       {
         id: 3,
-        company_name: 'Geese Feeding Corp',
+        company_name: MockCompanyNames.GEESE,
         sme_zscore: 345,
         bond_rating: 'A',
         created_at: 1629660000000,
@@ -35,7 +43,7 @@ const mockUsers = {
       },
       {
         id: 4,
-        company_name: 'Pigeon Feeding Corp',
+        company_name: MockCompanyNames.PIGEON,
         sme_zscore: 311,
         bond_rating: 'B+',
         created_at: 1629659000000,
@@ -43,7 +51,7 @@ const mockUsers = {
       },
       {
         id: 5,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -51,7 +59,7 @@ const mockUsers = {
       },
       {
         id: 6,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -59,7 +67,7 @@ const mockUsers = {
       },
       {
         id: 7,
-        company_name: 'Bird Feeding Corp',
+        company_name: MockCompanyNames.BIRD,
         sme_zscore: 456,
         bond_rating: 'AA',
         created_at: 1629660518563,
@@ -67,7 +75,7 @@ const mockUsers = {
       },
       {
         id: 8,
-        company_name: 'Swan Feeding Corp',
+        company_name: MockCompanyNames.SWAN,
         sme_zscore: 322,
         bond_rating: 'A-',
         created_at: 1629660001000,
@@ -75,7 +83,7 @@ const mockUsers = {
       },
       {
         id: 9,
-        company_name: 'Geese Feeding Corp',
+        company_name: MockCompanyNames.GEESE,
         sme_zscore: 345,
         bond_rating: 'A',
         created_at: 1629660000000,
@@ -83,7 +91,7 @@ const mockUsers = {
       },
       {
         id: 10,
-        company_name: 'Pigeon Feeding Corp',
+        company_name: MockCompanyNames.PIGEON,
         sme_zscore: 311,
         bond_rating: 'B+',
         created_at: 1629659000000,
@@ -91,7 +99,7 @@ const mockUsers = {
       },
       {
         id: 11,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -99,14 +107,14 @@ const mockUsers = {
       },
       {
         id: 12,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000
       },
       {
         id: 13,
-        company_name: 'Bird Feeding Corp',
+        company_name: MockCompanyNames.BIRD,
         sme_zscore: 456,
         bond_rating: 'AA',
         created_at: 1629660518563,
@@ -114,7 +122,7 @@ const mockUsers = {
       },
       {
         id: 14,
-        company_name: 'Swan Feeding Corp',
+        company_name: MockCompanyNames.SWAN,
         sme_zscore: 322,
         bond_rating: 'A-',
         created_at: 1629660001000,
@@ -130,7 +138,7 @@ const mockUsers = {
       },
       {
         id: 16,
-        company_name: 'Pigeon Feeding Corp',
+        company_name: MockCompanyNames.PIGEON,
         sme_zscore: 311,
         bond_rating: 'B+',
         created_at: 1629659000000,
@@ -138,7 +146,7 @@ const mockUsers = {
       },
       {
         id: 17,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -146,7 +154,7 @@ const mockUsers = {
       },
       {
         id: 18,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -154,7 +162,7 @@ const mockUsers = {
       },
       {
         id: 19,
-        company_name: 'Bird Feeding Corp',
+        company_name: MockCompanyNames.BIRD,
         sme_zscore: 456,
         bond_rating: 'AA',
         created_at: 1629660518563,
@@ -162,7 +170,7 @@ const mockUsers = {
       },
       {
         id: 20,
-        company_name: 'Swan Feeding Corp',
+        company_name: MockCompanyNames.SWAN,
         sme_zscore: 322,
         bond_rating: 'A-',
         created_at: 1629660001000,
@@ -170,7 +178,7 @@ const mockUsers = {
       },
       {
         id: 21,
-        company_name: 'Geese Feeding Corp',
+        company_name: MockCompanyNames.GEESE,
         sme_zscore: 345,
         bond_rating: 'A',
         created_at: 1629660000000,
@@ -186,7 +194,7 @@ const mockUsers = {
       },
       {
         id: 23,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -194,7 +202,7 @@ const mockUsers = {
       },
       {
         id: 24,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -202,7 +210,7 @@ const mockUsers = {
       },
       {
         id: 25,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -210,7 +218,7 @@ const mockUsers = {
       },
       {
         id: 26,
-        company_name: 'Bird Feeding Corp',
+        company_name: MockCompanyNames.BIRD,
         sme_zscore: 456,
         bond_rating: 'AA',
         created_at: 1629660518563,
@@ -218,7 +226,7 @@ const mockUsers = {
       },
       {
         id: 27,
-        company_name: 'Swan Feeding Corp',
+        company_name: MockCompanyNames.SWAN,
         sme_zscore: 322,
         bond_rating: 'A-',
         created_at: 1629660001000,
@@ -226,7 +234,7 @@ const mockUsers = {
       },
       {
         id: 28,
-        company_name: 'Geese Feeding Corp',
+        company_name: MockCompanyNames.GEESE,
         sme_zscore: 345,
         bond_rating: 'A',
         created_at: 1629660000000,
@@ -234,7 +242,7 @@ const mockUsers = {
       },
       {
         id: 29,
-        company_name: 'Pigeon Feeding Corp',
+        company_name: MockCompanyNames.PIGEON,
         sme_zscore: 311,
         bond_rating: 'B+',
         created_at: 1629659000000,
@@ -242,7 +250,7 @@ const mockUsers = {
       },
       {
         id: 30,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -250,7 +258,7 @@ const mockUsers = {
       },
       {
         id: 31,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -258,7 +266,7 @@ const mockUsers = {
       },
       {
         id: 32,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -266,7 +274,7 @@ const mockUsers = {
       },
       {
         id: 33,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
@@ -274,7 +282,7 @@ const mockUsers = {
       },
       {
         id: 34,
-        company_name: 'Dove Feeding Corp',
+        company_name: MockCompanyNames.DOVE,
         sme_zscore: 222,
         bond_rating: 'D',
         created_at: 1629657000000,
