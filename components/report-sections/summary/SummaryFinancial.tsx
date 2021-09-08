@@ -17,7 +17,7 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="py-2 align-middle inline-block min-w-full ">
-            <div className="overflow-hidden text-xs lg:text-sm">
+            <div className="overflow-hidden text-xs">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="border-b border-black">
                   <tr>
@@ -26,7 +26,7 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                       <td
                         key={year.year}
                         scope="col"
-                        className="relative px-6 py-3 text-primary"
+                        className="relative px-2 py-3 text-primary"
                       >
                         <p>{year.year}</p>
                       </td>

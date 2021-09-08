@@ -41,7 +41,7 @@ const ReportTemplate = () => {
       })
       .reverse();
 
-  const lastFiveYearsFinancials = data && transformedFinancials.slice(0, 4);
+  const lastFiveYearsFinancials = data && transformedFinancials.slice(0, 5);
 
   // temporary before data exists
   const description =
