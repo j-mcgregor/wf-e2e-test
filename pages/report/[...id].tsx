@@ -17,6 +17,17 @@ import SummaryDetails from '../../components/report-sections/summary/SummaryDeta
 import SummaryMap from '../../components/report-sections/summary/SummaryMap';
 import SummaryFinancial from '../../components/report-sections/summary/SummaryFinancial';
 
+interface DataProps {
+  created_at?: string;
+  company_name: string;
+  contact_details: { incorporation_date: string };
+  financials: {
+    [x: string]: {
+      employees: any;
+    };
+  };
+}
+
 const ReportTemplate = () => {
   const headings: string[] = useReportNavItems();
   const t = useTranslations();
@@ -26,7 +37,7 @@ const ReportTemplate = () => {
 
   const fetcher = (url: any) => fetch(url).then(res => res.json());
 
-  const { data, error } = useSWR(`/api/report?id=${id}`, fetcher);
+  const { data, error } = useSWR<DataProps>(`/api/report?id=${id}`, fetcher);
   // console.log(data);
 
   if (error) return <div>failed to load</div>;
@@ -39,7 +50,9 @@ const ReportTemplate = () => {
     <Layout title="SME - Calculator " fullWidth>
       <SecondaryLayout
         navigation={
-          <ReportNav companyName={data?.company_name} loading={!data} />
+          data?.company_name && (
+            <ReportNav companyName={data?.company_name} loading={!data} />
+          )
         }
       >
         {!data ? (
@@ -72,8 +85,8 @@ const ReportTemplate = () => {
                 </div>
               </div>
 
-              {Object.keys(data.financials).map(year => (
-                <SummaryFinancial employees={year.employees} />
+              {Object.entries(data.financials).map(fin => (
+                <SummaryFinancial employees={fin[1].employees} key={fin[0]} />
               ))}
             </div>
 
@@ -84,7 +97,7 @@ const ReportTemplate = () => {
                 key={header}
                 className="h-screen text-3xl pt-16"
               >
-                <HashHeader name={header}>
+                <HashHeader name={header} id={`${header}-id`}>
                   <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
                     {header}
                   </h3>

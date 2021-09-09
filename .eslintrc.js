@@ -9,13 +9,14 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    es6: true
+    es6: true,
+    'jest/globals': true
   },
   globals: {
     JSX: true,
     React: true
   },
-  plugins: ['simple-import-sort', 'prettier'],
+  plugins: ['simple-import-sort', 'prettier', 'jest'],
   settings: {
     react: {
       version: 'detect'
