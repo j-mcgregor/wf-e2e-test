@@ -4,12 +4,12 @@ interface FinancialTrendProps {
 
 const FinancialTrend = ({ data }: FinancialTrendProps) => {
   return (
-    <div className="flex flex-col h-12 w-[80px] py-2">
+    <td className="flex flex-col h-9 w-[80px]">
       <div className="h-1/2 w-full flex items-end">
-        {data.map(year => {
+        {data.map((year, index) => {
           return (
-            <div
-              key={year}
+            <span
+              key={index}
               style={{ height: `${year}%` }}
               className={`${
                 year > 0
@@ -23,17 +23,17 @@ const FinancialTrend = ({ data }: FinancialTrendProps) => {
         })}
       </div>
       <div className="h-1/2 w-full flex items-start">
-        {data.map(year => {
+        {data.map((year, index) => {
           return (
-            <div
-              key={year}
+            <span
+              key={index}
               style={{ height: `${Math.abs(year)}%` }}
               className={`${year < 0 && 'bg-red-500'} w-full mx-[2px]`}
             />
           );
         })}
       </div>
-    </div>
+    </td>
   );
 };
 
