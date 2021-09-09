@@ -45,10 +45,10 @@ const Reports = () => {
               <BookmarkCard
                 key={report.id}
                 linkTo={`/report/${report.id}`}
-                company_name={report.company_name}
-                sme_zscore={report.sme_zscore}
-                bond_rating={report.bond_rating}
-                pd_ratio={32.18} // not currently in mock data
+                companyName={report.company_name}
+                smeZscore={report.sme_zscore}
+                bondRating={report.bond_rating}
+                pdRatio={32.18} // not currently in mock data
               />
             );
           })}
