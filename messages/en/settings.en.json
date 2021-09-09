@@ -2,5 +2,26 @@
   "personal information": "Personal Information",
   "preferences": "Preferences",
   "password": "Password",
-  "communication": "Communication"
+  "communication": "Communication",
+  "save": "Save",
+  "forms": {
+    "personal": {
+      "update your personal": "Update your personal information",
+      "first name": "First name",
+      "last name": "Last name",
+      "email address": "Email address",
+      "country": "Country / Region",
+      "street address": "Street Address",
+      "city": "City",
+      "postcode": "Zip / Postcode",
+      "state": "State / Province",
+      "company name": "Company Name",
+      "company headquarters": "Company Headquarters Location"
+    } 
+  },
+  "errors": {
+    "email": "A valid email address is required.",
+    "last name": "Please provide your last name.",
+    "first name": "Please provide your first name."
+  }
 }

@@ -6,6 +6,8 @@ import Button from '../../elements/Button';
 import Input from '../../elements/Input';
 import Select from '../../elements/Select';
 import countryJSON from '../../../lib/country_currency.json';
+import ErrorMessage from '../../elements/ErrorMessage';
+import { useTranslations } from 'next-intl';
 
 interface PersonalInformationProps {
   heading: string;
@@ -34,11 +36,13 @@ const countries = countryJSON.map(value => {
 });
 
 const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
+
+  const t = useTranslations()
   
   const { register, handleSubmit, formState } =
     useForm<PersonalInformationFormInput>();
     
-  const { isDirty, isValid } = formState;
+  const { isDirty, isValid, errors } = formState;
 
   const onSubmit: SubmitHandler<PersonalInformationFormInput> = data =>
     // eslint-disable-next-line no-console
@@ -55,42 +59,45 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
               </h3>
             )}
             <p className="mt-1 text-sm text-gray-500">
-              Change or update your personal information
+            {t('forms.personal.update your personal')}
             </p>
           </div>
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <Input
                 {...register('firstName')}
-                label="First name"
+                label={t('forms.personal.first name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
+              { errors.lastName && <ErrorMessage text={`${t('errors.firstName')}`} />}
             </div>
 
             <div className="col-span-6 sm:col-span-3">
               <Input
-                {...register('lastName')}
-                label="Last name"
+                {...register('lastName', { required: true})}
+                label={t('forms.personal.last name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
+               { errors.lastName && <ErrorMessage text={`${t('errors.last name')}`} />}
             </div>
 
             <div className="col-span-6 sm:col-span-4">
               <Input
                 {...register('email', { pattern: validEmailRegex })}
                 type="email"
-                label="Email address"
+                label={t('forms.personal.email address')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
+              { errors.email && <ErrorMessage text={`${t('errors.email')}`} />}
             </div>
 
             <div className="col-span-6 sm:col-span-3">
               <Select
                 {...register('country')}
-                label="Country / Region"
+                label={t('forms.personal.country')}
                 options={countries}
                 className={formClassName}
                 labelClassName={formLabelClassName}
@@ -100,7 +107,7 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
             <div className="col-span-6">
               <Input
                 {...register('streetAddress')}
-                label="Street Address"
+                label={t('forms.personal.street address')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
@@ -109,7 +116,7 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
             <div className="col-span-6 sm:col-span-6 lg:col-span-2">
               <Input
                 {...register('city')}
-                label="City"
+                label={t('forms.personal.city')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
@@ -118,7 +125,7 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
             <div className="col-span-6 sm:col-span-3 lg:col-span-2">
               <Input
                 {...register('state')}
-                label="State / Province"
+                label={t('forms.personal.state')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
@@ -127,7 +134,7 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
             <div className="col-span-6 sm:col-span-3 lg:col-span-2">
               <Input
                 {...register('postcode')}
-                label="Zip / Postcode"
+                label={t('forms.personal.postcode')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
@@ -137,7 +144,7 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
             <div className="col-span-6 sm:col-span-6 lg:col-span-2">
               <Input
                 {...register('companyName')}
-                label="Company Name"
+                label={t('forms.personal.company name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
@@ -147,7 +154,7 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
               <Select
                 {...register('companyHQLocation')}
                 options={countries}
-                label="Company Headquarters Location"
+                label={t('forms.personal.company headquarters')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
@@ -162,7 +169,7 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
             variant="primary"
             className="max-w-[150px] ml-auto"
           >
-            Save
+            {t('forms.save')}
           </Button>
         </div>
       </div>
