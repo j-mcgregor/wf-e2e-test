@@ -8,6 +8,7 @@ interface ButtonProps {
   variant: 'primary' | 'secondary' | 'highlight' | 'alt' | 'none';
   children: ReactNode;
   loading?: boolean;
+  disabled?: boolean;
   className?: string;
   newClassName?: string;
   onClick?: () => void;
@@ -25,11 +26,14 @@ const buttonClassName = {
   none: ''
 };
 
+const disabledClassName = "opacity-60 pointer-events-none"
+
 const Button = ({
   className,
   newClassName,
   variant,
   loading,
+  disabled,
   type,
   linkTo,
   children,
@@ -54,11 +58,12 @@ const Button = ({
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       type={type}
       className={
         newClassName
           ? newClassName
-          : `${buttonClassName.base} ${buttonClassName[variant]} ${className}`
+          : `${buttonClassName.base} ${buttonClassName[variant]} ${className} ${disabled ? disabledClassName : ''}`
       }
     >
       {loading && <LoadingIcon />}
