@@ -1,13 +1,10 @@
-import React, { FC, useRef } from 'react';
+import React from 'react';
 import Input from '../../elements/Input';
-import { UseFormRegister, UseFormWatch } from 'react-hook-form/dist/types/form';
-import { FieldErrors } from 'react-hook-form/dist/types/errors';
 import { useForm } from 'react-hook-form';
 
-interface PasswordManagementProps {
-  watch: UseFormWatch<any>;
-  errors: FieldErrors;
-  register: UseFormRegister<any>;
+interface PasswordFormInput {
+  newPassword: string;
+  confirmPassword: string;
 }
 
 const newPasswordProps = {
@@ -21,17 +18,16 @@ const confirmPasswordProps = {
   type: 'password'
 };
 
-const PasswordManagement: FC = ({{register, watch, errors}}) => {
+const PasswordManagement = () => {
+  const { register, formState, getValues, handleSubmit} = useForm<PasswordFormInput>();
+  const { isDirty, isValid, errors } = formState;
 
-  interface PasswordFormInput {
+  const onSubmit = async (data: {
     newPassword: string;
     confirmPassword: string;
-  }
-
-
-  const password = useRef({});
-  password.current = watch('password', '');
-
+  }) => {
+    alert(JSON.stringify(data));
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -46,13 +42,14 @@ const PasswordManagement: FC = ({{register, watch, errors}}) => {
           })}
           {...newPasswordProps}
         />
-        {errors.password && <p>{errors.password.message}</p>}
+        {errors.newPassword && <p>{errors.newPassword.message}</p>}
 
         <Input
           {...register('confirmPassword', {
-            validate: value =>
-              value === password.current || 'The passwords do not match'
-          })}
+            validate: {
+              sameAs: value => getValues('newPassword') === value
+            }
+          })} 
           {...confirmPasswordProps}
         />
         {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}

@@ -1,29 +1,13 @@
 import React, { FC } from 'react';
 
 import Button from '../../elements/Button';
-import {  useForm } from 'react-hook-form';
 import PasswordManagement from './PasswordManagement';
 
 interface PasswordFormProps {
   isSSO: boolean;
 }
 
-interface PasswordFormInput {
-  newPassword: string;
-  confirmPassword: string;
-}
-
 const PasswordForm: FC<PasswordFormProps> = ({ isSSO }) => {
-  const { register, formState, watch } =
-    useForm<PasswordFormInput>();
-  const { isDirty, isValid, errors } = formState;
-
-  const onSubmit = async (data: {
-    newPassword: string;
-    confirmPassword: string;
-  }) => {
-    alert(JSON.stringify(data));
-  };
 
   return (
     <div className="shadow sm:rounded-md sm:overflow-hidden">
@@ -64,21 +48,8 @@ const PasswordForm: FC<PasswordFormProps> = ({ isSSO }) => {
             </div>
           </>
         ) : (
-          <PasswordManagement
-            register={register}
-            watch={watch}
-            errors={errors}
-          />
+          <PasswordManagement />
         )}
-      </div>
-      <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-        <button
-          disabled={!isDirty || !isValid}
-          type="submit"
-          className="bg-indigo-600 border border-transparent rounded-none shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
-        >
-          Save
-        </button>
       </div>
     </div>
   );
