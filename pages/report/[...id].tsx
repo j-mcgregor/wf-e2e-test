@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { useTranslations } from 'use-intl';
 
-import HashHeader from '../../components/elements/HashContainer';
+import HashContainer from '../../components/elements/HashContainer';
 import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
@@ -17,6 +17,7 @@ import SummaryMap from '../../components/report-sections/summary/SummaryMap';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import { useReportNavItems } from '../../hooks/useNavigation';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
+import { ReportSectionHeader } from '../../components/elements/Headers';
 
 const ReportTemplate = () => {
   const headings: string[] = useReportNavItems();
@@ -62,12 +63,13 @@ const ReportTemplate = () => {
         ) : (
           <div className="text-primary">
             <div className="py-8">
-              <h3 className="text-xl pb-4">{t('risk assessment report')}</h3>
+              <h1 className="text-xl pb-4">{t('risk assessment report')}</h1>
               <ReportHeader company={data?.company_name} created={created} />
             </div>
 
-            <div className="flex flex-col">
-              <p className="text-3xl py-8 text-primary">{t('summary')}</p>
+            <HashContainer name={'Summary'} id={`summary-id`}>
+              <ReportSectionHeader text={t('summary')} />
+
               <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm">
                 <div className="flex w-full md:w-1/2 flex-col py-2">
                   <SummaryDetails
@@ -89,33 +91,49 @@ const ReportTemplate = () => {
               <div className="py-4">
                 <SummaryFinancial years={lastFiveYearsFinancials} />
               </div>
-            </div>
+            </HashContainer>
 
-            <div>
-              <p className="text-2xl font-bold py-8 text-primary">
-                {t('risk metrics')}
-              </p>
+            <HashContainer name={'Risk Metrics'} id={`risk-metrics-id`}>
+              <ReportSectionHeader text={t('risk metrics')} />
               <Benchmarks />
               <BondRating
                 score="B"
                 description="Cupidatat sit duis minim voluptate labore ea. Esse mollit eu qui anim exercitation. Quis tempor velit et duis commodo."
               />
-            </div>
+            </HashContainer>
 
-            {headings.map(header => (
-              <div
-                data-report-section="true"
-                id={`${header.toLowerCase().replace(/ /g, '-')}-id`}
-                key={header}
-                className="h-screen text-3xl pt-16"
-              >
-                <HashHeader name={header}>
-                  <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
-                    {header}
-                  </h3>
-                </HashHeader>
-              </div>
-            ))}
+            <HashContainer name={'Highlights'} id={`highlights-id`}>
+              <ReportSectionHeader text={t('highlights')} />
+            </HashContainer>
+
+            <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
+              <ReportSectionHeader text={t('financial trends')} />
+            </HashContainer>
+
+            <HashContainer
+              name={'Corporate Governance'}
+              id={`corporate-governance-id`}
+            >
+              <ReportSectionHeader text={t('corporate governance')} />
+            </HashContainer>
+
+            <HashContainer name={'Legal Events'} id={`legal-events-id`}>
+              <ReportSectionHeader text={t('legal events')} />
+            </HashContainer>
+
+            <HashContainer
+              name={'Macro Economic Trends'}
+              id={`macro-economic-trends-id`}
+            >
+              <ReportSectionHeader text={t('macro economic trends')} />
+            </HashContainer>
+            <HashContainer name={'ESG'} id={`esg-id`}>
+              <ReportSectionHeader text={t('esg')} />
+            </HashContainer>
+
+            <HashContainer name={'News'} id={`news-id`}>
+              <ReportSectionHeader text={t('news')} />
+            </HashContainer>
           </div>
         )}
       </SecondaryLayout>
