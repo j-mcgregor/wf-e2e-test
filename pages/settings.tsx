@@ -10,54 +10,46 @@ import PreferenceForm from '../components/forms/settings/PreferenceForm';
 import Layout from '../components/layout/Layout';
 import SecondaryLayout from '../components/layout/SecondaryLayout';
 import SettingsNav from '../components/layout/SettingsNav';
-import { useSettingsNavItems } from '../hooks/useNavigation';
-import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 import { GetStaticPropsContext } from 'next';
+import { useTranslations } from 'next-intl';
 
 const Settings = () => {
-  const headings = useSettingsNavItems();
+
+
+  const t = useTranslations()
 
   return (
     <Layout title="Settings" fullWidth>
       <SecondaryLayout navigation={<SettingsNav />}>
         <div className="flex flex-col sm:px-6 lg:px-0 max-w-3xl mx-auto space-y-24 pb-12">
           <HashContainer
-            data-report-section="true"
-            id={`${headings[0]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-            className="pt-16"
-            name={headings[0]['title']}
+            id={`personal-information-id`}
+            name={'Personal Information'}
           >
-            <PersonalInformationForm heading={headings[0].title} />
+            <PersonalInformationForm />
           </HashContainer>
 
           <HashContainer
-            data-report-section="true"
-            id={`${headings[1]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-            className="pt-16"
-            name={headings[1]['title']}
+            id={`preferences-id`}
+            name={'Preferences'}
           >
-            <PreferenceForm headings={headings} />
+            <PreferenceForm />
           </HashContainer>
 
           <HashContainer
-            data-report-section="true"
-            id={`${headings[2]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-            className="pt-16"
-            name={headings[2]['title']}
+            id={`password-id`}
+            name={'Password'}
           >
             <PasswordForm isSSO={false} />
           </HashContainer>
 
           <HashContainer
-            data-report-section="true"
-            id={`${headings[3]['title'].toLowerCase().replace(/ /g, '-')}-id`}
-            className="pt-16"
-            name={headings[3]['title']}
+            id={`communication-id`}
+            name={'Communication'}
           >
-            <CommunicationForm headings={headings} />
+            <CommunicationForm />
           </HashContainer>
         </div>
-        <div className="h-[50vh]" />
       </SecondaryLayout>
     </Layout>
   );
