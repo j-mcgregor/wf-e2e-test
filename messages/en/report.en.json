@@ -23,5 +23,16 @@
   "industry sector": "Industry Sector",
   "incorporation date": "Incorporation Date",
   "last filed date": "Last Filed Account Date",
-  "company description": "Company Description"
+  "company description": "Company Description",
+  "sales": "Sales / Turnover",
+  "profit before taxes": "Profit / (Loss) Before Taxes",
+  "equity shareholder funds": "Equity Shareholder Funds",
+  "tangible worth": "Tangible Worth",
+  "total fixed assets": "Total Fixed Assets",
+  "total assets": "Total Assets",
+  "total current assets": "Total Current Assets",
+  "total current liabilities": "Total Current Liabilities",
+  "net current assets": "Net Current Assets",
+  "employees": "Employees",
+  "bond rating": "Bond Rating"
 }

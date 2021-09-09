@@ -1,6 +1,7 @@
-import { useTranslations } from 'use-intl';
-import { SummaryProps } from '../../../types/global';
 import Iframe from 'react-iframe';
+import { useTranslations } from 'use-intl';
+
+import { SummaryProps } from '../../../types/global';
 
 const SummaryMap = ({ contact }: SummaryProps) => {
   const t = useTranslations();
