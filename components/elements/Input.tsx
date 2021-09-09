@@ -7,8 +7,7 @@ type BaseInputProps = React.DetailedHTMLProps<
 
 interface InputProps extends BaseInputProps {
   name: string;
-  type: string;
-  key?: string | number;
+  type?: string;
   placeholder?: string | undefined;
   label?: React.ReactNode;
   labelClassName?: string;
@@ -31,7 +30,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     {
       label,
       name,
-      type,
+      type = "text",
       placeholder,
       className = defaultClasses,
       onFocusClassName = defaultFocusClasses,
