@@ -1,21 +1,21 @@
 import React, { FC } from 'react';
 
 import Button from '../../elements/Button';
+import { SettingsSectionHeader } from '../../elements/Headers';
 import PasswordManagement from './PasswordManagement';
+import { useTranslations } from 'next-intl';
 
 interface PasswordFormProps {
   isSSO: boolean;
 }
 
 const PasswordForm: FC<PasswordFormProps> = ({ isSSO }) => {
-
+  const t = useTranslations()
   return (
     <div className="shadow sm:rounded-md sm:overflow-hidden">
       <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
         <div>
-          <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
-            Password
-          </h3>
+          <SettingsSectionHeader text={t('password')}/>
           <p className="mt-1 text-sm text-gray-500">
             Handle your authentication details
           </p>

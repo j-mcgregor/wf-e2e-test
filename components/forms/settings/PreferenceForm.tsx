@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useSettingsNavItemsProps } from '../../../hooks/useNavigation';
+import { SettingsSectionHeader } from '../../elements/Headers';
 import Select from '../../elements/Select';
+import { useTranslations } from 'next-intl';
 
 import {
   localisationProps,
@@ -11,10 +11,6 @@ import {
   reportingProps
 } from './settingsData/SpecialistsInputProps';
 
-interface PreferenceFormProps {
-  headings: useSettingsNavItemsProps[];
-}
-
 interface PreferenceFormInput {
   localisation: string;
   reporting: string;
@@ -22,7 +18,10 @@ interface PreferenceFormInput {
   loginScreen: string;
 }
 
-const PreferenceForm: FC<PreferenceFormProps> = ({ headings }) => {
+const PreferenceForm = () => {
+
+  const t = useTranslations()
+
   const { register, handleSubmit, formState } = useForm<PreferenceFormInput>();
   const { isDirty, isValid } = formState;
   // eslint-disable-next-line no-console
@@ -36,9 +35,8 @@ const PreferenceForm: FC<PreferenceFormProps> = ({ headings }) => {
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
             <div>
-              <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
-                {headings[1]['title']}
-              </h3>
+            <SettingsSectionHeader text={t('preferences')}/>
+
               <p className="mt-1 text-sm text-gray-500">
                 Change or update your personal information
               </p>

@@ -1,12 +1,9 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { useSettingsNavItemsProps } from '../../../hooks/useNavigation';
 import CheckboxInput from '../../elements/Checkbox';
-
-interface CommunicationFormProps {
-  headings: useSettingsNavItemsProps[];
-}
+import { SettingsSectionHeader } from '../../elements/Headers';
+import { useTranslations } from 'next-intl';
 
 interface CommunicationFormInput {
   comments: string;
@@ -14,7 +11,10 @@ interface CommunicationFormInput {
   offers: string;
 }
 
-const CommunicationForm: FC<CommunicationFormProps> = ({ headings }) => {
+const CommunicationForm = () => {
+
+  const t = useTranslations()
+
   const { register, handleSubmit, formState } =
     useForm<CommunicationFormInput>();
   const { isDirty, isValid } = formState;
@@ -28,9 +28,7 @@ const CommunicationForm: FC<CommunicationFormProps> = ({ headings }) => {
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
-            <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
-              {headings[3]['title']}
-            </h3>
+            <SettingsSectionHeader text={t('communication')}/>
             <p className="mt-1 text-sm text-gray-500">
               Change or update your personal information
             </p>

@@ -8,10 +8,8 @@ import Select from '../../elements/Select';
 import countryJSON from '../../../lib/country_currency.json';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { useTranslations } from 'next-intl';
+import { SettingsSectionHeader } from '../../elements/Headers';
 
-interface PersonalInformationProps {
-  heading: string;
-}
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -35,7 +33,7 @@ const countries = countryJSON.map(value => {
   return { optionValue: value.CountryName };
 });
 
-const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
+const PersonalInformationForm = () => {
 
   const t = useTranslations()
   
@@ -53,11 +51,9 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
-            {heading && (
-              <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
-                {heading}
-              </h3>
-            )}
+              <SettingsSectionHeader>
+                {t('personal information')}
+              </SettingsSectionHeader>
             <p className="mt-1 text-sm text-gray-500">
             {t('forms.personal.update your personal')}
             </p>
@@ -169,7 +165,7 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
             variant="primary"
             className="max-w-[150px] ml-auto"
           >
-            {t('forms.save')}
+            {t('save')}
           </Button>
         </div>
       </div>
