@@ -18,7 +18,7 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
           <div className="py-2 align-middle inline-block min-w-full ">
             <div className="overflow-hidden text-xs">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="border-b border-black">
+                <thead className="border-b border-black font-semibold">
                   <tr>
                     <td />
                     {years.map((year, i) => (
