@@ -6,7 +6,7 @@ import HashContainer from '../components/elements/HashContainer';
 import CommunicationForm from '../components/forms/settings/CommunicationForm';
 import PasswordForm from '../components/forms/settings/PasswordForm';
 import PersonalInformationForm from '../components/forms/settings/PersonalInformationForm';
-import SpecialistsForm from '../components/forms/settings/SpecialistsForm';
+import PreferenceForm from '../components/forms/settings/PreferenceForm';
 import Layout from '../components/layout/Layout';
 import SecondaryLayout from '../components/layout/SecondaryLayout';
 import SettingsNav from '../components/layout/SettingsNav';
@@ -26,7 +26,7 @@ const Settings = () => {
             className="pt-16"
             name={headings[0]['title']}
           >
-            <PersonalInformationForm headings={headings} />
+            <PersonalInformationForm heading={headings[0].title} />
           </HashContainer>
 
           <HashContainer
@@ -35,7 +35,7 @@ const Settings = () => {
             className="pt-16"
             name={headings[1]['title']}
           >
-            <SpecialistsForm headings={headings} />
+            <PreferenceForm headings={headings} />
           </HashContainer>
 
           <HashContainer
@@ -44,7 +44,7 @@ const Settings = () => {
             className="pt-16"
             name={headings[2]['title']}
           >
-            <PasswordForm />
+            <PasswordForm isSSO={false} />
           </HashContainer>
 
           <HashContainer

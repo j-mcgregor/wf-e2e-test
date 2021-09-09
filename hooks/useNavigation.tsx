@@ -81,7 +81,7 @@ const useSettingsNavItems = (): useSettingsNavItemsProps[] => {
     const t = useTranslations()
     return [
         {icon: UserCircleIcon, title: `${t('personal information')}`},
-        {icon: FingerPrintIcon, title: `${t('specialists')}`},
+        {icon: FingerPrintIcon, title: `${t('preferences')}`},
         {icon: KeyIcon, title: `${t('password')}`},
         {icon: MailIcon, title: `${t('communication')}`},
     ]

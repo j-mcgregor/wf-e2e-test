@@ -11,22 +11,22 @@ import {
   reportingProps
 } from './settingsData/SpecialistsInputProps';
 
-interface SpecialistsFormProps {
+interface PreferenceFormProps {
   headings: useSettingsNavItemsProps[];
 }
 
-interface SpecialistsFormInput {
+interface PreferenceFormInput {
   localisation: string;
   reporting: string;
   currency: string;
   loginScreen: string;
 }
 
-const SpecialistsForm: FC<SpecialistsFormProps> = ({ headings }) => {
-  const { register, handleSubmit, formState } = useForm<SpecialistsFormInput>();
+const PreferenceForm: FC<PreferenceFormProps> = ({ headings }) => {
+  const { register, handleSubmit, formState } = useForm<PreferenceFormInput>();
   const { isDirty, isValid } = formState;
   // eslint-disable-next-line no-console
-  const onSubmit: SubmitHandler<SpecialistsFormInput> = data =>
+  const onSubmit: SubmitHandler<PreferenceFormInput> = data =>
     // eslint-disable-next-line no-console
     console.log(data);
 
@@ -108,4 +108,4 @@ const SpecialistsForm: FC<SpecialistsFormProps> = ({ headings }) => {
   );
 };
 
-export default SpecialistsForm;
+export default PreferenceForm;
