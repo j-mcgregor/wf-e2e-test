@@ -48,7 +48,7 @@ const ReportTemplate = () => {
   const lastFiveYearsFinancials = data && transformedFinancials.slice(0, 5);
 
   // temporary before data exists
-  const description =
+  const mockDescription =
     'Culpa minim do anim consequat labore amet officia ea mollit veniam velit. Lorem exercitation aute aliqua labore nisi ad enim do sunt do duis culpa. Consectetur excepteur est occaecat anim anim adipisicing magna ut enim adipisicing esse dolore.';
 
   return (
@@ -73,14 +73,11 @@ const ReportTemplate = () => {
               <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm">
                 <div className="flex w-full md:w-1/2 flex-col py-2">
                   <SummaryDetails
-                    info={{
-                      regNumber: 'SC172288',
-                      sector: 'Travel, Personal & Leisure',
-                      description: description,
-                      incorporationDate:
-                        data.contact_details.incorporation_date,
-                      lastAccountDate: '31/01/2020'
-                    }}
+                    regNumber={'SC172288'}
+                    sector={'Travel, Personal & Leisure'}
+                    description={mockDescription}
+                    incorporationDate={data.contact_details.incorporation_date}
+                    lastAccountDate={'31/01/2020'}
                   />
                 </div>
 
