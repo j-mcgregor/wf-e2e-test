@@ -1,24 +1,14 @@
 import React, { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useSettingsNavItemsProps } from '../../../hooks/useNavigation';
+
 import { validEmailRegex } from '../../../lib/regexes';
+import Button from '../../elements/Button';
 import Input from '../../elements/Input';
 import Select from '../../elements/Select';
-import {
-  companyNameProps,
-  postcodeProps,
-  stateProps,
-  cityProps,
-  streetAddressProps,
-  countryProps,
-  coHeadquartLocationProps,
-  emailProps,
-  lastNameProps,
-  firstNameProps
-} from './settingsData/personalInformationInputProps';
+import countryJSON from '../../../lib/country_currency.json';
 
 interface PersonalInformationProps {
-  headings: useSettingsNavItemsProps[];
+  heading: string;
 }
 
 interface PersonalInformationFormInput {
@@ -31,15 +21,25 @@ interface PersonalInformationFormInput {
   state: string;
   postcode: string;
   companyName: string;
-  coHeadquartLocation: string;
+  companyHQLocation: string;
 }
 
-const PersonalInformationForm: FC<PersonalInformationProps> = ({
-  headings
-}) => {
+const formClassName =
+  'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm';
+
+const formLabelClassName = 'block text-sm font-medium text-gray-700';
+
+const countries = countryJSON.map(value => {
+  return { optionValue: value.CountryName };
+});
+
+const PersonalInformationForm: FC<PersonalInformationProps> = ({ heading }) => {
+  
   const { register, handleSubmit, formState } =
     useForm<PersonalInformationFormInput>();
+    
   const { isDirty, isValid } = formState;
+
   const onSubmit: SubmitHandler<PersonalInformationFormInput> = data =>
     // eslint-disable-next-line no-console
     console.log({ data });
@@ -49,9 +49,11 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
-            <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
-              {headings[0]['title']}
-            </h3>
+            {heading && (
+              <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
+                {heading}
+              </h3>
+            )}
             <p className="mt-1 text-sm text-gray-500">
               Change or update your personal information
             </p>
@@ -59,68 +61,109 @@ const PersonalInformationForm: FC<PersonalInformationProps> = ({
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <Input
-                key={'firstName'}
                 {...register('firstName')}
-                {...firstNameProps}
+                label="First name"
+                className={formClassName}
+                labelClassName={formLabelClassName}
               />
             </div>
+
             <div className="col-span-6 sm:col-span-3">
               <Input
-                key={'lastName'}
                 {...register('lastName')}
-                {...lastNameProps}
+                label="Last name"
+                className={formClassName}
+                labelClassName={formLabelClassName}
               />
             </div>
+
             <div className="col-span-6 sm:col-span-4">
               <Input
                 {...register('email', { pattern: validEmailRegex })}
-                {...emailProps}
+                type="email"
+                label="Email address"
+                className={formClassName}
+                labelClassName={formLabelClassName}
               />
             </div>
+
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('country')} {...countryProps} />
+              <Select
+                {...register('country')}
+                label="Country / Region"
+                options={countries}
+                className={formClassName}
+                labelClassName={formLabelClassName}
+              />
             </div>
 
             <div className="col-span-6">
-              <Input {...register('streetAddress')} {...streetAddressProps} />
+              <Input
+                {...register('streetAddress')}
+                label="Street Address"
+                className={formClassName}
+                labelClassName={formLabelClassName}
+              />
             </div>
 
             <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-              <Input {...register('city')} {...cityProps} />
+              <Input
+                {...register('city')}
+                label="City"
+                className={formClassName}
+                labelClassName={formLabelClassName}
+              />
             </div>
 
             <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-              <Input {...register('state')} {...stateProps} />
+              <Input
+                {...register('state')}
+                label="State / Province"
+                className={formClassName}
+                labelClassName={formLabelClassName}
+              />
             </div>
 
             <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-              <Input {...register('postcode')} {...postcodeProps} />
+              <Input
+                {...register('postcode')}
+                label="Zip / Postcode"
+                className={formClassName}
+                labelClassName={formLabelClassName}
+              />
             </div>
           </div>
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-              <Input {...register('companyName')} {...companyNameProps} />
+              <Input
+                {...register('companyName')}
+                label="Company Name"
+                className={formClassName}
+                labelClassName={formLabelClassName}
+              />
             </div>
 
             <div className="col-span-6 sm:col-span-6 lg:col-span-4">
               <Select
-                {...register('coHeadquartLocation')}
-                {...coHeadquartLocationProps}
+                {...register('companyHQLocation')}
+                options={countries}
+                label="Company Headquarters Location"
+                className={formClassName}
+                labelClassName={formLabelClassName}
               />
             </div>
           </div>
         </div>
 
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-          <button
+          <Button
             disabled={!isDirty || !isValid}
             type="submit"
-            className="bg-alt border border-transparent rounded-none
-                        shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium
-                        text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            variant="primary"
+            className="max-w-[150px] ml-auto"
           >
             Save
-          </button>
+          </Button>
         </div>
       </div>
     </form>
