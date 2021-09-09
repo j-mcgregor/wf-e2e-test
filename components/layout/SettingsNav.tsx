@@ -54,11 +54,11 @@ const SettingsNav = () => {
                                     <div className="relative pb-2 h-full">
                                         <div className="relative flex items-center">
 
-                                            {icon && <IconTag icon={icon} className={"h-5 w-5 mr-2"}/>}
+                                            {icon && <IconTag icon={icon} className={"h-5 w-5 mx-1"}/>}
                                             <p
                                                 className={`${
                                                     isActive ? 'text-highlight' : ''
-                                                } ml-5 z-10 text-center`}
+                                                } ml-2 z-10 text-center`}
                                             >
                                                 {title}
                                             </p>
