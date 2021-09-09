@@ -1,6 +1,6 @@
 const SkeletonReport = () => {
   return (
-      <div className="flex flex-col mx-auto max-w-2xl animate-pulse xl:pt-24 md:pt-16 pt-8">
+      <div className="flex flex-col mx-auto max-w-5xl animate-pulse xl:pt-24 md:pt-16 pt-8">
         {/* Summary */}
         <div className="flex w-full my-4 h-[250px] space-x-5">
         <div className=" w-1/2 h-full bg-gray-200 rounded"></div>

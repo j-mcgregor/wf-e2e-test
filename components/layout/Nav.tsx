@@ -4,7 +4,6 @@ import { MenuAlt2Icon } from '@heroicons/react/solid';
 import React, { Fragment, useRef } from 'react';
 
 import { useMainNavItems } from '../../hooks/useNavigation';
-// import { siteNavigation } from '../../lib/settings/navigation.settings';
 import Button from '../elements/Button';
 import WF from '../elements/WFLogo';
 

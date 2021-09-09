@@ -48,8 +48,7 @@ const useMainNavItems = () => {
             {name: `${t('support')}`, href: '/support', icon: SupportIcon},
             {
                 name: `${t('logout')}`,
-                onClick: () => signOut(),
-                // onClick: () => signOut({ callbackUrl: '/login' }),
+                onClick: () => signOut({ callbackUrl: `${window.location.origin}/login` }),
                 icon: LogoutIcon
             }
         ]
