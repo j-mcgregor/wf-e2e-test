@@ -26,14 +26,15 @@ const HashContainer = ({
     if (isOnScreen) {
       push(path, path, { shallow: true });
     }
+
     //FIXME: linter suggested this, i don't see why, maybe have a look @sam
     // adding the other dependencies breaks the functionality, disabling line so I can pass the build
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asPath]);
+  }, [isOnScreen]);
 
   return (
-    <div className={className} ref={containerRef} id={id} {...restProps}>
+    <div className={`min-h-screen pt-16 ${className}`} ref={containerRef} id={id} {...restProps}>
       {children}
     </div>
   );

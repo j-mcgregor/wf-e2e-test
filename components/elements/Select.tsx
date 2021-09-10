@@ -1,13 +1,13 @@
 import React from 'react';
 
-type BaseInputProps = React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
+type BaseSelectProps = React.DetailedHTMLProps<
+  React.SelectHTMLAttributes<HTMLSelectElement>,
+  HTMLSelectElement
 >;
 
-interface InputProps extends BaseInputProps {
+interface SelectProps extends BaseSelectProps {
   name: string;
-  type?: string;
+  key?: string | number;
   placeholder?: string | undefined;
   label?: React.ReactNode;
   labelClassName?: string;
@@ -15,8 +15,7 @@ interface InputProps extends BaseInputProps {
   onFocusClassName?: string;
   onErrorClassName?: string;
   isError?: boolean;
-  select?: boolean;
-  options?: { optionValue: string; optionName: string }[];
+  options: { optionValue: string; optionName?: string }[];
 }
 
 const defaultFocusClasses = 'focus:ring-highlight focus:border-highlight';
@@ -25,12 +24,12 @@ const defaultClasses =
   'appearance-none block w-full px-3 py-2 my-2 rounded-md focus:outline-none placeholder-gray-400 sm:text-sm text-black';
 const defaultLabelClasses = 'block text-sm font-medium';
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const Input = React.forwardRef<HTMLSelectElement, SelectProps>(
   (
     {
+      options,
       label,
       name,
-      type = "text",
       placeholder,
       className = defaultClasses,
       onFocusClassName = defaultFocusClasses,
@@ -38,7 +37,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       isError,
       labelClassName = defaultLabelClasses,
       ...props
-    }: InputProps,
+    }: SelectProps,
     ref
   ) => {
     return (
@@ -48,9 +47,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {label}
           </label>
         )}
-        <input
+        {/* eslint-disable-next-line sonarjs/no-identical-expressions */}
+        {props.children && props.children}
+        <select
           ref={ref}
-          type={type}
           name={name}
           id={name}
           placeholder={placeholder}
@@ -58,7 +58,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             isError ? onErrorClassName : onFocusClassName
           } ${className}`}
           {...props}
-        />
+        >
+          {options &&
+            options.map(({ optionValue, optionName }) => {
+              return (
+                <option key={optionValue} value={optionValue}>
+                  {optionName ? optionName : optionValue}
+                </option>
+              );
+            })}
+        </select>
       </>
     );
   }

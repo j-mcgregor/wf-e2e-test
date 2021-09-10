@@ -1,31 +1,36 @@
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import CheckboxInput from '../../elements/Checkbox';
+import { SettingsSectionHeader } from '../../elements/Headers';
+import { useTranslations } from 'next-intl';
+
 interface CommunicationFormInput {
   comments: string;
   candidates: string;
   offers: string;
 }
-const CommunicationForm = () => {
-  const { register, handleSubmit } = useForm<CommunicationFormInput>();
 
-  const onSubmit: SubmitHandler<CommunicationFormInput> = data => {
+const CommunicationForm = () => {
+
+  const t = useTranslations()
+
+  const { register, handleSubmit, formState } =
+    useForm<CommunicationFormInput>();
+  const { isDirty, isValid } = formState;
+  // eslint-disable-next-line no-console
+  const onSubmit: SubmitHandler<CommunicationFormInput> = data =>
     // eslint-disable-next-line no-console
     console.log(data);
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
-            <div>
-              <h3 className={'text-lg leading-6 font-medium text-gray-900'}>
-                Communication
-              </h3>
-            </div>
+            <SettingsSectionHeader text={t('communication')}/>
             <p className="mt-1 text-sm text-gray-500">
-              Decide which communications you would like to receive.
+              Change or update your personal information
             </p>
           </div>
 
@@ -34,82 +39,45 @@ const CommunicationForm = () => {
               By Email
             </legend>
             <div className="mt-4 space-y-4">
-              <div className="flex items-start">
-                <div className="h-5 flex items-center">
-                  <input
-                    {...register('comments')}
-                    // value={"comments"}
-                    id="comments"
-                    name="comments"
-                    type="checkbox"
-                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="comments"
-                    className="font-medium text-gray-700"
-                  >
-                    Batch report completion
-                  </label>
-                  <p className="text-gray-500">
-                    Get notified when a batch report has completed all reports.
-                  </p>
-                </div>
+              <div className="flex items-center">
+                <CheckboxInput
+                  label={'Batch report completion'}
+                  id={'comments'}
+                  paragraph={
+                    'Get notified when a batch report has completed all reports.'
+                  }
+                  {...{ ...register('comments') }}
+                  name={'comments'}
+                />
               </div>
-              <div>
-                <div className="flex items-start">
-                  <div className="h-5 flex items-center">
-                    <input
-                      {...register('candidates')}
-                      id="candidates"
-                      name="candidates"
-                      type="checkbox"
-                      className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="candidates"
-                      className="font-medium text-gray-700"
-                    >
-                      Service Updates
-                    </label>
-                    <p className="text-gray-500">
-                      Get the latest updates on the Wiserfunding platform..
-                    </p>
-                  </div>
-                </div>
+              <div className="flex items-center">
+                <CheckboxInput
+                  label={'Service Updates'}
+                  id={'candidates'}
+                  paragraph={
+                    'Get the latest updates on the Wiserfunding platform.'
+                  }
+                  {...{ ...register('candidates') }}
+                  name={'candidates'}
+                />
               </div>
-              <div>
-                <div className="flex items-start">
-                  <div className="h-5 flex items-center">
-                    <input
-                      {...register('offers')}
-                      id="offers"
-                      name="offers"
-                      type="checkbox"
-                      className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="offers"
-                      className="font-medium text-gray-700"
-                    >
-                      Company updates
-                    </label>
-                    <p className="text-gray-500">
-                      Get all the latest updates relating to Wiserfunding.
-                    </p>
-                  </div>
-                </div>
+              <div className="flex items-center">
+                <CheckboxInput
+                  label={'Company Updates'}
+                  id={'offers'}
+                  paragraph={
+                    'Get all the latest updates relating to Wiserfunding.'
+                  }
+                  {...{ ...register('offers') }}
+                  name={'offers'}
+                />
               </div>
             </div>
           </fieldset>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           <button
+            disabled={!isDirty || !isValid}
             type="submit"
             className="bg-indigo-600 border border-transparent
                         rounded-none shadow-sm py-2 px-4 inline-flex justify-center

@@ -1,8 +1,9 @@
-import { useTranslations } from 'use-intl';
-import { SummaryProps } from '../../../types/global';
 import Iframe from 'react-iframe';
+import { useTranslations } from 'use-intl';
 
-const SummaryMap = ({ contact }: SummaryProps) => {
+import { SummaryContact } from '../../../types/report';
+
+const SummaryMap = ({ contact }: { contact: SummaryContact}) => {
   const t = useTranslations();
 
   const phone = contact?.phone_numbers[0].replace(/[A-z-]/g, '');
