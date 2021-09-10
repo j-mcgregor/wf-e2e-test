@@ -7,10 +7,7 @@ const SummaryMap = ({ contact }: { contact: SummaryContact}) => {
   const t = useTranslations();
 
   const phone = contact?.phone_numbers[0].replace(/[A-z-]/g, '');
-
-  // couldn't get working in a .env - API key through Dan's Google account:
-  const MAPS_API_KEY = 'AIzaSyBseaTSNK34Z11NPGydJsDTzTkE1Pe9fKo';
-
+  
   return (
     <div className="bg-white border shadow-sm rounded md:ml-8  h-full flex flex-col text-primary">
       <div className="flex items-center justify-center bg-gray-500 text-white text-center ">
@@ -18,7 +15,7 @@ const SummaryMap = ({ contact }: { contact: SummaryContact}) => {
           width="100%"
           height="100%"
           loading="lazy"
-          url={`https://www.google.com/maps/embed/v1/place?key=${MAPS_API_KEY}
+          url={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_MAPS_API_KEY}
           &q=${contact?.postal_code}}&zoom=12`}
         />
       </div>
