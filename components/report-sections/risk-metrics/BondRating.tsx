@@ -5,8 +5,8 @@ interface BondRatingProps {
   score: Rating;
   description: string;
 }
-type Rating = keyof typeof Ratings
-enum Ratings {
+type Rating = keyof typeof RatingTypes
+enum RatingTypes {
   CC,
   CCC,
   "B-",

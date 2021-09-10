@@ -5,7 +5,7 @@ import { validEmailRegex } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import Input from '../../elements/Input';
 import Select from '../../elements/Select';
-import countryJSON from '../../../lib/country_currency.json';
+import countryJSON from '../../../lib/data/country_currency.json';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { useTranslations } from 'next-intl';
 import { SettingsSectionHeader } from '../../elements/Headers';

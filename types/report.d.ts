@@ -4,7 +4,7 @@
 
 export type FinancialYear = {
   [index: string]: string;
-  year: string;
+  year?: string;
   sales: string;
   profit_and_loss_before_tax: string;
   total_shareholder_funds: string;
@@ -19,11 +19,11 @@ export type FinancialYear = {
 };
 
 export type SummaryInfo = {
-  regNumber: string;
+  reg_number: string;
   sector: string;
   description: string;
-  incorporationDate: number | string;
-  lastAccountDate: number | string;
+  incorporation_date: number | string;
+  last_account_date: number | string;
 };
 
 export type SummaryContact = {

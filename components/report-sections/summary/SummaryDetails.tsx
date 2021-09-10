@@ -1,5 +1,14 @@
 import { useTranslations } from 'use-intl';
-import { SummaryInfo } from '../../../types/report';
+
+
+
+export type SummaryDetailsProps = {
+  regNumber: string;
+  sector: string;
+  description: string;
+  incorporationDate: number | string;
+  lastAccountDate: number | string;
+};
 
 const SummaryDetails = ({
   regNumber,
@@ -7,7 +16,7 @@ const SummaryDetails = ({
   incorporationDate,
   lastAccountDate,
   description
-}: SummaryInfo) => {
+}: SummaryDetailsProps) => {
   const t = useTranslations();
 
   

@@ -18,20 +18,19 @@ import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import { useReportNavItems } from '../../hooks/useNavigation';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
 import { ReportSectionHeader } from '../../components/elements/Headers';
+import { FinancialYear, SummaryContact, SummaryInfo } from '../../types/report';
 
-interface DataProps {
+interface ReportDataProps {
   created_at?: string;
   company_name: string;
-  contact_details: { incorporation_date: string };
+  contact_details: SummaryContact & SummaryInfo;
   financials: {
-    [x: string]: {
-      employees: any;
-    };
-  };
+    [year: string]: FinancialYear;
+  }
 }
 
 const ReportTemplate = () => {
-  const headings: string[] = useReportNavItems();
+
   const t = useTranslations();
   const router = useRouter();
 
@@ -39,9 +38,10 @@ const ReportTemplate = () => {
 
   const fetcher = (url: any) => fetch(url).then(res => res.json());
 
-  const { data, error } = useSWR<DataProps>(`/api/report?id=${id}`, fetcher);
+  const { data, error } = useSWR<ReportDataProps>(`/api/report?id=${id}`, fetcher);
   // console.log(data);
 
+  // Todo: handle error more gracefully
   if (error) return <div>failed to load</div>;
 
   const date = new Date(Number(data?.['created_at']));
@@ -56,7 +56,7 @@ const ReportTemplate = () => {
       })
       .reverse();
 
-  const lastFiveYearsFinancials = data && transformedFinancials.slice(0, 5);
+  const lastFiveYearsFinancials = data && transformedFinancials?.slice(0, 5) || []
 
   // temporary before data exists
   const mockDescription =
