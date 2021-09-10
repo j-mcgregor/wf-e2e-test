@@ -1,13 +1,13 @@
 {
   "reports": "Reports",
-  "see all your recent reports": "See all of your recent reports and access the reports you have bookmarked for quick access...",
-  "bookmarked reports": "Bookmarked Reports",
-  "sme score": "SME Score",
-  "bond rating": "Bond Rating",
-  "pd ratio": "P/D Ratio",
-  "company name": "Company Name",
-  "sme z-score": "SME Z-Score",
+  "see_all_your_recent_reports": "See all of your recent reports and access the reports you have bookmarked for quick access...",
+  "bookmarked_reports": "Bookmarked Reports",
+  "sme_score": "SME Score",
+  "bond_rating": "Bond Rating",
+  "pd_ratio": "P/D Ratio",
+  "company_name": "Company Name",
+  "sme_z-score": "SME Z-Score",
   "created": "Created",
-  "recent reports": "All Recent Reports",
-  "load more": "Load More"
+  "recent_reports": "All Recent Reports",
+  "load_more": "Load More"
 }

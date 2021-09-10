@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface SecondaryNavProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   navigation?: React.ReactNode;
   // ^ I made this optional for empty use in the skeleton report <- dan
 }

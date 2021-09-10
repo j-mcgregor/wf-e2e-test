@@ -33,9 +33,9 @@ const Reports = () => {
       <div className="text-primary">
         <div>
           <h1 className="text-3xl font-semibold py-2">{t('reports')}</h1>
-          <p className="text-base py-4">{t('see all your recent reports')}</p>
+          <p className="text-base py-4">{t('see_all_your_recent_reports')}</p>
           <h2 className="text-2xl font-semibold py-6">
-            {t('bookmarked reports')}
+            {t('bookmarked_reports')}
           </h2>
         </div>
 
@@ -55,7 +55,7 @@ const Reports = () => {
         </div>
 
         <div className="flex flex-col">
-          <p className="text-2xl py-6 font-semibold">{t('recent reports')}</p>
+          <p className="text-2xl py-6 font-semibold">{t('recent_reports')}</p>
 
           <ReportTable
             headerSize="text-[10px] md:text-sm lg:text-base"
@@ -72,7 +72,7 @@ const Reports = () => {
               className="border-alt border max-w-[120px] my-2 mx-auto"
               onClick={handleAddReports}
             >
-              <p>{t('load more')}</p>
+              <p>{t('load_more')}</p>
             </Button>
           )}
         </div>

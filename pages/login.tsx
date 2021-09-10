@@ -19,10 +19,10 @@ const Login = () => {
           <div>
             <div className="bg-secondary">
               <h1 className="text-xl md:text-3xl font-bold py-3">
-                {t('sign into account')}
+                {t('sign_into_account')}
               </h1>
               <p className="text-sm text-highlight">
-                {t('register for demo', {
+                {t('register_for_demo', {
                   a: function Linked(children: React.ReactNode) {
                     return (
                       <Link

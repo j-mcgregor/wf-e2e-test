@@ -1,22 +1,22 @@
 {
-  "personal information": "Personal Information",
+  "personal_information": "Personal Information",
   "preferences": "Preferences",
   "communication": "Communication",
   "save": "Save",
   "password": "Password",
   "forms": {
     "personal": {
-      "update your personal": "Update your personal information",
-      "first name": "First name",
-      "last name": "Last name",
-      "email address": "Email address",
+      "update_your_personal": "Update your personal information",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email_address": "Email address",
       "country": "Country / Region",
-      "street address": "Street Address",
+      "street_address": "Street Address",
       "city": "City",
       "postcode": "Zip / Postcode",
       "state": "State / Province",
-      "company name": "Company Name",
-      "company headquarters": "Company Headquarters Location"
+      "company_name": "Company Name",
+      "company_headquarters": "Company Headquarters Location"
     },
     "communication-form": {
       "change or update": "Change or update your personal information",
@@ -63,8 +63,8 @@
   },
   "errors": {
     "email": "A valid email address is required.",
-    "last name": "Please provide your last name.",
-    "first name": "Please provide your first name.",
+    "last_name": "Please provide your last name.",
+    "first_name": "Please provide your first name.",
     "newPassword": {
       "message": "Password must have at least 8 characters"
     },

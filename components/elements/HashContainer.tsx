@@ -3,18 +3,20 @@ import React, { ReactNode, useEffect, useRef } from 'react';
 
 import useOnScreen from '../../hooks/useOnScreen';
 
+interface HashContainerProps {
+  name: string;
+  id?: string;
+  className?: string;
+  children?: React.ReactNode;
+}
+
 const HashContainer = ({
   children,
   name,
   className,
   id,
   ...restProps
-}: {
-  children: ReactNode;
-  name: string;
-  id?: string;
-  className?: string;
-}) => {
+}: HashContainerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { asPath, push } = useRouter();
   const isOnScreen = useOnScreen(containerRef);
@@ -34,7 +36,12 @@ const HashContainer = ({
   }, [isOnScreen]);
 
   return (
-    <div className={`min-h-screen pt-10 lg:pt-0 ${className}`} ref={containerRef} id={id} {...restProps}>
+    <div
+      className={`min-h-screen pt-10 lg:pt-0 ${className}`}
+      ref={containerRef}
+      id={id}
+      {...restProps}
+    >
       {children}
     </div>
   );

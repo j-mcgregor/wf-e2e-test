@@ -1,321 +1,140 @@
+import '@testing-library/jest-dom';
+
+import client from 'next-auth/client';
+import * as nextRouter from 'next/router';
 import React from 'react';
 
+import { mockReports } from '../../lib/mock-data/users';
+import allMessages from '../../messages/en';
 import Dashboard from '../../pages';
-import { render, screen } from '../../test-utils';
-import * as nextRouter from 'next/router';
-import client from 'next-auth/client';
-import '@testing-library/jest-dom';
+import { makeMockSession, render, screen, within } from '../../test-utils';
+
 jest.mock('next-auth/client');
 
 // @ts-ignore
+// eslint-disable-next-line no-import-assign
 nextRouter.useRouter = jest.fn().mockImplementation(() => ({}));
 
 describe('Dashboard', () => {
-  it('renders a heading', () => {
-    const mockSession = {
-      user: {
-        name: 'John Doe',
-        email: 'test@test.com',
-        id: 1,
-        recent_usage: {
-          last_login: 1629657065187,
-          api_requests: 142,
-          reports_ran: 32
-        },
-        reports: [
-          {
-            id: 1,
-            company_name: 'Bird Feeding Corp',
-            sme_zscore: 456,
-            bond_rating: 'AA',
-            created_at: 1629660518563,
-            bookmarked: false
-          },
-          {
-            id: 2,
-            company_name: 'Swan Feeding Corp',
-            sme_zscore: 322,
-            bond_rating: 'A-',
-            created_at: 1629660001000,
-            bookmarked: false
-          },
-          {
-            id: 3,
-            company_name: 'Geese Feeding Corp',
-            sme_zscore: 345,
-            bond_rating: 'A',
-            created_at: 1629660000000,
-            bookmarked: false
-          },
-          {
-            id: 4,
-            company_name: 'Pigeon Feeding Corp',
-            sme_zscore: 311,
-            bond_rating: 'B+',
-            created_at: 1629659000000,
-            bookmarked: false
-          },
-          {
-            id: 5,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: true
-          },
-          {
-            id: 6,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 7,
-            company_name: 'Bird Feeding Corp',
-            sme_zscore: 456,
-            bond_rating: 'AA',
-            created_at: 1629660518563,
-            bookmarked: false
-          },
-          {
-            id: 8,
-            company_name: 'Swan Feeding Corp',
-            sme_zscore: 322,
-            bond_rating: 'A-',
-            created_at: 1629660001000,
-            bookmarked: true
-          },
-          {
-            id: 9,
-            company_name: 'Geese Feeding Corp',
-            sme_zscore: 345,
-            bond_rating: 'A',
-            created_at: 1629660000000,
-            bookmarked: true
-          },
-          {
-            id: 10,
-            company_name: 'Pigeon Feeding Corp',
-            sme_zscore: 311,
-            bond_rating: 'B+',
-            created_at: 1629659000000,
-            bookmarked: false
-          },
-          {
-            id: 11,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 12,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000
-          },
-          {
-            id: 13,
-            company_name: 'Bird Feeding Corp',
-            sme_zscore: 456,
-            bond_rating: 'AA',
-            created_at: 1629660518563,
-            bookmarked: false
-          },
-          {
-            id: 14,
-            company_name: 'Swan Feeding Corp',
-            sme_zscore: 322,
-            bond_rating: 'A-',
-            created_at: 1629660001000,
-            bookmarked: false
-          },
-          {
-            id: 15,
-            company_name: 'THIRD NEWEST ENTRY TEST',
-            sme_zscore: 345,
-            bond_rating: 'A',
-            created_at: 1630408290506,
-            bookmarked: false
-          },
-          {
-            id: 16,
-            company_name: 'Pigeon Feeding Corp',
-            sme_zscore: 311,
-            bond_rating: 'B+',
-            created_at: 1629659000000,
-            bookmarked: false
-          },
-          {
-            id: 17,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 18,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 19,
-            company_name: 'Bird Feeding Corp',
-            sme_zscore: 456,
-            bond_rating: 'AA',
-            created_at: 1629660518563,
-            bookmarked: false
-          },
-          {
-            id: 20,
-            company_name: 'Swan Feeding Corp',
-            sme_zscore: 322,
-            bond_rating: 'A-',
-            created_at: 1629660001000,
-            bookmarked: false
-          },
-          {
-            id: 21,
-            company_name: 'Geese Feeding Corp',
-            sme_zscore: 345,
-            bond_rating: 'A',
-            created_at: 1629660000000,
-            bookmarked: false
-          },
-          {
-            id: 22,
-            company_name: 'SECOND NEWEST ENTRY TEST',
-            sme_zscore: 311,
-            bond_rating: 'B+',
-            created_at: 1630411549699,
-            bookmarked: true
-          },
-          {
-            id: 23,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 24,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 25,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 26,
-            company_name: 'Bird Feeding Corp',
-            sme_zscore: 456,
-            bond_rating: 'AA',
-            created_at: 1629660518563,
-            bookmarked: false
-          },
-          {
-            id: 27,
-            company_name: 'Swan Feeding Corp',
-            sme_zscore: 322,
-            bond_rating: 'A-',
-            created_at: 1629660001000,
-            bookmarked: false
-          },
-          {
-            id: 28,
-            company_name: 'Geese Feeding Corp',
-            sme_zscore: 345,
-            bond_rating: 'A',
-            created_at: 1629660000000,
-            bookmarked: false
-          },
-          {
-            id: 29,
-            company_name: 'Pigeon Feeding Corp',
-            sme_zscore: 311,
-            bond_rating: 'B+',
-            created_at: 1629659000000,
-            bookmarked: false
-          },
-          {
-            id: 30,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 31,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 32,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 33,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 34,
-            company_name: 'Dove Feeding Corp',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1629657000000,
-            bookmarked: false
-          },
-          {
-            id: 35,
-            company_name: 'NEWEST TEST ENTRY',
-            sme_zscore: 222,
-            bond_rating: 'D',
-            created_at: 1630411922216,
-            bookmarked: false
-          }
-        ]
-      },
-      expires: '2021-10-09T09:00:41.059Z'
-    };
+  let mockSession: any;
+
+  beforeEach(() => {
+    mockSession = makeMockSession();
 
     (client.useSession as jest.Mock).mockReturnValue([mockSession, false]);
+  });
 
-    render(<Dashboard />);
+  it('renders without throwing', () => {
+    expect(() => render(<Dashboard />, undefined, allMessages)).not.toThrow();
+  });
 
-    screen.logTestingPlaygroundURL();
-    const heading = screen.getByRole('heading', {
-      name: /welcome to next\.js!/i
+  it('renders the dashboard with all components', () => {
+    render(<Dashboard />, undefined, allMessages);
+
+    const statCards = screen.getAllByTestId('stat-card');
+
+    expect(statCards.length).toBe(3);
+
+    // STAT CARDS
+    expect(statCards[0].textContent?.includes('Total Reports')).toBe(true);
+    expect(statCards[0].textContent?.includes('32')).toBe(true);
+
+    expect(statCards[1].textContent?.includes('API Requests')).toBe(true);
+    expect(statCards[1].textContent?.includes('142')).toBe(true);
+
+    expect(statCards[2].textContent?.includes('weeks ago')).toBe(true);
+    expect(statCards[2].textContent?.includes('Last Login')).toBe(true);
+
+    // TABLE
+    expect(
+      screen.getByRole('columnheader', {
+        name: /company name/i
+      })
+    ).toBeVisible();
+    expect(
+      screen.getByRole('columnheader', {
+        name: /sme z-score/i
+      })
+    ).toBeVisible();
+    expect(
+      screen.getByRole('columnheader', {
+        name: /bond rating/i
+      })
+    ).toBeVisible();
+    expect(
+      screen.getByRole('columnheader', {
+        name: /create/i
+      })
+    ).toBeVisible();
+
+    const rows = screen.getAllByRole('row');
+    expect(rows.length).toBe(6); // table row limit + header
+
+    // rows should sort by newest
+    const newestFiveEntries = [...mockReports]
+      .sort((a, b) => b.created_at - a.created_at)
+      .slice(0, 5);
+
+    expect(
+      within(screen.getAllByRole('row')[1]).getByText(
+        newestFiveEntries[0].company_name
+      )
+    ).toBeVisible();
+
+    expect(
+      within(screen.getAllByRole('row')[2]).getByText(
+        newestFiveEntries[1].company_name
+      )
+    ).toBeVisible();
+
+    expect(
+      within(screen.getAllByRole('row')[3]).getByText(
+        newestFiveEntries[2].company_name
+      )
+    ).toBeVisible();
+
+    expect(
+      within(screen.getAllByRole('row')[4]).getByText(
+        newestFiveEntries[3].company_name
+      )
+    ).toBeVisible();
+
+    expect(
+      within(screen.getAllByRole('row')[5]).getByText(
+        newestFiveEntries[4].company_name
+      )
+    ).toBeVisible();
+
+    // LINK CARDS
+    const linkCards = screen.getAllByTestId('link-card');
+
+    expect(linkCards.length).toBe(4);
+
+    // STAT CARDS
+    const smeLink = screen.getByRole('link', {
+      name: /sme prospector find sme’s that fit your risk criteria and enable your to grow your business sustainably\. we provide all parameters required to complete a successful search\./i
     });
 
-    expect(heading).toBeInTheDocument();
+    expect(within(smeLink).getByText(/sme prospector/i)).toBeVisible();
+
+    const automatedReportLink = screen.getByRole('link', {
+      name: /with only a company number, automatically source data from millions of sme’s\. take this data and generate a credit risk report using wiserfunding’s sme z-score\./i
+    });
+
+    expect(
+      within(automatedReportLink).getByText(/create an automated report/i)
+    ).toBeVisible();
+
+    const apiLink = screen.getByRole('link', {
+      name: /api documentation do you have a large list of companies to analyse\? or want to integrate our technology into your own\. integrate with our api to achieve all of this and more\./i
+    });
+
+    expect(within(apiLink).getByText(/api documentation/i)).toBeVisible();
+
+    const batchLink = screen.getByRole('link', {
+      name: /got a lot of reports to run\? you bring the company ids and we’ll run them and let you know when every single report has been compiled for you and your team\./i
+    });
+
+    expect(within(batchLink).getByText(/batch reports/i)).toBeVisible();
   });
 });

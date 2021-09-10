@@ -11,7 +11,7 @@ const ReliabilityIndex = ({ reliability }: ReliabilityIndexProps) => {
   return (
     <div className="flex flex-col">
       <div className="flex pb-4">
-        <p className="font-bold pr-8">{t('reliability index')}</p>
+        <p className="font-bold pr-8">{t('reliability_index')}</p>
         <InfoPopover
           title="Reliability Index"
           body="Aute nisi ut eiusmod qui proident."

@@ -1,22 +1,22 @@
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
-import { validEmailRegex } from '../../../lib/utils/regexes';
-import Button from '../../elements/Button';
-import Input from '../../elements/Input';
-import Select from '../../elements/Select';
-import countryJSON from '../../../lib/data/country_currency.json';
-import ErrorMessage from '../../elements/ErrorMessage';
-import { useTranslations } from 'next-intl';
-import { SettingsSectionHeader } from '../../elements/Headers';
 import {
   RecoilValueReadOnly,
   selector,
   useRecoilValue,
   useSetRecoilState
 } from 'recoil';
+
 import appState from '../../../lib/appState';
+import countryJSON from '../../../lib/data/country_currency.json';
+import { validEmailRegex } from '../../../lib/utils/regexes';
 import { ContactInformation } from '../../../types/global';
+import Button from '../../elements/Button';
+import ErrorMessage from '../../elements/ErrorMessage';
+import { SettingsSectionHeader } from '../../elements/Headers';
+import Input from '../../elements/Input';
+import Select from '../../elements/Select';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -114,33 +114,33 @@ const PersonalInformationForm = () => {
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
             <SettingsSectionHeader>
-              {t('personal information')}
+              {t('personal_information')}
             </SettingsSectionHeader>
             <p className="mt-1 text-sm text-gray-500">
-              {t('forms.personal.update your personal')}
+              {t('forms.personal.update_your_personal')}
             </p>
           </div>
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <Input
                 {...register('firstName')}
-                label={t('forms.personal.first name')}
+                label={t('forms.personal.first_name')}
                 className={formClassName}
               />
               {errors.lastName && (
-                <ErrorMessage text={`${t('errors.first name')}`} />
+                <ErrorMessage text={`${t('errors.first_name')}`} />
               )}
             </div>
 
             <div className="col-span-6 sm:col-span-3">
               <Input
                 {...register('lastName', { required: true })}
-                label={t('forms.personal.last name')}
+                label={t('forms.personal.last_name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
               {errors.lastName && (
-                <ErrorMessage text={`${t('errors.last name')}`} />
+                <ErrorMessage text={`${t('errors.last_name')}`} />
               )}
             </div>
 
@@ -148,7 +148,7 @@ const PersonalInformationForm = () => {
               <Input
                 {...register('email', { pattern: validEmailRegex })}
                 type="email"
-                label={t('forms.personal.email address')}
+                label={t('forms.personal.email_address')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
@@ -168,7 +168,7 @@ const PersonalInformationForm = () => {
             <div className="col-span-6">
               <Input
                 {...register('streetAddress')}
-                label={t('forms.personal.street address')}
+                label={t('forms.personal.street_address')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
@@ -205,7 +205,7 @@ const PersonalInformationForm = () => {
             <div className="col-span-6 sm:col-span-6 lg:col-span-2">
               <Input
                 {...register('companyName')}
-                label={t('forms.personal.company name')}
+                label={t('forms.personal.company_name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
@@ -215,7 +215,7 @@ const PersonalInformationForm = () => {
               <Select
                 {...register('companyHQLocation')}
                 options={countries}
-                label={t('forms.personal.company headquarters')}
+                label={t('forms.personal.company_headquarters')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />

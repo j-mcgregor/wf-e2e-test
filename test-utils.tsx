@@ -1,25 +1,47 @@
 import { render, RenderOptions } from '@testing-library/react';
-import { Provider } from 'next-auth/client';
-import { NextIntlProvider } from 'next-intl';
-import React, { FC, ReactElement } from 'react';
+import userEvent from '@testing-library/user-event';
+import { IntlMessages, NextIntlProvider } from 'next-intl';
+import React, { ReactElement } from 'react';
 import { RecoilRoot } from 'recoil';
+import { SWRConfig } from 'swr';
 
-import messages from './messages/en';
+import { mockReports } from './lib/mock-data/users';
 
-const Providers: FC = ({ children }) => {
-  return (
-    <RecoilRoot>
-      <NextIntlProvider messages={messages} locale="en">
-        {children}
-      </NextIntlProvider>
-    </RecoilRoot>
-  );
-};
+const makeProviders =
+  (messages?: IntlMessages) =>
+  // eslint-disable-next-line react/display-name
+  ({ children }: { children?: React.ReactNode }) => {
+    return (
+      <RecoilRoot>
+        <NextIntlProvider messages={messages} locale="en">
+          <SWRConfig value={{ dedupingInterval: 0 }}>{children}</SWRConfig>
+        </NextIntlProvider>
+      </RecoilRoot>
+    );
+  };
 
 const customRender = (
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>
-) => render(ui, { wrapper: Providers, ...options });
+  options?: Omit<RenderOptions, 'wrapper'>,
+  messages?: IntlMessages
+) => render(ui, { wrapper: makeProviders(messages), ...options });
+
+const makeMockSession = () => {
+  return {
+    user: {
+      name: 'John Doe',
+      email: 'test@test.com',
+      id: 1,
+      recent_usage: {
+        last_login: 1629657065187,
+        api_requests: 142,
+        reports_ran: 32
+      },
+      reports: mockReports
+    },
+    expires: '2021-10-09T09:00:41.059Z'
+  };
+};
 
 export * from '@testing-library/react';
-export { customRender as render };
+export { customRender as render, makeMockSession, userEvent };

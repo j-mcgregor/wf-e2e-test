@@ -1,12 +1,12 @@
 {
-  "dashboard":"Dashboard",
-  "reports":"Reports",
-  "our tools":"Our Tools",
-  "sme calc":"SME Calc",
-  "sme prospector":"SME Prospector",
-  "batched reports":"Batched Reports",
-  "api documentation":"API Documentation",
-  "settings":"Settings",
-  "support":"Support",
-  "logout":"Logout"
+  "dashboard": "Dashboard",
+  "reports": "Reports",
+  "our_tools": "Our Tools",
+  "sme_calc": "SME Calc",
+  "sme_prospector": "SME Prospector",
+  "batched_reports": "Batched Reports",
+  "api_documentation": "API Documentation",
+  "settings": "Settings",
+  "support": "Support",
+  "logout": "Logout"
 }

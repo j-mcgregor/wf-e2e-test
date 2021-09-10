@@ -1,46 +1,48 @@
 /* eslint-disable security/detect-non-literal-require */
 import { GetServerSidePropsContext } from 'next';
-import { useRouter } from 'next/router';
-import useSWR from 'swr';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import useSWR from 'swr';
 
 import HashContainer from '../../components/elements/HashContainer';
+import { ReportSectionHeader } from '../../components/elements/Headers';
 import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
+import TabletReportNav from '../../components/layout/TabletReportNav';
+import CorporateOverview from '../../components/report-sections/corporate-governance/CorporateOverview';
+import Profiles from '../../components/report-sections/corporate-governance/Profiles';
+import ShareHolderList from '../../components/report-sections/corporate-governance/ShareHolderList';
+import ShareHoldingCard from '../../components/report-sections/corporate-governance/ShareHoldingCard';
+import ESGCard from '../../components/report-sections/esg-assessment/ESGCard';
+import CTACard from '../../components/report-sections/highlights/CTACard';
+import DataReliability from '../../components/report-sections/highlights/DataReliability';
+import FinancialAccounts from '../../components/report-sections/highlights/FinancialAccounts';
+import ReliabilityIndex from '../../components/report-sections/highlights/ReliabilityIndex';
+import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook';
+import LegalEvents from '../../components/report-sections/legal-events/LegalEvents';
 import ReportHeader from '../../components/report-sections/ReportHeader';
 import BondRating from '../../components/report-sections/risk-metrics/BondRating';
+import InfoPopover from '../../components/report-sections/risk-metrics/InfoPopover';
+import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
 import SummaryDetails from '../../components/report-sections/summary/SummaryDetails';
 import SummaryFinancial from '../../components/report-sections/summary/SummaryFinancial';
 import SummaryMap from '../../components/report-sections/summary/SummaryMap';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
-import { ReportSectionHeader } from '../../components/elements/Headers';
+import fetcher from '../../lib/utils/fetcher';
 import {
   FinancialYear,
-  SummaryContact,
-  SummaryInfo,
-  Reliability,
   LegalEvent,
   Profile,
-  Shareholder
+  Reliability,
+  Shareholder,
+  SummaryContact,
+  SummaryInfo
 } from '../../types/report';
-import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
-import InfoPopover from '../../components/report-sections/risk-metrics/InfoPopover';
-import ReliabilityIndex from '../../components/report-sections/highlights/ReliabilityIndex';
-import DataReliability from '../../components/report-sections/highlights/DataReliability';
-import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook';
-import FinancialAccounts from '../../components/report-sections/highlights/FinancialAccounts';
-import CTACard from '../../components/report-sections/highlights/CTACard';
-import TabletReportNav from '../../components/layout/TabletReportNav';
-import LegalEvents from '../../components/report-sections/legal-events/LegalEvents';
-import Profiles from '../../components/report-sections/corporate-governance/Profiles';
-import CorporateOverview from '../../components/report-sections/corporate-governance/CorporateOverview';
-import ShareHolderList from '../../components/report-sections/corporate-governance/ShareHolderList';
-import ShareHoldingCard from '../../components/report-sections/corporate-governance/ShareHoldingCard';
-import ESGCard from '../../components/report-sections/esg-assessment/ESGCard';
 
-interface ReportDataProps {
+export interface ReportDataProps {
   created_at?: string;
   company_name: string;
   contact_details: SummaryContact & SummaryInfo;
@@ -70,8 +72,6 @@ const ReportTemplate = () => {
 
   const { id } = router.query;
 
-  const fetcher = (url: any) => fetch(url).then(res => res.json());
-
   const { data, error } = useSWR<ReportDataProps>(
     `/api/report?id=${id}`,
     fetcher
@@ -88,6 +88,7 @@ const ReportTemplate = () => {
     data &&
     Object.keys(data.financials)
       .map(year => {
+        // eslint-disable-next-line security/detect-object-injection
         return { year, ...data.financials[year] };
       })
       .reverse();
@@ -95,19 +96,20 @@ const ReportTemplate = () => {
   const lastFiveYearsFinancials =
     (data && transformedFinancials?.slice(0, 5)) || [];
 
-  const INDUSTRY_BENCHMARK = t('industry benchmark');
-  const REGION_BENCHMARK = t('region benchmark');
+  const INDUSTRY_BENCHMARK = t('industry_benchmark');
+  const REGION_BENCHMARK = t('region_benchmark');
+
   return (
     <Layout title={`${data?.company_name} | ${t('report')}`} fullWidth>
       <SecondaryLayout
         navigation={
           data?.company_name && (
             <>
-                <ReportNav companyName={data?.company_name} loading={!data} />
-                <TabletReportNav
-                  companyName={data?.company_name}
-                  loading={!data}
-                />
+              <ReportNav companyName={data?.company_name} loading={!data} />
+              <TabletReportNav
+                companyName={data?.company_name}
+                loading={!data}
+              />
             </>
           )
         }
@@ -117,10 +119,9 @@ const ReportTemplate = () => {
         ) : (
           <div className="text-primary mt-10 lg:mt-0">
             <div className="py-8">
-              <h1 className="text-xl pb-4">{t('risk assessment report')}</h1>
-              <ReportHeader company={data?.company_name} created={created} />
+              <h1 className="text-xl pb-4">{t('risk_assessment_report')}</h1>
+              <ReportHeader company={data.company_name} created={created} />
             </div>
-
             <HashContainer name={'Summary'} id={`summary-id`}>
               <ReportSectionHeader text={t('summary')} />
 
@@ -143,9 +144,8 @@ const ReportTemplate = () => {
                 <SummaryFinancial years={lastFiveYearsFinancials} />
               </div>
             </HashContainer>
-
             <HashContainer name={'Risk Metrics'} id={`risk-metrics-id`}>
-              <ReportSectionHeader text={t('risk metrics')} />
+              <ReportSectionHeader text={t('risk_metrics')} />
               <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4">
                 <Speedometer
                   title="SME Z-score"
@@ -156,8 +156,8 @@ const ReportTemplate = () => {
                   ]}
                   hint={
                     <InfoPopover
-                      title={t('report.risk metrics.sme z-score.title')}
-                      body={t('report.risk metrics.sme z-score.body')}
+                      title={t('report_hints.risk_metrics.sme_z-score.title')}
+                      body={t('report_hints.risk_metrics.sme_z-score.body')}
                     />
                   }
                 />
@@ -171,10 +171,10 @@ const ReportTemplate = () => {
                   hint={
                     <InfoPopover
                       title={t(
-                        'report.risk metrics.probability of default.title'
+                        'report_hints.risk_metrics.probability_of_default.title'
                       )}
                       body={t(
-                        'report.risk metrics.probability of default.body'
+                        'report_hints.risk_metrics.probability_of_default.body'
                       )}
                     />
                   }
@@ -188,8 +188,12 @@ const ReportTemplate = () => {
                   ]}
                   hint={
                     <InfoPopover
-                      title={t('report.risk metrics.loss given default.title')}
-                      body={t('report.risk metrics.loss given default.body')}
+                      title={t(
+                        'report_hints.risk_metrics.loss_given_default.title'
+                      )}
+                      body={t(
+                        'report_hints.risk_metrics.loss_given_default.body'
+                      )}
                     />
                   }
                 />
@@ -199,7 +203,6 @@ const ReportTemplate = () => {
                 description="Cupidatat sit duis minim voluptate labore ea. Esse mollit eu qui anim exercitation. Quis tempor velit et duis commodo."
               />
             </HashContainer>
-
             <HashContainer name={'Highlights'} id={`highlights-id`}>
               <ReportSectionHeader text={t('highlights')} />
 
@@ -221,18 +224,18 @@ const ReportTemplate = () => {
               <div className="flex flex-col lg:flex-row py-6 justify-between">
                 <FinancialAccounts financialYears={transformedFinancials} />
                 <div className="w-full lg:ml-8">
-                  <p className="font-bold py-2">{t('add more data')}</p>
+                  <p className="font-bold py-2">{t('add_more_data')}</p>
                   <CTACard
-                    title={t('import data')}
-                    body={t('unlock api to gain access')}
+                    title={t('import_data')}
+                    body={t('unlock_api_to_gain_access')}
                     buttonText="Import"
                     unlocked={false}
                     buttonColor="bg-[#2BAD01]"
                     // linkTo='/'
                   />
                   <CTACard
-                    title={t('upload more data')}
-                    body={t('upload data for more recent report')}
+                    title={t('upload_more_data')}
+                    body={t('upload_data_for_more_recent_report')}
                     buttonText="Upload"
                     unlocked={true}
                     buttonColor="bg-alt"
@@ -241,16 +244,15 @@ const ReportTemplate = () => {
                 </div>
               </div>
             </HashContainer>
-
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
-              <ReportSectionHeader text={t('financial trends')} />
+              <ReportSectionHeader text={t('financial_trends')} />
             </HashContainer>
-
+            _
             <HashContainer
               name={'Corporate Governance'}
               id={`corporate-governance-id`}
             >
-              <ReportSectionHeader text={t('corporate governance')} />
+              <ReportSectionHeader text={t('corporate_governance')} />
               <CorporateOverview
                 cfo={data.personal.cfo}
                 ceo={data.personal.ceo}
@@ -272,19 +274,16 @@ const ReportTemplate = () => {
                 belowOne={324}
               />
             </HashContainer>
-
             <HashContainer name={'Legal Events'} id={`legal-events-id`}>
-              <ReportSectionHeader text={t('legal events')} />
+              <ReportSectionHeader text={t('legal_events')} />
               <LegalEvents legalEvents={data?.legal_events?.legal_events} />
             </HashContainer>
-
             <HashContainer
               name={'Macro Economic Trends'}
               id={`macro-economic-trends-id`}
             >
-              <ReportSectionHeader text={t('macro economic trends')} />
+              <ReportSectionHeader text={t('macro_economic_trends')} />
             </HashContainer>
-
             <HashContainer name={'ESG'} id={`esg-id`}>
               <ReportSectionHeader text={t('esg')} />
               <p className="text-xl">{t('esg assessment')}</p>
@@ -303,7 +302,6 @@ const ReportTemplate = () => {
                 rating="3"
               />
             </HashContainer>
-
             <HashContainer name={'News'} id={`news-id`}>
               <ReportSectionHeader text={t('news')} />
             </HashContainer>

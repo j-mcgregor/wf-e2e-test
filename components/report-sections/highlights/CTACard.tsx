@@ -41,7 +41,7 @@ const CTACard = ({
             {!unlocked && <Lock color="white" />}
           </Button>
           <Button linkTo={linkTo} className="w-full" variant="none">
-            <p>{t('learn more')}</p>
+            <p>{t('learn_more')}</p>
           </Button>
         </div>
       </div>

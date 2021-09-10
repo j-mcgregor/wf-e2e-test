@@ -22,6 +22,7 @@ const Stats = ({ stats, className }: StatsProps) => {
           <div
             key={i}
             className={`px-4 py-2 sm:p-4 bg-white shadow overflow-hidden  first:rounded-t  sm:first:rounded-l sm:last:rounded-r sm:first:rounded-r-none last:rounded-b sm:last:rounded-l-none`}
+            data-testid="stat-card"
           >
             <dt className="text-2xl font-medium text-highlight truncate before">
               {item.data && !item.timeAgo && (
