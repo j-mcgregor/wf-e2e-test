@@ -3,7 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import LoginContainer from '../components/containers/LoginContainer';
 import ResetPasswordForm from '../components/forms/login/ResetPasswordForm';
 import Layout from '../components/layout/Layout';
-import { validEmailRegex } from '../lib/regexes';
+import { validEmailRegex } from '../lib/utils/regexes';
 
 const PasswordReset = ({ email, isValid }: { email: string, isValid: boolean}) => {
   return (

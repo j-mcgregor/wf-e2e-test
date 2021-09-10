@@ -19,8 +19,7 @@ interface PreferenceFormInput {
 }
 
 const PreferenceForm = () => {
-
-  const t = useTranslations()
+  const t = useTranslations();
 
   const { register, handleSubmit, formState } = useForm<PreferenceFormInput>();
   const { isDirty, isValid } = formState;
@@ -35,7 +34,7 @@ const PreferenceForm = () => {
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
             <div>
-            <SettingsSectionHeader text={t('preferences')}/>
+              <SettingsSectionHeader text={t('preferences')} />
 
               <p className="mt-1 text-sm text-gray-500">
                 Change or update your personal information

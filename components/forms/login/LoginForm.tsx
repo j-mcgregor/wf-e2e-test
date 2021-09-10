@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import useLocalStorage from '../../../hooks/useLocalStorage';
-import { validEmailRegex } from '../../../lib/regexes';
+import { validEmailRegex } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import CheckboxInput from '../../elements/Checkbox';
 import ErrorMessage from '../../elements/ErrorMessage';

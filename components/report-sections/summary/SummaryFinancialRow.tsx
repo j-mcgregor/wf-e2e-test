@@ -2,7 +2,7 @@ import { JSXElementConstructor, ReactElement, ReactNodeArray } from 'react';
 
 import { FinancialYear } from '../../../types/report';
 import FinancialTrend from './FinancialTrend';
-import relativeTrend from '../../../lib/func/relative-trend';
+import relativeTrend from '../../../lib/utils/relative-trend';
 
 
 interface FinancialRowProps {

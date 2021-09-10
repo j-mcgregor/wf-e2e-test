@@ -1,8 +1,8 @@
-import localisationJSON from '../../../../lib/localisation.json';
+import localisationJSON from '../../../../lib/data/localisation.json';
 
 const getLocalisation = () =>
   localisationJSON.map(value => {
-    return { optionValue: value.country };
+    return { optionValue: value.locale };
   });
 const formLabelClassName = 'block text-sm font-medium text-gray-700';
 

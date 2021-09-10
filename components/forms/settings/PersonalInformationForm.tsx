@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { validEmailRegex } from '../../../lib/regexes';
+import { validEmailRegex } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import Input from '../../elements/Input';
 import Select from '../../elements/Select';

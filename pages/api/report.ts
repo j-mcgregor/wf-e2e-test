@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/client';
 
-import { NO_ID, NO_REPORT, UNAUTHORISED } from '../../lib/error-codes';
+import { NO_ID, NO_REPORT, UNAUTHORISED } from '../../lib/utils/error-codes';
 import mockReport from '../../lib/mock-data/report';
 import mockUsers from '../../lib/mock-data/users';
 import { Report } from '../../types/global';
