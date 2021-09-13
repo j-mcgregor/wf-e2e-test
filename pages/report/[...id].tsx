@@ -18,7 +18,14 @@ import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import { useReportNavItems } from '../../hooks/useNavigation';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
 import { ReportSectionHeader } from '../../components/elements/Headers';
-import { FinancialYear, SummaryContact, SummaryInfo } from '../../types/report';
+import {
+  FinancialYear,
+  SummaryContact,
+  SummaryInfo,
+  Reliability
+} from '../../types/report';
+import ReliabilityIndex from '../../components/report-sections/highlights/ReliabilityIndex';
+import DataReliability from '../../components/report-sections/highlights/DataReliability';
 
 interface ReportDataProps {
   created_at?: string;
@@ -26,11 +33,14 @@ interface ReportDataProps {
   contact_details: SummaryContact & SummaryInfo;
   financials: {
     [year: string]: FinancialYear;
-  }
+  };
+  highlights: {
+    data_reliability: Reliability;
+    risk_outlook: string[];
+  };
 }
 
 const ReportTemplate = () => {
-
   const t = useTranslations();
   const router = useRouter();
 
@@ -38,8 +48,11 @@ const ReportTemplate = () => {
 
   const fetcher = (url: any) => fetch(url).then(res => res.json());
 
-  const { data, error } = useSWR<ReportDataProps>(`/api/report?id=${id}`, fetcher);
-  // console.log(data);
+  const { data, error } = useSWR<ReportDataProps>(
+    `/api/report?id=${id}`,
+    fetcher
+  );
+  console.log(data?.highlights);
 
   // Todo: handle error more gracefully
   if (error) return <div>failed to load</div>;
@@ -56,7 +69,8 @@ const ReportTemplate = () => {
       })
       .reverse();
 
-  const lastFiveYearsFinancials = data && transformedFinancials?.slice(0, 5) || []
+  const lastFiveYearsFinancials =
+    (data && transformedFinancials?.slice(0, 5)) || [];
 
   // temporary before data exists
   const mockDescription =
@@ -114,6 +128,16 @@ const ReportTemplate = () => {
 
             <HashContainer name={'Highlights'} id={`highlights-id`}>
               <ReportSectionHeader text={t('highlights')} />
+              <div className="flex justify-between items-center ">
+                <ReliabilityIndex
+                  reliability={data.highlights.data_reliability.reliability}
+                  // reliability="unreliable"
+                  // reliability="somewhat reliable"
+                />
+                <DataReliability
+                  comment={data.highlights.data_reliability.comment}
+                />
+              </div>
             </HashContainer>
 
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
