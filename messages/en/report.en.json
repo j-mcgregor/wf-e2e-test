@@ -36,5 +36,8 @@
   "total current liabilities": "Total Current Liabilities",
   "net current assets": "Net Current Assets",
   "employees": "Employees",
-  "bond rating": "Bond Rating"
+  "bond rating": "Bond Rating",
+  "sme zscore": "SME Z-Score",
+  "industry benchmark": "Industry Benchmark",
+  "region benchmark": "Region Benchmark"
 }

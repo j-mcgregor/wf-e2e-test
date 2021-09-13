@@ -20,6 +20,39 @@ const mockReport = {
     region: 'Western Europe',
     websites: ['www.wrightglazing.co.uk']
   },
+  risk_metrics: {
+    sme_z_score: {
+      value: "267",
+      regional_benchmark: "345",
+      industry_benchmark: "211"
+    },
+    probability_of_default: {
+      value: "267",
+      regional_benchmark: "345",
+      industry_benchmark: "211"
+    },
+    loss_given_default: {
+      value: "267",
+      regional_benchmark: "345",
+      industry_benchmark: "211"
+    },
+    bond_rating: {
+      rating: "B-",
+      comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue."
+    }
+  },
+  highlights: {
+    data_reliability: {
+      reliability: "reliable",
+      comment: "We have accessed enough data to complete a report. If you would like to supplement the data in this report with the most recent management accounts please use the button below."
+    },
+    risk_outlook: [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.",
+    ]
+  },
   financials: {
     '2020': {
       accounts_receivable: null,
