@@ -63,7 +63,7 @@ const ReportTemplate = () => {
     'Culpa minim do anim consequat labore amet officia ea mollit veniam velit. Lorem exercitation aute aliqua labore nisi ad enim do sunt do duis culpa. Consectetur excepteur est occaecat anim anim adipisicing magna ut enim adipisicing esse dolore.';
 
   return (
-    <Layout title="SME - Calculator " fullWidth>
+    <Layout title={`${data?.company_name} | ${t('report')}`} fullWidth>
       <SecondaryLayout
         navigation={
           data?.company_name && (
@@ -137,6 +137,7 @@ const ReportTemplate = () => {
             >
               <ReportSectionHeader text={t('macro economic trends')} />
             </HashContainer>
+
             <HashContainer name={'ESG'} id={`esg-id`}>
               <ReportSectionHeader text={t('esg')} />
             </HashContainer>

@@ -33,11 +33,10 @@ const SummaryMap = ({ contact }: { contact: SummaryContact}) => {
         <div className="flex justify-between">
           <p>{t('email')}</p>
 
-          {/* {contact?.emails && <p>{contact.emails[0]}</p>} */}
-          <p className="font-bold">info@writeglazing.com</p>
+          {contact?.emails && <p className="font-bold">{contact.emails[0]}</p>}
         </div>
         <div className="flex justify-between">
-          <p>{t('email')}</p>
+          <p>{t('website')}</p>
           {contact?.websites && (
             <p className="font-bold">{contact.websites[0]}</p>
           )}
