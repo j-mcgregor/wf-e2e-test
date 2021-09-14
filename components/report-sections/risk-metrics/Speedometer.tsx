@@ -1,66 +1,85 @@
 import { useTranslations } from 'use-intl';
 import Dial from '../../svgs/Dial';
-import InfoPopover from './InfoPopover';
 import SpeedoArrow from '../../svgs/SpeedoArrow';
 import BenchmarkArrow from '../../svgs/BenchmarkArrow';
+import { TranslateInput } from '../../../types/global';
+import { ReactElement } from 'react';
 
-type secondaryValue = {
-  title: string;
-  score: number | string | null;
+type SecondaryValue = {
+  name: TranslateInput;
+  value: number | string | null;
+  colour?: string
 };
 
-interface SpeedometerProps {
+interface SpeedometerProps  {
   title: string;
-  secondaryValues: secondaryValue[];
+  secondaryValues: SecondaryValue[];
   value: string | number;
   weighting?: number;
-  hintTitle: string;
-  hintBody: string;
-}
+  hint: ReactElement
+} 
 
 const Speedometer = ({
   title,
   value,
-  hintTitle,
-  hintBody,
+  hint,
   secondaryValues
 }: SpeedometerProps) => {
   const t = useTranslations();
 
+  // 260 degrees available
+  
+
+  // probably need to add a version where there is no value and its completely disabled
+
+  const arrowDegs = Math.random() * 260 - 130;
+
+  const benchmarks = secondaryValues.map(value => ({
+    rotation: Math.random() * 260 - 130,
+    ...value
+  }));
+
   return (
     <>
-      <div className="bg-white w-[31%] flex flex-col items-center">
-        <div className="flex w-full items-center justify-between p-4">
+      <div className="bg-white mt-6 mx-auto xl:mx-0 flex flex-col items-center w-[250px]">
+        <div className="flex w-full items-center justify-between px-4 pt-4 pb-2">
           <p>{title}</p>
-          <InfoPopover hintTitle={hintTitle} hintBody={hintBody} />
+         { hint }
         </div>
 
-        <div className="relative">
+        <div className="relative ">
+          <Dial className="w-full h-full" />
+          <SpeedoArrow
+            style={{ transform: `rotate(${arrowDegs}deg)` }}
+            className="absolute top-0 w-full  h-full transition-transform duration-500"
+          />
 
-          <Dial className="" />
-          <SpeedoArrow className="absolute top-0 rotate-[-130deg]"/>
-          <BenchmarkArrow className="absolute top-0 rotate-[130deg]"/>
+          <div className="absolute top-1/2 w-full text-center text-2xl font-bold pt-5"><span>{value}</span></div>
+
+          {benchmarks.map((benchmark, index) => (
+            benchmark.value &&
+            <BenchmarkArrow
+              key={index}
+              style={{ transform: `rotate(${benchmark.rotation}deg)` }}
+              className={`absolute top-0 w-full h-full transition-transform duration-500 ${index % 2 === 1 ? "text-green-500" : "text-blue-500"}`}
+            />
+          ))}
         </div>
 
-        <div className="text-gray-400 w-full py-4 px-1 text-xs xl:text-sm">
-          <div
-            className={`${
-              !secondaryValues[0].score === null && 'text-gray-400'
-            } flex items-center justify-evenly`}
-          >
-            <div className="h-2 w-2 bg-blue-400 " />
-            <p>{secondaryValues[0].title}</p>
-            <p className="font-semibold">{secondaryValues[0].score}</p>
-          </div>
-          <div className="flex items-center justify-evenly">
-            <div className="h-2 w-2 bg-green-500 " />
-            <p>{secondaryValues[1].title}</p>
-            <p className="font-semibold">{secondaryValues[1].score}</p>
-          </div>
+        <div className="text-gray-400 w-full pb-4 px-1 text-xs xl:text-sm -mt-2">
+          { benchmarks.map((benchmark, index) => <SpeedoKey key={index} name={benchmark.name} value={benchmark.value} colour={index % 2 === 1 ? "bg-green-500" : "bg-blue-500"} />)}
         </div>
       </div>
     </>
   );
 };
+
+const SpeedoKey = ({ name, value, colour }: SecondaryValue) => {
+  return <div className={`flex items-center ml-4 space-x-3 ${!value && 'opacity-30'}`}>
+  <div className={`h-2 w-2 ${colour}`} />
+  <p className="w-[60%]">{name}</p>
+  <p className="font-semibold">{value}</p>
+</div>
+}
 
 export default Speedometer;

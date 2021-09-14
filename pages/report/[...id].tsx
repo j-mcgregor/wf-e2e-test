@@ -9,16 +9,16 @@ import Layout from '../../components/layout/Layout';
 import ReportNav from '../../components/layout/ReportNav';
 import SecondaryLayout from '../../components/layout/SecondaryLayout';
 import ReportHeader from '../../components/report-sections/ReportHeader';
-import Benchmarks from '../../components/report-sections/risk-metrics/Benchmarks';
 import BondRating from '../../components/report-sections/risk-metrics/BondRating';
 import SummaryDetails from '../../components/report-sections/summary/SummaryDetails';
 import SummaryFinancial from '../../components/report-sections/summary/SummaryFinancial';
 import SummaryMap from '../../components/report-sections/summary/SummaryMap';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
-import { useReportNavItems } from '../../hooks/useNavigation';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
 import { ReportSectionHeader } from '../../components/elements/Headers';
 import { FinancialYear, SummaryContact, SummaryInfo } from '../../types/report';
+import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
+import InfoPopover from '../../components/report-sections/risk-metrics/InfoPopover';
 
 interface ReportDataProps {
   created_at?: string;
@@ -26,11 +26,10 @@ interface ReportDataProps {
   contact_details: SummaryContact & SummaryInfo;
   financials: {
     [year: string]: FinancialYear;
-  }
+  };
 }
 
 const ReportTemplate = () => {
-
   const t = useTranslations();
   const router = useRouter();
 
@@ -38,7 +37,10 @@ const ReportTemplate = () => {
 
   const fetcher = (url: any) => fetch(url).then(res => res.json());
 
-  const { data, error } = useSWR<ReportDataProps>(`/api/report?id=${id}`, fetcher);
+  const { data, error } = useSWR<ReportDataProps>(
+    `/api/report?id=${id}`,
+    fetcher
+  );
   // console.log(data);
 
   // Todo: handle error more gracefully
@@ -56,12 +58,12 @@ const ReportTemplate = () => {
       })
       .reverse();
 
-  const lastFiveYearsFinancials = data && transformedFinancials?.slice(0, 5) || []
+  const lastFiveYearsFinancials =
+    (data && transformedFinancials?.slice(0, 5)) || [];
 
-  // temporary before data exists
-  const mockDescription =
-    'Culpa minim do anim consequat labore amet officia ea mollit veniam velit. Lorem exercitation aute aliqua labore nisi ad enim do sunt do duis culpa. Consectetur excepteur est occaecat anim anim adipisicing magna ut enim adipisicing esse dolore.';
 
+  const INDUSTRY_BENCHMARK = t('industry benchmark')
+  const REGION_BENCHMARK = t('region benchmark')
   return (
     <Layout title={`${data?.company_name} | ${t('report')}`} fullWidth>
       <SecondaryLayout
@@ -88,7 +90,7 @@ const ReportTemplate = () => {
                   <SummaryDetails
                     regNumber={'SC172288'}
                     sector={'Travel, Personal & Leisure'}
-                    description={mockDescription}
+                    description={data.contact_details.company_description}
                     incorporationDate={data.contact_details.incorporation_date}
                     lastAccountDate={'31/01/2020'}
                   />
@@ -105,7 +107,36 @@ const ReportTemplate = () => {
 
             <HashContainer name={'Risk Metrics'} id={`risk-metrics-id`}>
               <ReportSectionHeader text={t('risk metrics')} />
-              <Benchmarks />
+              <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4">
+                <Speedometer
+                  title="SME Z-score"
+                  value={304}
+                  secondaryValues={[
+                    { name: INDUSTRY_BENCHMARK, value: 403 },
+                    { name: REGION_BENCHMARK, value: 204 }
+                  ]}
+                  hint={<InfoPopover title={t('report.risk metrics.sme z-score.title')} body={t('report.risk metrics.sme z-score.body')} />}
+                />
+                <Speedometer
+                  title="Probability of Default"
+                  value="12.04%"
+                  secondaryValues={[
+                    { name: INDUSTRY_BENCHMARK, value: "6%" },
+                    { name: REGION_BENCHMARK, value: null }
+                  ]}
+                  hint={<InfoPopover title={t('report.risk metrics.probability of default.title')} body={t('report.risk metrics.probability of default.body')} />}
+                />
+                <Speedometer
+                  title="Loss Given Default"
+                  value={304}
+                  secondaryValues={[
+                    { name: INDUSTRY_BENCHMARK, value: "12.5%" },
+                    { name: REGION_BENCHMARK, value: null }
+                  ]}
+                  hint={<InfoPopover title={t('report.risk metrics.loss given default.title')} body={t('report.risk metrics.loss given default.body')} />}
+
+                />
+              </div>
               <BondRating
                 score="BB"
                 description="Cupidatat sit duis minim voluptate labore ea. Esse mollit eu qui anim exercitation. Quis tempor velit et duis commodo."
@@ -163,6 +194,7 @@ export const getServerSideProps = getServerSidePropsWithAuth(
           // pattern is to put them in JSON files separated by language and read
           // the desired one based on the `locale` received from Next.js.
           ...require(`../../messages/${locale}/report.${locale}.json`),
+          ...require(`../../messages/${locale}/hints.${locale}.json`),
           ...require(`../../messages/${locale}/general.${locale}.json`)
         }
       }

@@ -1,0 +1,18 @@
+{
+  "report": {
+    "risk metrics": {
+      "sme z-score": {
+        "title": "SME Z-Score",
+        "body": "The Wiserfunding SME Z-Score is our proprietary algorithm that assess the credit risk of SME's."
+      },
+      "probability of default": {
+        "title": "Probability of Default",
+        "body": "The Wiserfunding SME Z-Score is our proprietary algorithm that assess the credit risk of SME's."
+      },
+      "loss given default": {
+        "title": "Lost Given Default",
+        "body": "The Wiserfunding SME Z-Score is our proprietary algorithm that assess the credit risk of SME's."
+      }
+    }
+  }
+}
