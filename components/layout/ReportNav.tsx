@@ -89,7 +89,7 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
                     {index !== navItems.length - 1 ? (
                       <span
                         className={`${
-                          isActive ? 'bg-highlight' : 'bg-gray-400'
+                          isActive ? 'bg-highlight' : 'bg-primary'
                         } absolute top-2 h-full w-0.5 left-0`}
                         aria-hidden="true"
                       />
@@ -99,8 +99,8 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
                         className={`${
                           isActive
                             ? 'bg-highlight ring-highlight'
-                            : 'bg-gray-400 ring-gray-400'
-                        } h-0.5 w-0.5 rounded-full ring-8 `}
+                            : 'bg-primary ring-primary'
+                        } h-0.5 w-0.5 rounded-full ring-[5px] `}
                       />
                       <p
                         className={`${
