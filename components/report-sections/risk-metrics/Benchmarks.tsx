@@ -1,9 +1,9 @@
-import Benchmark from './Benchmark';
+import Speedometer from './Speedometer';
 
 const Benchmarks = () => {
   return (
     <div className="flex w-full justify-between pb-6 text-primary text-sm">
-      <Benchmark
+      <Speedometer
         title="SME Z-score"
         value={304}
         secondaryValues={[
@@ -13,7 +13,7 @@ const Benchmarks = () => {
         hintTitle="Hint Title"
         hintBody="Aliqua laborum sunt do culpa incididunt eu proident do."
       />
-      <Benchmark
+      <Speedometer
         title="Probability of Default"
         value="12.04%"
         secondaryValues={[
@@ -23,7 +23,7 @@ const Benchmarks = () => {
         hintTitle="Hint Title"
         hintBody="Aliqua laborum sunt do culpa incididunt eu proident do."
       />
-      <Benchmark
+      <Speedometer
         title="Loss Given Default"
         value={304}
         secondaryValues={[

@@ -107,7 +107,7 @@ const ReportTemplate = () => {
               <ReportSectionHeader text={t('risk metrics')} />
               <Benchmarks />
               <BondRating
-                score="B"
+                score="BB"
                 description="Cupidatat sit duis minim voluptate labore ea. Esse mollit eu qui anim exercitation. Quis tempor velit et duis commodo."
               />
             </HashContainer>
