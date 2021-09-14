@@ -144,7 +144,7 @@ const ReportTemplate = () => {
                   reports={data.highlights.risk_outlook}
                 />
               </div>
-              <FinancialAccounts years={transformedFinancials} />
+              <FinancialAccounts financialYears={transformedFinancials} />
             </HashContainer>
 
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>

@@ -6,25 +6,35 @@ import Tick from '../../icons/Tick';
 import Cross from '../../icons/Cross';
 
 interface FinancialAccountProps {
-  years?: FinancialYear[];
+  financialYears?: FinancialYear[];
 }
 
-const FinancialAccounts = ({ years }: FinancialAccountProps) => {
-  const a =
-    years &&
-    years.map((year, i) => {
-      if (Number(year.year) === Number(years[i + 1]?.year) + 1) {
-        console.log(year.year);
-      }
-    });
+const FinancialAccounts = ({ financialYears }: FinancialAccountProps) => {
+  // create a list of years going back from the current year
+  // check if report has every year that has been generated
+  // if accounts (year) exists render tick css
+  // if accounts (year) doesn't exist render cross css
 
-  console.log(a);
+  const preYears = [...Array(5).keys()];
+  const currentYear = new Date().getFullYear();
 
+  const years = preYears.map(index => `${currentYear - index}`);
+
+  const availableFinancialYears = financialYears?.map(
+    financialData => financialData.year
+  );
+  
   const t = useTranslations();
   return (
     <div className="flex flex-col w-3/12 pt-6">
       <p className="font-bold py-2">{t('financial accounts')}</p>
-      <ul>{}</ul>
+      <ul className="space-y-2">
+        {years.map(year => (
+          <li key={year} className="bg-white p-2 rounded ">
+            {year} {availableFinancialYears && availableFinancialYears?.indexOf(year) > -1 ? <Tick /> : <Cross />}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
