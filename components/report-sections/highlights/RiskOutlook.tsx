@@ -18,7 +18,11 @@ const RiskOutlook = ({ reports, hintTitle, hintBody }: OutlookProps) => {
       <div className="flex flex-col">
         <ul className="list-disc px-6">
           {reports.map((report, i) => {
-            return <li key={i}>{report}</li>;
+            return (
+              <li className="py-2 text-sm lg:text-sm" key={i}>
+                {report}
+              </li>
+            );
           })}
         </ul>
       </div>

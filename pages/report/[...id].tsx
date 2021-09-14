@@ -28,6 +28,7 @@ import ReliabilityIndex from '../../components/report-sections/highlights/Reliab
 import DataReliability from '../../components/report-sections/highlights/DataReliability';
 import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook';
 import FinancialAccounts from '../../components/report-sections/highlights/FinancialAccounts';
+import CTACard from '../../components/report-sections/highlights/CTACard';
 
 interface ReportDataProps {
   created_at?: string;
@@ -129,7 +130,8 @@ const ReportTemplate = () => {
 
             <HashContainer name={'Highlights'} id={`highlights-id`}>
               <ReportSectionHeader text={t('highlights')} />
-              <div className="flex justify-between items-center ">
+
+              <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 ">
                 <ReliabilityIndex
                   reliability={data.highlights.data_reliability.reliability}
                 />
@@ -144,7 +146,28 @@ const ReportTemplate = () => {
                   reports={data.highlights.risk_outlook}
                 />
               </div>
-              <FinancialAccounts financialYears={transformedFinancials} />
+              <div className="flex flex-col lg:flex-row py-6 justify-between">
+                <FinancialAccounts financialYears={transformedFinancials} />
+                <div className="w-full lg:ml-8">
+                  <p className="font-bold py-2">{t('add more data')}</p>
+                  <CTACard
+                    title={t('import data')}
+                    body={t('unlock api to gain access')}
+                    buttonText="Import"
+                    unlocked={false}
+                    buttonColor="bg-[#2BAD01]"
+                    // linkTo='/'
+                  />
+                  <CTACard
+                    title={t('upload more data')}
+                    body={t('upload data for more recent report')}
+                    buttonText="Upload"
+                    unlocked={true}
+                    buttonColor="bg-alt"
+                    // linkTo="/"
+                  />
+                </div>
+              </div>
             </HashContainer>
 
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>

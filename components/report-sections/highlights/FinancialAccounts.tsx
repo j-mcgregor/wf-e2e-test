@@ -1,5 +1,4 @@
 import { useTranslations } from 'use-intl';
-
 import { FinancialYear } from '../../../types/report';
 
 import Tick from '../../icons/Tick';
@@ -23,15 +22,21 @@ const FinancialAccounts = ({ financialYears }: FinancialAccountProps) => {
   const availableFinancialYears = financialYears?.map(
     financialData => financialData.year
   );
-  
+
   const t = useTranslations();
   return (
-    <div className="flex flex-col w-3/12 pt-6">
+    <div className="flex flex-col w-full lg:w-5/12 xl:w-4/12">
       <p className="font-bold py-2">{t('financial accounts')}</p>
       <ul className="space-y-2">
         {years.map(year => (
-          <li key={year} className="bg-white p-2 rounded ">
-            {year} {availableFinancialYears && availableFinancialYears?.indexOf(year) > -1 ? <Tick /> : <Cross />}
+          <li key={year} className="bg-white p-2 rounded flex justify-between">
+            {year}{' '}
+            {availableFinancialYears &&
+            availableFinancialYears?.indexOf(year) > -1 ? (
+              <Tick />
+            ) : (
+              <Cross />
+            )}
           </li>
         ))}
       </ul>

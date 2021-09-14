@@ -45,5 +45,12 @@
   "semi reliable": "SEMI-RELIABLE",
   "data reliability": "Data Reliability",
   "risk outlook": "Risk Outlook",
-  "financial accounts": "Financial Accounts"
+  "financial accounts": "Financial Accounts",
+  "add more data": "Add more data",
+  "unlock api to gain access": "Unlock our private APIs to get access to non-public information and resources about the Scottish Seabird Company.",
+  "import": "Import",
+  "import data": "Import open banking and accounting data",
+  "upload more data": "Upload more data",
+  "upload data for more recent report": "Got access to internal account not yet public? Upload them to add them to our analysis and create a more recent report.",
+  "learn more": "Learn more"
 }

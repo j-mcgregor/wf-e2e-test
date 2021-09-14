@@ -2,7 +2,7 @@ import Benchmark from './Benchmark';
 
 const Benchmarks = () => {
   return (
-    <div className="flex w-full justify-between pb-6 text-primary text-sm">
+    <div className="flex flex-wrap lg:flex-row w-full justify-center sm:justify-between items-center pb-6 text-primary text-sm">
       <Benchmark
         title="SME Z-score"
         value={304}

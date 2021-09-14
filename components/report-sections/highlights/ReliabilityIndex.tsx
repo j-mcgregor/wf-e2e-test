@@ -9,7 +9,7 @@ const ReliabilityIndex = ({ reliability }: ReliabilityIndexProps) => {
   const t = useTranslations();
 
   return (
-    <div className="flex flex-col w-2/6">
+    <div className="flex flex-col">
       <div className="flex pb-4">
         <p className="font-bold pr-8">{t('reliability index')}</p>
         <InfoPopover
