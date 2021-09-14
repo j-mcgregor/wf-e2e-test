@@ -26,6 +26,8 @@ import {
 } from '../../types/report';
 import ReliabilityIndex from '../../components/report-sections/highlights/ReliabilityIndex';
 import DataReliability from '../../components/report-sections/highlights/DataReliability';
+import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook';
+import FinancialAccounts from '../../components/report-sections/highlights/FinancialAccounts';
 
 interface ReportDataProps {
   created_at?: string;
@@ -52,7 +54,6 @@ const ReportTemplate = () => {
     `/api/report?id=${id}`,
     fetcher
   );
-  console.log(data?.highlights);
 
   // Todo: handle error more gracefully
   if (error) return <div>failed to load</div>;
@@ -131,13 +132,19 @@ const ReportTemplate = () => {
               <div className="flex justify-between items-center ">
                 <ReliabilityIndex
                   reliability={data.highlights.data_reliability.reliability}
-                  // reliability="unreliable"
-                  // reliability="somewhat reliable"
                 />
                 <DataReliability
                   comment={data.highlights.data_reliability.comment}
                 />
               </div>
+              <div className="flex">
+                <RiskOutlook
+                  hintTitle="hint title"
+                  hintBody="hint body"
+                  reports={data.highlights.risk_outlook}
+                />
+              </div>
+              <FinancialAccounts years={transformedFinancials} />
             </HashContainer>
 
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>

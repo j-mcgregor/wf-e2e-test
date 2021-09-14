@@ -43,5 +43,7 @@
   "reliable": "RELIABLE",
   "unreliable": "UNRELIABLE",
   "semi reliable": "SEMI-RELIABLE",
-  "data reliability": "Data Reliability"
+  "data reliability": "Data Reliability",
+  "risk outlook": "Risk Outlook",
+  "financial accounts": "Financial Accounts"
 }
