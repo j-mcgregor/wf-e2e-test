@@ -6,7 +6,7 @@ import Layout from '../components/layout/Layout';
 
 const forgotPassword = () => {
   return (
-    <Layout noNav={true} title="Forgotten Password">
+    <Layout noNav={true} title="Forgotten Password" noAuthRequired={true}>
       <LoginContainer>
         <ForgotPasswordForm />
       </LoginContainer>

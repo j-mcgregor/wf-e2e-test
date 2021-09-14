@@ -7,7 +7,7 @@ import { validEmailRegex } from '../lib/utils/regexes';
 
 const PasswordReset = ({ email, isValid }: { email: string, isValid: boolean}) => {
   return (
-    <Layout noNav={true} title="Password Reset">
+    <Layout noNav={true} title="Password Reset" noAuthRequired={true}>
       <LoginContainer>
         <ResetPasswordForm email={email} isValid={isValid} />
       </LoginContainer>
