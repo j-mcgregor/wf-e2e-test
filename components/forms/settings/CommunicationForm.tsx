@@ -5,6 +5,7 @@ import CheckboxInput from '../../elements/Checkbox';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import { useTranslations } from 'next-intl';
 import ErrorMessage from '../../elements/ErrorMessage';
+import Button from '../../elements/Button';
 
 interface CommunicationFormInput {
   comments: string;
@@ -18,7 +19,6 @@ const CommunicationForm = () => {
   const { register, handleSubmit, formState } =
     useForm<CommunicationFormInput>();
   const { isDirty, isValid, errors } = formState;
-  // eslint-disable-next-line no-console
   const onSubmit: SubmitHandler<CommunicationFormInput> = data =>
     // eslint-disable-next-line no-console
     console.log(data);
@@ -30,7 +30,7 @@ const CommunicationForm = () => {
           <div>
             <SettingsSectionHeader text={t('communication')} />
             <p className="mt-1 text-sm text-gray-500">
-              {t('Change or update your personal information')}
+              {t('change or update your personal information')}
             </p>
           </div>
 
@@ -41,10 +41,10 @@ const CommunicationForm = () => {
             <div className="mt-4 space-y-4">
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('Batch report completion')}
+                  label={t('batch report completion')}
                   id={'comments'}
                   paragraph={t(
-                    'Get notified when a batch report has completed all reports.'
+                    'get notified when a batch report has completed all reports.'
                   )}
                   {...{ ...register('comments') }}
                   name={'comments'}
@@ -55,10 +55,10 @@ const CommunicationForm = () => {
               </div>
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('Service Updates')}
+                  label={t('service updates')}
                   id={'candidates'}
                   paragraph={t(
-                    'Get the latest updates on the Wiserfunding platform.'
+                    'get the latest updates on the wiserfunding platform.'
                   )}
                   {...{ ...register('candidates') }}
                   name={'candidates'}
@@ -69,10 +69,10 @@ const CommunicationForm = () => {
               </div>
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('Company Updates')}
+                  label={t('company updates')}
                   id={'offers'}
                   paragraph={t(
-                    'Get all the latest updates relating to Wiserfunding.'
+                    'get all the latest updates relating to wiserfunding.'
                   )}
                   {...{ ...register('offers') }}
                   name={'offers'}
@@ -85,16 +85,24 @@ const CommunicationForm = () => {
           </fieldset>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-          <button
+          {/*<button*/}
+          {/*  disabled={!isDirty || !isValid}*/}
+          {/*  type="submit"*/}
+          {/*  className="bg-indigo-600 border border-transparent*/}
+          {/*              rounded-none shadow-sm py-2 px-4 inline-flex justify-center*/}
+          {/*              text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2*/}
+          {/*              focus:ring-offset-2 focus:ring-indigo-600"*/}
+          {/*>*/}
+          {/*  {t('Save')}*/}
+          {/*</button>*/}
+          <Button
             disabled={!isDirty || !isValid}
             type="submit"
-            className="bg-indigo-600 border border-transparent
-                        rounded-none shadow-sm py-2 px-4 inline-flex justify-center
-                        text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2
-                        focus:ring-offset-2 focus:ring-indigo-600"
+            variant="primary"
+            className="max-w-[150px] ml-auto"
           >
-            {t('Save')}
-          </button>
+            {t('save')}
+          </Button>
         </div>
       </div>
     </form>

@@ -13,7 +13,7 @@ const localisationProps = (t: any) => {
   return {
     options: getLocalisation(),
     label: () => {
-      t('Localisation');
+      t('localisation');
     },
     name: 'localisation',
     labelClassName: formLabelClassName,
@@ -25,7 +25,7 @@ const reportingProps = (t: any) => {
   return {
     options: getLocalisation(),
     label: () => {
-      t('Default reporting country');
+      t('default reporting country');
     },
     name: 'reporting',
     labelClassName: formLabelClassName,
@@ -37,7 +37,7 @@ const currencyProps = (t: any) => {
   return {
     options: getLocalisation(),
     label: () => {
-      t('Default currency');
+      t('default currency');
     },
     name: 'currency',
     labelClassName: formLabelClassName,
@@ -46,7 +46,7 @@ const currencyProps = (t: any) => {
 };
 
 const dashboardOptionsNames = (t: any) => {
-  return ['Dashboard', 'Reports', 'SME Calc', 'SME Prospector'].map(
+  return ['dashboard', 'reports', 'sme Calc', 'sme prospector'].map(
     (i: any) => {
       return t(i);
     }
@@ -71,7 +71,7 @@ const loginScreenProps = (t: any) => {
   return {
     options: options,
     label: () => {
-      t('Default login screen');
+      t('default login screen');
     },
     name: 'loginScreen',
     labelClassName: formLabelClassName,

@@ -1,10 +1,10 @@
 {
-  "Localisation": "Localisation",
-  "Default reporting country": "Default reporting country",
-  "Default currency": "Default currency",
-  "Dashboard": "Dashboard",
-  "Reports": "Reports",
-  "SME Calc": "SME Calc",
-  "SME Prospector": "SME Prospector",
-  "Default login screen": "Default login screen"
+  "localisation": "Localisation",
+  "default reporting country": "Default reporting country",
+  "default currency": "Default currency",
+  "dashboard": "Dashboard",
+  "reports": "Reports",
+  "sme calc": "SME Calc",
+  "sme prospector": "SME Prospector",
+  "default login screen": "Default login screen"
 }
