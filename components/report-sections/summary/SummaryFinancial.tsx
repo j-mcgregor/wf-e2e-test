@@ -29,9 +29,9 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                         <p>{year.year}</p>
                       </td>
                     ))}
-                     <td >
-                       <p>{t('trend')}</p>
-                     </td>
+                    <td>
+                      <p>{t('trend')}</p>
+                    </td>
                   </tr>
                 </thead>
 

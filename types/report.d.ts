@@ -1,6 +1,4 @@
-
-
-
+import DataReliability from '../components/report-sections/highlights/DataReliability';
 
 export type FinancialYear = {
   [index: string]: string;
@@ -36,4 +34,9 @@ export type SummaryContact = {
   websites: string[];
   emails: string[];
   company_description: string | null;
+};
+
+export type Reliability = {
+  reliability: 'reliable' | 'unreliable' | 'semi-reliable';
+  comment: string;
 };

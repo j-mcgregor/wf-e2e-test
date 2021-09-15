@@ -16,9 +16,19 @@ import SummaryMap from '../../components/report-sections/summary/SummaryMap';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
 import { ReportSectionHeader } from '../../components/elements/Headers';
-import { FinancialYear, SummaryContact, SummaryInfo } from '../../types/report';
+import {
+  FinancialYear,
+  SummaryContact,
+  SummaryInfo,
+  Reliability
+} from '../../types/report';
 import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
 import InfoPopover from '../../components/report-sections/risk-metrics/InfoPopover';
+import ReliabilityIndex from '../../components/report-sections/highlights/ReliabilityIndex';
+import DataReliability from '../../components/report-sections/highlights/DataReliability';
+import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook';
+import FinancialAccounts from '../../components/report-sections/highlights/FinancialAccounts';
+
 
 interface ReportDataProps {
   created_at?: string;
@@ -26,6 +36,10 @@ interface ReportDataProps {
   contact_details: SummaryContact & SummaryInfo;
   financials: {
     [year: string]: FinancialYear;
+  };
+  highlights: {
+    data_reliability: Reliability;
+    risk_outlook: string[];
   };
 }
 
@@ -145,6 +159,22 @@ const ReportTemplate = () => {
 
             <HashContainer name={'Highlights'} id={`highlights-id`}>
               <ReportSectionHeader text={t('highlights')} />
+              <div className="flex justify-between items-center ">
+                <ReliabilityIndex
+                  reliability={data.highlights.data_reliability.reliability}
+                />
+                <DataReliability
+                  comment={data.highlights.data_reliability.comment}
+                />
+              </div>
+              <div className="flex">
+                <RiskOutlook
+                  hintTitle="hint title"
+                  hintBody="hint body"
+                  reports={data.highlights.risk_outlook}
+                />
+              </div>
+              <FinancialAccounts financialYears={transformedFinancials} />
             </HashContainer>
 
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>

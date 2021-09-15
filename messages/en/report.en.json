@@ -39,5 +39,12 @@
   "bond rating": "Bond Rating",
   "sme zscore": "SME Z-Score",
   "industry benchmark": "Industry Benchmark",
-  "region benchmark": "Region Benchmark"
+  "region benchmark": "Region Benchmark",
+  "reliability index": "Reliability Index",
+  "reliable": "RELIABLE",
+  "unreliable": "UNRELIABLE",
+  "semi reliable": "SEMI-RELIABLE",
+  "data reliability": "Data Reliability",
+  "risk outlook": "Risk Outlook",
+  "financial accounts": "Financial Accounts"
 }
