@@ -10,6 +10,7 @@ import {
   loginScreenProps,
   reportingProps
 } from './settingsData/SpecialistsInputProps';
+import ErrorMessage from '../../elements/ErrorMessage';
 
 interface PreferenceFormInput {
   localisation: string;
@@ -22,7 +23,7 @@ const PreferenceForm = () => {
   const t = useTranslations();
 
   const { register, handleSubmit, formState } = useForm<PreferenceFormInput>();
-  const { isDirty, isValid } = formState;
+  const { isDirty, isValid, errors } = formState;
   // eslint-disable-next-line no-console
   const onSubmit: SubmitHandler<PreferenceFormInput> = data =>
     // eslint-disable-next-line no-console
@@ -37,16 +38,19 @@ const PreferenceForm = () => {
               <SettingsSectionHeader text={t('preferences')} />
 
               <p className="mt-1 text-sm text-gray-500">
-                Change or update your personal information
+                {`${t('Change your base preferences')}`}
               </p>
             </div>
           </div>
           {/*#localisation*/}
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('localisation')} {...localisationProps}>
+              <Select {...register('localisation')} {...localisationProps(t)}>
+                {errors.localisation && (
+                  <ErrorMessage text={`${t('errors.localisation')}`} />
+                )}
                 <p className="mt-1 text-sm text-gray-500">
-                  Set your language preferences.
+                  {t('Set your language preferences')}
                 </p>
               </Select>
             </div>
@@ -54,26 +58,36 @@ const PreferenceForm = () => {
           {/*#reporting*/}
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('reporting')} {...reportingProps}>
+              <Select {...register('reporting')} {...reportingProps(t)}>
+                {errors.reporting && (
+                  <ErrorMessage text={`${t('errors.reporting')}`} />
+                )}
+
                 <p className="mt-1 text-sm text-gray-500">
-                  Change your default country to run your reports in.
+                  {t('Change your default country')}
                 </p>
               </Select>
             </div>
             {/*#currency*/}
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('currency')} {...currencyProps}>
+              <Select {...register('currency')} {...currencyProps(t)}>
+                {errors.currency && (
+                  <ErrorMessage text={`${t('errors.currency')}`} />
+                )}
                 <p className="mt-1 text-sm text-gray-500">
-                  Change the default reporting currency.
+                  {t('Change the default reporting currency.')}
                 </p>
               </Select>
             </div>
           </div>
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('loginScreen')} {...loginScreenProps}>
+              <Select {...register('loginScreen')} {...loginScreenProps(t)}>
+                {errors.loginScreen && (
+                  <ErrorMessage text={`${t('errors.loginScreen')}`} />
+                )}
                 <p className="mt-1 text-sm text-gray-500">
-                  Change the screen you see on your first login.
+                  {t('Change the screen')}
                 </p>
               </Select>
             </div>
@@ -87,7 +101,7 @@ const PreferenceForm = () => {
                             rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium
                             text-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Reset to defaults
+            {t('Reset to defaults')}
           </button>
           <button
             disabled={!isDirty || !isValid}
@@ -97,7 +111,7 @@ const PreferenceForm = () => {
                             text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2
                             focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Save
+            {t('Save')}
           </button>
         </div>
       </div>
