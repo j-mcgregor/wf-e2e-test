@@ -1,7 +1,6 @@
 {
   "personal information": "Personal Information",
   "preferences": "Preferences",
-  "password": "Password",
   "communication": "Communication",
   "save": "Save",
   "forms": {
@@ -17,7 +16,48 @@
       "state": "State / Province",
       "company name": "Company Name",
       "company headquarters": "Company Headquarters Location"
-    } 
+    },
+    "communication-form": {
+      "change or update": "Change or update your personal information",
+      "by email": "By Email",
+      "batch report": "Batch report completion",
+      "get the latest updates on": "Get the latest updates on the Wiserfunding platform.",
+      "service updates": "Service Updates",
+      "get notified": "Get notified when a batch report has completed all reports.",
+      "get all the latest updates relating": "Get all the latest updates relating to Wiserfunding.",
+      "company updates": "Company Updates",
+      "save": "save"
+    },
+    "preference": {
+      "change your base": "Change your base preferences",
+      "set your language": "Set your language preferences.",
+      "change your default country": "Change your default country to run your reports in.",
+      "change the default reporting": "Change the default reporting currency.",
+      "change the screen": "Change the screen you see on your first login.",
+      "reset to defaults": "Reset to defaults"
+    },
+    "specialist-props": {
+      "localisation": "Localisation",
+      "default reporting country": "Default reporting country",
+      "default currency": "Default currency",
+      "dashboard": "Dashboard",
+      "reports": "Reports",
+      "sme calc": "SME Calc",
+      "sme prospector": "SME Prospector",
+      "default login screen": "Default login screen"
+    },
+    "password-form": {
+      "password": "Password",
+      "handle": "Handle your authentication details",
+      "manage account": "Manage Account",
+      "your account is handled": "Your account is handled by a Single Sign On provider.",
+      "please use their account": "Please use their account settings to change your details.",
+      "logged in google": "You are logged in with Google"
+    },
+    "password-management": {
+      "new password": "New Password",
+      "confirm password": "Confirm Password"
+    }
   },
   "errors": {
     "email": "A valid email address is required.",

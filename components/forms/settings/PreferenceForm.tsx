@@ -11,6 +11,7 @@ import {
   reportingProps
 } from './settingsData/SpecialistsInputProps';
 import ErrorMessage from '../../elements/ErrorMessage';
+import Button from '../../elements/Button';
 
 interface PreferenceFormInput {
   localisation: string;
@@ -38,7 +39,7 @@ const PreferenceForm = () => {
               <SettingsSectionHeader text={t('preferences')} />
 
               <p className="mt-1 text-sm text-gray-500">
-                {`${t('Change your base preferences')}`}
+                {`${t('forms.preference.change your base')}`}
               </p>
             </div>
           </div>
@@ -50,7 +51,7 @@ const PreferenceForm = () => {
                   <ErrorMessage text={`${t('errors.localisation')}`} />
                 )}
                 <p className="mt-1 text-sm text-gray-500">
-                  {t('Set your language preferences')}
+                  {t('forms.preference.set your language')}
                 </p>
               </Select>
             </div>
@@ -64,7 +65,7 @@ const PreferenceForm = () => {
                 )}
 
                 <p className="mt-1 text-sm text-gray-500">
-                  {t('Change your default country')}
+                  {t('forms.preference.change your default country')}
                 </p>
               </Select>
             </div>
@@ -75,7 +76,7 @@ const PreferenceForm = () => {
                   <ErrorMessage text={`${t('errors.currency')}`} />
                 )}
                 <p className="mt-1 text-sm text-gray-500">
-                  {t('Change the default reporting currency.')}
+                  {t('forms.preference.change the default reporting')}
                 </p>
               </Select>
             </div>
@@ -87,7 +88,7 @@ const PreferenceForm = () => {
                   <ErrorMessage text={`${t('errors.loginScreen')}`} />
                 )}
                 <p className="mt-1 text-sm text-gray-500">
-                  {t('Change the screen')}
+                  {t('forms.preference.change the screen')}
                 </p>
               </Select>
             </div>
@@ -95,24 +96,40 @@ const PreferenceForm = () => {
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           {/*FIXME: need to implement the reset functionality here*/}
-          <button
-            type="submit"
-            className="bg rounded-none border-2 border-current mr-4
-                            rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium
-                            text-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            {t('Reset to defaults')}
-          </button>
-          <button
+          {/*<button*/}
+          {/*  type="submit"*/}
+          {/*  className="bg rounded-none border-2 border-current mr-4*/}
+          {/*                  rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium*/}
+          {/*                  text-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"*/}
+          {/*>*/}
+          {/*  {t('forms.preference.reset to defaults')}*/}
+          {/*</button>*/}
+          <Button
             disabled={!isDirty || !isValid}
             type="submit"
-            className="bg-indigo-600 border border-transparent
-                            rounded-none shadow-sm py-2 px-4 inline-flex justify-center
-                            text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2
-                            focus:ring-offset-2 focus:ring-indigo-500"
+            variant="primary"
+            className="max-w-[150px] ml-auto"
           >
-            {t('Save')}
-          </button>
+            {t('forms.preference.reset to defaults')}
+          </Button>
+          {/*<button*/}
+          {/*  disabled={!isDirty || !isValid}*/}
+          {/*  type="submit"*/}
+          {/*  className="bg-indigo-600 border border-transparent*/}
+          {/*                  rounded-none shadow-sm py-2 px-4 inline-flex justify-center*/}
+          {/*                  text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2*/}
+          {/*                  focus:ring-offset-2 focus:ring-indigo-500"*/}
+          {/*>*/}
+          {/*  {t('save')}*/}
+          {/*</button>*/}
+          <Button
+            disabled={!isDirty || !isValid}
+            type="submit"
+            variant="primary"
+            className="max-w-[150px] ml-auto"
+          >
+            {t('save')}
+          </Button>
         </div>
       </div>
     </form>

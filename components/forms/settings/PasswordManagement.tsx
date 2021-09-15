@@ -1,25 +1,19 @@
 import React from 'react';
 import Input from '../../elements/Input';
 import { useForm } from 'react-hook-form';
+import Button from '../../elements/Button';
+import { useTranslations } from 'next-intl';
 
 interface PasswordFormInput {
   newPassword: string;
   confirmPassword: string;
 }
 
-const newPasswordProps = {
-  label: 'New Password',
-  name: 'newPassword',
-  type: 'password'
-};
-const confirmPasswordProps = {
-  label: 'Confirm Password',
-  name: 'confirmPassword',
-  type: 'password'
-};
-
 const PasswordManagement = () => {
-  const { register, formState, getValues, handleSubmit} = useForm<PasswordFormInput>();
+  const t = useTranslations();
+
+  const { register, formState, getValues, handleSubmit } =
+    useForm<PasswordFormInput>();
   const { isDirty, isValid, errors } = formState;
 
   const onSubmit = async (data: {
@@ -40,7 +34,9 @@ const PasswordManagement = () => {
               message: 'Password must have at least 8 characters'
             }
           })}
-          {...newPasswordProps}
+          label={t('forms.password-management.new password')}
+          name="newPassword"
+          type="password"
         />
         {errors.newPassword && <p>{errors.newPassword.message}</p>}
 
@@ -49,19 +45,29 @@ const PasswordManagement = () => {
             validate: {
               sameAs: value => getValues('newPassword') === value
             }
-          })} 
-          {...confirmPasswordProps}
+          })}
+          label={t('forms.password-management.confirm password')}
+          name="confirmPassword"
+          type="password"
         />
         {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
       </div>
       <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-        <button
+        {/*<button*/}
+        {/*  disabled={!isDirty || !isValid}*/}
+        {/*  type="submit"*/}
+        {/*  className="bg-indigo-600 border border-transparent rounded-none shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"*/}
+        {/*>*/}
+        {/*  Save*/}
+        {/*</button>*/}
+        <Button
           disabled={!isDirty || !isValid}
           type="submit"
-          className="bg-indigo-600 border border-transparent rounded-none shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+          variant="primary"
+          className="max-w-[150px] ml-auto"
         >
-          Save
-        </button>
+          {t('save')}
+        </Button>
       </div>
     </form>
   );

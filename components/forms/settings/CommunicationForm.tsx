@@ -30,22 +30,20 @@ const CommunicationForm = () => {
           <div>
             <SettingsSectionHeader text={t('communication')} />
             <p className="mt-1 text-sm text-gray-500">
-              {t('change or update your personal information')}
+              {t('forms.communication-form.change or update')}
             </p>
           </div>
 
           <fieldset>
             <legend className="text-base font-medium text-gray-900">
-              {t('By Email')}
+              {t('forms.communication-form.by email')}
             </legend>
             <div className="mt-4 space-y-4">
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('batch report completion')}
+                  label={t('forms.communication-form.batch report')}
                   id={'comments'}
-                  paragraph={t(
-                    'get notified when a batch report has completed all reports.'
-                  )}
+                  paragraph={t('forms.communication-form.get notified')}
                   {...{ ...register('comments') }}
                   name={'comments'}
                 />
@@ -55,10 +53,10 @@ const CommunicationForm = () => {
               </div>
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('service updates')}
+                  label={t('forms.communication-form.service updates')}
                   id={'candidates'}
                   paragraph={t(
-                    'get the latest updates on the wiserfunding platform.'
+                    'forms.communication-form.get the latest updates on'
                   )}
                   {...{ ...register('candidates') }}
                   name={'candidates'}
@@ -69,10 +67,10 @@ const CommunicationForm = () => {
               </div>
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('company updates')}
+                  label={t('forms.communication-form.company updates')}
                   id={'offers'}
                   paragraph={t(
-                    'get all the latest updates relating to wiserfunding.'
+                    'forms.communication-form.get all the latest updates relating'
                   )}
                   {...{ ...register('offers') }}
                   name={'offers'}

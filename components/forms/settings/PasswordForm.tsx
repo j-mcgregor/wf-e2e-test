@@ -10,24 +10,24 @@ interface PasswordFormProps {
 }
 
 const PasswordForm: FC<PasswordFormProps> = ({ isSSO }) => {
-  const t = useTranslations()
+  const t = useTranslations();
   return (
     <div className="shadow sm:rounded-md sm:overflow-hidden">
       <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
         <div>
-          <SettingsSectionHeader text={t('password')}/>
+          <SettingsSectionHeader text={t('forms.password-form.password')} />
           <p className="mt-1 text-sm text-gray-500">
-            Handle your authentication details
+            {t('forms.password-form.handle')}
           </p>
         </div>
-        {isSSO ? (
+        {!isSSO ? (
           <>
             <div>
-              <p className="mt-1 text-sm font-normal	 text-gray-900">
-                Your account is handled by a Single Sign On provider.
+              <p className="mt-1 text-sm font-normal text-gray-900">
+                {t('forms.password-form.your account is handled')}
               </p>
               <p className="mt-1 text-sm font-normal text-gray-900">
-                Please use their account settings to change your details.
+                {t('forms.password-form.please use their account')}
               </p>
             </div>
             <div className="grid grid-cols-6 gap-6">
@@ -40,9 +40,16 @@ const PasswordForm: FC<PasswordFormProps> = ({ isSSO }) => {
                       'text-center mt-1 text-base font-bold text-gray-900'
                     }
                   >
-                    You are logged in with Google
+                    {t('forms.password-form.logged in google')}
                   </h3>
-                  <Button variant={'none'}>Manage Acccount</Button>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    className="max-w-[150px] ml-auto"
+                  >
+                    {t('forms.password-form.manage account')}
+                  </Button>
+                  {/*<Button variant={'none'}>Manage Acccount</Button>*/}
                 </div>
               </div>
             </div>

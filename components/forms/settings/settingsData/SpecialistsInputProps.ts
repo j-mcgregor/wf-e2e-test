@@ -13,7 +13,7 @@ const localisationProps = (t: any) => {
   return {
     options: getLocalisation(),
     label: () => {
-      t('localisation');
+      t('forms.preference.localisation');
     },
     name: 'localisation',
     labelClassName: formLabelClassName,
@@ -25,7 +25,7 @@ const reportingProps = (t: any) => {
   return {
     options: getLocalisation(),
     label: () => {
-      t('default reporting country');
+      t('forms.preference.default reporting country');
     },
     name: 'reporting',
     labelClassName: formLabelClassName,
@@ -37,7 +37,7 @@ const currencyProps = (t: any) => {
   return {
     options: getLocalisation(),
     label: () => {
-      t('default currency');
+      t('forms.preference.default currency');
     },
     name: 'currency',
     labelClassName: formLabelClassName,
@@ -46,9 +46,9 @@ const currencyProps = (t: any) => {
 };
 
 const dashboardOptionsNames = (t: any) => {
-  return ['dashboard', 'reports', 'sme Calc', 'sme prospector'].map(
+  return ['dashboard', 'reports', 'sme calc', 'sme prospector'].map(
     (i: any) => {
-      return t(i);
+      return i;
     }
   );
 };
@@ -56,22 +56,24 @@ const dashboardOptionsNames = (t: any) => {
 const dashboardOptionsValues = [
   'dashboard',
   'reports',
-  'smeCalc',
-  'smeProspector'
+  'sme calc',
+  'sme prospector'
 ];
 
 const loginScreenProps = (t: any) => {
   const options = dashboardOptionsNames(t).map((name, nameIndex) => {
     return {
-      optionName: name,
-      optionValue: dashboardOptionsValues[parseInt(String(nameIndex))]
+      optionName: t(
+        'forms.specialist-props.' + dashboardOptionsValues[nameIndex]
+      ),
+      optionValue: name
     };
   });
 
   return {
     options: options,
     label: () => {
-      t('default login screen');
+      t('forms.preference default login screen');
     },
     name: 'loginScreen',
     labelClassName: formLabelClassName,
