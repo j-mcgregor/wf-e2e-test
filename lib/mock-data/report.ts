@@ -18,7 +18,8 @@ const mockReport = {
     phone_numbers: ['+44 20 8644 4224 - registered on TPS'],
     postal_code: 'SM3 9AG',
     region: 'Western Europe',
-    websites: ['www.wrightglazing.co.uk']
+    websites: ['www.wrightglazing.co.uk'],
+    company_description: 'Culpa minim do anim consequat labore amet officia ea mollit veniam velit. Lorem exercitation aute aliqua labore nisi ad enim do sunt do duis culpa. Consectetur excepteur est occaecat anim anim adipisicing magna ut enim adipisicing esse dolore.'
   },
   risk_metrics: {
     sme_z_score: {
@@ -27,14 +28,14 @@ const mockReport = {
       industry_benchmark: '211'
     },
     probability_of_default: {
-      value: '267',
-      regional_benchmark: '345',
-      industry_benchmark: '211'
+      value: "267",
+      regional_benchmark: "345",
+      industry_benchmark: null
     },
     loss_given_default: {
-      value: '267',
-      regional_benchmark: '345',
-      industry_benchmark: '211'
+      value: "267",
+      regional_benchmark: null,
+      industry_benchmark: null
     },
     bond_rating: {
       rating: 'B-',

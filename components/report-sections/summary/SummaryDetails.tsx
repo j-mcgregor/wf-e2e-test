@@ -5,7 +5,7 @@ import { useTranslations } from 'use-intl';
 export type SummaryDetailsProps = {
   regNumber: string;
   sector: string;
-  description: string;
+  description?: string | null;
   incorporationDate: number | string;
   lastAccountDate: number | string;
 };

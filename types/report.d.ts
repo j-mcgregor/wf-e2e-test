@@ -33,6 +33,7 @@ export type SummaryContact = {
   phone_numbers: string[];
   websites: string[];
   emails: string[];
+  company_description: string | null;
 };
 
 export type Reliability = {

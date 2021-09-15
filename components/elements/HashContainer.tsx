@@ -34,7 +34,7 @@ const HashContainer = ({
   }, [isOnScreen]);
 
   return (
-    <div className={`min-h-screen pt-16 ${className}`} ref={containerRef} id={id} {...restProps}>
+    <div className={`min-h-screen ${className}`} ref={containerRef} id={id} {...restProps}>
       {children}
     </div>
   );
