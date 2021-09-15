@@ -53,13 +53,6 @@ const PasswordManagement = () => {
         {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
       </div>
       <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-        {/*<button*/}
-        {/*  disabled={!isDirty || !isValid}*/}
-        {/*  type="submit"*/}
-        {/*  className="bg-indigo-600 border border-transparent rounded-none shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"*/}
-        {/*>*/}
-        {/*  Save*/}
-        {/*</button>*/}
         <Button
           disabled={!isDirty || !isValid}
           type="submit"
