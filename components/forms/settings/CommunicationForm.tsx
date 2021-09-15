@@ -6,6 +6,8 @@ import { SettingsSectionHeader } from '../../elements/Headers';
 import { useTranslations } from 'next-intl';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Button from '../../elements/Button';
+import { FieldErrors } from 'react-hook-form/dist/types/errors';
+import { FieldNamesMarkedBoolean } from 'react-hook-form/dist/types/form';
 
 interface CommunicationFormInput {
   comments: string;
@@ -16,12 +18,14 @@ interface CommunicationFormInput {
 const CommunicationForm = () => {
   const t = useTranslations();
 
-  const { register, handleSubmit, formState } =
+  const { reset, register, handleSubmit, formState } =
     useForm<CommunicationFormInput>();
-  const { isDirty, isValid, errors } = formState;
-  const onSubmit: SubmitHandler<CommunicationFormInput> = data =>
+  const { isDirty } = formState;
+  const onSubmit: SubmitHandler<CommunicationFormInput> = data => {
     // eslint-disable-next-line no-console
     console.log(data);
+    reset();
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -47,9 +51,6 @@ const CommunicationForm = () => {
                   {...{ ...register('comments') }}
                   name={'comments'}
                 />
-                {errors.comments && (
-                  <ErrorMessage text={`${t('errors.comments')}`} />
-                )}
               </div>
               <div className="flex items-center">
                 <CheckboxInput
@@ -61,9 +62,6 @@ const CommunicationForm = () => {
                   {...{ ...register('candidates') }}
                   name={'candidates'}
                 />
-                {errors.candidates && (
-                  <ErrorMessage text={`${t('errors.candidates')}`} />
-                )}
               </div>
               <div className="flex items-center">
                 <CheckboxInput
@@ -75,16 +73,13 @@ const CommunicationForm = () => {
                   {...{ ...register('offers') }}
                   name={'offers'}
                 />
-                {errors.offers && (
-                  <ErrorMessage text={`${t('errors.offers')}`} />
-                )}
               </div>
             </div>
           </fieldset>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           <Button
-            disabled={!isDirty || !isValid}
+            disabled={!isDirty}
             type="submit"
             variant="primary"
             className="max-w-[150px] ml-auto"

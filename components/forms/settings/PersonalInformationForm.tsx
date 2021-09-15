@@ -162,7 +162,7 @@ const PersonalInformationForm = () => {
 
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           <Button
-            disabled={!isDirty || !isValid}
+            disabled={!isDirty}
             type="submit"
             variant="primary"
             className="max-w-[150px] ml-auto"

@@ -96,14 +96,7 @@ const PreferenceForm = () => {
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           {/*FIXME: need to implement the reset functionality here*/}
-          {/*<button*/}
-          {/*  type="submit"*/}
-          {/*  className="bg rounded-none border-2 border-current mr-4*/}
-          {/*                  rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium*/}
-          {/*                  text-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"*/}
-          {/*>*/}
-          {/*  {t('forms.preference.reset to defaults')}*/}
-          {/*</button>*/}
+
           <div className="flex">
             <Button
               disabled={!isDirty || !isValid}
@@ -114,7 +107,7 @@ const PreferenceForm = () => {
               {t('forms.preference.reset to defaults')}
             </Button>
             <Button
-              disabled={!isDirty || !isValid}
+              disabled={!isDirty}
               type="submit"
               variant="primary"
               className="max-w-[150px] ml-3"
