@@ -2,11 +2,11 @@ import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { scroller } from 'react-scroll';
-import { useTranslations } from 'use-intl';
-
 import { useReportNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';
 import SkeletonMenu from '../skeletons/SkeletonMenu';
+import DownloadDoc from '../icons/DownloadDoc';
+import DownloadFolder from '../icons/DownloadFolder';
 
 interface ReportNavProps {
   companyName: string;
@@ -15,7 +15,6 @@ interface ReportNavProps {
 
 const ReportNav = ({ companyName, loading }: ReportNavProps) => {
   const navItems = useReportNavItems();
-  const t = useTranslations();
   const router = useRouter();
 
   const [activeItem, setActiveItem] = useState<string>('summary');
@@ -60,56 +59,37 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
   }
 
   return (
-    <div className="px-6 pt-8 flex flex-col h-full">
-      <div>
-        <Button
-          linkTo="/reports"
-          variant="none"
-          newClassName="text-sm flex items-center hover:text-alt "
-        >
-          <ArrowLeftIcon className="h-5 w-5 mr-2" /> {t('back to saved')}
-        </Button>
-        <p className="text-sm mt-8">{t('risk assessment report')}</p>
-        <h2 className="mt-4 text-xl">{companyName}</h2>
-      </div>
+    <div className="w-full absolute flex items-center bg-gray-200 z-20 text-sm text-primary">
+      <Button
+        linkTo="/reports"
+        variant="highlight"
+        newClassName=" bg-highlight items-center hover:text-alt relative h-[50px] top-0 flex items-center justify-center px-4"
+      >
+        <ArrowLeftIcon className="h-full w-6" />
+      </Button>
+      <p className="font-bold whitespace-nowrap px-4">{companyName}</p>
 
-      <div className="flow-root mt-8 ">
-        <h4 className="font-bold ">{t('content')}</h4>
-        <ul className="text-sm p-2">
+      {/* hide scroll works to allow touch but removes mouse - needs solution */}
+      <div className="overflow-x-auto flex hide-scroll">
+        <ul className=" flex items-center justify-between">
           {navItems.map((heading, index) => {
             const lowerHeading = heading.toLowerCase();
             const isActive = activeItem === lowerHeading;
+
             return (
               <li key={index}>
                 <button
-                  className="cursor-pointer w-full hover:text-alt"
+                  className="cursor-pointer hover:text-alt"
                   onClick={() => handleClick(lowerHeading)}
                 >
-                  <div className="relative pb-2 h-full">
-                    {index !== navItems.length - 1 ? (
-                      <span
-                        className={`${
-                          isActive ? 'bg-highlight' : 'bg-primary'
-                        } absolute top-2 h-full w-0.5 left-0`}
-                        aria-hidden="true"
-                      />
-                    ) : null}
-                    <div className="relative flex items-center ">
-                      <span
-                        className={`${
-                          isActive
-                            ? 'bg-highlight ring-highlight'
-                            : 'bg-primary ring-primary'
-                        } h-0.5 w-0.5 rounded-full ring-[5px] `}
-                      />
-                      <p
-                        className={`${
-                          isActive ? 'text-highlight' : ''
-                        } ml-6 z-10 text-center`}
-                      >
-                        {heading}
-                      </p>
-                    </div>
+                  <div className="whitespace-nowrap px-6">
+                    <p
+                      className={`${
+                        isActive ? 'text-highlight font-bold' : ''
+                      } z-10 text-center w-full`}
+                    >
+                      {heading}
+                    </p>
                   </div>
                 </button>
               </li>
@@ -118,11 +98,13 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
         </ul>
       </div>
 
-      <div className="space-y-2 items-end flex-1 justify-end flex flex-col pb-4">
-        <Button variant="alt" className="w-full">
-          {t('export pdf')}
+      <div className="flex h-[50px]">
+        <Button variant="alt" className="rounded-none flex items-center">
+          <DownloadDoc />
         </Button>
-        <Button variant="secondary">{t('export csv')}</Button>
+        <Button variant="secondary" className="rounded-none flex items-center">
+          <DownloadFolder />
+        </Button>
       </div>
     </div>
   );

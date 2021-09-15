@@ -29,7 +29,7 @@ import DataReliability from '../../components/report-sections/highlights/DataRel
 import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook';
 import FinancialAccounts from '../../components/report-sections/highlights/FinancialAccounts';
 import CTACard from '../../components/report-sections/highlights/CTACard';
-
+import TabletReportNav from '../../components/layout/TabletReportNav';
 
 interface ReportDataProps {
   created_at?: string;
@@ -76,22 +76,32 @@ const ReportTemplate = () => {
   const lastFiveYearsFinancials =
     (data && transformedFinancials?.slice(0, 5)) || [];
 
-
-  const INDUSTRY_BENCHMARK = t('industry benchmark')
-  const REGION_BENCHMARK = t('region benchmark')
+  const INDUSTRY_BENCHMARK = t('industry benchmark');
+  const REGION_BENCHMARK = t('region benchmark');
   return (
     <Layout title={`${data?.company_name} | ${t('report')}`} fullWidth>
       <SecondaryLayout
         navigation={
           data?.company_name && (
-            <ReportNav companyName={data?.company_name} loading={!data} />
+            <>
+              <div className="lg:block hidden">
+                <ReportNav companyName={data?.company_name} loading={!data} />
+              </div>
+
+              <div className="block lg:hidden">
+                <TabletReportNav
+                  companyName={data?.company_name}
+                  loading={!data}
+                />
+              </div>
+            </>
           )
         }
       >
         {!data ? (
           <SkeletonReport />
         ) : (
-          <div className="text-primary">
+          <div className="text-primary mt-10 lg:mt-0">
             <div className="py-8">
               <h1 className="text-xl pb-4">{t('risk assessment report')}</h1>
               <ReportHeader company={data?.company_name} created={created} />
@@ -130,26 +140,44 @@ const ReportTemplate = () => {
                     { name: INDUSTRY_BENCHMARK, value: 403 },
                     { name: REGION_BENCHMARK, value: 204 }
                   ]}
-                  hint={<InfoPopover title={t('report.risk metrics.sme z-score.title')} body={t('report.risk metrics.sme z-score.body')} />}
+                  hint={
+                    <InfoPopover
+                      title={t('report.risk metrics.sme z-score.title')}
+                      body={t('report.risk metrics.sme z-score.body')}
+                    />
+                  }
                 />
                 <Speedometer
                   title="Probability of Default"
                   value="12.04%"
                   secondaryValues={[
-                    { name: INDUSTRY_BENCHMARK, value: "6%" },
+                    { name: INDUSTRY_BENCHMARK, value: '6%' },
                     { name: REGION_BENCHMARK, value: null }
                   ]}
-                  hint={<InfoPopover title={t('report.risk metrics.probability of default.title')} body={t('report.risk metrics.probability of default.body')} />}
+                  hint={
+                    <InfoPopover
+                      title={t(
+                        'report.risk metrics.probability of default.title'
+                      )}
+                      body={t(
+                        'report.risk metrics.probability of default.body'
+                      )}
+                    />
+                  }
                 />
                 <Speedometer
                   title="Loss Given Default"
                   value={304}
                   secondaryValues={[
-                    { name: INDUSTRY_BENCHMARK, value: "12.5%" },
+                    { name: INDUSTRY_BENCHMARK, value: '12.5%' },
                     { name: REGION_BENCHMARK, value: null }
                   ]}
-                  hint={<InfoPopover title={t('report.risk metrics.loss given default.title')} body={t('report.risk metrics.loss given default.body')} />}
-
+                  hint={
+                    <InfoPopover
+                      title={t('report.risk metrics.loss given default.title')}
+                      body={t('report.risk metrics.loss given default.body')}
+                    />
+                  }
                 />
               </div>
               <BondRating
