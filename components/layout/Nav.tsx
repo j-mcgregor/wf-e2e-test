@@ -144,17 +144,17 @@ const Nav = ({ path }: NavProps) => {
       <div className="hidden bg-primary sm:flex sm:flex-shrink-0 lg:hidden">
         {/* expand menu button */}
 
-        <button
-          ref={sidebarRef}
-          type="button"
-          className="z-10  bg-primary absolute left-[55px] p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-highlight"
-          onClick={openSidebar}
-        >
-          <MenuAlt2Icon className="text-bg w-8 h-8" />
-        </button>
         <div className="w-14 flex flex-col">
-          <div className="border-r border-gray-200 pt-5 pb-4 flex flex-col flex-grow overflow-y-auto">
-            <div className="flex-shrink-0 px-3 flex items-center relative">
+          <div className="border-r border-gray-200 pt-2 pb-4 flex flex-col flex-grow overflow-y-auto">
+            <button
+              ref={sidebarRef}
+              type="button"
+              className="z-10 bg-primary p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-highlight"
+              onClick={openSidebar}
+            >
+              <MenuAlt2Icon className="text-bg w-8 h-8" />
+            </button>
+            <div className="flex-shrink-0 px-3 pt-3 flex items-center relative">
               <div className="relative w-20 h-10">
                 <WF />
               </div>
