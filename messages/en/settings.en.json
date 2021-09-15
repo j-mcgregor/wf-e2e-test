@@ -3,6 +3,7 @@
   "preferences": "Preferences",
   "communication": "Communication",
   "save": "Save",
+  "password": "Password",
   "forms": {
     "personal": {
       "update your personal": "Update your personal information",
@@ -29,6 +30,10 @@
       "save": "save"
     },
     "preference": {
+      "localisation": "Localisation",
+      "reporting": "Default reporting country",
+      "loginScreen": "Default Login Screen",
+      "currency": "Default currency",
       "change your base": "Change your base preferences",
       "set your language": "Set your language preferences.",
       "change your default country": "Change your default country to run your reports in.",
@@ -38,8 +43,6 @@
     },
     "specialist-props": {
       "localisation": "Localisation",
-      "default reporting country": "Default reporting country",
-      "default currency": "Default currency",
       "dashboard": "Dashboard",
       "reports": "Reports",
       "sme calc": "SME Calc",
@@ -47,7 +50,6 @@
       "default login screen": "Default login screen"
     },
     "password-form": {
-      "password": "Password",
       "handle": "Handle your authentication details",
       "manage account": "Manage Account",
       "your account is handled": "Your account is handled by a Single Sign On provider.",
@@ -62,6 +64,12 @@
   "errors": {
     "email": "A valid email address is required.",
     "last name": "Please provide your last name.",
-    "first name": "Please provide your first name."
+    "first name": "Please provide your first name.",
+    "newPassword": {
+      "message": "Password must have at least 8 characters"
+    },
+    "confirmPassword": {
+      "message": "The passwords do not match."
+    }
   }
 }

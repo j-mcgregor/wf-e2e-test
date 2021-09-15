@@ -13,15 +13,17 @@ const PasswordForm: FC<PasswordFormProps> = ({ isSSO }) => {
   const t = useTranslations();
   return (
     <div className="shadow sm:rounded-md sm:overflow-hidden">
-      <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
-        <SettingsSectionHeader text={t('forms.password-form.password')} />
-        <p className="mt-1 text-sm text-gray-500">
-          {t('forms.password-form.handle')}
-        </p>
+      <div className="bg-white pt-6 px-6 space-y-6 sm:pt-6">
+        <div>
+          <SettingsSectionHeader text={t('password')} />
+          <p className="mt-1 text-sm text-gray-500">
+            {t('forms.password-form.handle')}
+          </p>
+        </div>
       </div>
       {!isSSO ? (
         <div className="bg-white py-6 px-4 sm:p-6">
-          <div>
+          <div className="mb-8">
             <p className="mt-1 text-sm font-normal text-gray-900">
               {t('forms.password-form.your account is handled')}
             </p>

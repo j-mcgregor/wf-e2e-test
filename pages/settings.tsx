@@ -10,11 +10,8 @@ import Layout from '../components/layout/Layout';
 import SecondaryLayout from '../components/layout/SecondaryLayout';
 import SettingsNav from '../components/layout/SettingsNav';
 import { GetStaticPropsContext } from 'next';
-import { useTranslations } from 'next-intl';
 
 const Settings = () => {
-  const t = useTranslations();
-
   return (
     <Layout title="Settings" fullWidth>
       <SecondaryLayout navigation={<SettingsNav />}>
@@ -31,7 +28,7 @@ const Settings = () => {
           </HashContainer>
 
           <HashContainer id={`password-id`} name={'Password'}>
-            <PasswordForm isSSO={false} />
+            <PasswordForm isSSO={true} />
           </HashContainer>
 
           <HashContainer id={`communication-id`} name={'Communication'}>

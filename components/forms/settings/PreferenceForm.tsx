@@ -4,14 +4,8 @@ import { SettingsSectionHeader } from '../../elements/Headers';
 import Select from '../../elements/Select';
 import { useTranslations } from 'next-intl';
 
-import {
-  localisationProps,
-  currencyProps,
-  loginScreenProps,
-  reportingProps
-} from './settingsData/SpecialistsInputProps';
-import ErrorMessage from '../../elements/ErrorMessage';
 import Button from '../../elements/Button';
+import localisationJSON from '../../../lib/data/localisation.json';
 
 interface PreferenceFormInput {
   localisation: string;
@@ -20,15 +14,47 @@ interface PreferenceFormInput {
   loginScreen: string;
 }
 
+const getLocalisation = () =>
+  localisationJSON.map(value => {
+    return { optionValue: value.locale };
+  });
+
+const formLabelClassName = 'block text-sm font-medium text-gray-700';
+
+const formClassName =
+  'mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 ' +
+  'focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm';
+
+const options = (t: any) => {
+  const dashboardOptionsValues = [
+    'dashboard',
+    'reports',
+    'sme calc',
+    'sme prospector'
+  ];
+  return dashboardOptionsValues.map((name, nameIndex) => {
+    return {
+      optionName: t(
+        'forms.specialist-props.' +
+          //checks type, prevents any sort of injection, takes index as string, then parses it to a number.
+          dashboardOptionsValues[parseInt(String(nameIndex))]
+      ),
+      optionValue: name
+    };
+  });
+};
+
 const PreferenceForm = () => {
   const t = useTranslations();
 
-  const { register, handleSubmit, formState } = useForm<PreferenceFormInput>();
-  const { isDirty, isValid, errors } = formState;
-  // eslint-disable-next-line no-console
-  const onSubmit: SubmitHandler<PreferenceFormInput> = data =>
+  const { register, handleSubmit, formState, reset } =
+    useForm<PreferenceFormInput>();
+  const { isDirty, isValid } = formState;
+  const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
     // eslint-disable-next-line no-console
     console.log(data);
+    reset();
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -37,7 +63,6 @@ const PreferenceForm = () => {
           <div>
             <div>
               <SettingsSectionHeader text={t('preferences')} />
-
               <p className="mt-1 text-sm text-gray-500">
                 {`${t('forms.preference.change your base')}`}
               </p>
@@ -46,10 +71,14 @@ const PreferenceForm = () => {
           {/*#localisation*/}
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('localisation')} {...localisationProps(t)}>
-                {errors.localisation && (
-                  <ErrorMessage text={`${t('errors.localisation')}`} />
-                )}
+              <Select
+                {...register('localisation')}
+                options={getLocalisation()}
+                label={t('forms.preference.localisation')}
+                name={'localisation'}
+                labelClassName={formLabelClassName}
+                className={formClassName}
+              >
                 <p className="mt-1 text-sm text-gray-500">
                   {t('forms.preference.set your language')}
                 </p>
@@ -59,11 +88,14 @@ const PreferenceForm = () => {
           {/*#reporting*/}
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('reporting')} {...reportingProps(t)}>
-                {errors.reporting && (
-                  <ErrorMessage text={`${t('errors.reporting')}`} />
-                )}
-
+              <Select
+                {...register('reporting')}
+                options={getLocalisation()}
+                label={t('forms.preference.reporting')}
+                name={'reporting'}
+                labelClassName={formLabelClassName}
+                className={formClassName}
+              >
                 <p className="mt-1 text-sm text-gray-500">
                   {t('forms.preference.change your default country')}
                 </p>
@@ -71,10 +103,14 @@ const PreferenceForm = () => {
             </div>
             {/*#currency*/}
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('currency')} {...currencyProps(t)}>
-                {errors.currency && (
-                  <ErrorMessage text={`${t('errors.currency')}`} />
-                )}
+              <Select
+                {...register('currency')}
+                options={getLocalisation()}
+                label={t('forms.preference.currency')}
+                name={'currency'}
+                labelClassName={formLabelClassName}
+                className={formClassName}
+              >
                 <p className="mt-1 text-sm text-gray-500">
                   {t('forms.preference.change the default reporting')}
                 </p>
@@ -83,10 +119,14 @@ const PreferenceForm = () => {
           </div>
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('loginScreen')} {...loginScreenProps(t)}>
-                {errors.loginScreen && (
-                  <ErrorMessage text={`${t('errors.loginScreen')}`} />
-                )}
+              <Select
+                {...register('loginScreen')}
+                options={options(t)}
+                label={t('forms.preference.loginScreen')}
+                name={'loginScreen'}
+                labelClassName={formLabelClassName}
+                className={formClassName}
+              >
                 <p className="mt-1 text-sm text-gray-500">
                   {t('forms.preference.change the screen')}
                 </p>
@@ -99,6 +139,7 @@ const PreferenceForm = () => {
 
           <div className="flex">
             <Button
+              onClick={() => reset()}
               disabled={!isDirty || !isValid}
               type="submit"
               variant="primary"
