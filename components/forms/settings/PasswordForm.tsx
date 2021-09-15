@@ -15,7 +15,7 @@ const PasswordForm: FC<PasswordFormProps> = ({ isSSO }) => {
     <div className="shadow sm:rounded-md sm:overflow-hidden">
       <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
         <div>
-          <SettingsSectionHeader text={t('forms.password-form.password')} />
+          <SettingsSectionHeader text={t('password')} />
           <p className="mt-1 text-sm text-gray-500">
             {t('forms.password-form.handle')}
           </p>
@@ -49,7 +49,6 @@ const PasswordForm: FC<PasswordFormProps> = ({ isSSO }) => {
                   >
                     {t('forms.password-form.manage account')}
                   </Button>
-                  {/*<Button variant={'none'}>Manage Acccount</Button>*/}
                 </div>
               </div>
             </div>

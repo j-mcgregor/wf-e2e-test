@@ -3,6 +3,7 @@
   "preferences": "Preferences",
   "communication": "Communication",
   "save": "Save",
+  "password": "Password",
   "forms": {
     "personal": {
       "update your personal": "Update your personal information",
@@ -47,7 +48,6 @@
       "default login screen": "Default login screen"
     },
     "password-form": {
-      "password": "Password",
       "handle": "Handle your authentication details",
       "manage account": "Manage Account",
       "your account is handled": "Your account is handled by a Single Sign On provider.",
