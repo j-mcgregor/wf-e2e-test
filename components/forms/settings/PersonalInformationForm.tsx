@@ -38,7 +38,7 @@ const PersonalInformationForm = () => {
   const { register, handleSubmit, formState } =
     useForm<PersonalInformationFormInput>();
 
-  const { isDirty, isValid, errors } = formState;
+  const { isDirty, errors } = formState;
 
   const onSubmit: SubmitHandler<PersonalInformationFormInput> = data =>
     // eslint-disable-next-line no-console
@@ -65,7 +65,7 @@ const PersonalInformationForm = () => {
                 labelClassName={formLabelClassName}
               />
               {errors.lastName && (
-                <ErrorMessage text={`${t('errors.firstName')}`} />
+                <ErrorMessage text={`${t('errors.first name')}`} />
               )}
             </div>
 

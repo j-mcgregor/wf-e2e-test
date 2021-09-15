@@ -21,7 +21,7 @@ const PasswordForm: FC<PasswordFormProps> = ({ isSSO }) => {
           </p>
         </div>
       </div>
-      {!isSSO ? (
+      {isSSO ? (
         <div className="bg-white py-6 px-4 sm:p-6">
           <div className="mb-8">
             <p className="mt-1 text-sm font-normal text-gray-900">

@@ -3,6 +3,7 @@ import Input from '../../elements/Input';
 import { useForm } from 'react-hook-form';
 import Button from '../../elements/Button';
 import { useTranslations } from 'next-intl';
+import ErrorMessage from '../../elements/ErrorMessage';
 
 interface PasswordFormInput {
   newPassword: string;
@@ -41,12 +42,14 @@ const PasswordManagement = () => {
             name="newPassword"
             type="password"
           />
-          {errors.newPassword && <p>{t('errors.newPassword.message')}</p>}
+          {errors.newPassword && (
+            <ErrorMessage text={`${t('errors.newPassword.message')}`} />
+          )}
 
           <Input
             {...register('confirmPassword', {
               validate: {
-                //if this returns false it triggers the validation to show, its if validatin is false, trigger message
+                //if this returns false it triggers the validation to show, its if validating is false, trigger message
                 confirmPasswordValidate: value => {
                   return getValues('newPassword') === value;
                 }
@@ -58,7 +61,7 @@ const PasswordManagement = () => {
           />
 
           {errors?.confirmPassword?.type && (
-            <p>{t('errors.confirmPassword.message')}</p>
+            <ErrorMessage text={`${t('errors.confirmPassword.message')}`} />
           )}
         </div>
       </div>
