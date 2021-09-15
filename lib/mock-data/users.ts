@@ -16,6 +16,25 @@ const mockUsers = {
       api_requests: 142,
       reports_ran: 32
     },
+    isSSO: false,
+    contact_information: {
+      first_name: '',
+      last_name: '',
+      email: '',
+      country: '',
+      streetAddress: '',
+      city: '',
+      state: '',
+      postcode: '',
+      companyName: '',
+      companyHQLocation: ''
+    },
+      preferances: {
+        default_screen: '',
+        commuication: {
+
+        }
+      },
     reports: [
       {
         id: 1,

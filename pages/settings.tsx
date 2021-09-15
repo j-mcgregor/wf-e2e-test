@@ -10,10 +10,16 @@ import Layout from '../components/layout/Layout';
 import SecondaryLayout from '../components/layout/SecondaryLayout';
 import SettingsNav from '../components/layout/SettingsNav';
 import { GetStaticPropsContext } from 'next';
-import { useTranslations } from 'next-intl';
+import { useRecoilValue } from 'recoil';
+import appState from '../lib/appState';
 
 const Settings = () => {
-  const t = useTranslations();
+
+
+  const { user } = useRecoilValue(appState);
+
+
+  
 
   return (
     <Layout title="Settings" fullWidth>
@@ -31,7 +37,7 @@ const Settings = () => {
           </HashContainer>
 
           <HashContainer id={`password-id`} name={'Password'}>
-            <PasswordForm isSSO={true} />
+            <PasswordForm isSSO={false} />
           </HashContainer>
 
           <HashContainer id={`communication-id`} name={'Communication'}>
