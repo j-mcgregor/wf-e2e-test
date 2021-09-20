@@ -733,6 +733,14 @@ const mockReport = {
         types: ['Default', 'Charge/mortgage']
       },
       {
+        date: '2018-04-10',
+        description: 'Legal IP Dispute',
+        details: null,
+        id: null,
+        source: 'Companies House',
+        types: ['Default', 'Negative Event']
+      },
+      {
         date: '2018-04-09',
         description: 'LEGAL CHARGE',
         details: [
