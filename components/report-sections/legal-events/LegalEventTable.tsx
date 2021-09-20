@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { LegalEvent } from '../../../types/report';
 
@@ -10,17 +9,10 @@ interface LegalEventTableProps {
 }
 
 const LegalEventTable = ({ filter, legal_events }: LegalEventTableProps) => {
-  const [dropDown, setDropdown] = useState(false);
   const t = useTranslations();
 
-  // to use for info dropdown toggle
-  const handleDropdown = () => {
-    setDropdown(!dropDown);
-  };
   return (
     <div>
-      {filter}
-
       <div className="w-full my-6 flex flex-col text-xs mx-2">
         <LegalRow
           type={t('type')}
@@ -28,13 +20,14 @@ const LegalEventTable = ({ filter, legal_events }: LegalEventTableProps) => {
           date={t('date')}
         />
         <div className="border-b border-gray-800 my-1" />
+
         {legal_events.map(legal_event => {
-          return (
-            <LegalRow
-              types={legal_event.types}
-              description={legal_event.description}
-              date={legal_event.date}
-            />
+          return filter !== '' ? (
+            legal_event.types.includes(filter) && (
+              <LegalRow data={legal_event} />
+            )
+          ) : (
+            <LegalRow data={legal_event} />
           );
         })}
       </div>

@@ -57,5 +57,5 @@ export type LegalEvent = {
   details?: LegalEventDetails[];
   id?: number | string;
   source: string;
-  types: string[];
+  types: [];
 };

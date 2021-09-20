@@ -2,7 +2,7 @@ interface FilterTabProps {
   handleFilter: (category: string) => void;
   filter: string;
   category: string;
-  value: string | number;
+  value: number;
   header: string;
 }
 
@@ -20,7 +20,7 @@ const FilterTab = ({
         filter === category ? 'border-highlight' : 'border-white'
       }  border-2 w-1/3 cursor-pointer px-4 mx-1 rounded bg-white shadow`}
     >
-      <p className="py-2 text-2xl font-semibold ">{value}</p>
+      <p className="py-2 text-2xl font-semibold">{value}</p>
       <p className="pb-2 text-lg">{header}</p>
     </div>
   );
