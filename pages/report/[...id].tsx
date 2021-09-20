@@ -20,7 +20,8 @@ import {
   FinancialYear,
   SummaryContact,
   SummaryInfo,
-  Reliability
+  Reliability,
+  LegalEvent
 } from '../../types/report';
 import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
 import InfoPopover from '../../components/report-sections/risk-metrics/InfoPopover';
@@ -30,6 +31,7 @@ import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook
 import FinancialAccounts from '../../components/report-sections/highlights/FinancialAccounts';
 import CTACard from '../../components/report-sections/highlights/CTACard';
 import TabletReportNav from '../../components/layout/TabletReportNav';
+import LegalEvents from '../../components/report-sections/legal-events/LegalEvents';
 
 interface ReportDataProps {
   created_at?: string;
@@ -41,6 +43,9 @@ interface ReportDataProps {
   highlights: {
     data_reliability: Reliability;
     risk_outlook: string[];
+  };
+  legal_events: {
+    legal_events: LegalEvent[];
   };
 }
 
@@ -56,7 +61,7 @@ const ReportTemplate = () => {
     `/api/report?id=${id}`,
     fetcher
   );
-  // console.log(data);
+  // console.log(data?.legal_events.legal_events);
 
   // Todo: handle error more gracefully
   if (error) return <div>failed to load</div>;
@@ -241,6 +246,7 @@ const ReportTemplate = () => {
 
             <HashContainer name={'Legal Events'} id={`legal-events-id`}>
               <ReportSectionHeader text={t('legal events')} />
+              <LegalEvents legal_events={data.legal_events.legal_events} />
             </HashContainer>
 
             <HashContainer
