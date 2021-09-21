@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { LegalEvent } from '../../../types/report';
 import LegalRow from './LegalRow';
+import LegalFilter from './LegalFilter';
 
 interface LegalEventsProps {
   legalEvents: LegalEvent[];
@@ -9,15 +10,16 @@ interface LegalEventsProps {
 
 const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
   const allEvents = legalEvents.map(event => event);
-  const charges: Array<LegalEvent> =  allEvents.filter((event): boolean =>{
-    return event.types.indexOf('Charge/mortgage') !== -1 }
+
+  const charges = allEvents.filter(event =>
+    event.types.includes('Charge/mortgage')
   );
   const negativeEvents = allEvents.filter(event =>
     event.types.includes('Negative Event')
   );
 
   const [events, setEvents] = useState(allEvents);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState('all events');
 
   const handleFilter = (event: LegalEvent[], filter: string): void => {
     setEvents(event);
@@ -26,64 +28,44 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
 
   const t = useTranslations();
 
-  // to do
-  // mobile responsiveness
-  // stack the filters
-  // add padding to the edges on mobile
-  // add filters to own component
-  // find uses of SVGs that are heroicons and use the hero icons from the installed package
-  // change div to button 
-    // 1. legal events chevron 
-    // 2. filter to button as well as component
-  // complete the mapping function for the details
-  //  - check the length of rendering string to assign large size if required
-  //  - render keys as normal text converting from camel case
-  //  - implement css for this
-  // only negative events should be in red
-  // add array to report.settings
-  // add in translations 
-
   return (
-    <div className="text-primary">
-      <div className="flex my-6">
-        <div
-          onClick={() => handleFilter(allEvents, '')}
-          className={`${
-            filter === '' ? 'border-highlight' : 'border-white'
-          }  border-2 w-1/3 cursor-pointer px-4 mx-1 rounded bg-white shadow`}
-        >
-          <p className="py-2 text-2xl font-semibold">{allEvents.length}</p>
-          <p className="pb-2 text-lg">{t('all events')}</p>
-        </div>
-        <div
-          onClick={() => handleFilter(charges, 'charges')}
-          className={`${
-            filter === 'charges' ? 'border-highlight' : 'border-white'
-          }  border-2 w-1/3 cursor-pointer px-4 mx-1 rounded bg-white shadow`}
-        >
-          <p className="py-2 text-2xl font-semibold">{charges.length}</p>
-          <p className="pb-2 text-lg">{t('charges')}</p>
-        </div>
-        <div
-          onClick={() => handleFilter(negativeEvents, 'negative')}
-          className={`${
-            filter === 'negative' ? 'border-highlight' : 'border-white'
-          }  border-2 w-1/3 cursor-pointer px-4 mx-1 rounded bg-white shadow`}
-        >
-          <p className="py-2 text-2xl font-semibold">{negativeEvents.length}</p>
-          <p className="pb-2 text-lg">{t('negative events')}</p>
-        </div>
+    <div className="text-primary px-4 md:px-1">
+      <p className="text-xl">{t('summary')}</p>
+      <div className="flex flex-col md:flex-row my-6 ">
+        <LegalFilter
+          events={allEvents}
+          filter={filter}
+          handleFilter={() => handleFilter(allEvents, 'all events')}
+          title={t('all events')}
+          activeFilter="all events"
+        />
+        <LegalFilter
+          events={charges}
+          filter={filter}
+          handleFilter={() => handleFilter(charges, 'charges')}
+          title={t('charges')}
+          activeFilter="charges"
+        />
+        <LegalFilter
+          events={negativeEvents}
+          filter={filter}
+          handleFilter={() => handleFilter(negativeEvents, 'negative events')}
+          title={t('negative events')}
+          activeFilter="negative events"
+        />
       </div>
 
-      <div>
-        <div className="w-full my-6 flex flex-col text-xs mx-2">
-          <div className="flex border-b pb-2 mb-2">
-            <p className="w-full">Description</p>
-            <p className="w-full">Type</p>
-            <p className="w-1/3">Date</p>
-            <div className="w-12" />
-          </div>
+      <p className="text-xl">{t(filter)}</p>
 
+      <div className="bg-white shadow-sm p-2 my-6 rounded-sm">
+        <div className="w-full my-6 flex flex-col text-xs px-2">
+          <div className="flex border-b pb-2 mb-2">
+            <p className="w-full">{t('description')}</p>
+            <p className="w-full">{t('type')}</p>
+            <div className="w-[230px]">
+              <p>{t('date')}</p>
+            </div>
+          </div>
           {events.map((event, index) => {
             return <LegalRow key={index} {...event} />;
           })}

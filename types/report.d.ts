@@ -49,6 +49,7 @@ interface LegalEventDetails {
   DatePartiallySatisfied?: string;
   MortgageDetails?: string;
   PensionsEntitled?: string;
+  MortgageDetailsFreeText?: string;
 }
 
 export type LegalEvent = {

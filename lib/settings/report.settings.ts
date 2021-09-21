@@ -41,4 +41,5 @@ export const bondRatings = [
   }
 ];
 
-// add the negative values into here
+// negative values used in legal events table
+export const negativeValues = ['Negative Event'];
