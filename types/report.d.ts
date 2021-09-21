@@ -54,7 +54,7 @@ interface LegalEventDetails {
 export type LegalEvent = {
   date: string;
   description: string;
-  details?: LegalEventDetails[];
+  details: LegalEventDetails[];
   id?: number | string;
   source: string;
   types: [];

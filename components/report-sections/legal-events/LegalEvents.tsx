@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
-
+import { useState } from 'react';
+import { useTranslations } from 'use-intl';
 import { LegalEvent } from '../../../types/report';
-
 import LegalRow from './LegalRow';
 
 interface LegalEventsProps {
@@ -18,46 +17,55 @@ const LegalEvents = ({ legal_events }: LegalEventsProps) => {
   );
 
   const [events, setEvents] = useState(allEvents);
-  console.log(events);
-  const handleFilter = (event: []): void => {
+  const [filter, setFilter] = useState('');
+
+  const handleFilter = (event: LegalEvent[], filter: string): void => {
     setEvents(event);
+    setFilter(filter);
   };
+
+  const t = useTranslations();
 
   return (
     <div className="text-primary">
       <div className="flex my-6">
         <div
-          onClick={() => setEvents(allEvents)}
+          onClick={() => handleFilter(allEvents, '')}
           className={`${
-            events === allEvents ? 'border-highlight' : 'border-white'
+            filter === '' ? 'border-highlight' : 'border-white'
           }  border-2 w-1/3 cursor-pointer px-4 mx-1 rounded bg-white shadow`}
         >
           <p className="py-2 text-2xl font-semibold">{allEvents.length}</p>
-          <p className="pb-2 text-lg">All Events</p>
+          <p className="pb-2 text-lg">{t('all events')}</p>
         </div>
         <div
-          onClick={() => setEvents(charges)}
+          onClick={() => handleFilter(charges, 'charges')}
           className={`${
-            events === charges ? 'border-highlight' : 'border-white'
+            filter === 'charges' ? 'border-highlight' : 'border-white'
           }  border-2 w-1/3 cursor-pointer px-4 mx-1 rounded bg-white shadow`}
         >
           <p className="py-2 text-2xl font-semibold">{charges.length}</p>
-          <p className="pb-2 text-lg">Charges</p>
+          <p className="pb-2 text-lg">{t('charges')}</p>
         </div>
         <div
-          onClick={() => setEvents(negativeEvents)}
+          onClick={() => handleFilter(negativeEvents, 'negative')}
           className={`${
-            events === negativeEvents ? 'border-highlight' : 'border-white'
+            filter === 'negative' ? 'border-highlight' : 'border-white'
           }  border-2 w-1/3 cursor-pointer px-4 mx-1 rounded bg-white shadow`}
         >
           <p className="py-2 text-2xl font-semibold">{negativeEvents.length}</p>
-          <p className="pb-2 text-lg">Negative Events</p>
+          <p className="pb-2 text-lg">{t('negative events')}</p>
         </div>
       </div>
 
       <div>
         <div className="w-full my-6 flex flex-col text-xs mx-2">
-          <div className="border-b border-gray-800 my-1" />
+          <div className="flex border-b pb-2 mb-2">
+            <p className="w-full">Description</p>
+            <p className="w-full">Type</p>
+            <p className="w-1/3">Date</p>
+            <div className="w-12" />
+          </div>
 
           {events.map(event => {
             return <LegalRow data={event} />;
