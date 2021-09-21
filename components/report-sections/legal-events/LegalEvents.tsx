@@ -9,8 +9,8 @@ interface LegalEventsProps {
 
 const LegalEvents = ({ legal_events }: LegalEventsProps) => {
   const allEvents = legal_events.map(event => event);
-  const charges = allEvents.filter(event =>
-    event.types.includes('Charge/mortgage')
+  const charges: Array<LegalEvent> =  allEvents.filter((event): boolean =>{
+    return event.types.indexOf('Charge/mortgage') !== -1 }
   );
   const negativeEvents = allEvents.filter(event =>
     event.types.includes('Negative Event')
@@ -25,6 +25,23 @@ const LegalEvents = ({ legal_events }: LegalEventsProps) => {
   };
 
   const t = useTranslations();
+
+  // to do
+  // mobile responsiveness
+  // stack the filters
+  // add padding to the edges on mobile
+  // add filters to own component
+  // find uses of SVGs that are heroicons and use the hero icons from the installed package
+  // change div to button 
+    // 1. legal events chevron 
+    // 2. filter to button as well as component
+  // complete the mapping function for the details
+  //  - check the length of rendering string to assign large size if required
+  //  - render keys as normal text converting from camel case
+  //  - implement css for this
+  // only negative events should be in red
+  // add array to report.settings
+  // add in translations 
 
   return (
     <div className="text-primary">
@@ -67,8 +84,8 @@ const LegalEvents = ({ legal_events }: LegalEventsProps) => {
             <div className="w-12" />
           </div>
 
-          {events.map(event => {
-            return <LegalRow data={event} />;
+          {events.map((event, index) => {
+            return <LegalRow key={index} {...event} />;
           })}
         </div>
       </div>

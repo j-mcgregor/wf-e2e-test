@@ -2,42 +2,46 @@ import { LegalEvent } from '../../../types/report';
 import { useState } from 'react';
 import ChevronDown from '../../icons/ChevronDown';
 import ChevronUp from '../../icons/ChevronUp';
+import { ChevronUpIcon } from '@heroicons/react/outline';
 
-interface LegalRowProps {
-  data: LegalEvent;
-}
 
-const LegalRow = ({ data }: LegalRowProps) => {
+// add in the props separately 
+// types, description, date, details 
+const LegalRow = ({ types, description, details, date }: LegalEvent) => {
+  // move to report.settings.
   const negativeValues = ['Negative Event', 'Legal Charge', 'Charge/mortgage'];
+  
   // check types array for negative values and render red/black
-  const textColor = data?.types.some(value => negativeValues.includes(value))
+  const textColor = types?.some(value => negativeValues.includes(value))
     ? 'text-red-500'
     : 'text-black';
 
-  const [dropdown, setDropdown] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // to use for info dropdown toggle
-  const handleDropdown = () => {
-    setDropdown(!dropdown);
-  };
+  const handleDropdown = () => setDropdownOpen(!dropdownOpen);
+
   return (
     <div className={`${textColor} flex flex-col py-1`}>
       <div className="flex">
         <div className="w-full">
-          <p>{data?.description}</p>
+          <p>{description}</p>
         </div>
         <div className="w-full">
-          <p>{data?.types.join(', ')}</p>
+          <p>{types?.join(', ')}</p>
         </div>
-        <div className="w-1/3">
-          <p>{data?.date}</p>
+        <div className="w-1/3 flex justify-between">
+          <p>{date}</p>
+           {/* button here */}
+        <div onClick={handleDropdown} className="text-black cursor-pointer">
+          {/* Add in rotation on open and close */}
+          {details && <ChevronUpIcon className={`${!dropdownOpen && 'rotate-180'} w-4 transform duration-300`} /> }
+        </div>
         </div>
 
-        <div onClick={handleDropdown} className="text-black cursor-pointer">
-          {dropdown ? <ChevronUp /> : <ChevronDown />}
-        </div>
+       
       </div>
-      {dropdown && (
+      {dropdownOpen && (
         <div className="bg-red-400 h-52 w-full py-4">
           {/* <p>{data.details}</p> */}
         </div>

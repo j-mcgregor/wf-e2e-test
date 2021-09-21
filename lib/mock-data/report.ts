@@ -755,7 +755,7 @@ const mockReport = {
             PersonsEntitled: 'ALDERMORE BANK PLC'
           },
           {
-            AmountSecured: null,
+            AmountSecured: null, // "N/A"
             Class: 'LegalEventMortgageData',
             DateFullySatisfied: null,
             DatePartiallySatisfied: null,
