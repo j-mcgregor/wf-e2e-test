@@ -4,11 +4,11 @@ import { LegalEvent } from '../../../types/report';
 import LegalRow from './LegalRow';
 
 interface LegalEventsProps {
-  legal_events: LegalEvent[];
+  legalEvents: LegalEvent[];
 }
 
-const LegalEvents = ({ legal_events }: LegalEventsProps) => {
-  const allEvents = legal_events.map(event => event);
+const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
+  const allEvents = legalEvents.map(event => event);
   const charges: Array<LegalEvent> =  allEvents.filter((event): boolean =>{
     return event.types.indexOf('Charge/mortgage') !== -1 }
   );

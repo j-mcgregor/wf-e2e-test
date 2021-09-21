@@ -246,7 +246,7 @@ const ReportTemplate = () => {
 
             <HashContainer name={'Legal Events'} id={`legal-events-id`}>
               <ReportSectionHeader text={t('legal events')} />
-              <LegalEvents legal_events={data.legal_events.legal_events} />
+              <LegalEvents legalEvents={data?.legal_events?.legal_events} />
             </HashContainer>
 
             <HashContainer
