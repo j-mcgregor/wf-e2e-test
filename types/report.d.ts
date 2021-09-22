@@ -60,3 +60,31 @@ export type LegalEvent = {
   source: string;
   types: [];
 };
+
+export type Association = {
+  title: string;
+  company: string;
+  from_date: string;
+  to_date: string;
+};
+
+export type Profile = {
+  title: string;
+  name: string;
+  role: string;
+  linked_in_profile: string;
+  profile_image: string;
+  appointment_date: string;
+  nationality: string;
+  date_of_birth: string;
+  other_associations: Association[];
+};
+
+export type Overview = {
+  ceo: string;
+  cfo: string;
+  chairman: string;
+  directors: number;
+  senior_management: number;
+  shareholders: number;
+};

@@ -21,7 +21,9 @@ import {
   SummaryContact,
   SummaryInfo,
   Reliability,
-  LegalEvent
+  LegalEvent,
+  Profile,
+  Overview
 } from '../../types/report';
 import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
 import InfoPopover from '../../components/report-sections/risk-metrics/InfoPopover';
@@ -32,6 +34,8 @@ import FinancialAccounts from '../../components/report-sections/highlights/Finan
 import CTACard from '../../components/report-sections/highlights/CTACard';
 import TabletReportNav from '../../components/layout/TabletReportNav';
 import LegalEvents from '../../components/report-sections/legal-events/LegalEvents';
+import Profiles from '../../components/report-sections/corporate-governance/Profiles';
+import CorporateOverview from '../../components/report-sections/corporate-governance/CorporateOverview';
 
 interface ReportDataProps {
   created_at?: string;
@@ -47,6 +51,11 @@ interface ReportDataProps {
   legal_events: {
     legal_events: LegalEvent[];
   };
+  personal: {
+    directors: Profile[];
+    senior_management: Profile[];
+  };
+  corporate_overview: Overview;
 }
 
 const ReportTemplate = () => {
@@ -61,7 +70,7 @@ const ReportTemplate = () => {
     `/api/report?id=${id}`,
     fetcher
   );
-  // console.log(data?.legal_events.legal_events);
+  console.log(data?.personal.directors);
 
   // Todo: handle error more gracefully
   if (error) return <div>failed to load</div>;
@@ -242,6 +251,18 @@ const ReportTemplate = () => {
               id={`corporate-governance-id`}
             >
               <ReportSectionHeader text={t('corporate governance')} />
+              <CorporateOverview
+                cfo={data.corporate_overview.cfo}
+                ceo={data.corporate_overview.ceo}
+                chairman={data.corporate_overview.chairman}
+                directors={data.corporate_overview.directors}
+                seniorManagement={data.corporate_overview.senior_management}
+                shareholders={data.corporate_overview.shareholders}
+              />
+              <Profiles
+                directors={data.personal.directors}
+                seniorManagement={data.personal.senior_management}
+              />
             </HashContainer>
 
             <HashContainer name={'Legal Events'} id={`legal-events-id`}>

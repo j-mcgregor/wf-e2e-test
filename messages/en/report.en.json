@@ -59,5 +59,11 @@
   "negative events": "Negative Events",
   "type": "Type",
   "description": "Description",
-  "date": "Date"
+  "date": "Date",
+  "directors": "Directors",
+  "senior management": "Senior Management",
+  "appointment date": "Appointment Date",
+  "nationality": "Nationality",
+  "date of birth": "Date of Birth",
+  "other associations": "Other Associations"
 }
