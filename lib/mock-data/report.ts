@@ -19,7 +19,8 @@ const mockReport = {
     postal_code: 'SM3 9AG',
     region: 'Western Europe',
     websites: ['www.wrightglazing.co.uk'],
-    company_description: 'Culpa minim do anim consequat labore amet officia ea mollit veniam velit. Lorem exercitation aute aliqua labore nisi ad enim do sunt do duis culpa. Consectetur excepteur est occaecat anim anim adipisicing magna ut enim adipisicing esse dolore.'
+    company_description:
+      'Culpa minim do anim consequat labore amet officia ea mollit veniam velit. Lorem exercitation aute aliqua labore nisi ad enim do sunt do duis culpa. Consectetur excepteur est occaecat anim anim adipisicing magna ut enim adipisicing esse dolore.'
   },
   risk_metrics: {
     sme_z_score: {
@@ -28,12 +29,12 @@ const mockReport = {
       industry_benchmark: '211'
     },
     probability_of_default: {
-      value: "267",
-      regional_benchmark: "345",
+      value: '267',
+      regional_benchmark: '345',
       industry_benchmark: null
     },
     loss_given_default: {
-      value: "267",
+      value: '267',
       regional_benchmark: null,
       industry_benchmark: null
     },
@@ -811,7 +812,75 @@ const mockReport = {
       }
     ]
   },
-  shareholders: {
+  personal: {
+    directors: [
+      { 
+        title: "Ms",
+        name: 'Jo Smith',
+        role: 'Director',
+        linked_in_profile: 'https://linkedin.com',
+        profile_image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+        appointment_date: '2010-04-19',
+        nationality: 'British',
+        date_of_birth: '01-03-1979',
+        other_associations: [
+          {
+            title: 'Director',
+            company: 'Scottish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: 'current'
+          },
+          {
+            title: 'Director',
+            company: 'Welsh Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'Irish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          }
+        ]
+      },
+      { 
+        title: "Mr",
+        name: 'John Doe',
+        role: 'Director',
+        linked_in_profile: null,
+        profile_image: null,
+        appointment_date: '2010-04-19',
+        nationality: 'French',
+        date_of_birth: '09-12-1989',
+        other_associations: [
+          {
+            title: 'Director',
+            company: 'Scottish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: 'current'
+          },
+          {
+            title: 'Director',
+            company: 'Welsh Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'Irish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'English Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+        ]
+      }
+    ],
     shareholders: [
       {
         also_a_manager: 'Current manager',

@@ -2,6 +2,7 @@ import { LegalEvent } from '../../../types/report';
 import { useState } from 'react';
 import { ChevronUpIcon } from '@heroicons/react/outline';
 import { negativeValues } from '../../../lib/settings/report.settings';
+import { camelCaseToSentenceCase } from '../../../lib/utils/text-helpers';
 
 const LegalRow = ({ types, description, details, date }: LegalEvent) => {
   const textColor = types?.some(value => negativeValues.includes(value))
@@ -11,10 +12,6 @@ const LegalRow = ({ types, description, details, date }: LegalEvent) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleDropdown = () => setDropdownOpen(!dropdownOpen);
-
-  const splitCamelCase = (str: string): string => {
-    return str.replace(/([a-z])([A-Z])/g, '$1 $2');
-  };
 
   return (
     <div className={`${textColor} flex flex-col py-1.5`}>
@@ -44,21 +41,22 @@ const LegalRow = ({ types, description, details, date }: LegalEvent) => {
       </div>
       {details && dropdownOpen && (
         <div className="w-full my-2">
-          {details.map(detail => {
+          {details.map((detail,index) => {
             return (
-              <div className="flex flex-wrap justify-between bg-bg rounded my-2 ">
-                {Object.entries(detail).map(key => (
-                  <div className="flex flex-col px-6 py-4">
-                    <p className="py-1">{splitCamelCase(key[0])}</p>
+              <div key={index} className="flex flex-wrap justify-between bg-bg rounded my-2 ">
+                {Object.entries(detail).map(keyValueArray => {
+                  const header = camelCaseToSentenceCase(keyValueArray[0])
+                  const description = keyValueArray[1] ? camelCaseToSentenceCase(keyValueArray[1]) : 'N/A'
+                  return (
+                  <div key={header}className={`flex flex-col px-6 py-4 ${description?.length > 30 ? 'w-full' : 'w-1/2'} lg:w-auto`}>
+                    <p className="py-1">{header}</p>
                     <p
-                      className={`${
-                        key[1]?.length < 20 ? 'text-sm' : 'text-xs'
-                      } font-semibold`}
+                      className={`font-semibold`}
                     >
-                      {key[1] === null ? 'N/A' : splitCamelCase(key[1])}
+                     {description}
                     </p>
                   </div>
-                ))}
+                )})}
               </div>
             );
           })}
