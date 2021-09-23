@@ -10,6 +10,7 @@ import {
   RecoilValue,
   selector,
   useRecoilValue,
+  useResetRecoilState,
   useSetRecoilState
 } from 'recoil';
 import appState from '../../../lib/appState';
@@ -66,11 +67,23 @@ const PreferenceForm = () => {
     get: ({ get }) => {
       const user = get(appState).user;
       // @ts-ignore
+      // let {
+      //   localisation,
+      //   default_currency,
+      //   default_login_screen,
+      //   default_reporting_country
+      // } =
+      // return {
+      //   localisation,
+      //   default_currency,
+      //   default_login_screen,
+      //   default_reporting_country
+      // };
       return user.preferences;
     }
   });
   const currentUserPrefsInfo = useRecoilValue(currentUser);
-  // const test = useRecoilValue(appState);
+  const test = useRecoilValue(appState);
   const setCurrentUserPrefsInfo = useSetRecoilState(appState);
   //====================== translate ========================
 
@@ -96,9 +109,15 @@ const PreferenceForm = () => {
       return { ...curr, user: { preferences: data } };
     });
   };
-
+  // import {todoListState} from "../atoms/todoListState";
+  //
+  // const TodoResetButton = () => {
+  //   const resetList = useResetRecoilState(todoListState);
+  //   return <button onClick={resetList}>Reset</button>;
+  // };
   const ResetPrefs = () => {
-    // const resetPrefs = useResetRecoilState({ user: preferences });
+    // @ts-ignore
+    const resetPrefs = useResetRecoilState(appState);
     return (
       <Button
         onClick={() => resetPrefs}
@@ -111,7 +130,7 @@ const PreferenceForm = () => {
       </Button>
     );
   };
-
+  // console.log({ test });
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">

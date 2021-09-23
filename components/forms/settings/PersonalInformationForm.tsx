@@ -57,6 +57,7 @@ const PersonalInformationForm = () => {
       //   const contact = user.contact_information;
       //   set( ...appState, user: newValue );
       // }
+      //  this is what i wanted to do , https://stackoverflow.com/questions/63365150/react-recoil-state-not-being-reset-properly
     });
 
   const currentUserContactInfo = useRecoilValue(currentUser);
