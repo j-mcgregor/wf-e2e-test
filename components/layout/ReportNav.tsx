@@ -45,6 +45,7 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
     const path = router.asPath.replace(`${dynamicPath}#`, '');
     const header = path.replace(/-/g, ' ').toLowerCase();
     setActiveItem(header);
+    
   }, [router.asPath]);
 
   if (loading) {
@@ -60,7 +61,7 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
   }
 
   return (
-    <div className="px-6 pt-8 flex flex-col h-full">
+    <div className="px-6 pt-8 flex-col h-full hidden lg:flex">
       <div>
         <Button
           linkTo="/reports"

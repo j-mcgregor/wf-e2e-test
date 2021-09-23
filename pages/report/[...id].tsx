@@ -102,16 +102,11 @@ const ReportTemplate = () => {
         navigation={
           data?.company_name && (
             <>
-              <div className="lg:block h-full hidden">
                 <ReportNav companyName={data?.company_name} loading={!data} />
-              </div>
-
-              <div className="block lg:hidden">
                 <TabletReportNav
                   companyName={data?.company_name}
                   loading={!data}
                 />
-              </div>
             </>
           )
         }

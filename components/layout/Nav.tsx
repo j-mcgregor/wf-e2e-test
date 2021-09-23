@@ -178,7 +178,8 @@ const Nav = ({ path }: NavProps) => {
         </div>
       </div>
 
-      <div className="absolute w-full md:px-8 xl:px-0 sm:hidden">
+      {/* Menu for mobile  */}
+      <div className="absolute w-full md:px-8 xl:px-0 sm:hidden z-30">
         <div className="relative z-10 flex-shrink-0 h-12 bg-primary border-gray-200 flex">
           <button
             type="button"
