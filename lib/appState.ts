@@ -8,7 +8,7 @@ import { SessionUser } from '../types/global';
 const appState = atom<SessionUser>({
   key: 'appState',
   default: {
-    user: {}
+    user: null
   }
 });
 
