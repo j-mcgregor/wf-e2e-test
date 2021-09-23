@@ -75,7 +75,6 @@ const ReportTemplate = () => {
     `/api/report?id=${id}`,
     fetcher
   );
-  console.log(data?.personal.directors);
 
   // Todo: handle error more gracefully
   if (error) return <div>failed to load</div>;
