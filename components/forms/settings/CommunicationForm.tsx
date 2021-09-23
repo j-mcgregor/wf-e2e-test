@@ -48,6 +48,7 @@ const CommunicationForm = () => {
   const onSubmit: SubmitHandler<CommunicationFormInput> = data => {
     // eslint-disable-next-line no-console
     console.log({ data });
+    // @ts-ignore
     setCurrentUserCommsInfo(curr => {
       return { ...curr, user: { preferences: { communication: data } } };
     });
