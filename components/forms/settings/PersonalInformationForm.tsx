@@ -45,7 +45,7 @@ const PersonalInformationForm = () => {
     key: 'currentUserContactInfoState',
     get: ({ get }) => {
       const user = get(appState).user;
-      return user?.contact_information;
+      return user.contact_information;
     },
     set: ({ set }, newValue) => set(appState, newValue)
   });
@@ -63,16 +63,16 @@ const PersonalInformationForm = () => {
   const { register, handleSubmit, formState } =
     useForm<PersonalInformationFormInput>({
       defaultValues: {
-        firstName: currentUserContactInfo?.first_name,
-        lastName: contactInfo?.last_name,
-        email: contactInfo?.email,
-        country: contactInfo?.country,
-        streetAddress: contactInfo?.street_address,
-        city: contactInfo?.city,
-        state: contactInfo?.state,
-        postcode: contactInfo?.postcode,
-        companyName: contactInfo?.company_name,
-        companyHQLocation: contactInfo?.company_HQ_Location
+        firstName: currentUser.first_name,
+        lastName: currentUser.last_name,
+        email: currentUserContactInfo.email,
+        country: currentUserContactInfo.country,
+        streetAddress: currentUserContactInfo.street_address,
+        city: currentUserContactInfo.city,
+        state: currentUserContactInfo.state,
+        postcode: currentUserContactInfo.postcode,
+        companyName: currentUserContactInfo.company_name,
+        companyHQLocation: currentUserContactInfo.company_HQ_Location
       }
     });
 
@@ -95,12 +95,12 @@ const PersonalInformationForm = () => {
       company_HQ_Location: data.companyHQLocation
     };
 
-    return setPersonalInfoState({
-      user: {
-        ...currentUser,
-        contact_information: updatedData
-      }
-    });
+    // return setPersonalInfoState({
+    //   user: {
+    //     ...currentUser,
+    //     contact_information: updatedData
+    //   }
+    // });
   };
 
   return (
@@ -121,7 +121,6 @@ const PersonalInformationForm = () => {
                 {...register('firstName')}
                 label={t('forms.personal.first name')}
                 className={formClassName}
-                labelClassName={formLabelClassName}
               />
               {errors.lastName && (
                 <ErrorMessage text={`${t('errors.first name')}`} />
@@ -147,7 +146,6 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.email address')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
-                placeholder={contactInfo?.email}
               />
               {errors.email && <ErrorMessage text={`${t('errors.email')}`} />}
             </div>
@@ -159,7 +157,6 @@ const PersonalInformationForm = () => {
                 options={countries}
                 className={formClassName}
                 labelClassName={formLabelClassName}
-                placeholder={contactInfo?.country}
               />
             </div>
 
@@ -169,7 +166,6 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.street address')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
-                placeholder={contactInfo?.street_address}
               />
             </div>
 
@@ -179,7 +175,6 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.city')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
-                placeholder={contactInfo?.city}
               />
             </div>
 
@@ -189,7 +184,6 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.state')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
-                placeholder={contactInfo?.state}
               />
             </div>
 
@@ -199,7 +193,6 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.postcode')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
-                placeholder={contactInfo?.postcode}
               />
             </div>
           </div>
@@ -210,7 +203,6 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.company name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
-                placeholder={contactInfo?.company_name}
               />
             </div>
 
@@ -221,7 +213,6 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.company headquarters')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
-                placeholder={contactInfo?.company_HQ_Location}
               />
             </div>
           </div>
