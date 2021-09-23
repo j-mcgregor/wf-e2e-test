@@ -37,6 +37,7 @@ import LegalEvents from '../../components/report-sections/legal-events/LegalEven
 import Profiles from '../../components/report-sections/corporate-governance/Profiles';
 import CorporateOverview from '../../components/report-sections/corporate-governance/CorporateOverview';
 import ShareHolderList from '../../components/report-sections/corporate-governance/ShareHolderList';
+import ShareHoldingCard from '../../components/report-sections/corporate-governance/ShareHoldingCard';
 
 interface ReportDataProps {
   created_at?: string;
@@ -268,6 +269,13 @@ const ReportTemplate = () => {
                 seniorManagement={data.personal.senior_management}
               />
               <ShareHolderList shareholders={data.personal.shareholders} />
+              <ShareHoldingCard
+                total={391}
+                above10={2}
+                fiveToTen={18}
+                oneToFive={47}
+                belowOne={324}
+              />
             </HashContainer>
 
             <HashContainer name={'Legal Events'} id={`legal-events-id`}>
