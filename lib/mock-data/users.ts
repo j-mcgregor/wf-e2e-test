@@ -16,25 +16,23 @@ const mockUsers = {
       api_requests: 142,
       reports_ran: 32
     },
-    isSSO: false,
+    is_SSO: false,
     contact_information: {
-      first_name: '',
-      last_name: '',
-      email: '',
-      country: '',
-      streetAddress: '',
-      city: '',
-      state: '',
-      postcode: '',
-      companyName: '',
-      companyHQLocation: ''
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'test@test.com',
+      country: 'United Kingdom',
+      streetAddress: '123 Aplace Street',
+      city: 'London',
+      state: 'Hackney',
+      postcode: 'N42FF',
+      companyName: 'Awesome Stuff LTD',
+      companyHQLocation: 'N4 3FF'
     },
-      preferances: {
-        default_screen: '',
-        commuication: {
-
-        }
-      },
+    preferances: {
+      default_screen: '',
+      commuication: {}
+    },
     reports: [
       {
         id: 1,

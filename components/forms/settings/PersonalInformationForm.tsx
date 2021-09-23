@@ -9,6 +9,7 @@ import countryJSON from '../../../lib/data/country_currency.json';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { useTranslations } from 'next-intl';
 import { SettingsSectionHeader } from '../../elements/Headers';
+import { atom, useRecoilState, useSetRecoilState } from 'recoil';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -32,7 +33,31 @@ const countries = countryJSON.map(value => {
   return { optionValue: value.CountryName };
 });
 
+// const _UserObject = {
+//   firstName: '',
+//   lastName: '',
+//   email: '',
+//   country: '',
+//   streetAddress: '',
+//   city: '',
+//   state: '',
+//   postcode: '',
+//   companyName: '',
+//   companyHQLocation: ''
+// };
+//====================== COMPONENT ========================
 const PersonalInformationForm = () => {
+  // ATOM
+  // const personalInfoState = atom({
+  //   key: 'personalInfoState',
+  //   default: {}
+  // });
+
+  // not using a getter anf setter as we are updating user object
+  const [currentPersonalInfoState, setPersonalInfoState] =
+    useRecoilState(personalInfoState);
+
+  //====================== translate ========================
   const t = useTranslations();
 
   const { register, handleSubmit, formState } =
@@ -42,7 +67,10 @@ const PersonalInformationForm = () => {
 
   const onSubmit: SubmitHandler<PersonalInformationFormInput> = data =>
     // eslint-disable-next-line no-console
-    console.log({ data });
+    {
+      setPersonalInfoState(data);
+      return console.log({ currentPersonalInfoState });
+    };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
