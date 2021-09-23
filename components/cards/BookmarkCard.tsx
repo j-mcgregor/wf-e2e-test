@@ -2,7 +2,7 @@ import {
   ArrowNarrowUpIcon,
   DocumentReportIcon
 } from '@heroicons/react/outline';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 import Link from '../elements/Link';
 

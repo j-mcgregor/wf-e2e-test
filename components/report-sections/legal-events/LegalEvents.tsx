@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 import { LegalEvent } from '../../../types/report';
 import LegalRow from './LegalRow';
 import LegalFilter from './LegalFilter';

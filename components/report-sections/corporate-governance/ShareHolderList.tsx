@@ -1,4 +1,4 @@
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 import ShareHolderCard from './ShareHolderCard';
 import { Shareholder } from '../../../types/report';
 

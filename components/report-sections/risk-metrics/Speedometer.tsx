@@ -1,4 +1,4 @@
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 import Dial from '../../svgs/Dial';
 import SpeedoArrow from '../../svgs/SpeedoArrow';
 import BenchmarkArrow from '../../svgs/BenchmarkArrow';

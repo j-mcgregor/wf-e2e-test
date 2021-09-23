@@ -2,7 +2,7 @@ import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { scroller } from 'react-scroll';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 import { useReportNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';

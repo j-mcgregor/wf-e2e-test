@@ -1,4 +1,4 @@
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 import { FinancialYear } from '../../../types/report';
 import SummaryFinancialRow from './SummaryFinancialRow';

@@ -2,7 +2,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 import HashContainer from '../../components/elements/HashContainer';
 import Layout from '../../components/layout/Layout';

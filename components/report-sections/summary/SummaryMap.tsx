@@ -1,5 +1,5 @@
 import Iframe from 'react-iframe';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 import { SummaryContact } from '../../../types/report';
 

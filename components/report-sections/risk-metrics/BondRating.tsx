@@ -1,4 +1,4 @@
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 import { bondRatings } from '../../../lib/settings/report.settings';
 
 interface BondRatingProps {
