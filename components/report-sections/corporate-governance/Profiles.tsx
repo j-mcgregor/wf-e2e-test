@@ -12,7 +12,7 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
   return (
     <div className="px-4 sm:px-0">
       <p className="my-4 text-xl">{t('directors')}</p>
-      <div className="flex flex-col sm:flex-row flex-wrap sm:justify-between">
+      <div className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4">
         {directors.map(director => (
           <PersonalCard
             title={director.title}
@@ -29,7 +29,7 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
       </div>
 
       <p className="my-4 text-xl">{t('senior management')}</p>
-      <div className="flex flex-col sm:flex-row flex-wrap sm:justify-between">
+      <div className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4">
         {seniorManagement.map(manager => (
           <PersonalCard
             title={manager.title}

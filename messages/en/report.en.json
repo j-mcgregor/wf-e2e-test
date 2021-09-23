@@ -62,8 +62,12 @@
   "date": "Date",
   "directors": "Directors",
   "senior management": "Senior Management",
+  "ceo": "CEO",
+  "cfo": "CFO",
+  "shareholders": "Shareholders",
   "appointment date": "Appointment Date",
   "nationality": "Nationality",
   "date of birth": "Date of Birth",
-  "other associations": "Other Associations"
+  "other associations": "Other Associations",
+  "all shareholders": "All Shareholders"
 }

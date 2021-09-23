@@ -36,7 +36,7 @@ const PersonalCard = ({
       : word.slice(word.length - qtyToSlice);
   };
   return (
-    <div className="text-sm sm:text-xs xl:text-sm selection:flex flex-col bg-white p-4 w-full sm:w-[48%] my-4 rounded-sm shadow-sm">
+    <div className="text-sm sm:text-xs xl:text-sm selection:flex flex-col bg-white p-4 rounded-sm shadow-sm">
       <div className="flex justify-between">
         <div className="flex">
           {profileImage ? (
@@ -55,10 +55,11 @@ const PersonalCard = ({
           </div>
         </div>
         <div>
-          {/**  hide if no linkedin profile **/}
-          <Link linkTo={linkedinProfile}>
-            <LinkedinIcon />
-          </Link>
+          {linkedinProfile && (
+            <Link linkTo={linkedinProfile}>
+              <LinkedinIcon />
+            </Link>
+          )}
         </div>
       </div>
       <div className="flex flex-col w-full my-3">

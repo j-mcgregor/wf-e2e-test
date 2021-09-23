@@ -80,11 +80,8 @@ export type Profile = {
   other_associations: Association[];
 };
 
-export type Overview = {
-  ceo: string;
-  cfo: string;
-  chairman: string;
-  directors: number;
-  senior_management: number;
-  shareholders: number;
+export type Shareholder = {
+  first_name: string;
+  last_name: string;
+  linkedin: string;
 };

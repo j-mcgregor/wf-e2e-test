@@ -23,7 +23,7 @@ import {
   Reliability,
   LegalEvent,
   Profile,
-  Overview
+  Shareholder
 } from '../../types/report';
 import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
 import InfoPopover from '../../components/report-sections/risk-metrics/InfoPopover';
@@ -36,6 +36,7 @@ import TabletReportNav from '../../components/layout/TabletReportNav';
 import LegalEvents from '../../components/report-sections/legal-events/LegalEvents';
 import Profiles from '../../components/report-sections/corporate-governance/Profiles';
 import CorporateOverview from '../../components/report-sections/corporate-governance/CorporateOverview';
+import ShareHolderList from '../../components/report-sections/corporate-governance/ShareHolderList';
 
 interface ReportDataProps {
   created_at?: string;
@@ -54,8 +55,11 @@ interface ReportDataProps {
   personal: {
     directors: Profile[];
     senior_management: Profile[];
+    shareholders: Shareholder[];
+    ceo: string;
+    cfo: string;
+    chairman: string;
   };
-  corporate_overview: Overview;
 }
 
 const ReportTemplate = () => {
@@ -252,17 +256,18 @@ const ReportTemplate = () => {
             >
               <ReportSectionHeader text={t('corporate governance')} />
               <CorporateOverview
-                cfo={data.corporate_overview.cfo}
-                ceo={data.corporate_overview.ceo}
-                chairman={data.corporate_overview.chairman}
-                directors={data.corporate_overview.directors}
-                seniorManagement={data.corporate_overview.senior_management}
-                shareholders={data.corporate_overview.shareholders}
+                cfo={data.personal.cfo}
+                ceo={data.personal.ceo}
+                chairman={data.personal.chairman}
+                directors={data.personal.directors.length}
+                seniorManagement={data.personal.senior_management.length}
+                shareholders={data.personal.shareholders.length}
               />
               <Profiles
                 directors={data.personal.directors}
                 seniorManagement={data.personal.senior_management}
               />
+              <ShareHolderList shareholders={data.personal.shareholders} />
             </HashContainer>
 
             <HashContainer name={'Legal Events'} id={`legal-events-id`}>

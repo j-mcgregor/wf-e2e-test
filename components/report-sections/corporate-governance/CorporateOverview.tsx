@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl';
+
 interface CorporateOverviewProps {
   ceo: string;
   cfo: string;
@@ -15,32 +17,34 @@ const CorporateOverview = ({
   seniorManagement,
   shareholders
 }: CorporateOverviewProps) => {
+  const t = useTranslations();
+
   return (
-    <div className="flex flex-col w-full bg-white shadow-sm rounded-sm">
-      <div className="grid grid-cols-3 grid-rows-2">
-        <div className="p-4 border">
+    <div className="bg-white shadow-sm rounded-sm mx-4 sm:mx-0">
+      <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-2 ">
+        <div className="p-4 border-b border-r">
           <p className="font-bold">{ceo}</p>
-          <p>CEO</p>
+          <p>{t('ceo')}</p>
         </div>
-        <div className="p-4 border">
+        <div className="p-4 border-b md:border-r">
           <p className="font-bold">{cfo}</p>
-          <p>CFO</p>
+          <p>{t('cfo')}</p>
         </div>
-        <div className="p-4 border">
+        <div className="p-4 border-b border-r md:border-r-0">
           <p className="font-bold">{chairman}</p>
-          <p>Chairman</p>
+          <p>{t('chairman')}</p>
         </div>
-        <div className="p-4 border">
+        <div className="p-4 border-b md:border-r">
           <p className="font-bold">{directors}</p>
-          <p>Directors</p>
+          <p>{t('directors')}</p>
         </div>
-        <div className="p-4 border">
+        <div className="p-4 border-r">
           <p className="font-bold">{shareholders}</p>
-          <p>Shareholders</p>
+          <p>{t('shareholders')}</p>
         </div>
-        <div className="p-4 border">
+        <div className="p-4 ">
           <p className="font-bold">{seniorManagement}</p>
-          <p>Senior Management</p>
+          <p>{t('senior management')}</p>
         </div>
       </div>
     </div>
