@@ -10,6 +10,8 @@ import ErrorMessage from '../../elements/ErrorMessage';
 import { useTranslations } from 'next-intl';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import { atom, useRecoilState, useSetRecoilState } from 'recoil';
+import appState from '../../../lib/appState';
+import { SessionUser } from '../../../types/global';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -33,29 +35,11 @@ const countries = countryJSON.map(value => {
   return { optionValue: value.CountryName };
 });
 
-// const _UserObject = {
-//   firstName: '',
-//   lastName: '',
-//   email: '',
-//   country: '',
-//   streetAddress: '',
-//   city: '',
-//   state: '',
-//   postcode: '',
-//   companyName: '',
-//   companyHQLocation: ''
-// };
 //====================== COMPONENT ========================
 const PersonalInformationForm = () => {
-  // ATOM
-  // const personalInfoState = atom({
-  //   key: 'personalInfoState',
-  //   default: {}
-  // });
-
-  // not using a getter anf setter as we are updating user object
+  // not using a getter and setter as we are updating user object
   const [currentPersonalInfoState, setPersonalInfoState] =
-    useRecoilState(personalInfoState);
+    useRecoilState<SessionUser>(appState);
 
   //====================== translate ========================
   const t = useTranslations();
@@ -65,12 +49,12 @@ const PersonalInformationForm = () => {
 
   const { isDirty, errors } = formState;
 
-  const onSubmit: SubmitHandler<PersonalInformationFormInput> = data =>
+  const onSubmit: SubmitHandler<PersonalInformationFormInput> = async data =>
     // eslint-disable-next-line no-console
     {
-      setPersonalInfoState(data);
-      return console.log({ currentPersonalInfoState });
+      await setPersonalInfoState({ user: data });
     };
+  console.log({ currentPersonalInfoState });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -91,6 +75,7 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.first name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
+                placeholder={currentPersonalInfoState.user.}
               />
               {errors.lastName && (
                 <ErrorMessage text={`${t('errors.first name')}`} />

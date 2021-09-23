@@ -22,12 +22,12 @@ const mockUsers = {
       last_name: 'Doe',
       email: 'test@test.com',
       country: 'United Kingdom',
-      streetAddress: '123 Aplace Street',
+      street_address: '123 Aplace Street',
       city: 'London',
       state: 'Hackney',
       postcode: 'N42FF',
-      companyName: 'Awesome Stuff LTD',
-      companyHQLocation: 'N4 3FF'
+      company_name: 'Awesome Stuff LTD',
+      company_HQ_Location: 'N4 3FF'
     },
     preferances: {
       default_screen: '',
