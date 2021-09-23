@@ -30,8 +30,12 @@ const mockUsers = {
       company_HQ_Location: 'N4 3FF'
     },
     preferences: {
-      default_screen: '',
-      communication: {}
+      // eslint-disable-next-line sonarjs/no-duplicate-string
+      localisation: 'English(GB)',
+      default_currency: 'English(GB)',
+      default_login_screen: 'SME Calc',
+      default_reporting_country: 'English(GB)',
+      communication: { comments: false, candidates: false, offers: false }
     },
     reports: [
       {

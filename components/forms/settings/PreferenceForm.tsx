@@ -6,6 +6,13 @@ import { useTranslations } from 'next-intl';
 
 import Button from '../../elements/Button';
 import localisationJSON from '../../../lib/data/localisation.json';
+import {
+  RecoilValueReadOnly,
+  selector,
+  useRecoilValue,
+  useSetRecoilState
+} from 'recoil';
+import appState from '../../../lib/appState';
 
 interface PreferenceFormInput {
   localisation: string;
@@ -44,16 +51,51 @@ const options = (t: any) => {
   });
 };
 
+//====================== COMPONENT ========================
+
+interface thing {
+  localisation: string;
+  default_currency: string;
+  default_login_screen: string;
+  default_reporting_country: string;
+}
+
 const PreferenceForm = () => {
+  const currentUser: RecoilValueReadOnly<thing | undefined> = selector({
+    key: 'currentUserContactInfoState',
+    get: ({ get }) => {
+      const user = get(appState).user;
+      // @ts-ignore
+      return user.preferences.default_screen;
+    }
+  });
+  const currentUserPrefsInfo = useRecoilValue(currentUser);
+  // const test = useRecoilValue(appState);
+  const setCurrentUserPrefsInfo = useSetRecoilState(appState);
+  //====================== translate ========================
+
   const t = useTranslations();
 
   const { register, handleSubmit, formState, reset } =
-    useForm<PreferenceFormInput>();
+    useForm<PreferenceFormInput>({
+      defaultValues: {
+        localisation: currentUserPrefsInfo?.localisation,
+        currency: currentUserPrefsInfo?.default_currency,
+        reporting: currentUserPrefsInfo?.default_reporting_country,
+        loginScreen: currentUserPrefsInfo?.default_login_screen
+      }
+    });
   const { isDirty, isValid } = formState;
+
+  //====================== form ========================
+
   const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
     // eslint-disable-next-line no-console
-    console.log(data);
-    reset();
+    console.log({ data });
+    // @ts-ignore
+    setCurrentUserPrefsInfo(curr => {
+      return { ...curr, user: { preferences: data } };
+    });
   };
 
   return (
@@ -161,5 +203,4 @@ const PreferenceForm = () => {
     </form>
   );
 };
-
 export default PreferenceForm;

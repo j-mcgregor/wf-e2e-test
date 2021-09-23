@@ -9,9 +9,14 @@ import countryJSON from '../../../lib/data/country_currency.json';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { useTranslations } from 'next-intl';
 import { SettingsSectionHeader } from '../../elements/Headers';
-import { selector, useRecoilState } from 'recoil';
+import {
+  RecoilValueReadOnly,
+  selector,
+  useRecoilValue,
+  useSetRecoilState
+} from 'recoil';
 import appState from '../../../lib/appState';
-import { ContactInformation, SessionUser } from '../../../types/global';
+import { ContactInformation } from '../../../types/global';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -37,24 +42,25 @@ const countries = countryJSON.map(value => {
 
 //====================== COMPONENT ========================
 const PersonalInformationForm = () => {
-  // not using a getter and setter as we are updating user object
-  // const [currentPersonalInfoState, setPersonalInfoState] =
-  //   useRecoilState<SessionUser>(appState);
+  const currentUser: RecoilValueReadOnly<ContactInformation | undefined> =
+    selector({
+      key: 'currentUserContactInfoState',
+      get: ({ get }) => {
+        const user = get(appState).user;
+        // @ts-ignore
+        // console.log({ contact: user.contact_information });
+        return user.contact_information;
+      }
+      //FIXME: this was my setter method, not sure why it was hating on me
+      // set: ({ set, get }, newValue) => {
+      //   const user = get(appState).user;
+      //   const contact = user.contact_information;
+      //   set( ...appState, user: newValue );
+      // }
+    });
 
-  const currentUser: ContactInformation = selector({
-    key: 'currentUserContactInfoState',
-    get: ({ get }) => {
-      const user = get(appState).user;
-      return user.contact_information;
-    },
-    set: ({ set }, newValue) => set(appState, newValue)
-  });
-
-  const [currentUserContactInfo, setCurrentUserContactInfo] =
-    useRecoilState<ContactInformation>(currentUser);
-
-  // const currentUser = currentPersonalInfoState.user;
-  // const contactInfo = currentUser?.contact_information;
+  const currentUserContactInfo = useRecoilValue(currentUser);
+  const setCurrentUserContactInfo = useSetRecoilState(appState);
 
   //====================== translate ========================
   const t = useTranslations();
@@ -63,16 +69,16 @@ const PersonalInformationForm = () => {
   const { register, handleSubmit, formState } =
     useForm<PersonalInformationFormInput>({
       defaultValues: {
-        firstName: currentUser.first_name,
-        lastName: currentUser.last_name,
-        email: currentUserContactInfo.email,
-        country: currentUserContactInfo.country,
-        streetAddress: currentUserContactInfo.street_address,
-        city: currentUserContactInfo.city,
-        state: currentUserContactInfo.state,
-        postcode: currentUserContactInfo.postcode,
-        companyName: currentUserContactInfo.company_name,
-        companyHQLocation: currentUserContactInfo.company_HQ_Location
+        firstName: currentUserContactInfo?.first_name,
+        lastName: currentUserContactInfo?.last_name,
+        email: currentUserContactInfo?.email,
+        country: currentUserContactInfo?.country,
+        streetAddress: currentUserContactInfo?.street_address,
+        city: currentUserContactInfo?.city,
+        state: currentUserContactInfo?.state,
+        postcode: currentUserContactInfo?.postcode,
+        companyName: currentUserContactInfo?.company_name,
+        companyHQLocation: currentUserContactInfo?.company_HQ_Location
       }
     });
 
@@ -95,12 +101,10 @@ const PersonalInformationForm = () => {
       company_HQ_Location: data.companyHQLocation
     };
 
-    // return setPersonalInfoState({
-    //   user: {
-    //     ...currentUser,
-    //     contact_information: updatedData
-    //   }
-    // });
+    // @ts-ignore
+    setCurrentUserContactInfo(curr => {
+      return { ...curr, user: { contact_information: updatedData } };
+    });
   };
 
   return (

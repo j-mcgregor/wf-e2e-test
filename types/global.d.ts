@@ -42,8 +42,15 @@ export type SessionUser = {
     is_SSO: boolean;
     contact_information?: ContactInformation;
     preferences: {
-      default_screen: '';
-      communication: {};
+      localisation: string;
+      default_currency: string;
+      default_login_screen: string;
+      default_reporting_country: string;
+      communication: {
+        comments: boolean;
+        candidates: boolean;
+        offers: boolean;
+      };
     };
     reports?: [];
   };

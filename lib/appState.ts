@@ -31,8 +31,11 @@ const appState = atom<SessionUser>({
         company_HQ_Location: ''
       },
       preferences: {
-        default_screen: '',
-        communication: {}
+        localisation: '',
+        default_currency: '',
+        default_login_screen: '',
+        default_reporting_country: '',
+        communication: { comments: false, candidates: false, offers: false }
       },
       reports: []
     }
