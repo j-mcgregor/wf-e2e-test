@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import Button from '../../elements/Button';
 import localisationJSON from '../../../lib/data/localisation.json';
 import {
-  RecoilValueReadOnly,
+  RecoilValue,
   selector,
   useRecoilValue,
   useSetRecoilState
@@ -53,7 +53,7 @@ const options = (t: any) => {
 
 //====================== COMPONENT ========================
 
-interface thing {
+interface preferencesProps {
   localisation: string;
   default_currency: string;
   default_login_screen: string;
@@ -61,12 +61,12 @@ interface thing {
 }
 
 const PreferenceForm = () => {
-  const currentUser: RecoilValueReadOnly<thing | undefined> = selector({
+  const currentUser: RecoilValue<preferencesProps | undefined> = selector({
     key: 'currentUserContactInfoState',
     get: ({ get }) => {
       const user = get(appState).user;
       // @ts-ignore
-      return user.preferences.default_screen;
+      return user.preferences;
     }
   });
   const currentUserPrefsInfo = useRecoilValue(currentUser);
@@ -76,15 +76,14 @@ const PreferenceForm = () => {
 
   const t = useTranslations();
 
-  const { register, handleSubmit, formState, reset } =
-    useForm<PreferenceFormInput>({
-      defaultValues: {
-        localisation: currentUserPrefsInfo?.localisation,
-        currency: currentUserPrefsInfo?.default_currency,
-        reporting: currentUserPrefsInfo?.default_reporting_country,
-        loginScreen: currentUserPrefsInfo?.default_login_screen
-      }
-    });
+  const { register, handleSubmit, formState } = useForm<PreferenceFormInput>({
+    defaultValues: {
+      localisation: currentUserPrefsInfo?.localisation,
+      currency: currentUserPrefsInfo?.default_currency,
+      reporting: currentUserPrefsInfo?.default_reporting_country,
+      loginScreen: currentUserPrefsInfo?.default_login_screen
+    }
+  });
   const { isDirty, isValid } = formState;
 
   //====================== form ========================
@@ -96,6 +95,21 @@ const PreferenceForm = () => {
     setCurrentUserPrefsInfo(curr => {
       return { ...curr, user: { preferences: data } };
     });
+  };
+
+  const ResetPrefs = () => {
+    // const resetPrefs = useResetRecoilState({ user: preferences });
+    return (
+      <Button
+        onClick={() => resetPrefs}
+        disabled={!isDirty || !isValid}
+        type="submit"
+        variant="primary"
+        className="max-w-[150px] ml-auto"
+      >
+        {t('forms.preference.reset to defaults')}
+      </Button>
+    );
   };
 
   return (
@@ -180,15 +194,7 @@ const PreferenceForm = () => {
           {/*FIXME: need to implement the reset functionality here*/}
 
           <div className="flex">
-            <Button
-              onClick={() => reset()}
-              disabled={!isDirty || !isValid}
-              type="submit"
-              variant="primary"
-              className="max-w-[150px] ml-auto"
-            >
-              {t('forms.preference.reset to defaults')}
-            </Button>
+            <ResetPrefs />
             <Button
               disabled={!isDirty}
               type="submit"

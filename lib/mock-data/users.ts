@@ -31,10 +31,10 @@ const mockUsers = {
     },
     preferences: {
       // eslint-disable-next-line sonarjs/no-duplicate-string
-      localisation: 'English(GB)',
-      default_currency: 'English(GB)',
-      default_login_screen: 'SME Calc',
-      default_reporting_country: 'English(GB)',
+      localisation: 'English (GB)',
+      default_currency: 'English (GB)',
+      default_login_screen: 'dashboard',
+      default_reporting_country: 'English (GB)',
       communication: { comments: false, candidates: false, offers: false }
     },
     reports: [
