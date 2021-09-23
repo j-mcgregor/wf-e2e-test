@@ -1,6 +1,3 @@
-import DataReliability from '../components/report-sections/highlights/DataReliability';
-import LegalEvents from '../components/report-sections/legal-events/LegalEvents';
-
 export type FinancialYear = {
   [index: string]: string;
   year?: string;
