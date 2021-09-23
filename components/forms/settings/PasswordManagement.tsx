@@ -1,67 +1,79 @@
 import React from 'react';
 import Input from '../../elements/Input';
 import { useForm } from 'react-hook-form';
+import Button from '../../elements/Button';
+import { useTranslations } from 'next-intl';
+import ErrorMessage from '../../elements/ErrorMessage';
 
 interface PasswordFormInput {
   newPassword: string;
   confirmPassword: string;
 }
 
-const newPasswordProps = {
-  label: 'New Password',
-  name: 'newPassword',
-  type: 'password'
-};
-const confirmPasswordProps = {
-  label: 'Confirm Password',
-  name: 'confirmPassword',
-  type: 'password'
-};
-
 const PasswordManagement = () => {
-  const { register, formState, getValues, handleSubmit} = useForm<PasswordFormInput>();
-  const { isDirty, isValid, errors } = formState;
+  const t = useTranslations();
+
+  const { register, formState, getValues, handleSubmit, reset } =
+    useForm<PasswordFormInput>();
+  const { isDirty, errors } = formState;
 
   const onSubmit = async (data: {
     newPassword: string;
     confirmPassword: string;
   }) => {
-    alert(JSON.stringify(data));
+    // eslint-disable-next-line no-console
+    console.log(data);
+    reset();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <Input
-          {...register('newPassword', {
-            required: 'You must specify a password',
-            minLength: {
-              value: 8,
-              message: 'Password must have at least 8 characters'
-            }
-          })}
-          {...newPasswordProps}
-        />
-        {errors.newPassword && <p>{errors.newPassword.message}</p>}
+      <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
+        <div className=" xs:w-full sm:w-full lg:w-1/2">
+          <Input
+            {...register('newPassword', {
+              required: 'You must specify a password',
+              minLength: {
+                value: 8,
+                message: 'Password must have at least 8 characters'
+              }
+            })}
+            label={t('forms.password-management.new password')}
+            name="newPassword"
+            type="password"
+          />
+          {errors.newPassword && (
+            <ErrorMessage text={`${t('errors.newPassword.message')}`} />
+          )}
 
-        <Input
-          {...register('confirmPassword', {
-            validate: {
-              sameAs: value => getValues('newPassword') === value
-            }
-          })} 
-          {...confirmPasswordProps}
-        />
-        {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+          <Input
+            {...register('confirmPassword', {
+              validate: {
+                //if this returns false it triggers the validation to show, its if validating is false, trigger message
+                confirmPasswordValidate: value => {
+                  return getValues('newPassword') === value;
+                }
+              }
+            })}
+            label={t('forms.password-management.confirm password')}
+            name="confirmPassword"
+            type="password"
+          />
+
+          {errors?.confirmPassword?.type && (
+            <ErrorMessage text={`${t('errors.confirmPassword.message')}`} />
+          )}
+        </div>
       </div>
       <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-        <button
-          disabled={!isDirty || !isValid}
+        <Button
+          disabled={!isDirty}
           type="submit"
-          className="bg-indigo-600 border border-transparent rounded-none shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+          variant="primary"
+          className="max-w-[150px] ml-auto"
         >
-          Save
-        </button>
+          {t('save')}
+        </Button>
       </div>
     </form>
   );

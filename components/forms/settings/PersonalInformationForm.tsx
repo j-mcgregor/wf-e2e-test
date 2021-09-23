@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { validEmailRegex } from '../../../lib/utils/regexes';
@@ -9,7 +9,9 @@ import countryJSON from '../../../lib/data/country_currency.json';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { useTranslations } from 'next-intl';
 import { SettingsSectionHeader } from '../../elements/Headers';
-
+import { atom, useRecoilState, useSetRecoilState } from 'recoil';
+import appState from '../../../lib/appState';
+import { SessionUser } from '../../../types/global';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -33,29 +35,37 @@ const countries = countryJSON.map(value => {
   return { optionValue: value.CountryName };
 });
 
+//====================== COMPONENT ========================
 const PersonalInformationForm = () => {
+  // not using a getter and setter as we are updating user object
+  const [currentPersonalInfoState, setPersonalInfoState] =
+    useRecoilState<SessionUser>(appState);
 
-  const t = useTranslations()
-  
+  //====================== translate ========================
+  const t = useTranslations();
+
   const { register, handleSubmit, formState } =
     useForm<PersonalInformationFormInput>();
-    
-  const { isDirty, isValid, errors } = formState;
 
-  const onSubmit: SubmitHandler<PersonalInformationFormInput> = data =>
+  const { isDirty, errors } = formState;
+
+  const onSubmit: SubmitHandler<PersonalInformationFormInput> = async data =>
     // eslint-disable-next-line no-console
-    console.log({ data });
+    {
+      await setPersonalInfoState({ user: data });
+    };
+  console.log({ currentPersonalInfoState });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
-              <SettingsSectionHeader>
-                {t('personal information')}
-              </SettingsSectionHeader>
+            <SettingsSectionHeader>
+              {t('personal information')}
+            </SettingsSectionHeader>
             <p className="mt-1 text-sm text-gray-500">
-            {t('forms.personal.update your personal')}
+              {t('forms.personal.update your personal')}
             </p>
           </div>
           <div className="grid grid-cols-6 gap-6">
@@ -65,18 +75,23 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.first name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
+                placeholder={currentPersonalInfoState.user.}
               />
-              { errors.lastName && <ErrorMessage text={`${t('errors.firstName')}`} />}
+              {errors.lastName && (
+                <ErrorMessage text={`${t('errors.first name')}`} />
+              )}
             </div>
 
             <div className="col-span-6 sm:col-span-3">
               <Input
-                {...register('lastName', { required: true})}
+                {...register('lastName', { required: true })}
                 label={t('forms.personal.last name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
-               { errors.lastName && <ErrorMessage text={`${t('errors.last name')}`} />}
+              {errors.lastName && (
+                <ErrorMessage text={`${t('errors.last name')}`} />
+              )}
             </div>
 
             <div className="col-span-6 sm:col-span-4">
@@ -87,7 +102,7 @@ const PersonalInformationForm = () => {
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
-              { errors.email && <ErrorMessage text={`${t('errors.email')}`} />}
+              {errors.email && <ErrorMessage text={`${t('errors.email')}`} />}
             </div>
 
             <div className="col-span-6 sm:col-span-3">
@@ -160,7 +175,7 @@ const PersonalInformationForm = () => {
 
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           <Button
-            disabled={!isDirty || !isValid}
+            disabled={!isDirty}
             type="submit"
             variant="primary"
             className="max-w-[150px] ml-auto"

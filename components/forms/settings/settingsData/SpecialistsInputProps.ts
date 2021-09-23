@@ -9,42 +9,76 @@ const formLabelClassName = 'block text-sm font-medium text-gray-700';
 const formClassName =
   'mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm';
 
-const localisationProps = {
-  options: getLocalisation(),
-  label: 'Localisation',
-  name: 'localisation',
-  labelClassName: formLabelClassName,
-  className: formClassName
-};
-const reportingProps = {
-  options: getLocalisation(),
-  label: 'Default reporting country',
-  name: 'reporting',
-  labelClassName: formLabelClassName,
-  className: formClassName
+const localisationProps = (t: any) => {
+  return {
+    options: getLocalisation(),
+    label: () => {
+      t('forms.preference.localisation');
+    },
+    name: 'localisation',
+    labelClassName: formLabelClassName,
+    className: formClassName
+  };
 };
 
-const currencyProps = {
-  options: getLocalisation(),
-  label: 'Default currency',
-  name: 'currency',
-  labelClassName: formLabelClassName,
-  className: formClassName
+const reportingProps = (t: any) => {
+  return {
+    options: getLocalisation(),
+    label: () => {
+      t('forms.preference.default reporting country');
+    },
+    name: 'reporting',
+    labelClassName: formLabelClassName,
+    className: formClassName
+  };
 };
 
-const dashBoardOptions = [
-  { optionValue: 'dashboard', optionName: 'Dashboard' },
-  { optionValue: 'reports', optionName: 'Reports' },
-  { optionValue: 'smeCalc', optionName: 'SME Calc' },
-  { optionValue: 'smeProspector', optionName: 'SME Prospector' }
+const currencyProps = (t: any) => {
+  return {
+    options: getLocalisation(),
+    label: () => {
+      t('forms.preference.default currency');
+    },
+    name: 'currency',
+    labelClassName: formLabelClassName,
+    className: formClassName
+  };
+};
+
+const dashboardOptionsNames = (t: any) => {
+  return ['dashboard', 'reports', 'sme calc', 'sme prospector'].map(
+    (i: any) => {
+      return i;
+    }
+  );
+};
+
+const dashboardOptionsValues = [
+  'dashboard',
+  'reports',
+  'sme calc',
+  'sme prospector'
 ];
 
-const loginScreenProps = {
-  options: dashBoardOptions,
-  label: 'Default login screen',
-  name: 'loginScreen',
-  labelClassName: formLabelClassName,
-  className: formClassName
+const loginScreenProps = (t: any) => {
+  const options = dashboardOptionsNames(t).map((name, nameIndex) => {
+    return {
+      optionName: t(
+        'forms.specialist-props.' + dashboardOptionsValues[nameIndex]
+      ),
+      optionValue: name
+    };
+  });
+
+  return {
+    options: options,
+    label: () => {
+      t('forms.preference default login screen');
+    },
+    name: 'loginScreen',
+    labelClassName: formLabelClassName,
+    className: formClassName
+  };
 };
 
 export { localisationProps, currencyProps, loginScreenProps, reportingProps };
