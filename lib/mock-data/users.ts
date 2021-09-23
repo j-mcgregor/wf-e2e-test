@@ -29,9 +29,9 @@ const mockUsers = {
       company_name: 'Awesome Stuff LTD',
       company_HQ_Location: 'N4 3FF'
     },
-    preferances: {
+    preferences: {
       default_screen: '',
-      commuication: {}
+      communication: {}
     },
     reports: [
       {

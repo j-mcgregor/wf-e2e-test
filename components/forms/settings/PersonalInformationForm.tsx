@@ -9,9 +9,9 @@ import countryJSON from '../../../lib/data/country_currency.json';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { useTranslations } from 'next-intl';
 import { SettingsSectionHeader } from '../../elements/Headers';
-import { atom, useRecoilState, useSetRecoilState } from 'recoil';
+import { selector, useRecoilState } from 'recoil';
 import appState from '../../../lib/appState';
-import { SessionUser } from '../../../types/global';
+import { ContactInformation, SessionUser } from '../../../types/global';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -38,23 +38,70 @@ const countries = countryJSON.map(value => {
 //====================== COMPONENT ========================
 const PersonalInformationForm = () => {
   // not using a getter and setter as we are updating user object
-  const [currentPersonalInfoState, setPersonalInfoState] =
-    useRecoilState<SessionUser>(appState);
+  // const [currentPersonalInfoState, setPersonalInfoState] =
+  //   useRecoilState<SessionUser>(appState);
+
+  const currentUser: ContactInformation = selector({
+    key: 'currentUserContactInfoState',
+    get: ({ get }) => {
+      const user = get(appState).user;
+      return user?.contact_information;
+    },
+    set: ({ set }, newValue) => set(appState, newValue)
+  });
+
+  const [currentUserContactInfo, setCurrentUserContactInfo] =
+    useRecoilState<ContactInformation>(currentUser);
+
+  // const currentUser = currentPersonalInfoState.user;
+  // const contactInfo = currentUser?.contact_information;
 
   //====================== translate ========================
   const t = useTranslations();
 
+  //====================== form ========================
   const { register, handleSubmit, formState } =
-    useForm<PersonalInformationFormInput>();
+    useForm<PersonalInformationFormInput>({
+      defaultValues: {
+        firstName: currentUserContactInfo?.first_name,
+        lastName: contactInfo?.last_name,
+        email: contactInfo?.email,
+        country: contactInfo?.country,
+        streetAddress: contactInfo?.street_address,
+        city: contactInfo?.city,
+        state: contactInfo?.state,
+        postcode: contactInfo?.postcode,
+        companyName: contactInfo?.company_name,
+        companyHQLocation: contactInfo?.company_HQ_Location
+      }
+    });
 
   const { isDirty, errors } = formState;
 
-  const onSubmit: SubmitHandler<PersonalInformationFormInput> = async data =>
-    // eslint-disable-next-line no-console
-    {
-      await setPersonalInfoState({ user: data });
+  // @ts-ignore
+  const onSubmit: SubmitHandler = async (
+    data: PersonalInformationFormInput
+  ) => {
+    const updatedData = {
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      country: data.country,
+      street_address: data.streetAddress,
+      city: data.city,
+      state: data.state,
+      postcode: data.postcode,
+      company_name: data.companyName,
+      company_HQ_Location: data.companyHQLocation
     };
-  console.log({ currentPersonalInfoState });
+
+    return setPersonalInfoState({
+      user: {
+        ...currentUser,
+        contact_information: updatedData
+      }
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -75,7 +122,6 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.first name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
-                placeholder={currentPersonalInfoState.user.}
               />
               {errors.lastName && (
                 <ErrorMessage text={`${t('errors.first name')}`} />
@@ -101,6 +147,7 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.email address')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
+                placeholder={contactInfo?.email}
               />
               {errors.email && <ErrorMessage text={`${t('errors.email')}`} />}
             </div>
@@ -112,6 +159,7 @@ const PersonalInformationForm = () => {
                 options={countries}
                 className={formClassName}
                 labelClassName={formLabelClassName}
+                placeholder={contactInfo?.country}
               />
             </div>
 
@@ -121,6 +169,7 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.street address')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
+                placeholder={contactInfo?.street_address}
               />
             </div>
 
@@ -130,6 +179,7 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.city')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
+                placeholder={contactInfo?.city}
               />
             </div>
 
@@ -139,6 +189,7 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.state')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
+                placeholder={contactInfo?.state}
               />
             </div>
 
@@ -148,6 +199,7 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.postcode')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
+                placeholder={contactInfo?.postcode}
               />
             </div>
           </div>
@@ -158,6 +210,7 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.company name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
+                placeholder={contactInfo?.company_name}
               />
             </div>
 
@@ -168,6 +221,7 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.company headquarters')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
+                placeholder={contactInfo?.company_HQ_Location}
               />
             </div>
           </div>
