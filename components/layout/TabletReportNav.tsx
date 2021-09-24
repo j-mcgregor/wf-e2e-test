@@ -47,7 +47,12 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
 
     // handles the scrolling of the nav to get the menu item into view
     const snakedHeader = header.replace(/\s/g, '-').toLowerCase();
-    document.querySelector(`#${snakedHeader}-nav-id`)?.scrollIntoView({behavior: "smooth"})
+
+    // handle no header on first load
+    // errors if there is no #route applied
+    if (!/\//.test(header)) {
+      document.querySelector(`#${snakedHeader}-nav-id`)?.scrollIntoView({behavior: "smooth"})
+    }
     
   }, [router.asPath]);
 
