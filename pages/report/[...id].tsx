@@ -38,6 +38,7 @@ import Profiles from '../../components/report-sections/corporate-governance/Prof
 import CorporateOverview from '../../components/report-sections/corporate-governance/CorporateOverview';
 import ShareHolderList from '../../components/report-sections/corporate-governance/ShareHolderList';
 import ShareHoldingCard from '../../components/report-sections/corporate-governance/ShareHoldingCard';
+import ESGCard from '../../components/report-sections/esg-assessment/ESGCard';
 
 interface ReportDataProps {
   created_at?: string;
@@ -286,6 +287,21 @@ const ReportTemplate = () => {
 
             <HashContainer name={'ESG'} id={`esg-id`}>
               <ReportSectionHeader text={t('esg')} />
+              <p className="text-xl">{t('esg assessment')}</p>
+              <ESGCard
+                title={t('environmental')}
+                description={t('using environmental indicators')}
+                result={t('neutral')}
+                resultText={t('environmental impact')}
+                rating="1"
+              />
+              <ESGCard
+                title={t('governance')}
+                description={t('data on company governance')}
+                result="positive"
+                resultText={t('pep flags')}
+                rating="3"
+              />
             </HashContainer>
 
             <HashContainer name={'News'} id={`news-id`}>
