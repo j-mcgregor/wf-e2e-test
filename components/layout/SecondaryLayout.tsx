@@ -9,8 +9,8 @@ interface SecondaryNavProps {
 const SecondaryNav = ({ navigation, children }: SecondaryNavProps) => {
   return (
     <div className="flex h-screen overflow-hidden flex-1 relative ">
-      <aside className="bg-gray-200 bg-opacity-75 flex lg:flex-shrink-0">
-        <div className="lg:w-64 w-0 flex flex-col">{navigation}</div>
+      <aside className="bg-gray-200 bg-opacity-75 flex xl:flex-shrink-0">
+        <div className="xl:w-64 w-0 flex flex-col">{navigation}</div>
       </aside>
 
       <div

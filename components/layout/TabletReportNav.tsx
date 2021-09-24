@@ -69,7 +69,7 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
   }
 
   return (
-    <div className="w-full fixed bottom-0 sm:absolute sm:top-0 sm:bottom-auto  items-center bg-gray-200 z-20 text-sm text-primary flex lg:hidden">
+    <div className="w-full fixed bottom-0 sm:absolute sm:top-0 sm:bottom-auto  items-center bg-gray-200 z-20 text-sm text-primary flex xl:hidden">
       <Button
         linkTo="/reports"
         variant="highlight"

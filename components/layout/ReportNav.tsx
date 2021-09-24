@@ -61,7 +61,7 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
   }
 
   return (
-    <div className="px-6 pt-8 flex-col h-full hidden lg:flex">
+    <div className="px-6 pt-8 flex-col h-full hidden xl:flex">
       <div>
         <Button
           linkTo="/reports"
