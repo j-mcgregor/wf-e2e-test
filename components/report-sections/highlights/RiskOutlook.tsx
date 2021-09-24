@@ -13,7 +13,7 @@ const RiskOutlook = ({ reports, hintTitle, hintBody }: OutlookProps) => {
     <div className="flex flex-col">
       <div className="flex pb-4">
         <p className="font-bold pr-8">{t('risk outlook')}</p>
-        <InfoPopover hintTitle={hintTitle} hintBody={hintBody} />
+        <InfoPopover title={hintTitle} body={hintBody} />
       </div>
       <div className="flex flex-col">
         <ul className="list-disc px-6">
