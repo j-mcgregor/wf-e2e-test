@@ -8,18 +8,24 @@ interface LegalEventsProps {
   legalEvents: LegalEvent[];
 }
 
+const FILTERS = {
+  ALL: 'all events',
+  NEGATIVE: 'negative event',
+  CHARGES: 'charges'
+}
+
 const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
   const allEvents = legalEvents.map(event => event);
 
   const charges = allEvents.filter(event =>
-    event.types.includes('Charge/mortgage')
+    /Charge\/mortgage/.test(event.types.join(', '))
   );
   const negativeEvents = allEvents.filter(event =>
-    event.types.includes('Negative Event')
+    /Negative event/.test(event.types.join(', '))
   );
 
   const [events, setEvents] = useState(allEvents);
-  const [filter, setFilter] = useState('all events');
+  const [filter, setFilter] = useState(FILTERS.ALL);
 
   const handleFilter = (event: LegalEvent[], filter: string): void => {
     setEvents(event);
@@ -31,27 +37,27 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
   return (
     <div className="text-primary px-4 md:px-1">
       <p className="text-xl">{t('summary')}</p>
-      <div className="flex flex-col md:flex-row my-6 ">
+      <div className="flex flex-col md:flex-row my-6 justi ">
         <LegalFilter
           events={allEvents}
           filter={filter}
-          handleFilter={() => handleFilter(allEvents, 'all events')}
+          handleFilter={() => handleFilter(allEvents, FILTERS.ALL)}
           title={t('all events')}
-          activeFilter="all events"
+          activeFilter={FILTERS.ALL}
         />
         <LegalFilter
           events={charges}
           filter={filter}
-          handleFilter={() => handleFilter(charges, 'charges')}
+          handleFilter={() => handleFilter(charges, FILTERS.CHARGES)}
           title={t('charges')}
-          activeFilter="charges"
+          activeFilter={FILTERS.CHARGES}
         />
         <LegalFilter
           events={negativeEvents}
           filter={filter}
-          handleFilter={() => handleFilter(negativeEvents, 'negative events')}
+          handleFilter={() => handleFilter(negativeEvents, FILTERS.NEGATIVE)}
           title={t('negative events')}
-          activeFilter="negative events"
+          activeFilter={FILTERS.NEGATIVE}
         />
       </div>
 
