@@ -41,7 +41,7 @@ const PersonalCard = ({
         <div className="flex">
           {profileImage ? (
             <div className="relative overflow-hidden h-12 w-12 border rounded-full mr-3">
-              <Image src={profileImage} layout="fill" objectFit="cover" />
+              <Image src={profileImage} layout="fill" objectFit="cover" alt={`${name} profile`} />
             </div>
           ) : (
             <ProfileIcon className="mr-3" />

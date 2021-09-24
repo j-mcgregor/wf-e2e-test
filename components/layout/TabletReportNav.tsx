@@ -1,6 +1,6 @@
 import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { scroller } from 'react-scroll';
 import { useReportNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';

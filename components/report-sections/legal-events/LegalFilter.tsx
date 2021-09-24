@@ -2,6 +2,7 @@ import { LegalEvent } from '../../../types/report';
 import { TranslateInput } from '../../../types/global';
 
 interface LegalFilterProps {
+  // eslint-disable-next-line no-unused-vars
   handleFilter: (event: LegalEvent[], filter: string) => void;
   events: LegalEvent[];
   filter: string;
