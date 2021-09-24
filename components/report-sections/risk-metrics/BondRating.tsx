@@ -2,21 +2,10 @@ import { useTranslations } from 'next-intl';
 import { bondRatings } from '../../../lib/settings/report.settings';
 
 interface BondRatingProps {
-  score: Rating;
+  score: RatingType;
   description: string;
 }
-type Rating = keyof typeof RatingTypes
-enum RatingTypes {
-  CC,
-  CCC,
-  "B-",
-  B,
-  BB,
-  BBB,
-  A,
-  AA,
-  AAA,
-}
+type RatingType = "AAA" | "AA" | "A" | "BBB" | "BB" | "B" | "B-" | "CCC" | "CC"
 
 const BondRating = ({ score, description }: BondRatingProps) => {
   const t = useTranslations();
