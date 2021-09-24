@@ -9,9 +9,14 @@ import countryJSON from '../../../lib/data/country_currency.json';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { useTranslations } from 'next-intl';
 import { SettingsSectionHeader } from '../../elements/Headers';
-import { atom, useRecoilState, useSetRecoilState } from 'recoil';
+import {
+  RecoilValueReadOnly,
+  selector,
+  useRecoilValue,
+  useSetRecoilState
+} from 'recoil';
 import appState from '../../../lib/appState';
-import { SessionUser } from '../../../types/global';
+import { ContactInformation } from '../../../types/global';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -37,24 +42,71 @@ const countries = countryJSON.map(value => {
 
 //====================== COMPONENT ========================
 const PersonalInformationForm = () => {
-  // not using a getter and setter as we are updating user object
-  const [currentPersonalInfoState, setPersonalInfoState] =
-    useRecoilState<SessionUser>(appState);
+  const currentUser: RecoilValueReadOnly<ContactInformation | undefined> =
+    selector({
+      key: 'currentUserContactInfoState',
+      get: ({ get }) => {
+        const user = get(appState).user;
+        // @ts-ignore
+        // console.log({ contact: user.contact_information });
+        return user.contact_information;
+      }
+      //FIXME: this was my setter method, not sure why it was hating on me
+      // set: ({ set, get }, newValue) => {
+      //   const user = get(appState).user;
+      //   const contact = user.contact_information;
+      //   set( ...appState, user: newValue );
+      // }
+      //  this is what i wanted to do , https://stackoverflow.com/questions/63365150/react-recoil-state-not-being-reset-properly
+    });
+
+  const currentUserContactInfo = useRecoilValue(currentUser);
+  const setCurrentUserContactInfo = useSetRecoilState(appState);
 
   //====================== translate ========================
   const t = useTranslations();
 
+  //====================== form ========================
   const { register, handleSubmit, formState } =
-    useForm<PersonalInformationFormInput>();
+    useForm<PersonalInformationFormInput>({
+      defaultValues: {
+        firstName: currentUserContactInfo?.first_name,
+        lastName: currentUserContactInfo?.last_name,
+        email: currentUserContactInfo?.email,
+        country: currentUserContactInfo?.country,
+        streetAddress: currentUserContactInfo?.street_address,
+        city: currentUserContactInfo?.city,
+        state: currentUserContactInfo?.state,
+        postcode: currentUserContactInfo?.postcode,
+        companyName: currentUserContactInfo?.company_name,
+        companyHQLocation: currentUserContactInfo?.company_HQ_Location
+      }
+    });
 
   const { isDirty, errors } = formState;
 
-  const onSubmit: SubmitHandler<PersonalInformationFormInput> = async data =>
-    // eslint-disable-next-line no-console
-    {
-      await setPersonalInfoState({ user: data });
+  // @ts-ignore
+  const onSubmit: SubmitHandler = async (
+    data: PersonalInformationFormInput
+  ) => {
+    const updatedData = {
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      country: data.country,
+      street_address: data.streetAddress,
+      city: data.city,
+      state: data.state,
+      postcode: data.postcode,
+      company_name: data.companyName,
+      company_HQ_Location: data.companyHQLocation
     };
-  console.log({ currentPersonalInfoState });
+
+    // @ts-ignore
+    setCurrentUserContactInfo(curr => {
+      return { ...curr, user: { contact_information: updatedData } };
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -74,8 +126,6 @@ const PersonalInformationForm = () => {
                 {...register('firstName')}
                 label={t('forms.personal.first name')}
                 className={formClassName}
-                labelClassName={formLabelClassName}
-                placeholder={currentPersonalInfoState.user.}
               />
               {errors.lastName && (
                 <ErrorMessage text={`${t('errors.first name')}`} />

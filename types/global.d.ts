@@ -29,20 +29,30 @@ type ContactInformation = {
   company_HQ_Location: string;
 };
 
-interface User {
-  name?: string | null;
-  email?: string | null;
-  image?: string | null;
-  recent_usage?: {
-    reports_ran?: StatDataType;
-    api_requests?: StatDataType;
-    last_login?: StatDataType;
-  };
-  is_SSO: boolean;
-  contact_information?: ContactInformation;
-  preferences: {
-    default_screen: '';
-    communication: {};
+export type User = {
+  user?: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    recent_usage?: {
+      reports_ran: StatDataType;
+      api_requests: StatDataType;
+      last_login: StatDataType;
+    };
+    is_SSO: boolean;
+    contact_information?: ContactInformation;
+    preferences: {
+      localisation: string;
+      default_currency: string;
+      default_login_screen: string;
+      default_reporting_country: string;
+      communication: {
+        comments: boolean;
+        candidates: boolean;
+        offers: boolean;
+      };
+    };
+    reports?: [];
   };
   reports?: Report[];
 } 

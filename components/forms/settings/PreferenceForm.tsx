@@ -6,6 +6,14 @@ import { useTranslations } from 'next-intl';
 
 import Button from '../../elements/Button';
 import localisationJSON from '../../../lib/data/localisation.json';
+import {
+  RecoilValue,
+  selector,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState
+} from 'recoil';
+import appState from '../../../lib/appState';
 
 interface PreferenceFormInput {
   localisation: string;
@@ -44,18 +52,85 @@ const options = (t: any) => {
   });
 };
 
+//====================== COMPONENT ========================
+
+interface preferencesProps {
+  localisation: string;
+  default_currency: string;
+  default_login_screen: string;
+  default_reporting_country: string;
+}
+
 const PreferenceForm = () => {
+  const currentUser: RecoilValue<preferencesProps | undefined> = selector({
+    key: 'currentUserContactInfoState',
+    get: ({ get }) => {
+      const user = get(appState).user;
+      // @ts-ignore
+      // let {
+      //   localisation,
+      //   default_currency,
+      //   default_login_screen,
+      //   default_reporting_country
+      // } =
+      // return {
+      //   localisation,
+      //   default_currency,
+      //   default_login_screen,
+      //   default_reporting_country
+      // };
+      return user.preferences;
+    }
+  });
+  const currentUserPrefsInfo = useRecoilValue(currentUser);
+  const test = useRecoilValue(appState);
+  const setCurrentUserPrefsInfo = useSetRecoilState(appState);
+  //====================== translate ========================
+
   const t = useTranslations();
 
-  const { register, handleSubmit, formState, reset } =
-    useForm<PreferenceFormInput>();
+  const { register, handleSubmit, formState } = useForm<PreferenceFormInput>({
+    defaultValues: {
+      localisation: currentUserPrefsInfo?.localisation,
+      currency: currentUserPrefsInfo?.default_currency,
+      reporting: currentUserPrefsInfo?.default_reporting_country,
+      loginScreen: currentUserPrefsInfo?.default_login_screen
+    }
+  });
   const { isDirty, isValid } = formState;
+
+  //====================== form ========================
+
   const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
     // eslint-disable-next-line no-console
-    console.log(data);
-    reset();
+    console.log({ data });
+    // @ts-ignore
+    setCurrentUserPrefsInfo(curr => {
+      return { ...curr, user: { preferences: data } };
+    });
   };
-
+  // import {todoListState} from "../atoms/todoListState";
+  //
+  // const TodoResetButton = () => {
+  //   const resetList = useResetRecoilState(todoListState);
+  //   return <button onClick={resetList}>Reset</button>;
+  // };
+  const ResetPrefs = () => {
+    // @ts-ignore
+    const resetPrefs = useResetRecoilState(appState);
+    return (
+      <Button
+        onClick={() => resetPrefs}
+        disabled={!isDirty || !isValid}
+        type="submit"
+        variant="primary"
+        className="max-w-[150px] ml-auto"
+      >
+        {t('forms.preference.reset to defaults')}
+      </Button>
+    );
+  };
+  // console.log({ test });
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">
@@ -138,15 +213,7 @@ const PreferenceForm = () => {
           {/*FIXME: need to implement the reset functionality here*/}
 
           <div className="flex">
-            <Button
-              onClick={() => reset()}
-              disabled={!isDirty || !isValid}
-              type="submit"
-              variant="primary"
-              className="max-w-[150px] ml-auto"
-            >
-              {t('forms.preference.reset to defaults')}
-            </Button>
+            <ResetPrefs />
             <Button
               disabled={!isDirty}
               type="submit"
@@ -161,5 +228,4 @@ const PreferenceForm = () => {
     </form>
   );
 };
-
 export default PreferenceForm;

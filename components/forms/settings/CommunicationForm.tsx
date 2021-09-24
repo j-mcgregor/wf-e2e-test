@@ -4,29 +4,55 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import CheckboxInput from '../../elements/Checkbox';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import { useTranslations } from 'next-intl';
-import ErrorMessage from '../../elements/ErrorMessage';
 import Button from '../../elements/Button';
-import { FieldErrors } from 'react-hook-form/dist/types/errors';
-import { FieldNamesMarkedBoolean } from 'react-hook-form/dist/types/form';
+import {
+  RecoilValueReadOnly,
+  selector,
+  useRecoilValue,
+  useSetRecoilState
+} from 'recoil';
+import appState from '../../../lib/appState';
 
 interface CommunicationFormInput {
-  comments: string;
-  candidates: string;
-  offers: string;
+  comments: boolean;
+  candidates: boolean;
+  offers: boolean;
 }
 
+//====================== COMPONENT ========================
+
 const CommunicationForm = () => {
+  const currentUser: RecoilValueReadOnly<{} | undefined> = selector({
+    key: 'currentUserContactInfoState',
+    get: ({ get }) => {
+      const user = get(appState).user;
+      // @ts-ignore
+      return user.preferences.communication;
+    }
+  });
+
+  const currentUserCommsInfo = useRecoilValue(currentUser);
+  // const test = useRecoilValue(appState);
+  const setCurrentUserCommsInfo = useSetRecoilState(appState);
+
+  //====================== translate ========================
+
   const t = useTranslations();
 
-  const { reset, register, handleSubmit, formState } =
-    useForm<CommunicationFormInput>();
+  //====================== form ========================
+
+  const { register, handleSubmit, formState } = useForm<CommunicationFormInput>(
+    { defaultValues: currentUserCommsInfo }
+  );
   const { isDirty } = formState;
   const onSubmit: SubmitHandler<CommunicationFormInput> = data => {
     // eslint-disable-next-line no-console
-    console.log(data);
-    reset();
+    console.log({ data });
+    // @ts-ignore
+    setCurrentUserCommsInfo(curr => {
+      return { ...curr, user: { preferences: { communication: data } } };
+    });
   };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">

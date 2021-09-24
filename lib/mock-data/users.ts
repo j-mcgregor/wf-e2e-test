@@ -29,9 +29,13 @@ const mockUsers = {
       company_name: 'Awesome Stuff LTD',
       company_HQ_Location: 'N4 3FF'
     },
-    preferances: {
-      default_screen: '',
-      commuication: {}
+    preferences: {
+      // eslint-disable-next-line sonarjs/no-duplicate-string
+      localisation: 'English (GB)',
+      default_currency: 'English (GB)',
+      default_login_screen: 'dashboard',
+      default_reporting_country: 'English (GB)',
+      communication: { comments: false, candidates: false, offers: false }
     },
     reports: [
       {
