@@ -6,7 +6,7 @@ import {
 } from '@testing-library/dom';
 import client from 'next-auth/client';
 import * as nextRouter from 'next/router';
-import { MockReportData } from '../../../lib/mock-data/report';
+import mockReport from '../../../lib/mock-data/report';
 
 // import { mockServerGet, server } from '../../../__mocks__/service-worker/server';
 import allMessages from '../../../messages/en';
@@ -35,7 +35,7 @@ describe('ReportTemplate', () => {
     (client.useSession as jest.Mock).mockReturnValue([mockSession, false]);
   });
 
-  it('should render all sections without issue', async () => {
+  fit('should render all sections without issue', async () => {
     const { container } = render(<ReportTemplate />, undefined, allMessages);
 
     await waitForElementToBeRemoved(screen.getByTestId('skeleton-report'));
@@ -98,12 +98,12 @@ describe('ReportTemplate', () => {
     // TODO : change when hardcoded is replaced
     expect(
       within(infoGroups[4]).getByText(
-        `${MockReportData.contact_details.company_description}`
+        `${mockReport.contact_details.company_description}`
       )
     ).toBeInTheDocument();
     expect(
       within(infoGroups[4]).getByText(
-        `${MockReportData.contact_details.company_description}`
+        `${mockReport.contact_details.company_description}`
       )
     ).toBeInTheDocument();
 
@@ -116,18 +116,16 @@ describe('ReportTemplate', () => {
     if (address) {
       expect(
         within(address).getByText(
-          `${MockReportData.contact_details.address_line_1}`
+          `${mockReport.contact_details.address_line_1}`
         )
       ).toBeInTheDocument();
       expect(
         within(address).getByText(
-          `${MockReportData.contact_details.address_line_2}`
+          `${mockReport.contact_details.address_line_2}`
         )
       ).toBeInTheDocument();
       expect(
-        within(address).getByText(
-          `${MockReportData.contact_details.postal_code}`
-        )
+        within(address).getByText(`${mockReport.contact_details.postal_code}`)
       ).toBeInTheDocument();
     }
 

@@ -5,6 +5,7 @@ import general from './general.en.json';
 import hints from './hints.en.json';
 import index from './index.en.json';
 import login from './login.en.json';
+import passwordManagement from './password-management.en.json';
 import report from './report.en.json';
 import reports from './reports.en.json';
 import resetPassword from './reset-password.en.json';
@@ -23,6 +24,7 @@ export default {
   ...hints,
   ...index,
   ...login,
+  ...passwordManagement,
   ...report,
   ...reports,
   ...resetPassword,

@@ -2,6 +2,8 @@ import { ReportDataProps } from '../../pages/report/[...id]';
 
 /* eslint-disable sonarjs/no-duplicate-string */
 const mockReport = {
+  created_at: new Date().setFullYear(2020, 1, 1).toString(),
+  company_name: 'Wayne Industries',
   contact_details: {
     address_line_1: '591 LONDON ROAD',
     address_line_2: 'CHEAM',
@@ -1135,104 +1137,6 @@ const mockReport = {
         uci: 'P004899242',
         linkedin: null
       }
-    ]
-  }
-};
-
-export const MockReportData: ReportDataProps = {
-  created_at: new Date().setFullYear(2020, 1, 1).toString(),
-  company_name: 'Wayne Industries',
-  contact_details: {
-    address_line_1: '591 LONDON ROAD',
-    address_line_2: 'CHEAM',
-    address_line_3: null,
-    address_line_4: null,
-    emails: ['batman@wayneindustries.com'],
-    incorporation_date: '2006-06-20 00:00:00',
-    phone_numbers: ['+44 20 8644 4224 - registered on TPS'],
-    postal_code: 'SM3 9AG',
-    websites: ['www.wrightglazing.co.uk'],
-    company_description:
-      'Culpa minim do anim consequat labore amet officia ea mollit veniam velit. Lorem exercitation aute aliqua labore nisi ad enim do sunt do duis culpa. Consectetur excepteur est occaecat anim anim adipisicing magna ut enim adipisicing esse dolore.',
-    reg_number: '',
-    sector: '',
-    description: '',
-    last_account_date: ''
-  },
-  financials: {
-    '2020': {
-      value: '200',
-      accounts_receivable: '',
-      added_value: '',
-      capital: '1000.0',
-      cash_and_equivalents: '49977.0',
-      cash_flow: '',
-      cost_of_employees: '',
-      cost_of_goods_sold: '',
-      creditors: '0.0',
-      current_assets: '586682.0',
-      current_liabilities: '599996.0',
-      current_ratio: '0.978',
-      debtors: '0.0',
-      depreciation: '6287.0',
-      ebitda: '',
-      employees: '13.0',
-      enterprise_value: '',
-      export_revenue: '',
-      extraordinary_expenses: '',
-      extraordinary_profit: '',
-      extraordinary_revenue: '',
-      financial_expenses: '',
-      financial_profit: '',
-      financial_revenue: '',
-      fixed_assets: '237710.0',
-      gross_profit: '',
-      intangible_fixed_assets: '0.0',
-      interest_expenses: '',
-      loans: '0.0',
-      long_term_debt: '',
-      material_costs: '',
-      net_current_assets: '-13314.0',
-      net_income: '',
-      non_current_liabilities: '0.0',
-      operating_profit: '',
-      operating_revenue: '',
-      other_current_assets: '538065.0',
-      other_current_liabilities: '599996.0',
-      other_fixed_assets: '0.0',
-      other_non_current_liabilities: '',
-      other_operating_expenses: '',
-      other_operating_items: '',
-      other_shareholders_finds: '223396.0',
-      profit_after_tax: '',
-      profit_and_loss_before_tax: '',
-      profit_margin: '',
-      provisions: '',
-      r_and_d: '',
-      return_on_capital_employed: '',
-      return_on_shareholder_funds: '',
-      sales: '',
-      shareholders_funds: '224396.0',
-      solvency_ratio: '27.22',
-      stocks: '48617.0',
-      tangible_fixed_assets: '237710.0',
-      taxation: '',
-      total_assets: '824392.0',
-      total_shareholder_funds: '824392.0',
-      working_capital: '48617.0'
-    }
-  },
-  highlights: {
-    data_reliability: {
-      reliability: 'reliable',
-      comment:
-        'We have accessed enough data to complete a report. If you would like to supplement the data in this report with the most recent management accounts please use the button below.'
-    },
-    risk_outlook: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.'
     ]
   }
 };

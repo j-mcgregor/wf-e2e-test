@@ -11,7 +11,7 @@ jest.mock('next-auth/client');
 // eslint-disable-next-line no-import-assign
 nextRouter.useRouter = jest.fn().mockImplementation(() => ({}));
 
-describe('PreferenceForm', () => {
+describe.skip('PreferenceForm', () => {
   let mockSession: any;
 
   beforeEach(() => {
