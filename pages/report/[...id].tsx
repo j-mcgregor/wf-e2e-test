@@ -42,6 +42,7 @@ import ESGCard from '../../components/report-sections/esg-assessment/ESGCard';
 import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
 
 interface ReportDataProps {
+  id: string | number;
   created_at?: string;
   company_name: string;
   contact_details: SummaryContact & SummaryInfo;
@@ -69,7 +70,7 @@ const ReportTemplate = () => {
   const t = useTranslations();
   const router = useRouter();
 
-  const { id } = router.query;
+  const { id=[] } = router.query;
 
   const fetcher = (url: any) => fetch(url).then(res => res.json());
 
@@ -95,6 +96,7 @@ const ReportTemplate = () => {
 
   const INDUSTRY_BENCHMARK = t('industry benchmark');
   const REGION_BENCHMARK = t('region benchmark');
+
   return (
     <Layout title={`${data?.company_name} | ${t('report')}`} fullWidth>
       <SecondaryLayout
@@ -112,13 +114,13 @@ const ReportTemplate = () => {
       >
         {!data ? (
           <SkeletonReport />
-        ) : !error ? (
+        ) : error ? (
           <ErrorSkeleton />
         ) : (
           <div className="text-primary mt-10 lg:mt-0">
             <div className="py-8">
               <h1 className="text-xl pb-4">{t('risk assessment report')}</h1>
-              <ReportHeader company={data?.company_name} created={created} />
+              <ReportHeader company={data?.company_name} created={created} reportId={id[0]}/>
             </div>
 
             <HashContainer name={'Summary'} id={`summary-id`}>

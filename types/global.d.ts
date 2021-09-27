@@ -1,4 +1,5 @@
 import { JSXElementConstructor, ReactElement, ReactNodeArray } from 'react';
+import { RecoilValue } from 'recoil';
 
 export type TranslateInput =
   | string
@@ -55,5 +56,5 @@ export type User = {
 };
 
 export type SessionUser = {
-  user?: User | null;
+  user: User | Promise<User> | RecoilValue<User> | null |undefined
 };

@@ -8,13 +8,15 @@ import BookmarkCard from '../components/cards/BookmarkCard';
 import Button from '../components/elements/Button';
 import ReportTable from '../components/elements/ReportTable';
 import Layout from '../components/layout/Layout';
-import appState from '../lib/appState';
+import appState, {userReports} from '../lib/appState';
 import { Report } from '../types/global';
 
 const Reports = () => {
   const [reportLimit, setReportLimit] = useState(10); // initial limit of 10 reports
 
   const { user } = useRecoilValue(appState);
+
+  const { bookmarkedReports }: { bookmarkedReports: Report[] | undefined } = useRecoilValue(userReports)
 
   const reports = (user && user.reports) || [];
 
@@ -40,7 +42,7 @@ const Reports = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 leading-4">
-          {hasBookmark?.map((report: Report) => {
+          {bookmarkedReports && bookmarkedReports.map((report: Report) => {
             return (
               <BookmarkCard
                 key={report.id}

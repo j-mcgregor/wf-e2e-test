@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 const mockReport = {
+  id: 1,
   contact_details: {
     address_line_1: '591 LONDON ROAD',
     address_line_2: 'CHEAM',
