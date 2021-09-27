@@ -37,8 +37,7 @@ const Speedometer = ({
 
   return (
     <>
-      <div
-        className="bg-white mt-6 mx-auto xl:mx-0 flex flex-col items-center w-[250px]"
+      <div className="bg-white mt-6 mx-auto xl:mx-0 flex flex-col items-center w-[250px] overflow-hidden"
         role="contentinfo"
       >
         <div className="flex w-full items-center justify-between px-4 pt-4 pb-2">
@@ -71,7 +70,7 @@ const Speedometer = ({
           )}
         </div>
 
-        <div className="text-gray-400 w-full pb-4 px-1 text-xs xl:text-sm -mt-2">
+        <div className="text-gray-400 w-full pb-4 px-1 text-xs xl:text-sm -mt-2 overflow-hidden">
           {benchmarks.map((benchmark, index) => (
             <SpeedoKey
               key={index}

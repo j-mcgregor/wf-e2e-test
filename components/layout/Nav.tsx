@@ -125,7 +125,7 @@ const Nav = ({ path }: NavProps) => {
       {/* Static sidebar for desktop */}
       <div className="hidden bg-primary lg:flex lg:flex-shrink-0">
         <div className="w-56 flex flex-col">
-          <div className="border-r border-gray-200 pt-5 pb-4 flex flex-col flex-grow overflow-y-auto">
+          <div className="pt-5 pb-4 flex flex-col flex-grow overflow-y-auto">
             <div className="flex-shrink-0 px-4 flex items-center relative">
               <div className="relative w-40 h-10">
                 <WF />
