@@ -9,7 +9,8 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    es6: true
+    es6: true,
+    jest: true
   },
   globals: {
     JSX: true,
@@ -47,7 +48,8 @@ module.exports = {
     // 'simple-import-sort/imports': 'warn',
     'unicorn/filename-case': 'off',
     'next/no-img-element': 'off',
-    'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    // 'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }], // lint breaks in BondRating.tsx when using this rule
+    'no-unused-vars': 'off',
     'jsx-a11y/anchor-is-valid': [
       'error',
       {

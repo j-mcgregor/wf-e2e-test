@@ -3,11 +3,15 @@ import { useTranslations } from 'next-intl';
 
 import { SummaryContact } from '../../../types/report';
 
-const SummaryMap = ({ contact }: { contact: SummaryContact}) => {
+interface SummaryMapProps {
+  contact: SummaryContact;
+}
+
+const SummaryMap = ({ contact }: SummaryMapProps) => {
   const t = useTranslations();
 
-  const phone = contact?.phone_numbers[0].replace(/[A-z-]/g, '');
-  
+  const phone = contact?.phone_numbers?.[0].replace(/[A-z-]/g, '');
+
   return (
     <div className="bg-white border shadow-sm rounded md:ml-8  h-full flex flex-col text-primary">
       <div className="flex items-center justify-center bg-gray-500 text-white text-center ">
@@ -21,14 +25,14 @@ const SummaryMap = ({ contact }: { contact: SummaryContact}) => {
       </div>
       <div className="flex flex-col p-4">
         <div>
-          <p>{t('registered address')}</p>
-          <div className="font-bold pb-2">
+          <p>{t('registered_address')}</p>
+          <address className="font-bold pb-2">
             <p>{contact?.address_line_1}</p>
             <p>{contact?.address_line_2}</p>
             <p>{contact?.address_line_3}</p>
             <p>{contact?.address_line_4}</p>
             <p>{contact?.postal_code}</p>
-          </div>
+          </address>
         </div>
         <div className="flex justify-between flex-wrap">
           <p>{t('email')}</p>

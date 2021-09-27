@@ -1,18 +1,19 @@
 import { useTranslations } from 'next-intl';
+
 import { bondRatings } from '../../../lib/settings/report.settings';
 
 interface BondRatingProps {
   score: RatingType;
   description: string;
 }
-type RatingType = "AAA" | "AA" | "A" | "BBB" | "BB" | "B" | "B-" | "CCC" | "CC"
+type RatingType = 'AAA' | 'AA' | 'A' | 'BBB' | 'BB' | 'B' | 'B-' | 'CCC' | 'CC';
 
 const BondRating = ({ score, description }: BondRatingProps) => {
   const t = useTranslations();
 
   return (
     <div className="bg-white shadow rounded-sm px-8 py-6">
-      <p className="text-xl font-bold">{t('bond rating')}</p>
+      <p className="text-xl font-bold">{t('bond_rating')}</p>
 
       <div className="flex w-full items-center my-4 py-4">
         {bondRatings.map((rating, i) => {

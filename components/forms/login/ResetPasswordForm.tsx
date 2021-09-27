@@ -59,23 +59,23 @@ const ResetPasswordForm = ({ email, isValid }: FormProps) => {
     <div className="mt-6">
       <div>
         <Logo />
-        <h1 className="text-3xl font-bold py-3 my-2">{t('reset password')}</h1>
+        <h1 className="text-3xl font-bold py-3 my-2">{t('reset_password')}</h1>
         {!isValid && (
           <div>
-            <p className="mb-2">{t('valid link required')}</p>
-            <p className="mb-4">{t('go to forgotten password')}</p>
+            <p className="mb-2">{t('valid_link_required')}</p>
+            <p className="mb-4">{t('go_to_forgotten_password')}</p>
             <Button variant="highlight" linkTo="/forgot-password">
-              {t('forgot password')}
+              {t('forgot_password')}
             </Button>
           </div>
         )}
 
-        {formSubmitted && <p>{t('password sent')}</p>}
+        {formSubmitted && <p>{t('password_sent')}</p>}
 
         {!formSubmitted && isValid && (
           <>
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-              <p>{t('enter new password')}</p>
+              <p>{t('enter_new_password')}</p>
               <div className="mt-6">
                 <Input
                   {...register('newPassword', {
@@ -83,17 +83,17 @@ const ResetPasswordForm = ({ email, isValid }: FormProps) => {
                     minLength: 8
                   })}
                   type="password"
-                  placeholder={`${t('placeholders.your new password')}`}
+                  placeholder={`${t('placeholders.your_new_password')}`}
                 />
                 {errors.newPassword?.type === 'minLength' && (
-                  <ErrorMessage text={t('errors.min length')} />
+                  <ErrorMessage text={t('errors.min_length')} />
                 )}
                 {errors.newPassword?.type === 'required' && (
                   <ErrorMessage text={t('errors.required')} />
                 )}
               </div>
 
-              <p>{t('confirm new password')}</p>
+              <p>{t('confirm_new_password')}</p>
               <div className="mt-6">
                 <Input
                   {...register('confirmPassword', {
@@ -103,19 +103,19 @@ const ResetPasswordForm = ({ email, isValid }: FormProps) => {
                     }
                   })}
                   type="password"
-                  placeholder={`${t('placeholders.your new password')}`}
+                  placeholder={`${t('placeholders.your_new_password')}`}
                 />
                 {errors.confirmPassword?.type === 'sameAs' && (
-                  <ErrorMessage text={t('errors.not same')} />
+                  <ErrorMessage text={t('errors.not_same')} />
                 )}
                 {errors.confirmPassword?.type === 'required' && (
                   <ErrorMessage text={t('errors.required')} />
                 )}
               </div>
-              {submitError && <ErrorMessage text={t('errors.submit error')} />}
+              {submitError && <ErrorMessage text={t('errors.submit_error')} />}
               <div className="mt-6">
                 <Button variant="highlight" type="submit">
-                  {t('change password')}
+                  {t('change_password')}
                 </Button>
               </div>
             </form>
@@ -125,7 +125,7 @@ const ResetPasswordForm = ({ email, isValid }: FormProps) => {
 
       <div className="w-full text-center mt-8 text-highlight hover:text-yellow-500 text-sm">
         <Link linkTo="/login">
-          <p>{t('back to login')}</p>
+          <p>{t('back_to_login')}</p>
         </Link>
       </div>
     </div>

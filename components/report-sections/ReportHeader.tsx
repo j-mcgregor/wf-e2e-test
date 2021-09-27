@@ -20,7 +20,13 @@ const ReportHeader = ({ company, created }: ReportHeaderProps) => {
           <BookmarkIcon />
         </Button>
         <div className="w-12 h-12 ml-4">
-          <Image src={WFLogo} alt="Wiserfunding Logo" objectFit="contain" />
+          <Image
+            src={WFLogo}
+            alt="Wiserfunding Logo"
+            objectFit="contain"
+            width={200}
+            height={50}
+          />
         </div>
       </div>
     </div>

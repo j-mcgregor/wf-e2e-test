@@ -68,9 +68,9 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
           variant="none"
           newClassName="text-sm flex items-center hover:text-alt "
         >
-          <ArrowLeftIcon className="h-5 w-5 mr-2" /> {t('back to saved')}
+          <ArrowLeftIcon className="h-5 w-5 mr-2" /> {t('back_to_saved')}
         </Button>
-        <p className="text-sm mt-8">{t('risk assessment report')}</p>
+        <p className="text-sm mt-8">{t('risk_assessment_report')}</p>
         <h2 className="mt-4 text-xl">{companyName}</h2>
       </div>
 
@@ -121,9 +121,9 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
 
       <div className="space-y-2 items-end flex-1 justify-end flex flex-col pb-4">
         <Button variant="alt" className="w-full">
-          {t('export pdf')}
+          {t('export_pdf')}
         </Button>
-        <Button variant="secondary">{t('export csv')}</Button>
+        <Button variant="secondary">{t('export_csv')}</Button>
       </div>
     </div>
   );

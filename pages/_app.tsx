@@ -5,6 +5,10 @@ import { NextIntlProvider } from 'next-intl';
 import { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
 
+if (process.env.NODE_ENV !== 'production') {
+  require('../__mocks__/service-worker/index');
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
