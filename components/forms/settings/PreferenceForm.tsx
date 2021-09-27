@@ -4,12 +4,16 @@ import { SettingsSectionHeader } from '../../elements/Headers';
 import Select from '../../elements/Select';
 import { useTranslations } from 'next-intl';
 
+import Button from '../../elements/Button';
+import localisationJSON from '../../../lib/data/localisation.json';
 import {
-  localisationProps,
-  currencyProps,
-  loginScreenProps,
-  reportingProps
-} from './settingsData/SpecialistsInputProps';
+  RecoilValue,
+  selector,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState
+} from 'recoil';
+import appState from '../../../lib/appState';
 
 interface PreferenceFormInput {
   localisation: string;
@@ -18,16 +22,115 @@ interface PreferenceFormInput {
   loginScreen: string;
 }
 
+const getLocalisation = () =>
+  localisationJSON.map(value => {
+    return { optionValue: value.locale };
+  });
+
+const formLabelClassName = 'block text-sm font-medium text-gray-700';
+
+const formClassName =
+  'mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 ' +
+  'focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm';
+
+const options = (t: any) => {
+  const dashboardOptionsValues = [
+    'dashboard',
+    'reports',
+    'sme calc',
+    'sme prospector'
+  ];
+  return dashboardOptionsValues.map((name, nameIndex) => {
+    return {
+      optionName: t(
+        'forms.specialist-props.' +
+          //checks type, prevents any sort of injection, takes index as string, then parses it to a number.
+          dashboardOptionsValues[parseInt(String(nameIndex))]
+      ),
+      optionValue: name
+    };
+  });
+};
+
+//====================== COMPONENT ========================
+
+interface preferencesProps {
+  localisation: string;
+  default_currency: string;
+  default_login_screen: string;
+  default_reporting_country: string;
+}
+
 const PreferenceForm = () => {
+  const currentUser: RecoilValue<preferencesProps | undefined> = selector({
+    key: 'currentUserContactInfoState',
+    get: ({ get }) => {
+      const user = get(appState).user;
+      // @ts-ignore
+      // let {
+      //   localisation,
+      //   default_currency,
+      //   default_login_screen,
+      //   default_reporting_country
+      // } =
+      // return {
+      //   localisation,
+      //   default_currency,
+      //   default_login_screen,
+      //   default_reporting_country
+      // };
+      return user.preferences;
+    }
+  });
+  const currentUserPrefsInfo = useRecoilValue(currentUser);
+  const test = useRecoilValue(appState);
+  const setCurrentUserPrefsInfo = useSetRecoilState(appState);
+  //====================== translate ========================
+
   const t = useTranslations();
 
-  const { register, handleSubmit, formState } = useForm<PreferenceFormInput>();
+  const { register, handleSubmit, formState } = useForm<PreferenceFormInput>({
+    defaultValues: {
+      localisation: currentUserPrefsInfo?.localisation,
+      currency: currentUserPrefsInfo?.default_currency,
+      reporting: currentUserPrefsInfo?.default_reporting_country,
+      loginScreen: currentUserPrefsInfo?.default_login_screen
+    }
+  });
   const { isDirty, isValid } = formState;
-  // eslint-disable-next-line no-console
-  const onSubmit: SubmitHandler<PreferenceFormInput> = data =>
-    // eslint-disable-next-line no-console
-    console.log(data);
 
+  //====================== form ========================
+
+  const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
+    // eslint-disable-next-line no-console
+    console.log({ data });
+    // @ts-ignore
+    setCurrentUserPrefsInfo(curr => {
+      return { ...curr, user: { preferences: data } };
+    });
+  };
+  // import {todoListState} from "../atoms/todoListState";
+  //
+  // const TodoResetButton = () => {
+  //   const resetList = useResetRecoilState(todoListState);
+  //   return <button onClick={resetList}>Reset</button>;
+  // };
+  const ResetPrefs = () => {
+    // @ts-ignore
+    const resetPrefs = useResetRecoilState(appState);
+    return (
+      <Button
+        onClick={() => resetPrefs}
+        disabled={!isDirty || !isValid}
+        type="submit"
+        variant="primary"
+        className="max-w-[150px] ml-auto"
+      >
+        {t('forms.preference.reset to defaults')}
+      </Button>
+    );
+  };
+  // console.log({ test });
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">
@@ -35,18 +138,24 @@ const PreferenceForm = () => {
           <div>
             <div>
               <SettingsSectionHeader text={t('preferences')} />
-
               <p className="mt-1 text-sm text-gray-500">
-                Change or update your personal information
+                {`${t('forms.preference.change your base')}`}
               </p>
             </div>
           </div>
           {/*#localisation*/}
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('localisation')} {...localisationProps}>
+              <Select
+                {...register('localisation')}
+                options={getLocalisation()}
+                label={t('forms.preference.localisation')}
+                name={'localisation'}
+                labelClassName={formLabelClassName}
+                className={formClassName}
+              >
                 <p className="mt-1 text-sm text-gray-500">
-                  Set your language preferences.
+                  {t('forms.preference.set your language')}
                 </p>
               </Select>
             </div>
@@ -54,26 +163,47 @@ const PreferenceForm = () => {
           {/*#reporting*/}
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('reporting')} {...reportingProps}>
+              <Select
+                {...register('reporting')}
+                options={getLocalisation()}
+                label={t('forms.preference.reporting')}
+                name={'reporting'}
+                labelClassName={formLabelClassName}
+                className={formClassName}
+              >
                 <p className="mt-1 text-sm text-gray-500">
-                  Change your default country to run your reports in.
+                  {t('forms.preference.change your default country')}
                 </p>
               </Select>
             </div>
             {/*#currency*/}
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('currency')} {...currencyProps}>
+              <Select
+                {...register('currency')}
+                options={getLocalisation()}
+                label={t('forms.preference.currency')}
+                name={'currency'}
+                labelClassName={formLabelClassName}
+                className={formClassName}
+              >
                 <p className="mt-1 text-sm text-gray-500">
-                  Change the default reporting currency.
+                  {t('forms.preference.change the default reporting')}
                 </p>
               </Select>
             </div>
           </div>
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
-              <Select {...register('loginScreen')} {...loginScreenProps}>
+              <Select
+                {...register('loginScreen')}
+                options={options(t)}
+                label={t('forms.preference.loginScreen')}
+                name={'loginScreen'}
+                labelClassName={formLabelClassName}
+                className={formClassName}
+              >
                 <p className="mt-1 text-sm text-gray-500">
-                  Change the screen you see on your first login.
+                  {t('forms.preference.change the screen')}
                 </p>
               </Select>
             </div>
@@ -81,28 +211,21 @@ const PreferenceForm = () => {
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           {/*FIXME: need to implement the reset functionality here*/}
-          <button
-            type="submit"
-            className="bg rounded-none border-2 border-current mr-4
-                            rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium
-                            text-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Reset to defaults
-          </button>
-          <button
-            disabled={!isDirty || !isValid}
-            type="submit"
-            className="bg-indigo-600 border border-transparent
-                            rounded-none shadow-sm py-2 px-4 inline-flex justify-center
-                            text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2
-                            focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Save
-          </button>
+
+          <div className="flex">
+            <ResetPrefs />
+            <Button
+              disabled={!isDirty}
+              type="submit"
+              variant="primary"
+              className="max-w-[150px] ml-3"
+            >
+              {t('save')}
+            </Button>
+          </div>
         </div>
       </div>
     </form>
   );
 };
-
 export default PreferenceForm;

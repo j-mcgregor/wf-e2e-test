@@ -44,6 +44,16 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
     const path = router.asPath.replace(`${dynamicPath}#`, '');
     const header = path.replace(/-/g, ' ').toLowerCase();
     setActiveItem(header);
+
+    // handles the scrolling of the nav to get the menu item into view
+    const snakedHeader = header.replace(/\s/g, '-').toLowerCase();
+
+    // handle no header on first load
+    // errors if there is no #route applied
+    if (!/\//.test(header)) {
+      document.querySelector(`#${snakedHeader}-nav-id`)?.scrollIntoView({behavior: "smooth"})
+    }
+    
   }, [router.asPath]);
 
   if (loading) {
@@ -59,7 +69,7 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
   }
 
   return (
-    <div className="w-full absolute flex items-center bg-gray-200 z-20 text-sm text-primary">
+    <div className="w-full fixed bottom-0 sm:absolute sm:top-0 sm:bottom-auto  items-center bg-gray-200 z-20 text-sm text-primary flex xl:hidden">
       <Button
         linkTo="/reports"
         variant="highlight"
@@ -67,17 +77,22 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
       >
         <ArrowLeftIcon className="h-full w-6" />
       </Button>
-      <p className="font-bold whitespace-nowrap px-4">{companyName}</p>
+     
 
       {/* hide scroll works to allow touch but removes mouse - needs solution */}
-      <div className="overflow-x-auto flex hide-scroll">
-        <ul className=" flex items-center justify-between">
+      <div className="overflow-x-auto flex hide-scroll"  id="tablet-report-nav-container">
+        <ul className="flex items-center justify-between pr-20 sm:pr-40 md:pr-80">
+
+          <li> <p className="font-bold whitespace-nowrap px-4">{companyName}</p></li>
+
+          
           {navItems.map((heading, index) => {
             const lowerHeading = heading.toLowerCase();
             const isActive = activeItem === lowerHeading;
+            const snakedHeader = heading.replace(/\s/g, '-').toLowerCase();
 
             return (
-              <li key={index}>
+              <li key={index} id={`${snakedHeader}-nav-id`}>
                 <button
                   className="cursor-pointer hover:text-alt"
                   onClick={() => handleClick(lowerHeading)}

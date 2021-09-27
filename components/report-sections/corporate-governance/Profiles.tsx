@@ -1,4 +1,4 @@
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 import { Profile } from '../../../types/report';
 import PersonalCard from './PersonalCard';
 
@@ -13,8 +13,9 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
     <div className="px-4 sm:px-0">
       <p className="my-4 text-xl">{t('directors')}</p>
       <div className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4">
-        {directors.map(director => (
+        {directors.map((director, index) => (
           <PersonalCard
+            key={director.name + index}
             title={director.title}
             name={director.name}
             role={director.role}
@@ -30,8 +31,9 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
 
       <p className="my-4 text-xl">{t('senior management')}</p>
       <div className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4">
-        {seniorManagement.map(manager => (
+        {seniorManagement.map((manager, index)  => (
           <PersonalCard
+            key={manager.name + index}
             title={manager.title}
             name={manager.name}
             role={manager.role}

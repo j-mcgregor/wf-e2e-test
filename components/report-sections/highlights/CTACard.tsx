@@ -1,5 +1,5 @@
 import { TranslateInput } from '../../../types/global';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 import Button from '../../elements/Button';
 import Lock from '../../icons/Lock';
 

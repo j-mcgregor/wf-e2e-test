@@ -2,7 +2,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 import HashContainer from '../../components/elements/HashContainer';
 import Layout from '../../components/layout/Layout';
@@ -76,7 +76,6 @@ const ReportTemplate = () => {
     `/api/report?id=${id}`,
     fetcher
   );
-  console.log(data?.personal.directors);
 
   // Todo: handle error more gracefully
   if (error) return <div>failed to load</div>;
@@ -104,16 +103,11 @@ const ReportTemplate = () => {
         navigation={
           data?.company_name && (
             <>
-              <div className="lg:block hidden">
                 <ReportNav companyName={data?.company_name} loading={!data} />
-              </div>
-
-              <div className="block lg:hidden">
                 <TabletReportNav
                   companyName={data?.company_name}
                   loading={!data}
                 />
-              </div>
             </>
           )
         }

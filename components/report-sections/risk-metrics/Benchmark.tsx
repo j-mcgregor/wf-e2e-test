@@ -1,4 +1,3 @@
-import { useTranslations } from 'use-intl';
 import InfoPopover from './InfoPopover';
 
 type secondaryValue = {
@@ -22,13 +21,12 @@ const Benchmark = ({
   hintBody,
   secondaryValues
 }: BenchmarkProps) => {
-  const t = useTranslations();
 
   return (
     <div className="bg-white w-full sm:w-[48%] xl:w-[31%] flex flex-col items-center my-4 shadow rounded-sm">
       <div className="flex w-full items-center justify-between p-4">
         <p>{title}</p>
-        <InfoPopover hintTitle={hintTitle} hintBody={hintBody} />
+        <InfoPopover title={hintTitle} body={hintBody} />
       </div>
 
       <div

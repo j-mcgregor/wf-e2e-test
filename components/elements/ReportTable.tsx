@@ -1,7 +1,7 @@
 import { DocumentReportIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import ReactTimeAgo from 'react-timeago';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 import { Report } from '../../types/global';
 import SkeletonRow from '../skeletons/SkeletonRow';

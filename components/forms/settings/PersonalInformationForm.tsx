@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { validEmailRegex } from '../../../lib/utils/regexes';
@@ -9,7 +9,14 @@ import countryJSON from '../../../lib/data/country_currency.json';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { useTranslations } from 'next-intl';
 import { SettingsSectionHeader } from '../../elements/Headers';
-
+import {
+  RecoilValueReadOnly,
+  selector,
+  useRecoilValue,
+  useSetRecoilState
+} from 'recoil';
+import appState from '../../../lib/appState';
+import { ContactInformation } from '../../../types/global';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -33,29 +40,84 @@ const countries = countryJSON.map(value => {
   return { optionValue: value.CountryName };
 });
 
+//====================== COMPONENT ========================
 const PersonalInformationForm = () => {
+  const currentUser: RecoilValueReadOnly<ContactInformation | undefined> =
+    selector({
+      key: 'currentUserContactInfoState',
+      get: ({ get }) => {
+        const user = get(appState).user;
+        // @ts-ignore
+        // console.log({ contact: user.contact_information });
+        return user.contact_information;
+      }
+      //FIXME: this was my setter method, not sure why it was hating on me
+      // set: ({ set, get }, newValue) => {
+      //   const user = get(appState).user;
+      //   const contact = user.contact_information;
+      //   set( ...appState, user: newValue );
+      // }
+      //  this is what i wanted to do , https://stackoverflow.com/questions/63365150/react-recoil-state-not-being-reset-properly
+    });
 
-  const t = useTranslations()
-  
+  const currentUserContactInfo = useRecoilValue(currentUser);
+  const setCurrentUserContactInfo = useSetRecoilState(appState);
+
+  //====================== translate ========================
+  const t = useTranslations();
+
+  //====================== form ========================
   const { register, handleSubmit, formState } =
-    useForm<PersonalInformationFormInput>();
-    
-  const { isDirty, isValid, errors } = formState;
+    useForm<PersonalInformationFormInput>({
+      defaultValues: {
+        firstName: currentUserContactInfo?.first_name,
+        lastName: currentUserContactInfo?.last_name,
+        email: currentUserContactInfo?.email,
+        country: currentUserContactInfo?.country,
+        streetAddress: currentUserContactInfo?.street_address,
+        city: currentUserContactInfo?.city,
+        state: currentUserContactInfo?.state,
+        postcode: currentUserContactInfo?.postcode,
+        companyName: currentUserContactInfo?.company_name,
+        companyHQLocation: currentUserContactInfo?.company_HQ_Location
+      }
+    });
 
-  const onSubmit: SubmitHandler<PersonalInformationFormInput> = data =>
-    // eslint-disable-next-line no-console
-    console.log({ data });
+  const { isDirty, errors } = formState;
+
+  // @ts-ignore
+  const onSubmit: SubmitHandler = async (
+    data: PersonalInformationFormInput
+  ) => {
+    const updatedData = {
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      country: data.country,
+      street_address: data.streetAddress,
+      city: data.city,
+      state: data.state,
+      postcode: data.postcode,
+      company_name: data.companyName,
+      company_HQ_Location: data.companyHQLocation
+    };
+
+    // @ts-ignore
+    setCurrentUserContactInfo(curr => {
+      return { ...curr, user: { contact_information: updatedData } };
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
-              <SettingsSectionHeader>
-                {t('personal information')}
-              </SettingsSectionHeader>
+            <SettingsSectionHeader>
+              {t('personal information')}
+            </SettingsSectionHeader>
             <p className="mt-1 text-sm text-gray-500">
-            {t('forms.personal.update your personal')}
+              {t('forms.personal.update your personal')}
             </p>
           </div>
           <div className="grid grid-cols-6 gap-6">
@@ -64,19 +126,22 @@ const PersonalInformationForm = () => {
                 {...register('firstName')}
                 label={t('forms.personal.first name')}
                 className={formClassName}
-                labelClassName={formLabelClassName}
               />
-              { errors.lastName && <ErrorMessage text={`${t('errors.firstName')}`} />}
+              {errors.lastName && (
+                <ErrorMessage text={`${t('errors.first name')}`} />
+              )}
             </div>
 
             <div className="col-span-6 sm:col-span-3">
               <Input
-                {...register('lastName', { required: true})}
+                {...register('lastName', { required: true })}
                 label={t('forms.personal.last name')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
-               { errors.lastName && <ErrorMessage text={`${t('errors.last name')}`} />}
+              {errors.lastName && (
+                <ErrorMessage text={`${t('errors.last name')}`} />
+              )}
             </div>
 
             <div className="col-span-6 sm:col-span-4">
@@ -87,7 +152,7 @@ const PersonalInformationForm = () => {
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
-              { errors.email && <ErrorMessage text={`${t('errors.email')}`} />}
+              {errors.email && <ErrorMessage text={`${t('errors.email')}`} />}
             </div>
 
             <div className="col-span-6 sm:col-span-3">
@@ -160,7 +225,7 @@ const PersonalInformationForm = () => {
 
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           <Button
-            disabled={!isDirty || !isValid}
+            disabled={!isDirty}
             type="submit"
             variant="primary"
             className="max-w-[150px] ml-auto"

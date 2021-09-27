@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-non-literal-require */
-import { GetServerSidePropsContext } from 'next';
 import React from 'react';
 
 import HashContainer from '../components/elements/HashContainer';
@@ -11,13 +10,8 @@ import Layout from '../components/layout/Layout';
 import SecondaryLayout from '../components/layout/SecondaryLayout';
 import SettingsNav from '../components/layout/SettingsNav';
 import { GetStaticPropsContext } from 'next';
-import { useTranslations } from 'next-intl';
 
 const Settings = () => {
-
-
-  const t = useTranslations()
-
   return (
     <Layout title="Settings" fullWidth>
       <SecondaryLayout navigation={<SettingsNav />}>
@@ -29,24 +23,15 @@ const Settings = () => {
             <PersonalInformationForm />
           </HashContainer>
 
-          <HashContainer
-            id={`preferences-id`}
-            name={'Preferences'}
-          >
+          <HashContainer id={`preferences-id`} name={'Preferences'}>
             <PreferenceForm />
           </HashContainer>
 
-          <HashContainer
-            id={`password-id`}
-            name={'Password'}
-          >
+          <HashContainer id={`password-id`} name={'Password'}>
             <PasswordForm isSSO={false} />
           </HashContainer>
 
-          <HashContainer
-            id={`communication-id`}
-            name={'Communication'}
-          >
+          <HashContainer id={`communication-id`} name={'Communication'}>
             <CommunicationForm />
           </HashContainer>
         </div>

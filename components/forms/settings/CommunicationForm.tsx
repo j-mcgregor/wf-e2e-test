@@ -4,70 +4,98 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import CheckboxInput from '../../elements/Checkbox';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import { useTranslations } from 'next-intl';
+import Button from '../../elements/Button';
+import {
+  RecoilValueReadOnly,
+  selector,
+  useRecoilValue,
+  useSetRecoilState
+} from 'recoil';
+import appState from '../../../lib/appState';
 
 interface CommunicationFormInput {
-  comments: string;
-  candidates: string;
-  offers: string;
+  comments: boolean;
+  candidates: boolean;
+  offers: boolean;
 }
 
+//====================== COMPONENT ========================
+
 const CommunicationForm = () => {
+  const currentUser: RecoilValueReadOnly<{} | undefined> = selector({
+    key: 'currentUserContactInfoState',
+    get: ({ get }) => {
+      const user = get(appState).user;
+      // @ts-ignore
+      return user.preferences.communication;
+    }
+  });
 
-  const t = useTranslations()
+  const currentUserCommsInfo = useRecoilValue(currentUser);
+  // const test = useRecoilValue(appState);
+  const setCurrentUserCommsInfo = useSetRecoilState(appState);
 
-  const { register, handleSubmit, formState } =
-    useForm<CommunicationFormInput>();
-  const { isDirty, isValid } = formState;
-  // eslint-disable-next-line no-console
-  const onSubmit: SubmitHandler<CommunicationFormInput> = data =>
+  //====================== translate ========================
+
+  const t = useTranslations();
+
+  //====================== form ========================
+
+  const { register, handleSubmit, formState } = useForm<CommunicationFormInput>(
+    { defaultValues: currentUserCommsInfo }
+  );
+  const { isDirty } = formState;
+  const onSubmit: SubmitHandler<CommunicationFormInput> = data => {
     // eslint-disable-next-line no-console
-    console.log(data);
-
+    console.log({ data });
+    // @ts-ignore
+    setCurrentUserCommsInfo(curr => {
+      return { ...curr, user: { preferences: { communication: data } } };
+    });
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
-            <SettingsSectionHeader text={t('communication')}/>
+            <SettingsSectionHeader text={t('communication')} />
             <p className="mt-1 text-sm text-gray-500">
-              Change or update your personal information
+              {t('forms.communication-form.change or update')}
             </p>
           </div>
 
           <fieldset>
             <legend className="text-base font-medium text-gray-900">
-              By Email
+              {t('forms.communication-form.by email')}
             </legend>
             <div className="mt-4 space-y-4">
               <div className="flex items-center">
                 <CheckboxInput
-                  label={'Batch report completion'}
+                  label={t('forms.communication-form.batch report')}
                   id={'comments'}
-                  paragraph={
-                    'Get notified when a batch report has completed all reports.'
-                  }
+                  paragraph={t('forms.communication-form.get notified')}
                   {...{ ...register('comments') }}
                   name={'comments'}
                 />
               </div>
               <div className="flex items-center">
                 <CheckboxInput
-                  label={'Service Updates'}
+                  label={t('forms.communication-form.service updates')}
                   id={'candidates'}
-                  paragraph={
-                    'Get the latest updates on the Wiserfunding platform.'
-                  }
+                  paragraph={t(
+                    'forms.communication-form.get the latest updates on'
+                  )}
                   {...{ ...register('candidates') }}
                   name={'candidates'}
                 />
               </div>
               <div className="flex items-center">
                 <CheckboxInput
-                  label={'Company Updates'}
+                  label={t('forms.communication-form.company updates')}
                   id={'offers'}
-                  paragraph={
-                    'Get all the latest updates relating to Wiserfunding.'
-                  }
+                  paragraph={t(
+                    'forms.communication-form.get all the latest updates relating'
+                  )}
                   {...{ ...register('offers') }}
                   name={'offers'}
                 />
@@ -76,16 +104,14 @@ const CommunicationForm = () => {
           </fieldset>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-          <button
-            disabled={!isDirty || !isValid}
+          <Button
+            disabled={!isDirty}
             type="submit"
-            className="bg-indigo-600 border border-transparent
-                        rounded-none shadow-sm py-2 px-4 inline-flex justify-center
-                        text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2
-                        focus:ring-offset-2 focus:ring-indigo-600"
+            variant="primary"
+            className="max-w-[150px] ml-auto"
           >
-            Save
-          </button>
+            {t('save')}
+          </Button>
         </div>
       </div>
     </form>

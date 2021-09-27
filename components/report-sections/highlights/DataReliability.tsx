@@ -1,4 +1,4 @@
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 interface DataReliabilityProps {
   comment: string;

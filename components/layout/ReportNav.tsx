@@ -2,7 +2,7 @@ import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { scroller } from 'react-scroll';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 import { useReportNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';
@@ -45,6 +45,7 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
     const path = router.asPath.replace(`${dynamicPath}#`, '');
     const header = path.replace(/-/g, ' ').toLowerCase();
     setActiveItem(header);
+    
   }, [router.asPath]);
 
   if (loading) {
@@ -60,7 +61,7 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
   }
 
   return (
-    <div className="px-6 pt-8 flex flex-col h-full">
+    <div className="px-6 pt-8 flex-col h-full hidden xl:flex">
       <div>
         <Button
           linkTo="/reports"

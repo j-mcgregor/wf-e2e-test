@@ -125,7 +125,7 @@ const Nav = ({ path }: NavProps) => {
       {/* Static sidebar for desktop */}
       <div className="hidden bg-primary lg:flex lg:flex-shrink-0">
         <div className="w-56 flex flex-col">
-          <div className="border-r border-gray-200 pt-5 pb-4 flex flex-col flex-grow overflow-y-auto">
+          <div className="pt-5 pb-4 flex flex-col flex-grow overflow-y-auto">
             <div className="flex-shrink-0 px-4 flex items-center relative">
               <div className="relative w-40 h-10">
                 <WF />
@@ -178,7 +178,8 @@ const Nav = ({ path }: NavProps) => {
         </div>
       </div>
 
-      <div className="absolute w-full md:px-8 xl:px-0 sm:hidden">
+      {/* Menu for mobile  */}
+      <div className="absolute w-full md:px-8 xl:px-0 sm:hidden z-30">
         <div className="relative z-10 flex-shrink-0 h-12 bg-primary border-gray-200 flex">
           <button
             type="button"

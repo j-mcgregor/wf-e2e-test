@@ -16,6 +16,27 @@ const mockUsers = {
       api_requests: 142,
       reports_ran: 32
     },
+    is_SSO: false,
+    contact_information: {
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'test@test.com',
+      country: 'United Kingdom',
+      street_address: '123 Aplace Street',
+      city: 'London',
+      state: 'Hackney',
+      postcode: 'N42FF',
+      company_name: 'Awesome Stuff LTD',
+      company_HQ_Location: 'N4 3FF'
+    },
+    preferences: {
+      // eslint-disable-next-line sonarjs/no-duplicate-string
+      localisation: 'English (GB)',
+      default_currency: 'English (GB)',
+      default_login_screen: 'dashboard',
+      default_reporting_country: 'English (GB)',
+      communication: { comments: false, candidates: false, offers: false }
+    },
     reports: [
       {
         id: 1,

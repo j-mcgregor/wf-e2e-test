@@ -739,7 +739,7 @@ const mockReport = {
         details: null,
         id: null,
         source: 'Companies House',
-        types: ['Default', 'Negative Event']
+        types: ['Default', 'Negative event']
       },
       {
         date: '2018-04-09',

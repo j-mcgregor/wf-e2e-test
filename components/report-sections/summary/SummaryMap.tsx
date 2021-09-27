@@ -1,5 +1,5 @@
 import Iframe from 'react-iframe';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 import { SummaryContact } from '../../../types/report';
 
@@ -30,18 +30,18 @@ const SummaryMap = ({ contact }: { contact: SummaryContact}) => {
             <p>{contact?.postal_code}</p>
           </div>
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between flex-wrap">
           <p>{t('email')}</p>
 
           {contact?.emails && <p className="font-bold">{contact.emails[0]}</p>}
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between flex-wrap">
           <p>{t('website')}</p>
           {contact?.websites && (
             <p className="font-bold">{contact.websites[0]}</p>
           )}
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between flex-wrap">
           <p>{t('telephone')}</p>
           {contact?.phone_numbers && <p className="font-bold">{phone}</p>}
         </div>
