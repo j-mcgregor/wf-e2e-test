@@ -14,14 +14,16 @@ const MultiChart = () => {
   const [data, setData] = useState<CompanyDataType[][] | undefined>();
   const [selectedCompany, setSelectedCompany] = useState(1);
 
-  console.log(data);
-
   useEffect(() => {
     setData(companies);
   });
 
+  const black = '#022D45';
+  const blue = '#278EC8';
+  const green = '#2BAD01';
+
   const graphColors = (i: number): string => {
-    return i === 0 ? '#022D45' : i === 1 ? '#2BAD01' : '#278EC8';
+    return i === 0 ? black : i === 1 ? blue : green;
   };
 
   return (
@@ -38,7 +40,7 @@ const MultiChart = () => {
                 style={{
                   data: {
                     fill: graphColors(i),
-                    fillOpacity: i === selectedCompany ? '0.3' : '0.1',
+                    fillOpacity: i === selectedCompany ? '0.4' : '0.1',
                     stroke: graphColors(i)
                   }
                 }}
@@ -62,6 +64,29 @@ const MultiChart = () => {
             ))}
           </VictoryGroup>
         </VictoryChart>
+        <div className="flex flex-col text-sm w-full items-center text-primary">
+          <button
+            onClick={() => setSelectedCompany(0)}
+            className="flex items-center w-28 py-1 justify-between"
+          >
+            <div className={`w-4 h-4 bg-[#022D45]`} />
+            <p>Company 1</p>
+          </button>
+          <button
+            onClick={() => setSelectedCompany(1)}
+            className="flex items-center w-28 py-1 justify-between"
+          >
+            <div className={`w-4 h-4 bg-[#278EC8]`} />
+            <p>Company 2</p>
+          </button>
+          <button
+            onClick={() => setSelectedCompany(2)}
+            className="flex items-center w-28 py-1 justify-between"
+          >
+            <div className={`w-4 h-4 bg-[#2BAD01]`} />
+            <p>Company 3</p>
+          </button>
+        </div>
       </div>
     </div>
   );
