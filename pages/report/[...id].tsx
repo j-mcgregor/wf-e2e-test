@@ -39,6 +39,7 @@ import CorporateOverview from '../../components/report-sections/corporate-govern
 import ShareHolderList from '../../components/report-sections/corporate-governance/ShareHolderList';
 import ShareHoldingCard from '../../components/report-sections/corporate-governance/ShareHoldingCard';
 import ESGCard from '../../components/report-sections/esg-assessment/ESGCard';
+import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
 
 interface ReportDataProps {
   created_at?: string;
@@ -77,9 +78,6 @@ const ReportTemplate = () => {
     fetcher
   );
 
-  // Todo: handle error more gracefully
-  if (error) return <div>failed to load</div>;
-
   const date = new Date(Number(data?.['created_at']));
 
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
@@ -103,17 +101,19 @@ const ReportTemplate = () => {
         navigation={
           data?.company_name && (
             <>
-                <ReportNav companyName={data?.company_name} loading={!data} />
-                <TabletReportNav
-                  companyName={data?.company_name}
-                  loading={!data}
-                />
+              <ReportNav companyName={data?.company_name} loading={!data} />
+              <TabletReportNav
+                companyName={data?.company_name}
+                loading={!data}
+              />
             </>
           )
         }
       >
         {!data ? (
           <SkeletonReport />
+        ) : !error ? (
+          <ErrorSkeleton />
         ) : (
           <div className="text-primary mt-10 lg:mt-0">
             <div className="py-8">

@@ -8,5 +8,13 @@
   "api documentation":"API Documentation",
   "settings":"Settings",
   "support":"Support",
-  "logout":"Logout"
+  "logout":"Logout",
+  "errors": {
+    "header": {
+      "default": "Error: something went wrong"
+    },
+    "message": {
+      "default": "Please refresh the page and try again. If this error persists, please contact Wiserfunding support."
+    }
+  }
 }
