@@ -1,6 +1,11 @@
 import React from 'react';
 
-const ToolTip = ({ text, ...restProps }: { text: string | number | Float32Array }) => {
+const ToolTip = ({
+  text,
+  ...restProps
+}: {
+  text: string | number | Float32Array | undefined;
+}) => {
   return (
     <svg
       width="34"

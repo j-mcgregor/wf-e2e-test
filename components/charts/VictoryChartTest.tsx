@@ -9,7 +9,7 @@ import { theme, darkBlue } from './theme';
 import { data } from './data';
 
 const VictoryChartTest = () => {
-  const selectedDataPoint = 2;
+  const selectedDataPoint = 4;
 
   return (
     <div className="w-screen min-h-screen flex justify-center items-center bg-bg">

@@ -11,13 +11,12 @@ const orange = '#E58A2E';
 // TEXT
 const sansSerif = "'Helvetica Neue', 'Helvetica', sans-serif";
 const fontSize = 8;
-const fontWeight = 'bold';
 
 // Layout
-const padding = 14;
+const padding = 10;
 const baseProps = {
-  width: 350,
-  height: 350,
+  width: 250,
+  height: 400,
   padding: 40
 };
 
@@ -43,7 +42,7 @@ const dataLabelStyles = {
 const areaLabelStyles = {
   fontSize: 8,
   padding: 16,
-  fill: 'red',
+  fill: 'black',
   fontWeight: 'bold'
 };
 
@@ -99,22 +98,6 @@ export const theme = {
     baseProps
   ),
   chart: baseProps,
-  // MAIN GRAPH LINE
-  line: assign(
-    {
-      style: {
-        data: {
-          fill: 'transparent',
-          opacity: 1,
-          stroke: orange,
-          strokeWidth: 1
-        },
-        labels: dataLabelStyles
-      }
-    },
-    baseProps
-  ),
-
   scatter: assign(
     {
       style: {
@@ -122,7 +105,7 @@ export const theme = {
           fill: darkBlue,
           opacity: 1,
           stroke: 'transparent',
-          strokeWidth: 0
+          strokeWidth: 1
         },
         labels: dataLabelStyles
       }

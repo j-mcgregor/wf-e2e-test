@@ -1,9 +1,12 @@
-import VictoryChartTest from '../components/charts/VictoryChartTest';
+import SingleChart from '../components/charts/SingleChart';
+import MultiChart from '../components/charts/MultiChart';
 
 const chart = () => {
   return (
     <div>
-      <VictoryChartTest />
+      {/* <VictoryChartTest /> */}
+      <SingleChart title="GDP Growth Rate" timeFrame="Quarterly" />
+      <MultiChart />
     </div>
   );
 };
