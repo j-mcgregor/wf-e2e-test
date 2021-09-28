@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --log-level=debug",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint --ext ts --ext tsx --ext js --fix && next lint",
     "pretty": "prettier --write **/*.tsx **/*.ts",
