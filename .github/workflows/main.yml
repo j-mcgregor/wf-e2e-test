@@ -7,6 +7,32 @@ on:
     branches: [main]
 
 jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      SENTRY_DEPLOY_ENVIRONMENT: ${{ secrets.SENTRY_DEPLOY_ENVIRONMENT }}
+
+   steps: 
+    # See: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-a-workflow#using-the-checkout-action
+    - uses: actions/checkout@v1.0.0
+
+    - name: Create new Sentry release and deploy to Heroku
+      run: |
+        # Install Sentry CLI
+        curl -sL https://sentry.io/get-cli/ | bash
+        
+        # Create new Sentry release
+        export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+        sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+        sentry-cli releases set-commits --auto $SENTRY_RELEASE
+        sentry-cli releases finalize $SENTRY_RELEASE
+        
+        # Create new deploy for this Sentry release
+        sentry-cli releases deploys $SENTRY_RELEASE new -e $SENTRY_DEPLOY_ENVIRONMENT
+
   build_and_test:
     runs-on: ubuntu-latest
 
@@ -18,13 +44,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: mskelton/setup-yarn@v1
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
-          environment: production
           ref: ${{ github.head_ref }}
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
