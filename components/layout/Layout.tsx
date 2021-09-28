@@ -38,11 +38,10 @@ const Layout = ({
 
   const setState = useSetRecoilState(appState);
   const { user } = useRecoilValue(appState);
-
   React.useEffect(() => {
     if (session && session.user && !user ) {
       // @ts-ignore
-      setState({ ...appState, user: session?.user });
+      setState({user: {...session?.user}});
     }
   }, [session, setState]);
 

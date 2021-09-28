@@ -3,8 +3,8 @@ import WFLogo from '../../public/images/logos/wf-logo.svg';
 import Button from '../elements/Button';
 import { useTranslations } from 'next-intl';
 import { BookmarkIcon } from '@heroicons/react/outline';
-import { RecoilState, SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
-import { userReports } from '../../lib/appState';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import {  UserReports, userReports } from '../../lib/appState';
 import { Report } from '../../types/global'
 interface ReportHeaderProps {
   company: string;
@@ -13,11 +13,17 @@ interface ReportHeaderProps {
 }
 const ReportHeader = ({ company, created, reportId }: ReportHeaderProps) => {
 
-  // prefiltered application state
-  const [{ bookmarkedReports }, setBookMarkedReports]: [Report[], SetterOrUpdater<any>] = useRecoilState(userReports)
+  const { bookmarkedReports}  = useRecoilValue<UserReports>(userReports)
+
+
+  const setBookmarkedReports = useSetRecoilState(userReports)
 
   const handleClick = () => {
-    return setBookMarkedReports(reportId)
+    // recoil requires that what comes out of state is the same as what goes in,
+    // but that is in efficient and problematic
+    // we're working around it for now
+    // @ts-ignore
+    return setBookmarkedReports(reportId)
   };
   // compare strings of the id and reportId
   const isBookMarked = bookmarkedReports?.find(
