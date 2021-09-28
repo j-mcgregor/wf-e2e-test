@@ -1,15 +1,15 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { withSentry } from '@sentry/nextjs';
 import { getSession } from 'next-auth/client';
 
-import { NO_ID, NO_REPORT, UNAUTHORISED } from '../../lib/utils/error-codes';
 import mockReport from '../../lib/mock-data/report';
 import mockUsers from '../../lib/mock-data/users';
+import { NO_ID, NO_REPORT, UNAUTHORISED } from '../../lib/utils/error-codes';
 import { Report } from '../../types/global';
 
-export default async function report(
-  request: NextApiRequest,
-  response: NextApiResponse
-) {
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+// Declaring function for readability with Sentry wrapper
+const report = async (request: NextApiRequest, response: NextApiResponse) => {
   const session = await getSession({ req: request });
 
   // unauthenticated requests
@@ -51,4 +51,6 @@ export default async function report(
   };
 
   return response.status(200).json(resReport);
-}
+};
+
+export default withSentry(report);

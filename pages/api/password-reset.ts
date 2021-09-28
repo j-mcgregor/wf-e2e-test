@@ -1,9 +1,13 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { withSentry } from '@sentry/nextjs';
+
+import type { NextApiRequest, NextApiResponse } from 'next';
 // import { getSession } from 'next-auth/client'
-export default async function passwordReset(
+
+// Declaring function for readability with Sentry wrapper
+const passwordReset = async (
   request: NextApiRequest,
   response: NextApiResponse
-) {
+) => {
   // example protected API end points
   // const session = await getSession({ req })
 
@@ -15,4 +19,6 @@ export default async function passwordReset(
   // send request to FAST API to send password reset email
 
   return response.status(200).send('Success');
-}
+};
+
+export default withSentry(passwordReset);
