@@ -41,7 +41,7 @@ const Layout = ({
   React.useEffect(() => {
     if (session && session.user && !user ) {
       // @ts-ignore
-      setState({user: {...session?.user}});
+      setState({...appState, user: {...session?.user}});
     }
   }, [session, setState]);
 
