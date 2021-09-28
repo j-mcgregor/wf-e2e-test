@@ -117,7 +117,6 @@ export const theme = {
       fill: 'transparent',
       stroke: 'transparent',
       strokeWidth: 0
-    },
-    flyoutStyle: {}
+    }
   }
 };

@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { VictoryArea, VictoryScatter, VictoryGroup } from 'victory';
 import ChartContainer from './ChartContainer';
 
-import { companies, CompanyDataType } from './data';
+import { graphData, GraphDataType } from './data';
 
 const ChartMulti = () => {
-  const [data, setData] = useState<CompanyDataType[][] | undefined>();
+  const [data, setData] = useState<GraphDataType[] | null>();
   const [selectedCompany, setSelectedCompany] = useState<number>(0);
   const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 
   useEffect(() => {
-    data !== companies && setData(companies);
+    data !== graphData && setData(graphData);
   }, []);
 
   const black = '#022D45';
@@ -35,7 +35,7 @@ const ChartMulti = () => {
                   duration: 500,
                   onLoad: { duration: 500 }
                 }}
-                data={company}
+                data={company.data}
                 interpolation="natural"
                 style={{
                   data: {
@@ -51,7 +51,7 @@ const ChartMulti = () => {
           <VictoryGroup>
             {data?.map((company, i) => (
               <VictoryScatter
-                data={company}
+                data={company.data}
                 size={2}
                 style={{
                   data: {
@@ -74,45 +74,31 @@ const ChartMulti = () => {
         </ChartContainer>
 
         <div className="flex flex-col text-xs items-start px-8 pb-12 w-full justify-between text-primary">
-          <button
-            onClick={() => setSelectedCompany(0)}
-            className={` flex items-center py-1 justify-start w-full`}
-          >
-            <div
-              className={`${
-                selectedCompany !== 0
-                  ? 'bg-white border-2 border-[#022D45]'
-                  : 'bg-[#022D45]'
-              } w-4 h-4 mx-2 `}
-            />
-            <p>Scottish Seabird Center LTD</p>
-          </button>
-          <button
-            onClick={() => setSelectedCompany(1)}
-            className="flex items-center py-1 justify-start w-full"
-          >
-            <div
-              className={`${
-                selectedCompany !== 1
-                  ? 'bg-white border-2 border-[#2BAD01]'
-                  : 'bg-[#2BAD01] border-none'
-              } w-4 h-4  mx-2`}
-            />
-            <p>Industry Benchmark</p>
-          </button>
-          <button
-            onClick={() => setSelectedCompany(2)}
-            className="flex items-center py-1 justify-start w-full"
-          >
-            <div
-              className={`${
-                selectedCompany !== 2
-                  ? 'bg-white border-2 border-[#278EC8]'
-                  : 'bg-[#278EC8] border-none'
-              } w-4 h-4 mx-2`}
-            />
-            <p>Region Benchmark</p>
-          </button>
+          {data?.map((company, i) => {
+            const keyColor =
+              company.name === 'Industry Benchmark'
+                ? '#2BAD01'
+                : company.name === 'Region Benchmark'
+                ? '#278EC8'
+                : '#022D45';
+
+            return (
+              <button
+                key={i}
+                onClick={() => setSelectedCompany(i)}
+                className={` flex items-center py-1 justify-start w-full`}
+              >
+                <div
+                  className={`${
+                    selectedCompany !== i
+                      ? `bg-white border-2 border-[${keyColor}]`
+                      : `bg-[${keyColor}]`
+                  } w-4 h-4 mx-2 `}
+                />
+                <p>{company.name}</p>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
