@@ -14,6 +14,7 @@ const ChartContainer = ({
 }: ChartContainerProps) => {
   return (
     <VictoryChart
+      maxDomain={{ y: 1000 }}
       height={250}
       width={350}
       theme={theme}
@@ -23,7 +24,10 @@ const ChartContainer = ({
           labels={({ datum }) => datum.y}
           labelComponent={
             <VictoryTooltip
-              style={{ fontSize: 10, padding: 3 }}
+              style={{
+                fontSize: 10,
+                padding: 4
+              }}
               flyoutComponent={<ToolTip text={tooltipValue} />}
             />
           }

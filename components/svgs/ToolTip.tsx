@@ -8,6 +8,7 @@ const ToolTip = ({
 }) => {
   return (
     <svg
+      transform="translate(-12 -31)"
       width="13"
       height="12"
       viewBox="0 0 13 12"
@@ -32,6 +33,7 @@ const ToolTip = ({
         fontFamily="Helvetica"
         fontSize="3.79991"
         letterSpacing="0.126664px"
+        fontWeight="bold"
       >
         <tspan x="2.7255" y="6.49126">
           {text}
