@@ -29,7 +29,7 @@ const ToolTip = ({
         fill="white"
         xmlSpace="preserve"
         style={{ whiteSpace: 'pre' }}
-        fontFamily="IBM Plex Sans"
+        fontFamily="Helvetica"
         fontSize="3.79991"
         letterSpacing="0.126664px"
       >

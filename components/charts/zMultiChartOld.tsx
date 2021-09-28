@@ -4,16 +4,22 @@ import {
   VictoryChart,
   VictoryArea,
   VictoryScatter,
-  VictoryGroup
+  VictoryGroup,
+  VictoryVoronoiContainer,
+  VictoryTooltip
 } from 'victory';
+
+import ToolTip from '../svgs/ToolTip';
 
 import { companies, CompanyDataType } from './data';
 import { theme } from './theme';
 
 const MultiChart = () => {
   const [data, setData] = useState<CompanyDataType[][] | undefined>();
-  const [selectedCompany, setSelectedCompany] = useState<number | undefined>();
+  const [selectedCompany, setSelectedCompany] = useState<number>(0);
+  const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 
+  console.log(data);
   useEffect(() => {
     data !== companies && setData(companies);
   }, []);
@@ -29,7 +35,23 @@ const MultiChart = () => {
   return (
     <div className="w-screen flex justify-center  bg-bg">
       <div className="w-1/2 shadow rounded-sm bg-white flex flex-col">
-        <VictoryChart height={250} width={350} theme={theme}>
+        <VictoryChart
+          height={250}
+          width={350}
+          theme={theme}
+          containerComponent={
+            <VictoryVoronoiContainer
+              onActivated={points => setToolTipValue(points[0]._voronoiY)}
+              labels={({ datum }) => datum.y}
+              labelComponent={
+                <VictoryTooltip
+                  style={{ fontSize: 10, padding: 4 }}
+                  flyoutComponent={<ToolTip text={toolTipValue} />}
+                />
+              }
+            />
+          }
+        >
           <VictoryGroup style={{ data: { strokeWidth: 1 } }}>
             {data?.map((company, i) => (
               <VictoryArea
@@ -42,9 +64,9 @@ const MultiChart = () => {
                 style={{
                   data: {
                     fill: graphColors(i),
-                    fillOpacity: i === selectedCompany ? '0.5' : '0.1',
+                    fillOpacity: i === selectedCompany ? '0.5' : '0.2',
                     stroke: graphColors(i),
-                    strokeOpacity: i === selectedCompany ? '1' : '0.1'
+                    strokeOpacity: i === selectedCompany ? '0.9' : '0.15'
                   }
                 }}
               />

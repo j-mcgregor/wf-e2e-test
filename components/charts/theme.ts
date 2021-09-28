@@ -33,7 +33,7 @@ const baseLabelStyles = {
 // DATA POINTS ALONG GRAPH LINE
 const dataLabelStyles = {
   fontSize: 8,
-  padding: 16,
+  padding: 12,
   fill: 'black',
   fontWeight: 'bold'
 };
@@ -41,8 +41,6 @@ const dataLabelStyles = {
 // USING ONLY INSIDE CHART FOR THE SELECTED DATA POINTS
 const areaLabelStyles = {
   fontSize: 8,
-  // padding: 16,
-  fill: 'black',
   fontWeight: 'bold'
 };
 
@@ -111,5 +109,15 @@ export const theme = {
       }
     },
     baseProps
-  )
+  ),
+
+  tooltip: {
+    style: {
+      fontFamily: sansSerif,
+      fill: 'transparent',
+      stroke: 'transparent',
+      strokeWidth: 0
+    },
+    flyoutStyle: {}
+  }
 };

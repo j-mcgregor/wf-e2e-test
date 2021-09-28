@@ -1,11 +1,12 @@
-import SingleChart from '../components/charts/SingleChart';
-import MultiChart from '../components/charts/MultiChart';
+import Chart from '../components/charts/Chart';
+
+import ChartMulti from '../components/charts/ChartMulti';
 
 const chart = () => {
   return (
     <div>
-      <SingleChart title="GDP Growth Rate" timeFrame="Quarterly" />
-      <MultiChart />
+      <Chart title="GDP Growth Rate" timeFrame="Quarterly" />
+      <ChartMulti />
     </div>
   );
 };
