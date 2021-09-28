@@ -9,6 +9,10 @@ on:
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
+    env:
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
 
     strategy:
       matrix:
@@ -21,15 +25,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           node-version: ${{ matrix.node-version }}
-      - name: Create Sentry release (production)
-        if: github.ref == 'refs/heads/main'
-        uses: getsentry/action-release@v1.1.5
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: python-discord
-          SENTRY_PROJECT: forms-frontend
-        with:
-          environment: production
+      - name: Install dependencies
         run: yarn
       - run: yarn build
       - run: yarn lint
