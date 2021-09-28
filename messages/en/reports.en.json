@@ -9,5 +9,10 @@
   "sme z-score": "SME Z-Score",
   "created": "Created",
   "recent reports": "All Recent Reports",
-  "load more": "Load More"
+  "load more": "Load More",
+  "no reports generated": "No reports generated yet",
+  "get started with new report": "Get started with your first report today",
+  "generate report": "Generate report",
+  "no reports bookmarked": "No reports bookmarked",
+  "click the book mark": "Click the bookmark icon in the top right of a report to save it."
 }
