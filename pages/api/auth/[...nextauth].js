@@ -1,22 +1,16 @@
-import { withSentry } from '@sentry/nextjs';
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 
 import mockUsers from '../../../lib/mock-data/users';
 
-/**
- * Not 100% sure this works, can remove easily
- * Revert to export default NextAuth({...})
- * - Jack
- */
-
-const nextAuthHandler = NextAuth({
+export default NextAuth({
   // Configure one or more authentication providers
   providers: [
     Providers.Credentials({
       // The name to display on the sign in form (e.g. 'Sign in with...')
       name: 'Credentials',
-      // The credentials is used to generate a suitable form s be submitted.
+      // The credentials is used to generate a suitable form on the sign in page.
+      // You can specify whatever fields you are expecting to be submitted.
       // e.g. domain, username, password, 2FA token, etc.
       credentials: {
         email: {
@@ -72,5 +66,3 @@ const nextAuthHandler = NextAuth({
   }
   // A database is optional, but required to persist accounts in a database
 });
-
-export default withSentry(nextAuthHandler);
