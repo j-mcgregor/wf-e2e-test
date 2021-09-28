@@ -46,7 +46,7 @@ describe('ReportTemplate', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: /wayne industries/i,
+        name: /the wright glazing co. limited/i,
         level: 1
       })
     ).toBeInTheDocument();

@@ -29,7 +29,7 @@ describe('PasswordReset', () => {
 
   it('render the ReportNav without issue', () => {
     expect(() =>
-      render(<ReportNav companyName="Wayne Industries" />, {}, allMessages)
+      render(<ReportNav companyName="THE WRIGHT GLAZING CO. LIMITED" />, {}, allMessages)
     ).not.toThrow();
   });
 });
