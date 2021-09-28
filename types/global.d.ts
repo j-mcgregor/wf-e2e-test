@@ -1,4 +1,5 @@
 import { JSXElementConstructor, ReactElement, ReactNodeArray } from 'react';
+import { DefaultValue, RecoilValue } from 'recoil';
 
 export type TranslateInput =
   | string
@@ -38,9 +39,9 @@ export type User = {
     api_requests: StatDataType;
     last_login: StatDataType;
   };
-  is_SSO: boolean;
+  is_SSO?: boolean;
   contact_information?: ContactInformation;
-  preferences: {
+  preferences?: {
     localisation: string;
     default_currency: string;
     default_login_screen: string;
@@ -52,8 +53,9 @@ export type User = {
     };
   };
   reports?: Report[];
-};
+}
 
-export type SessionUser = {
-  user?: User | null;
-};
+export interface RecoilUserType {
+  user: User | Promise<User> | RecoilValue<User>
+  // default: {}
+}

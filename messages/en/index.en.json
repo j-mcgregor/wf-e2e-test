@@ -18,8 +18,5 @@
   "sme_z-score": "SME Z-Score",
   "bond_rating": "Bond Rating",
   "created": "Created",
-  "never": "Never",
-  "no_reports_generated": "No reports generated yet",
-  "get_started_with_new_report": "Get started with your first report today",
-  "generate_report": "Generate report"
+  "never": "Never"
 }

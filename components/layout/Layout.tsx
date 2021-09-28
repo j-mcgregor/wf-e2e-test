@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 
 import appState from '../../lib/appState';
 import SkeletonLayout from '../skeletons/SkeletonLayout';
@@ -37,11 +37,11 @@ const Layout = ({
   if (!loading && !session && !noAuthRequired) router.push('/login');
 
   const setState = useSetRecoilState(appState);
-
+  const { user } = useRecoilValue(appState);
   React.useEffect(() => {
-    if (session && session.user) {
+    if (session && session.user && !user ) {
       // @ts-ignore
-      setState({ ...appState, user: session?.user });
+      setState({user: {...session?.user}});
     }
   }, [session, setState]);
 

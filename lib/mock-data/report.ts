@@ -3,7 +3,7 @@ import { ReportDataProps } from '../../pages/report/[...id]';
 /* eslint-disable sonarjs/no-duplicate-string */
 const mockReport = {
   created_at: new Date().setFullYear(2020, 1, 1).toString(),
-  company_name: 'Wayne Industries',
+  company_name: 'THE WRIGHT GLAZING CO. LIMITED',
   contact_details: {
     address_line_1: '591 LONDON ROAD',
     address_line_2: 'CHEAM',

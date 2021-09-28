@@ -38,3 +38,17 @@ const SentryWebpackPluginOptions = {
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
 module.exports = withSentryConfig(moduleExports, SentryWebpackPluginOptions);
+
+// handles the silencing of the Recoil state errors in development
+const intercept = require("intercept-stdout")
+
+// safely ignore recoil stdout warning messages 
+function interceptStdout(text) {
+  if (text.includes('Duplicate atom key')) {
+    return ''
+  }
+  return text
+}
+
+// Intercept in dev and prod
+intercept(interceptStdout)

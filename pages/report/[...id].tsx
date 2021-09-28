@@ -41,8 +41,10 @@ import {
   SummaryContact,
   SummaryInfo
 } from '../../types/report';
+import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
 
 export interface ReportDataProps {
+  id: string | number;
   created_at?: string;
   company_name: string;
   contact_details: SummaryContact & SummaryInfo;
@@ -70,15 +72,12 @@ const ReportTemplate = () => {
   const t = useTranslations();
   const router = useRouter();
 
-  const { id } = router.query;
+  const { id=[] } = router.query;
 
   const { data, error } = useSWR<ReportDataProps>(
     `/api/report?id=${id}`,
     fetcher
   );
-
-  // Todo: handle error more gracefully
-  if (error) return <div>failed to load</div>;
 
   const date = new Date(Number(data?.['created_at']));
 
@@ -116,11 +115,13 @@ const ReportTemplate = () => {
       >
         {!data ? (
           <SkeletonReport />
+        ) : error ? (
+          <ErrorSkeleton />
         ) : (
           <div className="text-primary mt-10 lg:mt-0">
             <div className="py-8">
-              <h1 className="text-xl pb-4">{t('risk_assessment_report')}</h1>
-              <ReportHeader company={data.company_name} created={created} />
+              <h1 className="text-xl pb-4">{t('risk assessment report')}</h1>
+              <ReportHeader company={data?.company_name} created={created} reportId={id[0]}/>
             </div>
             <HashContainer name={'Summary'} id={`summary-id`}>
               <ReportSectionHeader text={t('summary')} />
