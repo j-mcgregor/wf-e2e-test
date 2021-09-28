@@ -19,13 +19,17 @@ interface ChartProps {
 }
 const SingleChart = ({ title, timeFrame, info }: ChartProps) => {
   const [company, setCompany] = useState(company1);
-  const [toolTipValue, setToolTipValue] = useState<number | string | undefined>(
-    undefined
+
+  const [toolTipValue, setToolTipValue] = useState<number | string | null>(
+    null
   );
 
   return (
     <div className="w-screen flex justify-center items-center bg-bg">
-      <div className="w-1/2 shadow rounded-sm bg-white flex flex-col my-8">
+      <div
+        onMouseLeave={() => setToolTipValue(null)}
+        className="w-1/2 shadow rounded-sm bg-white flex flex-col my-8"
+      >
         <VictoryChart
           height={250}
           width={350}
@@ -47,7 +51,9 @@ const SingleChart = ({ title, timeFrame, info }: ChartProps) => {
             style={{ labels: { fill: 'transparent ' } }}
             labelComponent={
               <VictoryTooltip
-                flyoutStyle={{ stroke: 'white' }}
+                // cornerRadius={4}
+                // height={10}
+                // flyoutStyle={{ stroke: 'white' }}
                 // need to somehow edit component to align properly in chart when rendered?
                 flyoutComponent={<ToolTip text={toolTipValue} />}
               />
@@ -58,8 +64,8 @@ const SingleChart = ({ title, timeFrame, info }: ChartProps) => {
             size={2}
             style={{ data: { fill: darkBlue } }}
             // below hides label but doesn't reset when mouse leaves chart
-            // labels={({ datum }) => (toolTipValue !== datum.y ? datum.y : null)}
-            labels={({ datum }) => datum.y}
+            labels={({ datum }) => (toolTipValue !== datum.y ? datum.y : null)}
+            // labels={({ datum }) => datum.y}
           />
         </VictoryChart>
       </div>

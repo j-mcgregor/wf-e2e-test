@@ -4,36 +4,36 @@ const ToolTip = ({
   text,
   ...restProps
 }: {
-  text: string | number | Float32Array | undefined;
+  text: string | number | Float32Array | null;
 }) => {
   return (
     <svg
-      width="34"
-      height="32"
-      viewBox="0 0 34 32"
+      width="13"
+      height="12"
+      viewBox="0 0 13 12"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...restProps}
     >
       <rect
-        x="16.9585"
-        y="22.0447"
-        width="6.78328"
-        height="6.78328"
-        rx="0.84791"
-        transform="rotate(45 16.9585 22.0447)"
+        x="6.3335"
+        y="8.2328"
+        width="2.53328"
+        height="2.53328"
+        rx="0.31666"
+        transform="rotate(45 6.3335 8.2328)"
         fill="#022D45"
       />
-      <rect width="33.9164" height="27.1331" rx="2.54373" fill="#022D45" />
+      <rect width="12.6664" height="10.1331" rx="0.949979" fill="#022D45" />
       <text
         fill="white"
         xmlSpace="preserve"
         style={{ whiteSpace: 'pre' }}
-        // fontFamily="IBM Plex Sans"
-        fontSize="10.1749"
-        letterSpacing="0.339164px"
+        fontFamily="IBM Plex Sans"
+        fontSize="3.79991"
+        letterSpacing="0.126664px"
       >
-        <tspan x="7.29798" y="17.3814">
+        <tspan x="2.7255" y="6.49126">
           {text}
         </tspan>
       </text>

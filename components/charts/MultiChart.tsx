@@ -15,8 +15,8 @@ const MultiChart = () => {
   const [selectedCompany, setSelectedCompany] = useState<number | undefined>();
 
   useEffect(() => {
-    setData(companies);
-  });
+    data !== companies && setData(companies);
+  }, []);
 
   const black = '#022D45';
   const blue = '#278EC8';
@@ -43,12 +43,14 @@ const MultiChart = () => {
                   data: {
                     fill: graphColors(i),
                     fillOpacity: i === selectedCompany ? '0.5' : '0.1',
-                    stroke: graphColors(i)
+                    stroke: graphColors(i),
+                    strokeOpacity: i === selectedCompany ? '1' : '0.1'
                   }
                 }}
               />
             ))}
           </VictoryGroup>
+
           <VictoryGroup>
             {data?.map((company, i) => (
               <VictoryScatter
@@ -57,9 +59,10 @@ const MultiChart = () => {
                 style={{
                   data: {
                     strokeWidth: 1,
-                    fillOpacity: 1,
+                    stroke: graphColors(i),
+                    strokeOpacity: i === selectedCompany ? '1' : '0.3',
                     fill: i !== selectedCompany ? 'white' : graphColors(i),
-                    stroke: graphColors(i)
+                    fillOpacity: i === selectedCompany ? '1' : '0.3'
                   }
                 }}
                 labels={({ datum }) =>
@@ -73,23 +76,41 @@ const MultiChart = () => {
         <div className="flex flex-col text-xs items-start px-8 pb-12 w-full justify-between text-primary">
           <button
             onClick={() => setSelectedCompany(0)}
-            className="flex items-center py-1 justify-start w-full"
+            className={` flex items-center py-1 justify-start w-full`}
           >
-            <div className={`w-4 h-4 bg-[#022D45] mx-2`} />
+            <div
+              className={`${
+                selectedCompany !== 0
+                  ? 'bg-white border-2 border-[#022D45]'
+                  : 'bg-[#022D45]'
+              } w-4 h-4 mx-2 `}
+            />
             <p>Scottish Seabird Center LTD</p>
           </button>
           <button
             onClick={() => setSelectedCompany(1)}
             className="flex items-center py-1 justify-start w-full"
           >
-            <div className={`w-4 h-4 bg-[#2BAD01] mx-2`} />
+            <div
+              className={`${
+                selectedCompany !== 1
+                  ? 'bg-white border-2 border-[#2BAD01]'
+                  : 'bg-[#2BAD01] border-none'
+              } w-4 h-4  mx-2`}
+            />
             <p>Industry Benchmark</p>
           </button>
           <button
             onClick={() => setSelectedCompany(2)}
             className="flex items-center py-1 justify-start w-full"
           >
-            <div className={`w-4 h-4 bg-[#278EC8] mx-2`} />
+            <div
+              className={`${
+                selectedCompany !== 2
+                  ? 'bg-white border-2 border-[#278EC8]'
+                  : 'bg-[#278EC8] border-none'
+              } w-4 h-4 mx-2`}
+            />
             <p>Region Benchmark</p>
           </button>
         </div>

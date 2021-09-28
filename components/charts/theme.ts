@@ -41,7 +41,7 @@ const dataLabelStyles = {
 // USING ONLY INSIDE CHART FOR THE SELECTED DATA POINTS
 const areaLabelStyles = {
   fontSize: 8,
-  padding: 16,
+  // padding: 16,
   fill: 'black',
   fontWeight: 'bold'
 };
