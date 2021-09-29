@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 import React from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import appState from '../../lib/appState';
 import SkeletonLayout from '../skeletons/SkeletonLayout';
@@ -37,6 +37,7 @@ const Layout = ({
   if (!loading && !session && !noAuthRequired) router.push('/login');
 
   const setState = useSetRecoilState(appState);
+  const state = useRecoilValue(appState);
 
   React.useEffect(() => {
     if (session && session.user) {
@@ -46,6 +47,8 @@ const Layout = ({
   }, [session, setState]);
 
   if (!noAuthRequired && loading) return <SkeletonLayout noNav={noNav} />;
+
+  // console.log({ layout: state.user?.contact_information });
 
   return (
     <div>

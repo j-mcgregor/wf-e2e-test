@@ -21,7 +21,6 @@ export default function Dashboard() {
   const t = useTranslations();
 
   const { user } = useRecoilValue(appState);
-  console.log({ DashB: user });
   return (
     <Layout title="Dashboard">
       <div className="grid grid-cols-7 gap-x-4 text-primary">
