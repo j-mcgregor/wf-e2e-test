@@ -11,7 +11,7 @@ const ChartMulti = () => {
 
   useEffect(() => {
     data !== graphData && setData(graphData);
-  }, []);
+  }, [data]);
 
   const black = '#022D45';
   const blue = '#278EC8';
@@ -81,20 +81,24 @@ const ChartMulti = () => {
 
         <div className="flex flex-col text-xs items-start px-8 pb-12 w-full justify-between text-primary">
           {data?.map((company, i) => {
-            const keyColor =
+            const notSelectKeyClass =
               company.name === 'Industry Benchmark'
-                ? '#278EC8'
+                ? 'border-2 border-[#278EC8]'
                 : company.name === 'Region Benchmark'
-                ? '#2BAD01'
-                : '#022D45';
-
+                ? 'border-2 border-[#2BAD01]'
+                : 'border-2 border-[#022D45]';
+            const selectedKeyClass =  company.name === 'Industry Benchmark'
+                ? 'bg-[#278EC8]'
+                : company.name === 'Region Benchmark'
+                ? 'bg-[#2BAD01]'
+                : 'bg-[#022D45]';
             return !company.data.length ? (
               <button
                 disabled
                 key={i}
                 className={` flex items-center py-1 justify-start w-full opacity-40 cursor-default`}
               >
-                <div className={`border-2 border-[${keyColor}] w-4 h-4 mx-2`} />
+                <div className={`${notSelectKeyClass} w-4 h-4 mx-2`} />
                 <p>{company.name}</p>
               </button>
             ) : (
@@ -104,11 +108,9 @@ const ChartMulti = () => {
                 className={` flex items-center py-1 justify-start w-full`}
               >
                 <div
-                  className={`${
-                    selectedCompany !== i
-                      ? `border-2 border-[${keyColor}]`
-                      : `bg-[${keyColor}]`
-                  } w-4 h-4 mx-2`}
+                  className={`${selectedCompany !== i
+                    ? notSelectKeyClass
+                    : selectedKeyClass} w-4 h-4 mx-2`}
                 />
                 <p>{company.name}</p>
               </button>
