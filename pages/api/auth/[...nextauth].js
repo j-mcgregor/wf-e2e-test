@@ -30,7 +30,6 @@ export default NextAuth({
 
         // authenticate the user with the backend
         const authenticated = await User.authenticate(credentials.email, credentials.password)
-        console.log(authenticated)
         // // if no error and we have user data, return it
         if (authenticated && authenticated.token) {
           return await User.getUser(authenticated.token) ;

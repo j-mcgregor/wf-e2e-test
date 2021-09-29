@@ -15,9 +15,6 @@ import appState from '../lib/appState';
 
 const Settings = () => {
   const { user } = useRecoilValue(appState);
-
-  console.log({ settings: user });
-
   return (
     <Layout title="Settings" fullWidth>
       <SecondaryLayout navigation={<SettingsNav />}>
