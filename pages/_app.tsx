@@ -15,7 +15,7 @@ const mutedConsole = memoize((console) => ({
 }))
 global.console = mutedConsole(global.console);
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'development') {
   require('../__mocks__/service-worker/index');
 }
 
