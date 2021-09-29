@@ -9,14 +9,8 @@ import countryJSON from '../../../lib/data/country_currency.json';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { useTranslations } from 'next-intl';
 import { SettingsSectionHeader } from '../../elements/Headers';
-import {
-  RecoilValueReadOnly,
-  selector,
-  useRecoilValue,
-  useSetRecoilState
-} from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import appState from '../../../lib/appState';
-import { ContactInformation } from '../../../types/global';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -43,26 +37,8 @@ const countries = countryJSON.map(value => {
 //====================== COMPONENT ========================
 const PersonalInformationForm = () => {
   const { user } = useRecoilValue(appState);
-  const currentUser: RecoilValueReadOnly<ContactInformation | undefined> =
-    selector({
-      key: 'currentUserContactInfoState',
-      get: ({ get }) => {
-        const user = get(appState).user;
-        // @ts-ignore
-        // console.log({ contact: user.contact_information });
-        return user.contact_information;
-      }
-      //FIXME: this was my setter method, not sure why it was hating on me
-      // set: ({ set, get }, newValue) => {
-      //   const user = get(appState).user;
-      //   const contact = user.contact_information;
-      //   set( ...appState, user: newValue );
-      // }
-      //  this is what i wanted to do , https://stackoverflow.com/questions/63365150/react-recoil-state-not-being-reset-properly
-    });
-
-  const currentUserContactInfo = useRecoilValue(currentUser);
   const setCurrentUserContactInfo = useSetRecoilState(appState);
+  const contactinfo = user?.contact_information;
 
   //====================== translate ========================
   const t = useTranslations();
@@ -71,29 +47,29 @@ const PersonalInformationForm = () => {
   const { register, handleSubmit, formState, setValue } =
     useForm<PersonalInformationFormInput>({
       defaultValues: {
-        firstName: user?.contact_information?.first_name,
-        lastName: currentUserContactInfo?.last_name,
-        email: currentUserContactInfo?.email,
-        country: currentUserContactInfo?.country,
-        streetAddress: currentUserContactInfo?.street_address,
-        city: currentUserContactInfo?.city,
-        state: currentUserContactInfo?.state,
-        postcode: currentUserContactInfo?.postcode,
-        companyName: currentUserContactInfo?.company_name,
-        companyHQLocation: currentUserContactInfo?.company_HQ_location
+        firstName: contactinfo?.first_name,
+        lastName: contactinfo?.last_name,
+        email: contactinfo?.email,
+        country: contactinfo?.country,
+        streetAddress: contactinfo?.street_address,
+        city: contactinfo?.city,
+        state: contactinfo?.state,
+        postcode: contactinfo?.postcode,
+        companyName: contactinfo?.company_name,
+        companyHQLocation: contactinfo?.company_HQ_location
       }
     });
 
-  const first_name = currentUserContactInfo?.first_name || '';
-  const _email = currentUserContactInfo?.email || '';
-  const last_name = currentUserContactInfo?.last_name || '';
-  const _country = currentUserContactInfo?.country || '';
-  const street_address = currentUserContactInfo?.street_address || '';
-  const _city = currentUserContactInfo?.city || '';
-  const _state = currentUserContactInfo?.state || '';
-  const _postcode = currentUserContactInfo?.postcode || '';
-  const company_name = currentUserContactInfo?.company_name || '';
-  const company_HQ_location = currentUserContactInfo?.company_HQ_location || '';
+  const first_name = contactinfo?.first_name || '';
+  const _email = contactinfo?.email || '';
+  const last_name = contactinfo?.last_name || '';
+  const _country = contactinfo?.country || '';
+  const street_address = contactinfo?.street_address || '';
+  const _city = contactinfo?.city || '';
+  const _state = contactinfo?.state || '';
+  const _postcode = contactinfo?.postcode || '';
+  const company_name = contactinfo?.company_name || '';
+  const company_HQ_location = contactinfo?.company_HQ_location || '';
 
   React.useEffect(() => {
     setValue('firstName', first_name);
@@ -129,10 +105,13 @@ const PersonalInformationForm = () => {
 
     // @ts-ignore
     setCurrentUserContactInfo(curr => {
-      return { ...curr, user: { contact_information: updatedData } };
+      return {
+        ...curr,
+        user: { ...curr.user, contact_information: updatedData }
+      };
     });
   };
-
+  // console.log({ user });
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">

@@ -49,14 +49,6 @@ const options = (t: any) => {
 
 //====================== COMPONENT ========================
 
-// interface PreferencesProps {
-//   localisation: string;
-//   default_currency: string;
-//   default_login_screen: string;
-//   default_reporting_country: string;
-//   communication: { comments: boolean; candidates: boolean; offers: boolean };
-// }
-
 const PreferenceForm = () => {
   const { user } = useRecoilValue(appState);
   const setCurrentUserPrefs = useSetRecoilState(appState);
@@ -116,12 +108,14 @@ const PreferenceForm = () => {
       };
     });
   };
-  const userTest = 'test@test.com';
 
+  const userTest = 'test@test.com';
   const ResetPrefs = () => {
     const resetState = () => {
+      // @ts-ignore
       setCurrentUserPrefs({
         ...mockUsers[userTest],
+        // @ts-ignore
         user: {
           ...mockUsers[userTest],
           preferences: mockUsers[userTest].preferences,
@@ -143,6 +137,7 @@ const PreferenceForm = () => {
     );
   };
 
+  //Demos before and after effects of reset/submit
   // console.log({ user: user?.preferences, dave: user });
 
   return (

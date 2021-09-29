@@ -47,9 +47,21 @@ const CommunicationForm = () => {
     console.log({ data });
     // @ts-ignore
     setCurrentUserCommsInfo(curr => {
-      return { ...curr, user: { preferences: { communication: data } } };
+      return {
+        ...curr,
+        user: {
+          ...curr.user,
+          preferences: {
+            ...curr.user?.preferences,
+            communication: data
+          }
+        }
+      };
     });
   };
+
+  // console.log({ user });
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">

@@ -22,7 +22,7 @@ const mockUsers = {
       last_name: 'Doe',
       email: 'test@test.com',
       country: 'United Kingdom',
-      street_address: '123 Aplace Street',
+      street_address: '123 A place Street',
       city: 'London',
       state: 'Hackney',
       postcode: 'N42FF',
