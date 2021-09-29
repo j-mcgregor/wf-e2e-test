@@ -54,12 +54,17 @@ export default NextAuth({
     },
     async session(session, token, _user) {
 
-      // get the user using the token stored in the token
-      const user = await User.getUser(token.accessToken)
+      if (token.accessToken) {
+        const user = await User.getUser(token.accessToken)
 
-      // add the mock user data in the use session hook
-      session.user = user;
-      return session;
+        // add the mock user data in the use session hook
+        session.user = user;
+        return session;
+      }
+      // get the user using the token stored in the token
+      const user = mockUsers[session.user.email]
+      session.user = user
+      return session 
     }
   }
 });
