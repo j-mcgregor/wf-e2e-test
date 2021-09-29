@@ -25,10 +25,10 @@ const PasswordForm = ({ isSSO }: PasswordFormProps) => {
         <div className="bg-white py-6 px-4 sm:p-6">
           <div className="mb-8">
             <p className="mt-1 text-sm font-normal text-gray-900">
-              {t('forms.password-form.your account is handled')}
+              {t('forms.password-form.your_account_is_handled')}
             </p>
             <p className="mt-1 text-sm font-normal text-gray-900">
-              {t('forms.password-form.please use their account')}
+              {t('forms.password-form.please_use_their_account')}
             </p>
           </div>
           <div className="grid grid-cols-6 gap-6">
@@ -41,7 +41,7 @@ const PasswordForm = ({ isSSO }: PasswordFormProps) => {
                     'text-center mt-4 text-base font-bold text-gray-900'
                   }
                 >
-                  {t('forms.password-form.logged in google')}
+                  {t('forms.password-form.logged_in_google')}
                 </h3>
                 <div className={'flex justify-center my-4'}>
                   <Button
@@ -49,7 +49,7 @@ const PasswordForm = ({ isSSO }: PasswordFormProps) => {
                     variant="primary"
                     className="max-w-[150px]"
                   >
-                    {t('forms.password-form.manage account')}
+                    {t('forms.password-form.manage_account')}
                   </Button>
                 </div>
               </div>

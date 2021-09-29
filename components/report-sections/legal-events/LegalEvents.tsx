@@ -9,10 +9,10 @@ interface LegalEventsProps {
 }
 
 const FILTERS = {
-  ALL: 'all events',
-  NEGATIVE: 'negative event',
+  ALL: 'all_events',
+  NEGATIVE: 'negative_event',
   CHARGES: 'charges'
-}
+};
 
 const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
   const allEvents = legalEvents.map(event => event);
