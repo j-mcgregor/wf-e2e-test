@@ -7,7 +7,8 @@ import { useTranslations } from 'next-intl';
 import Button from '../../elements/Button';
 import localisationJSON from '../../../lib/data/localisation.json';
 import {
-  RecoilValue,
+  DefaultValue,
+  RecoilState,
   selector,
   useRecoilValue,
   useResetRecoilState,
@@ -54,47 +55,39 @@ const options = (t: any) => {
 
 //====================== COMPONENT ========================
 
-interface preferencesProps {
+interface PreferencesProps {
   localisation: string;
   default_currency: string;
   default_login_screen: string;
   default_reporting_country: string;
+  communication: { comments: boolean; candidates: boolean; offers: boolean };
 }
 
 const PreferenceForm = () => {
-  const currentUser: RecoilValue<preferencesProps | undefined> = selector({
+  const currentUser: RecoilState<PreferencesProps | undefined> = selector({
     key: 'currentUserContactInfoState',
+
     get: ({ get }) => {
       const user = get(appState).user;
-      // @ts-ignore
-      // let {
-      //   localisation,
-      //   default_currency,
-      //   default_login_screen,
-      //   default_reporting_country
-      // } =
-      // return {
-      //   localisation,
-      //   default_currency,
-      //   default_login_screen,
-      //   default_reporting_country
-      // };
-      return user.preferences;
-    }
+      return user?.preferences;
+    },
+
+    set: ({ set }, newValue) => set(appState, newValue as DefaultValue)
   });
-  const currentUserPrefsInfo = useRecoilValue(currentUser);
-  const test = useRecoilValue(appState);
-  const setCurrentUserPrefsInfo = useSetRecoilState(appState);
+
+  const currentUserPrefs = useRecoilValue(currentUser);
+  const appStateTest = useRecoilValue(appState);
+  const setCurrentUserPrefs = useSetRecoilState(appState);
   //====================== translate ========================
 
   const t = useTranslations();
 
   const { register, handleSubmit, formState } = useForm<PreferenceFormInput>({
     defaultValues: {
-      localisation: currentUserPrefsInfo?.localisation,
-      currency: currentUserPrefsInfo?.default_currency,
-      reporting: currentUserPrefsInfo?.default_reporting_country,
-      loginScreen: currentUserPrefsInfo?.default_login_screen
+      localisation: currentUserPrefs?.localisation,
+      currency: currentUserPrefs?.default_currency,
+      reporting: currentUserPrefs?.default_reporting_country,
+      loginScreen: currentUserPrefs?.default_login_screen
     }
   });
   const { isDirty, isValid } = formState;
@@ -104,23 +97,30 @@ const PreferenceForm = () => {
   const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
     // eslint-disable-next-line no-console
     console.log({ data });
-    // @ts-ignore
-    setCurrentUserPrefsInfo(curr => {
-      return { ...curr, user: { preferences: data } };
+    setCurrentUserPrefs(currentUser => {
+      const {
+        localisation,
+        currency: default_currency,
+        loginScreen: default_login_screen,
+        reporting: default_reporting_country
+      } = data;
+      return {
+        ...currentUser,
+        preferences: {
+          localisation,
+          default_currency,
+          default_login_screen,
+          default_reporting_country
+        }
+      };
     });
   };
-  // import {todoListState} from "../atoms/todoListState";
-  //
-  // const TodoResetButton = () => {
-  //   const resetList = useResetRecoilState(todoListState);
-  //   return <button onClick={resetList}>Reset</button>;
-  // };
+
   const ResetPrefs = () => {
-    // @ts-ignore
     const resetPrefs = useResetRecoilState(appState);
     return (
       <Button
-        onClick={() => resetPrefs}
+        onClick={() => resetPrefs()}
         disabled={!isDirty || !isValid}
         type="submit"
         variant="primary"
@@ -130,7 +130,7 @@ const PreferenceForm = () => {
       </Button>
     );
   };
-  // console.log({ test });
+  console.log({ currentUserPrefs, appStateTest });
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">

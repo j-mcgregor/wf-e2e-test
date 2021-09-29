@@ -2,5 +2,13 @@
   {
     "code": "en-GB",
     "locale": "English (GB)"
+  },
+  {
+    "code": "test",
+    "locale": "Test"
+  },
+  {
+    "code": "test2",
+    "locale": "Test2"
   }
 ]
