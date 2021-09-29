@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next telemetry disable && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ext ts --ext tsx --ext js --fix && next lint",
@@ -12,7 +12,8 @@
     "test:watch": "jest --runInBand --watchAll",
     "test:coverage": "yarn jest --coverage ",
     "clean": "rm -rf node_modules coverage .next",
-    "commit-cli": "git-cz"
+    "commit-cli": "git-cz",
+    "prepare": "next telemetry disable"
   },
   "husky": {
     "hooks": {
