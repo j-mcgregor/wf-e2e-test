@@ -120,7 +120,7 @@ const ReportTemplate = () => {
         ) : (
           <div className="text-primary mt-10 lg:mt-0">
             <div className="py-8">
-              <h1 className="text-xl pb-4">{t('risk assessment report')}</h1>
+              <h1 className="text-xl pb-4">{t('risk_assessment_report')}</h1>
               <ReportHeader company={data?.company_name} created={created} reportId={id[0]}/>
             </div>
             <HashContainer name={'Summary'} id={`summary-id`}>

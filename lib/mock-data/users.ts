@@ -290,7 +290,7 @@ export const mockReports = [
 
 const mockUsers = {
   'test@test.com': {
-    name: 'John Doe',
+    full_name: 'John Doe',
     email: 'test@test.com',
     id: 1,
     recent_usage: {
@@ -322,7 +322,7 @@ const mockUsers = {
     reports: mockReports
   },
   'new@test.com': {
-    name: 'Jane Doe (new user)',
+    full_name: 'Jane Doe (new user)',
     email: 'new@test.com',
     id: 2,
     recent_usage: {
