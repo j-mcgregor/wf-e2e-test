@@ -42,6 +42,9 @@ const countries = countryJSON.map(value => {
 
 //====================== COMPONENT ========================
 const PersonalInformationForm = () => {
+
+  const {user} = useRecoilValue(appState)
+
   const currentUser: RecoilValueReadOnly<ContactInformation | undefined> =
     selector({
       key: 'currentUserContactInfoState',
@@ -67,10 +70,10 @@ const PersonalInformationForm = () => {
   const t = useTranslations();
 
   //====================== form ========================
-  const { register, handleSubmit, formState } =
+  const { register, handleSubmit, formState, setValue } =
     useForm<PersonalInformationFormInput>({
       defaultValues: {
-        firstName: currentUserContactInfo?.first_name,
+        firstName: user.contactInformation?.first_name,
         lastName: currentUserContactInfo?.last_name,
         email: currentUserContactInfo?.email,
         country: currentUserContactInfo?.country,
@@ -82,6 +85,25 @@ const PersonalInformationForm = () => {
         companyHQLocation: currentUserContactInfo?.company_HQ_Location
       }
     });
+
+
+  const firstName = currentUserContactInfo?.first_name || ''
+
+
+
+  React.useEffect(() => {
+    setValue('firstName', firstName)
+    // lastName: currentUserContactInfo?.last_name,
+    // email: currentUserContactInfo?.email,
+    // country: currentUserContactInfo?.country,
+    // streetAddress: currentUserContactInfo?.street_address,
+    // city: currentUserContactInfo?.city,
+    // state: currentUserContactInfo?.state,
+    // postcode: currentUserContactInfo?.postcode,
+    // companyName: currentUserContactInfo?.company_name,
+    // companyHQLocation: currentUserContactInfo?.company_HQ_Location
+
+  }, [user])
 
   const { isDirty, errors } = formState;
 
@@ -127,7 +149,7 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.first name')}
                 className={formClassName}
               />
-              {errors.lastName && (
+              {errors.firstName && (
                 <ErrorMessage text={`${t('errors.first name')}`} />
               )}
             </div>

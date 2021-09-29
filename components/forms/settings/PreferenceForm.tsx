@@ -78,6 +78,7 @@ const PreferenceForm = () => {
   const currentUserPrefs = useRecoilValue(currentUser);
   const appStateTest = useRecoilValue(appState);
   const setCurrentUserPrefs = useSetRecoilState(appState);
+
   //====================== translate ========================
 
   const t = useTranslations();
@@ -130,7 +131,7 @@ const PreferenceForm = () => {
       </Button>
     );
   };
-  console.log({ currentUserPrefs, appStateTest });
+  // console.log({ currentUserPrefs, appStateTest });
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">
