@@ -39,10 +39,11 @@ const Layout = ({
   const setState = useSetRecoilState(appState);
   const { user } = useRecoilValue(appState);
   React.useEffect(() => {
-    if (session && session.user && !user ) {
+    if (session && session.user && !user) {
       // @ts-ignore
-      setState({...appState, user: {...session?.user}});
+      setState({ ...appState, user: { ...session?.user } });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, setState]);
 
   if (!noAuthRequired && loading) return <SkeletonLayout noNav={noNav} />;

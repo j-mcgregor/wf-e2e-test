@@ -31,25 +31,25 @@ const LoginForm = () => {
 
   const [, setActiveUser] = useLocalStorage<string | null>('user', null);
   const [authError, setAuthError] = useState(false);
-  const [userEmail, setUserEmail ] = useLocalStorage('wf_user_email', '')
+  const [userEmail, setUserEmail] = useLocalStorage('wf_user_email', '');
 
   // handle the remember functions
   React.useEffect(() => {
-    userEmail && setValue('email', userEmail)
-    userEmail && setValue('remember', true)
-  }, [userEmail])
-  
+    userEmail && setValue('email', userEmail);
+    userEmail && setValue('remember', true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userEmail]);
+
   // only runs if form is valid
   const onSubmit = async (data: FormValues) => {
-
     // if remember add email to local state
     if (data.remember) {
-      setUserEmail(data.email)
+      setUserEmail(data.email);
     }
 
     // if don't remember remove from local state
     if (!data.remember) {
-      setUserEmail('')
+      setUserEmail('');
     }
 
     const authenticated = await signIn('credentials', {

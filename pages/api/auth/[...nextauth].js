@@ -22,7 +22,6 @@ export default NextAuth({
       },
 
       async authorize(credentials, _req) {
-
         if (credentials.email === 'test@test.com') {
           return mockUsers[credentials.email];
         }
@@ -32,35 +31,43 @@ export default NextAuth({
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        const res = await fetch('https://api.saggio-credito.co.uk/api/v1/login/access-token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-          },
-          body: new URLSearchParams({
-            'username': credentials.email,
-            'password': credentials.password
-          })
-        })
+        const res = await fetch(
+          'https://api.saggio-credito.co.uk/api/v1/login/access-token',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            },
+            body: new URLSearchParams({
+              username: credentials.email,
+              password: credentials.password
+            })
+          }
+        );
 
-        const json = await res.json()
-        const token = json.access_token
+        const json = await res.json();
+        const token = json.access_token;
 
         // const user = await res.json();
         const user = mockUsers[credentials.email];
 
         // // If no error and we have user data, return it
         if (res.ok) {
-          const resMe = await fetch('https://api.saggio-credito.co.uk/api/v1/users/me', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-              'Authorization': `Bearer ${token}`
-            },
-          })
+          const resMe = await fetch(
+            'https://api.saggio-credito.co.uk/api/v1/users/me',
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type':
+                  'application/x-www-form-urlencoded;charset=UTF-8',
+                Authorization: `Bearer ${token}`
+              }
+            }
+          );
 
-          const user = await resMe.json()
-          console.log(user)
+          const user = await resMe.json();
+          // eslint-disable-next-line no-console
+          console.log(user);
 
           return user;
         }
