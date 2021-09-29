@@ -69,30 +69,30 @@ const CommunicationForm = () => {
           <div>
             <SettingsSectionHeader text={t('communication')} />
             <p className="mt-1 text-sm text-gray-500">
-              {t('forms.communication-form.change or update')}
+              {t('forms.communication-form.change_or_update')}
             </p>
           </div>
 
           <fieldset>
             <legend className="text-base font-medium text-gray-900">
-              {t('forms.communication-form.by email')}
+              {t('forms.communication-form.by_email')}
             </legend>
             <div className="mt-4 space-y-4">
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('forms.communication-form.batch report')}
+                  label={t('forms.communication-form.batch_report')}
                   id={'comments'}
-                  paragraph={t('forms.communication-form.get notified')}
+                  paragraph={t('forms.communication-form.get_notified')}
                   {...{ ...register('comments') }}
                   name={'comments'}
                 />
               </div>
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('forms.communication-form.service updates')}
+                  label={t('forms.communication-form.service_updates')}
                   id={'candidates'}
                   paragraph={t(
-                    'forms.communication-form.get the latest updates on'
+                    'forms.communication-form.get_the_latest_updates_on'
                   )}
                   {...{ ...register('candidates') }}
                   name={'candidates'}
@@ -100,10 +100,10 @@ const CommunicationForm = () => {
               </div>
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('forms.communication-form.company updates')}
+                  label={t('forms.communication-form.company_updates')}
                   id={'offers'}
                   paragraph={t(
-                    'forms.communication-form.get all the latest updates relating'
+                    'forms.communication-form.get_all_the_latest_updates_relating'
                   )}
                   {...{ ...register('offers') }}
                   name={'offers'}

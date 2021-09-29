@@ -2,7 +2,6 @@
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import useSWR from 'swr';
 
 import HashContainer from '../../components/elements/HashContainer';
@@ -72,7 +71,7 @@ const ReportTemplate = () => {
   const t = useTranslations();
   const router = useRouter();
 
-  const { id=[] } = router.query;
+  const { id = [] } = router.query;
 
   const { data, error } = useSWR<ReportDataProps>(
     `/api/report?id=${id}`,
@@ -121,7 +120,11 @@ const ReportTemplate = () => {
           <div className="text-primary mt-10 lg:mt-0">
             <div className="py-8">
               <h1 className="text-xl pb-4">{t('risk_assessment_report')}</h1>
-              <ReportHeader company={data?.company_name} created={created} reportId={id[0]}/>
+              <ReportHeader
+                company={data?.company_name}
+                created={created}
+                reportId={id[0]}
+              />
             </div>
             <HashContainer name={'Summary'} id={`summary-id`}>
               <ReportSectionHeader text={t('summary')} />
@@ -287,19 +290,19 @@ const ReportTemplate = () => {
             </HashContainer>
             <HashContainer name={'ESG'} id={`esg-id`}>
               <ReportSectionHeader text={t('esg')} />
-              <p className="text-xl">{t('esg assessment')}</p>
+              <p className="text-xl">{t('esg_assessment')}</p>
               <ESGCard
                 title={t('environmental')}
-                description={t('using environmental indicators')}
+                description={t('using_environmental_indicators')}
                 result={t('neutral')}
-                resultText={t('environmental impact')}
+                resultText={t('environmental_impact')}
                 rating="1"
               />
               <ESGCard
                 title={t('governance')}
-                description={t('data on company governance')}
+                description={t('data_on_company_governance')}
                 result="positive"
-                resultText={t('pep flags')}
+                resultText={t('pep_flags')}
                 rating="3"
               />
             </HashContainer>

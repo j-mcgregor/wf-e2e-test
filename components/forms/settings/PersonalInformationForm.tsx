@@ -1,17 +1,11 @@
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import {
-  RecoilValueReadOnly,
-  selector,
-  useRecoilValue,
-  useSetRecoilState
-} from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import appState from '../../../lib/appState';
 import countryJSON from '../../../lib/data/country_currency.json';
 import { validEmailRegex } from '../../../lib/utils/regexes';
-import { ContactInformation } from '../../../types/global';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { SettingsSectionHeader } from '../../elements/Headers';
@@ -112,9 +106,13 @@ const PersonalInformationForm = () => {
     setCurrentUserContactInfo(curr => {
       return {
         ...curr,
-        user: { ...curr.user, contact_information: updatedData, name: `${data.firstName} ${data.lastName}`, email: data.email }
-        
-      }
+        user: {
+          ...curr.user,
+          contact_information: updatedData,
+          name: `${data.firstName} ${data.lastName}`,
+          email: data.email
+        }
+      };
     });
   };
 

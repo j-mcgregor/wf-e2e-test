@@ -19,14 +19,14 @@
       "company_headquarters": "Company Headquarters Location"
     },
     "communication-form": {
-      "change or update": "Change or update your personal information",
-      "by email": "By Email",
-      "batch report": "Batch report completion",
-      "get the latest updates on": "Get the latest updates on the Wiserfunding platform.",
-      "service updates": "Service Updates",
-      "get notified": "Get notified when a batch report has completed all reports.",
-      "get all the latest updates relating": "Get all the latest updates relating to Wiserfunding.",
-      "company updates": "Company Updates",
+      "change_or_update": "Change or update your personal information",
+      "by_email": "By Email",
+      "batch_report": "Batch report completion",
+      "get_the_latest_updates_on": "Get the latest updates on the Wiserfunding platform.",
+      "service_updates": "Service Updates",
+      "get_notified": "Get notified when a batch report has completed all reports.",
+      "get_all_the_latest_updates_relating": "Get all the latest updates relating to Wiserfunding.",
+      "company_updates": "Company Updates",
       "save": "save"
     },
     "preference": {
@@ -34,10 +34,10 @@
       "reporting": "Default reporting country",
       "loginScreen": "Default Login Screen",
       "currency": "Default currency",
-      "change your base": "Change your base preferences",
-      "set your language": "Set your language preferences.",
-      "change your default country": "Change your default country to run your reports in.",
-      "change the default reporting": "Change the default reporting currency.",
+      "change_your_base": "Change your base preferences",
+      "set_your_language": "Set your language preferences.",
+      "change_your_default_country": "Change your default country to run your reports in.",
+      "change_the_default_reporting": "Change the default reporting currency.",
       "change the screen": "Change the screen you see on your first login.",
       "reset to defaults": "Reset to defaults"
     },
@@ -45,20 +45,20 @@
       "localisation": "Localisation",
       "dashboard": "Dashboard",
       "reports": "Reports",
-      "sme calc": "SME Calc",
-      "sme prospector": "SME Prospector",
-      "default login screen": "Default login screen"
+      "sme_calc": "SME Calc",
+      "sme_prospector": "SME Prospector",
+      "default_login_screen": "Default login screen"
     },
     "password-form": {
       "handle": "Handle your authentication details",
-      "manage account": "Manage Account",
-      "your account is handled": "Your account is handled by a Single Sign On provider.",
-      "please use their account": "Please use their account settings to change your details.",
-      "logged in google": "You are logged in with Google"
+      "manage_account": "Manage Account",
+      "your_account_is_handled": "Your account is handled by a Single Sign On provider.",
+      "please_use_their_account": "Please use their account settings to change your details.",
+      "logged_in_google": "You are logged in with Google"
     },
     "password-management": {
-      "new password": "New Password",
-      "confirm password": "Confirm Password"
+      "new_password": "New Password",
+      "confirm_password": "Confirm Password"
     }
   },
   "errors": {

@@ -38,7 +38,7 @@ const PasswordManagement = () => {
                 message: 'Password must have at least 8 characters'
               }
             })}
-            label={t('forms.password-management.new password')}
+            label={t('forms.password-management.new_password')}
             name="newPassword"
             type="password"
           />
@@ -55,7 +55,7 @@ const PasswordManagement = () => {
                 }
               }
             })}
-            label={t('forms.password-management.confirm password')}
+            label={t('forms.password-management.confirm_password')}
             name="confirmPassword"
             type="password"
           />

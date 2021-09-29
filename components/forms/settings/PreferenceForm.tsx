@@ -32,8 +32,8 @@ const options = (t: any) => {
   const dashboardOptionsValues = [
     'dashboard',
     'reports',
-    'sme calc',
-    'sme prospector'
+    'sme_calc',
+    'sme_prospector'
   ];
   return dashboardOptionsValues.map((name, nameIndex) => {
     return {
@@ -132,7 +132,7 @@ const PreferenceForm = () => {
         variant="primary"
         className="max-w-[150px] ml-auto"
       >
-        {t('forms.preference.reset to defaults')}
+        {t('forms.preference.reset_to_defaults')}
       </Button>
     );
   };
@@ -148,7 +148,7 @@ const PreferenceForm = () => {
             <div>
               <SettingsSectionHeader text={t('preferences')} />
               <p className="mt-1 text-sm text-gray-500">
-                {`${t('forms.preference.change your base')}`}
+                {`${t('forms.preference.change_your_base')}`}
               </p>
             </div>
           </div>
@@ -164,7 +164,7 @@ const PreferenceForm = () => {
                 className={formClassName}
               >
                 <p className="mt-1 text-sm text-gray-500">
-                  {t('forms.preference.set your language')}
+                  {t('forms.preference.set_your_language')}
                 </p>
               </Select>
             </div>
@@ -181,7 +181,7 @@ const PreferenceForm = () => {
                 className={formClassName}
               >
                 <p className="mt-1 text-sm text-gray-500">
-                  {t('forms.preference.change your default country')}
+                  {t('forms.preference.change_your_default_country')}
                 </p>
               </Select>
             </div>
@@ -196,7 +196,7 @@ const PreferenceForm = () => {
                 className={formClassName}
               >
                 <p className="mt-1 text-sm text-gray-500">
-                  {t('forms.preference.change the default reporting')}
+                  {t('forms.preference.change_the_default_reporting')}
                 </p>
               </Select>
             </div>
@@ -212,7 +212,7 @@ const PreferenceForm = () => {
                 className={formClassName}
               >
                 <p className="mt-1 text-sm text-gray-500">
-                  {t('forms.preference.change the screen')}
+                  {t('forms.preference.change_the_screen')}
                 </p>
               </Select>
             </div>

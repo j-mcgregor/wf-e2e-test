@@ -10,11 +10,8 @@ import Layout from '../components/layout/Layout';
 import SecondaryLayout from '../components/layout/SecondaryLayout';
 import SettingsNav from '../components/layout/SettingsNav';
 import { GetStaticPropsContext } from 'next';
-import { useRecoilValue } from 'recoil';
-import appState from '../lib/appState';
 
 const Settings = () => {
-  const { user } = useRecoilValue(appState);
   return (
     <Layout title="Settings" fullWidth>
       <SecondaryLayout navigation={<SettingsNav />}>
