@@ -22,14 +22,17 @@ interface CommunicationFormInput {
 //====================== COMPONENT ========================
 
 const CommunicationForm = () => {
-  const currentUser: RecoilValueReadOnly<{} | undefined> = selector({
-    key: 'currentUserContactInfoState',
-    get: ({ get }) => {
-      const user = get(appState).user;
-      // @ts-ignore
-      return user.preferences.communication;
-    }
-  });
+  const { user } = useRecoilValue(appState);
+
+  const currentUser: RecoilValueReadOnly<CommunicationFormInput | undefined> =
+    selector({
+      key: 'currentUserContactInfoState',
+      get: ({ get }) => {
+        const user = get(appState).user;
+        // @ts-ignore
+        return user.preferences.communication;
+      }
+    });
 
   const currentUserCommsInfo = useRecoilValue(currentUser);
   // const test = useRecoilValue(appState);
@@ -41,9 +44,19 @@ const CommunicationForm = () => {
 
   //====================== form ========================
 
-  const { register, handleSubmit, formState } = useForm<CommunicationFormInput>(
-    { defaultValues: currentUserCommsInfo }
-  );
+  const { register, handleSubmit, formState, setValue } =
+    useForm<CommunicationFormInput>({ defaultValues: currentUserCommsInfo });
+
+  const _offers = currentUserCommsInfo?.offers || false;
+  const _candidates = currentUserCommsInfo?.candidates || false;
+  const _comments = currentUserCommsInfo?.comments || false;
+
+  React.useEffect(() => {
+    setValue('offers', _offers);
+    setValue('candidates', _candidates);
+    setValue('comments', _comments);
+  }, [user]);
+
   const { isDirty } = formState;
   const onSubmit: SubmitHandler<CommunicationFormInput> = data => {
     // eslint-disable-next-line no-console

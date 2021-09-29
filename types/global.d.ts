@@ -26,7 +26,7 @@ type ContactInformation = {
   state: string;
   postcode: string;
   company_name: string;
-  company_HQ_Location: string;
+  company_HQ_location: string;
 };
 
 export type SessionUser = {

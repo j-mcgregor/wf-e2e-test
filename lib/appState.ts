@@ -28,7 +28,7 @@ const appState = atom<SessionUser>({
         state: '',
         postcode: '',
         company_name: '',
-        company_HQ_Location: ''
+        company_HQ_location: ''
       },
       preferences: {
         localisation: '',

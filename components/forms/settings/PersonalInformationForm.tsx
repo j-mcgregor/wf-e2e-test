@@ -42,9 +42,7 @@ const countries = countryJSON.map(value => {
 
 //====================== COMPONENT ========================
 const PersonalInformationForm = () => {
-
-  const {user} = useRecoilValue(appState)
-
+  const { user } = useRecoilValue(appState);
   const currentUser: RecoilValueReadOnly<ContactInformation | undefined> =
     selector({
       key: 'currentUserContactInfoState',
@@ -73,7 +71,7 @@ const PersonalInformationForm = () => {
   const { register, handleSubmit, formState, setValue } =
     useForm<PersonalInformationFormInput>({
       defaultValues: {
-        firstName: user.contactInformation?.first_name,
+        firstName: user?.contact_information?.first_name,
         lastName: currentUserContactInfo?.last_name,
         email: currentUserContactInfo?.email,
         country: currentUserContactInfo?.country,
@@ -82,28 +80,33 @@ const PersonalInformationForm = () => {
         state: currentUserContactInfo?.state,
         postcode: currentUserContactInfo?.postcode,
         companyName: currentUserContactInfo?.company_name,
-        companyHQLocation: currentUserContactInfo?.company_HQ_Location
+        companyHQLocation: currentUserContactInfo?.company_HQ_location
       }
     });
 
-
-  const firstName = currentUserContactInfo?.first_name || ''
-
-
+  const first_name = currentUserContactInfo?.first_name || '';
+  const _email = currentUserContactInfo?.email || '';
+  const last_name = currentUserContactInfo?.last_name || '';
+  const _country = currentUserContactInfo?.country || '';
+  const street_address = currentUserContactInfo?.street_address || '';
+  const _city = currentUserContactInfo?.city || '';
+  const _state = currentUserContactInfo?.state || '';
+  const _postcode = currentUserContactInfo?.postcode || '';
+  const company_name = currentUserContactInfo?.company_name || '';
+  const company_HQ_location = currentUserContactInfo?.company_HQ_location || '';
 
   React.useEffect(() => {
-    setValue('firstName', firstName)
-    // lastName: currentUserContactInfo?.last_name,
-    // email: currentUserContactInfo?.email,
-    // country: currentUserContactInfo?.country,
-    // streetAddress: currentUserContactInfo?.street_address,
-    // city: currentUserContactInfo?.city,
-    // state: currentUserContactInfo?.state,
-    // postcode: currentUserContactInfo?.postcode,
-    // companyName: currentUserContactInfo?.company_name,
-    // companyHQLocation: currentUserContactInfo?.company_HQ_Location
-
-  }, [user])
+    setValue('firstName', first_name);
+    setValue('email', _email);
+    setValue('lastName', last_name);
+    setValue('country', _country);
+    setValue('streetAddress', street_address);
+    setValue('city', _city);
+    setValue('state', _state);
+    setValue('postcode', _postcode);
+    setValue('companyName', company_name);
+    setValue('companyHQLocation', company_HQ_location);
+  }, [user]);
 
   const { isDirty, errors } = formState;
 
@@ -236,8 +239,8 @@ const PersonalInformationForm = () => {
             <div className="col-span-6 sm:col-span-6 lg:col-span-4">
               <Select
                 {...register('companyHQLocation')}
-                options={countries}
                 label={t('forms.personal.company headquarters')}
+                options={countries}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />

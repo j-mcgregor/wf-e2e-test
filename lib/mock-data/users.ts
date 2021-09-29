@@ -27,7 +27,7 @@ const mockUsers = {
       state: 'Hackney',
       postcode: 'N42FF',
       company_name: 'Awesome Stuff LTD',
-      company_HQ_Location: 'N4 3FF'
+      company_HQ_location: 'United Kingdom'
     },
     preferences: {
       // eslint-disable-next-line sonarjs/no-duplicate-string

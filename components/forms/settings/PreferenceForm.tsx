@@ -64,7 +64,9 @@ interface PreferencesProps {
 }
 
 const PreferenceForm = () => {
-  const currentUser: RecoilState<PreferencesProps | undefined> = selector({
+  const { user } = useRecoilValue(appState);
+
+  const currentUser = selector<PreferencesProps>({
     key: 'currentUserContactInfoState',
 
     get: ({ get }) => {
@@ -76,22 +78,36 @@ const PreferenceForm = () => {
   });
 
   const currentUserPrefs = useRecoilValue(currentUser);
-  const appStateTest = useRecoilValue(appState);
+  // const appStateTest = useRecoilValue(appState);
   const setCurrentUserPrefs = useSetRecoilState(appState);
 
   //====================== translate ========================
 
   const t = useTranslations();
 
-  const { register, handleSubmit, formState } = useForm<PreferenceFormInput>({
-    defaultValues: {
-      localisation: currentUserPrefs?.localisation,
-      currency: currentUserPrefs?.default_currency,
-      reporting: currentUserPrefs?.default_reporting_country,
-      loginScreen: currentUserPrefs?.default_login_screen
-    }
-  });
+  const { register, handleSubmit, formState, setValue } =
+    useForm<PreferenceFormInput>({
+      defaultValues: {
+        localisation: currentUserPrefs?.localisation,
+        currency: currentUserPrefs?.default_currency,
+        reporting: currentUserPrefs?.default_reporting_country,
+        loginScreen: currentUserPrefs?.default_login_screen
+      }
+    });
   const { isDirty, isValid } = formState;
+
+  const localisation = currentUserPrefs?.localisation || '';
+  const default_currency = currentUserPrefs?.default_currency || '';
+  const default_reporting_country =
+    currentUserPrefs?.default_reporting_country || '';
+  const default_login_screen = currentUserPrefs?.default_login_screen || '';
+
+  React.useEffect(() => {
+    setValue('localisation', localisation);
+    setValue('currency', default_currency);
+    setValue('reporting', default_reporting_country);
+    setValue('loginScreen', default_login_screen);
+  }, [user]);
 
   //====================== form ========================
 
