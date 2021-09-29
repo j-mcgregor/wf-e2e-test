@@ -67,16 +67,6 @@ interface PreferencesProps {
 const PreferenceForm = () => {
   const { user } = useRecoilValue(appState);
 
-  const currentUser: RecoilValueReadOnly<PreferencesProps | undefined> =
-    selector({
-      key: 'currentUserContactInfoState',
-      get: ({ get }) => {
-        const user = get(appState).user;
-        return user?.preferences;
-      }
-    });
-
-  const currentUserPrefs = useRecoilValue(currentUser);
   const setCurrentUserPrefs = useSetRecoilState(appState);
 
   //====================== translate ========================
@@ -86,19 +76,19 @@ const PreferenceForm = () => {
   const { register, handleSubmit, formState, setValue } =
     useForm<PreferenceFormInput>({
       defaultValues: {
-        localisation: currentUserPrefs?.localisation,
-        currency: currentUserPrefs?.default_currency,
-        reporting: currentUserPrefs?.default_reporting_country,
-        loginScreen: currentUserPrefs?.default_login_screen
+        localisation: user?.preferences?.localisation,
+        currency: user?.preferences?.default_currency,
+        reporting: user?.preferences?.default_reporting_country,
+        loginScreen: user?.preferences?.default_login_screen
       }
     });
   const { isDirty, isValid } = formState;
 
-  const localisation = currentUserPrefs?.localisation || '';
-  const default_currency = currentUserPrefs?.default_currency || '';
+  const localisation = user?.preferences?.localisation || '';
+  const default_currency = user?.preferences?.default_currency || '';
   const default_reporting_country =
-    currentUserPrefs?.default_reporting_country || '';
-  const default_login_screen = currentUserPrefs?.default_login_screen || '';
+    user?.preferences?.default_reporting_country || '';
+  const default_login_screen = user?.preferences?.default_login_screen || '';
 
   React.useEffect(() => {
     setValue('localisation', localisation);
@@ -119,15 +109,15 @@ const PreferenceForm = () => {
         loginScreen: default_login_screen,
         reporting: default_reporting_country
       } = data;
-      return {
-        ...currentUser,
-        preferences: {
-          localisation,
-          default_currency,
-          default_login_screen,
-          default_reporting_country
-        }
+
+      const newPrefs = {
+        localisation,
+        default_currency,
+        default_login_screen,
+        default_reporting_country
       };
+      // console.log({ ...currentUser.user?.preferences });
+      return { ...currentUser.user, newPrefs };
     });
   };
 
@@ -145,7 +135,7 @@ const PreferenceForm = () => {
       </Button>
     );
   };
-  // console.log({ currentUserPrefs, appStateTest });
+  console.log({ user: user?.preferences });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

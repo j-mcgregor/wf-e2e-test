@@ -35,7 +35,7 @@ const mockUsers = {
       default_currency: 'English (GB)',
       default_login_screen: 'dashboard',
       default_reporting_country: 'English (GB)',
-      communication: { comments: false, candidates: false, offers: false }
+      communication: { comments: true, candidates: false, offers: true }
     },
     reports: [
       {
