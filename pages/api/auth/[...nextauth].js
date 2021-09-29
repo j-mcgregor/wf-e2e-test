@@ -22,29 +22,52 @@ export default NextAuth({
       },
 
       async authorize(credentials, _req) {
+
+        if (credentials.email === 'test@test.com') {
+          return mockUsers[credentials.email];
+        }
         // You need to provide your own logic here that takes the credentials
         // submitted and returns either a object representing a user or value
         // that is false/null if the credentials are invalid.
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        // const res = await fetch('/your/endpoint', {
-        //   method: 'POST',
-        //   body: JSON.stringify(credentials),
-        //   headers: { 'Content-Type': 'application/json' }
-        // });
+        const res = await fetch('https://api.saggio-credito.co.uk/api/v1/login/access-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
+          body: new URLSearchParams({
+            'username': credentials.email,
+            'password': credentials.password
+          })
+        })
+
+        const json = await res.json()
+        const token = json.access_token
+
         // const user = await res.json();
-
-        // // If no error and we have user data, return it
-        // if (res.ok && user) {
-        //   return user;
-        // }
-
         const user = mockUsers[credentials.email];
 
-        if (user) {
+        // // If no error and we have user data, return it
+        if (res.ok) {
+          const resMe = await fetch('https://api.saggio-credito.co.uk/api/v1/users/me', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+              'Authorization': `Bearer ${token}`
+            },
+          })
+
+          const user = await resMe.json()
+          console.log(user)
+
           return user;
         }
+
+        // if (user) {
+        //   return user;
+        // }
 
         // Return null if user data could not be retrieved
         return null;
