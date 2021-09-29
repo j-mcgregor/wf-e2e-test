@@ -42,6 +42,7 @@ import ESGCard from '../../components/report-sections/esg-assessment/ESGCard';
 import FinancialTrends from '../../components/report-sections/financial-trends/FinancialTrends';
 
 import { multiGraphData } from '../../lib/mock-data/charts';
+import MacroEconomicTrends from '../../components/report-sections/macro-economic-trends/MacroEconomicTrends';
 
 interface ReportDataProps {
   created_at?: string;
@@ -287,6 +288,7 @@ const ReportTemplate = () => {
               id={`macro-economic-trends-id`}
             >
               <ReportSectionHeader text={t('macro economic trends')} />
+              <MacroEconomicTrends />
             </HashContainer>
 
             <HashContainer name={'ESG'} id={`esg-id`}>

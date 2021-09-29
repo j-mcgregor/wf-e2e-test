@@ -11,6 +11,74 @@ export const singleGraphData = [
   { x: '2020', y: 880 }
 ];
 
+// new mock data to be fed into 'Macro Economic Trends' Chart components
+export const macroTrendData = [
+  {
+    title: 'GDP Growth Rate',
+    timeScale: 'Quarterly',
+    data: [
+      { x: '2011', y: 304 },
+      { x: '2012', y: 410 },
+      { x: '2013', y: 350 },
+      { x: '2014', y: 371 },
+      { x: '2015', y: 510 },
+      { x: '2016', y: 649 },
+      { x: '2017', y: 600 },
+      { x: '2018', y: 604 },
+      { x: '2019', y: 867 },
+      { x: '2020', y: 880 }
+    ]
+  },
+  {
+    title: 'GDP  Annual Growth Rate',
+    timeScale: 'Quarterly',
+    data: [
+      { x: '2011', y: 304 },
+      { x: '2012', y: 410 },
+      { x: '2013', y: 350 },
+      { x: '2014', y: 371 },
+      { x: '2015', y: 510 },
+      { x: '2016', y: 649 },
+      { x: '2017', y: 600 },
+      { x: '2018', y: 604 },
+      { x: '2019', y: 867 },
+      { x: '2020', y: 880 }
+    ]
+  },
+  {
+    title: 'GDP Per Capita',
+    timeScale: 'Yearly',
+    data: [
+      { x: '2011', y: 304 },
+      { x: '2012', y: 410 },
+      { x: '2013', y: 350 },
+      { x: '2014', y: 371 },
+      { x: '2015', y: 510 },
+      { x: '2016', y: 649 },
+      { x: '2017', y: 600 },
+      { x: '2018', y: 604 },
+      { x: '2019', y: 867 },
+      { x: '2020', y: 880 }
+    ]
+  },
+  {
+    title: 'Unemployment Rate',
+    timeScale: 'Yearly',
+    data: [
+      { x: '2011', y: 304 },
+      { x: '2012', y: 410 },
+      { x: '2013', y: 350 },
+      { x: '2014', y: 371 },
+      { x: '2015', y: 510 },
+      { x: '2016', y: 649 },
+      { x: '2017', y: 600 },
+      { x: '2018', y: 604 },
+      { x: '2019', y: 867 },
+      { x: '2020', y: 880 }
+    ]
+  }
+];
+
 export const multiGraphData = [
   [
     {

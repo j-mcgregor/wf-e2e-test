@@ -30,7 +30,7 @@ const ChartMulti = ({ graphData, category, units }: ChartMultiProps) => {
 
   return (
     <div className="shadow rounded-sm bg-white flex flex-col">
-      <div className="flex justify-between items-start p-4 text-sm">
+      <div className="flex justify-between items-start p-4 text-xs">
         <div>
           <p className="font-bold pb-2">{category}</p>
           <p className="opacity-70">£ {units}</p>
@@ -41,6 +41,9 @@ const ChartMulti = ({ graphData, category, units }: ChartMultiProps) => {
         </Button>
       </div>
       <ChartContainer
+        height={250}
+        width={200}
+        max={800}
         tooltipValue={toolTipValue}
         handleSetTooltip={setToolTipValue}
       >
@@ -95,7 +98,7 @@ const ChartMulti = ({ graphData, category, units }: ChartMultiProps) => {
         </VictoryGroup>
       </ChartContainer>
 
-      <div className="flex flex-col text-xs items-start px-8 pb-4 w-full justify-between text-primary">
+      <div className="flex flex-col text-xs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
         {data?.map((company, i) => {
           const bg =
             company.name === 'Industry Benchmark'
