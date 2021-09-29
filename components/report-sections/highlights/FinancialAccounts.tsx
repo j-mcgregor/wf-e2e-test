@@ -1,4 +1,4 @@
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 import { FinancialYear } from '../../../types/report';
 
 import Tick from '../../icons/Tick';
@@ -26,7 +26,7 @@ const FinancialAccounts = ({ financialYears }: FinancialAccountProps) => {
   const t = useTranslations();
   return (
     <div className="flex flex-col w-full lg:w-5/12 xl:w-4/12">
-      <p className="font-bold py-2">{t('financial accounts')}</p>
+      <p className="font-bold py-2">{t('financial_accounts')}</p>
       <ul className="space-y-2">
         {years.map(year => (
           <li key={year} className="bg-white p-2 rounded flex justify-between">

@@ -2,7 +2,7 @@ import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { scroller } from 'react-scroll';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 import { useReportNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';
@@ -45,31 +45,32 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
     const path = router.asPath.replace(`${dynamicPath}#`, '');
     const header = path.replace(/-/g, ' ').toLowerCase();
     setActiveItem(header);
+    
   }, [router.asPath]);
 
-
   if (loading) {
-    return    <>
-    <aside className="hidden  w-full px-4 bg-gray-200 animate-pulse md:flex flex-col h-full justify-between py-8">
-      <SkeletonMenu items={10} />
-      <SkeletonMenu items={2} />
-    </aside>
-    <aside className="w-full h-12 bg-gray-200 md:hidden">
-    </aside>
-    </>
+    return (
+      <>
+        <aside className="hidden  w-full px-4 bg-gray-200 animate-pulse md:flex flex-col h-full justify-between py-8">
+          <SkeletonMenu items={10} />
+          <SkeletonMenu items={2} />
+        </aside>
+        <aside className="w-full h-12 bg-gray-200 md:hidden"></aside>
+      </>
+    );
   }
 
   return (
-    <div className="px-6 pt-8 flex flex-col h-full">
+    <div className="px-6 pt-8 flex-col h-full hidden xl:flex">
       <div>
         <Button
           linkTo="/reports"
           variant="none"
           newClassName="text-sm flex items-center hover:text-alt "
         >
-          <ArrowLeftIcon className="h-5 w-5 mr-2" /> {t('back to saved')}
+          <ArrowLeftIcon className="h-5 w-5 mr-2" /> {t('back_to_saved')}
         </Button>
-        <p className="text-sm mt-8">{t('risk assessment report')}</p>
+        <p className="text-sm mt-8">{t('risk_assessment_report')}</p>
         <h2 className="mt-4 text-xl">{companyName}</h2>
       </div>
 
@@ -120,9 +121,9 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
 
       <div className="space-y-2 items-end flex-1 justify-end flex flex-col pb-4">
         <Button variant="alt" className="w-full">
-          {t('export pdf')}
+          {t('export_pdf')}
         </Button>
-        <Button variant="secondary">{t('export csv')}</Button>
+        <Button variant="secondary">{t('export_csv')}</Button>
       </div>
     </div>
   );

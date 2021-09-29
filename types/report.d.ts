@@ -1,5 +1,3 @@
-import DataReliability from '../components/report-sections/highlights/DataReliability';
-
 export type FinancialYear = {
   [index: string]: string;
   year?: string;
@@ -39,4 +37,48 @@ export type SummaryContact = {
 export type Reliability = {
   reliability: 'reliable' | 'unreliable' | 'semi-reliable';
   comment: string;
+};
+
+interface LegalEventDetails {
+  AmountSecured?: number | string;
+  Class?: string;
+  DateFullySatisfied?: string;
+  DatePartiallySatisfied?: string;
+  MortgageDetails?: string;
+  PensionsEntitled?: string;
+  MortgageDetailsFreeText?: string;
+}
+
+export type LegalEvent = {
+  date: string;
+  description: string;
+  details: LegalEventDetails[];
+  id?: number | string;
+  source: string;
+  types: [];
+};
+
+export type Association = {
+  title: string;
+  company: string;
+  from_date: string;
+  to_date: string;
+};
+
+export type Profile = {
+  title: string;
+  name: string;
+  role: string;
+  linked_in_profile: string;
+  profile_image: string;
+  appointment_date: string;
+  nationality: string;
+  date_of_birth: string;
+  other_associations: Association[];
+};
+
+export type Shareholder = {
+  first_name: string;
+  last_name: string;
+  linkedin: string;
 };

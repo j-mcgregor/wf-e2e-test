@@ -1,18 +1,18 @@
 {
-  "sign into account": "Sign into your account",
-  "register for demo": "Or <a>register for a demo and access</a>",
-  "sign in with": "Sign in with",
-  "continue with": "Or continue with",
+  "sign_into_account": "Sign into your account",
+  "register_for_demo": "Or <a>register for a demo and access</a>",
+  "sign_in_with": "Sign in with",
+  "continue_with": "Or continue with",
   "email": "Email address",
   "password": "Password",
-  "remember me": "Remember me",
-  "forgot password": "Forgot your password?",
-  "sign in": "Sign in",
+  "remember_me": "Remember me",
+  "forgot_password": "Forgot your password?",
+  "sign_in": "Sign in",
   "errors": {
-    "incorrect details": "Your details are incorrect. Please try again.",
-    "password required": "Your password is required.",
-    "email required": "Your email is required.",
-    "valid email": "Please enter a valid email."
+    "incorrect_details": "Your details are incorrect. Please try again.",
+    "password_required": "Your password is required.",
+    "email_required": "Your email is required.",
+    "valid_email": "Please enter a valid email."
   },
   "placeholders": {
     "email": "you@example.com",

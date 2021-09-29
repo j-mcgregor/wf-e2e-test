@@ -6,6 +6,7 @@ import React, { Fragment, useRef } from 'react';
 import { useMainNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';
 import WF from '../elements/WFLogo';
+import Logo from '../elements/Logo';
 
 export type HeroIcon = (_props: React.ComponentProps<'svg'>) => JSX.Element;
 
@@ -95,7 +96,7 @@ const Nav = ({ path }: NavProps) => {
               </Transition.Child>
               <div className="flex-shrink-0 px-4 flex items-center">
                 <div className="relative w-40 h-10">
-                  <WF />
+                  {sidebarOpen ? <Logo /> : <WF />}
                 </div>
               </div>
               <div className="mt-5 flex-1 h-0 overflow-y-auto">
@@ -124,7 +125,7 @@ const Nav = ({ path }: NavProps) => {
       {/* Static sidebar for desktop */}
       <div className="hidden bg-primary lg:flex lg:flex-shrink-0">
         <div className="w-56 flex flex-col">
-          <div className="border-r border-gray-200 pt-5 pb-4 flex flex-col flex-grow overflow-y-auto">
+          <div className="pt-5 pb-4 flex flex-col flex-grow overflow-y-auto">
             <div className="flex-shrink-0 px-4 flex items-center relative">
               <div className="relative w-40 h-10">
                 <WF />
@@ -145,7 +146,7 @@ const Nav = ({ path }: NavProps) => {
         {/* expand menu button */}
 
         <div className="w-14 flex flex-col">
-          <div className="border-r border-gray-200 pt-2 pb-4 flex flex-col flex-grow overflow-y-auto">
+          <div className="pt-2 pb-4 flex flex-col flex-grow overflow-y-auto">
             <button
               ref={sidebarRef}
               type="button"
@@ -177,7 +178,8 @@ const Nav = ({ path }: NavProps) => {
         </div>
       </div>
 
-      <div className="absolute w-full md:px-8 xl:px-0 sm:hidden">
+      {/* Menu for mobile  */}
+      <div className="absolute w-full md:px-8 xl:px-0 sm:hidden z-30">
         <div className="relative z-10 flex-shrink-0 h-12 bg-primary border-gray-200 flex">
           <button
             type="button"

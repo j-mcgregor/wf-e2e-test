@@ -26,11 +26,11 @@ export default function Dashboard() {
       <div className="grid grid-cols-7 gap-x-4 text-primary">
         <div className="col-span-7 md:col-span-5 ">
           <div>
-            <p className="text-base h-6 md:-mt-6">{t('welcome back')}</p>
+            <p className="text-base h-6 md:-mt-6">{t('welcome_back')}</p>
 
             <div className="flex justify-between">
-              <h1 className="text-2xl font-semibold">{user && user.name}</h1>
-              <p className="font-semibold">{t('last 7 days')}</p>
+              <h1 className="text-2xl font-semibold">{user && user.full_name}</h1>
+              <p className="font-semibold">{t('last_7_days')}</p>
             </div>
           </div>
 
@@ -38,22 +38,22 @@ export default function Dashboard() {
             className="mt-4 mb-4"
             stats={[
               {
-                header: t('total reports'),
-                data: user?.recent_usage?.reports_ran
+                header: t('total_reports'),
+                data: user?.recent_usage?.reports_ran || 0
               },
               {
-                header: t('api requests'),
-                data: user?.recent_usage?.api_requests
+                header: t('api_requests'),
+                data: user?.recent_usage?.api_requests || 0
               },
               {
-                header: t('last login'),
+                header: t('last_login'),
                 data: user?.recent_usage?.last_login,
                 timeAgo: true
               }
             ]}
           />
           <ReportTable
-            reports={user?.reports}
+            reports={user?.reports || []}
             limit={5}
             shadow={true}
             borders={true}
@@ -74,16 +74,16 @@ export default function Dashboard() {
           className="mx-auto"
           icon={<LightningBoltIcon className='className="h-6 w-6 text-white' />}
           iconColor="bg-highlight"
-          header={t('automated report header')}
-          description={t('automated report description')}
+          header={t('automated_report_header')}
+          description={t('automated_report_description')}
           linkTo="/sme-calculator"
         />
         <LinkCard
           className="mx-auto"
           icon={<SearchCircleIcon className='className="h-6 w-6 text-white' />}
           iconColor="bg-highlight-2"
-          header={t('sme prospector header')}
-          description={t('sme prospector description')}
+          header={t('sme_prospector_header')}
+          description={t('sme_prospector_description')}
           linkTo="/sme-prospector"
         />
         <LinkCard
@@ -92,16 +92,16 @@ export default function Dashboard() {
             <DocumentDuplicateIcon className='className="h-6 w-6 text-white' />
           }
           iconColor="bg-highlight-3"
-          header={t('batch reports header')}
-          description={t('batch reports description')}
+          header={t('batch_reports_header')}
+          description={t('batch_reports_description')}
           linkTo="/batched-reports"
         />
         <LinkCard
           className="mx-auto"
           icon={<ChipIcon className='className="h-6 w-6 text-white ' />}
           iconColor="bg-highlight-4"
-          header={t('api docs header')}
-          description={t('api docs description')}
+          header={t('api_docs_header')}
+          description={t('api_docs_description')}
           linkTo="/api-documentation"
         />
       </div>

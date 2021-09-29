@@ -1,5 +1,9 @@
+import { ReportDataProps } from '../../pages/report/[...id]';
+
 /* eslint-disable sonarjs/no-duplicate-string */
 const mockReport = {
+  created_at: new Date().setFullYear(2020, 1, 1).toString(),
+  company_name: 'THE WRIGHT GLAZING CO. LIMITED',
   contact_details: {
     address_line_1: '591 LONDON ROAD',
     address_line_2: 'CHEAM',
@@ -8,7 +12,7 @@ const mockReport = {
     city: 'SUTTON',
     country: 'United Kingdom',
     domains: ['wrightglazing.co.uk'],
-    emails: null,
+    emails: ['batman@wayneindustries.com'],
     fax_numbers: null,
     incorporation_date: '2006-06-20 00:00:00',
     name: 'THE WRIGHT GLAZING CO. LIMITED',
@@ -19,7 +23,8 @@ const mockReport = {
     postal_code: 'SM3 9AG',
     region: 'Western Europe',
     websites: ['www.wrightglazing.co.uk'],
-    company_description: 'Culpa minim do anim consequat labore amet officia ea mollit veniam velit. Lorem exercitation aute aliqua labore nisi ad enim do sunt do duis culpa. Consectetur excepteur est occaecat anim anim adipisicing magna ut enim adipisicing esse dolore.'
+    company_description:
+      'Culpa minim do anim consequat labore amet officia ea mollit veniam velit. Lorem exercitation aute aliqua labore nisi ad enim do sunt do duis culpa. Consectetur excepteur est occaecat anim anim adipisicing magna ut enim adipisicing esse dolore.'
   },
   risk_metrics: {
     sme_z_score: {
@@ -28,12 +33,12 @@ const mockReport = {
       industry_benchmark: '211'
     },
     probability_of_default: {
-      value: "267",
-      regional_benchmark: "345",
+      value: '267',
+      regional_benchmark: '345',
       industry_benchmark: null
     },
     loss_given_default: {
-      value: "267",
+      value: '267',
       regional_benchmark: null,
       industry_benchmark: null
     },
@@ -733,6 +738,14 @@ const mockReport = {
         types: ['Default', 'Charge/mortgage']
       },
       {
+        date: '2018-04-10',
+        description: 'Legal IP Dispute',
+        details: null,
+        id: null,
+        source: 'Companies House',
+        types: ['Default', 'Negative event']
+      },
+      {
         date: '2018-04-09',
         description: 'LEGAL CHARGE',
         details: [
@@ -747,7 +760,7 @@ const mockReport = {
             PersonsEntitled: 'ALDERMORE BANK PLC'
           },
           {
-            AmountSecured: null,
+            AmountSecured: null, // "N/A"
             Class: 'LegalEventMortgageData',
             DateFullySatisfied: null,
             DatePartiallySatisfied: null,
@@ -803,7 +816,150 @@ const mockReport = {
       }
     ]
   },
-  shareholders: {
+  personal: {
+    ceo: 'John Smith',
+    cfo: 'Jane Doe',
+    chairman: 'Jerry Smith',
+    directors: [
+      {
+        title: 'Ms',
+        name: 'Jo Smith',
+        role: 'Director',
+        linked_in_profile: 'https://linkedin.com',
+        profile_image:
+          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+        appointment_date: '19-04-2010',
+        nationality: 'British',
+        date_of_birth: '01-03-1979',
+        other_associations: [
+          {
+            title: 'Director',
+            company: 'Scottish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: 'current'
+          },
+          {
+            title: 'Director',
+            company: 'Welsh Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'Irish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          }
+        ]
+      },
+      {
+        title: 'Mr',
+        name: 'John Doe',
+        role: 'Director',
+        linked_in_profile: null,
+        profile_image: null,
+        appointment_date: '19-04-2010',
+        nationality: 'French',
+        date_of_birth: '09-12-1989',
+        other_associations: [
+          {
+            title: 'Director',
+            company: 'Scottish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: 'current'
+          },
+          {
+            title: 'Director',
+            company: 'Welsh Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'Irish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'English Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          }
+        ]
+      }
+    ],
+
+    senior_management: [
+      {
+        title: 'Ms',
+        name: 'Jo Smith',
+        role: 'Director',
+        linked_in_profile: 'https://linkedin.com',
+        profile_image:
+          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+        appointment_date: '19-04-2010',
+        nationality: 'British',
+        date_of_birth: '01-03-1979',
+        other_associations: [
+          {
+            title: 'Director',
+            company: 'Scottish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: 'current'
+          },
+          {
+            title: 'Director',
+            company: 'Welsh Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'Irish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          }
+        ]
+      },
+      {
+        title: 'Mr',
+        name: 'John Doe',
+        role: 'Director',
+        linked_in_profile: null,
+        profile_image: null,
+        appointment_date: '19-04-2010',
+        nationality: 'French',
+        date_of_birth: '09-12-1989',
+        other_associations: [
+          {
+            title: 'Director',
+            company: 'Scottish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: 'current'
+          },
+          {
+            title: 'Director',
+            company: 'Welsh Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'Irish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'English Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          }
+        ]
+      }
+    ],
+
     shareholders: [
       {
         also_a_manager: 'Current manager',
@@ -818,7 +974,8 @@ const mockReport = {
         percentage: '51,00',
         salutation: 'MR',
         type: 'One or more named individuals or families',
-        uci: 'P062973798'
+        uci: 'P062973798',
+        linkedin: 'https://linkedin.com'
       },
       {
         also_a_manager: 'Current manager',
@@ -833,7 +990,152 @@ const mockReport = {
         percentage: '49,00',
         salutation: 'MRS',
         type: 'One or more named individuals or families',
-        uci: 'P004899242'
+        uci: 'P004899242',
+        linkedin: 'https://linkedin.com'
+      },
+      {
+        also_a_manager: 'Current manager',
+        country: 'GB',
+        first_name: 'BRIAN',
+        information_date: '06/2021',
+        is_beneficially_held: false,
+        is_liability: false,
+        last_name: 'JAMES',
+        name: 'MR BRIAN JAMES',
+        peps_sanctions_enforcements: false,
+        percentage: '49,00',
+        salutation: 'MRS',
+        type: 'One or more named individuals or families',
+        uci: 'P004899242',
+        linkedin: null
+      },
+      {
+        also_a_manager: 'Current manager',
+        country: 'GB',
+        first_name: 'JENNIFER',
+        information_date: '06/2021',
+        is_beneficially_held: false,
+        is_liability: false,
+        last_name: 'HANCOCK',
+        name: 'MRS JENNIFER HANCOCK',
+        peps_sanctions_enforcements: false,
+        percentage: '49,00',
+        salutation: 'MRS',
+        type: 'One or more named individuals or families',
+        uci: 'P004899242',
+        linkedin: 'https://linkedin.com'
+      },
+      {
+        also_a_manager: 'Current manager',
+        country: 'GB',
+        first_name: 'EMMA',
+        information_date: '06/2021',
+        is_beneficially_held: false,
+        is_liability: false,
+        last_name: 'GROOMBRIDGE-WRIGHT',
+        name: 'MRS EMMA GROOMBRIDGE-WRIGHT',
+        peps_sanctions_enforcements: false,
+        percentage: '49,00',
+        salutation: 'MRS',
+        type: 'One or more named individuals or families',
+        uci: 'P004899242',
+        linkedin: 'https://linkedin.com'
+      },
+      {
+        also_a_manager: 'Current manager',
+        country: 'GB',
+        first_name: 'EMMA',
+        information_date: '06/2021',
+        is_beneficially_held: false,
+        is_liability: false,
+        last_name: 'GROOMBRIDGE-WRIGHT',
+        name: 'MRS EMMA GROOMBRIDGE-WRIGHT',
+        peps_sanctions_enforcements: false,
+        percentage: '49,00',
+        salutation: 'MRS',
+        type: 'One or more named individuals or families',
+        uci: 'P004899242',
+        linkedin: 'https://linkedin.com'
+      },
+      {
+        also_a_manager: 'Current manager',
+        country: 'GB',
+        first_name: 'EMMA',
+        information_date: '06/2021',
+        is_beneficially_held: false,
+        is_liability: false,
+        last_name: 'GROOMBRIDGE-WRIGHT',
+        name: 'MRS EMMA GROOMBRIDGE-WRIGHT',
+        peps_sanctions_enforcements: false,
+        percentage: '49,00',
+        salutation: 'MRS',
+        type: 'One or more named individuals or families',
+        uci: 'P004899242',
+        linkedin: null
+      },
+      {
+        also_a_manager: 'Current manager',
+        country: 'GB',
+        first_name: 'EMMA',
+        information_date: '06/2021',
+        is_beneficially_held: false,
+        is_liability: false,
+        last_name: 'GROOMBRIDGE-WRIGHT',
+        name: 'MRS EMMA GROOMBRIDGE-WRIGHT',
+        peps_sanctions_enforcements: false,
+        percentage: '49,00',
+        salutation: 'MRS',
+        type: 'One or more named individuals or families',
+        uci: 'P004899242',
+        linkedin: 'https://linkedin.com'
+      },
+      {
+        also_a_manager: 'Current manager',
+        country: 'GB',
+        first_name: 'EMMA',
+        information_date: '06/2021',
+        is_beneficially_held: false,
+        is_liability: false,
+        last_name: 'GROOMBRIDGE-WRIGHT',
+        name: 'MRS EMMA GROOMBRIDGE-WRIGHT',
+        peps_sanctions_enforcements: false,
+        percentage: '49,00',
+        salutation: 'MRS',
+        type: 'One or more named individuals or families',
+        uci: 'P004899242',
+        linkedin: 'https://linkedin.com'
+      },
+      {
+        also_a_manager: 'Current manager',
+        country: 'GB',
+        first_name: 'GAVIN',
+        information_date: '06/2021',
+        is_beneficially_held: false,
+        is_liability: false,
+        last_name: 'JOHNSON',
+        name: 'MR GAVIN JOHNSON',
+        peps_sanctions_enforcements: false,
+        percentage: '49,00',
+        salutation: 'MRS',
+        type: 'One or more named individuals or families',
+        uci: 'P004899242',
+        linkedin: 'https://linkedin.com'
+      },
+      {
+        also_a_manager: 'Current manager',
+        country: 'GB',
+        first_name: 'FRANK',
+        information_date: '06/2021',
+        is_beneficially_held: false,
+        is_liability: false,
+        last_name: 'HERBERT',
+        name: 'MR FRANK HERBERT',
+        peps_sanctions_enforcements: false,
+        percentage: '49,00',
+        salutation: 'MRS',
+        type: 'One or more named individuals or families',
+        uci: 'P004899242',
+        linkedin: null
       }
     ]
   }

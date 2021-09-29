@@ -1,4 +1,4 @@
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 import InfoPopover from '../risk-metrics/InfoPopover';
 
 interface OutlookProps {
@@ -12,8 +12,8 @@ const RiskOutlook = ({ reports, hintTitle, hintBody }: OutlookProps) => {
   return (
     <div className="flex flex-col">
       <div className="flex pb-4">
-        <p className="font-bold pr-8">{t('risk outlook')}</p>
-        <InfoPopover hintTitle={hintTitle} hintBody={hintBody} />
+        <p className="font-bold pr-8">{t('risk_outlook')}</p>
+        <InfoPopover title={hintTitle} body={hintBody} />
       </div>
       <div className="flex flex-col">
         <ul className="list-disc px-6">

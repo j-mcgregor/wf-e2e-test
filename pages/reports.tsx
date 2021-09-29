@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-non-literal-require */
+import { BookmarkIcon } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -8,15 +9,13 @@ import BookmarkCard from '../components/cards/BookmarkCard';
 import Button from '../components/elements/Button';
 import ReportTable from '../components/elements/ReportTable';
 import Layout from '../components/layout/Layout';
-import appState from '../lib/appState';
+import { userReports } from '../lib/appState';
 import { Report } from '../types/global';
 
 const Reports = () => {
   const [reportLimit, setReportLimit] = useState(10); // initial limit of 10 reports
 
-  const { user } = useRecoilValue(appState);
-
-  const reports = (user && user.reports) || [];
+  const { bookmarkedReports, allReports } = useRecoilValue(userReports);
 
   const t = useTranslations();
 
@@ -25,54 +24,61 @@ const Reports = () => {
     reportLimit < 30 ? setReportLimit(reportLimit + 5) : null;
   };
 
-  const hasBookmark =
-    user && reports.filter((report: Report) => report.bookmarked);
-
   return (
     <Layout noNav={false} title="Reports">
       <div className="text-primary">
         <div>
           <h1 className="text-3xl font-semibold py-2">{t('reports')}</h1>
-          <p className="text-base py-4">{t('see all your recent reports')}</p>
+          <p className="text-base py-4">{t('see_all_your_recent_reports')}</p>
           <h2 className="text-2xl font-semibold py-6">
-            {t('bookmarked reports')}
+            {t('bookmarked_reports')}
           </h2>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 leading-4">
-          {hasBookmark?.map((report: Report) => {
-            return (
-              <BookmarkCard
-                key={report.id}
-                linkTo={`/report/${report.id}`}
-                companyName={report.company_name}
-                smeZscore={report.sme_zscore}
-                bondRating={report.bond_rating}
-                pdRatio={32.18} // not currently in mock data
-              />
-            );
-          })}
+          {bookmarkedReports &&
+            bookmarkedReports.map((report: Report) => {
+              return (
+                <BookmarkCard
+                  key={report.id}
+                  linkTo={`/report/${report.id}`}
+                  companyName={report.company_name}
+                  smeZscore={report.sme_zscore}
+                  bondRating={report.bond_rating}
+                  pdRatio={32.18} // not currently in mock data
+                />
+              );
+            })}
         </div>
+        {!bookmarkedReports || bookmarkedReports.length === 0 && (
+          <div className="bg-gray-200 text-center w-full px-4 py-8 ">
+            <div>
+              <BookmarkIcon className="w-10 mx-auto mb-2" />
+              <h3 className="font-bold">{t('no_reports_bookmarked')}</h3>
+              <p>{t('click_the_bookmark')}</p>
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-col">
-          <p className="text-2xl py-6 font-semibold">{t('recent reports')}</p>
+          <p className="text-2xl py-6 font-semibold">{t('recent_reports')}</p>
 
           <ReportTable
             headerSize="text-[10px] md:text-sm lg:text-base"
-            reports={reports}
+            reports={allReports}
             limit={reportLimit}
             shadow={true}
             borders={true}
             fillerRows={false}
           />
 
-          {reportLimit < 30 && (
+          {reportLimit < 30 && allReports.length > 0 && (
             <Button
               variant="none"
               className="border-alt border max-w-[120px] my-2 mx-auto"
               onClick={handleAddReports}
             >
-              <p>{t('load more')}</p>
+              <p>{t('load_more')}</p>
             </Button>
           )}
         </div>

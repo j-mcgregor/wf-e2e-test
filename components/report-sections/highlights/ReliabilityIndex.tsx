@@ -1,4 +1,4 @@
-import { useTranslations } from 'use-intl';
+import { useTranslations } from 'next-intl';
 import InfoPopover from '../risk-metrics/InfoPopover';
 
 interface ReliabilityIndexProps {
@@ -11,10 +11,10 @@ const ReliabilityIndex = ({ reliability }: ReliabilityIndexProps) => {
   return (
     <div className="flex flex-col">
       <div className="flex pb-4">
-        <p className="font-bold pr-8">{t('reliability index')}</p>
+        <p className="font-bold pr-8">{t('reliability_index')}</p>
         <InfoPopover
-          hintTitle="Reliability Index"
-          hintBody="Aute nisi ut eiusmod qui proident."
+          title="Reliability Index"
+          body="Aute nisi ut eiusmod qui proident."
         />
       </div>
       <div className="h-52 w-24 self-center rounded m-8 bg-gradient-to-b from-[#2BAD01] via-[#FFC702] to-[#FF0000]">

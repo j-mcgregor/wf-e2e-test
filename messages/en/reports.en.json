@@ -1,13 +1,18 @@
 {
   "reports": "Reports",
-  "see all your recent reports": "See all of your recent reports and access the reports you have bookmarked for quick access...",
-  "bookmarked reports": "Bookmarked Reports",
-  "sme score": "SME Score",
-  "bond rating": "Bond Rating",
-  "pd ratio": "P/D Ratio",
-  "company name": "Company Name",
-  "sme z-score": "SME Z-Score",
+  "see_all_your_recent_reports": "See all of your recent reports and access the reports you have bookmarked for quick access...",
+  "bookmarked_reports": "Bookmarked Reports",
+  "sme_score": "SME Score",
+  "bond_rating": "Bond Rating",
+  "pd_ratio": "P/D Ratio",
+  "company_name": "Company Name",
+  "sme_z-score": "SME Z-Score",
   "created": "Created",
-  "recent reports": "All Recent Reports",
-  "load more": "Load More"
+  "recent_reports": "All Recent Reports",
+  "load_more": "Load More",
+  "no_reports_generated": "No reports generated yet",
+  "get_started_with_new_report": "Get started with your first report today",
+  "generate_report": "Generate report",
+  "no_reports_bookmarked": "No reports bookmarked",
+  "click_the_bookmark": "Click the bookmark icon in the top right of a report to save it."
 }
