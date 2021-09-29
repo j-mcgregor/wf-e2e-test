@@ -37,6 +37,7 @@ const countries = countryJSON.map(value => {
 //====================== COMPONENT ========================
 const PersonalInformationForm = () => {
   const { user } = useRecoilValue(appState);
+
   const setCurrentUserContactInfo = useSetRecoilState(appState);
   const contactInfo = user?.contact_information;
 
@@ -49,7 +50,6 @@ const PersonalInformationForm = () => {
       defaultValues: {
         firstName: contactInfo?.first_name,
         lastName: contactInfo?.last_name,
-        email: contactInfo?.email,
         country: contactInfo?.country,
         streetAddress: contactInfo?.street_address,
         city: contactInfo?.city,
@@ -61,7 +61,7 @@ const PersonalInformationForm = () => {
     });
 
   const first_name = contactInfo?.first_name || '';
-  const _email = contactInfo?.email || '';
+  const _email = user?.email || '';
   const last_name = contactInfo?.last_name || '';
   const _country = contactInfo?.country || '';
   const street_address = contactInfo?.street_address || '';
@@ -93,7 +93,6 @@ const PersonalInformationForm = () => {
     const updatedData = {
       first_name: data.firstName,
       last_name: data.lastName,
-      email: data.email,
       country: data.country,
       street_address: data.streetAddress,
       city: data.city,
@@ -107,8 +106,9 @@ const PersonalInformationForm = () => {
     setCurrentUserContactInfo(curr => {
       return {
         ...curr,
-        user: { ...curr.user, contact_information: updatedData }
-      };
+        user: { ...curr.user, contact_information: updatedData, name: `${data.firstName} ${data.lastName}`, email: data.email }
+        
+      }
     });
   };
 
