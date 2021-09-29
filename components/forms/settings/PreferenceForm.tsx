@@ -6,16 +6,9 @@ import { useTranslations } from 'next-intl';
 
 import Button from '../../elements/Button';
 import localisationJSON from '../../../lib/data/localisation.json';
-import {
-  DefaultValue,
-  RecoilState,
-  RecoilValueReadOnly,
-  selector,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState
-} from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import appState from '../../../lib/appState';
+import mockUsers from '../../../lib/mock-data/users';
 
 interface PreferenceFormInput {
   localisation: string;
@@ -56,17 +49,16 @@ const options = (t: any) => {
 
 //====================== COMPONENT ========================
 
-interface PreferencesProps {
-  localisation: string;
-  default_currency: string;
-  default_login_screen: string;
-  default_reporting_country: string;
-  communication: { comments: boolean; candidates: boolean; offers: boolean };
-}
+// interface PreferencesProps {
+//   localisation: string;
+//   default_currency: string;
+//   default_login_screen: string;
+//   default_reporting_country: string;
+//   communication: { comments: boolean; candidates: boolean; offers: boolean };
+// }
 
 const PreferenceForm = () => {
   const { user } = useRecoilValue(appState);
-
   const setCurrentUserPrefs = useSetRecoilState(appState);
 
   //====================== translate ========================
@@ -98,10 +90,8 @@ const PreferenceForm = () => {
   }, [user]);
 
   //====================== form ========================
-
   const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
-    // eslint-disable-next-line no-console
-    console.log({ data });
+    // @ts-ignore
     setCurrentUserPrefs(currentUser => {
       const {
         localisation,
@@ -116,16 +106,33 @@ const PreferenceForm = () => {
         default_login_screen,
         default_reporting_country
       };
-      // console.log({ ...currentUser.user?.preferences });
-      return { ...currentUser.user, newPrefs };
+      return {
+        ...currentUser,
+        user: {
+          ...currentUser.user,
+          preferences: newPrefs,
+          ...currentUser.user?.preferences?.communication
+        }
+      };
     });
   };
+  const userTest = 'test@test.com';
 
   const ResetPrefs = () => {
-    // const resetPrefs = useResetRecoilState(appState);
+    const resetState = () => {
+      setCurrentUserPrefs({
+        ...mockUsers[userTest],
+        user: {
+          ...mockUsers[userTest],
+          preferences: mockUsers[userTest].preferences,
+          ...mockUsers[userTest].preferences.communication
+        }
+      });
+    };
+
     return (
       <Button
-        // onClick={() => resetPrefs()}
+        onClick={() => resetState()}
         disabled={!isDirty || !isValid}
         type="submit"
         variant="primary"
@@ -135,7 +142,8 @@ const PreferenceForm = () => {
       </Button>
     );
   };
-  console.log({ user: user?.preferences });
+
+  // console.log({ user: user?.preferences, dave: user });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
