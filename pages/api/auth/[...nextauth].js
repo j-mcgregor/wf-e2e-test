@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 
 import mockUsers from '../../../lib/mock-data/users';
+import User from '../../../lib/funcs/user';
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -23,53 +24,25 @@ export default NextAuth({
 
       async authorize(credentials, _req) {
 
-        if (credentials.email === 'test@test.com') {
+        if (credentials.email === 'test@test.com' || credentials.email === 'new@test.com') {
           return mockUsers[credentials.email];
         }
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        const res = await fetch('https://api.saggio-credito.co.uk/api/v1/login/access-token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-          },
-          body: new URLSearchParams({
-            'username': credentials.email,
-            'password': credentials.password
-          })
-        })
 
-        const json = await res.json()
-        const token = json.access_token
-
-        // // If no error and we have user data, return it
-        if (res.ok) {
-          const resMe = await fetch('https://api.saggio-credito.co.uk/api/v1/users/me', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-              'Authorization': `Bearer ${token}`
-            },
-          })
-
-          const user = await resMe.json()
-
-          return { ...user, token };
+        // authenticate the user with the backend
+        const authenticated = await User.authenticate(credentials.email, credentials.password)
+        console.log(authenticated)
+        // // if no error and we have user data, return it
+        if (authenticated && authenticated.token) {
+          return await User.getUser(authenticated.token) ;
         }
 
         // Return null if user data could not be retrieved
         return null;
       }
     })
-    // ...add more providers here
   ],
   pages: {
     signIn: '/login'
-    // signOut: '/auth/signout'
   },
   callbacks: {
     async jwt(token, user) {
@@ -80,15 +53,10 @@ export default NextAuth({
       return token
     },
     async session(session, token, _user) {
-      const resMe = await fetch('https://api.saggio-credito.co.uk/api/v1/users/me', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-          'Authorization': `Bearer ${token.accessToken}`
-        },
-      })
-      // console.log(resMe)
-      const user = await resMe.json()
+
+      // get the user using the token stored in the token
+      const user = await User.getUser(token.accessToken)
+
       // add the mock user data in the use session hook
       session.user = user;
       return session;
