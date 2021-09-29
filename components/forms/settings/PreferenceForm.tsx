@@ -83,7 +83,7 @@ const PreferenceForm = () => {
     }
   });
   const currentUserPrefsInfo = useRecoilValue(currentUser);
-  const test = useRecoilValue(appState);
+  // const test = useRecoilValue(appState);
   const setCurrentUserPrefsInfo = useSetRecoilState(appState);
   //====================== translate ========================
 
