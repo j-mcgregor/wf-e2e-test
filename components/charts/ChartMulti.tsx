@@ -6,7 +6,7 @@ import { graphData, GraphDataType } from './data';
 
 const ChartMulti = () => {
   const [data, setData] = useState<GraphDataType[] | null>();
-  const [selectedCompany, setSelectedCompany] = useState<number>(0);
+  const [selectedCompany, setSelectedCompany] = useState<number | null>(null);
   const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const ChartMulti = () => {
   const green = '#2BAD01';
 
   const graphColors = (i: number): string => {
-    return i === 0 ? black : i === 1 ? green : blue;
+    return i === 0 ? black : i === 1 ? blue : green;
   };
 
   return (
@@ -29,47 +29,53 @@ const ChartMulti = () => {
           handleSetTooltip={setToolTipValue}
         >
           <VictoryGroup style={{ data: { strokeWidth: 1 } }}>
-            {data?.map((company, i) => (
-              <VictoryArea
-                animate={{
-                  duration: 500,
-                  onLoad: { duration: 500 }
-                }}
-                data={company.data}
-                interpolation="natural"
-                style={{
-                  data: {
-                    fill: graphColors(i),
-                    fillOpacity: i === selectedCompany ? '0.5' : '0.2',
-                    stroke: graphColors(i),
-                    strokeOpacity: i === selectedCompany ? '0.9' : '0.15'
-                  }
-                }}
-              />
-            ))}
+            {data?.map(
+              (company, i) =>
+                company.data.length > 0 && (
+                  <VictoryArea
+                    animate={{
+                      duration: 500,
+                      onLoad: { duration: 500 }
+                    }}
+                    data={company.data}
+                    interpolation="natural"
+                    style={{
+                      data: {
+                        fill: graphColors(i),
+                        fillOpacity: i === selectedCompany ? '0.5' : '0.2',
+                        stroke: graphColors(i),
+                        strokeOpacity: i === selectedCompany ? '0.9' : '0.15'
+                      }
+                    }}
+                  />
+                )
+            )}
           </VictoryGroup>
           <VictoryGroup>
-            {data?.map((company, i) => (
-              <VictoryScatter
-                data={company.data}
-                size={2}
-                style={{
-                  data: {
-                    strokeWidth: 1,
-                    stroke: graphColors(i),
-                    strokeOpacity: i === selectedCompany ? '1' : '0.3',
-                    fill: i !== selectedCompany ? 'white' : graphColors(i),
-                    fillOpacity: i === selectedCompany ? '1' : '0.3'
-                  }
-                }}
-                labels={({ datum }) =>
-                  data.indexOf(company) === selectedCompany &&
-                  toolTipValue !== datum.y
-                    ? datum.y
-                    : null
-                }
-              />
-            ))}
+            {data?.map(
+              (company, i) =>
+                company.data.length > 0 && (
+                  <VictoryScatter
+                    data={company.data}
+                    size={2}
+                    style={{
+                      data: {
+                        strokeWidth: 1,
+                        stroke: graphColors(i),
+                        strokeOpacity: i === selectedCompany ? '1' : '0.3',
+                        fill: i !== selectedCompany ? 'white' : graphColors(i),
+                        fillOpacity: i === selectedCompany ? '1' : '0.3'
+                      }
+                    }}
+                    labels={({ datum }) =>
+                      data.indexOf(company) === selectedCompany &&
+                      toolTipValue !== datum.y
+                        ? datum.y
+                        : null
+                    }
+                  />
+                )
+            )}
           </VictoryGroup>
         </ChartContainer>
 
@@ -77,12 +83,21 @@ const ChartMulti = () => {
           {data?.map((company, i) => {
             const keyColor =
               company.name === 'Industry Benchmark'
-                ? '#2BAD01'
-                : company.name === 'Region Benchmark'
                 ? '#278EC8'
+                : company.name === 'Region Benchmark'
+                ? '#2BAD01'
                 : '#022D45';
 
-            return (
+            return !company.data.length ? (
+              <button
+                disabled
+                key={i}
+                className={` flex items-center py-1 justify-start w-full opacity-40 cursor-default`}
+              >
+                <div className={`border-2 border-[${keyColor}] w-4 h-4 mx-2`} />
+                <p>{company.name}</p>
+              </button>
+            ) : (
               <button
                 key={i}
                 onClick={() => setSelectedCompany(i)}
@@ -91,9 +106,9 @@ const ChartMulti = () => {
                 <div
                   className={`${
                     selectedCompany !== i
-                      ? `bg-white border-2 border-[${keyColor}]`
+                      ? `border-2 border-[${keyColor}]`
                       : `bg-[${keyColor}]`
-                  } w-4 h-4 mx-2 `}
+                  } w-4 h-4 mx-2`}
                 />
                 <p>{company.name}</p>
               </button>
