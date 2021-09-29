@@ -11,13 +11,12 @@ const orange = '#E58A2E';
 // TEXT
 const sansSerif = "'Helvetica Neue', 'Helvetica', sans-serif";
 const fontSize = 8;
-const fontWeight = 'bold';
 
 // Layout
-const padding = 14;
+const padding = 10;
 const baseProps = {
-  width: 350,
-  height: 350,
+  width: 250,
+  height: 400,
   padding: 40
 };
 
@@ -34,7 +33,7 @@ const baseLabelStyles = {
 // DATA POINTS ALONG GRAPH LINE
 const dataLabelStyles = {
   fontSize: 8,
-  padding: 16,
+  padding: 12,
   fill: 'black',
   fontWeight: 'bold'
 };
@@ -42,8 +41,6 @@ const dataLabelStyles = {
 // USING ONLY INSIDE CHART FOR THE SELECTED DATA POINTS
 const areaLabelStyles = {
   fontSize: 8,
-  padding: 16,
-  fill: 'red',
   fontWeight: 'bold'
 };
 
@@ -99,14 +96,13 @@ export const theme = {
     baseProps
   ),
   chart: baseProps,
-  // MAIN GRAPH LINE
-  line: assign(
+  scatter: assign(
     {
       style: {
         data: {
-          fill: 'transparent',
+          fill: darkBlue,
           opacity: 1,
-          stroke: orange,
+          stroke: 'transparent',
           strokeWidth: 1
         },
         labels: dataLabelStyles
@@ -115,18 +111,12 @@ export const theme = {
     baseProps
   ),
 
-  scatter: assign(
-    {
-      style: {
-        data: {
-          fill: darkBlue,
-          opacity: 1,
-          stroke: 'transparent',
-          strokeWidth: 0
-        },
-        labels: dataLabelStyles
-      }
-    },
-    baseProps
-  )
+  tooltip: {
+    style: {
+      fontFamily: sansSerif,
+      fill: 'transparent',
+      stroke: 'transparent',
+      strokeWidth: 0
+    }
+  }
 };

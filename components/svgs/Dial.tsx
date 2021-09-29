@@ -1,13 +1,13 @@
 import React from 'react';
-import dial from '../../images/icons/dial.png'
+import dial from '../../images/icons/dial.png';
 import Image from 'next/image';
 
-const Dial = ({ className }: { className?: string}) => {
+const Dial = ({ className }: { className?: string }) => {
   return (
-    <div className={className} >
-      <Image  src={dial} alt=""/>
+    <div className={className}>
+      <Image src={dial} alt="" height={200} width={200} />
     </div>
   );
-}
+};
 
-export default Dial
+export default Dial;

@@ -1,6 +1,9 @@
+import { ReportDataProps } from '../../pages/report/[...id]';
+
 /* eslint-disable sonarjs/no-duplicate-string */
 const mockReport = {
-  id: 1,
+  created_at: new Date().setFullYear(2020, 1, 1).toString(),
+  company_name: 'THE WRIGHT GLAZING CO. LIMITED',
   contact_details: {
     address_line_1: '591 LONDON ROAD',
     address_line_2: 'CHEAM',
@@ -9,7 +12,7 @@ const mockReport = {
     city: 'SUTTON',
     country: 'United Kingdom',
     domains: ['wrightglazing.co.uk'],
-    emails: null,
+    emails: ['batman@wayneindustries.com'],
     fax_numbers: null,
     incorporation_date: '2006-06-20 00:00:00',
     name: 'THE WRIGHT GLAZING CO. LIMITED',

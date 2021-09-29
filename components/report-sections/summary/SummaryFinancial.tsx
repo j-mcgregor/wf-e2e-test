@@ -12,7 +12,7 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
 
   return (
     <div className="p-6 shadow rounded-sm bg-white">
-      <p className="text-primary">{t('financial statement overview')}</p>
+      <p className="text-primary">{t('financial_statement_overview')}</p>
       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="py-2 align-middle inline-block min-w-full ">
@@ -42,42 +42,42 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                     rowKey="sales"
                   />
                   <SummaryFinancialRow
-                    rowHeader={t('profit before taxes')}
+                    rowHeader={t('profit_before_taxes')}
                     data={years}
                     rowKey="profit_and_loss_before_tax"
                   />
                   <SummaryFinancialRow
-                    rowHeader={t('equity shareholder funds')}
+                    rowHeader={t('equity_shareholder_funds')}
                     data={years}
                     rowKey="total_shareholder_funds"
                   />
                   <SummaryFinancialRow
-                    rowHeader={t('tangible worth')}
+                    rowHeader={t('tangible_worth')}
                     data={years}
                     rowKey="capital"
                   />
                   <SummaryFinancialRow
-                    rowHeader={t('total fixed assets')}
+                    rowHeader={t('total_fixed_assets')}
                     data={years}
                     rowKey="tangible_fixed_assets"
                   />
                   <SummaryFinancialRow
-                    rowHeader={t('total assets')}
+                    rowHeader={t('total_assets')}
                     data={years}
                     rowKey="total_assets"
                   />
                   <SummaryFinancialRow
-                    rowHeader={t('total current assets')}
+                    rowHeader={t('total_current_assets')}
                     data={years}
                     rowKey="current_assets"
                   />
                   <SummaryFinancialRow
-                    rowHeader={t('total current liabilities')}
+                    rowHeader={t('total_current_liabilities')}
                     data={years}
                     rowKey="current_liabilities"
                   />
                   <SummaryFinancialRow
-                    rowHeader={t('net current assets')}
+                    rowHeader={t('net_current_assets')}
                     data={years}
                     rowKey="net_current_assets"
                   />

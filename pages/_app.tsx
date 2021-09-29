@@ -15,6 +15,10 @@ const mutedConsole = memoize((console) => ({
 }))
 global.console = mutedConsole(global.console);
 
+if (process.env.NODE_ENV !== 'production') {
+  require('../__mocks__/service-worker/index');
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>

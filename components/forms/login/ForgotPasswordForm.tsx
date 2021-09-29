@@ -8,6 +8,7 @@ import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
 import Link from '../../elements/Link';
 import Logo from '../../elements/Logo';
+import config from '../../../config';
 
 type FormValues = {
   email: string;
@@ -27,7 +28,8 @@ const ForgotPasswordForm = () => {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      const req = await fetch('/api/password-reset', {
+      // absolute URLs necessary for tests
+      const res = await fetch(`${config.URL}/api/password-reset`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -37,7 +39,9 @@ const ForgotPasswordForm = () => {
         })
       });
 
-      if (req.ok) {
+      const d = await res.json();
+
+      if (res.ok) {
         return setSubmittedState(true);
       }
 
@@ -54,12 +58,16 @@ const ForgotPasswordForm = () => {
       <div>
         <Logo />
         <h1 className="text-3xl font-bold py-3 my-2">
-          {t('forgotten password')}
+          {t('forgotten_password')}
         </h1>
         {!submittedState ? (
           <>
-            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-              <p>{t('enter email')}</p>
+            <form
+              className="space-y-6"
+              onSubmit={handleSubmit(onSubmit)}
+              data-testid="forgot-password-form"
+            >
+              <p>{t('enter_email')}</p>
               <div className="mt-6">
                 <Input
                   {...register('email', {
@@ -67,35 +75,35 @@ const ForgotPasswordForm = () => {
                     pattern: validEmailRegex
                   })}
                   type="email"
-                  label={`${t('email address')}`}
+                  label={`${t('email_address')}`}
                   placeholder={`${t('placeholders.email')}`}
                 />
 
                 {errors.email?.type === 'required' && (
-                  <ErrorMessage text={t('errors.email required')} />
+                  <ErrorMessage text={t('errors.email_required')} />
                 )}
                 {errors.email?.type === 'pattern' && (
-                  <ErrorMessage text={t('errors.valid email')} />
+                  <ErrorMessage text={t('errors.valid_email')} />
                 )}
                 {submitError && (
-                  <ErrorMessage text={t('errors.submit error')} />
+                  <ErrorMessage text={t('errors.submit_error')} />
                 )}
               </div>
               <div className="mt-6">
                 <Button variant="highlight" type="submit">
-                  {t('reset password')}
+                  {t('reset_password')}
                 </Button>
               </div>
             </form>
           </>
         ) : (
-          <p>{t('if email exists')}</p>
+          <p>{t('if_email_exists')}</p>
         )}
       </div>
 
       <div className="w-full text-center mt-8 text-highlight hover:text-yellow-500 text-sm">
         <Link linkTo="/login">
-          <p>{t('back to login')}</p>
+          <p>{t('back_to_login')}</p>
         </Link>
       </div>
     </div>

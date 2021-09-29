@@ -1,15 +1,15 @@
-import React, { FC } from 'react';
+import { useTranslations } from 'next-intl';
+import React from 'react';
 
 import Button from '../../elements/Button';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import PasswordManagement from './PasswordManagement';
-import { useTranslations } from 'next-intl';
 
 interface PasswordFormProps {
   isSSO: boolean;
 }
 
-const PasswordForm: FC<PasswordFormProps> = ({ isSSO }) => {
+const PasswordForm = ({ isSSO }: PasswordFormProps) => {
   const t = useTranslations();
   return (
     <div className="shadow sm:rounded-md sm:overflow-hidden">

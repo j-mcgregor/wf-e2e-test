@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 
@@ -8,8 +8,7 @@ import SkeletonLayout from '../skeletons/SkeletonLayout';
 import Nav from './Nav';
 import Seo from './Seo';
 
-type LayoutProps = {
-  children: React.ReactNode;
+interface LayoutProps {
   title?: string;
   pageTitle?: string;
   description?: string;
@@ -17,16 +16,17 @@ type LayoutProps = {
   noNav?: boolean | undefined;
   fullWidth?: boolean;
   noAuthRequired?: boolean;
-};
+  children?: React.ReactNode;
+}
 
 const Layout = ({
-  children,
   noNav,
   title,
   description,
   pageTitle,
   fullWidth,
-  noAuthRequired
+  noAuthRequired,
+  children
 }: LayoutProps) => {
   const router = useRouter();
 
@@ -41,7 +41,7 @@ const Layout = ({
   React.useEffect(() => {
     if (session && session.user && !user ) {
       // @ts-ignore
-      setState({user: {...session?.user}});
+      setState({...appState, user: {...session?.user}});
     }
   }, [session, setState]);
 

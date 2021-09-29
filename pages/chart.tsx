@@ -1,9 +1,11 @@
-import VictoryChartTest from '../components/charts/VictoryChartTest';
+import Chart from '../components/charts/Chart';
+import ChartMulti from '../components/charts/ChartMulti';
 
 const chart = () => {
   return (
     <div>
-      <VictoryChartTest />
+      <Chart />
+      <ChartMulti />
     </div>
   );
 };

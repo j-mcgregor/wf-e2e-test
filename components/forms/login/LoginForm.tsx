@@ -73,7 +73,7 @@ const LoginForm = () => {
             <div className="sm:w-full w-1/4 border-t border-white" />
 
             <div className="relative flex justify-center text-sm w-full text-center">
-              <span className="px-2">{t('continue with')}</span>
+              <span className="px-2">{t('continue_with')}</span>
             </div>
             <div className="sm:w-full w-1/4 border-t border-white" />
           </div>
@@ -98,10 +98,10 @@ const LoginForm = () => {
                   placeholder={`${t('placeholders.email')}`}
                 />
                 {errors.email?.type === 'required' && (
-                  <ErrorMessage text={t('errors.email required')} />
+                  <ErrorMessage text={t('errors.email_required')} />
                 )}
                 {errors.email?.type === 'pattern' && (
-                  <ErrorMessage text={t('errors.valid email')} />
+                  <ErrorMessage text={t('errors.valid_email')} />
                 )}
               </div>
 
@@ -113,19 +113,19 @@ const LoginForm = () => {
                   placeholder={`${t('placeholders.password')}`}
                 />
                 {errors.password?.type === 'required' && (
-                  <ErrorMessage text={t('errors.password required')} />
+                  <ErrorMessage text={t('errors.password_required')} />
                 )}
               </div>
             </div>
 
-            {authError && <ErrorMessage text={t('errors.incorrect details')} />}
+            {authError && <ErrorMessage text={t('errors.incorrect_details')} />}
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-left">
               <div className="flex items-center w-full sm:w-auto">
                 <CheckboxInput
                   {...register('remember')}
                   id="remember"
-                  label={`${t('remember me')}`}
+                  label={`${t('remember_me')}`}
                 />
               </div>
 
@@ -134,14 +134,14 @@ const LoginForm = () => {
                   linkTo="/forgotten-password"
                   className="font-medium text-highlight hover:text-yellow-500"
                 >
-                  {t('forgot password')}
+                  {t('forgot_password')}
                 </Link>
               </div>
             </div>
 
             <div>
               <Button type="submit" loading={isSubmitting} variant="highlight">
-                {t('sign in')}
+                {t('sign_in')}
               </Button>
             </div>
 
@@ -150,7 +150,7 @@ const LoginForm = () => {
                 linkTo="/forgotten-password"
                 className="font-medium text-highlight hover:text-yellow-500"
               >
-                {t('forgot password')}
+                {t('forgot_password')}
               </Link>
             </div>
           </form>
