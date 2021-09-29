@@ -9,6 +9,7 @@ import localisationJSON from '../../../lib/data/localisation.json';
 import {
   DefaultValue,
   RecoilState,
+  RecoilValueReadOnly,
   selector,
   useRecoilValue,
   useResetRecoilState,
@@ -66,19 +67,16 @@ interface PreferencesProps {
 const PreferenceForm = () => {
   const { user } = useRecoilValue(appState);
 
-  const currentUser = selector<PreferencesProps>({
-    key: 'currentUserContactInfoState',
-
-    get: ({ get }) => {
-      const user = get(appState).user;
-      return user?.preferences;
-    },
-
-    set: ({ set }, newValue) => set(appState, newValue as DefaultValue)
-  });
+  const currentUser: RecoilValueReadOnly<PreferencesProps | undefined> =
+    selector({
+      key: 'currentUserContactInfoState',
+      get: ({ get }) => {
+        const user = get(appState).user;
+        return user?.preferences;
+      }
+    });
 
   const currentUserPrefs = useRecoilValue(currentUser);
-  // const appStateTest = useRecoilValue(appState);
   const setCurrentUserPrefs = useSetRecoilState(appState);
 
   //====================== translate ========================
@@ -134,10 +132,10 @@ const PreferenceForm = () => {
   };
 
   const ResetPrefs = () => {
-    const resetPrefs = useResetRecoilState(appState);
+    // const resetPrefs = useResetRecoilState(appState);
     return (
       <Button
-        onClick={() => resetPrefs()}
+        // onClick={() => resetPrefs()}
         disabled={!isDirty || !isValid}
         type="submit"
         variant="primary"
@@ -148,6 +146,7 @@ const PreferenceForm = () => {
     );
   };
   // console.log({ currentUserPrefs, appStateTest });
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">
