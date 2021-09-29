@@ -46,9 +46,6 @@ export default NextAuth({
         const json = await res.json()
         const token = json.access_token
 
-        // const user = await res.json();
-        const user = mockUsers[credentials.email];
-
         // // If no error and we have user data, return it
         if (res.ok) {
           const resMe = await fetch('https://api.saggio-credito.co.uk/api/v1/users/me', {
@@ -60,14 +57,9 @@ export default NextAuth({
           })
 
           const user = await resMe.json()
-          console.log(user)
 
-          return user;
+          return { ...user, token };
         }
-
-        // if (user) {
-        //   return user;
-        // }
 
         // Return null if user data could not be retrieved
         return null;
@@ -80,12 +72,26 @@ export default NextAuth({
     // signOut: '/auth/signout'
   },
   callbacks: {
-    async session(session, _token) {
+    async jwt(token, user) {
+      // Persist the backend access token to the token right after signin   
+      if (user) {
+        token.accessToken = user.token
+      }
+      return token
+    },
+    async session(session, token, _user) {
+      const resMe = await fetch('https://api.saggio-credito.co.uk/api/v1/users/me', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+          'Authorization': `Bearer ${token.accessToken}`
+        },
+      })
+      // console.log(resMe)
+      const user = await resMe.json()
       // add the mock user data in the use session hook
-      const user = mockUsers[session?.user?.email];
       session.user = user;
       return session;
     }
   }
-  // A database is optional, but required to persist accounts in a database
 });
