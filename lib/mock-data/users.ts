@@ -290,7 +290,7 @@ export const mockReports = [
 
 const mockUsers = {
   'test@test.com': {
-    name: 'John Doe',
+    full_name: 'John Doe',
     email: 'test@test.com',
     id: 1,
     recent_usage: {
@@ -304,12 +304,12 @@ const mockUsers = {
       last_name: 'Doe',
       email: 'test@test.com',
       country: 'United Kingdom',
-      street_address: '123 Aplace Street',
+      street_address: '123 A place Street',
       city: 'London',
       state: 'Hackney',
       postcode: 'N42FF',
       company_name: 'Awesome Stuff LTD',
-      company_HQ_Location: 'N4 3FF'
+      company_HQ_location: 'United Kingdom'
     },
     preferences: {
       // eslint-disable-next-line sonarjs/no-duplicate-string
@@ -317,12 +317,12 @@ const mockUsers = {
       default_currency: 'English (GB)',
       default_login_screen: 'dashboard',
       default_reporting_country: 'English (GB)',
-      communication: { comments: false, candidates: false, offers: false }
+      communication: { comments: true, candidates: false, offers: true }
     },
     reports: mockReports
   },
   'new@test.com': {
-    name: 'Jane Doe (new user)',
+    full_name: 'Jane Doe (new user)',
     email: 'new@test.com',
     id: 2,
     recent_usage: {

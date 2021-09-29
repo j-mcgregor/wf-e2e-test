@@ -42,46 +42,53 @@ const countries = countryJSON.map(value => {
 
 //====================== COMPONENT ========================
 const PersonalInformationForm = () => {
-  const currentUser: RecoilValueReadOnly<ContactInformation | undefined> =
-    selector({
-      key: 'currentUserContactInfoState',
-      get: ({ get }) => {
-        const user = get(appState).user;
-        // @ts-ignore
-        // console.log({ contact: user.contact_information });
-        return user.contact_information;
-      }
-      //FIXME: this was my setter method, not sure why it was hating on me
-      // set: ({ set, get }, newValue) => {
-      //   const user = get(appState).user;
-      //   const contact = user.contact_information;
-      //   set( ...appState, user: newValue );
-      // }
-      //  this is what i wanted to do , https://stackoverflow.com/questions/63365150/react-recoil-state-not-being-reset-properly
-    });
+  const { user } = useRecoilValue(appState);
 
-  const currentUserContactInfo = useRecoilValue(currentUser);
   const setCurrentUserContactInfo = useSetRecoilState(appState);
+  const contactInfo = user?.contact_information;
 
   //====================== translate ========================
   const t = useTranslations();
 
   //====================== form ========================
-  const { register, handleSubmit, formState } =
+  const { register, handleSubmit, formState, setValue } =
     useForm<PersonalInformationFormInput>({
       defaultValues: {
-        firstName: currentUserContactInfo?.first_name,
-        lastName: currentUserContactInfo?.last_name,
-        email: currentUserContactInfo?.email,
-        country: currentUserContactInfo?.country,
-        streetAddress: currentUserContactInfo?.street_address,
-        city: currentUserContactInfo?.city,
-        state: currentUserContactInfo?.state,
-        postcode: currentUserContactInfo?.postcode,
-        companyName: currentUserContactInfo?.company_name,
-        companyHQLocation: currentUserContactInfo?.company_HQ_Location
+        firstName: contactInfo?.first_name,
+        lastName: contactInfo?.last_name,
+        country: contactInfo?.country,
+        streetAddress: contactInfo?.street_address,
+        city: contactInfo?.city,
+        state: contactInfo?.state,
+        postcode: contactInfo?.postcode,
+        companyName: contactInfo?.company_name,
+        companyHQLocation: contactInfo?.company_HQ_location
       }
     });
+
+  const first_name = contactInfo?.first_name || '';
+  const _email = user?.email || '';
+  const last_name = contactInfo?.last_name || '';
+  const _country = contactInfo?.country || '';
+  const street_address = contactInfo?.street_address || '';
+  const _city = contactInfo?.city || '';
+  const _state = contactInfo?.state || '';
+  const _postcode = contactInfo?.postcode || '';
+  const company_name = contactInfo?.company_name || '';
+  const company_HQ_location = contactInfo?.company_HQ_location || '';
+
+  React.useEffect(() => {
+    setValue('firstName', first_name);
+    setValue('email', _email);
+    setValue('lastName', last_name);
+    setValue('country', _country);
+    setValue('streetAddress', street_address);
+    setValue('city', _city);
+    setValue('state', _state);
+    setValue('postcode', _postcode);
+    setValue('companyName', company_name);
+    setValue('companyHQLocation', company_HQ_location);
+  }, [user]);
 
   const { isDirty, errors } = formState;
 
@@ -92,7 +99,6 @@ const PersonalInformationForm = () => {
     const updatedData = {
       first_name: data.firstName,
       last_name: data.lastName,
-      email: data.email,
       country: data.country,
       street_address: data.streetAddress,
       city: data.city,
@@ -104,7 +110,11 @@ const PersonalInformationForm = () => {
 
     // @ts-ignore
     setCurrentUserContactInfo(curr => {
-      return { ...curr, user: { contact_information: updatedData } };
+      return {
+        ...curr,
+        user: { ...curr.user, contact_information: updatedData, name: `${data.firstName} ${data.lastName}`, email: data.email }
+        
+      }
     });
   };
 
@@ -127,8 +137,8 @@ const PersonalInformationForm = () => {
                 label={t('forms.personal.first_name')}
                 className={formClassName}
               />
-              {errors.lastName && (
-                <ErrorMessage text={`${t('errors.first_name')}`} />
+              {errors.firstName && (
+                <ErrorMessage text={`${t('errors.first name')}`} />
               )}
             </div>
 
@@ -214,8 +224,8 @@ const PersonalInformationForm = () => {
             <div className="col-span-6 sm:col-span-6 lg:col-span-4">
               <Select
                 {...register('companyHQLocation')}
+                label={t('forms.personal.company headquarters')}
                 options={countries}
-                label={t('forms.personal.company_headquarters')}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />

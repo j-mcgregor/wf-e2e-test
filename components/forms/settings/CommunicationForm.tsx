@@ -5,12 +5,7 @@ import CheckboxInput from '../../elements/Checkbox';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import { useTranslations } from 'next-intl';
 import Button from '../../elements/Button';
-import {
-  RecoilValueReadOnly,
-  selector,
-  useRecoilValue,
-  useSetRecoilState
-} from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import appState from '../../../lib/appState';
 
 interface CommunicationFormInput {
@@ -22,17 +17,7 @@ interface CommunicationFormInput {
 //====================== COMPONENT ========================
 
 const CommunicationForm = () => {
-  const currentUser: RecoilValueReadOnly<{} | undefined> = selector({
-    key: 'currentUserContactInfoState',
-    get: ({ get }) => {
-      const user = get(appState).user;
-      // @ts-ignore
-      return user.preferences.communication;
-    }
-  });
-
-  const currentUserCommsInfo = useRecoilValue(currentUser);
-  // const test = useRecoilValue(appState);
+  const { user } = useRecoilValue(appState);
   const setCurrentUserCommsInfo = useSetRecoilState(appState);
 
   //====================== translate ========================
@@ -41,18 +26,42 @@ const CommunicationForm = () => {
 
   //====================== form ========================
 
-  const { register, handleSubmit, formState } = useForm<CommunicationFormInput>(
-    { defaultValues: currentUserCommsInfo }
-  );
+  const { register, handleSubmit, formState, setValue } =
+    useForm<CommunicationFormInput>({
+      defaultValues: user?.preferences?.communication
+    });
+
+  const _offers = user?.preferences?.communication?.offers || false;
+  const _candidates = user?.preferences?.communication?.candidates || false;
+  const _comments = user?.preferences?.communication?.comments || false;
+
+  React.useEffect(() => {
+    setValue('offers', _offers);
+    setValue('candidates', _candidates);
+    setValue('comments', _comments);
+  }, [user]);
+
   const { isDirty } = formState;
   const onSubmit: SubmitHandler<CommunicationFormInput> = data => {
     // eslint-disable-next-line no-console
     console.log({ data });
     // @ts-ignore
     setCurrentUserCommsInfo(curr => {
-      return { ...curr, user: { preferences: { communication: data } } };
+      return {
+        ...curr,
+        user: {
+          ...curr.user,
+          preferences: {
+            ...curr.user?.preferences,
+            communication: data
+          }
+        }
+      };
     });
   };
+
+  // console.log({ user });
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">

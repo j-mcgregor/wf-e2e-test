@@ -38,6 +38,7 @@ const Layout = ({
 
   const setState = useSetRecoilState(appState);
   const { user } = useRecoilValue(appState);
+  
   React.useEffect(() => {
     if (session && session.user && !user) {
       // @ts-ignore
@@ -47,6 +48,8 @@ const Layout = ({
   }, [session, setState]);
 
   if (!noAuthRequired && loading) return <SkeletonLayout noNav={noNav} />;
+
+  // console.log({ layout: state.user?.contact_information });
 
   return (
     <div>

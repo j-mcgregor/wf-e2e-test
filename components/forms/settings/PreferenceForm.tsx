@@ -6,14 +6,9 @@ import { useTranslations } from 'next-intl';
 
 import Button from '../../elements/Button';
 import localisationJSON from '../../../lib/data/localisation.json';
-import {
-  RecoilValue,
-  selector,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState
-} from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import appState from '../../../lib/appState';
+import mockUsers from '../../../lib/mock-data/users';
 
 interface PreferenceFormInput {
   localisation: string;
@@ -54,73 +49,84 @@ const options = (t: any) => {
 
 //====================== COMPONENT ========================
 
-interface preferencesProps {
-  localisation: string;
-  default_currency: string;
-  default_login_screen: string;
-  default_reporting_country: string;
-}
-
 const PreferenceForm = () => {
-  const currentUser: RecoilValue<preferencesProps | undefined> = selector({
-    key: 'currentUserContactInfoState',
-    get: ({ get }) => {
-      const user = get(appState).user;
-      // @ts-ignore
-      // let {
-      //   localisation,
-      //   default_currency,
-      //   default_login_screen,
-      //   default_reporting_country
-      // } =
-      // return {
-      //   localisation,
-      //   default_currency,
-      //   default_login_screen,
-      //   default_reporting_country
-      // };
-      return user.preferences;
-    }
-  });
-  const currentUserPrefsInfo = useRecoilValue(currentUser);
-  const test = useRecoilValue(appState);
-  const setCurrentUserPrefsInfo = useSetRecoilState(appState);
+  const { user } = useRecoilValue(appState);
+  const setCurrentUserPrefs = useSetRecoilState(appState);
+
   //====================== translate ========================
 
   const t = useTranslations();
 
-  const { register, handleSubmit, formState } = useForm<PreferenceFormInput>({
-    defaultValues: {
-      localisation: currentUserPrefsInfo?.localisation,
-      currency: currentUserPrefsInfo?.default_currency,
-      reporting: currentUserPrefsInfo?.default_reporting_country,
-      loginScreen: currentUserPrefsInfo?.default_login_screen
-    }
-  });
+  const { register, handleSubmit, formState, setValue } =
+    useForm<PreferenceFormInput>({
+      defaultValues: {
+        localisation: user?.preferences?.localisation,
+        currency: user?.preferences?.default_currency,
+        reporting: user?.preferences?.default_reporting_country,
+        loginScreen: user?.preferences?.default_login_screen
+      }
+    });
   const { isDirty, isValid } = formState;
 
-  //====================== form ========================
+  const localisation = user?.preferences?.localisation || '';
+  const default_currency = user?.preferences?.default_currency || '';
+  const default_reporting_country =
+    user?.preferences?.default_reporting_country || '';
+  const default_login_screen = user?.preferences?.default_login_screen || '';
 
+  React.useEffect(() => {
+    setValue('localisation', localisation);
+    setValue('currency', default_currency);
+    setValue('reporting', default_reporting_country);
+    setValue('loginScreen', default_login_screen);
+  }, [user]);
+
+  //====================== form ========================
   const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
-    // eslint-disable-next-line no-console
-    console.log({ data });
     // @ts-ignore
-    setCurrentUserPrefsInfo(curr => {
-      return { ...curr, user: { preferences: data } };
+    setCurrentUserPrefs(currentUser => {
+      const {
+        localisation,
+        currency: default_currency,
+        loginScreen: default_login_screen,
+        reporting: default_reporting_country
+      } = data;
+
+      const newPrefs = {
+        localisation,
+        default_currency,
+        default_login_screen,
+        default_reporting_country
+      };
+      return {
+        ...currentUser,
+        user: {
+          ...currentUser.user,
+          preferences: newPrefs,
+          ...currentUser.user?.preferences?.communication
+        }
+      };
     });
   };
-  // import {todoListState} from "../atoms/todoListState";
-  //
-  // const TodoResetButton = () => {
-  //   const resetList = useResetRecoilState(todoListState);
-  //   return <button onClick={resetList}>Reset</button>;
-  // };
+
+  const userTest = 'test@test.com';
   const ResetPrefs = () => {
-    // @ts-ignore
-    const resetPrefs = useResetRecoilState(appState);
+    const resetState = () => {
+      // @ts-ignore
+      setCurrentUserPrefs({
+        ...mockUsers[userTest],
+        // @ts-ignore
+        user: {
+          ...mockUsers[userTest],
+          preferences: mockUsers[userTest].preferences,
+          ...mockUsers[userTest].preferences.communication
+        }
+      });
+    };
+
     return (
       <Button
-        onClick={() => resetPrefs}
+        onClick={() => resetState()}
         disabled={!isDirty || !isValid}
         type="submit"
         variant="primary"
@@ -130,7 +136,10 @@ const PreferenceForm = () => {
       </Button>
     );
   };
-  // console.log({ test });
+
+  //Demos before and after effects of reset/submit
+  // console.log({ user: user?.preferences, dave: user });
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">

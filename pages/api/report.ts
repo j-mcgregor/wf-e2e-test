@@ -35,7 +35,7 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
   // @ts-ignore
   // eslint-disable-next-line security/detect-object-injection
   const user = mockUsers[email];
-  const report = user.reports.find(
+  const report = user?.reports?.find(
     (report: Report) => report.id === Number(reportId)
   );
 

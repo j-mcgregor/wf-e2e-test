@@ -21,7 +21,6 @@ export default function Dashboard() {
   const t = useTranslations();
 
   const { user } = useRecoilValue(appState);
-
   return (
     <Layout title="Dashboard">
       <div className="grid grid-cols-7 gap-x-4 text-primary">
@@ -30,7 +29,7 @@ export default function Dashboard() {
             <p className="text-base h-6 md:-mt-6">{t('welcome_back')}</p>
 
             <div className="flex justify-between">
-              <h1 className="text-2xl font-semibold">{user && user.name}</h1>
+              <h1 className="text-2xl font-semibold">{user && user.full_name}</h1>
               <p className="font-semibold">{t('last_7_days')}</p>
             </div>
           </div>
@@ -40,11 +39,11 @@ export default function Dashboard() {
             stats={[
               {
                 header: t('total_reports'),
-                data: user?.recent_usage?.reports_ran
+                data: user?.recent_usage?.reports_ran || 0
               },
               {
                 header: t('api_requests'),
-                data: user?.recent_usage?.api_requests
+                data: user?.recent_usage?.api_requests || 0
               },
               {
                 header: t('last_login'),
@@ -54,7 +53,7 @@ export default function Dashboard() {
             ]}
           />
           <ReportTable
-            reports={user?.reports}
+            reports={user?.reports || []}
             limit={5}
             shadow={true}
             borders={true}

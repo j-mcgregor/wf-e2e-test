@@ -12,7 +12,8 @@
     "test:watch": "jest --runInBand --watchAll",
     "test:coverage": "yarn jest --coverage ",
     "clean": "rm -rf node_modules coverage .next",
-    "commit-cli": "git-cz"
+    "commit": "git-cz",
+    "prepare": "husky install && next telemetry disable"
   },
   "husky": {
     "hooks": {
