@@ -38,7 +38,7 @@ const countries = countryJSON.map(value => {
 const PersonalInformationForm = () => {
   const { user } = useRecoilValue(appState);
   const setCurrentUserContactInfo = useSetRecoilState(appState);
-  const contactinfo = user?.contact_information;
+  const contactInfo = user?.contact_information;
 
   //====================== translate ========================
   const t = useTranslations();
@@ -47,29 +47,29 @@ const PersonalInformationForm = () => {
   const { register, handleSubmit, formState, setValue } =
     useForm<PersonalInformationFormInput>({
       defaultValues: {
-        firstName: contactinfo?.first_name,
-        lastName: contactinfo?.last_name,
-        email: contactinfo?.email,
-        country: contactinfo?.country,
-        streetAddress: contactinfo?.street_address,
-        city: contactinfo?.city,
-        state: contactinfo?.state,
-        postcode: contactinfo?.postcode,
-        companyName: contactinfo?.company_name,
-        companyHQLocation: contactinfo?.company_HQ_location
+        firstName: contactInfo?.first_name,
+        lastName: contactInfo?.last_name,
+        email: contactInfo?.email,
+        country: contactInfo?.country,
+        streetAddress: contactInfo?.street_address,
+        city: contactInfo?.city,
+        state: contactInfo?.state,
+        postcode: contactInfo?.postcode,
+        companyName: contactInfo?.company_name,
+        companyHQLocation: contactInfo?.company_HQ_location
       }
     });
 
-  const first_name = contactinfo?.first_name || '';
-  const _email = contactinfo?.email || '';
-  const last_name = contactinfo?.last_name || '';
-  const _country = contactinfo?.country || '';
-  const street_address = contactinfo?.street_address || '';
-  const _city = contactinfo?.city || '';
-  const _state = contactinfo?.state || '';
-  const _postcode = contactinfo?.postcode || '';
-  const company_name = contactinfo?.company_name || '';
-  const company_HQ_location = contactinfo?.company_HQ_location || '';
+  const first_name = contactInfo?.first_name || '';
+  const _email = contactInfo?.email || '';
+  const last_name = contactInfo?.last_name || '';
+  const _country = contactInfo?.country || '';
+  const street_address = contactInfo?.street_address || '';
+  const _city = contactInfo?.city || '';
+  const _state = contactInfo?.state || '';
+  const _postcode = contactInfo?.postcode || '';
+  const company_name = contactInfo?.company_name || '';
+  const company_HQ_location = contactInfo?.company_HQ_location || '';
 
   React.useEffect(() => {
     setValue('firstName', first_name);
@@ -111,7 +111,7 @@ const PersonalInformationForm = () => {
       };
     });
   };
-  // console.log({ user });
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">
