@@ -39,6 +39,9 @@ import CorporateOverview from '../../components/report-sections/corporate-govern
 import ShareHolderList from '../../components/report-sections/corporate-governance/ShareHolderList';
 import ShareHoldingCard from '../../components/report-sections/corporate-governance/ShareHoldingCard';
 import ESGCard from '../../components/report-sections/esg-assessment/ESGCard';
+import FinancialTrends from '../../components/report-sections/financial-trends/FinancialTrends';
+
+import { multiGraphData } from '../../lib/mock-data/charts';
 
 interface ReportDataProps {
   created_at?: string;
@@ -103,11 +106,11 @@ const ReportTemplate = () => {
         navigation={
           data?.company_name && (
             <>
-                <ReportNav companyName={data?.company_name} loading={!data} />
-                <TabletReportNav
-                  companyName={data?.company_name}
-                  loading={!data}
-                />
+              <ReportNav companyName={data?.company_name} loading={!data} />
+              <TabletReportNav
+                companyName={data?.company_name}
+                loading={!data}
+              />
             </>
           )
         }
@@ -244,6 +247,7 @@ const ReportTemplate = () => {
 
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
               <ReportSectionHeader text={t('financial trends')} />
+              <FinancialTrends data={multiGraphData} />
             </HashContainer>
 
             <HashContainer

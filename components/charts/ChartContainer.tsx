@@ -14,9 +14,9 @@ const ChartContainer = ({
 }: ChartContainerProps) => {
   return (
     <VictoryChart
-      maxDomain={{ y: 1000 }}
+      maxDomain={{ y: 800 }}
       height={250}
-      width={350}
+      width={200}
       theme={theme}
       containerComponent={
         <VictoryVoronoiContainer
