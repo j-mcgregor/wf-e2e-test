@@ -24,8 +24,9 @@ const MacroEconomicTrends = ({ data }: MacroEconomicTrendsProps) => {
 
   return (
     <div className="grid md:grid-cols-2 gap-2">
-      {chartsToRender.map(chart => (
+      {chartsToRender.map((chart, index) => (
         <Chart
+          key={index}
           title={chart.title}
           subtitle={chart.subHeader}
           data={chart.data}

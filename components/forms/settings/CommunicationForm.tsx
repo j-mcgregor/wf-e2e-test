@@ -44,7 +44,7 @@ const CommunicationForm = () => {
   const { isDirty } = formState;
   const onSubmit: SubmitHandler<CommunicationFormInput> = data => {
     // eslint-disable-next-line no-console
-    console.log({ data });
+    // console.log({ data });
     // @ts-ignore
     setCurrentUserCommsInfo(curr => {
       return {

@@ -24,7 +24,7 @@ import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook
 import LegalEvents from '../../components/report-sections/legal-events/LegalEvents';
 import ReportHeader from '../../components/report-sections/ReportHeader';
 import BondRating from '../../components/report-sections/risk-metrics/BondRating';
-import InfoPopover from '../../components/report-sections/risk-metrics/InfoPopover';
+import InfoPopover from '../../components/elements/InfoPopover';
 import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
 import SummaryDetails from '../../components/report-sections/summary/SummaryDetails';
 import SummaryFinancial from '../../components/report-sections/summary/SummaryFinancial';
@@ -32,6 +32,7 @@ import SummaryMap from '../../components/report-sections/summary/SummaryMap';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
 import fetcher from '../../lib/utils/fetcher';
+import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
 import {
   FinancialYear,
   LegalEvent,

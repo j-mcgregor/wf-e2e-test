@@ -112,10 +112,10 @@ const ChartMulti = ({ graphData, header, subHeader }: ChartMultiProps) => {
 
           const border =
             company.name === 'Industry Benchmark'
-              ? `border-[#278EC8]`
+              ? `border-2  border-[#278EC8]`
               : company.name === 'Region Benchmark'
-              ? `border-[#2BAD01]`
-              : `border-[#022D45]`;
+              ? `border-2  border-[#2BAD01]`
+              : `border-2  border-[#022D45]`;
 
           return !company.data.length ? (
             <button
@@ -136,7 +136,7 @@ const ChartMulti = ({ graphData, header, subHeader }: ChartMultiProps) => {
             >
               <div
                 className={`${
-                  selectedCompany !== i ? `border-2 ${border}` : `${bg}`
+                  selectedCompany !== i ? border : bg
                 } w-4 h-4 mx-2`}
               />
               <p>{company.name}</p>
