@@ -29,8 +29,8 @@ const Chart = ({ title, subtitle, data }: ChartProps) => {
 
       <div onMouseLeave={() => setToolTipValue(null)}>
         <ChartContainer
-          height={350}
-          width={600}
+          height={250}
+          width={400}
           max={1000}
           tooltipValue={toolTipValue}
           handleSetTooltip={setToolTipValue}
@@ -47,7 +47,7 @@ const Chart = ({ title, subtitle, data }: ChartProps) => {
           <VictoryScatter
             data={data}
             size={3}
-            style={{ data: { fill: darkBlue }, labels: { fontSize: 14 } }}
+            style={{ data: { fill: darkBlue } }}
             labels={({ datum }) => (toolTipValue !== datum.y ? datum.y : null)}
           />
         </ChartContainer>
