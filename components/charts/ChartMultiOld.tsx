@@ -1,22 +1,12 @@
 import { useState, useEffect } from 'react';
 import { VictoryArea, VictoryScatter, VictoryGroup } from 'victory';
 import ChartContainer from './ChartContainer';
-import { InformationCircleIcon } from '@heroicons/react/outline';
-import { MultiGraphDataType } from '../../types/charts';
-import Button from '../elements/Button';
-import { TranslateInput } from '../../types/global';
 
-interface ChartMultiProps {
-  graphData: MultiGraphDataType[];
-  header: TranslateInput;
-  subHeader: TranslateInput;
-  hintTitle?: TranslateInput;
-  hintBody?: TranslateInput;
-}
+import { graphData, GraphDataType } from './data';
 
-const ChartMulti = ({ graphData, header, subHeader }: ChartMultiProps) => {
-  const [data, setData] = useState<MultiGraphDataType[] | null>(null);
-  const [selectedCompany, setSelectedCompany] = useState<number | null>(0);
+const ChartMulti = () => {
+  const [data, setData] = useState<GraphDataType[] | null>();
+  const [selectedCompany, setSelectedCompany] = useState<number | null>(null);
   const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 
   useEffect(() => {
@@ -32,25 +22,13 @@ const ChartMulti = ({ graphData, header, subHeader }: ChartMultiProps) => {
   };
 
   return (
-    <div className="shadow rounded-sm bg-white flex flex-col">
-      <div className="flex justify-between items-start p-4 text-xs">
-        <div>
-          <p className="font-bold pb-2">{header}</p>
-          <p className="opacity-70">{subHeader}</p>
-        </div>
-
-        <Button variant="none" newClassName="w-6 h-6">
-          <InformationCircleIcon />
-        </Button>
-      </div>
+    // <div className="w-screen flex justify-center  bg-bg">
+    <div className="w-1/2 shadow rounded-sm bg-white flex flex-col">
       <ChartContainer
-        height={250}
-        width={200}
-        max={800}
         tooltipValue={toolTipValue}
         handleSetTooltip={setToolTipValue}
       >
-        <VictoryGroup style={{ data: { strokeWidth: 1.5 } }}>
+        <VictoryGroup style={{ data: { strokeWidth: 1 } }}>
           {data?.map(
             (company, i) =>
               company.data.length > 0 && (
@@ -101,42 +79,35 @@ const ChartMulti = ({ graphData, header, subHeader }: ChartMultiProps) => {
         </VictoryGroup>
       </ChartContainer>
 
-      <div className="flex flex-col text-xs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
+      <div className="flex flex-col text-xs items-start px-8 pb-12 w-full justify-between text-primary">
         {data?.map((company, i) => {
-          const bg =
+          const keyColor =
             company.name === 'Industry Benchmark'
-              ? `bg-[#278EC8]`
+              ? '#278EC8'
               : company.name === 'Region Benchmark'
-              ? `bg-[#2BAD01]`
-              : `bg-[#022D45]`;
-
-          const border =
-            company.name === 'Industry Benchmark'
-              ? `border-[#278EC8]`
-              : company.name === 'Region Benchmark'
-              ? `border-[#2BAD01]`
-              : `border-[#022D45]`;
+              ? '#2BAD01'
+              : '#022D45';
 
           return !company.data.length ? (
             <button
               disabled
               key={i}
-              className={`flex items-center py-1 justify-start w-full cursor-default opacity-50`}
+              className={` flex items-center py-1 justify-start w-full opacity-40 cursor-default`}
             >
-              <div className={`border-2 ${border} w-4 h-4 mx-2`} />
+              <div className={`border-2 border-[${keyColor}] w-4 h-4 mx-2`} />
               <p>{company.name}</p>
             </button>
           ) : (
             <button
               key={i}
               onClick={() => setSelectedCompany(i)}
-              className={`${
-                selectedCompany === i && 'font-bold'
-              } flex items-center py-1 justify-start w-full`}
+              className={` flex items-center py-1 justify-start w-full`}
             >
               <div
                 className={`${
-                  selectedCompany !== i ? `border-2 ${border}` : `${bg}`
+                  selectedCompany !== i
+                    ? `border-2 border-[${keyColor}]`
+                    : `bg-[${keyColor}]`
                 } w-4 h-4 mx-2`}
               />
               <p>{company.name}</p>
@@ -145,6 +116,7 @@ const ChartMulti = ({ graphData, header, subHeader }: ChartMultiProps) => {
         })}
       </div>
     </div>
+    // </div>
   );
 };
 

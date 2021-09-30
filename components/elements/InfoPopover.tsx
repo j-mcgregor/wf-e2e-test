@@ -1,11 +1,11 @@
 import { Popover } from '@headlessui/react';
-import { TranslateInput } from '../../../types/global';
-import InfoIcon from '../../icons/InfoIcon';
+import { TranslateInput } from '../../types/global';
+import InfoIcon from '../icons/InfoIcon';
 
 export type InfoPopoverProps = {
   title: TranslateInput;
   body: TranslateInput;
-}
+};
 const InfoPopover = ({ title, body }: InfoPopoverProps) => {
   return (
     <Popover className="relative z-20">

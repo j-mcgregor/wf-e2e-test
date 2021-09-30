@@ -41,22 +41,29 @@ const LegalRow = ({ types, description, details, date }: LegalEvent) => {
       </div>
       {details && dropdownOpen && (
         <div className="w-full my-2">
-          {details.map((detail,index) => {
+          {details.map((detail, index) => {
             return (
-              <div key={index} className="flex flex-wrap justify-between bg-bg rounded my-2 ">
+              <div
+                key={index}
+                className="flex flex-wrap justify-between bg-bg rounded my-2 "
+              >
                 {Object.entries(detail).map(keyValueArray => {
-                  const header = camelCaseToSentenceCase(keyValueArray[0])
-                  const description = keyValueArray[1] ? camelCaseToSentenceCase(keyValueArray[1]) : 'N/A'
+                  const header = camelCaseToSentenceCase(keyValueArray[0]);
+                  const description = keyValueArray[1]
+                    ? camelCaseToSentenceCase(keyValueArray[1])
+                    : 'N/A';
                   return (
-                  <div key={header}className={`flex flex-col px-6 py-4 ${description?.length > 30 ? 'w-full' : 'w-1/2'} lg:w-auto`}>
-                    <p className="py-1">{header}</p>
-                    <p
-                      className={`font-semibold`}
+                    <div
+                      key={header}
+                      className={`flex flex-col px-6 py-4 ${
+                        description?.length > 30 ? 'w-full' : 'w-1/2'
+                      } lg:w-auto`}
                     >
-                     {description}
-                    </p>
-                  </div>
-                )})}
+                      <p className="py-1">{header}</p>
+                      <p className={`font-semibold`}>{description}</p>
+                    </div>
+                  );
+                })}
               </div>
             );
           })}

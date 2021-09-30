@@ -1,5 +1,9 @@
 # Custom Dictionary Words
 boxplot
+Deby
+ebit
+EBITDA
+EBTIDA
 linkedin
 svgs
 Tofive

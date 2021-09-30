@@ -41,7 +41,12 @@ import {
   SummaryContact,
   SummaryInfo
 } from '../../types/report';
-import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
+
+import FinancialTrends from '../../components/report-sections/financial-trends/FinancialTrends';
+
+import MacroEconomicTrends from '../../components/report-sections/macro-economic-trends/MacroEconomicTrends';
+
+import { multiGraphData, macroTrendData } from '../../lib/mock-data/charts';
 
 export interface ReportDataProps {
   id: string | number;
@@ -72,7 +77,7 @@ const ReportTemplate = () => {
   const t = useTranslations();
   const router = useRouter();
 
-  const { id=[] } = router.query;
+  const { id = [] } = router.query;
 
   const { data, error } = useSWR<ReportDataProps>(
     `/api/report?id=${id}`,
@@ -121,7 +126,11 @@ const ReportTemplate = () => {
           <div className="text-primary mt-10 lg:mt-0">
             <div className="py-8">
               <h1 className="text-xl pb-4">{t('risk_assessment_report')}</h1>
-              <ReportHeader company={data?.company_name} created={created} reportId={id[0]}/>
+              <ReportHeader
+                company={data?.company_name}
+                created={created}
+                reportId={id[0]}
+              />
             </div>
             <HashContainer name={'Summary'} id={`summary-id`}>
               <ReportSectionHeader text={t('summary')} />
@@ -246,7 +255,8 @@ const ReportTemplate = () => {
               </div>
             </HashContainer>
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
-              <ReportSectionHeader text={t('financial_trends')} />
+              <ReportSectionHeader text={t('financial trends')} />
+              <FinancialTrends data={multiGraphData} />
             </HashContainer>
             _
             <HashContainer
@@ -283,7 +293,8 @@ const ReportTemplate = () => {
               name={'Macro Economic Trends'}
               id={`macro-economic-trends-id`}
             >
-              <ReportSectionHeader text={t('macro_economic_trends')} />
+              <ReportSectionHeader text={t('macro economic trends')} />
+              <MacroEconomicTrends trends={macroTrendData} />
             </HashContainer>
             <HashContainer name={'ESG'} id={`esg-id`}>
               <ReportSectionHeader text={t('esg')} />
