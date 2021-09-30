@@ -1,3 +1,5 @@
 export const UNAUTHORISED = "UNAUTHORISED"
-export const NO_ID = "NO_ID"
+export const NO_REPORT_ID = "NO_ID"
 export const NO_REPORT = "NO_REPORT"
+export const GENERIC_API_ERROR = "GENERIC_API_ERROR"
+export const VALID_EMAIL_REQUIRED = "VALID_EMAIL_REQUIRED"

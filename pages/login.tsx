@@ -7,40 +7,48 @@ import Logo from '../components/elements/Logo';
 import LoginForm from '../components/forms/login/LoginForm';
 import LoginSSO from '../components/forms/login/LoginSSO';
 import Layout from '../components/layout/Layout';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/client';
 
 const Login = () => {
   const t = useTranslations();
+  const router = useRouter();
+
+  const [session, loading] = useSession();
+  if (!loading && session) router.push('/');
 
   return (
     <Layout noNav={true} title="Login" noAuthRequired={true}>
-      <LoginContainer>
-        <div>
-          <Logo />
-          <div>
-            <div className="bg-secondary">
-              <h1 className="text-xl md:text-3xl font-bold py-3">
-                {t('sign_into_account')}
-              </h1>
-              <p className="text-sm text-highlight">
-                {t('register_for_demo', {
-                  a: function Linked(children: React.ReactNode) {
-                    return (
-                      <Link
-                        className="text-highlight"
-                        linkTo="https://wiserfunding.com/free-trial"
-                      >
-                        {children}
-                      </Link>
-                    );
-                  }
-                })}
-              </p>
+     
+        <LoginContainer>
+        {!loading && !session && ( <div>
+            <Logo />
+            <div>
+              <div className="bg-secondary">
+                <h1 className="text-xl md:text-3xl font-bold py-3">
+                  {t('sign_into_account')}
+                </h1>
+                <p className="text-sm text-highlight">
+                  {t('register_for_demo', {
+                    a: function Linked(children: React.ReactNode) {
+                      return (
+                        <Link
+                          className="text-highlight"
+                          linkTo="https://wiserfunding.com/free-trial"
+                        >
+                          {children}
+                        </Link>
+                      );
+                    }
+                  })}
+                </p>
+              </div>
             </div>
-          </div>
-          <LoginSSO />
-          <LoginForm />
-        </div>
-      </LoginContainer>
+            <LoginSSO />
+            <LoginForm />
+          </div> )}
+        </LoginContainer>
+     
     </Layout>
   );
 };

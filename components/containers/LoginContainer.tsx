@@ -36,11 +36,13 @@ const LoginContainer = ({ children }: LoginProps) => {
       />
 
       {/* w-11/12 md:w-136 bg-black text-white flex flex-col mx-auto px-10 md:px-20 py-14 */}
-      <div className="z-20 w-full px-2">
-        <div className="w-full sm:max-w-xl bg-black text-white flex mx-auto flex-col px-12 sm:px-20 py-6 sm:py-14 sm:text-left my-4">
-          {children}
+      {children && (
+        <div className="z-20 w-full px-2">
+          <div className="w-full sm:max-w-xl bg-black text-white flex mx-auto flex-col px-12 sm:px-20 py-6 sm:py-14 sm:text-left my-4">
+            {children}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
