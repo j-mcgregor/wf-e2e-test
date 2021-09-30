@@ -22,11 +22,7 @@ describe('PasswordReset', () => {
 
   it('render the form without issue', () => {
     expect(() =>
-      render(
-        <PasswordReset email="batman@wayneindustries.com" isValid />,
-        {},
-        allMessages
-      )
+      render(<PasswordReset token="1234" isValid />, {}, allMessages)
     ).not.toThrow();
   });
 });

@@ -9,7 +9,7 @@ jest.mock('next-auth/client');
 
 // @ts-ignore
 // eslint-disable-next-line no-import-assign
-nextRouter.useRouter = jest.fn().mockImplementation(() => ({}));
+nextRouter.useRouter = jest.fn().mockImplementation(() => ({ push: x => x }));
 
 describe('LoginPage', () => {
   let mockSession: any;

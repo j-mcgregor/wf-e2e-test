@@ -30,7 +30,9 @@ const ForgotPasswordForm = () => {
   const onSubmit = async (data: FormValues) => {
     try {
       // absolute URLs necessary for tests
-      const res = await fetch(`${config.URL}/api/password-reset?email=${data.email}`);
+      const res = await fetch(
+        `${config.URL}/api/password-reset?email=${data.email}`
+      );
 
       const body = await res.json();
 
@@ -38,12 +40,12 @@ const ForgotPasswordForm = () => {
         return setSubmittedState(true);
       }
       if (body.error) {
-        return setSubmitError({ type: body.error});
+        return setSubmitError({ type: body.error });
       }
-      return setSubmitError({ type: GENERIC_API_ERROR})
+      return setSubmitError({ type: GENERIC_API_ERROR });
     } catch (e) {
       // log the details of the error to the logger
-      return setSubmitError({ type: GENERIC_API_ERROR});
+      return setSubmitError({ type: GENERIC_API_ERROR });
     }
   };
 
@@ -79,12 +81,16 @@ const ForgotPasswordForm = () => {
                 {errors.email?.type === 'pattern' && (
                   <ErrorMessage text={t('VALID_EMAIL_REQUIRED')} />
                 )}
-                {submitError.type && (
+                {submitError.type === GENERIC_API_ERROR && (
                   <ErrorMessage text={t('GENERIC_API_ERROR')} />
                 )}
               </div>
               <div className="mt-6">
-                <Button variant="highlight" type="submit" loading={isSubmitting}>
+                <Button
+                  variant="highlight"
+                  type="submit"
+                  loading={isSubmitting}
+                >
                   {t('reset_password')}
                 </Button>
               </div>
