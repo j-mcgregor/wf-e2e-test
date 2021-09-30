@@ -41,8 +41,9 @@ import ShareHoldingCard from '../../components/report-sections/corporate-governa
 import ESGCard from '../../components/report-sections/esg-assessment/ESGCard';
 import FinancialTrends from '../../components/report-sections/financial-trends/FinancialTrends';
 
-import { multiGraphData } from '../../lib/mock-data/charts';
 import MacroEconomicTrends from '../../components/report-sections/macro-economic-trends/MacroEconomicTrends';
+
+import { multiGraphData, macroTrendData } from '../../lib/mock-data/charts';
 
 interface ReportDataProps {
   created_at?: string;
@@ -288,7 +289,7 @@ const ReportTemplate = () => {
               id={`macro-economic-trends-id`}
             >
               <ReportSectionHeader text={t('macro economic trends')} />
-              <MacroEconomicTrends />
+              <MacroEconomicTrends trends={macroTrendData} />
             </HashContainer>
 
             <HashContainer name={'ESG'} id={`esg-id`}>

@@ -1,16 +1,16 @@
 import Chart from '../../charts/Chart';
 
-import { macroTrendData } from '../../../lib/mock-data/charts';
+import { MacroTrend } from '../../../lib/mock-data/charts';
 
-console.log(macroTrendData);
-
-const MacroEconomicTrends = () => {
+interface MacroEconomicTrendsProps {
+  trends: MacroTrend[];
+}
+const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
   return (
     <div className="grid md:grid-cols-2 gap-2">
-      <Chart title="GDP Growth Rate" subtitle="Quarterly" />
-      <Chart title="GDP Growth Rate" subtitle="Quarterly" />
-      <Chart title="GDP Growth Rate" subtitle="Quarterly" />
-      <Chart title="GDP Growth Rate" subtitle="Quarterly" />
+      {trends.map(trend => (
+        <Chart title={trend.title} subtitle={trend.period} data={trend.data} />
+      ))}
     </div>
   );
 };

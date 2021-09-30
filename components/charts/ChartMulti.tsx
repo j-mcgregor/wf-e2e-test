@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react';
 import { VictoryArea, VictoryScatter, VictoryGroup } from 'victory';
 import ChartContainer from './ChartContainer';
 import { InformationCircleIcon } from '@heroicons/react/outline';
-import { GraphDataType } from './data';
+import { MultiGraphData } from '../../lib/mock-data/charts';
 import Button from '../elements/Button';
 
 interface ChartMultiProps {
-  graphData: GraphDataType[];
+  graphData: MultiGraphData[];
   category: string;
   units: string;
 }
 
 const ChartMulti = ({ graphData, category, units }: ChartMultiProps) => {
-  const [data, setData] = useState<GraphDataType[] | null>(null);
+  const [data, setData] = useState<MultiGraphData[] | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<number | null>(0);
   const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 

@@ -1,8 +1,8 @@
-import { GraphDataType } from '../../../lib/mock-data/charts';
+import { GraphData } from '../../../lib/mock-data/charts';
 import ChartMulti from '../../charts/ChartMulti';
 
 interface FinancialTrendsProps {
-  data: GraphDataType[][]; // 2D array of arrays of objects
+  data: GraphData[][]; // 2D array of arrays of objects
 }
 
 const FinancialTrends = ({ data }: FinancialTrendsProps) => {

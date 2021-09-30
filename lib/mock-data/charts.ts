@@ -12,10 +12,11 @@ export const singleGraphData = [
 ];
 
 // new mock data to be fed into 'Macro Economic Trends' Chart components
+
 export const macroTrendData = [
   {
     title: 'GDP Growth Rate',
-    timeScale: 'Quarterly',
+    period: 'Quarterly',
     data: [
       { x: '2011', y: 304 },
       { x: '2012', y: 410 },
@@ -31,7 +32,7 @@ export const macroTrendData = [
   },
   {
     title: 'GDP  Annual Growth Rate',
-    timeScale: 'Quarterly',
+    period: 'Quarterly',
     data: [
       { x: '2011', y: 304 },
       { x: '2012', y: 410 },
@@ -47,7 +48,7 @@ export const macroTrendData = [
   },
   {
     title: 'GDP Per Capita',
-    timeScale: 'Yearly',
+    period: 'Yearly',
     data: [
       { x: '2011', y: 304 },
       { x: '2012', y: 410 },
@@ -63,7 +64,39 @@ export const macroTrendData = [
   },
   {
     title: 'Unemployment Rate',
-    timeScale: 'Yearly',
+    period: 'Yearly',
+    data: [
+      { x: '2011', y: 304 },
+      { x: '2012', y: 410 },
+      { x: '2013', y: 350 },
+      { x: '2014', y: 371 },
+      { x: '2015', y: 510 },
+      { x: '2016', y: 649 },
+      { x: '2017', y: 600 },
+      { x: '2018', y: 604 },
+      { x: '2019', y: 867 },
+      { x: '2020', y: 880 }
+    ]
+  },
+  {
+    title: 'Unemployment Rate',
+    period: 'Yearly',
+    data: [
+      { x: '2011', y: 304 },
+      { x: '2012', y: 410 },
+      { x: '2013', y: 350 },
+      { x: '2014', y: 371 },
+      { x: '2015', y: 510 },
+      { x: '2016', y: 649 },
+      { x: '2017', y: 600 },
+      { x: '2018', y: 604 },
+      { x: '2019', y: 867 },
+      { x: '2020', y: 880 }
+    ]
+  },
+  {
+    title: 'Unemployment Rate',
+    period: 'Yearly',
     data: [
       { x: '2011', y: 304 },
       { x: '2012', y: 410 },
@@ -274,16 +307,18 @@ export const multiGraphData = [
   ]
 ];
 
-export type CompanyDataType = {
-  name: string;
-  data: DataType[];
-};
-
-export type DataType = {
+export type DataPoint = {
   x: string;
   y: number;
 };
-export type GraphDataType = {
+
+export type MultiGraphData = {
   name: string;
-  data: DataType[];
+  data: DataPoint[];
+};
+
+export type MacroTrend = {
+  title: string;
+  period: string;
+  data: DataPoint[];
 };

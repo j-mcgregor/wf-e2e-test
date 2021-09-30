@@ -1,20 +1,18 @@
 import { useState } from 'react';
 import { VictoryArea, VictoryScatter } from 'victory';
-
 import ChartContainer from './ChartContainer';
 import { darkBlue } from './theme';
-import { company1 } from './data';
+import { DataPoint } from '../../lib/mock-data/charts';
 import { InformationCircleIcon } from '@heroicons/react/outline';
 import Button from '../elements/Button';
 
 interface ChartProps {
   title: string;
   subtitle: string;
+  data: DataPoint[];
 }
 
-const Chart = ({ title, subtitle }: ChartProps) => {
-  const company = company1;
-
+const Chart = ({ title, subtitle, data }: ChartProps) => {
   const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 
   return (
@@ -38,7 +36,7 @@ const Chart = ({ title, subtitle }: ChartProps) => {
           handleSetTooltip={setToolTipValue}
         >
           <VictoryArea
-            data={company}
+            data={data}
             interpolation="natural"
             labels={({ datum }) => datum.y}
             style={{
@@ -47,7 +45,7 @@ const Chart = ({ title, subtitle }: ChartProps) => {
             }}
           />
           <VictoryScatter
-            data={company}
+            data={data}
             size={3}
             style={{ data: { fill: darkBlue }, labels: { fontSize: 14 } }}
             labels={({ datum }) => (toolTipValue !== datum.y ? datum.y : null)}
