@@ -9,12 +9,10 @@ const APIDocumentation = () => {
     <Layout title="API Documentation">
       <h1 className="text-2xl">API Documentation </h1>
     </Layout>
-  )
-}
+  );
+};
 
-export default APIDocumentation
-
-
+export default APIDocumentation;
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
