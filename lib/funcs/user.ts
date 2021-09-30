@@ -1,10 +1,17 @@
+const XMLHeaders = {
+  'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+}
+const JSONHeaders = {
+  'Content-Type': 'application/json'
+}
+
 const authenticate = async (email: string, password: string) => {
   const res = await fetch(
-    'https://api.saggio-credito.co.uk/api/v1/login/access-token',
+    `${process.env.WF_AP_ROUTE}/login/access-token`,
     {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        ...XMLHeaders
       },
       body: new URLSearchParams({
         username: email,
@@ -24,10 +31,10 @@ const getUser = async (token: string) => {
   if (!token) {
     return false;
   }
-  const res = await fetch('https://api.saggio-credito.co.uk/api/v1/users/me', {
+  const res = await fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      ...XMLHeaders,
       Authorization: `Bearer ${token}`
     }
   });
@@ -39,6 +46,47 @@ const getUser = async (token: string) => {
   return null;
 };
 
-const User = { authenticate, getUser };
+const forgotPassword = async (email: string) => {
+  if (!email) {
+    return { ok: false};
+  }
+  const res = await fetch(`${process.env.WF_AP_ROUTE}/password-recovery/${email}`, {
+    method: 'POST',
+    headers: {
+      ...XMLHeaders
+    },
+  });
+
+  console.log(res)
+  if (res.ok) {
+    const { msg } = await res.json()
+    return { msg, ok: true}
+  }
+  return { ok: false};
+}
+
+
+const resetPassword = async (token: string, newPassword: string): Promise< ({msg?: string; ok?: boolean})> => {
+  if (!token || !newPassword) {
+    return { ok: false};
+  }
+
+  const res = await fetch(`${process.env.WF_AP_ROUTE}/reset-password/`, {
+    method: 'POST',
+    headers: {
+      ...JSONHeaders
+    },
+    body: JSON.stringify({ token, new_password: newPassword})
+  });
+
+  if (res.ok) {
+    const { msg } = await res.json()
+    return { msg, ok: true}
+  }
+  return { ok: false}
+}
+
+
+const User = { authenticate, getUser, resetPassword, forgotPassword };
 
 export default User;

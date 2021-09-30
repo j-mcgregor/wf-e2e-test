@@ -9,6 +9,7 @@ import Input from '../../elements/Input';
 import Link from '../../elements/Link';
 import Logo from '../../elements/Logo';
 import config from '../../../config';
+import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 
 type FormValues = {
   email: string;
@@ -18,38 +19,31 @@ const ForgotPasswordForm = () => {
   const t = useTranslations();
 
   const [submittedState, setSubmittedState] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
+  const [submitError, setSubmitError] = useState({ type: '' });
 
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm<FormValues>();
 
   const onSubmit = async (data: FormValues) => {
     try {
       // absolute URLs necessary for tests
-      const res = await fetch(`${config.URL}/api/password-reset`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ...data
-        })
-      });
+      const res = await fetch(`${config.URL}/api/password-reset?email=${data.email}`);
 
-      const d = await res.json();
+      const body = await res.json();
 
       if (res.ok) {
         return setSubmittedState(true);
       }
-
-      return setSubmitError(true);
+      if (body.error) {
+        return setSubmitError({ type: body.error});
+      }
+      return setSubmitError({ type: GENERIC_API_ERROR})
     } catch (e) {
       // log the details of the error to the logger
-
-      return setSubmitError(true);
+      return setSubmitError({ type: GENERIC_API_ERROR});
     }
   };
 
@@ -80,17 +74,17 @@ const ForgotPasswordForm = () => {
                 />
 
                 {errors.email?.type === 'required' && (
-                  <ErrorMessage text={t('errors.email_required')} />
+                  <ErrorMessage text={t('EMAIL_REQUIRED')} />
                 )}
                 {errors.email?.type === 'pattern' && (
-                  <ErrorMessage text={t('errors.valid_email')} />
+                  <ErrorMessage text={t('VALID_EMAIL_REQUIRED')} />
                 )}
-                {submitError && (
-                  <ErrorMessage text={t('errors.submit_error')} />
+                {submitError.type && (
+                  <ErrorMessage text={t('GENERIC_API_ERROR')} />
                 )}
               </div>
               <div className="mt-6">
-                <Button variant="highlight" type="submit">
+                <Button variant="highlight" type="submit" loading={isSubmitting}>
                   {t('reset_password')}
                 </Button>
               </div>

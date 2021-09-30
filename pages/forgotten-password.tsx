@@ -7,12 +7,15 @@ import Layout from '../components/layout/Layout';
 import { useTranslations } from 'next-intl';
 
 const ForgotPassword = () => {
-
-  const t = useTranslations()
+  const t = useTranslations();
   return (
-    <Layout noNav={true} title={`${t('forgotten_password')}`} noAuthRequired={true}>
+    <Layout
+      noNav={true}
+      title={`${t('forgotten_password')}`}
+      noAuthRequired={true}
+    >
       <LoginContainer>
-         <ForgotPasswordForm /> 
+        <ForgotPasswordForm />
       </LoginContainer>
     </Layout>
   );
