@@ -1,24 +1,21 @@
 const XMLHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-}
+};
 const JSONHeaders = {
   'Content-Type': 'application/json'
-}
+};
 
 const authenticate = async (email: string, password: string) => {
-  const res = await fetch(
-    `${process.env.WF_AP_ROUTE}/login/access-token`,
-    {
-      method: 'POST',
-      headers: {
-        ...XMLHeaders
-      },
-      body: new URLSearchParams({
-        username: email,
-        password: password
-      })
-    }
-  );
+  const res = await fetch(`${process.env.WF_AP_ROUTE}/login/access-token`, {
+    method: 'POST',
+    headers: {
+      ...XMLHeaders
+    },
+    body: new URLSearchParams({
+      username: email,
+      password: password
+    })
+  });
 
   if (res.ok) {
     const json = await res.json();
@@ -48,26 +45,32 @@ const getUser = async (token: string) => {
 
 const forgotPassword = async (email: string) => {
   if (!email) {
-    return { ok: false};
+    return { ok: false };
   }
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/password-recovery/${email}`, {
-    method: 'POST',
-    headers: {
-      ...XMLHeaders
-    },
-  });
+  const res = await fetch(
+    `${process.env.WF_AP_ROUTE}/password-recovery/${email}`,
+    {
+      method: 'POST',
+      headers: {
+        ...XMLHeaders
+      }
+    }
+  );
 
   if (res.ok) {
-    const { msg } = await res.json()
-    return { msg, ok: true}
+    const { msg } = await res.json();
+    return { msg, ok: true };
   }
-  return { ok: false};
-}
 
+  return { ok: false };
+};
 
-const resetPassword = async (token: string, newPassword: string): Promise< ({msg?: string; ok?: boolean})> => {
+const resetPassword = async (
+  token: string,
+  newPassword: string
+): Promise<{ msg?: string; ok?: boolean }> => {
   if (!token || !newPassword) {
-    return { ok: false};
+    return { ok: false };
   }
 
   const res = await fetch(`${process.env.WF_AP_ROUTE}/reset-password/`, {
@@ -75,16 +78,15 @@ const resetPassword = async (token: string, newPassword: string): Promise< ({msg
     headers: {
       ...JSONHeaders
     },
-    body: JSON.stringify({ token, new_password: newPassword})
+    body: JSON.stringify({ token, new_password: newPassword })
   });
 
   if (res.ok) {
-    const { msg } = await res.json()
-    return { msg, ok: true}
+    const { msg } = await res.json();
+    return { msg, ok: true };
   }
-  return { ok: false}
-}
-
+  return { ok: false };
+};
 
 const User = { authenticate, getUser, resetPassword, forgotPassword };
 
