@@ -16,10 +16,10 @@ const appState = atom<any>({
 export const appUser = selector<User>({
   key: 'appUser',
   get: ({ get }) => {
-    return get(appState).user
+    return get(appState).user;
   },
   set: ({ set }, newUser) => {
-    return set(appState,  { user: newUser });
+    return set(appState, { user: newUser });
   }
 });
 
@@ -29,53 +29,57 @@ export type UserReports = {
   nonBookmarkedReports: Report[];
 };
 
-
 export const userReports = selector<UserReports>({
   key: 'userReports',
-  get: ({ get }): UserReports=> {
+  get: ({ get }): UserReports => {
     const user = get(appUser);
-    const reports = user?.reports
-    const bookmarkedReports = reports?.filter((report: Report) => report.bookmarked);
+    const reports = user?.reports;
+    const bookmarkedReports = reports?.filter(
+      (report: Report) => report.bookmarked
+    );
     const allReports = reports;
-    const nonBookmarkedReports = reports?.filter((report: Report)  => !report.bookmarked);
+    const nonBookmarkedReports = reports?.filter(
+      (report: Report) => !report.bookmarked
+    );
 
     return {
       bookmarkedReports: bookmarkedReports || [],
       allReports: allReports || [],
       nonBookmarkedReports: nonBookmarkedReports || []
-    } ;
+    };
   },
   set: ({ set, get }, reportId) => {
     const user = get(appUser);
 
-    const allOtherReports = user?.reports?.filter(
-      (report: Report)  => `${report.id}` !== `${reportId}`
-    ) || [];
+    const allOtherReports =
+      user?.reports?.filter(
+        (report: Report) => `${report.id}` !== `${reportId}`
+      ) || [];
     const updatedReport = user?.reports?.find(
-      (report: Report)  => `${report.id}` === `${reportId}`
+      (report: Report) => `${report.id}` === `${reportId}`
     );
 
     // handle report match an no match
-    const reports = updatedReport ? [
-      ...allOtherReports,
-      {
-        ...updatedReport,
-        bookmarked: !updatedReport?.bookmarked
-      }
-    ] : [...allOtherReports]
+    const reports = updatedReport
+      ? [
+          ...allOtherReports,
+          {
+            ...updatedReport,
+            bookmarked: !updatedReport?.bookmarked
+          }
+        ]
+      : [...allOtherReports];
 
     const newUser = {
       ...user,
       reports
-    }
+    };
 
     return set(appUser, newUser);
   }
 });
 
 export default appState;
-
-
 
 // const _user = {
 //   name: null,
@@ -108,4 +112,3 @@ export default appState;
 //   },
 //   reports: []
 // }
-
