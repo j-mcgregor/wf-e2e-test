@@ -53,9 +53,9 @@ export type User = {
     };
   };
   reports?: Report[];
-}
+};
 
 export interface RecoilUserType {
-  user: User | Promise<User> | RecoilValue<User>
+  user: User | Promise<User> | RecoilValue<User>;
   // default: {}
 }

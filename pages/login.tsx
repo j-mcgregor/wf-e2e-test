@@ -19,9 +19,9 @@ const Login = () => {
 
   return (
     <Layout noNav={true} title="Login" noAuthRequired={true}>
-     
-        <LoginContainer>
-        {!loading && !session && ( <div>
+      <LoginContainer>
+        {!loading && !session && (
+          <div>
             <Logo />
             <div>
               <div className="bg-secondary">
@@ -46,9 +46,9 @@ const Login = () => {
             </div>
             <LoginSSO />
             <LoginForm />
-          </div> )}
-        </LoginContainer>
-     
+          </div>
+        )}
+      </LoginContainer>
     </Layout>
   );
 };

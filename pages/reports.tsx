@@ -50,15 +50,16 @@ const Reports = () => {
               );
             })}
         </div>
-        {!bookmarkedReports || bookmarkedReports.length === 0 && (
-          <div className="bg-gray-200 text-center w-full px-4 py-8 ">
-            <div>
-              <BookmarkIcon className="w-10 mx-auto mb-2" />
-              <h3 className="font-bold">{t('no_reports_bookmarked')}</h3>
-              <p>{t('click_the_bookmark')}</p>
+        {!bookmarkedReports ||
+          (bookmarkedReports.length === 0 && (
+            <div className="bg-gray-200 text-center w-full px-4 py-8 ">
+              <div>
+                <BookmarkIcon className="w-10 mx-auto mb-2" />
+                <h3 className="font-bold">{t('no_reports_bookmarked')}</h3>
+                <p>{t('click_the_bookmark')}</p>
+              </div>
             </div>
-          </div>
-        )}
+          ))}
 
         <div className="flex flex-col">
           <p className="text-2xl py-6 font-semibold">{t('recent_reports')}</p>

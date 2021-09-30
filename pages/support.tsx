@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-require */
 import { GetStaticPropsContext } from 'next';
-import React from 'react'
+import React from 'react';
 
 import Layout from '../components/layout/Layout';
 
@@ -9,12 +9,10 @@ const Support = () => {
     <Layout title="Support">
       <h1 className="text-2xl">Support </h1>
     </Layout>
-  )
-}
+  );
+};
 
-export default Support
-
-
+export default Support;
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {

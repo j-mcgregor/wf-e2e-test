@@ -15,12 +15,6 @@
     "commit": "git-cz",
     "prepare": "husky install && next telemetry disable"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged && yarn lint",
-      "pre-push": "yarn test"
-    }
-  },
   "dependencies": {
     "@headlessui/react": "^1.4.0",
     "@heroicons/react": "^1.0.3",

@@ -29,7 +29,9 @@ export default function Dashboard() {
             <p className="text-base h-6 md:-mt-6">{t('welcome_back')}</p>
 
             <div className="flex justify-between">
-              <h1 className="text-2xl font-semibold">{user && user.full_name}</h1>
+              <h1 className="text-2xl font-semibold">
+                {user && user.full_name}
+              </h1>
               <p className="font-semibold">{t('last_7_days')}</p>
             </div>
           </div>
