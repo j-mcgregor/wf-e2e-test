@@ -57,7 +57,6 @@ const forgotPassword = async (email: string) => {
     },
   });
 
-  console.log(res)
   if (res.ok) {
     const { msg } = await res.json()
     return { msg, ok: true}
