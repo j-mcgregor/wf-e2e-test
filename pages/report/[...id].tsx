@@ -2,7 +2,6 @@
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import useSWR from 'swr';
 
 import HashContainer from '../../components/elements/HashContainer';
@@ -46,8 +45,6 @@ import {
 import FinancialTrends from '../../components/report-sections/financial-trends/FinancialTrends';
 
 import MacroEconomicTrends from '../../components/report-sections/macro-economic-trends/MacroEconomicTrends';
-
-import { multiGraphData, macroTrendData } from '../../lib/mock-data/charts';
 
 export interface ReportDataProps {
   id: string | number;
@@ -257,7 +254,7 @@ const ReportTemplate = () => {
             </HashContainer>
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
               <ReportSectionHeader text={t('financial trends')} />
-              <FinancialTrends data={multiGraphData} />
+              <FinancialTrends data={[]} />
             </HashContainer>
             _
             <HashContainer
@@ -295,7 +292,7 @@ const ReportTemplate = () => {
               id={`macro-economic-trends-id`}
             >
               <ReportSectionHeader text={t('macro economic trends')} />
-              <MacroEconomicTrends trends={macroTrendData} />
+              <MacroEconomicTrends trends={[]} />
             </HashContainer>
             <HashContainer name={'ESG'} id={`esg-id`}>
               <ReportSectionHeader text={t('esg')} />

@@ -1,7 +1,8 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { MultiGraphDataType, GraphDataType } from '../../types/charts';
 
-const poundsThousands = poundsThousands;
+const poundsThousands = '£_thousands';
+
 export const bondRatings = [
   {
     score: 'CC',
