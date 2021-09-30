@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import InfoPopover from '../risk-metrics/InfoPopover';
+import InfoPopover from '../../elements/InfoPopover';
 
 interface OutlookProps {
   reports: string[];

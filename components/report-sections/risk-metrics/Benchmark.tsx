@@ -1,4 +1,4 @@
-import InfoPopover from './InfoPopover';
+import InfoPopover from '../../elements/InfoPopover';
 
 type secondaryValue = {
   title: string;
@@ -21,7 +21,6 @@ const Benchmark = ({
   hintBody,
   secondaryValues
 }: BenchmarkProps) => {
-
   return (
     <div className="bg-white w-full sm:w-[48%] xl:w-[31%] flex flex-col items-center my-4 shadow rounded-sm">
       <div className="flex w-full items-center justify-between p-4">

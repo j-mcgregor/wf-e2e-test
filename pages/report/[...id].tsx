@@ -26,7 +26,7 @@ import {
   Shareholder
 } from '../../types/report';
 import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
-import InfoPopover from '../../components/report-sections/risk-metrics/InfoPopover';
+import InfoPopover from '../../components/elements/InfoPopover';
 import ReliabilityIndex from '../../components/report-sections/highlights/ReliabilityIndex';
 import DataReliability from '../../components/report-sections/highlights/DataReliability';
 import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook';

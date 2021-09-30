@@ -1,3 +1,5 @@
+import { MultiGraphDataType, GraphDataType } from '../../types/charts';
+
 export const bondRatings = [
   {
     score: 'CC',
@@ -43,3 +45,242 @@ export const bondRatings = [
 
 // negative values used in legal events table
 export const negativeValues = ['Negative Event'];
+
+const createChart = (
+  header: string,
+  subHeader: string,
+  hint: {
+    title: string;
+    body: string;
+  },
+  data: MultiGraphDataType | GraphDataType
+) => {
+  // function to find max y value
+  return {
+    header, // translatable
+    subHeader, // translate
+    hint,
+    data
+    // data: dataMap ? dataMap(data) : data
+  };
+};
+
+export const macroEconomicTrendCharts = {
+  gdp_growth_rate: (data: GraphDataType) =>
+    createChart(
+      'gdp_growth_rate',
+      'quarterly',
+      {
+        title: 'gdp_growth_rate.title',
+        body: 'gdp_growth_rate.body'
+      },
+      data
+    ),
+  gdp_annual_growth_rate: (data: GraphDataType) =>
+    createChart(
+      'gdp_annual_growth_rate',
+      'quarterly',
+      {
+        title: 'gdp_annual_growth_rate.title',
+        body: 'gdp_annual_growth_rate.body'
+      },
+      data
+    ),
+  gdp_per_capita: (data: GraphDataType) =>
+    createChart(
+      'gdp_per_capita',
+      'yearly',
+      {
+        title: 'gdp_per_capita.title',
+        body: 'gdp_per_capita.body'
+      },
+      data
+    )
+};
+
+export const financialTrendsCharts = {
+  turnover: (data: MultiGraphDataType) =>
+    createChart(
+      'turnover',
+      '£_thousands',
+      { title: 'turnover.title', body: 'turnover.body' },
+      data
+    ),
+
+  turnover2: (data: MultiGraphDataType) =>
+    createChart(
+      'turnover',
+      '£_thousands',
+      { title: 'turnover.title', body: 'turnover.body' },
+      data
+    ),
+
+  ebit: (data: MultiGraphDataType) =>
+    createChart(
+      'ebit',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  ebitda: (data: MultiGraphDataType) =>
+    createChart(
+      'ebitda',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  total_debt: (data: MultiGraphDataType) =>
+    createChart(
+      'total_debt',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  cash_and_cash_equivalent: (data: MultiGraphDataType) =>
+    createChart(
+      'cash_and_cash_equivalent',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  interest_expenses: (data: MultiGraphDataType) =>
+    createChart(
+      'interest_expenses',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  net_income: (data: MultiGraphDataType) =>
+    createChart(
+      'net_income',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  shareholders_equity: (data: MultiGraphDataType) =>
+    createChart(
+      'shareholders_equity',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  retained_earnings: (data: MultiGraphDataType) =>
+    createChart(
+      'retained_earnings',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  days_receivable: (data: MultiGraphDataType) =>
+    createChart(
+      'days_receivable',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  days_payable: (data: MultiGraphDataType) =>
+    createChart(
+      'days_payable',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  ebitda_margin: (data: MultiGraphDataType) =>
+    createChart(
+      'ebitda_margin',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  total_debt_total_assets: (data: MultiGraphDataType) =>
+    createChart(
+      'total_debt_total_assets',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  debt_equity_ratio: (data: MultiGraphDataType) =>
+    createChart(
+      'debt_equity_ratio',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  equity_total_assets: (data: MultiGraphDataType) =>
+    createChart(
+      'days_payable',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  tangible_fixed_assets_total_assets: (data: MultiGraphDataType) =>
+    createChart(
+      'tangible_fixed_assets_total_assets',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  intangible_fixed_assets: (data: MultiGraphDataType) =>
+    createChart(
+      'intangible_fixed_assets',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  interest_coverage_ratio: (data: MultiGraphDataType) =>
+    createChart(
+      'interest_coverage_ratio',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  return_on_equity: (data: MultiGraphDataType) =>
+    createChart(
+      'return_on_equity',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  return_on_assets: (data: MultiGraphDataType) =>
+    createChart(
+      'return_on_assets',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  liquidity_ratio: (data: MultiGraphDataType) =>
+    createChart(
+      'liquidity_ratio',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  current_ratio: (data: MultiGraphDataType) =>
+    createChart(
+      'current_ratio',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  net_debt: (data: MultiGraphDataType) =>
+    createChart(
+      'net_debt',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  net_debt_ebitda: (data: MultiGraphDataType) =>
+    createChart(
+      'net_debt_ebitda',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    ),
+  deby_service_coverage_ratio: (data: MultiGraphDataType) =>
+    createChart(
+      'deby_service_coverage_ratio',
+      '£_thousands',
+      { title: 'ebit.title', body: 'ebit.body' },
+      data
+    )
+};

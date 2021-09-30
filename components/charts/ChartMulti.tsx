@@ -2,17 +2,20 @@ import { useState, useEffect } from 'react';
 import { VictoryArea, VictoryScatter, VictoryGroup } from 'victory';
 import ChartContainer from './ChartContainer';
 import { InformationCircleIcon } from '@heroicons/react/outline';
-import { MultiGraphData } from '../../lib/mock-data/charts';
+import { MultiGraphDataType } from '../../types/charts';
 import Button from '../elements/Button';
+import { TranslateInput } from '../../types/global';
 
 interface ChartMultiProps {
-  graphData: MultiGraphData[];
-  category: string;
-  units: string;
+  graphData: MultiGraphDataType[];
+  header: TranslateInput;
+  subHeader: TranslateInput;
+  hintTitle?: TranslateInput;
+  hintBody?: TranslateInput;
 }
 
-const ChartMulti = ({ graphData, category, units }: ChartMultiProps) => {
-  const [data, setData] = useState<MultiGraphData[] | null>(null);
+const ChartMulti = ({ graphData, header, subHeader }: ChartMultiProps) => {
+  const [data, setData] = useState<MultiGraphDataType[] | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<number | null>(0);
   const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 
@@ -32,8 +35,8 @@ const ChartMulti = ({ graphData, category, units }: ChartMultiProps) => {
     <div className="shadow rounded-sm bg-white flex flex-col">
       <div className="flex justify-between items-start p-4 text-xs">
         <div>
-          <p className="font-bold pb-2">{category}</p>
-          <p className="opacity-70">£ {units}</p>
+          <p className="font-bold pb-2">{header}</p>
+          <p className="opacity-70">{subHeader}</p>
         </div>
 
         <Button variant="none" newClassName="w-6 h-6">

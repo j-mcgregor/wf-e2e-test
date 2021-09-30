@@ -82,5 +82,38 @@
   "governance": "Governance",
   "pep flags": "PEP Flags",
   "data on company governance": "Data on company governance and problematic shareholders / directors.",
-  "chairman": "Chairman"
+  "chairman": "Chairman",
+  "£_thousands": "£ Thousands",
+  "turnover": "Turnover",
+  "ebit": "EBIT",
+  "ebitda": "EBTIDA",
+  "total_debt": "Total Debt",
+  "cash_and_cash_equivalent": "Cash & Cash Equivalent",
+  "interest_expenses": "Interest Expenses",
+  "net_income": "Net Income",
+  "shareholders_equity": "Shareholders Equity",
+  "retained_earnings": "Retained Earnings",
+  "days_receivable": "Days Receivable",
+  "days_payable": "Days Payable",
+  "ebitda_margin": "EBITDA Margin",
+  "total_debt_total_assets": "Total Debt/Total Assets",
+  "short_term_debt_total_debt": "Short Term Debt / Total Debt",
+  "debt_equity_ratio": "Debt / Equity Ratio",
+  "equity_total_assets": "Equity Total Assets",
+  "tangible_fixed_assets_total_assets": "Tangible Fixed Assets / Total Assets",
+  "intangible_fixed_assets": "Intangible Fixed Assets / Total Assets",
+  "interest_coverage_ratio": "Interest Coverage Ratio",
+  "return_on_equity": "Return on Equity (ROE)",
+  "return_on_assets": "Return on Assets (ROA)",
+  "liquidity_ratio": "Liquidity Ratio",
+  "current_ratio": "Current Ratio",
+  "net_debt": "Net Debt",
+  "net_debt_ebitda": "Net Debt EBITDA",
+  "deby_service_coverage_ratio": "Deby Service Coverage Ratio"
+
+
+
+
+
+
 }
