@@ -45,7 +45,6 @@ import {
 import FinancialTrends from '../../components/report-sections/financial-trends/FinancialTrends';
 import MacroEconomicTrends from '../../components/report-sections/macro-economic-trends/MacroEconomicTrends';
 import NewsFeed from '../../components/report-sections/news/NewsFeed';
-import StructureChart from '../../components/report-sections/corporate-governance/StructureChart';
 
 export interface ReportDataProps {
   id: string | number;
