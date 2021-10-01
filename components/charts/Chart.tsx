@@ -3,9 +3,7 @@ import { VictoryArea, VictoryScatter } from 'victory';
 import ChartContainer from './ChartContainer';
 import { darkBlue } from './theme';
 import { GraphDataType } from '../../types/charts';
-import { InformationCircleIcon } from '@heroicons/react/outline';
-import Button from '../elements/Button';
-import InfoPopover from '../elements/InfoPopover';
+import Hint from '../elements/Hint';
 import { TranslateInput } from '../../types/global';
 
 interface ChartProps {
@@ -27,7 +25,7 @@ const Chart = ({ title, subtitle, data, hintBody, hintTitle }: ChartProps) => {
           <p className="opacity-70">{subtitle}</p>
         </div>
 
-        <InfoPopover title={hintTitle} body={hintBody} />
+        <Hint title={hintTitle} body={hintBody} />
       </div>
 
       <div onMouseLeave={() => setToolTipValue(null)}>

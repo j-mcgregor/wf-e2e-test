@@ -3,7 +3,7 @@ import { VictoryArea, VictoryScatter, VictoryGroup } from 'victory';
 import ChartContainer from './ChartContainer';
 import { MultiGraphDataType } from '../../types/charts';
 import { TranslateInput } from '../../types/global';
-import InfoPopover from '../elements/InfoPopover';
+import Hint from '../elements/Hint';
 
 interface ChartMultiProps {
   graphData: MultiGraphDataType[];
@@ -44,7 +44,7 @@ const ChartMulti = ({
           <p className="opacity-70">{subHeader}</p>
         </div>
 
-        <InfoPopover title={hintTitle} body={hintBody} />
+        <Hint title={hintTitle} body={hintBody} />
       </div>
       <ChartContainer
         height={250}

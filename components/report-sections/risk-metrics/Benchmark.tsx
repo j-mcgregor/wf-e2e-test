@@ -1,4 +1,4 @@
-import InfoPopover from '../../elements/InfoPopover';
+import Hint from '../../elements/Hint';
 
 type secondaryValue = {
   title: string;
@@ -25,7 +25,7 @@ const Benchmark = ({
     <div className="bg-white w-full sm:w-[48%] xl:w-[31%] flex flex-col items-center my-4 shadow rounded-sm">
       <div className="flex w-full items-center justify-between p-4">
         <p>{title}</p>
-        <InfoPopover title={hintTitle} body={hintBody} />
+        <Hint title={hintTitle} body={hintBody} />
       </div>
 
       <div

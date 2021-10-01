@@ -1,5 +1,3 @@
-import { ReportDataProps } from '../../pages/report/[...id]';
-
 /* eslint-disable sonarjs/no-duplicate-string */
 const mockReport = {
   created_at: new Date().setFullYear(2020, 1, 1).toString(),

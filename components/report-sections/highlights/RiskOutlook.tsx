@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import InfoPopover from '../../elements/InfoPopover';
+import Hint from '../../elements/Hint';
 
 interface OutlookProps {
   reports: string[];
@@ -13,7 +13,7 @@ const RiskOutlook = ({ reports, hintTitle, hintBody }: OutlookProps) => {
     <div className="flex flex-col">
       <div className="flex pb-4">
         <p className="font-bold pr-8">{t('risk_outlook')}</p>
-        <InfoPopover title={hintTitle} body={hintBody} />
+        <Hint title={hintTitle} body={hintBody} />
       </div>
       <div className="flex flex-col">
         <ul className="list-disc px-6">

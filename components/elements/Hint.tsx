@@ -6,7 +6,7 @@ export type InfoPopoverProps = {
   title: TranslateInput;
   body: TranslateInput;
 };
-const InfoPopover = ({ title, body }: InfoPopoverProps) => {
+const Hint = ({ title, body }: InfoPopoverProps) => {
   return (
     <Popover className="relative z-20">
       <Popover.Button>
@@ -21,4 +21,4 @@ const InfoPopover = ({ title, body }: InfoPopoverProps) => {
   );
 };
 
-export default InfoPopover;
+export default Hint;

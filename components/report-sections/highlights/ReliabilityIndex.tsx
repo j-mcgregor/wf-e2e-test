@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import InfoPopover from '../../elements/InfoPopover';
+import Hint from '../../elements/Hint';
 
 interface ReliabilityIndexProps {
   reliability: string;
@@ -12,7 +12,7 @@ const ReliabilityIndex = ({ reliability }: ReliabilityIndexProps) => {
     <div className="flex flex-col">
       <div className="flex pb-4">
         <p className="font-bold pr-8">{t('reliability_index')}</p>
-        <InfoPopover
+        <Hint
           title="Reliability Index"
           body="Aute nisi ut eiusmod qui proident."
         />

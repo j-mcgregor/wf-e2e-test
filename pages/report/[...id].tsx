@@ -23,7 +23,7 @@ import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook
 import LegalEvents from '../../components/report-sections/legal-events/LegalEvents';
 import ReportHeader from '../../components/report-sections/ReportHeader';
 import BondRating from '../../components/report-sections/risk-metrics/BondRating';
-import InfoPopover from '../../components/elements/InfoPopover';
+import Hint from '../../components/elements/Hint';
 import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
 import SummaryDetails from '../../components/report-sections/summary/SummaryDetails';
 import SummaryFinancial from '../../components/report-sections/summary/SummaryFinancial';
@@ -45,6 +45,7 @@ import {
 import FinancialTrends from '../../components/report-sections/financial-trends/FinancialTrends';
 
 import MacroEconomicTrends from '../../components/report-sections/macro-economic-trends/MacroEconomicTrends';
+import NewsFeed from '../../components/report-sections/news/NewsFeed';
 
 export interface ReportDataProps {
   id: string | number;
@@ -163,7 +164,7 @@ const ReportTemplate = () => {
                     { name: REGION_BENCHMARK, value: 204 }
                   ]}
                   hint={
-                    <InfoPopover
+                    <Hint
                       title={t('report_hints.risk_metrics.sme_z-score.title')}
                       body={t('report_hints.risk_metrics.sme_z-score.body')}
                     />
@@ -177,7 +178,7 @@ const ReportTemplate = () => {
                     { name: REGION_BENCHMARK, value: null }
                   ]}
                   hint={
-                    <InfoPopover
+                    <Hint
                       title={t(
                         'report_hints.risk_metrics.probability_of_default.title'
                       )}
@@ -195,7 +196,7 @@ const ReportTemplate = () => {
                     { name: REGION_BENCHMARK, value: null }
                   ]}
                   hint={
-                    <InfoPopover
+                    <Hint
                       title={t(
                         'report_hints.risk_metrics.loss_given_default.title'
                       )}
@@ -314,6 +315,7 @@ const ReportTemplate = () => {
             </HashContainer>
             <HashContainer name={'News'} id={`news-id`}>
               <ReportSectionHeader text={t('news')} />
+              <NewsFeed />
             </HashContainer>
           </div>
         )}
