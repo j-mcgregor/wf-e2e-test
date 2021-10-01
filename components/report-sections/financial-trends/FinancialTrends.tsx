@@ -60,8 +60,8 @@ const FinancialTrends = ({ data }: FinancialTrendsProps) => {
           header={`${t(chart.header)}`}
           subHeader={`${t(chart.subHeader)}`}
           graphData={chart.data}
-          // hintTitle={`${t(chart.hint.title)}`}
-          // hintBody={`${t(chart.hint.body)}`}
+          hintTitle={chart.hint.title}
+          hintBody={chart.hint.body}
         />
       ))}
     </div>

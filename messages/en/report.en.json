@@ -84,6 +84,7 @@
   "data on company governance": "Data on company governance and problematic shareholders / directors.",
   "chairman": "Chairman",
   "neutral": "neutral",
+
   "£_thousands": "£ Thousands",
   "turnover": "Turnover",
   "ebit": "EBIT",
@@ -110,5 +111,21 @@
   "current_ratio": "Current Ratio",
   "net_debt": "Net Debt",
   "net_debt_ebitda": "Net Debt EBITDA",
-  "deby_service_coverage_ratio": "Deby Service Coverage Ratio"
+  "deby_service_coverage_ratio": "Deby Service Coverage Ratio",
+  "gdp_growth_rate": "GDP Growth Rate",
+  "gdp_annual_growth_rate": "GDP Annual Growth Rate",
+  "gdp_per_capita": "GDP Per Capita",
+  "unemployment_rate": "Unemployment Rate",
+  "annual_inflation_rate": "Annual Inflation Rate",
+  "interest_rate": "Interest Rate",
+  "consumer_spending_millions": "Consumer Spending Millions",
+  "government_debt_to_gdp": "Government Debt to GDP",
+  "house_price_index": "House Price Index",
+  "stock_market_uk": "Stock Market UK",
+  "consumer_price_index": "Consumer Price Index",
+  "credit_rating": "Credit Rating",
+  "quarterly": "Quarterly",
+  "yearly": "Yearly",
+  "monthly": "Monthly",
+  "daily": "Daily"
 }

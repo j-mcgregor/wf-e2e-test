@@ -1,20 +1,25 @@
 import { useState, useEffect } from 'react';
 import { VictoryArea, VictoryScatter, VictoryGroup } from 'victory';
 import ChartContainer from './ChartContainer';
-import { InformationCircleIcon } from '@heroicons/react/outline';
 import { MultiGraphDataType } from '../../types/charts';
-import Button from '../elements/Button';
 import { TranslateInput } from '../../types/global';
+import InfoPopover from '../elements/InfoPopover';
 
 interface ChartMultiProps {
   graphData: MultiGraphDataType[];
   header: TranslateInput;
   subHeader: TranslateInput;
-  hintTitle?: TranslateInput;
-  hintBody?: TranslateInput;
+  hintTitle: TranslateInput;
+  hintBody: TranslateInput;
 }
 
-const ChartMulti = ({ graphData, header, subHeader }: ChartMultiProps) => {
+const ChartMulti = ({
+  graphData,
+  header,
+  subHeader,
+  hintBody,
+  hintTitle
+}: ChartMultiProps) => {
   const [data, setData] = useState<MultiGraphDataType[] | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<number | null>(0);
   const [toolTipValue, setToolTipValue] = useState<number | null>(null);
@@ -39,9 +44,7 @@ const ChartMulti = ({ graphData, header, subHeader }: ChartMultiProps) => {
           <p className="opacity-70">{subHeader}</p>
         </div>
 
-        <Button variant="none" newClassName="w-6 h-6">
-          <InformationCircleIcon />
-        </Button>
+        <InfoPopover title={hintTitle} body={hintBody} />
       </div>
       <ChartContainer
         height={250}

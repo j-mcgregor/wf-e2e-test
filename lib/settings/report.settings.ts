@@ -98,6 +98,96 @@ export const macroEconomicTrendCharts = {
         body: 'gdp_per_capita.body'
       },
       data
+    ),
+  unemployment_rate: (data: GraphDataType) =>
+    createChart(
+      'unemployment_rate',
+      'monthly',
+      {
+        title: 'unemployment_rate.title',
+        body: 'unemployment_rate.body'
+      },
+      data
+    ),
+  annual_inflation_rate: (data: GraphDataType) =>
+    createChart(
+      'annual_inflation_rate',
+      'monthly',
+      {
+        title: 'annual_inflation_rate.title',
+        body: 'annual_inflation_rate.body'
+      },
+      data
+    ),
+  interest_rate: (data: GraphDataType) =>
+    createChart(
+      'interest_rate',
+      'daily',
+      {
+        title: 'interest_rate.title',
+        body: 'interest_rate.body'
+      },
+      data
+    ),
+  consumer_spending_millions: (data: GraphDataType) =>
+    createChart(
+      'consumer_spending_millions',
+      'quarterly',
+      {
+        title: 'consumer_spending_millions.title',
+        body: 'consumer_spending_millions.body'
+      },
+      data
+    ),
+  government_debt_to_gdp: (data: GraphDataType) =>
+    createChart(
+      'government_debt_to_gdp',
+      'yearly',
+      {
+        title: 'government_debt_to_gdp.title',
+        body: 'government_debt_to_gdp.body'
+      },
+      data
+    ),
+  house_price_index: (data: GraphDataType) =>
+    createChart(
+      'house_price_index',
+      'monthly',
+      {
+        title: 'house_price_index.title',
+        body: 'house_price_index.body'
+      },
+      data
+    ),
+  stock_market_uk: (data: GraphDataType) =>
+    createChart(
+      'stock_market_uk',
+      'daily',
+      {
+        title: 'stock_market_uk.title',
+        body: 'stock_market_uk.body'
+      },
+      data
+    ),
+  consumer_price_index: (data: GraphDataType) =>
+    createChart(
+      'consumer_price_index',
+      'monthly',
+      {
+        title: 'consumer_price_index.title',
+        body: 'consumer_price_index.body'
+      },
+      data
+    ),
+  credit_rating: (data: GraphDataType) =>
+    createChart(
+      'credit_rating',
+      'monthly',
+      {
+        title: 'credit_rating.title',
+        body: 'credit_rating.body'
+      },
+      data
     )
 };
 
