@@ -46,6 +46,7 @@
     "tsparticles": "^1.33.3",
     "types": "unicef/react-org-chart",
     "underscore": "^1.13.1",
+    "use-file-picker": "^1.4.0",
     "victory": "^36.0.1"
   },
   "devDependencies": {
