@@ -28,7 +28,7 @@ const UploadFile = ({ text, linkText, selectFile }: UploadFileProps) => {
           >
             {linkText}
           </label>
-          <span>{text}</span>
+          <span>&nbsp;{text}</span>
         </div>
       </form>
     </div>
