@@ -10,6 +10,10 @@
 const { withSentryConfig } = require('@sentry/nextjs');
 
 const moduleExports = {
+  api: {
+    // this issue https://github.com/getsentry/sentry-javascript/issues/3852#issuecomment-918820923
+    externalResolver: true,
+  },
   i18n: {
     // These are all the locales you want to support in
     // your application

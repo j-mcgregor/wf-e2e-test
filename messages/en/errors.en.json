@@ -1,0 +1,8 @@
+{
+  "GENERIC_API_ERROR": "There was an error submitting your email. Please contact support.",
+  "UNAUTHORISED": "You are not authorised to complete this action.",
+  "NO_REPORT_ID": "No report ID provided.",
+  "VALID_EMAIL_REQUIRED": "Please provide a valid email.",
+  "EMAIL_REQUIRED": "Your email is required.",
+  "NO_REPORT": "No report found."
+}

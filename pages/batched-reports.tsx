@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-require */
 import { GetStaticPropsContext } from 'next';
-import React from 'react'
+import React from 'react';
 
 import Layout from '../components/layout/Layout';
 
@@ -9,12 +9,10 @@ const BatchReports = () => {
     <Layout title="SME Calc">
       <h1 className="text-2xl">Batched Reports </h1>
     </Layout>
-  )
-}
+  );
+};
 
-export default BatchReports
-
-
+export default BatchReports;
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {

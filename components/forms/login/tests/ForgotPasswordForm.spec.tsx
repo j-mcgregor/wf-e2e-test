@@ -2,8 +2,11 @@
 import client from 'next-auth/client';
 import * as nextRouter from 'next/router';
 
-import { mockServerPost } from '../../../../__mocks__/service-worker/server';
-import forgotPasswordMessages from '../../../../messages/en/forgotten-password.en.json';
+import {
+  mockServerGet,
+  mockServerPost
+} from '../../../../__mocks__/service-worker/server';
+import allMessages from '../../../../messages/en';
 import {
   fireEvent,
   makeMockSession,
@@ -12,6 +15,7 @@ import {
   waitFor
 } from '../../../../test-utils';
 import ForgotPasswordForm from '../ForgotPasswordForm';
+import { GENERIC_API_ERROR } from '../../../../lib/utils/error-codes';
 
 jest.mock('next-auth/client');
 
@@ -34,17 +38,18 @@ describe('ForgotPasswordForm', () => {
 
   it('renders the form without issue', () => {
     expect(() =>
-      render(<ForgotPasswordForm />, undefined, forgotPasswordMessages)
+      render(<ForgotPasswordForm />, undefined, allMessages)
     ).not.toThrow();
   });
 
   it('contains the right information', async () => {
-    mockServerPost(
-      'http://localhost:3000/api/password-reset',
+    mockServerGet(
+      'http://localhost:3000/api/password-reset?email=batman@wayneindustries.net',
       200,
       JSON.stringify({ ok: true })
     );
-    render(<ForgotPasswordForm />, undefined, forgotPasswordMessages);
+
+    render(<ForgotPasswordForm />, undefined, allMessages);
 
     expect(
       screen.getByRole('heading', {
@@ -69,7 +74,11 @@ describe('ForgotPasswordForm', () => {
       }
     );
 
+    screen.logTestingPlaygroundURL();
+
     await waitFor(() => {
+      screen.logTestingPlaygroundURL();
+
       fireEvent.submit(
         screen.getByRole('button', {
           name: /reset password/i
@@ -96,9 +105,9 @@ describe('ForgotPasswordForm', () => {
     mockServerPost(
       'http://localhost:3000/api/password-reset',
       400,
-      JSON.stringify({ ok: false })
+      JSON.stringify({ ok: false, error: GENERIC_API_ERROR })
     );
-    render(<ForgotPasswordForm />, undefined, forgotPasswordMessages);
+    render(<ForgotPasswordForm />, undefined, allMessages);
 
     expect(
       screen.getByRole('heading', {

@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-require */
 import { GetStaticPropsContext } from 'next';
-import React from 'react'
+import React from 'react';
 
 import Layout from '../components/layout/Layout';
 
@@ -9,12 +9,10 @@ const SMEProspector = () => {
     <Layout title="SME Prospector">
       <h1 className="text-2xl">SME Prospector </h1>
     </Layout>
-  )
-}
+  );
+};
 
-export default SMEProspector
-
-
+export default SMEProspector;
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {

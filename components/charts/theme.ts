@@ -15,9 +15,9 @@ const fontSize = 8;
 // Layout
 const padding = 10;
 const baseProps = {
-  width: 250,
-  height: 400,
-  padding: 40
+  width: 200,
+  height: 250,
+  padding: 35
 };
 
 //  DEFAULT LABEL STYLES

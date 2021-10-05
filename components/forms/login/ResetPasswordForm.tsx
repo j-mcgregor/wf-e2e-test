@@ -1,15 +1,17 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
 import Link from '../../elements/Link';
 import Logo from '../../elements/Logo';
+import { useRouter } from 'next/router';
 
 type FormProps = {
-  email?: string;
+  token?: string;
   isValid?: boolean;
 };
 
@@ -18,40 +20,44 @@ type FormValues = {
   confirmPassword: string;
 };
 
-const ResetPasswordForm = ({ email, isValid }: FormProps) => {
+const ResetPasswordForm = ({ token, isValid }: FormProps) => {
   const t = useTranslations();
+  const router = useRouter()
 
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
+  const [submitError, setSubmitError] = useState({ type: '' });
 
   const {
     register,
     handleSubmit,
     getValues,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm<FormValues>();
 
   const onSubmit = async (data: FormValues) => {
     try {
-      const req = await fetch(`/api/password-reset?email=${email}`, {
+      const res = await fetch(`/api/password-reset`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          ...data
+          token,
+          newPassword: data.newPassword
         })
       });
+      const body = await res.json();
 
-      if (req.ok) {
+      if (res.ok) {
         return setFormSubmitted(true);
       }
-
-      return setSubmitError(true);
+      if (body.error) {
+        return setSubmitError({ type: body.error });
+      }
+      return setSubmitError({ type: GENERIC_API_ERROR });
     } catch (e) {
       // log the details of the error to the logger
-
-      return setSubmitError(true);
+      return setSubmitError({ type: GENERIC_API_ERROR });
     }
   };
 
@@ -64,7 +70,7 @@ const ResetPasswordForm = ({ email, isValid }: FormProps) => {
           <div>
             <p className="mb-2">{t('valid_link_required')}</p>
             <p className="mb-4">{t('go_to_forgotten_password')}</p>
-            <Button variant="highlight" linkTo="/forgot-password">
+            <Button variant="highlight" linkTo="/forgotten-password">
               {t('forgot_password')}
             </Button>
           </div>
@@ -112,9 +118,9 @@ const ResetPasswordForm = ({ email, isValid }: FormProps) => {
                   <ErrorMessage text={t('errors.required')} />
                 )}
               </div>
-              {submitError && <ErrorMessage text={t('errors.submit_error')} />}
+              {submitError.type === GENERIC_API_ERROR && <ErrorMessage text={t('errors.submit_error')} />}
               <div className="mt-6">
-                <Button variant="highlight" type="submit">
+                <Button variant="highlight" type="submit" loading={isSubmitting}>
                   {t('change_password')}
                 </Button>
               </div>

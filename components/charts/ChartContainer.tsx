@@ -1,22 +1,29 @@
 import { VictoryChart, VictoryTooltip, VictoryVoronoiContainer } from 'victory';
 import ToolTip from '../svgs/ToolTip';
+
 import { theme } from './theme';
 
 interface ChartContainerProps {
   children: React.ReactNode;
   handleSetTooltip: (point: number) => void;
   tooltipValue: number | null;
+  height: number;
+  width: number;
+  max: number;
 }
 const ChartContainer = ({
   children,
   tooltipValue,
+  height,
+  width,
+  max,
   handleSetTooltip
 }: ChartContainerProps) => {
   return (
     <VictoryChart
-      maxDomain={{ y: 1000 }}
-      height={250}
-      width={350}
+      maxDomain={{ y: max }}
+      height={height}
+      width={width}
       theme={theme}
       containerComponent={
         <VictoryVoronoiContainer

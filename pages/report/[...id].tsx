@@ -23,7 +23,7 @@ import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook
 import LegalEvents from '../../components/report-sections/legal-events/LegalEvents';
 import ReportHeader from '../../components/report-sections/ReportHeader';
 import BondRating from '../../components/report-sections/risk-metrics/BondRating';
-import InfoPopover from '../../components/report-sections/risk-metrics/InfoPopover';
+import InfoPopover from '../../components/elements/InfoPopover';
 import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
 import SummaryDetails from '../../components/report-sections/summary/SummaryDetails';
 import SummaryFinancial from '../../components/report-sections/summary/SummaryFinancial';
@@ -31,6 +31,7 @@ import SummaryMap from '../../components/report-sections/summary/SummaryMap';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
 import fetcher from '../../lib/utils/fetcher';
+import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
 import {
   FinancialYear,
   LegalEvent,
@@ -40,7 +41,10 @@ import {
   SummaryContact,
   SummaryInfo
 } from '../../types/report';
-import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
+
+import FinancialTrends from '../../components/report-sections/financial-trends/FinancialTrends';
+
+import MacroEconomicTrends from '../../components/report-sections/macro-economic-trends/MacroEconomicTrends';
 
 export interface ReportDataProps {
   id: string | number;
@@ -249,7 +253,8 @@ const ReportTemplate = () => {
               </div>
             </HashContainer>
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
-              <ReportSectionHeader text={t('financial_trends')} />
+              <ReportSectionHeader text={t('financial trends')} />
+              <FinancialTrends data={[]} />
             </HashContainer>
             _
             <HashContainer
@@ -286,7 +291,8 @@ const ReportTemplate = () => {
               name={'Macro Economic Trends'}
               id={`macro-economic-trends-id`}
             >
-              <ReportSectionHeader text={t('macro_economic_trends')} />
+              <ReportSectionHeader text={t('macro economic trends')} />
+              <MacroEconomicTrends trends={[]} />
             </HashContainer>
             <HashContainer name={'ESG'} id={`esg-id`}>
               <ReportSectionHeader text={t('esg')} />
