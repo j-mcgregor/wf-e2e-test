@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { VictoryArea, VictoryScatter, VictoryGroup } from 'victory';
 import ChartContainer from './ChartContainer';
-import { MultiGraphDataType } from '../../types/charts';
+import { GraphDataType, MultiGraphDataType } from '../../types/charts';
 import { TranslateInput } from '../../types/global';
 import Hint from '../elements/Hint';
 
 interface ChartMultiProps {
-  graphData: MultiGraphDataType[];
+  graphData: MultiGraphDataType[] | GraphDataType[];
   header: TranslateInput;
   subHeader: TranslateInput;
   hintTitle: TranslateInput;
@@ -20,7 +20,9 @@ const ChartMulti = ({
   hintBody,
   hintTitle
 }: ChartMultiProps) => {
-  const [data, setData] = useState<MultiGraphDataType[] | null>(null);
+  const [data, setData] = useState<
+    MultiGraphDataType[] | GraphDataType[] | null
+  >(null);
   const [selectedCompany, setSelectedCompany] = useState<number | null>(0);
   const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 

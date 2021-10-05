@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { VictoryArea, VictoryScatter } from 'victory';
 import ChartContainer from './ChartContainer';
 import { darkBlue } from './theme';
-import { GraphDataType } from '../../types/charts';
+import { GraphDataType, MultiGraphDataType } from '../../types/charts';
 import Hint from '../elements/Hint';
 import { TranslateInput } from '../../types/global';
 
 interface ChartProps {
   title: TranslateInput;
   subtitle: TranslateInput;
-  data: GraphDataType[];
+  data: GraphDataType[] | MultiGraphDataType[];
   hintTitle: TranslateInput;
   hintBody: TranslateInput;
 }

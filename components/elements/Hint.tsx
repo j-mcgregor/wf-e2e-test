@@ -4,11 +4,11 @@ import { TranslateInput } from '../../types/global';
 import { InformationCircleIcon } from '@heroicons/react/outline';
 import { usePopper } from 'react-popper';
 
-export type InfoPopoverProps = {
+export type HintTypeProps = {
   title: TranslateInput;
   body: TranslateInput;
 };
-const Hint = ({ title, body }: InfoPopoverProps) => {
+const Hint = ({ title, body }: HintTypeProps) => {
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
