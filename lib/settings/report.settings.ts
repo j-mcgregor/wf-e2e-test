@@ -54,14 +54,14 @@ export type ReportChartType = {
   header: string;
   subHeader: string;
   hint: HintTypeProps;
-  data: MultiGraphDataType[] | GraphDataType[];
+  data: MultiGraphDataType[];
 };
 
 const createChart = (
   header: string,
   subHeader: string,
   hint: HintTypeProps,
-  data: MultiGraphDataType[] | GraphDataType[]
+  data: MultiGraphDataType[]
 ): ReportChartType => {
   // function to find max y value
   return {
@@ -74,11 +74,11 @@ const createChart = (
 };
 
 type AllMultiGraphChartsType = {
-  [index: string]: (data: GraphDataType[]) => ReportChartType;
+  [index: string]: (data: MultiGraphDataType[]) => ReportChartType;
 };
 
 export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
-  gdp_growth_rate: (data: GraphDataType[]) =>
+  gdp_growth_rate: (data: MultiGraphDataType[]) =>
     createChart(
       'gdp_growth_rate',
       'quarterly',
@@ -88,7 +88,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  gdp_annual_growth_rate: (data: GraphDataType[]) =>
+  gdp_annual_growth_rate: (data: MultiGraphDataType[]) =>
     createChart(
       'gdp_annual_growth_rate',
       'quarterly',
@@ -98,7 +98,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  gdp_per_capita: (data: GraphDataType[]) =>
+  gdp_per_capita: (data: MultiGraphDataType[]) =>
     createChart(
       'gdp_per_capita',
       'yearly',
@@ -108,7 +108,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  unemployment_rate: (data: GraphDataType[]) =>
+  unemployment_rate: (data: MultiGraphDataType[]) =>
     createChart(
       'unemployment_rate',
       'monthly',
@@ -118,7 +118,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  annual_inflation_rate: (data: GraphDataType[]) =>
+  annual_inflation_rate: (data: MultiGraphDataType[]) =>
     createChart(
       'annual_inflation_rate',
       'monthly',
@@ -128,7 +128,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  interest_rate: (data: GraphDataType[]) =>
+  interest_rate: (data: MultiGraphDataType[]) =>
     createChart(
       'interest_rate',
       'daily',
@@ -138,7 +138,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  consumer_spending_millions: (data: GraphDataType[]) =>
+  consumer_spending_millions: (data: MultiGraphDataType[]) =>
     createChart(
       'consumer_spending_millions',
       'quarterly',
@@ -148,7 +148,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  government_debt_to_gdp: (data: GraphDataType[]) =>
+  government_debt_to_gdp: (data: MultiGraphDataType[]) =>
     createChart(
       'government_debt_to_gdp',
       'yearly',
@@ -158,7 +158,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  house_price_index: (data: GraphDataType[]) =>
+  house_price_index: (data: MultiGraphDataType[]) =>
     createChart(
       'house_price_index',
       'monthly',
@@ -168,7 +168,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  stock_market_uk: (data: GraphDataType[]) =>
+  stock_market_uk: (data: MultiGraphDataType[]) =>
     createChart(
       'stock_market_uk',
       'daily',
@@ -178,7 +178,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  consumer_price_index: (data: GraphDataType[]) =>
+  consumer_price_index: (data: MultiGraphDataType[]) =>
     createChart(
       'consumer_price_index',
       'monthly',
@@ -188,7 +188,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  credit_rating: (data: GraphDataType[]) =>
+  credit_rating: (data: MultiGraphDataType[]) =>
     createChart(
       'credit_rating',
       'monthly',

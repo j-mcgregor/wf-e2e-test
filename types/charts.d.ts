@@ -20,7 +20,7 @@ export type GraphDataType = {
 };
 
 export type MultiGraphDataType = {
-  name: string;
+  name?: string;
   data: GraphDataType[];
 };
 

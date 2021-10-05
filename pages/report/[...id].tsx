@@ -253,10 +253,9 @@ const ReportTemplate = () => {
               </div>
             </HashContainer>
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
-              <ReportSectionHeader text={t('financial trends')} />
+              <ReportSectionHeader text={t('financial_trends')} />
               <FinancialTrends data={[]} />
             </HashContainer>
-            _
             <HashContainer
               name={'Corporate Governance'}
               id={`corporate-governance-id`}
@@ -291,7 +290,7 @@ const ReportTemplate = () => {
               name={'Macro Economic Trends'}
               id={`macro-economic-trends-id`}
             >
-              <ReportSectionHeader text={t('macro economic trends')} />
+              <ReportSectionHeader text={t('macro_economic_trends')} />
               <MacroEconomicTrends trends={[]} />
             </HashContainer>
             <HashContainer name={'ESG'} id={`esg-id`}>

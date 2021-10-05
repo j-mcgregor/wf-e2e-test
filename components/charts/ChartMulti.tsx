@@ -6,7 +6,7 @@ import { TranslateInput } from '../../types/global';
 import Hint from '../elements/Hint';
 
 interface ChartMultiProps {
-  graphData: MultiGraphDataType[] | GraphDataType[];
+  graphData: MultiGraphDataType[];
   header: TranslateInput;
   subHeader: TranslateInput;
   hintTitle: TranslateInput;
@@ -20,9 +20,7 @@ const ChartMulti = ({
   hintBody,
   hintTitle
 }: ChartMultiProps) => {
-  const [data, setData] = useState<
-    MultiGraphDataType[] | GraphDataType[] | null
-  >(null);
+  const [data, setData] = useState<MultiGraphDataType[] | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<number | null>(0);
   const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 
@@ -40,7 +38,7 @@ const ChartMulti = ({
 
   return (
     <div className="shadow rounded-sm bg-white flex flex-col">
-      <div className="flex justify-between items-start p-4 text-xs">
+      <div className="flex justify-between items-start px-4 pt-4 text-xs">
         <div>
           <p className="font-bold pb-2">{header}</p>
           <p className="opacity-70">{subHeader}</p>
@@ -49,7 +47,7 @@ const ChartMulti = ({
         <Hint title={hintTitle} body={hintBody} />
       </div>
       <ChartContainer
-        height={250}
+        height={220}
         width={200}
         max={800}
         tooltipValue={toolTipValue}
@@ -58,7 +56,7 @@ const ChartMulti = ({
         <VictoryGroup style={{ data: { strokeWidth: 1.5 } }}>
           {data?.map(
             (company, i) =>
-              company.data.length > 0 && (
+              company?.data?.length > 0 && (
                 <VictoryArea
                   animate={{
                     duration: 500,
@@ -106,7 +104,7 @@ const ChartMulti = ({
         </VictoryGroup>
       </ChartContainer>
 
-      <div className="flex flex-col text-xs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
+      <div className="flex flex-col text-xxs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
         {data?.map((company, i) => {
           const bg =
             company.name === 'Industry Benchmark'
@@ -128,8 +126,8 @@ const ChartMulti = ({
               key={i}
               className={`flex items-center py-1 justify-start w-full cursor-default opacity-50`}
             >
-              <div className={`border-2 ${border} w-4 h-4 mx-2`} />
-              <p>{company.name}</p>
+              <div className={`border-2 ${border} w-3 h-3 mx-2`} />
+              <p className="text-xs">{company.name}</p>
             </button>
           ) : (
             <button
@@ -137,12 +135,12 @@ const ChartMulti = ({
               onClick={() => setSelectedCompany(i)}
               className={`${
                 selectedCompany === i && 'font-bold'
-              } flex items-center py-1 justify-start w-full`}
+              } flex items-center justify-start w-full `}
             >
               <div
                 className={`${
                   selectedCompany !== i ? border : bg
-                } w-4 h-4 mx-2`}
+                } w-3 h-3 mx-2`}
               />
               <p>{company.name}</p>
             </button>

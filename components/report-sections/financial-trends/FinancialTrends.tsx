@@ -47,10 +47,8 @@ const FinancialTrends = ({ data }: FinancialTrendsProps) => {
           }
         ])
       ),
-    [data]
+    []
   );
-
-  // chartsToRender.map(chart => console.log(chart));
 
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
