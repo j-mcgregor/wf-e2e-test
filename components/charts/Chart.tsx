@@ -2,17 +2,19 @@ import { useState } from 'react';
 import { VictoryArea, VictoryScatter } from 'victory';
 import ChartContainer from './ChartContainer';
 import { darkBlue } from './theme';
-import { DataPoint } from '../../lib/mock-data/charts';
-import { InformationCircleIcon } from '@heroicons/react/outline';
-import Button from '../elements/Button';
+import { GraphDataType } from '../../types/charts';
+import Hint from '../elements/Hint';
+import { TranslateInput } from '../../types/global';
 
 interface ChartProps {
-  title: string;
-  subtitle: string;
-  data: DataPoint[];
+  title: TranslateInput;
+  subtitle: TranslateInput;
+  data: GraphDataType[];
+  hintTitle: TranslateInput;
+  hintBody: TranslateInput;
 }
 
-const Chart = ({ title, subtitle, data }: ChartProps) => {
+const Chart = ({ title, subtitle, data, hintBody, hintTitle }: ChartProps) => {
   const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 
   return (
@@ -22,9 +24,8 @@ const Chart = ({ title, subtitle, data }: ChartProps) => {
           <p className="font-bold pb-2">{title}</p>
           <p className="opacity-70">{subtitle}</p>
         </div>
-        <Button variant="none" newClassName="w-6 h-6">
-          <InformationCircleIcon />
-        </Button>
+
+        <Hint title={hintTitle} body={hintBody} />
       </div>
 
       <div onMouseLeave={() => setToolTipValue(null)}>

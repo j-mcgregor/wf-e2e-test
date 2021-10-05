@@ -1,3 +1,4 @@
+import { useTranslations } from 'use-intl';
 import Chart from '../../charts/Chart';
 import { macroEconomicTrendCharts } from '../../../lib/settings/report.settings';
 import { MacroTrend } from '../../../types/charts';
@@ -5,7 +6,9 @@ import { MacroTrend } from '../../../types/charts';
 interface MacroEconomicTrendsProps {
   trends: MacroTrend[];
 }
-const MacroEconomicTrends = ({ data }: MacroEconomicTrendsProps) => {
+const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
+  const t = useTranslations();
+
   const chartsToRender = Object.keys(macroEconomicTrendCharts).map(
     (key: string) =>
       macroEconomicTrendCharts[key]([
@@ -27,9 +30,11 @@ const MacroEconomicTrends = ({ data }: MacroEconomicTrendsProps) => {
       {chartsToRender.map((chart, index) => (
         <Chart
           key={index}
-          title={chart.title}
-          subtitle={chart.subHeader}
+          title={`${t(chart.header)}`}
+          subtitle={`${t(chart.subHeader)}`}
           data={chart.data}
+          hintBody={`${t(chart.hint.body)}`}
+          hintTitle={`${t(chart.hint.title)}`}
         />
       ))}
     </div>
