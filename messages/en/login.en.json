@@ -8,12 +8,7 @@
   "remember_me": "Remember me",
   "forgot_password": "Forgot your password?",
   "sign_in": "Sign in",
-  "errors": {
-    "incorrect_details": "Your details are incorrect. Please try again.",
-    "password_required": "Your password is required.",
-    "email_required": "Your email is required.",
-    "valid_email": "Please enter a valid email."
-  },
+  "microsoft": "Microsoft",
   "placeholders": {
     "email": "you@example.com",
     "password": "Password"

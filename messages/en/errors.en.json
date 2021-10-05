@@ -4,5 +4,8 @@
   "NO_REPORT_ID": "No report ID provided.",
   "VALID_EMAIL_REQUIRED": "Please provide a valid email.",
   "EMAIL_REQUIRED": "Your email is required.",
-  "NO_REPORT": "No report found."
+  "PASSWORD_REQUIRED": "Your password is required",
+  "NO_REPORT": "No report found.",
+  "INVALID_SSO_LOGIN": "We couldn't log you in with your SSO credentials. Please check that you have access and try again. If the problem persists please contact support.",
+  "INCORRECT_DETAILS": "Your details are incorrect. Please try again."
 }
