@@ -35,10 +35,9 @@ const getUser = async (token: string) => {
       Authorization: `Bearer ${token}`
     }
   });
-  // console.log(res)
   if (res.ok) {
     const user = await res.json();
-    return { ...user, token };
+    return { ok: true, ...user, token };
   }
   return null;
 };

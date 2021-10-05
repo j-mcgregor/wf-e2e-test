@@ -17,18 +17,14 @@ export default NextAuth({
       accessTokenUrl: `https://login.microsoftonline.com/${process.env.REACT_APP_AZURE_TENANT_ID}/oauth2/v2.0/token`,
       authorizationUrl: `https://login.microsoftonline.com/${process.env.REACT_APP_AZURE_TENANT_ID}/oauth2/v2.0/authorize?response_type=code&response_mode=query`,
       profileUrl: 'https://graph.microsoft.com/oidc/userinfo',
-      profile: async (profile, token) => {
+      profile: async (_profile, token) => {
+        // use the SSO token to get the backend api auth token
         const wfToken = await User.getSSOToken(token.id_token);
-
         if (wfToken.ok) {
+          // use the backend api auth token to get the user information
           const user = await User.getUser(wfToken.access_token);
           if (user.ok) {
-            return {
-              ...user,
-
-              // set the token for the JTW change
-              token: wfToken.access_token
-            };
+            return user;
           }
         }
         return false;
@@ -79,8 +75,6 @@ export default NextAuth({
   },
   callbacks: {
     async jwt(token, user) {
-      // check that the token is actually on the user
-
       // Persist the backend access token to the token right after signin
       if (user) {
         token.accessToken = user.token;
@@ -88,7 +82,6 @@ export default NextAuth({
       return token;
     },
     async session(session, token, _user) {
-      // implement SSO token refresh here
       if (token.accessToken) {
         const user = await User.getUser(token.accessToken);
 
