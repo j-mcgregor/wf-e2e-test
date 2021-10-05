@@ -82,8 +82,8 @@ const UploadNewData = () => {
         requiredValues.length;
 
     setValidation({
-      hasCorrectFields: isSubset && isSubset,
-      valuesAreValid: hasValidValues && hasValidValues
+      hasCorrectFields: isSubset,
+      valuesAreValid: hasValidValues
       // isUploaded: true
     });
   };
