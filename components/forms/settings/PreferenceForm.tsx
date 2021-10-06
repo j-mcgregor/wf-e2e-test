@@ -8,10 +8,10 @@ import Button from '../../elements/Button';
 import localisationJSON from '../../../lib/data/localisation.json';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import appState from '../../../lib/appState';
-import mockUsers from '../../../lib/mock-data/users';
+import { useEffect, useState } from 'react';
 
 interface PreferenceFormInput {
-  localisation: string;
+  locale: string;
   reporting: string;
   currency: string;
   loginScreen: string;
@@ -52,46 +52,49 @@ const options = (t: any) => {
 const PreferenceForm = () => {
   const { user } = useRecoilValue(appState);
   const setCurrentUserPrefs = useSetRecoilState(appState);
-
+  const [submittedData, setSubmittedData] = useState();
   //====================== translate ========================
 
   const t = useTranslations();
 
-  const { register, handleSubmit, formState, setValue } =
-    useForm<PreferenceFormInput>({
-      defaultValues: {
-        localisation: user?.preferences?.localisation,
-        currency: user?.preferences?.default_currency,
-        reporting: user?.preferences?.default_reporting_country,
-        loginScreen: user?.preferences?.default_login_screen
-      }
-    });
+  const prefDefaults = {
+    locale: 'English GB',
+    currency: 'GBP',
+    loginScreen: 'English GB',
+    reporting: 'dashboard'
+  };
+  const currentValues = {
+    locale: user?.preferences.localisation,
+    currency: user?.preferences.default_currency,
+    loginScreen: user?.preferences.default_login_screen,
+    reporting: user?.preferences.default_reporting_country
+  };
+
+  const initialValues = () => {
+    if (currentValues !== prefDefaults) {
+      return currentValues;
+    } else {
+      return prefDefaults;
+    }
+  };
+  const { register, handleSubmit, formState, reset } =
+    // @ts-ignore
+    useForm<PreferenceFormInput>(initialValues());
   const { isDirty, isValid } = formState;
-
-  const localisation = user?.preferences?.localisation || '';
-  const default_currency = user?.preferences?.default_currency || '';
-  const default_reporting_country =
-    user?.preferences?.default_reporting_country || '';
-  const default_login_screen = user?.preferences?.default_login_screen || '';
-
-  React.useEffect(() => {
-    setValue('localisation', localisation);
-    setValue('currency', default_currency);
-    setValue('reporting', default_reporting_country);
-    setValue('loginScreen', default_login_screen);
-  }, [user]);
 
   //====================== form ========================
   const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
     // @ts-ignore
     setCurrentUserPrefs(currentUser => {
       const {
-        localisation,
+        locale: localisation,
         currency: default_currency,
         loginScreen: default_login_screen,
         reporting: default_reporting_country
       } = data;
 
+      // @ts-ignore
+      setSubmittedData(data);
       const newPrefs = {
         localisation,
         default_currency,
@@ -109,25 +112,24 @@ const PreferenceForm = () => {
     });
   };
 
-  const userTest = 'test@test.com';
-  const ResetPrefs = () => {
-    const resetState = () => {
-      // @ts-ignore
-      setCurrentUserPrefs({
-        ...mockUsers[userTest],
-        // @ts-ignore
-        user: {
-          ...mockUsers[userTest],
-          preferences: mockUsers[userTest].preferences,
-          ...mockUsers[userTest].preferences.communication
-        }
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset(submittedData, {
+        keepDirty: false,
+        keepDefaultValues: true
       });
-    };
+    }
+  }, [formState, submittedData, reset]);
+
+  const userTest = 'test@test.com';
+
+  const ResetToDefault = () => {
+    const dirty = currentValues !== prefDefaults;
 
     return (
       <Button
-        onClick={() => resetState()}
-        disabled={!isDirty || !isValid}
+        onClick={() => reset(undefined, { keepDefaultValues: true })}
+        disabled={!dirty || !isValid}
         type="submit"
         variant="primary"
         className="max-w-[150px] ml-auto"
@@ -136,9 +138,6 @@ const PreferenceForm = () => {
       </Button>
     );
   };
-
-  //Demos before and after effects of reset/submit
-  // console.log({ user: user?.preferences, dave: user });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -156,10 +155,10 @@ const PreferenceForm = () => {
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <Select
-                {...register('localisation')}
+                {...register('locale')}
                 options={getLocalisation()}
                 label={t('forms.preference.localisation')}
-                name={'localisation'}
+                name={'reporting'}
                 labelClassName={formLabelClassName}
                 className={formClassName}
               >
@@ -222,7 +221,7 @@ const PreferenceForm = () => {
           {/*FIXME: need to implement the reset functionality here*/}
 
           <div className="flex">
-            <ResetPrefs />
+            <ResetToDefault />
             <Button
               disabled={!isDirty}
               type="submit"

@@ -11,6 +11,7 @@ import ErrorMessage from '../../elements/ErrorMessage';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import Input from '../../elements/Input';
 import Select from '../../elements/Select';
+import { EMAIL_REQUIRED } from '../../../lib/utils/error-codes';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -160,7 +161,8 @@ const PersonalInformationForm = () => {
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
-              {errors.email && <ErrorMessage text={`${t('errors.email')}`} />}
+
+              {errors.email && <ErrorMessage text={`${t(EMAIL_REQUIRED)}`} />}
             </div>
 
             <div className="col-span-6 sm:col-span-3">
@@ -222,7 +224,7 @@ const PersonalInformationForm = () => {
             <div className="col-span-6 sm:col-span-6 lg:col-span-4">
               <Select
                 {...register('companyHQLocation')}
-                label={t('forms.personal.company headquarters')}
+                label={t('forms.personal.company_headquarters')}
                 options={countries}
                 className={formClassName}
                 labelClassName={formLabelClassName}

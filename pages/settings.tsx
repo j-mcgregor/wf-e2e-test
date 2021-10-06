@@ -28,7 +28,7 @@ const Settings = () => {
           </HashContainer>
 
           <HashContainer id={`password-id`} name={'Password'}>
-            <PasswordForm isSSO={'google'} />
+            <PasswordForm isSSO={false} />
           </HashContainer>
 
           <HashContainer id={`communication-id`} name={'Communication'}>
@@ -50,7 +50,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
         ...require(`../messages/${locale}/settings.${locale}.json`),
-        ...require(`../messages/${locale}/general.${locale}.json`)
+        ...require(`../messages/${locale}/general.${locale}.json`),
+        ...require(`../messages/${locale}/errors.${locale}.json`)
       }
     }
   };

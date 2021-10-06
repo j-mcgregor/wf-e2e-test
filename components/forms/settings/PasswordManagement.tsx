@@ -4,6 +4,11 @@ import { useForm } from 'react-hook-form';
 import Button from '../../elements/Button';
 import { useTranslations } from 'next-intl';
 import ErrorMessage from '../../elements/ErrorMessage';
+import {
+  CONFIRM_PASSWORD,
+  NEW_PASSWORD,
+  VALID_EMAIL_REQUIRED
+} from '../../../lib/utils/error-codes';
 
 interface PasswordFormInput {
   newPassword: string;
@@ -42,10 +47,7 @@ const PasswordManagement = () => {
             name="newPassword"
             type="password"
           />
-          {errors.newPassword && (
-            <ErrorMessage text={`${t('errors.newPassword.message')}`} />
-          )}
-
+          {errors.newPassword && <ErrorMessage text={t(NEW_PASSWORD)} />}
           <Input
             {...register('confirmPassword', {
               validate: {
@@ -59,9 +61,8 @@ const PasswordManagement = () => {
             name="confirmPassword"
             type="password"
           />
-
-          {errors?.confirmPassword?.type && (
-            <ErrorMessage text={`${t('errors.confirmPassword.message')}`} />
+          {errors?.confirmPassword && (
+            <ErrorMessage text={t(CONFIRM_PASSWORD)} />
           )}
         </div>
       </div>

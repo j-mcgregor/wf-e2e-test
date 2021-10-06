@@ -38,8 +38,8 @@
       "set_your_language": "Set your language preferences.",
       "change_your_default_country": "Change your default country to run your reports in.",
       "change_the_default_reporting": "Change the default reporting currency.",
-      "change the screen": "Change the screen you see on your first login.",
-      "reset to defaults": "Reset to defaults"
+      "change_the_screen": "Change the screen you see on your first login.",
+      "reset_to_defaults": "Reset to defaults"
     },
     "specialist-props": {
       "localisation": "Localisation",
@@ -59,18 +59,7 @@
     },
     "password-management": {
       "new_password": "New Password",
-      "confirm_password": "Confirm Password"
-    }
-  },
-  "errors": {
-    "email": "A valid email address is required.",
-    "last_name": "Please provide your last name.",
-    "first_name": "Please provide your first name.",
-    "newPassword": {
-      "message": "Password must have at least 8 characters"
-    },
-    "confirmPassword": {
-      "message": "The passwords do not match."
+      "confirm_password": "Confirm Passwordd"
     }
   }
 }

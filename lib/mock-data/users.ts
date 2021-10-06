@@ -332,21 +332,21 @@ const mockUsers = {
     contact_information: {
       first_name: 'John',
       last_name: 'Doe',
-      country: 'United Kingdom',
-      street_address: '123 A place Street',
-      city: 'London',
-      state: 'Hackney',
-      postcode: 'N42FF',
-      company_name: 'Awesome Stuff LTD',
-      company_hq_location: 'United Kingdom'
+      country: null,
+      street_address: null,
+      city: null,
+      state: null,
+      postcode: null,
+      company_name: null,
+      company_hq_location: null
     },
     preferences: {
       // eslint-disable-next-line sonarjs/no-duplicate-string
-      localisation: 'English (GB)',
-      default_currency: `${country_currency}`, //TODO:
-      default_login_screen: 'dashboard',
-      default_reporting_country: 'English (GB)',
-      communication: { comments: true, candidates: false, offers: true }
+      localisation: null,
+      default_currency: 'Thing (GBP)',
+      default_login_screen: null,
+      default_reporting_country: null,
+      communication: { comments: false, candidates: false, offers: false }
     },
     reports: []
   }
