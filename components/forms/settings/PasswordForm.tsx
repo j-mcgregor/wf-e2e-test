@@ -4,12 +4,62 @@ import React from 'react';
 import Button from '../../elements/Button';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import PasswordManagement from './PasswordManagement';
+import GoogleIcon from '../../icons/GoogleIcon';
+import MicroSoftIcon from '../../icons/MicrosoftIcon';
+import Link from '../../elements/Link';
 
 interface PasswordFormProps {
-  isSSO: boolean;
+  isSSO: false | 'microsoft' | 'google';
 }
 
+const SSOPassword = ({ isSSO }: PasswordFormProps) => {
+  let component: React.ReactElement = <></>;
+  const t = useTranslations();
+  switch (isSSO) {
+    case 'google':
+      component = (
+        <>
+          <div className={'flex justify-center py-4'}>
+            <GoogleIcon />
+          </div>
+          <h3 className={'text-center text-base font-bold text-gray-900'}>
+            {t('forms.password-form.logged_in_google')}
+          </h3>
+        </>
+      );
+      break;
+    case 'microsoft':
+      component = (
+        <>
+          <div className={'flex justify-center py-4'}>
+            <MicroSoftIcon />
+          </div>
+          <h3 className={'text-center text-base font-bold text-gray-900'}>
+            {t('forms.password-form.logged_in_microsoft')}
+          </h3>
+        </>
+      );
+      break;
+  }
+  return component;
+};
+
+const linkTo = ({ isSSO }: PasswordFormProps) => {
+  let link: string | undefined;
+  switch (isSSO) {
+    case 'google':
+      link = 'https://myaccount.google.com/';
+      break;
+    // eslint-disable-next-line sonarjs/no-duplicated-branches
+    case 'microsoft':
+      link = 'https://account.microsoft.com/';
+      break;
+  }
+  return link;
+};
 const PasswordForm = ({ isSSO }: PasswordFormProps) => {
+  console.log(isSSO);
+
   const t = useTranslations();
   return (
     <div className="shadow sm:rounded-md sm:overflow-hidden">
@@ -34,17 +84,11 @@ const PasswordForm = ({ isSSO }: PasswordFormProps) => {
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-6 lg:col-span-4">
               <div className="bg-gray-100 flex flex-col justify-center">
-                {/*<Icon />*/}
-                {/*google icon*/}
-                <h3
-                  className={
-                    'text-center mt-4 text-base font-bold text-gray-900'
-                  }
-                >
-                  {t('forms.password-form.logged_in_google')}
-                </h3>
+                <SSOPassword isSSO={isSSO} />
                 <div className={'flex justify-center my-4'}>
                   <Button
+                    // @ts-ignore
+                    linkTo={linkTo(isSSO)}
                     type="submit"
                     variant="primary"
                     className="max-w-[150px]"

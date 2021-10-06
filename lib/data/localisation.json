@@ -4,6 +4,10 @@
     "locale": "English (GB)"
   },
   {
+    "code": "it-IT",
+    "locale": "Italian (Italy)"
+  },
+  {
     "code": "test",
     "locale": "Test"
   },

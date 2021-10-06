@@ -56,7 +56,7 @@ const PersonalInformationForm = () => {
         state: contactInfo?.state,
         postcode: contactInfo?.postcode,
         companyName: contactInfo?.company_name,
-        companyHQLocation: contactInfo?.company_HQ_location
+        companyHQLocation: contactInfo?.company_hq_location
       }
     });
 
@@ -69,7 +69,7 @@ const PersonalInformationForm = () => {
   const _state = contactInfo?.state || '';
   const _postcode = contactInfo?.postcode || '';
   const company_name = contactInfo?.company_name || '';
-  const company_HQ_location = contactInfo?.company_HQ_location || '';
+  const company_hq_location = contactInfo?.company_hq_location || '';
 
   React.useEffect(() => {
     setValue('firstName', first_name);
@@ -81,7 +81,7 @@ const PersonalInformationForm = () => {
     setValue('state', _state);
     setValue('postcode', _postcode);
     setValue('companyName', company_name);
-    setValue('companyHQLocation', company_HQ_location);
+    setValue('companyHQLocation', company_hq_location);
   }, [user]);
 
   const { isDirty, errors } = formState;
@@ -99,7 +99,7 @@ const PersonalInformationForm = () => {
       state: data.state,
       postcode: data.postcode,
       company_name: data.companyName,
-      company_HQ_Location: data.companyHQLocation
+      company_hq_Location: data.companyHQLocation
     };
 
     // @ts-ignore

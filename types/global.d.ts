@@ -27,7 +27,7 @@ type ContactInformation = {
   state: string;
   postcode: string;
   company_name: string;
-  company_HQ_location: string;
+  company_hq_location: string;
 };
 
 export type User = {

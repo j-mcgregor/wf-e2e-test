@@ -54,7 +54,8 @@
       "manage_account": "Manage Account",
       "your_account_is_handled": "Your account is handled by a Single Sign On provider.",
       "please_use_their_account": "Please use their account settings to change your details.",
-      "logged_in_google": "You are logged in with Google"
+      "logged_in_google": "You are logged in with Google",
+      "logged_in_microsoft": "You are logged in with Microsoft"
     },
     "password-management": {
       "new_password": "New Password",

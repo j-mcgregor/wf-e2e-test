@@ -302,14 +302,13 @@ const mockUsers = {
     contact_information: {
       first_name: 'John',
       last_name: 'Doe',
-      email: 'test@test.com',
       country: 'United Kingdom',
       street_address: '123 A place Street',
       city: 'London',
       state: 'Hackney',
       postcode: 'N42FF',
       company_name: 'Awesome Stuff LTD',
-      company_HQ_location: 'United Kingdom'
+      company_hq_location: 'United Kingdom'
     },
     preferences: {
       // eslint-disable-next-line sonarjs/no-duplicate-string
@@ -329,6 +328,25 @@ const mockUsers = {
       last_login: null,
       api_requests: 0,
       reports_ran: 0
+    },
+    contact_information: {
+      first_name: 'John',
+      last_name: 'Doe',
+      country: 'United Kingdom',
+      street_address: '123 A place Street',
+      city: 'London',
+      state: 'Hackney',
+      postcode: 'N42FF',
+      company_name: 'Awesome Stuff LTD',
+      company_hq_location: 'United Kingdom'
+    },
+    preferences: {
+      // eslint-disable-next-line sonarjs/no-duplicate-string
+      localisation: 'English (GB)',
+      default_currency: `${country_currency}`, //TODO:
+      default_login_screen: 'dashboard',
+      default_reporting_country: 'English (GB)',
+      communication: { comments: true, candidates: false, offers: true }
     },
     reports: []
   }

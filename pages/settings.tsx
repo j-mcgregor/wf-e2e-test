@@ -28,7 +28,7 @@ const Settings = () => {
           </HashContainer>
 
           <HashContainer id={`password-id`} name={'Password'}>
-            <PasswordForm isSSO={false} />
+            <PasswordForm isSSO={'google'} />
           </HashContainer>
 
           <HashContainer id={`communication-id`} name={'Communication'}>
