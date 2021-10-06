@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { UploadIcon, XIcon } from '@heroicons/react/outline';
+import { useTranslations } from 'use-intl';
+import {
+  UploadIcon,
+  XIcon,
+  DocumentAddIcon,
+  DocumentTextIcon
+} from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
 
 interface UploadFileProps {
@@ -19,6 +25,8 @@ const UploadFile = ({
   fileName,
   readFile
 }: UploadFileProps) => {
+  const t = useTranslations();
+
   const [draggedOver, setIsDraggedOver] = useState(false);
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -33,10 +41,16 @@ const UploadFile = ({
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const file = e.dataTransfer.items[0].getAsFile();
-    // console.log('file from drop:');
+
     readFile(file);
     setIsDraggedOver(false);
   };
+
+  // - Disable generate new report button until all validations passed
+  // - If file attached, dont render 'upload csv' text
+  // - Disable generate new button if not valid
+
+  // - move valid headers and other settings to the reports settings
 
   return (
     <div
@@ -44,39 +58,55 @@ const UploadFile = ({
       onDrop={e => handleDrop(e)}
       onDragLeave={handleDragLeave}
       className={`${
-        draggedOver ? 'border-highlight' : 'border-transparent'
-      } bg-bg w-full h-52 flex flex-col items-center justify-center border-4 border-opacity-80 rounded`}
+        draggedOver ? 'bg-highlight bg-opacity-60' : 'bg-bg'
+      } w-full h-52 flex flex-col items-center justify-center rounded`}
     >
-      <UploadIcon className="h-20 w-20 border-2 border-primary p-4 rounded" />
+      <div
+        className={`${
+          draggedOver ? 'hidden' : 'block'
+        } flex flex-col items-center`}
+      >
+        <UploadIcon className="h-20 w-20 border-2 border-primary p-4 rounded mt-5" />
 
-      <form className="py-4 text-sm">
-        <input
-          className="hidden"
-          type="file"
-          id="file-upload"
-          accept=".txt, .csv"
-          onChange={e => selectFile(e)}
-        />
+        <form className="py-4 mt-2 text-sm">
+          <input
+            className="hidden"
+            type="file"
+            id="file-upload"
+            accept=".csv"
+            onChange={e => selectFile(e)}
+          />
 
-        <div className="flex">
-          <label
-            className="text-highlight cursor-pointer"
-            htmlFor="file-upload"
-          >
-            {linkText}
-          </label>
-          <span>&nbsp;{text}</span>
-        </div>
-      </form>
-      {fileName && (
-        <div className="flex items-center justify-center">
-          <p className="text-sm font-semibold">{fileName}</p>
+          <div className="flex">
+            <label
+              className="text-highlight cursor-pointer hover:opacity-80"
+              htmlFor="file-upload"
+            >
+              {linkText}
+            </label>
+            <span>&nbsp;{text}</span>
+          </div>
+        </form>
+
+        <div
+          className={`${
+            fileName ? 'visible' : 'invisible'
+          } flex items-center justify-center relative`}
+        >
+          <p className="text-sm font-semibold">{fileName || 'test'}</p>
           <XIcon
             onClick={removeFile}
-            className="h-4 w-4 font-bold ml-3 cursor-pointer"
+            className="h-5 w-5 font-bold ml-2 cursor-pointer hover:opacity-80"
           />
         </div>
-      )}
+      </div>
+
+      <p
+        className={`${draggedOver ? 'block' : 'hidden'}
+        text-lg font-semibold`}
+      >
+        {t('drop_file_to_upload')}
+      </p>
     </div>
   );
 };

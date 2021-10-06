@@ -11,10 +11,10 @@ type FileType = {
 type FileContentType = string | ArrayBuffer | null | undefined;
 
 type FileValidationType = {
-  hasCorrectFields: boolean;
-  valuesAreValid: boolean | undefined;
-  isUploaded?: boolean;
+  hasFile?: boolean;
   isCSV: boolean;
+  hasRequiredFormat: boolean | undefined;
+  hasRequiredData: boolean;
 };
 
 const UploadNewData = () => {
@@ -26,9 +26,9 @@ const UploadNewData = () => {
   const [fileContent, setFileContent] = useState<FileContentType | null>(null);
 
   const [validation, setValidation] = useState<FileValidationType>({
-    hasCorrectFields: false,
-    valuesAreValid: false,
-    isUploaded: false,
+    hasRequiredData: false,
+    hasRequiredFormat: false,
+    hasFile: false,
     isCSV: false
   });
 
@@ -58,9 +58,9 @@ const UploadNewData = () => {
   const handleRemoveFile = () => {
     setFileContent(null);
     setValidation({
-      hasCorrectFields: false,
-      valuesAreValid: false,
-      isUploaded: false,
+      hasRequiredData: false,
+      hasRequiredFormat: false,
+      hasFile: false,
       isCSV: false
     });
     setSelectedFile({
@@ -71,8 +71,7 @@ const UploadNewData = () => {
 
   const readFile = (file: File | null) => {
     file && setSelectedFile(file);
-    // console.log('file content from button');
-    // console.log(file);
+
     const reader = new FileReader();
     reader.onload = function (file) {
       setFileContent(file.target?.result);
@@ -95,13 +94,11 @@ const UploadNewData = () => {
       requiredValues.filter(key => contentObject[key]).length ===
         requiredValues.length;
 
-    const hasUploaded = false;
-
     setValidation({
-      hasCorrectFields: isSubset,
-      valuesAreValid: hasValidValues,
+      hasRequiredData: isSubset,
+      hasRequiredFormat: hasValidValues,
       isCSV: selectedFile.type === 'text/csv',
-      isUploaded: hasUploaded
+      hasFile: fileContent ? true : false
     });
   };
 
@@ -112,6 +109,13 @@ const UploadNewData = () => {
       return <XIcon className="w-6 h-6 text-red-500" />;
     }
   };
+
+  // USE TO DISABLE / ENABLE BUTTON
+  const validated =
+    validation.hasFile &&
+    validation.hasRequiredData &&
+    validation.hasRequiredFormat &&
+    validation.isCSV;
 
   const t = useTranslations();
 
@@ -137,20 +141,20 @@ const UploadNewData = () => {
           <div>
             <p className="font-bold py-2">{t('valid_csv_check')}</p>
             <div className="flex py-1 items-center">
-              {renderValidationCheck(validation.isUploaded)}
-              <p className="px-2">{t('upload_csv')}</p>
-            </div>
-            <div className="flex py-1 items-center">
-              {renderValidationCheck(validation.hasCorrectFields)}
-              <p className="px-2">{t('has_correct_fields')}</p>
-            </div>
-            <div className="flex py-1">
-              {renderValidationCheck(validation.valuesAreValid)}
-              <p className="px-2">{t('matches_template')}</p>
+              {renderValidationCheck(validation.hasFile)}
+              <p className="px-2">{t('uploaded_file')}</p>
             </div>
             <div className="flex py-1">
               {renderValidationCheck(validation.isCSV)}
               <p className="px-2">{t('is_valid_csv')}</p>
+            </div>
+            <div className="flex py-1">
+              {renderValidationCheck(validation.hasRequiredFormat)}
+              <p className="px-2">{t('has_required_format')}</p>
+            </div>
+            <div className="flex py-1 items-center">
+              {renderValidationCheck(validation.hasRequiredData)}
+              <p className="px-2">{t('has_required_data')}</p>
             </div>
           </div>
         </div>
