@@ -24,7 +24,7 @@ export default NextAuth({
           // use the backend api auth token to get the user information
           const user = await User.getUser(wfToken.access_token);
           if (user.ok) {
-            return user;
+            return { ...user, isSSO: 'microsoft' };
           }
         }
         return false;
@@ -62,7 +62,8 @@ export default NextAuth({
         );
         // // if no error and we have user data, return it
         if (authenticated && authenticated.token) {
-          return await User.getUser(authenticated.token);
+          const user = User.getUser(authenticated.token);
+          return await { ...user, isSSo: false };
         }
         // Return null if user data could not be retrieved
         return null;

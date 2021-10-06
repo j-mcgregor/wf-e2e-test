@@ -9,7 +9,11 @@ import Input from '../../elements/Input';
 import Link from '../../elements/Link';
 import Logo from '../../elements/Logo';
 import config from '../../../config';
-import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
+import {
+  EMAIL_REQUIRED,
+  GENERIC_API_ERROR,
+  VALID_EMAIL_REQUIRED
+} from '../../../lib/utils/error-codes';
 
 type FormValues = {
   email: string;
@@ -76,13 +80,13 @@ const ForgotPasswordForm = () => {
                 />
 
                 {errors.email?.type === 'required' && (
-                  <ErrorMessage text={t('EMAIL_REQUIRED')} />
+                  <ErrorMessage text={t(EMAIL_REQUIRED)} />
                 )}
                 {errors.email?.type === 'pattern' && (
-                  <ErrorMessage text={t('VALID_EMAIL_REQUIRED')} />
+                  <ErrorMessage text={t(VALID_EMAIL_REQUIRED)} />
                 )}
                 {submitError.type === GENERIC_API_ERROR && (
-                  <ErrorMessage text={t('GENERIC_API_ERROR')} />
+                  <ErrorMessage text={t(GENERIC_API_ERROR)} />
                 )}
               </div>
               <div className="mt-6">
