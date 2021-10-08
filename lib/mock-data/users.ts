@@ -316,7 +316,11 @@ const mockUsers = {
       default_currency: 'English (GB)',
       default_login_screen: 'dashboard',
       default_reporting_country: 'English (GB)',
-      communication: { comments: true, candidates: false, offers: true }
+      communication: {
+        batch_report_email: true,
+        service_update: true,
+        company_updates: false
+      }
     },
     reports: mockReports
   },
@@ -342,11 +346,15 @@ const mockUsers = {
     },
     preferences: {
       // eslint-disable-next-line sonarjs/no-duplicate-string
-      localisation: null,
-      default_currency: 'Thing (GBP)',
-      default_login_screen: null,
-      default_reporting_country: null,
-      communication: { comments: false, candidates: false, offers: false }
+      localisation: 'English (GB)',
+      default_currency: 'English (GB)',
+      default_login_screen: 'dashboard',
+      default_reporting_country: 'English (GB)',
+      communication: {
+        batch_report_email: true,
+        service_update: true,
+        company_updates: false
+      }
     },
     reports: []
   }
