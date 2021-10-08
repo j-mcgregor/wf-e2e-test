@@ -9,9 +9,9 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import appState from '../../../lib/appState';
 
 interface CommunicationFormInput {
-  comments: boolean;
-  candidates: boolean;
-  offers: boolean;
+  batch_report_email: boolean;
+  service_update: boolean;
+  company_updates: boolean;
 }
 
 //====================== COMPONENT ========================
@@ -31,14 +31,17 @@ const CommunicationForm = () => {
       defaultValues: user?.preferences?.communication
     });
 
-  const _offers = user?.preferences?.communication?.offers || false;
-  const _candidates = user?.preferences?.communication?.candidates || false;
-  const _comments = user?.preferences?.communication?.comments || false;
+  const _company_updates =
+    user?.preferences?.communication?.company_updates || false;
+  const _service_update =
+    user?.preferences?.communication?.service_update || false;
+  const _batch_report_email =
+    user?.preferences?.communication?.batch_report_email || false;
 
   React.useEffect(() => {
-    setValue('offers', _offers);
-    setValue('candidates', _candidates);
-    setValue('comments', _comments);
+    setValue('company_updates', _company_updates);
+    setValue('service_update', _service_update);
+    setValue('batch_report_email', _batch_report_email);
   }, [user]);
 
   const { isDirty } = formState;
@@ -81,32 +84,32 @@ const CommunicationForm = () => {
               <div className="flex items-center">
                 <CheckboxInput
                   label={t('forms.communication-form.batch_report')}
-                  id={'comments'}
+                  id={'batch_report_email'}
                   paragraph={t('forms.communication-form.get_notified')}
-                  {...{ ...register('comments') }}
-                  name={'comments'}
+                  {...{ ...register('batch_report_email') }}
+                  name={'batch_report_email'}
                 />
               </div>
               <div className="flex items-center">
                 <CheckboxInput
                   label={t('forms.communication-form.service_updates')}
-                  id={'candidates'}
+                  id={'service_update'}
                   paragraph={t(
                     'forms.communication-form.get_the_latest_updates_on'
                   )}
-                  {...{ ...register('candidates') }}
-                  name={'candidates'}
+                  {...{ ...register('service_update') }}
+                  name={'service_update'}
                 />
               </div>
               <div className="flex items-center">
                 <CheckboxInput
                   label={t('forms.communication-form.company_updates')}
-                  id={'offers'}
+                  id={'company_updates'}
                   paragraph={t(
                     'forms.communication-form.get_all_the_latest_updates_relating'
                   )}
-                  {...{ ...register('offers') }}
-                  name={'offers'}
+                  {...{ ...register('company_updates') }}
+                  name={'company_updates'}
                 />
               </div>
             </div>

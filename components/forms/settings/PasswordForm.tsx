@@ -58,8 +58,6 @@ const linkTo = ({ isSSO }: PasswordFormProps) => {
   return link;
 };
 const PasswordForm = ({ isSSO }: PasswordFormProps) => {
-  console.log(isSSO);
-
   const t = useTranslations();
   return (
     <div className="shadow sm:rounded-md sm:overflow-hidden">
