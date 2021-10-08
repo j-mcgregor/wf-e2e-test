@@ -10,6 +10,8 @@ import Layout from '../components/layout/Layout';
 import SecondaryLayout from '../components/layout/SecondaryLayout';
 import SettingsNav from '../components/layout/SettingsNav';
 import { GetStaticPropsContext } from 'next';
+import { useRecoilValue } from 'recoil';
+import appState from '../lib/appState';
 
 const formLabelClassName = 'block text-sm font-medium text-gray-700';
 
@@ -22,6 +24,8 @@ export type FormWithClassProps = {
 };
 
 const Settings = () => {
+  const { user } = useRecoilValue(appState);
+
   return (
     <Layout title="Settings" fullWidth>
       <SecondaryLayout navigation={<SettingsNav />}>
@@ -45,7 +49,7 @@ const Settings = () => {
           </HashContainer>
 
           <HashContainer id={`password-id`} name={'Password'}>
-            <PasswordForm isSSO={false} />
+            <PasswordForm isSSO={user?.is_sso} />
           </HashContainer>
 
           <HashContainer id={`communication-id`} name={'Communication'}>

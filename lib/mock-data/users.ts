@@ -7,6 +7,11 @@ const MockCompanyNames = {
   DOVE: 'Dove Feeding Corp'
 };
 
+export const giveUserCorrectStructure = (user: any) => ({
+  ...mockUsers['new@test.com'],
+  ...user
+});
+
 export const mockReports = [
   {
     id: 1,
@@ -299,7 +304,7 @@ const mockUsers = {
       api_requests: 142,
       reports_ran: 32
     },
-    is_SSO: false,
+    is_sso: false,
     contact_information: {
       first_name: 'John',
       last_name: 'Doe',
@@ -328,6 +333,7 @@ const mockUsers = {
     full_name: 'Jane Doe (new user)',
     email: 'new@test.com',
     id: 2,
+    is_sso: false,
     recent_usage: {
       last_login: null,
       api_requests: 0,

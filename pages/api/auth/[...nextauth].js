@@ -2,7 +2,9 @@ import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 
 import User from '../../../lib/funcs/user';
-import mockUsers from '../../../lib/mock-data/users';
+import mockUsers, {
+  giveUserCorrectStructure
+} from '../../../lib/mock-data/users';
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -24,7 +26,7 @@ export default NextAuth({
           // use the backend api auth token to get the user information
           const user = await User.getUser(wfToken.access_token);
           if (user.ok) {
-            return { ...user, isSSO: 'microsoft' };
+            return { ...giveUserCorrectStructure(user), is_sso: 'microsoft' };
           }
         }
         return false;
@@ -63,7 +65,7 @@ export default NextAuth({
         // // if no error and we have user data, return it
         if (authenticated && authenticated.token) {
           const user = User.getUser(authenticated.token);
-          return await { ...user, isSSo: false };
+          return await { ...giveUserCorrectStructure(user), is_sso: false };
         }
         // Return null if user data could not be retrieved
         return null;
@@ -79,6 +81,7 @@ export default NextAuth({
       // Persist the backend access token to the token right after signin
       if (user) {
         token.accessToken = user.token;
+        token.is_sso = user.is_sso;
       }
       return token;
     },
@@ -87,7 +90,10 @@ export default NextAuth({
         const user = await User.getUser(token.accessToken);
 
         // add the mock user data in the use session hook
-        session.user = user;
+        session.user = {
+          ...giveUserCorrectStructure(user),
+          is_sso: token.is_sso
+        };
         return session;
       }
       // get the user using the token stored in the token
