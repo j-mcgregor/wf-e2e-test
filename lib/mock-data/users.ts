@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 const MockCompanyNames = {
   BIRD: 'Bird Feeding Corp',
   SWAN: 'Swan Feeding Corp',
@@ -311,11 +312,10 @@ const mockUsers = {
       company_hq_location: 'United Kingdom'
     },
     preferences: {
-      // eslint-disable-next-line sonarjs/no-duplicate-string
       localisation: 'English (GB)',
-      default_currency: 'English (GB)',
+      default_currency: 'United Kingdom - Pound (£)',
       default_login_screen: 'dashboard',
-      default_reporting_country: 'English (GB)',
+      default_reporting_country: 'United Kingdom',
       communication: {
         batch_report_email: true,
         service_update: true,
@@ -347,13 +347,13 @@ const mockUsers = {
     preferences: {
       // eslint-disable-next-line sonarjs/no-duplicate-string
       localisation: 'English (GB)',
-      default_currency: 'English (GB)',
+      default_currency: 'United Kingdom - Pound (£)',
       default_login_screen: 'dashboard',
-      default_reporting_country: 'English (GB)',
+      default_reporting_country: 'United Kingdom',
       communication: {
         batch_report_email: true,
         service_update: true,
-        company_updates: false
+        company_updates: true
       }
     },
     reports: []

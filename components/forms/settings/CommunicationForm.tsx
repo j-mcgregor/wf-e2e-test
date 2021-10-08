@@ -26,7 +26,7 @@ const CommunicationForm = () => {
 
   //====================== form ========================
 
-  const { register, handleSubmit, formState, setValue } =
+  const { register, handleSubmit, formState, setValue, reset } =
     useForm<CommunicationFormInput>({
       defaultValues: user?.preferences?.communication
     });
@@ -44,7 +44,7 @@ const CommunicationForm = () => {
     setValue('batch_report_email', _batch_report_email);
   }, [user]);
 
-  const { isDirty } = formState;
+  const { isDirty, isSubmitting } = formState;
   const onSubmit: SubmitHandler<CommunicationFormInput> = data => {
     // eslint-disable-next-line no-console
     // console.log({ data });
@@ -62,6 +62,15 @@ const CommunicationForm = () => {
       };
     });
   };
+
+  React.useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset(user.preferences.communication, {
+        keepDirty: false,
+        keepDefaultValues: true
+      });
+    }
+  }, [formState, reset]);
 
   // console.log({ user });
 
@@ -118,6 +127,7 @@ const CommunicationForm = () => {
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           <Button
             disabled={!isDirty}
+            loading={isSubmitting}
             type="submit"
             variant="primary"
             className="max-w-[150px] ml-auto"

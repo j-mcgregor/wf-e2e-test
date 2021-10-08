@@ -1,143 +1,95 @@
 import * as React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import Select from '../../elements/Select';
 import { useTranslations } from 'next-intl';
 
 import Button from '../../elements/Button';
-import localisationJSON from '../../../lib/data/localisation.json';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import appState from '../../../lib/appState';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import SettingsSettings from '../../../lib/settings/settings.settings';
+import { FormWithClassProps } from '../../../pages/settings';
 
-interface PreferenceFormInput {
+type PreferenceFormInput = {
   locale: string;
   reporting: string;
   currency: string;
   loginScreen: string;
-}
-
-const getLocalisation = () =>
-  localisationJSON.map(value => {
-    return { optionValue: value.locale };
-  });
-
-const formLabelClassName = 'block text-sm font-medium text-gray-700';
-
-const formClassName =
-  'mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 ' +
-  'focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm';
-
-const options = (t: any) => {
-  const dashboardOptionsValues = [
-    'dashboard',
-    'reports',
-    'sme_calc',
-    'sme_prospector'
-  ];
-  return dashboardOptionsValues.map((name, nameIndex) => {
-    return {
-      optionName: t(
-        'forms.specialist-props.' +
-          //checks type, prevents any sort of injection, takes index as string, then parses it to a number.
-          dashboardOptionsValues[parseInt(String(nameIndex))]
-      ),
-      optionValue: name
-    };
-  });
 };
 
-//====================== COMPONENT ========================
+const { defaultOptions, dashboardOptionValues } = SettingsSettings;
 
-const PreferenceForm = () => {
+const PreferenceForm = ({
+  formClassName,
+  formLabelClassName
+}: FormWithClassProps) => {
   const { user } = useRecoilValue(appState);
+
   const setCurrentUserPrefs = useSetRecoilState(appState);
-  const [submittedData, setSubmittedData] = useState();
-  //====================== translate ========================
 
   const t = useTranslations();
 
+  const dashboardOptions = React.useMemo(
+    () =>
+      dashboardOptionValues.map(value => ({
+        optionValue: value,
+        optionName: t(`forms.specialist-props.${value}`)
+      })),
+    [t]
+  );
+
   const prefDefaults = {
-    locale: 'English GB',
-    currency: 'GBP',
-    loginScreen: 'English GB',
-    reporting: 'dashboard'
+    locale: defaultOptions.preferences.localisation,
+    currency: defaultOptions.preferences.default_currency,
+    loginScreen: defaultOptions.preferences.default_login_screen,
+    reporting: defaultOptions.preferences.default_reporting_country
   };
-  const currentValues = {
+
+  const currentUserValues = {
     locale: user?.preferences.localisation,
     currency: user?.preferences.default_currency,
     loginScreen: user?.preferences.default_login_screen,
     reporting: user?.preferences.default_reporting_country
   };
 
-  const initialValues = () => {
-    if (currentValues !== prefDefaults) {
-      return currentValues;
-    } else {
-      return prefDefaults;
-    }
-  };
   const { register, handleSubmit, formState, reset } =
-    // @ts-ignore
-    useForm<PreferenceFormInput>(initialValues());
+    useForm<PreferenceFormInput>({ defaultValues: currentUserValues });
   const { isDirty, isValid } = formState;
 
-  //====================== form ========================
   const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
     // @ts-ignore
-    setCurrentUserPrefs(currentUser => {
-      const {
-        locale: localisation,
-        currency: default_currency,
-        loginScreen: default_login_screen,
-        reporting: default_reporting_country
-      } = data;
-
-      // @ts-ignore
-      setSubmittedData(data);
-      const newPrefs = {
-        localisation,
-        default_currency,
-        default_login_screen,
-        default_reporting_country
-      };
-      return {
-        ...currentUser,
-        user: {
-          ...currentUser.user,
-          preferences: newPrefs,
-          ...currentUser.user?.preferences?.communication
-        }
-      };
-    });
+    setCurrentUserPrefs(currentUser => ({
+      ...currentUser,
+      user: {
+        ...currentUser.user,
+        preferences: {
+          localisation: data.locale,
+          default_currency: data.currency,
+          default_login_screen: data.loginScreen,
+          default_reporting_country: data.reporting
+        },
+        ...currentUser.user?.preferences?.communication
+      }
+    }));
   };
 
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
-      reset(submittedData, {
-        keepDirty: false,
-        keepDefaultValues: true
+      reset(currentUserValues, {
+        keepDirty: true
+        // keepDefaultValues: true
       });
     }
-  }, [formState, submittedData, reset]);
+  }, [formState, reset]);
 
-  const userTest = 'test@test.com';
+  useEffect(() => {
+    reset(currentUserValues);
+  }, [user]);
 
-  const ResetToDefault = () => {
-    const dirty = currentValues !== prefDefaults;
-
-    return (
-      <Button
-        onClick={() => reset(undefined, { keepDefaultValues: true })}
-        disabled={!dirty || !isValid}
-        type="submit"
-        variant="primary"
-        className="max-w-[150px] ml-auto"
-      >
-        {t('forms.preference.reset_to_defaults')}
-      </Button>
-    );
-  };
+  // comparing JS objects must be strings otherwise comparison will always be false
+  const shouldAllowReset =
+    JSON.stringify(currentUserValues) !== JSON.stringify(prefDefaults);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -156,9 +108,9 @@ const PreferenceForm = () => {
             <div className="col-span-6 sm:col-span-3">
               <Select
                 {...register('locale')}
-                options={getLocalisation()}
+                options={SettingsSettings.supportedLocales}
                 label={t('forms.preference.localisation')}
-                name={'reporting'}
+                name={'locale'}
                 labelClassName={formLabelClassName}
                 className={formClassName}
               >
@@ -173,7 +125,7 @@ const PreferenceForm = () => {
             <div className="col-span-6 sm:col-span-3">
               <Select
                 {...register('reporting')}
-                options={getLocalisation()}
+                options={SettingsSettings.supportedCountries}
                 label={t('forms.preference.reporting')}
                 name={'reporting'}
                 labelClassName={formLabelClassName}
@@ -188,7 +140,7 @@ const PreferenceForm = () => {
             <div className="col-span-6 sm:col-span-3">
               <Select
                 {...register('currency')}
-                options={getLocalisation()}
+                options={SettingsSettings.supportedCurrencies}
                 label={t('forms.preference.currency')}
                 name={'currency'}
                 labelClassName={formLabelClassName}
@@ -204,7 +156,7 @@ const PreferenceForm = () => {
             <div className="col-span-6 sm:col-span-3">
               <Select
                 {...register('loginScreen')}
-                options={options(t)}
+                options={dashboardOptions}
                 label={t('forms.preference.loginScreen')}
                 name={'loginScreen'}
                 labelClassName={formLabelClassName}
@@ -218,10 +170,21 @@ const PreferenceForm = () => {
           </div>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-          {/*FIXME: need to implement the reset functionality here*/}
-
           <div className="flex">
-            <ResetToDefault />
+            <Button
+              onClick={() =>
+                reset(prefDefaults, {
+                  keepDefaultValues: false,
+                  keepDirty: true
+                })
+              }
+              disabled={!shouldAllowReset || !isValid}
+              type="submit"
+              variant="primary"
+              className="max-w-[150px] ml-auto"
+            >
+              {t('forms.preference.reset_to_defaults')}
+            </Button>
             <Button
               disabled={!isDirty}
               type="submit"
