@@ -8,8 +8,8 @@
   "NO_REPORT": "No report found.",
   "INVALID_SSO_LOGIN": "We couldn't log you in with your SSO credentials. Please check that you have access and try again. If the problem persists please contact support.",
   "INCORRECT_DETAILS": "Your details are incorrect. Please try again.",
-  "LAST_NAME": "Please provide your lastname.",
-  "FIRST_NAME": "Please provide your first name.",
-  "NEW_PASSWORD": "Password must have at least 8 characters",
-  "CONFIRM_PASSWORD": "The passwords do not match."
+  "LAST_NAME_REQUIRED": "Please provide your last name.",
+  "FIRST_NAME_REQUIRED": "Please provide your first name.",
+  "NEW_PASSWORD_REQUIRED": "Password must have at least 8 characters",
+  "CONFIRM_PASSWORD_MATCH": "The passwords do not match."
 }

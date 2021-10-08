@@ -10,7 +10,11 @@ import ErrorMessage from '../../elements/ErrorMessage';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import Input from '../../elements/Input';
 import Select from '../../elements/Select';
-import { EMAIL_REQUIRED } from '../../../lib/utils/error-codes';
+import {
+  EMAIL_REQUIRED,
+  LAST_NAME_REQUIRED,
+  FIRST_NAME_REQUIRED
+} from '../../../lib/utils/error-codes';
 import SettingsSettings from '../../../lib/settings/settings.settings';
 import { FormWithClassProps } from '../../../pages/settings';
 
@@ -113,7 +117,7 @@ const PersonalInformationForm = ({
                 className={formClassName}
               />
               {errors.firstName && (
-                <ErrorMessage text={`${t('errors.first name')}`} />
+                <ErrorMessage text={`${t(FIRST_NAME_REQUIRED)}`} />
               )}
             </div>
 
@@ -125,7 +129,7 @@ const PersonalInformationForm = ({
                 labelClassName={formLabelClassName}
               />
               {errors.lastName && (
-                <ErrorMessage text={`${t('errors.last_name')}`} />
+                <ErrorMessage text={`${t(LAST_NAME_REQUIRED)}`} />
               )}
             </div>
 

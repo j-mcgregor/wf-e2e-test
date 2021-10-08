@@ -5,9 +5,8 @@ import Button from '../../elements/Button';
 import { useTranslations } from 'next-intl';
 import ErrorMessage from '../../elements/ErrorMessage';
 import {
-  CONFIRM_PASSWORD,
-  NEW_PASSWORD,
-  VALID_EMAIL_REQUIRED
+  CONFIRM_PASSWORD_MATCH,
+  NEW_PASSWORD_REQUIRED
 } from '../../../lib/utils/error-codes';
 
 interface PasswordFormInput {
@@ -47,7 +46,9 @@ const PasswordManagement = () => {
             name="newPassword"
             type="password"
           />
-          {errors.newPassword && <ErrorMessage text={t(NEW_PASSWORD)} />}
+          {errors.newPassword && (
+            <ErrorMessage text={t(NEW_PASSWORD_REQUIRED)} />
+          )}
           <Input
             {...register('confirmPassword', {
               validate: {
@@ -62,7 +63,7 @@ const PasswordManagement = () => {
             type="password"
           />
           {errors?.confirmPassword && (
-            <ErrorMessage text={t(CONFIRM_PASSWORD)} />
+            <ErrorMessage text={t(CONFIRM_PASSWORD_MATCH)} />
           )}
         </div>
       </div>
