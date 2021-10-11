@@ -28,13 +28,10 @@ const SelectMenu = () => {
   return (
     <Listbox value={selectedCountry} onChange={setSelected}>
       <div className="mt-1 relative">
-        <Listbox.Button className="bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-highlight focus:border-highlight sm:text-sm">
+        <Listbox.Button className="bg-bg relative w-full border border-primary rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-highlight focus:border-highlight sm:text-sm">
           <span className="block truncate">{selectedCountry.optionValue}</span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-            <SelectorIcon
-              className="h-6 w-6 text-gray-400"
-              aria-hidden="true"
-            />
+            <SelectorIcon className="h-6 w-6 text-primary" aria-hidden="true" />
           </span>
         </Listbox.Button>
 
@@ -50,7 +47,7 @@ const SelectMenu = () => {
                 key={country.optionValue}
                 className={({ active }) =>
                   classNames(
-                    active ? 'text-white bg-indigo-600' : 'text-gray-900',
+                    active ? 'text-white bg-highlight' : 'text-gray-900',
                     'cursor-default select-none relative py-2 pl-3 pr-9'
                   )
                 }
@@ -70,7 +67,7 @@ const SelectMenu = () => {
                     {selected ? (
                       <span
                         className={classNames(
-                          active ? 'text-white' : 'text-indigo-600',
+                          active ? 'text-white' : 'text-primary',
                           'absolute inset-y-0 right-0 flex items-center pr-4'
                         )}
                       >

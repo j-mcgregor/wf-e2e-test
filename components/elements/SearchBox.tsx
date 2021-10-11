@@ -3,9 +3,11 @@ import { TranslateInput } from '../../types/global';
 
 interface SearchBoxProps {
   placeholder: TranslateInput;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
 }
 
-const SearchBox = ({ placeholder }: SearchBoxProps) => {
+const SearchBox = ({ placeholder, onChange, value }: SearchBoxProps) => {
   return (
     <div>
       <div className="mt-1 relative rounded-md shadow-sm">
@@ -18,6 +20,8 @@ const SearchBox = ({ placeholder }: SearchBoxProps) => {
           id="email"
           className="focus:ring-highlight focus:border-highlight block w-full pl-10 sm:text-sm border-primary rounded bg-bg"
           placeholder={placeholder}
+          onChange={e => onChange(e)}
+          value={value}
         />
       </div>
     </div>
