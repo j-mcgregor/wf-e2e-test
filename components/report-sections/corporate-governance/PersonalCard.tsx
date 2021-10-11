@@ -41,7 +41,12 @@ const PersonalCard = ({
         <div className="flex">
           {profileImage ? (
             <div className="relative overflow-hidden h-12 w-12 border rounded-full mr-3">
-              <Image src={profileImage} layout="fill" objectFit="cover" alt={`${name} profile`} />
+              <Image
+                src={profileImage}
+                layout="fill"
+                objectFit="cover"
+                alt={`${name} profile`}
+              />
             </div>
           ) : (
             <ProfileIcon className="mr-3" />
@@ -64,7 +69,7 @@ const PersonalCard = ({
       </div>
       <div className="flex flex-col w-full my-3">
         <div className="flex justify-between">
-          <p className="mr-1">{t('appointment date')}</p>
+          <p className="mr-1">{t('appointment_date')}</p>
           <p>{truncateDate(appointmentDate, 4)}</p>
         </div>
         <div className="flex justify-between">
@@ -72,19 +77,20 @@ const PersonalCard = ({
           <p>{nationality}</p>
         </div>
         <div className="flex justify-between">
-          <p>{t('date of birth')}</p>
+          <p>{t('date_of_birth')}</p>
           <p>{dateOfBirth}</p>
         </div>
       </div>
 
       <div className="flex flex-col w-full my-3">
-        <p className="pb-2 font-bold">Other Associations</p>
+        <p className="pb-2 font-bold">{t('other_associations')}</p>
         {otherAssociations.map((association, i) => {
           return (
             <div
               key={i}
               className={`${i !== 0 && 'opacity-50'} flex justify-between`}
             >
+              {/*//FIXME: does this need translation?*/}
               <p className="mr-2">{association.company}</p>
               <div className="flex">
                 <p>{truncateDate(association.from_date, 4)}</p>

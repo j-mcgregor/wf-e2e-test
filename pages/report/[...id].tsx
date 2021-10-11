@@ -253,10 +253,9 @@ const ReportTemplate = () => {
               </div>
             </HashContainer>
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
-              <ReportSectionHeader text={t('financial trends')} />
+              <ReportSectionHeader text={t('financial_trends')} />
               <FinancialTrends data={[]} />
             </HashContainer>
-            _
             <HashContainer
               name={'Corporate Governance'}
               id={`corporate-governance-id`}
@@ -291,24 +290,24 @@ const ReportTemplate = () => {
               name={'Macro Economic Trends'}
               id={`macro-economic-trends-id`}
             >
-              <ReportSectionHeader text={t('macro economic trends')} />
+              <ReportSectionHeader text={t('macro_economic_trends')} />
               <MacroEconomicTrends trends={[]} />
             </HashContainer>
             <HashContainer name={'ESG'} id={`esg-id`}>
               <ReportSectionHeader text={t('esg')} />
-              <p className="text-xl">{t('esg assessment')}</p>
+              <p className="text-xl">{t('esg_assessment')}</p>
               <ESGCard
                 title={t('environmental')}
-                description={t('using environmental indicators')}
+                description={t('using_environmental_indicators')}
                 result={t('neutral')}
-                resultText={t('environmental impact')}
+                resultText={t('environmental_impact')}
                 rating="1"
               />
               <ESGCard
                 title={t('governance')}
-                description={t('data on company governance')}
+                description={t('data_on_company_governance')}
                 result="positive"
-                resultText={t('pep flags')}
+                resultText={t('pep_flags')}
                 rating="3"
               />
             </HashContainer>

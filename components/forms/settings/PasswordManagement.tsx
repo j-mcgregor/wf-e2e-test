@@ -4,6 +4,10 @@ import { useForm } from 'react-hook-form';
 import Button from '../../elements/Button';
 import { useTranslations } from 'next-intl';
 import ErrorMessage from '../../elements/ErrorMessage';
+import {
+  CONFIRM_PASSWORD_MATCH,
+  NEW_PASSWORD_REQUIRED
+} from '../../../lib/utils/error-codes';
 
 interface PasswordFormInput {
   newPassword: string;
@@ -38,14 +42,13 @@ const PasswordManagement = () => {
                 message: 'Password must have at least 8 characters'
               }
             })}
-            label={t('forms.password-management.new password')}
+            label={t('forms.password-management.new_password')}
             name="newPassword"
             type="password"
           />
           {errors.newPassword && (
-            <ErrorMessage text={`${t('errors.newPassword.message')}`} />
+            <ErrorMessage text={t(NEW_PASSWORD_REQUIRED)} />
           )}
-
           <Input
             {...register('confirmPassword', {
               validate: {
@@ -55,13 +58,12 @@ const PasswordManagement = () => {
                 }
               }
             })}
-            label={t('forms.password-management.confirm password')}
+            label={t('forms.password-management.confirm_password')}
             name="confirmPassword"
             type="password"
           />
-
-          {errors?.confirmPassword?.type && (
-            <ErrorMessage text={`${t('errors.confirmPassword.message')}`} />
+          {errors?.confirmPassword && (
+            <ErrorMessage text={t(CONFIRM_PASSWORD_MATCH)} />
           )}
         </div>
       </div>

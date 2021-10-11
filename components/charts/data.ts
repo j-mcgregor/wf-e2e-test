@@ -94,7 +94,3 @@ export type DataType = {
   x: string;
   y: number;
 };
-export type GraphDataType = {
-  name: string;
-  data: DataType[];
-};

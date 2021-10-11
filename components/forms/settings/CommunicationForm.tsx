@@ -9,9 +9,9 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import appState from '../../../lib/appState';
 
 interface CommunicationFormInput {
-  comments: boolean;
-  candidates: boolean;
-  offers: boolean;
+  batch_report_email: boolean;
+  service_update: boolean;
+  company_updates: boolean;
 }
 
 //====================== COMPONENT ========================
@@ -26,22 +26,25 @@ const CommunicationForm = () => {
 
   //====================== form ========================
 
-  const { register, handleSubmit, formState, setValue } =
+  const { register, handleSubmit, formState, setValue, reset } =
     useForm<CommunicationFormInput>({
       defaultValues: user?.preferences?.communication
     });
 
-  const _offers = user?.preferences?.communication?.offers || false;
-  const _candidates = user?.preferences?.communication?.candidates || false;
-  const _comments = user?.preferences?.communication?.comments || false;
+  const _company_updates =
+    user?.preferences?.communication?.company_updates || false;
+  const _service_update =
+    user?.preferences?.communication?.service_update || false;
+  const _batch_report_email =
+    user?.preferences?.communication?.batch_report_email || false;
 
   React.useEffect(() => {
-    setValue('offers', _offers);
-    setValue('candidates', _candidates);
-    setValue('comments', _comments);
+    setValue('company_updates', _company_updates);
+    setValue('service_update', _service_update);
+    setValue('batch_report_email', _batch_report_email);
   }, [user]);
 
-  const { isDirty } = formState;
+  const { isDirty, isSubmitting } = formState;
   const onSubmit: SubmitHandler<CommunicationFormInput> = data => {
     // eslint-disable-next-line no-console
     // console.log({ data });
@@ -60,6 +63,15 @@ const CommunicationForm = () => {
     });
   };
 
+  React.useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset(user.preferences.communication, {
+        keepDirty: false,
+        keepDefaultValues: true
+      });
+    }
+  }, [formState, reset]);
+
   // console.log({ user });
 
   return (
@@ -69,44 +81,44 @@ const CommunicationForm = () => {
           <div>
             <SettingsSectionHeader text={t('communication')} />
             <p className="mt-1 text-sm text-gray-500">
-              {t('forms.communication-form.change or update')}
+              {t('forms.communication-form.change_or_update')}
             </p>
           </div>
 
           <fieldset>
             <legend className="text-base font-medium text-gray-900">
-              {t('forms.communication-form.by email')}
+              {t('forms.communication-form.by_email')}
             </legend>
             <div className="mt-4 space-y-4">
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('forms.communication-form.batch report')}
-                  id={'comments'}
-                  paragraph={t('forms.communication-form.get notified')}
-                  {...{ ...register('comments') }}
-                  name={'comments'}
+                  label={t('forms.communication-form.batch_report')}
+                  id={'batch_report_email'}
+                  paragraph={t('forms.communication-form.get_notified')}
+                  {...{ ...register('batch_report_email') }}
+                  name={'batch_report_email'}
                 />
               </div>
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('forms.communication-form.service updates')}
-                  id={'candidates'}
+                  label={t('forms.communication-form.service_updates')}
+                  id={'service_update'}
                   paragraph={t(
-                    'forms.communication-form.get the latest updates on'
+                    'forms.communication-form.get_the_latest_updates_on'
                   )}
-                  {...{ ...register('candidates') }}
-                  name={'candidates'}
+                  {...{ ...register('service_update') }}
+                  name={'service_update'}
                 />
               </div>
               <div className="flex items-center">
                 <CheckboxInput
-                  label={t('forms.communication-form.company updates')}
-                  id={'offers'}
+                  label={t('forms.communication-form.company_updates')}
+                  id={'company_updates'}
                   paragraph={t(
-                    'forms.communication-form.get all the latest updates relating'
+                    'forms.communication-form.get_all_the_latest_updates_relating'
                   )}
-                  {...{ ...register('offers') }}
-                  name={'offers'}
+                  {...{ ...register('company_updates') }}
+                  name={'company_updates'}
                 />
               </div>
             </div>
@@ -115,6 +127,7 @@ const CommunicationForm = () => {
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           <Button
             disabled={!isDirty}
+            loading={isSubmitting}
             type="submit"
             variant="primary"
             className="max-w-[150px] ml-auto"

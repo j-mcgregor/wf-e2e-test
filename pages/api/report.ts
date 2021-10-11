@@ -3,7 +3,11 @@ import { getSession } from 'next-auth/client';
 
 import mockReport from '../../lib/mock-data/report';
 import mockUsers from '../../lib/mock-data/users';
-import { NO_ID, NO_REPORT, UNAUTHORISED } from '../../lib/utils/error-codes';
+import {
+  NO_REPORT_ID,
+  NO_REPORT,
+  UNAUTHORISED
+} from '../../lib/utils/error-codes';
 import { Report } from '../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -24,7 +28,7 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
   const reportId = request.query.id;
   if (!reportId) {
     return response.status(500).json({
-      error: NO_ID,
+      error: NO_REPORT_ID,
       message: 'No report ID provided, please add report id.'
     });
   }

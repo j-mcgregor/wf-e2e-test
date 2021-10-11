@@ -11,6 +11,12 @@ import CheckboxInput from '../../elements/Checkbox';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
 import Link from '../../elements/Link';
+import {
+  EMAIL_REQUIRED,
+  PASSWORD_REQUIRED,
+  VALID_EMAIL_REQUIRED,
+  INCORRECT_DETAILS
+} from '../../../lib/utils/error-codes';
 
 type FormValues = {
   email: string;
@@ -21,7 +27,6 @@ type FormValues = {
 const LoginForm = () => {
   const t = useTranslations();
   const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -98,10 +103,10 @@ const LoginForm = () => {
                   placeholder={`${t('placeholders.email')}`}
                 />
                 {errors.email?.type === 'required' && (
-                  <ErrorMessage text={t('errors.email_required')} />
+                  <ErrorMessage text={t(EMAIL_REQUIRED)} />
                 )}
                 {errors.email?.type === 'pattern' && (
-                  <ErrorMessage text={t('errors.valid_email')} />
+                  <ErrorMessage text={t(VALID_EMAIL_REQUIRED)} />
                 )}
               </div>
 
@@ -113,12 +118,12 @@ const LoginForm = () => {
                   placeholder={`${t('placeholders.password')}`}
                 />
                 {errors.password?.type === 'required' && (
-                  <ErrorMessage text={t('errors.password_required')} />
+                  <ErrorMessage text={t(PASSWORD_REQUIRED)} />
                 )}
               </div>
             </div>
 
-            {authError && <ErrorMessage text={t('errors.incorrect_details')} />}
+            {authError && <ErrorMessage text={t(INCORRECT_DETAILS)} />}
 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-left">
               <div className="flex items-center w-full sm:w-auto">

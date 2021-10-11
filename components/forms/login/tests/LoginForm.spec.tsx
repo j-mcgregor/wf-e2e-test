@@ -3,7 +3,7 @@ import { fireEvent, waitFor } from '@testing-library/dom';
 import client from 'next-auth/client';
 import * as nextRouter from 'next/router';
 
-import loginMessages from '../../../../messages/en/login.en.json';
+import allMessages from '../../../../messages/en';
 import { makeMockSession, render, screen } from '../../../../test-utils';
 import LoginForm from '../LoginForm';
 
@@ -43,17 +43,17 @@ describe('LoginForm', () => {
   });
 
   it('render the form without issue', () => {
-    expect(() => render(<LoginForm />, undefined, loginMessages)).not.toThrow();
+    expect(() => render(<LoginForm />, undefined, allMessages)).not.toThrow();
   });
 
   it('submits the form without issue', async () => {
     signInSpy.mockReturnValue({ ok: true });
 
-    render(<LoginForm />, undefined, loginMessages);
+    render(<LoginForm />, undefined, allMessages);
 
     fireEvent.input(
       screen.getByRole('textbox', {
-        name: /email address/i
+        name: /email/i
       }),
       {
         target: {
@@ -70,7 +70,7 @@ describe('LoginForm', () => {
 
     expect(
       screen.getByRole('textbox', {
-        name: /email address/i
+        name: /email/i
       })
     ).toHaveValue('test@test.com');
 
@@ -85,11 +85,11 @@ describe('LoginForm', () => {
   });
 
   it('displays an invalid email pattern message if form submitted with invalid email', async () => {
-    render(<LoginForm />, undefined, loginMessages);
+    render(<LoginForm />, undefined, allMessages);
 
     fireEvent.input(
       screen.getByRole('textbox', {
-        name: /email address/i
+        name: /email/i
       }),
       {
         target: {
@@ -113,12 +113,12 @@ describe('LoginForm', () => {
     });
 
     expect(
-      screen.getByText(/please enter a valid email\./i)
+      screen.getByText(/please provide a valid email\./i)
     ).toBeInTheDocument();
   });
 
   it('displays an email required message if form submitted with no email', async () => {
-    render(<LoginForm />, undefined, loginMessages);
+    render(<LoginForm />, undefined, allMessages);
 
     fireEvent.input(screen.getByLabelText(/password/i), {
       target: {
@@ -138,11 +138,11 @@ describe('LoginForm', () => {
   });
 
   it('displays a password required message if form submitted with no password', async () => {
-    render(<LoginForm />, undefined, loginMessages);
+    render(<LoginForm />, undefined, allMessages);
 
     fireEvent.input(
       screen.getByRole('textbox', {
-        name: /email address/i
+        name: /email/i
       }),
       {
         target: {
@@ -163,15 +163,14 @@ describe('LoginForm', () => {
   });
 
   it('displays an error message when details are incorrect after submitting', async () => {
-    render(<LoginForm />, undefined, loginMessages);
-
+    render(<LoginForm />, undefined, allMessages);
     fireEvent.input(
       screen.getByRole('textbox', {
-        name: /email address/i
+        name: /email/i
       }),
       {
         target: {
-          value: 'test@test.com'
+          value: 'test@test.co'
         }
       }
     );
@@ -184,9 +183,9 @@ describe('LoginForm', () => {
 
     expect(
       screen.getByRole('textbox', {
-        name: /email address/i
+        name: /email/i
       })
-    ).toHaveValue('test@test.com');
+    ).toHaveValue('test@test.co');
 
     expect(screen.getByLabelText(/password/i)).toHaveValue('password');
 

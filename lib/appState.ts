@@ -80,35 +80,3 @@ export const userReports = selector<UserReports>({
 });
 
 export default appState;
-
-// const _user = {
-//   name: null,
-//   email: null,
-//   image: null,
-//   recent_usage: {
-//     reports_ran: '',
-//     api_requests: '',
-//     last_login: ''
-//   },
-//   is_SSO: false,
-//   contact_information: {
-//     first_name: '',
-//     last_name: '',
-//     email: '',
-//     country: '',
-//     street_address: '',
-//     city: '',
-//     state: '',
-//     postcode: '',
-//     company_name: '',
-//     company_HQ_Location: ''
-//   },
-//   preferences: {
-//     localisation: '',
-//     default_currency: '',
-//     default_login_screen: '',
-//     default_reporting_country: '',
-//     communication: { comments: false, candidates: false, offers: false }
-//   },
-//   reports: []
-// }

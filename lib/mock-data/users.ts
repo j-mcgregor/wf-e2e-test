@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 const MockCompanyNames = {
   BIRD: 'Bird Feeding Corp',
   SWAN: 'Swan Feeding Corp',
@@ -5,6 +6,11 @@ const MockCompanyNames = {
   PIGEON: 'Pigeon Feeding Corp',
   DOVE: 'Dove Feeding Corp'
 };
+
+export const giveUserCorrectStructure = (user: any) => ({
+  ...mockUsers['new@test.com'],
+  ...user
+});
 
 export const mockReports = [
   {
@@ -298,26 +304,28 @@ const mockUsers = {
       api_requests: 142,
       reports_ran: 32
     },
-    is_SSO: false,
+    is_sso: false,
     contact_information: {
       first_name: 'John',
       last_name: 'Doe',
-      email: 'test@test.com',
       country: 'United Kingdom',
       street_address: '123 A place Street',
       city: 'London',
       state: 'Hackney',
       postcode: 'N42FF',
       company_name: 'Awesome Stuff LTD',
-      company_HQ_location: 'United Kingdom'
+      company_hq_location: 'United Kingdom'
     },
     preferences: {
-      // eslint-disable-next-line sonarjs/no-duplicate-string
       localisation: 'English (GB)',
-      default_currency: 'English (GB)',
+      default_currency: 'United Kingdom - Pound (£)',
       default_login_screen: 'dashboard',
-      default_reporting_country: 'English (GB)',
-      communication: { comments: true, candidates: false, offers: true }
+      default_reporting_country: 'United Kingdom',
+      communication: {
+        batch_report_email: true,
+        service_update: true,
+        company_updates: false
+      }
     },
     reports: mockReports
   },
@@ -325,10 +333,34 @@ const mockUsers = {
     full_name: 'Jane Doe (new user)',
     email: 'new@test.com',
     id: 2,
+    is_sso: false,
     recent_usage: {
       last_login: null,
       api_requests: 0,
       reports_ran: 0
+    },
+    contact_information: {
+      first_name: 'John',
+      last_name: 'Doe',
+      country: null,
+      street_address: null,
+      city: null,
+      state: null,
+      postcode: null,
+      company_name: null,
+      company_hq_location: null
+    },
+    preferences: {
+      // eslint-disable-next-line sonarjs/no-duplicate-string
+      localisation: 'English (GB)',
+      default_currency: 'United Kingdom - Pound (£)',
+      default_login_screen: 'dashboard',
+      default_reporting_country: 'United Kingdom',
+      communication: {
+        batch_report_email: true,
+        service_update: true,
+        company_updates: true
+      }
     },
     reports: []
   }

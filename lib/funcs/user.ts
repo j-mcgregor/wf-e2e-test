@@ -35,10 +35,9 @@ const getUser = async (token: string) => {
       Authorization: `Bearer ${token}`
     }
   });
-
   if (res.ok) {
     const user = await res.json();
-    return { ...user, token };
+    return { ok: true, ...user, token };
   }
   return null;
 };
@@ -65,6 +64,29 @@ const forgotPassword = async (email: string) => {
   return { ok: false };
 };
 
+const getSSOToken = async (
+  token: string
+): Promise<{ access_token?: string; ok?: boolean }> => {
+  if (!token) {
+    return { ok: false };
+  }
+
+  const res = await fetch(`${process.env.WF_AP_ROUTE}/login/single-signon`, {
+    method: 'POST',
+    headers: {
+      ...XMLHeaders
+    },
+    body: new URLSearchParams({
+      sso_token: token
+    })
+  });
+  if (res.ok) {
+    const { access_token } = await res.json();
+    return { access_token, ok: true };
+  }
+  return { ok: false };
+};
+
 const resetPassword = async (
   token: string,
   newPassword: string
@@ -88,6 +110,12 @@ const resetPassword = async (
   return { ok: false };
 };
 
-const User = { authenticate, getUser, resetPassword, forgotPassword };
+const User = {
+  authenticate,
+  getUser,
+  resetPassword,
+  forgotPassword,
+  getSSOToken
+};
 
 export default User;

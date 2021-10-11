@@ -27,19 +27,19 @@ const ShareHoldingCard = ({
             <p>{total}</p>
           </div>
           <div className="flex justify-between py-1">
-            <p>{t('above 10')}</p>
+            <p>{t('above_10')}</p>
             <p>{above10}</p>
           </div>
           <div className="flex justify-between py-1">
-            <p>{t('between 5-10')}</p>
+            <p>{t('between_5-10')}</p>
             <p>{fiveToTen}</p>
           </div>
           <div className="flex justify-between py-1">
-            <p>{t('between 1-5')}</p>
+            <p>{t('between_1-5')}</p>
             <p>{oneToFive}</p>
           </div>
           <div className="flex justify-between py-1">
-            <p>{t('below 1')}</p>
+            <p>{t('below_1')}</p>
             <p>{belowOne}</p>
           </div>
         </div>

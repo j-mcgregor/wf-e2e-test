@@ -4,11 +4,7 @@
     "locale": "English (GB)"
   },
   {
-    "code": "test",
-    "locale": "Test"
-  },
-  {
-    "code": "test2",
-    "locale": "Test2"
+    "code": "it-IT",
+    "locale": "Italian (Italy)"
   }
 ]

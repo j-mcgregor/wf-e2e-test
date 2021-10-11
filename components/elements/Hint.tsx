@@ -4,11 +4,11 @@ import { TranslateInput } from '../../types/global';
 import { InformationCircleIcon } from '@heroicons/react/outline';
 import { usePopper } from 'react-popper';
 
-export type InfoPopoverProps = {
+export type HintTypeProps = {
   title: TranslateInput;
   body: TranslateInput;
 };
-const Hint = ({ title, body }: InfoPopoverProps) => {
+const Hint = ({ title, body }: HintTypeProps) => {
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
@@ -19,7 +19,7 @@ const Hint = ({ title, body }: InfoPopoverProps) => {
   return (
     <Popover>
       <Popover.Button ref={setReferenceElement}>
-        <InformationCircleIcon className="h-8 w-8" />
+        <InformationCircleIcon className="h-6 w-6 opacity-50" />
       </Popover.Button>
 
       <Popover.Panel
