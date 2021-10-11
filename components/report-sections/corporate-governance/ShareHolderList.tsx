@@ -11,7 +11,7 @@ const ShareHolderList = ({ shareholders }: ShareHolderListProps) => {
 
   return (
     <div className="my-4">
-      <p className="text-xl py-4">{t('all shareholders')}</p>
+      <p className="text-xl py-4">{t('all_shareholders')}</p>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {shareholders.map((shareholder, index) => {

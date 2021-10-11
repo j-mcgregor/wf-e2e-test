@@ -94,6 +94,7 @@ module.exports = {
         '-full': '-100%'
       },
       fontSize: {
+        xxs: '0.7rem',
         '7xl': '4.5rem',
         '8xl': '5rem',
         '9xl': '5.5rem',

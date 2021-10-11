@@ -13,25 +13,43 @@ import { GetStaticPropsContext } from 'next';
 import { useRecoilValue } from 'recoil';
 import appState from '../lib/appState';
 
+const formLabelClassName = 'block text-sm font-medium text-gray-700';
+
+const formClassName =
+  'mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm';
+
+export type FormWithClassProps = {
+  formClassName?: string;
+  formLabelClassName: string;
+};
+
 const Settings = () => {
   const { user } = useRecoilValue(appState);
+
   return (
     <Layout title="Settings" fullWidth>
       <SecondaryLayout navigation={<SettingsNav />}>
         <div className="flex flex-col sm:px-6 lg:px-0 max-w-3xl mx-auto space-y-24 pb-12">
           <HashContainer
+            className="lg:!pt-12"
             id={`personal-information-id`}
             name={'Personal Information'}
           >
-            <PersonalInformationForm />
+            <PersonalInformationForm
+              formClassName={formClassName}
+              formLabelClassName={formLabelClassName}
+            />
           </HashContainer>
 
           <HashContainer id={`preferences-id`} name={'Preferences'}>
-            <PreferenceForm />
+            <PreferenceForm
+              formClassName={formClassName}
+              formLabelClassName={formLabelClassName}
+            />
           </HashContainer>
 
           <HashContainer id={`password-id`} name={'Password'}>
-            <PasswordForm isSSO={false} />
+            <PasswordForm isSSO={user?.is_sso} />
           </HashContainer>
 
           <HashContainer id={`communication-id`} name={'Communication'}>
@@ -53,7 +71,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
         ...require(`../messages/${locale}/settings.${locale}.json`),
-        ...require(`../messages/${locale}/general.${locale}.json`)
+        ...require(`../messages/${locale}/general.${locale}.json`),
+        ...require(`../messages/${locale}/errors.${locale}.json`)
       }
     }
   };

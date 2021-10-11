@@ -1,3 +1,5 @@
+import { TranslateInput } from './global';
+
 export type ChartType = {
   header: TranslateInput;
   subHeader: TranslateInput;
@@ -8,13 +10,17 @@ export type ChartType = {
   data: GraphDataType[];
 };
 
+export type IndexedGraphDataType = {
+  [index: string]: GraphDataType;
+};
+
 export type GraphDataType = {
   x: string;
   y: number;
 };
 
 export type MultiGraphDataType = {
-  name: string;
+  name?: string;
   data: GraphDataType[];
 };
 

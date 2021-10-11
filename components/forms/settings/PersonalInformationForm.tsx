@@ -1,22 +1,22 @@
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import {
-  RecoilValueReadOnly,
-  selector,
-  useRecoilValue,
-  useSetRecoilState
-} from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import appState from '../../../lib/appState';
-import countryJSON from '../../../lib/data/country_currency.json';
 import { validEmailRegex } from '../../../lib/utils/regexes';
-import { ContactInformation } from '../../../types/global';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import Input from '../../elements/Input';
 import Select from '../../elements/Select';
+import {
+  EMAIL_REQUIRED,
+  LAST_NAME_REQUIRED,
+  FIRST_NAME_REQUIRED
+} from '../../../lib/utils/error-codes';
+import SettingsSettings from '../../../lib/settings/settings.settings';
+import { FormWithClassProps } from '../../../pages/settings';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -31,63 +31,38 @@ interface PersonalInformationFormInput {
   companyHQLocation: string;
 }
 
-const formClassName =
-  'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm';
+const { supportedCountries } = SettingsSettings;
 
-const formLabelClassName = 'block text-sm font-medium text-gray-700';
-
-const countries = countryJSON.map(value => {
-  return { optionValue: value.CountryName };
-});
-
-//====================== COMPONENT ========================
-const PersonalInformationForm = () => {
+const PersonalInformationForm = ({
+  formClassName,
+  formLabelClassName
+}: FormWithClassProps) => {
   const { user } = useRecoilValue(appState);
 
   const setCurrentUserContactInfo = useSetRecoilState(appState);
   const contactInfo = user?.contact_information;
 
-  //====================== translate ========================
   const t = useTranslations();
 
-  //====================== form ========================
-  const { register, handleSubmit, formState, setValue } =
+  const currentUserValues = {
+    firstName: contactInfo?.first_name,
+    lastName: contactInfo?.last_name,
+    email: user?.email,
+    country: contactInfo?.country,
+    streetAddress: contactInfo?.street_address,
+    city: contactInfo?.city,
+    state: contactInfo?.state,
+    postcode: contactInfo?.postcode,
+    companyName: contactInfo?.company_name,
+    companyHQLocation: contactInfo?.company_hq_location
+  };
+  const { register, handleSubmit, formState, reset } =
     useForm<PersonalInformationFormInput>({
-      defaultValues: {
-        firstName: contactInfo?.first_name,
-        lastName: contactInfo?.last_name,
-        country: contactInfo?.country,
-        streetAddress: contactInfo?.street_address,
-        city: contactInfo?.city,
-        state: contactInfo?.state,
-        postcode: contactInfo?.postcode,
-        companyName: contactInfo?.company_name,
-        companyHQLocation: contactInfo?.company_HQ_location
-      }
+      defaultValues: currentUserValues
     });
 
-  const first_name = contactInfo?.first_name || '';
-  const _email = user?.email || '';
-  const last_name = contactInfo?.last_name || '';
-  const _country = contactInfo?.country || '';
-  const street_address = contactInfo?.street_address || '';
-  const _city = contactInfo?.city || '';
-  const _state = contactInfo?.state || '';
-  const _postcode = contactInfo?.postcode || '';
-  const company_name = contactInfo?.company_name || '';
-  const company_HQ_location = contactInfo?.company_HQ_location || '';
-
   React.useEffect(() => {
-    setValue('firstName', first_name);
-    setValue('email', _email);
-    setValue('lastName', last_name);
-    setValue('country', _country);
-    setValue('streetAddress', street_address);
-    setValue('city', _city);
-    setValue('state', _state);
-    setValue('postcode', _postcode);
-    setValue('companyName', company_name);
-    setValue('companyHQLocation', company_HQ_location);
+    reset(currentUserValues);
   }, [user]);
 
   const { isDirty, errors } = formState;
@@ -105,16 +80,20 @@ const PersonalInformationForm = () => {
       state: data.state,
       postcode: data.postcode,
       company_name: data.companyName,
-      company_HQ_Location: data.companyHQLocation
+      company_hq_location: data.companyHQLocation
     };
 
     // @ts-ignore
     setCurrentUserContactInfo(curr => {
       return {
         ...curr,
-        user: { ...curr.user, contact_information: updatedData, name: `${data.firstName} ${data.lastName}`, email: data.email }
-        
-      }
+        user: {
+          ...curr.user,
+          contact_information: updatedData,
+          name: `${data.firstName} ${data.lastName}`,
+          email: data.email
+        }
+      };
     });
   };
 
@@ -138,7 +117,7 @@ const PersonalInformationForm = () => {
                 className={formClassName}
               />
               {errors.firstName && (
-                <ErrorMessage text={`${t('errors.first name')}`} />
+                <ErrorMessage text={`${t(FIRST_NAME_REQUIRED)}`} />
               )}
             </div>
 
@@ -150,7 +129,7 @@ const PersonalInformationForm = () => {
                 labelClassName={formLabelClassName}
               />
               {errors.lastName && (
-                <ErrorMessage text={`${t('errors.last_name')}`} />
+                <ErrorMessage text={`${t(LAST_NAME_REQUIRED)}`} />
               )}
             </div>
 
@@ -162,14 +141,15 @@ const PersonalInformationForm = () => {
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
-              {errors.email && <ErrorMessage text={`${t('errors.email')}`} />}
+
+              {errors.email && <ErrorMessage text={`${t(EMAIL_REQUIRED)}`} />}
             </div>
 
             <div className="col-span-6 sm:col-span-3">
               <Select
                 {...register('country')}
                 label={t('forms.personal.country')}
-                options={countries}
+                options={supportedCountries}
                 className={formClassName}
                 labelClassName={formLabelClassName}
               />
@@ -224,9 +204,10 @@ const PersonalInformationForm = () => {
             <div className="col-span-6 sm:col-span-6 lg:col-span-4">
               <Select
                 {...register('companyHQLocation')}
-                label={t('forms.personal.company headquarters')}
-                options={countries}
+                label={t('forms.personal.company_headquarters')}
+                options={supportedCountries}
                 className={formClassName}
+                placeholder={'Your company headquarters'}
                 labelClassName={formLabelClassName}
               />
             </div>

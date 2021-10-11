@@ -1,4 +1,5 @@
 import React from 'react';
+import { TranslateInput } from '../../types/global';
 
 type BaseSelectProps = React.DetailedHTMLProps<
   React.SelectHTMLAttributes<HTMLSelectElement>,
@@ -15,7 +16,7 @@ interface SelectProps extends BaseSelectProps {
   onFocusClassName?: string;
   onErrorClassName?: string;
   isError?: boolean;
-  options: { optionValue: string; optionName?: string }[];
+  options: { optionValue: string; optionName?: string | TranslateInput }[];
 }
 
 const defaultFocusClasses = 'focus:ring-highlight focus:border-highlight';

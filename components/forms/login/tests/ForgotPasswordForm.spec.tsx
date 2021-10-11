@@ -102,11 +102,12 @@ describe('ForgotPasswordForm', () => {
   });
 
   it('contains the correct error if submission failed', async () => {
-    mockServerPost(
+    mockServerGet(
       'http://localhost:3000/api/password-reset',
       400,
       JSON.stringify({ ok: false, error: GENERIC_API_ERROR })
     );
+
     render(<ForgotPasswordForm />, undefined, allMessages);
 
     expect(
