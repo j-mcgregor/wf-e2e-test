@@ -1,13 +1,15 @@
 /* eslint-disable security/detect-non-literal-require */
 import { GetStaticPropsContext } from 'next';
-import React from 'react';
-
 import Layout from '../components/layout/Layout';
+import AutomatedReports from '../components/sme-calc-sections/AutomatedReports';
 
 const SMECalculator = () => {
   return (
     <Layout title="SME Calc">
-      <h1 className="text-2xl">SME Calculator </h1>
+      <div className="text-primary">
+        <h1 className="text-2xl">SME Calculator </h1>
+        <AutomatedReports />
+      </div>
     </Layout>
   );
 };
