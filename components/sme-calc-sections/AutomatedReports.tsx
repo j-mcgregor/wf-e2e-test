@@ -1,5 +1,6 @@
 import { useTranslations } from 'use-intl';
 import SelectMenu from '../elements/SelectMenu';
+import SearchBox from '../elements/SearchBox';
 
 const AutomatedReports = () => {
   const t = useTranslations();
@@ -28,6 +29,7 @@ const AutomatedReports = () => {
           <p className="text-lg font-semibold py-1">{t('company_search')}</p>
           <p>{t('search_the_registered_companies_by_name')}</p>
         </div>
+        <SearchBox placeholder={t('enter_company_name')} />
       </div>
     </div>
   );
