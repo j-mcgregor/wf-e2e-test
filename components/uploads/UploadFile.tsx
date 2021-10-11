@@ -46,11 +46,7 @@ const UploadFile = ({
     setIsDraggedOver(false);
   };
 
-  // - Disable generate new report button until all validations passed
-  // - If file attached, dont render 'upload csv' text
-  // - Disable generate new button if not valid
-
-  // - move valid headers and other settings to the reports settings
+  // -
 
   return (
     <div
@@ -77,15 +73,17 @@ const UploadFile = ({
             onChange={e => selectFile(e)}
           />
 
-          <div className="flex">
-            <label
-              className="text-highlight cursor-pointer hover:opacity-80"
-              htmlFor="file-upload"
-            >
-              {linkText}
-            </label>
-            <span>&nbsp;{text}</span>
-          </div>
+          {!fileName && (
+            <div className="flex">
+              <label
+                className="text-highlight cursor-pointer hover:opacity-80"
+                htmlFor="file-upload"
+              >
+                {linkText}
+              </label>
+              <span>&nbsp;{text}</span>
+            </div>
+          )}
         </form>
 
         <div

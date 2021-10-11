@@ -26,7 +26,7 @@ const Hint = ({ title, body }: InfoPopoverProps) => {
         ref={setPopperElement}
         style={styles.popper}
         {...attributes.popper}
-        className=" bg-white px-6 py-4 rounded-sm shadow text-sm -mx-6 z-20"
+        className="bg-white px-6 py-4 rounded-sm shadow text-sm -mx-6 z-20 max-w-xs"
       >
         <p className="font-bold pb-1">{title}</p>
         <p>{body}</p>

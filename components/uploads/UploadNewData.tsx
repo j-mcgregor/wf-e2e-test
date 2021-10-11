@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'use-intl';
+import {
+  validHeaders,
+  requiredValues
+} from '../../lib/settings/report.settings';
 import Button from '../elements/Button';
 import UploadFile from './UploadFile';
 import { XIcon, CheckIcon } from '@heroicons/react/outline';
@@ -31,20 +35,6 @@ const UploadNewData = () => {
     hasFile: false,
     isCSV: false
   });
-
-  const validHeaders = [
-    'company_name',
-    'company_id',
-    'sme_z_score',
-    'p_d_ratio\r'
-  ];
-
-  const requiredValues = [
-    'sme_z_score',
-    'company_name',
-    'company_id',
-    'p_d_ratio\r'
-  ];
 
   useEffect(() => {
     getValidations(fileContent, selectedFile);
@@ -111,7 +101,7 @@ const UploadNewData = () => {
   };
 
   // USE TO DISABLE / ENABLE BUTTON
-  const validated =
+  const isValidated =
     validation.hasFile &&
     validation.hasRequiredData &&
     validation.hasRequiredFormat &&
@@ -162,6 +152,7 @@ const UploadNewData = () => {
       <div className="w-3/12">
         <Button
           variant="highlight"
+          disabled={!isValidated}
           linkTo="#"
           className="text-primary rounded-none"
         >

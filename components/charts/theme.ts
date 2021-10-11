@@ -17,7 +17,7 @@ const padding = 10;
 const baseProps = {
   width: 200,
   height: 250,
-  padding: 35
+  padding: 30
 };
 
 //  DEFAULT LABEL STYLES
