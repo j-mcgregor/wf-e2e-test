@@ -1,17 +1,37 @@
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
+import { XIcon } from '@heroicons/react/outline';
 import SelectMenu from './SelectMenu';
 import SearchBox from '../elements/SearchBox';
-import { XIcon } from '@heroicons/react/outline';
 import Button from '../elements/Button';
+import SettingsSettings from '../../lib/settings/settings.settings';
+import { countries } from '../../lib/settings/sme-calc-settings.settings';
+
+type Value = {
+  optionValue: string;
+};
 
 const AutomatedReports = () => {
+  const defaultCountry =
+    SettingsSettings.defaultOptions.preferences.default_reporting_country;
+
+  const defaultCountryIndex = countries.findIndex(e => {
+    return e.optionValue === defaultCountry ? true : null;
+  });
+
   const [searchValue, setSearchValue] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState<Value>(
+    countries[defaultCountryIndex]
+  );
 
   const t = useTranslations();
 
   const handleSearchValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(e.target.value);
+  };
+
+  const handleSelectCountry = (value: Value): void => {
+    setSelectedCountry(value);
   };
 
   return (
@@ -30,21 +50,29 @@ const AutomatedReports = () => {
             <p>{t('the_country_where_the_company_is_based')}</p>
           </div>
 
-          {/* MAKE SELECT MENU MORE RE-USABLE... ADD PROPS ETC */}
           <div className="w-1/3">
-            <SelectMenu />
+            <SelectMenu
+              values={countries}
+              defaultValue={defaultCountry}
+              selectedValue={selectedCountry}
+              setSelectedValue={handleSelectCountry}
+            />
           </div>
         </div>
 
-        <div className="py-2">
-          <p className="text-lg font-semibold py-1">{t('company_search')}</p>
-          <p>{t('search_the_registered_companies_by_name')}</p>
+        <div className="opacity-50 ">
+          <div className="py-2">
+            <p className="text-lg font-semibold py-1">{t('company_search')}</p>
+            <p>{t('search_the_registered_companies_by_name')}</p>
+          </div>
+
+          <SearchBox
+            disabled={defaultCountry !== 'United Kingdom'}
+            placeholder={t('enter_company_name')}
+            onChange={e => handleSearchValue(e)}
+            value={searchValue}
+          />
         </div>
-        <SearchBox
-          placeholder={t('enter_company_name')}
-          onChange={e => handleSearchValue(e)}
-          value={searchValue}
-        />
 
         {/* TEMP PLACEHOLDER - WILL SPLIT OUT AND USE SEARCH TO GENERATE */}
         <div className="bg-bg flex w-full p-6 my-4 justify-between">

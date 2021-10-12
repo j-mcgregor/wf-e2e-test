@@ -5,9 +5,15 @@ interface SearchBoxProps {
   placeholder: TranslateInput;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
+  disabled: boolean;
 }
 
-const SearchBox = ({ placeholder, onChange, value }: SearchBoxProps) => {
+const SearchBox = ({
+  placeholder,
+  onChange,
+  value,
+  disabled
+}: SearchBoxProps) => {
   return (
     <div>
       <div className="mt-1 relative rounded-md shadow-sm">
@@ -15,6 +21,7 @@ const SearchBox = ({ placeholder, onChange, value }: SearchBoxProps) => {
           <SearchIcon className="h-5 w-5 text-primary" aria-hidden="true" />
         </div>
         <input
+          disabled={disabled}
           type="text"
           name="email"
           id="email"

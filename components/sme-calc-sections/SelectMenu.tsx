@@ -1,35 +1,32 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
-import { countries } from '../../lib/settings/sme-calc-settings.settings';
-import SettingsSettings from '../../lib/settings/settings.settings';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-type Country = {
+type Value = {
   optionValue: string;
 };
 
-const SelectMenu = () => {
-  const defaultCountry = countries.findIndex(e => {
-    return e.optionValue ===
-      SettingsSettings.defaultOptions.preferences.default_reporting_country
-      ? true
-      : null;
-  });
+interface SelectMenuProps {
+  defaultValue: string;
+  values: Value[];
+  selectedValue: Value;
+  setSelectedValue: (value: Value) => void;
+}
 
-  const [selectedCountry, setSelected] = useState<Country>(
-    countries[defaultCountry]
-  );
-
+const SelectMenu = ({
+  values,
+  selectedValue,
+  setSelectedValue
+}: SelectMenuProps) => {
   return (
-    <Listbox value={selectedCountry} onChange={setSelected}>
+    <Listbox value={selectedValue} onChange={setSelectedValue}>
       <div className="mt-1 relative">
         <Listbox.Button className="bg-bg relative w-full border border-primary rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-highlight focus:border-highlight sm:text-sm">
-          <span className="block truncate">{selectedCountry.optionValue}</span>
+          <span className="block truncate">{selectedValue.optionValue}</span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
             <SelectorIcon className="h-6 w-6 text-primary" aria-hidden="true" />
           </span>
@@ -42,16 +39,16 @@ const SelectMenu = () => {
           leaveTo="opacity-0"
         >
           <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-            {countries.map(country => (
+            {values.map(value => (
               <Listbox.Option
-                key={country.optionValue}
+                key={value.optionValue}
                 className={({ active }) =>
                   classNames(
                     active ? 'text-white bg-highlight' : 'text-gray-900',
                     'cursor-default select-none relative py-2 pl-3 pr-9'
                   )
                 }
-                value={country}
+                value={value}
               >
                 {({ selected, active }) => (
                   <>
@@ -61,7 +58,7 @@ const SelectMenu = () => {
                         'block truncate'
                       )}
                     >
-                      {country.optionValue}
+                      {value.optionValue}
                     </span>
 
                     {selected ? (
