@@ -1,17 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'use-intl';
 import { XIcon } from '@heroicons/react/outline';
-import SelectMenu from './SelectMenu';
-import SearchBox from '../elements/SearchBox';
-import Button from '../elements/Button';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import { countries } from '../../lib/settings/sme-calc-settings.settings';
+import SelectMenu from '../elements/SelectMenu';
+import SearchBox from '../elements/SearchBox';
+import Button from '../elements/Button';
 
 type Value = {
   optionValue: string;
 };
 
 const AutomatedReports = () => {
+  const t = useTranslations();
+
   const defaultCountry =
     SettingsSettings.defaultOptions.preferences.default_reporting_country;
 
@@ -20,19 +22,23 @@ const AutomatedReports = () => {
   });
 
   const [searchValue, setSearchValue] = useState('');
+
   const [selectedCountry, setSelectedCountry] = useState<Value>(
     countries[defaultCountryIndex]
   );
 
-  const t = useTranslations();
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
 
   const handleSearchValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(e.target.value);
   };
 
   const handleSelectCountry = (value: Value): void => {
+    setSearchValue('');
     setSelectedCountry(value);
   };
+
+  const isUK = selectedCountry.optionValue === 'United Kingdom';
 
   return (
     <div className="text-sm">
@@ -60,29 +66,73 @@ const AutomatedReports = () => {
           </div>
         </div>
 
-        <div className="opacity-50 ">
+        <div className={`${!isUK && 'opacity-20'}`}>
           <div className="py-2">
             <p className="text-lg font-semibold py-1">{t('company_search')}</p>
             <p>{t('search_the_registered_companies_by_name')}</p>
           </div>
 
           <SearchBox
-            disabled={defaultCountry !== 'United Kingdom'}
+            disabled={!isUK}
             placeholder={t('enter_company_name')}
             onChange={e => handleSearchValue(e)}
             value={searchValue}
           />
         </div>
 
-        {/* TEMP PLACEHOLDER - WILL SPLIT OUT AND USE SEARCH TO GENERATE */}
-        <div className="bg-bg flex w-full p-6 my-4 justify-between">
-          <p className="font-semibold">Seabird Limited Company</p>
-          <div className="flex items-center">
-            <p>1232334345</p>
-            <XIcon className="w-5 h-5 ml-4 cursor-pointer hover:opacity-80" />
+        {/* CARD TO ONLY SHOW WHEN COMPANY IS SELECTED FROM DROPDOWN */}
+        {selectedCompany && (
+          <div className="bg-bg flex w-full p-6 my-4 justify-between">
+            <p className="font-semibold">Seabird Limited Company</p>
+            <div className="flex items-center">
+              <p>1232334345</p>
+              <XIcon className="w-5 h-5 ml-4 cursor-pointer hover:opacity-80" />
+            </div>
+          </div>
+        )}
+
+        {/* SEARCH OPTIONS TO ONLY SHOW IF NOT UK */}
+
+        <div>
+          <div className="my-4">
+            <div className="py-2">
+              <p className="text-lg font-semibold py-1">
+                {t('company_registration')}
+              </p>
+              <p>{t('the_identification_number_for_the_company')}</p>
+            </div>
+
+            <SearchBox placeholder="123456789" />
+          </div>
+          <div className="my-4">
+            <div className="py-2">
+              <p className="text-lg font-semibold py-1">{t('account_type')}</p>
+              <p>{t('choose_the_type_of_accounts_to_generate')}</p>
+            </div>
+
+            <SelectMenu
+              values={countries}
+              defaultValue={defaultCountry}
+              selectedValue={selectedCountry}
+              setSelectedValue={handleSelectCountry}
+            />
+          </div>
+          <div className="my-4">
+            <div className="py-2">
+              <p className="text-lg font-semibold py-1">{t('currency')}</p>
+              <p>{t('will_switch_based_on_country_selected')}</p>
+            </div>
+
+            <SelectMenu
+              values={countries}
+              defaultValue={defaultCountry}
+              selectedValue={selectedCountry}
+              setSelectedValue={handleSelectCountry}
+            />
           </div>
         </div>
-        <div className="flex items-center">
+
+        <div className="flex items-center my-6">
           <Button variant="highlight" className="text-primary rounded-none">
             {t('generate_report')}
           </Button>

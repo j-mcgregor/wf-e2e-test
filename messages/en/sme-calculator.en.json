@@ -10,5 +10,11 @@
   "generate_report": "Generate Report",
   "advanced_search": "Advanced Search",
   "cant_find_the_company_you_were_looking_for": "Can't find the company you were looking for?",
-  "provide_own_data": "Provide own data"
+  "provide_own_data": "Provide own data",
+  "company_registration": "Company Registration",
+  "the_identification_number_for_the_company": "The identification number or serial for the company.",
+  "account_type": "Account Type",
+  "choose_the_type_of_accounts_to_generate": "Choose the type of accounts you would like to generate the report from.",
+  "currency": "Currency",
+  "will_switch_based_on_country_selected": "Will switch based on country selected. You can manually override."
 }

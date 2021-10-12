@@ -3,9 +3,9 @@ import { TranslateInput } from '../../types/global';
 
 interface SearchBoxProps {
   placeholder: TranslateInput;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value: string;
-  disabled: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  disabled?: boolean;
 }
 
 const SearchBox = ({
