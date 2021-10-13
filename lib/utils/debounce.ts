@@ -1,4 +1,4 @@
-const debounce = (func: () => void, timeout: number) => {
+const debounce = (func: any, timeout: number) => {
   let timer: ReturnType<typeof setTimeout>;
   return (...args: []) => {
     clearTimeout(timer);

@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
+import { TranslateInput } from '../../types/global';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -11,22 +12,25 @@ type Value = {
 };
 
 interface SelectMenuProps {
-  defaultValue?: string | Value;
-  values: Value[];
-  selectedValue: Value;
+  defaultValue?: TranslateInput | Value;
+  values?: Value[];
+  selectedValue?: Value;
   setSelectedValue: (value: Value) => void;
 }
 
 const SelectMenu = ({
   values,
   selectedValue,
-  setSelectedValue
+  setSelectedValue,
+  defaultValue
 }: SelectMenuProps) => {
   return (
     <Listbox value={selectedValue} onChange={setSelectedValue}>
       <div className="mt-1 relative">
         <Listbox.Button className="bg-bg relative w-full border border-primary rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-highlight focus:border-highlight sm:text-sm">
-          <span className="block truncate">{selectedValue.optionValue}</span>
+          <span className={`block truncate'`}>
+            {selectedValue ? selectedValue.optionValue : defaultValue}
+          </span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
             <SelectorIcon className="h-6 w-6 text-primary" aria-hidden="true" />
           </span>
@@ -39,7 +43,7 @@ const SelectMenu = ({
           leaveTo="opacity-0"
         >
           <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-            {values.map(value => (
+            {values?.map(value => (
               <Listbox.Option
                 key={value.optionValue}
                 className={({ active }) =>

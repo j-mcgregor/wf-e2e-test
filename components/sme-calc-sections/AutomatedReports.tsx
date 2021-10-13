@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'use-intl';
+import { useRecoilValue } from 'recoil';
 import { XIcon } from '@heroicons/react/outline';
 import SettingsSettings from '../../lib/settings/settings.settings';
+import { userReports } from '../../lib/appState';
+import { Report } from '../../types/global';
 import SelectMenu from '../elements/SelectMenu';
-import SearchBox from '../elements/SearchBox';
+import SearchBox from './SearchBox';
 import Button from '../elements/Button';
+
+import debounce from '../../lib/utils/debounce';
 
 type Value = {
   optionValue: string;
@@ -13,7 +18,8 @@ type Value = {
 const AutomatedReports = () => {
   const t = useTranslations();
 
-  // arrays taken from settings
+  const { allReports } = useRecoilValue(userReports);
+
   const currencies: Value[] = SettingsSettings.supportedCurrencies;
   const countries: Value[] = SettingsSettings.supportedCountries;
 
@@ -33,40 +39,63 @@ const AutomatedReports = () => {
     return e.optionValue === defaultCountry ? true : null;
   });
 
-  //* STATE
-  // state for input search box
-  const [searchValue, setSearchValue] = useState('');
-  // state for country selection dropdown
+  const [companySearchValue, setCompanySearchValue] = useState('');
+  const [regSearchValue, setRegSearchValue] = useState<string | null>();
+  const [filteredCompanies, setFilteredCompanies] = useState<Report[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<Value>(
     countries[defaultIndex]
   );
-  // state for currency selection dropdown
   const [selectedCurrency, setSelectedCurrency] = useState<Value>(
     currencies[defaultIndex]
   );
-
-  // state for company selection dropdown
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
+  const isUK = selectedCountry.optionValue === 'United Kingdom';
+  const [advancedSearch, setAdvancedSearch] = useState(isUK ? false : true);
 
-  // re-render currency when new country is selected from dropdown
-  useEffect(() => {
-    setSelectedCurrency(currencies[selectedCountryIndex]);
-  }, [selectedCountry]);
-
-  // get index of selected country for rendering currency in useEffect hook
   const selectedCountryIndex = getIndex(selectedCountry, countries);
 
-  // variable if country is UK - for conditionally rendering extra selection inputs
-  const isUK = selectedCountry.optionValue === 'United Kingdom';
+  //? some useEffect hooks for controlling rendering of various options
+  // re-render currency when new country is selected from dropdown & open advanced search if country is not UK
+  useEffect(() => {
+    setSelectedCurrency(currencies[selectedCountryIndex]);
+    !isUK && setAdvancedSearch(true);
+  }, [selectedCountry]);
 
-  //* EVENT HANDLERS
+  // if default is UK when 'basic search' is selected, reset country to UK
+  useEffect(() => {
+    !advancedSearch && !isUK && setSelectedCountry(countries[defaultIndex]);
+  }, [advancedSearch]);
+
+  // filter companies based on search field - using recoil reports state as temp data prior to companies house api
+  useEffect(() => {
+    const companyFilter = allReports.filter(company =>
+      Object.values(company.company_name)
+        .join('')
+        .toLowerCase()
+        .includes(companySearchValue.toLowerCase())
+    );
+    // debounce function delays setting of filter state
+    const filter = () => setFilteredCompanies(companyFilter);
+    const debounceFilter = debounce(() => filter(), 1000);
+    debounceFilter();
+  }, [companySearchValue]);
+
+  const isValid = selectedCompany || regSearchValue ? true : false;
+
+  //? event handlers
   const handleSelectCountry = (value: Value): void => {
-    setSearchValue('');
+    setCompanySearchValue('');
     setSelectedCountry(value);
   };
 
-  const handleSearchValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSearchValue(e.target.value);
+  const handleSearchCompany = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setCompanySearchValue(e.target.value);
+  };
+
+  const handleSearchReg = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setRegSearchValue(e.target.value);
   };
 
   const handleSelectCurrency = (value: Value): void => {
@@ -109,8 +138,9 @@ const AutomatedReports = () => {
           <SearchBox
             disabled={!isUK}
             placeholder={t('enter_company_name')}
-            onChange={e => handleSearchValue(e)}
-            value={searchValue}
+            onChange={e => handleSearchCompany(e)}
+            value={companySearchValue}
+            options={filteredCompanies}
           />
         </div>
 
@@ -126,8 +156,7 @@ const AutomatedReports = () => {
         )}
 
         {/* SEARCH OPTIONS TO ONLY SHOW IF NOT UK */}
-
-        {!isUK && (
+        {advancedSearch && (
           <div>
             <div className="my-4">
               <div className="py-2">
@@ -139,7 +168,7 @@ const AutomatedReports = () => {
 
               <SearchBox
                 placeholder="123456789"
-                onChange={e => handleSearchValue(e)}
+                onChange={e => handleSearchReg(e)}
               />
             </div>
             <div className="my-4">
@@ -151,9 +180,7 @@ const AutomatedReports = () => {
               </div>
 
               <SelectMenu
-                values={countries}
-                defaultValue={defaultCountry}
-                selectedValue={selectedCountry}
+                defaultValue={t('account_type')}
                 setSelectedValue={handleSelectCountry}
               />
             </div>
@@ -174,10 +201,19 @@ const AutomatedReports = () => {
         )}
 
         <div className="flex items-center my-6">
-          <Button variant="highlight" className="text-primary rounded-none">
+          <Button
+            variant="highlight"
+            className="text-primary rounded-none"
+            disabled={!isValid}
+          >
             {t('generate_report')}
           </Button>
-          <p className="mx-4">{t('advanced_search')}</p>
+          <button
+            onClick={() => setAdvancedSearch(!advancedSearch)}
+            className="mx-4 cursor-pointer hover:opacity-80"
+          >
+            {!advancedSearch ? t('advanced_search') : t('basic_search')}
+          </button>
         </div>
       </div>
 

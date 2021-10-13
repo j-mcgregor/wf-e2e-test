@@ -1,8 +1,9 @@
-import { useState, Fragment } from 'react';
+import { useState } from 'react';
 import { Listbox } from '@headlessui/react';
+import { Report } from '../../types/global';
 
 interface DropdownProps {
-  options: string[];
+  options: Report[];
 }
 const Dropdown = ({ options }: DropdownProps) => {
   const [selectedOption, setSelectedOption] = useState(options[0]);
@@ -15,9 +16,9 @@ const Dropdown = ({ options }: DropdownProps) => {
           {!open && (
             <div>
               <Listbox.Options static>
-                {options.map((option, i) => (
-                  <Listbox.Option key={i} value={option}>
-                    {option}
+                {options.map(option => (
+                  <Listbox.Option key={option.id} value={option.company_name}>
+                    {option.company_name}
                   </Listbox.Option>
                 ))}
               </Listbox.Options>
