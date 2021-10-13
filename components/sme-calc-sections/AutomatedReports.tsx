@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useTranslations } from 'use-intl';
 import { XIcon } from '@heroicons/react/outline';
 import SettingsSettings from '../../lib/settings/settings.settings';
-import { countries } from '../../lib/settings/sme-calc-settings.settings';
 import SelectMenu from '../elements/SelectMenu';
 import SearchBox from '../elements/SearchBox';
 import Button from '../elements/Button';
@@ -14,31 +13,66 @@ type Value = {
 const AutomatedReports = () => {
   const t = useTranslations();
 
+  // arrays taken from settings
+  const currencies: Value[] = SettingsSettings.supportedCurrencies;
+  const countries: Value[] = SettingsSettings.supportedCountries;
+
+  // default country taken from user profile (settings)
   const defaultCountry =
     SettingsSettings.defaultOptions.preferences.default_reporting_country;
 
-  const defaultCountryIndex = countries.findIndex(e => {
+  // helper function to get index of an optionValue
+  const getIndex = (item: Value, array: Value[]) => {
+    return array.findIndex(e => {
+      return e.optionValue === item.optionValue ? true : null;
+    });
+  };
+
+  // default index for country upon initial render
+  const defaultIndex = countries.findIndex(e => {
     return e.optionValue === defaultCountry ? true : null;
   });
 
+  //* STATE
+  // state for input search box
   const [searchValue, setSearchValue] = useState('');
-
+  // state for country selection dropdown
   const [selectedCountry, setSelectedCountry] = useState<Value>(
-    countries[defaultCountryIndex]
+    countries[defaultIndex]
+  );
+  // state for currency selection dropdown
+  const [selectedCurrency, setSelectedCurrency] = useState<Value>(
+    currencies[defaultIndex]
   );
 
+  // state for company selection dropdown
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
 
-  const handleSearchValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSearchValue(e.target.value);
-  };
+  // re-render currency when new country is selected from dropdown
+  useEffect(() => {
+    setSelectedCurrency(currencies[selectedCountryIndex]);
+  }, [selectedCountry]);
 
+  // get index of selected country for rendering currency in useEffect hook
+  const selectedCountryIndex = getIndex(selectedCountry, countries);
+
+  // variable if country is UK - for conditionally rendering extra selection inputs
+  const isUK = selectedCountry.optionValue === 'United Kingdom';
+
+  //* EVENT HANDLERS
   const handleSelectCountry = (value: Value): void => {
     setSearchValue('');
     setSelectedCountry(value);
   };
 
-  const isUK = selectedCountry.optionValue === 'United Kingdom';
+  const handleSearchValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleSelectCurrency = (value: Value): void => {
+    const currency = getIndex(value, currencies);
+    setSelectedCurrency(currencies[currency]);
+  };
 
   return (
     <div className="text-sm">
@@ -93,44 +127,51 @@ const AutomatedReports = () => {
 
         {/* SEARCH OPTIONS TO ONLY SHOW IF NOT UK */}
 
-        <div>
-          <div className="my-4">
-            <div className="py-2">
-              <p className="text-lg font-semibold py-1">
-                {t('company_registration')}
-              </p>
-              <p>{t('the_identification_number_for_the_company')}</p>
-            </div>
+        {!isUK && (
+          <div>
+            <div className="my-4">
+              <div className="py-2">
+                <p className="text-lg font-semibold py-1">
+                  {t('company_registration')}
+                </p>
+                <p>{t('the_identification_number_for_the_company')}</p>
+              </div>
 
-            <SearchBox placeholder="123456789" />
-          </div>
-          <div className="my-4">
-            <div className="py-2">
-              <p className="text-lg font-semibold py-1">{t('account_type')}</p>
-              <p>{t('choose_the_type_of_accounts_to_generate')}</p>
+              <SearchBox
+                placeholder="123456789"
+                onChange={e => handleSearchValue(e)}
+              />
             </div>
+            <div className="my-4">
+              <div className="py-2">
+                <p className="text-lg font-semibold py-1">
+                  {t('account_type')}
+                </p>
+                <p>{t('choose_the_type_of_accounts_to_generate')}</p>
+              </div>
 
-            <SelectMenu
-              values={countries}
-              defaultValue={defaultCountry}
-              selectedValue={selectedCountry}
-              setSelectedValue={handleSelectCountry}
-            />
-          </div>
-          <div className="my-4">
-            <div className="py-2">
-              <p className="text-lg font-semibold py-1">{t('currency')}</p>
-              <p>{t('will_switch_based_on_country_selected')}</p>
+              <SelectMenu
+                values={countries}
+                defaultValue={defaultCountry}
+                selectedValue={selectedCountry}
+                setSelectedValue={handleSelectCountry}
+              />
             </div>
+            <div className="my-4">
+              <div className="py-2">
+                <p className="text-lg font-semibold py-1">{t('currency')}</p>
+                <p>{t('will_switch_based_on_country_selected')}</p>
+              </div>
 
-            <SelectMenu
-              values={countries}
-              defaultValue={defaultCountry}
-              selectedValue={selectedCountry}
-              setSelectedValue={handleSelectCountry}
-            />
+              <SelectMenu
+                values={currencies}
+                defaultValue={selectedCurrency}
+                selectedValue={selectedCurrency}
+                setSelectedValue={handleSelectCurrency}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="flex items-center my-6">
           <Button variant="highlight" className="text-primary rounded-none">

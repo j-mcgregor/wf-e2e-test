@@ -11,8 +11,8 @@ type Value = {
 };
 
 interface SelectMenuProps {
-  defaultValue?: string;
-  values?: Value[];
+  defaultValue?: string | Value;
+  values: Value[];
   selectedValue: Value;
   setSelectedValue: (value: Value) => void;
 }
