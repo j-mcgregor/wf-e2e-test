@@ -8,6 +8,7 @@ import ClickAway from '../elements/ClickAway';
 interface SearchBoxProps {
   placeholder: TranslateInput;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setCompany: (e: string | null) => void;
   value?: string;
   disabled?: boolean;
   options?: Report[];
@@ -18,13 +19,15 @@ const SearchBox = ({
   onChange,
   value,
   disabled,
-  options
+  options,
+  setCompany
 }: SearchBoxProps) => {
-  const [selectedOption, setSelectedOption] = useState();
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [showList, setShowList] = useState(false);
 
   useEffect(() => {
     showList && setShowList(!showList);
+    setCompany(selectedOption);
   }, [selectedOption]);
 
   const handleShowList = e => {

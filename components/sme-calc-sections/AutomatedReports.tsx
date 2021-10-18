@@ -143,13 +143,14 @@ const AutomatedReports = () => {
             onChange={e => handleSearchCompany(e)}
             value={companySearchValue}
             options={filteredCompanies}
+            setCompany={(company: string | null) => setSelectedCompany(company)}
           />
         </div>
 
         {/* CARD TO ONLY SHOW WHEN COMPANY IS SELECTED FROM DROPDOWN */}
         {selectedCompany && (
           <div className="bg-bg flex w-full p-6 my-4 justify-between">
-            <p className="font-semibold">Seabird Limited Company</p>
+            <p className="font-semibold">{selectedCompany}</p>
             <div className="flex items-center">
               <p>1232334345</p>
               <XIcon className="w-5 h-5 ml-4 cursor-pointer hover:opacity-80" />
