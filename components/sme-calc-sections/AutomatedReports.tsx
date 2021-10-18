@@ -68,14 +68,16 @@ const AutomatedReports = () => {
 
   // filter companies based on search field - using recoil reports state as temp data prior to companies house api
   useEffect(() => {
-    const companyFilter = allReports.filter(company =>
-      Object.values(company.company_name)
-        .join('')
-        .toLowerCase()
-        .includes(companySearchValue.toLowerCase())
-    );
     // debounce function delays setting of filter state
-    const filter = () => setFilteredCompanies(companyFilter);
+    const filter = () => {
+      const companyFilter = allReports.filter(company =>
+        Object.values(company.company_name)
+          .join('')
+          .toLowerCase()
+          .includes(companySearchValue.toLowerCase())
+      );
+      setFilteredCompanies(companyFilter);
+    };
     const debounceFilter = debounce(() => filter(), 1000);
     debounceFilter();
   }, [companySearchValue]);

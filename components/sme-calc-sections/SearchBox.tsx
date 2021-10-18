@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { Listbox } from '@headlessui/react';
+import { useState, useEffect } from 'react';
 import { Report } from '../../types/global';
 import { SearchIcon } from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
+import { Listbox } from '@headlessui/react';
+import ClickAway from './ClickAway';
 
 interface SearchBoxProps {
   placeholder: TranslateInput;
@@ -20,9 +21,20 @@ const SearchBox = ({
   options
 }: SearchBoxProps) => {
   const [selectedOption, setSelectedOption] = useState();
+  const [showList, setShowList] = useState(false);
+
+  useEffect(() => {
+    showList && setShowList(!showList);
+  }, [selectedOption]);
+
+  const handleShowList = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e);
+    !showList && setShowList(true);
+  };
 
   return (
     <div>
+      <p>{selectedOption}</p>
       <div className="mt-1 relative rounded-md shadow-sm">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon className="h-5 w-5 text-primary" aria-hidden="true" />
@@ -34,33 +46,49 @@ const SearchBox = ({
           id="email"
           className="focus:ring-highlight focus:border-highlight block w-full pl-10 sm:text-sm border-primary rounded bg-bg"
           placeholder={placeholder}
-          onChange={e => onChange(e)}
+          onChange={e => handleShowList(e)}
           value={value}
         />
       </div>
 
-      {options && value !== '' && (
-        <Listbox value={selectedOption} onChange={setSelectedOption}>
-          {({ open }) => (
-            <>
-              <Listbox.Button>{selectedOption}</Listbox.Button>
-              {!open && (
-                <div>
-                  <Listbox.Options static>
-                    {options.map(option => (
-                      <Listbox.Option
-                        key={option.id}
-                        value={option.company_name}
-                      >
-                        {option.company_name}
-                      </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
-                </div>
-              )}
-            </>
-          )}
-        </Listbox>
+      {showList && (
+        <ClickAway action={() => setShowList(false)}>
+          <Listbox value={selectedOption} onChange={setSelectedOption}>
+            {({ open }) => (
+              <>
+                {!open && options?.length !== 0 && (
+                  <div className="border border-primary rounded px-6 py-2 cursor-pointer">
+                    <Listbox.Options static>
+                      {options?.map(option => (
+                        <Listbox.Option
+                          key={option.id}
+                          value={option.company_name}
+                        >
+                          {({ active, selected }) => (
+                            <li className="border-l-primary border-l flex justify-between my-4 pl-4 hover:bg-bg hover:text-highlight p-2">
+                              <div>
+                                <p className="font-semibold pb-1">
+                                  {option.company_name}
+                                </p>
+                                <p>ID: 1212233434555621</p>
+                              </div>
+                              <div className="text-right">
+                                <p>
+                                  Registered: <strong>12th June 1990</strong>
+                                </p>
+                                <p>123 Regent Street, London, England</p>
+                              </div>
+                            </li>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </div>
+                )}
+              </>
+            )}
+          </Listbox>
+        </ClickAway>
       )}
     </div>
   );
