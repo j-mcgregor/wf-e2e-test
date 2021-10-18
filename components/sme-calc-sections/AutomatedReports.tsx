@@ -131,14 +131,14 @@ const AutomatedReports = () => {
           </div>
         </div>
 
-        <div className={`${!isUK && 'opacity-20'}`}>
+        <div className={`${!isUK || (isUK && advancedSearch && 'opacity-20')}`}>
           <div className="py-2">
             <p className="text-lg font-semibold py-1">{t('company_search')}</p>
             <p>{t('search_the_registered_companies_by_name')}</p>
           </div>
 
           <SearchBox
-            disabled={!isUK}
+            disabled={!isUK || (isUK && advancedSearch)}
             placeholder={t('enter_company_name')}
             onChange={e => handleSearchCompany(e)}
             value={companySearchValue}
@@ -212,7 +212,9 @@ const AutomatedReports = () => {
           </Button>
           <button
             onClick={() => setAdvancedSearch(!advancedSearch)}
-            className="mx-4 cursor-pointer hover:opacity-80"
+            className={`${
+              !isUK && 'hidden'
+            } mx-4 cursor-pointer hover:opacity-80`}
           >
             {!advancedSearch ? t('advanced_search') : t('basic_search')}
           </button>
