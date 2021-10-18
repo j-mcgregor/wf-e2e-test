@@ -106,7 +106,7 @@ const AutomatedReports = () => {
   };
 
   return (
-    <div className="text-sm">
+    <div className="text-sm my">
       <div className="py-4">
         <p className="text-3xl font-semibold py-2">{t('automated_reports')}</p>
         <p>{t('access_our_powerful_credit_risk_assessment')}</p>

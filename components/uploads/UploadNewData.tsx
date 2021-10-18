@@ -21,7 +21,11 @@ type FileValidationType = {
   hasRequiredData: boolean;
 };
 
-const UploadNewData = () => {
+interface UploadNewDataProps {
+  hasHeader: boolean;
+}
+
+const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
   const [selectedFile, setSelectedFile] = useState<FileType>({
     type: null,
     name: null
@@ -109,14 +113,16 @@ const UploadNewData = () => {
 
   const t = useTranslations();
 
+  const header = (
+    <div>
+      <p className="text-3xl font-semibold py-2">{t('upload_the_new_data')}</p>
+      <p className="text-sm py-2">{t('drag_and_drop_csv_below')}</p>
+    </div>
+  );
+
   return (
     <div className="bg-white rounded-sm shadow-sm p-8">
-      <div>
-        <p className="text-3xl font-semibold py-2">
-          {t('upload_the_new_data')}
-        </p>
-        <p className="text-sm py-2">{t('drag_and_drop_csv_below')}</p>
-      </div>
+      {hasHeader && header}
       <div className="flex justify-between w-full py-4">
         <UploadFile
           text={t('or_drag_and_drop_it')}
@@ -153,7 +159,6 @@ const UploadNewData = () => {
         <Button
           variant="highlight"
           disabled={!isValidated}
-          linkTo="#"
           className="text-primary rounded-none"
         >
           {t('generate_new_report')}

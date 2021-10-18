@@ -3,7 +3,7 @@ import { Report } from '../../types/global';
 import { SearchIcon } from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
 import { Listbox } from '@headlessui/react';
-import ClickAway from './ClickAway';
+import ClickAway from '../elements/ClickAway';
 
 interface SearchBoxProps {
   placeholder: TranslateInput;

@@ -2,6 +2,7 @@
 import { GetStaticPropsContext } from 'next';
 import Layout from '../components/layout/Layout';
 import AutomatedReports from '../components/sme-calc-sections/AutomatedReports';
+import ProvideData from '../components/sme-calc-sections/ProvideData';
 
 const SMECalculator = () => {
   return (
@@ -9,6 +10,7 @@ const SMECalculator = () => {
       <div className="text-primary">
         <h1 className="text-2xl">SME Calculator </h1>
         <AutomatedReports />
+        <ProvideData />
       </div>
     </Layout>
   );
