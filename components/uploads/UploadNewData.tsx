@@ -72,9 +72,16 @@ const UploadNewData = () => {
     // compare each array to validate if csv headers are a subset of the valid headers array
     const isSubset = validHeaders.every(val => headers?.includes(val));
     // create object & keys from headers and values arrays
-    const object =
+    const object:
+      | {
+          [index: string]: string;
+        }
+      | undefined =
       values &&
-      headers?.reduce((acc, curr, i) => ({ ...acc, [curr]: values[i] }), {});
+      headers?.reduce(
+        (acc, curr: string, i) => ({ ...acc, [curr]: values[i] }),
+        {}
+      );
 
     const hasValidValues =
       object &&
