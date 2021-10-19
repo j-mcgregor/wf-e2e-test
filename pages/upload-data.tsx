@@ -26,11 +26,10 @@ const UploadData = () => {
         <p className="font-semibold text-4xl py-3">
           {t('upload_additional_data')}
         </p>
-        <p className="text-sm py-4">{t('add_additional_data_to_report')}</p>
+        s<p className="text-sm py-4">{t('add_additional_data_to_report')}</p>
         <p className="text-2xl font-semibold py-2">
           {t('choose_data_to_modify')}
         </p>
-
         <div className="flex w-1/2 justify-between py-4">
           <LinkCard
             icon={<CloudDownloadIcon className="h-6 w-6" />}
@@ -47,7 +46,6 @@ const UploadData = () => {
             description={t('add_a_new_year_of_financials')}
           />
         </div>
-
         <UploadNewData hasHeader={true} />
       </div>
     </Layout>

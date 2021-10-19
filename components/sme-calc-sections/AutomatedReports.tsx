@@ -8,14 +8,17 @@ import { Report } from '../../types/global';
 import SelectMenu from '../elements/SelectMenu';
 import SearchBox from './SearchBox';
 import Button from '../elements/Button';
-
 import debounce from '../../lib/utils/debounce';
 
 type Value = {
   optionValue: string;
 };
 
-const AutomatedReports = () => {
+interface AutomatedReportsProps {
+  disabled: boolean;
+}
+
+const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
   const t = useTranslations();
 
   const { allReports } = useRecoilValue(userReports);
@@ -51,10 +54,15 @@ const AutomatedReports = () => {
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const isUK = selectedCountry.optionValue === 'United Kingdom';
   const [advancedSearch, setAdvancedSearch] = useState(isUK ? false : true);
+  const [showProvideData, setShowProvideData] = useState(false);
 
   const selectedCountryIndex = getIndex(selectedCountry, countries);
 
   //? some useEffect hooks for controlling rendering of various options
+
+  useEffect(() => {
+    disabled && setAdvancedSearch(false);
+  }, [disabled]);
   // re-render currency when new country is selected from dropdown & open advanced search if country is not UK
   useEffect(() => {
     setSelectedCurrency(currencies[Number(selectedCountryIndex)]);
@@ -98,6 +106,10 @@ const AutomatedReports = () => {
     setCompanySearchValue(e.target.value);
   };
 
+  const handleResetSearchValue = () => {
+    setCompanySearchValue('');
+  };
+
   const handleSearchReg = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setRegSearchValue(e.target.value);
   };
@@ -113,8 +125,11 @@ const AutomatedReports = () => {
         <p className="text-3xl font-semibold py-2">{t('automated_reports')}</p>
         <p>{t('access_our_powerful_credit_risk_assessment')}</p>
       </div>
-
-      <div className="bg-white rounded-sm shadow-sm px-8 py-4">
+      <div
+        className={`${
+          disabled && 'text-opacity-20'
+        } text-primary bg-white rounded-sm shadow-sm px-8 py-4`}
+      >
         <p className="text-2xl font-semibold py-4">{t('find_the_company')}</p>
 
         <div className="flex justify-between">
@@ -125,6 +140,7 @@ const AutomatedReports = () => {
 
           <div className="w-1/3">
             <SelectMenu
+              disabled={disabled}
               values={countries}
               defaultValue={defaultCountry}
               selectedValue={selectedCountry}
@@ -133,23 +149,27 @@ const AutomatedReports = () => {
           </div>
         </div>
 
-        <div className={`${!isUK || (isUK && advancedSearch && 'opacity-20')}`}>
+        <div
+          className={`${
+            disabled === true || advancedSearch === true ? 'opacity-20' : null
+          } text-primary `}
+        >
           <div className="py-2">
             <p className="text-lg font-semibold py-1">{t('company_search')}</p>
             <p>{t('search_the_registered_companies_by_name')}</p>
           </div>
 
           <SearchBox
-            disabled={!isUK || (isUK && advancedSearch)}
+            disabled={advancedSearch === true || disabled === true}
             placeholder={t('enter_company_name')}
             onChange={e => handleSearchCompany(e)}
             value={companySearchValue}
+            resetValue={handleResetSearchValue}
             options={filteredCompanies}
-            setCompany={(company: string | null) => setSelectedCompany(company)}
+            setOption={(company: string | null) => setSelectedCompany(company)}
           />
         </div>
 
-        {/* CARD TO ONLY SHOW WHEN COMPANY IS SELECTED FROM DROPDOWN */}
         {selectedCompany && (
           <div className="bg-bg flex w-full p-6 my-4 justify-between">
             <p className="font-semibold">{selectedCompany}</p>
@@ -214,23 +234,15 @@ const AutomatedReports = () => {
             {t('generate_report')}
           </Button>
           <button
+            disabled={disabled}
             onClick={() => setAdvancedSearch(!advancedSearch)}
-            className={`${
-              !isUK && 'hidden'
-            } mx-4 cursor-pointer hover:opacity-80`}
+            className={`${!isUK && 'hidden'} ${
+              disabled ? 'cursor-default' : 'cursor-pointer'
+            } mx-4 hover:opacity-80`}
           >
             {!advancedSearch ? t('advanced_search') : t('basic_search')}
           </button>
         </div>
-      </div>
-
-      <div className="flex flex-col w-1/3">
-        <p className="font-semibold py-4 mt-4">
-          {t('cant_find_the_company_you_were_looking_for')}
-        </p>
-        <Button variant="alt" className="rounded-none font-normal">
-          {t('provide_own_data')}
-        </Button>
       </div>
     </div>
   );

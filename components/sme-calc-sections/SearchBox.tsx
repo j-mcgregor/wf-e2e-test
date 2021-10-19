@@ -1,32 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Report } from '../../types/global';
 import { SearchIcon } from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
 import { Listbox } from '@headlessui/react';
 
+import useOutsideClick from '../../hooks/useOutsideClick';
+
 interface SearchBoxProps {
+  disabled?: boolean;
   placeholder: TranslateInput;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setCompany?: (e: string | null) => void;
   value?: string;
-  disabled?: boolean;
+  resetValue?: () => void;
   options?: Report[];
+  setOption?: (e: string | null) => void;
 }
 
 const SearchBox = ({
   placeholder,
   onChange,
   value,
+  resetValue,
   disabled,
   options,
-  setCompany
+  setOption
 }: SearchBoxProps) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [showList, setShowList] = useState(false);
 
   useEffect(() => {
     showList && setShowList(!showList);
-    setCompany && setCompany(selectedOption);
+    setOption && setOption(selectedOption);
+    resetValue && resetValue();
   }, [selectedOption]);
 
   const handleShowList = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,9 +39,14 @@ const SearchBox = ({
     !showList && setShowList(true);
   };
 
+  const listboxRef = useRef(null);
+
+  useOutsideClick(listboxRef, () => {
+    setShowList(false);
+  });
+
   return (
     <div>
-      <p>{selectedOption}</p>
       <div className="mt-1 relative rounded-md shadow-sm">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon className="h-5 w-5 text-primary" aria-hidden="true" />
@@ -54,19 +64,18 @@ const SearchBox = ({
       </div>
 
       {showList && (
-        // <ClickAway action={() => console.log('clicked outside')}>
-        <Listbox value={selectedOption} onChange={setSelectedOption}>
-          {({ open }) => (
-            <>
-              {!open && options?.length !== 0 && (
-                <div className="border border-primary rounded px-6 py-2 cursor-pointer">
-                  <Listbox.Options static>
-                    {options?.map(option => (
-                      <Listbox.Option
-                        key={option.id}
-                        value={option.company_name}
-                      >
-                        {({ active, selected }) => (
+        <div ref={listboxRef}>
+          <Listbox value={selectedOption} onChange={setSelectedOption}>
+            {({ open }) => (
+              <>
+                {!open && options?.length !== 0 && (
+                  <div className="border border-primary rounded px-6 py-2 cursor-pointer">
+                    <Listbox.Options static>
+                      {options?.map(option => (
+                        <Listbox.Option
+                          key={option.id}
+                          value={option.company_name}
+                        >
                           <li className="border-l-primary border-l flex justify-between my-4 pl-4 hover:bg-bg hover:text-highlight p-2">
                             <div>
                               <p className="font-semibold pb-1">
@@ -81,16 +90,15 @@ const SearchBox = ({
                               <p>123 Regent Street, London, England</p>
                             </div>
                           </li>
-                        )}
-                      </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
-                </div>
-              )}
-            </>
-          )}
-        </Listbox>
-        // </ClickAway>
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </div>
+                )}
+              </>
+            )}
+          </Listbox>
+        </div>
       )}
     </div>
   );
