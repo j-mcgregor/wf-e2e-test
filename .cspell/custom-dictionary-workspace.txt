@@ -5,6 +5,7 @@ ebit
 EBITDA
 EBTIDA
 linkedin
+NewData
 svgs
 Tofive
 voronoi

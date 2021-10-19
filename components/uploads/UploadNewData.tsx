@@ -1,101 +1,109 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'use-intl';
+import {
+  validHeaders,
+  requiredValues
+} from '../../lib/settings/report.settings';
 import Button from '../elements/Button';
 import UploadFile from './UploadFile';
 import { XIcon, CheckIcon } from '@heroicons/react/outline';
 
-type FileType = Blob | File | null;
+type FileType = {
+  type: string | null;
+  name: string | null;
+};
 type FileContentType = string | ArrayBuffer | null | undefined;
 
 type FileValidationType = {
-  hasCorrectFields: boolean;
-  valuesAreValid: boolean | undefined;
-  isUploaded?: boolean;
+  hasFile?: boolean;
+  isCSV: boolean;
+  hasRequiredFormat: boolean | undefined;
+  hasRequiredData: boolean;
 };
 
-const UploadNewData = () => {
-  // const [selectedFile, setSelectedFile] = useState<FileType>(null);
+interface UploadNewDataProps {
+  hasHeader: boolean;
+}
 
-  const [fileContent, setFileContent] = useState<FileContentType>(null);
-
-  const [isCSV, setIsCSV] = useState(false);
-
-  const [valuesAreValid, setValuesAreValid] = useState<boolean | undefined>(
-    false
-  );
-
-  const [isUploaded, setIsUploaded] = useState(false);
-
-  const [validation, setValidation] = useState<FileValidationType>({
-    hasCorrectFields: false,
-    valuesAreValid: false,
-    isUploaded: false
+const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
+  const [selectedFile, setSelectedFile] = useState<FileType>({
+    type: null,
+    name: null
   });
 
-  const validHeaders = [
-    'company_name',
-    'company_id',
-    'sme_z_score',
-    'p_d_ratio\r'
-  ];
+  const [fileContent, setFileContent] = useState<FileContentType | null>(null);
 
-  const requiredValues = [
-    'sme_z_score',
-    'company_name',
-    'company_id',
-    'p_d_ratio\r'
-  ];
+  const [validation, setValidation] = useState<FileValidationType>({
+    hasRequiredData: false,
+    hasRequiredFormat: false,
+    hasFile: false,
+    isCSV: false
+  });
 
   useEffect(() => {
-    getValidations(fileContent);
+    getValidations(fileContent, selectedFile);
   }, [fileContent]);
 
   const handleSelectFile = (e: any) => {
-    const file = e.target.files[0];
+    const file = e && e.target.files[0];
     readFile(file);
   };
 
-  const readFile = (file: any) => {
+  const handleRemoveFile = () => {
+    setFileContent(null);
+    setValidation({
+      hasRequiredData: false,
+      hasRequiredFormat: false,
+      hasFile: false,
+      isCSV: false
+    });
+    setSelectedFile({
+      type: null,
+      name: null
+    });
+  };
+
+  const readFile = (file: File | null) => {
+    file && setSelectedFile(file);
+
     const reader = new FileReader();
     reader.onload = function (file) {
       setFileContent(file.target?.result);
     };
-    reader.readAsText(file);
-    file.type === 'text/csv' ? setIsCSV(true) : setIsCSV(false);
+    file && reader.readAsText(file);
   };
 
-  const getValidations = (content: FileContentType) => {
+  const getValidations = (content: FileContentType, selectedFile: FileType) => {
     const str = content?.toString();
-    // split each line of CSV into array
     const headers: string[] | undefined = str?.split('\n')[0].split(',');
     const values: string[] | undefined = str?.split('\n')[1].split(',');
-    // compare each array to validate if csv headers are a subset of the valid headers array
     const isSubset = validHeaders.every(val => headers?.includes(val));
     // create object & keys from headers and values arrays
-    const object:
+    const contentObject:
       | {
           [index: string]: string;
         }
       | undefined =
       values &&
       headers?.reduce(
-        (acc, curr: string, i) => ({ ...acc, [curr]: values[i] }),
+        (acc, curr: string, i) => ({ ...acc, [curr]: values[Number(i)] }),
         {}
       );
 
     const hasValidValues =
-      object &&
-      requiredValues.filter(key => object[key]).length ===
+      contentObject &&
+      requiredValues.filter(key => contentObject[`${key}`]).length ===
         requiredValues.length;
 
     setValidation({
-      hasCorrectFields: isSubset,
-      valuesAreValid: hasValidValues
-      // isUploaded: true
+      hasRequiredData: isSubset,
+      hasRequiredFormat: hasValidValues,
+      isCSV: selectedFile.type === 'text/csv',
+      hasFile: fileContent ? true : false
     });
   };
 
-  const validationCheck = (value: boolean | undefined) => {
+  const renderValidationCheck = (value: boolean | undefined) => {
     if (value === true) {
       return <CheckIcon className="w-6 h-6 text-green-500" />;
     } else {
@@ -103,41 +111,53 @@ const UploadNewData = () => {
     }
   };
 
+  // USE TO DISABLE / ENABLE BUTTON
+  const isValidated =
+    validation.hasFile &&
+    validation.hasRequiredData &&
+    validation.hasRequiredFormat &&
+    validation.isCSV;
+
   const t = useTranslations();
+
+  const header = (
+    <div>
+      <p className="text-3xl font-semibold py-2">{t('upload_the_new_data')}</p>
+      <p className="text-sm py-2">{t('drag_and_drop_csv_below')}</p>
+    </div>
+  );
 
   return (
     <div className="bg-white rounded-sm shadow-sm p-8">
-      <div>
-        <p className="text-3xl font-semibold py-2">
-          {t('upload_the_new_data')}
-        </p>
-        <p className="text-sm py-2">{t('drag_and_drop_csv_below')}</p>
-      </div>
+      {hasHeader && header}
       <div className="flex justify-between w-full py-4">
         <UploadFile
           text={t('or_drag_and_drop_it')}
           linkText={t('upload_your_csv')}
           selectFile={handleSelectFile}
+          readFile={readFile}
+          removeFile={handleRemoveFile}
+          fileName={selectedFile.name}
         />
 
         <div className="text-sm flex flex-col w-full items-center">
           <div>
             <p className="font-bold py-2">{t('valid_csv_check')}</p>
             <div className="flex py-1 items-center">
-              {validationCheck(validation.isUploaded)}
-              <p className="px-2">{t('upload_csv')}</p>
+              {renderValidationCheck(validation.hasFile)}
+              <p className="px-2">{t('uploaded_file')}</p>
+            </div>
+            <div className="flex py-1">
+              {renderValidationCheck(validation.isCSV)}
+              <p className="px-2">{t('is_valid_csv')}</p>
+            </div>
+            <div className="flex py-1">
+              {renderValidationCheck(validation.hasRequiredFormat)}
+              <p className="px-2">{t('has_required_format')}</p>
             </div>
             <div className="flex py-1 items-center">
-              {validationCheck(validation.hasCorrectFields)}
-              <p className="px-2">{t('has_correct_fields')}</p>
-            </div>
-            <div className="flex py-1">
-              {validationCheck(validation.valuesAreValid)}
-              <p className="px-2">{t('matches_template')}</p>
-            </div>
-            <div className="flex py-1">
-              {validationCheck(isCSV)}
-              <p className="px-2">{t('is_valid_csv')}</p>
+              {renderValidationCheck(validation.hasRequiredData)}
+              <p className="px-2">{t('has_required_data')}</p>
             </div>
           </div>
         </div>
@@ -145,7 +165,7 @@ const UploadNewData = () => {
       <div className="w-3/12">
         <Button
           variant="highlight"
-          linkTo="#"
+          disabled={!isValidated}
           className="text-primary rounded-none"
         >
           {t('generate_new_report')}

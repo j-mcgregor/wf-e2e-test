@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-require */
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
@@ -46,7 +47,8 @@ const UploadData = () => {
             description={t('add_a_new_year_of_financials')}
           />
         </div>
-        <UploadNewData />
+
+        <UploadNewData hasHeader={true} />
       </div>
     </Layout>
   );
