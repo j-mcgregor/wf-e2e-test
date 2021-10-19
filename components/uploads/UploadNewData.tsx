@@ -78,10 +78,17 @@ const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
     const headers: string[] | undefined = str?.split('\n')[0].split(',');
     const values: string[] | undefined = str?.split('\n')[1].split(',');
     const isSubset = validHeaders.every(val => headers?.includes(val));
-
-    const contentObject =
+    // create object & keys from headers and values arrays
+    const object:
+      | {
+          [index: string]: string;
+        }
+      | undefined =
       values &&
-      headers?.reduce((acc, curr, i) => ({ ...acc, [curr]: values[i] }), {});
+      headers?.reduce(
+        (acc, curr: string, i) => ({ ...acc, [curr]: values[i] }),
+        {}
+      );
 
     const hasValidValues =
       contentObject &&
