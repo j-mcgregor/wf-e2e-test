@@ -31,5 +31,7 @@
   "generate_new_report": "Generate new report",
   "upload_your_csv": "Upload your CSV",
   "or_drag_and_drop_it": "or drag and drop it.",
-  "drop_file_to_upload": "Drop File to Upload"
+  "drop_file_to_upload": "Drop File to Upload",
+  "registered": "Registered",
+  "id": "ID"
 }

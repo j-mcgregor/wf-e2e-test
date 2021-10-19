@@ -3,7 +3,6 @@ import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-
 import HashContainer from '../../components/elements/HashContainer';
 import { ReportSectionHeader } from '../../components/elements/Headers';
 import Layout from '../../components/layout/Layout';

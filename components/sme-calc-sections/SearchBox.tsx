@@ -1,9 +1,9 @@
+import { useTranslations } from 'use-intl';
 import { useState, useEffect, useRef } from 'react';
-import { Report } from '../../types/global';
+import { Company } from '../../types/global';
 import { SearchIcon } from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
 import { Listbox } from '@headlessui/react';
-
 import useOutsideClick from '../../hooks/useOutsideClick';
 
 interface SearchBoxProps {
@@ -12,8 +12,8 @@ interface SearchBoxProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
   resetValue?: () => void;
-  options?: Report[];
-  setOption?: (e: string | null) => void;
+  options?: Company[];
+  setOption?: (e: Company | null) => void;
 }
 
 const SearchBox = ({
@@ -25,7 +25,8 @@ const SearchBox = ({
   options,
   setOption
 }: SearchBoxProps) => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const t = useTranslations();
+  const [selectedOption, setSelectedOption] = useState<Company | null>(null);
   const [showList, setShowList] = useState(false);
 
   useEffect(() => {
@@ -39,28 +40,34 @@ const SearchBox = ({
     !showList && setShowList(true);
   };
 
+  // click outside handler
+  // ref attached to element to control
   const listboxRef = useRef(null);
-
+  // hook runs function when clicked outside of ref element - hides list
   useOutsideClick(listboxRef, () => {
     setShowList(false);
   });
 
   return (
     <div>
-      <div className="mt-1 relative rounded-md shadow-sm">
+      <div className="mt-1 relative rounded-md shadow-sm flex items-center">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon className="h-5 w-5 text-primary" aria-hidden="true" />
         </div>
+
         <input
           disabled={disabled}
           type="text"
           name="email"
           id="email"
-          className="focus:ring-highlight focus:border-highlight block w-full pl-10 sm:text-sm border-primary rounded bg-bg"
+          className="focus:ring-highlight focus:border-highlight block w-full pl-10 text-sm border-primary rounded bg-bg"
           placeholder={`${placeholder}`}
           onChange={e => handleShowList(e)}
           value={value}
         />
+        {options && options.length > 0 && (
+          <label className="absolute right-5">{options?.length} results</label>
+        )}
       </div>
 
       {showList && (
@@ -73,21 +80,24 @@ const SearchBox = ({
                     <Listbox.Options static>
                       {options?.map(option => (
                         <Listbox.Option
-                          key={option.id}
-                          value={option.company_name}
+                          key={option.company_id}
+                          value={option.name}
                         >
                           <li className="border-l-primary border-l flex justify-between my-4 pl-4 hover:bg-bg hover:text-highlight p-2">
                             <div>
                               <p className="font-semibold pb-1">
-                                {option.company_name}
+                                {option.name}
                               </p>
-                              <p>ID: 1212233434555621</p>
+                              <p>
+                                {t('id')}: {option.company_id}
+                              </p>
                             </div>
                             <div className="text-right">
                               <p>
-                                Registered: <strong>12th June 1990</strong>
+                                {t('registered')}:{' '}
+                                <strong>{option.registration_date}</strong>
                               </p>
-                              <p>123 Regent Street, London, England</p>
+                              <p>{option.registered_address}</p>
                             </div>
                           </li>
                         </Listbox.Option>

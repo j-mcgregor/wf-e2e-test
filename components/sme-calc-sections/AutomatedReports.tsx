@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'use-intl';
-import { useRecoilValue } from 'recoil';
 import { XIcon } from '@heroicons/react/outline';
 import SettingsSettings from '../../lib/settings/settings.settings';
-import { userReports } from '../../lib/appState';
-import { Report } from '../../types/global';
 import SelectMenu from '../elements/SelectMenu';
 import SearchBox from './SearchBox';
 import Button from '../elements/Button';
 import debounce from '../../lib/utils/debounce';
+import useSWR from 'swr';
+import fetcher from '../../lib/utils/fetcher';
+import { Company } from '../../types/global';
 
 type Value = {
   optionValue: string;
@@ -21,11 +21,8 @@ interface AutomatedReportsProps {
 const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
   const t = useTranslations();
 
-  const { allReports } = useRecoilValue(userReports);
-
   const currencies: Value[] = SettingsSettings.supportedCurrencies;
   const countries: Value[] = SettingsSettings.supportedCountries;
-
   // default country taken from user profile (settings)
   const defaultCountry =
     SettingsSettings.defaultOptions.preferences.default_reporting_country;
@@ -36,7 +33,6 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
       return e.optionValue === item.optionValue ? true : null;
     });
   };
-
   // default index for country upon initial render
   const defaultIndex = countries.findIndex(e => {
     return e.optionValue === defaultCountry ? true : null;
@@ -44,21 +40,30 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
 
   const [companySearchValue, setCompanySearchValue] = useState('');
   const [regSearchValue, setRegSearchValue] = useState<string | null>();
-  const [filteredCompanies, setFilteredCompanies] = useState<Report[]>([]);
+  const [companies, setCompanies] = useState<Company[] | []>([]);
   const [selectedCountry, setSelectedCountry] = useState<Value>(
     countries[Number(defaultIndex)]
   );
   const [selectedCurrency, setSelectedCurrency] = useState<Value>(
     currencies[Number(defaultIndex)]
   );
-  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const isUK = selectedCountry.optionValue === 'United Kingdom';
   const [advancedSearch, setAdvancedSearch] = useState(isUK ? false : true);
-  const [showProvideData, setShowProvideData] = useState(false);
-
   const selectedCountryIndex = getIndex(selectedCountry, countries);
 
   //? some useEffect hooks for controlling rendering of various options
+  // query to mock companies api - value as query parameter
+  const { data } = useSWR(
+    `/api/search-companies?query=${companySearchValue}`,
+    fetcher
+  );
+
+  // run useEffect to set companies to result of SWR api request, via debounce function to delay typed results
+  useEffect(() => {
+    const debounceCompanySearch = debounce(() => setCompanies(data), 200);
+    debounceCompanySearch();
+  }, [companySearchValue]);
 
   useEffect(() => {
     disabled && setAdvancedSearch(false);
@@ -75,22 +80,6 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
       !isUK &&
       setSelectedCountry(countries[Number(selectedCountryIndex)]);
   }, [advancedSearch]);
-
-  // filter companies based on search field - using recoil reports state as temp data prior to companies house api
-  useEffect(() => {
-    // debounce function delays setting of filter state
-    const filter = () => {
-      const companyFilter = allReports.filter(company =>
-        Object.values(company.company_name)
-          .join('')
-          .toLowerCase()
-          .includes(companySearchValue.toLowerCase())
-      );
-      setFilteredCompanies(companyFilter);
-    };
-    const debounceFilter = debounce(() => filter(), 1000);
-    debounceFilter();
-  }, [companySearchValue]);
 
   const isValid = selectedCompany || regSearchValue ? true : false;
 
@@ -165,14 +154,14 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
             onChange={e => handleSearchCompany(e)}
             value={companySearchValue}
             resetValue={handleResetSearchValue}
-            options={filteredCompanies}
-            setOption={(company: string | null) => setSelectedCompany(company)}
+            options={companies}
+            setOption={(company: Company | null) => setSelectedCompany(company)}
           />
         </div>
 
         {selectedCompany && (
           <div className="bg-bg flex w-full p-6 my-4 justify-between">
-            <p className="font-semibold">{selectedCompany}</p>
+            <p className="font-semibold">{selectedCompany.name}</p>
             <div className="flex items-center">
               <p>1232334345</p>
               <XIcon className="w-5 h-5 ml-4 cursor-pointer hover:opacity-80" />
@@ -183,44 +172,51 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
         {/* SEARCH OPTIONS TO ONLY SHOW IF NOT UK */}
         {advancedSearch && (
           <div>
-            <div className="my-4">
-              <div className="py-2">
+            <div className="my-4 flex justify-between items-center">
+              <div className="py-2 w-1/2">
                 <p className="text-lg font-semibold py-1">
                   {t('company_registration')}
                 </p>
                 <p>{t('the_identification_number_for_the_company')}</p>
               </div>
-
-              <SearchBox
-                placeholder="123456789"
-                onChange={e => handleSearchReg(e)}
-              />
+              <div className="w-1/3">
+                <SearchBox
+                  placeholder="123456789"
+                  onChange={e => handleSearchReg(e)}
+                />
+              </div>
             </div>
-            <div className="my-4">
-              <div className="py-2">
+
+            <div className="my-4 flex justify-between items-center">
+              <div className="py-2 w-1/2">
                 <p className="text-lg font-semibold py-1">
                   {t('account_type')}
                 </p>
                 <p>{t('choose_the_type_of_accounts_to_generate')}</p>
               </div>
 
-              <SelectMenu
-                defaultValue={t('account_type')}
-                setSelectedValue={handleSelectCountry}
-              />
+              <div className="w-1/3">
+                <SelectMenu
+                  defaultValue={t('account_type')}
+                  setSelectedValue={handleSelectCountry}
+                />
+              </div>
             </div>
-            <div className="my-4">
-              <div className="py-2">
+
+            <div className="my-4 flex justify-between items-center">
+              <div className="py-2 w-1/2">
                 <p className="text-lg font-semibold py-1">{t('currency')}</p>
                 <p>{t('will_switch_based_on_country_selected')}</p>
               </div>
 
-              <SelectMenu
-                values={currencies}
-                defaultValue={selectedCurrency}
-                selectedValue={selectedCurrency}
-                setSelectedValue={handleSelectCurrency}
-              />
+              <div className="w-1/3">
+                <SelectMenu
+                  values={currencies}
+                  defaultValue={selectedCurrency}
+                  selectedValue={selectedCurrency}
+                  setSelectedValue={handleSelectCurrency}
+                />
+              </div>
             </div>
           </div>
         )}
