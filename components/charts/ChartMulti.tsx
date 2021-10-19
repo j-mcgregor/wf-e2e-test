@@ -41,7 +41,7 @@ const ChartMulti = ({
       <div className="flex justify-between items-start px-4 pt-4 text-xs">
         <div>
           <p className="font-bold pb-2">{header}</p>
-          <p className="opacity-70 border border-red-500">{subHeader}</p>
+          <p className="opacity-70">{subHeader}</p>
         </div>
 
         <Hint title={hintTitle} body={hintBody} />
@@ -67,9 +67,9 @@ const ChartMulti = ({
                   style={{
                     data: {
                       fill: graphColors(i),
-                      fillOpacity: i === selectedCompany ? '1' : '0.3',
+                      fillOpacity: i === selectedCompany ? '0.8' : '0.05',
                       stroke: graphColors(i),
-                      strokeOpacity: i === selectedCompany ? '1' : '0.15'
+                      strokeOpacity: i === selectedCompany ? '1' : '0.05'
                     }
                   }}
                 />
@@ -87,9 +87,9 @@ const ChartMulti = ({
                     data: {
                       strokeWidth: 1,
                       stroke: graphColors(i),
-                      strokeOpacity: i === selectedCompany ? '1' : '0.3',
+                      strokeOpacity: i === selectedCompany ? '1' : '0.15',
                       fill: i !== selectedCompany ? 'white' : graphColors(i),
-                      fillOpacity: i === selectedCompany ? '1' : '0.3'
+                      fillOpacity: i === selectedCompany ? '1' : '0'
                     }
                   }}
                   labels={({ datum }) =>

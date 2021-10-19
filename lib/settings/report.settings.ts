@@ -213,11 +213,11 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       data
     ),
 
-  turnover2: (data: MultiGraphDataType[]) =>
+  totalAssets: (data: MultiGraphDataType[]) =>
     createChart(
-      'turnover2',
+      'total_assets',
       poundsThousands,
-      { title: 'turnover.title', body: 'turnover.body' },
+      { title: 'total_assets.title', body: 'total_assets.body' },
       data
     ),
 

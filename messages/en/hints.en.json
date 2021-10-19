@@ -13,6 +13,56 @@
         "title": "Lost Given Default",
         "body": "The Wiserfunding SME Z-Score is our proprietary algorithm that assess the credit risk of SME's."
       }
+    },
+    "macro_economic_trends": {
+      "gdp_growth_rate": {
+        "title": "GDP Growth Rate",
+        "body": "Lorem ipsum."
+      },
+      "gdp_annual_growth": {
+        "title": "GDP Annual Growth Rate",
+        "body": "Lorem ipsum."
+      },
+      "gdp_per_capita": {
+        "title": "GDP Per Capita",
+        "body": "Lorem ipsum."
+      },
+      "unemployment_rate": {
+        "title": "Unemployment Rate",
+        "body": "Lorem ipsum."
+      },
+      "annual_inflation_rate": {
+        "title": "Annual Inflation Rate",
+        "body": "Lorem ipsum."
+      },
+      "interest_rate": {
+        "title": "Interest Rate",
+        "body": "Lorem ipsum."
+      },
+      "consumer_spending_millions": {
+        "title": "Consumer Spending Millions",
+        "body": "Lorem ipsum."
+      },
+      "government_debt_to_gdp": {
+        "title": "Government Debt to GDP",
+        "body": "Lorem ipsum."
+      },
+      "house_price_index": {
+        "title": "House Price Index",
+        "body": "Lorem ipsum."
+      },
+      "stock_market_uk": {
+        "title": "Stock Market UK",
+        "body": "Lorem ipsum."
+      },
+      "consumer_price_index": {
+        "title": "Consumer Price Index",
+        "body": "Lorem ipsum."
+      },
+      "credit_rating": {
+        "title": "Credit Rating",
+        "body": "Lorem ipsum."
+      }
     }
   }
 }

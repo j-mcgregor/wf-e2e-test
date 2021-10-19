@@ -105,7 +105,10 @@ const ReportTemplate = () => {
   const REGION_BENCHMARK = t('region_benchmark');
 
   return (
-    <Layout title={`${data?.company_name} | ${t('report')}`} fullWidth>
+    <Layout
+      title={`${data?.company_name || 'Loading'} | ${t('report')}`}
+      fullWidth
+    >
       <SecondaryLayout
         navigation={
           data?.company_name && (
@@ -255,15 +258,18 @@ const ReportTemplate = () => {
                 </div>
               </div>
             </HashContainer>
+
             <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
               <ReportSectionHeader text={t('financial_trends')} />
               <FinancialTrends data={[]} />
             </HashContainer>
+
             <HashContainer
               name={'Corporate Governance'}
               id={`corporate-governance-id`}
             >
               <ReportSectionHeader text={t('corporate_governance')} />
+
               <CorporateOverview
                 cfo={data.personal.cfo}
                 ceo={data.personal.ceo}
@@ -272,23 +278,33 @@ const ReportTemplate = () => {
                 seniorManagement={data.personal.senior_management.length}
                 shareholders={data.personal.shareholders.length}
               />
+
               <Profiles
                 directors={data.personal.directors}
                 seniorManagement={data.personal.senior_management}
               />
+
               <ShareHolderList shareholders={data.personal.shareholders} />
-              <ShareHoldingCard
+
+              {/* Removed till we know more about whether it is going to be included */}
+              {/* <ShareHoldingCard
                 total={391}
                 above10={2}
                 fiveToTen={18}
                 oneToFive={47}
                 belowOne={324}
-              />
+              /> */}
             </HashContainer>
-            <HashContainer name={'Legal Events'} id={`legal-events-id`}>
+
+            <HashContainer
+              name={'Legal Events'}
+              id={`legal-events-id`}
+              fullHeight={false}
+            >
               <ReportSectionHeader text={t('legal_events')} />
               <LegalEvents legalEvents={data?.legal_events?.legal_events} />
             </HashContainer>
+
             <HashContainer
               name={'Macro Economic Trends'}
               id={`macro-economic-trends-id`}
@@ -296,7 +312,8 @@ const ReportTemplate = () => {
               <ReportSectionHeader text={t('macro_economic_trends')} />
               <MacroEconomicTrends trends={[]} />
             </HashContainer>
-            <HashContainer name={'ESG'} id={`esg-id`}>
+
+            <HashContainer name={'ESG'} id={`esg-id`} fullHeight={false}>
               <ReportSectionHeader text={t('esg')} />
               <p className="text-xl">{t('esg_assessment')}</p>
               <ESGCard
@@ -314,6 +331,7 @@ const ReportTemplate = () => {
                 rating="3"
               />
             </HashContainer>
+
             <HashContainer name={'News'} id={`news-id`}>
               <ReportSectionHeader text={t('news')} />
               <NewsFeed />

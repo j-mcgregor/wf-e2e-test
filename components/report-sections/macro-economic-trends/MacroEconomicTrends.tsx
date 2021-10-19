@@ -41,8 +41,10 @@ const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
           title={`${t(chart.header)}`}
           subtitle={`${t(chart.subHeader)}`}
           data={chart.data[0].data}
-          hintBody={t(`${chart.hint.body}`)}
-          hintTitle={t(`${chart.hint.title}`)}
+          hintBody={t(`report_hints.macro_economic_trends.${chart.hint.body}`)}
+          hintTitle={t(
+            `report_hints.macro_economic_trends.${chart.hint.title}`
+          )}
         />
       ))}
     </div>

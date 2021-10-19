@@ -29,9 +29,9 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
         ))}
       </div>
 
-      <p className="my-4 text-xl">{t('senior management')}</p>
+      <p className="my-4 text-xl">{t('senior_management')}</p>
       <div className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4">
-        {seniorManagement.map((manager, index)  => (
+        {seniorManagement.map((manager, index) => (
           <PersonalCard
             key={manager.name + index}
             title={manager.title}
