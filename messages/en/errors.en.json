@@ -2,6 +2,7 @@
   "GENERIC_API_ERROR": "There was an error submitting your email. Please contact support.",
   "UNAUTHORISED": "You are not authorised to complete this action.",
   "NO_REPORT_ID": "No report ID provided.",
+  "REPORT_FETCHING_ERROR": "There was an error fetching that report.",
   "VALID_EMAIL_REQUIRED": "Please provide a valid email.",
   "EMAIL_REQUIRED": "Your email is required.",
   "PASSWORD_REQUIRED": "Your password is required.",

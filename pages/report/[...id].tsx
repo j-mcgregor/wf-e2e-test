@@ -45,6 +45,7 @@ import {
 import FinancialTrends from '../../components/report-sections/financial-trends/FinancialTrends';
 import MacroEconomicTrends from '../../components/report-sections/macro-economic-trends/MacroEconomicTrends';
 import NewsFeed from '../../components/report-sections/news/NewsFeed';
+import { REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 
 export interface ReportDataProps {
   id: string | number;
@@ -69,6 +70,8 @@ export interface ReportDataProps {
     cfo: string;
     chairman: string;
   };
+  error?: boolean;
+  message?: string;
 }
 
 const ReportTemplate = () => {
@@ -87,7 +90,7 @@ const ReportTemplate = () => {
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
 
   const transformedFinancials =
-    data &&
+    data?.financials &&
     Object.keys(data.financials)
       .map(year => {
         // eslint-disable-next-line security/detect-object-injection
@@ -96,7 +99,7 @@ const ReportTemplate = () => {
       .reverse();
 
   const lastFiveYearsFinancials =
-    (data && transformedFinancials?.slice(0, 5)) || [];
+    (data?.financials && transformedFinancials?.slice(0, 5)) || [];
 
   const INDUSTRY_BENCHMARK = t('industry_benchmark');
   const REGION_BENCHMARK = t('region_benchmark');
@@ -118,8 +121,8 @@ const ReportTemplate = () => {
       >
         {!data ? (
           <SkeletonReport />
-        ) : error ? (
-          <ErrorSkeleton />
+        ) : error || data.error ? (
+          <ErrorSkeleton header={`${t(REPORT_FETCHING_ERROR)}`} />
         ) : (
           <div className="text-primary mt-10 lg:mt-0">
             <div className="py-8">
@@ -334,7 +337,8 @@ export const getServerSideProps = getServerSidePropsWithAuth(
           // the desired one based on the `locale` received from Next.js.
           ...require(`../../messages/${locale}/report.${locale}.json`),
           ...require(`../../messages/${locale}/hints.${locale}.json`),
-          ...require(`../../messages/${locale}/general.${locale}.json`)
+          ...require(`../../messages/${locale}/general.${locale}.json`),
+          ...require(`../../messages/${locale}/errors.${locale}.json`)
         }
       }
     };
