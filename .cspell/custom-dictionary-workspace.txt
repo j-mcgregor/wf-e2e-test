@@ -1,5 +1,6 @@
 # Custom Dictionary Words
 boxplot
+customisability
 Deby
 ebit
 EBITDA
