@@ -43,10 +43,10 @@ const AutomatedReports = () => {
   const [regSearchValue, setRegSearchValue] = useState<string | null>();
   const [filteredCompanies, setFilteredCompanies] = useState<Report[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<Value>(
-    countries[defaultIndex]
+    countries[Number(defaultIndex)]
   );
   const [selectedCurrency, setSelectedCurrency] = useState<Value>(
-    currencies[defaultIndex]
+    currencies[Number(defaultIndex)]
   );
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const isUK = selectedCountry.optionValue === 'United Kingdom';
@@ -57,13 +57,15 @@ const AutomatedReports = () => {
   //? some useEffect hooks for controlling rendering of various options
   // re-render currency when new country is selected from dropdown & open advanced search if country is not UK
   useEffect(() => {
-    setSelectedCurrency(currencies[selectedCountryIndex]);
+    setSelectedCurrency(currencies[Number(selectedCountryIndex)]);
     !isUK && setAdvancedSearch(true);
   }, [selectedCountry]);
 
   // if default is UK when 'basic search' is selected, reset country to UK
   useEffect(() => {
-    !advancedSearch && !isUK && setSelectedCountry(countries[defaultIndex]);
+    !advancedSearch &&
+      !isUK &&
+      setSelectedCountry(countries[Number(selectedCountryIndex)]);
   }, [advancedSearch]);
 
   // filter companies based on search field - using recoil reports state as temp data prior to companies house api
@@ -102,7 +104,7 @@ const AutomatedReports = () => {
 
   const handleSelectCurrency = (value: Value): void => {
     const currency = getIndex(value, currencies);
-    setSelectedCurrency(currencies[currency]);
+    setSelectedCurrency(currencies[Number(currency)]);
   };
 
   return (

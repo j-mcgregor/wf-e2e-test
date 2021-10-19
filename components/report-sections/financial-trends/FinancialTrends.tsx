@@ -14,7 +14,7 @@ const FinancialTrends = ({ data }: FinancialTrendsProps) => {
   const chartsToRender = useMemo(
     () =>
       Object.keys(financialTrendsCharts).map((key: string) =>
-        financialTrendsCharts[key]([
+        financialTrendsCharts[key.toString()]([
           {
             name: 'Scottish Seabird Center LTD',
             data: [

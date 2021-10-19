@@ -13,7 +13,7 @@ const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
   const chartsToRender = useMemo(
     () =>
       Object.keys(macroEconomicTrendCharts).map((key: string) =>
-        macroEconomicTrendCharts[key]([
+        macroEconomicTrendCharts[key.toString()]([
           {
             data: [
               { x: '2011', y: 304 },

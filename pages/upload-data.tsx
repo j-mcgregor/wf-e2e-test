@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-require */
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';

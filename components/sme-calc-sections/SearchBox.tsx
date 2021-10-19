@@ -3,12 +3,11 @@ import { Report } from '../../types/global';
 import { SearchIcon } from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
 import { Listbox } from '@headlessui/react';
-import ClickAway from '../elements/ClickAway';
 
 interface SearchBoxProps {
   placeholder: TranslateInput;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setCompany: (e: string | null) => void;
+  setCompany?: (e: string | null) => void;
   value?: string;
   disabled?: boolean;
   options?: Report[];
@@ -27,10 +26,10 @@ const SearchBox = ({
 
   useEffect(() => {
     showList && setShowList(!showList);
-    setCompany(selectedOption);
+    setCompany && setCompany(selectedOption);
   }, [selectedOption]);
 
-  const handleShowList = e => {
+  const handleShowList = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e);
     !showList && setShowList(true);
   };
@@ -48,7 +47,7 @@ const SearchBox = ({
           name="email"
           id="email"
           className="focus:ring-highlight focus:border-highlight block w-full pl-10 sm:text-sm border-primary rounded bg-bg"
-          placeholder={placeholder}
+          placeholder={`${placeholder}`}
           onChange={e => handleShowList(e)}
           value={value}
         />
