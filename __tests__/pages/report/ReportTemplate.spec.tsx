@@ -137,13 +137,13 @@ describe('ReportTemplate', () => {
      * FINANCIAL STATEMENT OVERVIEW
      */
 
-    const totalAssets = screen.getByText('Total Assets').parentElement;
+    // const totalAssets = screen.getByText('Total Assets').parentElement;
 
-    if (totalAssets) {
-      expect(totalAssets.querySelectorAll('td')[1].textContent).toBe(
-        '824392.0'
-      );
-    }
+    // if (totalAssets) {
+    //   expect(totalAssets.querySelectorAll('td')[1].textContent).toBe(
+    //     '824392.0'
+    //   );
+    // }
 
     const totalCurrentAssets = screen.getByText(
       'Total Current Assets'
