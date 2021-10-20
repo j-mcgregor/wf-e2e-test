@@ -44,7 +44,7 @@ const CorporateOverview = ({
         </div>
         <div className="p-4 ">
           <p className="font-bold">{seniorManagement}</p>
-          <p>{t('senior management')}</p>
+          <p>{t('senior_management')}</p>
         </div>
       </div>
     </div>

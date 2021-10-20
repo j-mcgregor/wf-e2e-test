@@ -885,6 +885,42 @@ const mockReport = {
             to_date: '14-04-2021'
           }
         ]
+      },
+      {
+        title: 'Mr',
+        name: 'John Doe',
+        role: 'Director',
+        linked_in_profile: null,
+        profile_image: null,
+        appointment_date: '19-04-2010',
+        nationality: 'French',
+        date_of_birth: '09-12-1989',
+        other_associations: [
+          {
+            title: 'Director',
+            company: 'Scottish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: 'current'
+          },
+          {
+            title: 'Director',
+            company: 'Welsh Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'Irish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'English Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          }
+        ]
       }
     ],
 
@@ -915,6 +951,78 @@ const mockReport = {
           {
             title: 'Director',
             company: 'Irish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          }
+        ]
+      },
+      {
+        title: 'Mr',
+        name: 'John Doe',
+        role: 'Director',
+        linked_in_profile: null,
+        profile_image: null,
+        appointment_date: '19-04-2010',
+        nationality: 'French',
+        date_of_birth: '09-12-1989',
+        other_associations: [
+          {
+            title: 'Director',
+            company: 'Scottish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: 'current'
+          },
+          {
+            title: 'Director',
+            company: 'Welsh Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'Irish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'English Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          }
+        ]
+      },
+      {
+        title: 'Mr',
+        name: 'John Doe',
+        role: 'Director',
+        linked_in_profile: null,
+        profile_image: null,
+        appointment_date: '19-04-2010',
+        nationality: 'French',
+        date_of_birth: '09-12-1989',
+        other_associations: [
+          {
+            title: 'Director',
+            company: 'Scottish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: 'current'
+          },
+          {
+            title: 'Director',
+            company: 'Welsh Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'Irish Seabird Company',
+            from_date: '21-03-2012',
+            to_date: '14-04-2021'
+          },
+          {
+            title: 'Director',
+            company: 'English Seabird Company',
             from_date: '21-03-2012',
             to_date: '14-04-2021'
           }

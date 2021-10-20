@@ -1,3 +1,5 @@
+// uncomment below to engage why did you render
+// import '../lib/wdyr.ts'
 import '../styles/globals.css';
 
 import memoize from 'lodash/memoize';
