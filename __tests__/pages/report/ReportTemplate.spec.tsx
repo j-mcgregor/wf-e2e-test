@@ -10,7 +10,7 @@ import mockReport from '../../../lib/mock-data/report';
 
 // import { mockServerGet, server } from '../../../__mocks__/service-worker/server';
 import allMessages from '../../../messages/en';
-import ReportTemplate from '../../../pages/report/[...id]';
+import ReportTemplate from '../../../pages/report/[id]/index';
 import { makeMockSession, render, screen } from '../../../test-utils';
 
 jest.mock('next-auth/client');

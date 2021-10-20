@@ -314,9 +314,9 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     ),
   equity_total_assets: (data: MultiGraphDataType[]) =>
     createChart(
-      'days_payable',
+      'equity_total_assets',
       poundsThousands,
-      { title: 'days_payable.title', body: 'ebit.body' },
+      { title: 'equity_total_assets.title', body: 'ebit.body' },
       data
     ),
   tangible_fixed_assets_total_assets: (data: MultiGraphDataType[]) =>
