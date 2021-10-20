@@ -3,34 +3,35 @@ import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import HashContainer from '../../components/elements/HashContainer';
-import { ReportSectionHeader } from '../../components/elements/Headers';
-import Layout from '../../components/layout/Layout';
-import ReportNav from '../../components/layout/ReportNav';
-import SecondaryLayout from '../../components/layout/SecondaryLayout';
-import TabletReportNav from '../../components/layout/TabletReportNav';
-import CorporateOverview from '../../components/report-sections/corporate-governance/CorporateOverview';
-import Profiles from '../../components/report-sections/corporate-governance/Profiles';
-import ShareHolderList from '../../components/report-sections/corporate-governance/ShareHolderList';
-import ShareHoldingCard from '../../components/report-sections/corporate-governance/ShareHoldingCard';
-import ESGCard from '../../components/report-sections/esg-assessment/ESGCard';
-import CTACard from '../../components/report-sections/highlights/CTACard';
-import DataReliability from '../../components/report-sections/highlights/DataReliability';
-import FinancialAccounts from '../../components/report-sections/highlights/FinancialAccounts';
-import ReliabilityIndex from '../../components/report-sections/highlights/ReliabilityIndex';
-import RiskOutlook from '../../components/report-sections/highlights/RiskOutlook';
-import LegalEvents from '../../components/report-sections/legal-events/LegalEvents';
-import ReportHeader from '../../components/report-sections/ReportHeader';
-import BondRating from '../../components/report-sections/risk-metrics/BondRating';
-import Hint from '../../components/elements/Hint';
-import Speedometer from '../../components/report-sections/risk-metrics/Speedometer';
-import SummaryDetails from '../../components/report-sections/summary/SummaryDetails';
-import SummaryFinancial from '../../components/report-sections/summary/SummaryFinancial';
-import SummaryMap from '../../components/report-sections/summary/SummaryMap';
-import SkeletonReport from '../../components/skeletons/SkeletonReport';
-import getServerSidePropsWithAuth from '../../lib/auth/getServerSidePropsWithAuth';
-import fetcher from '../../lib/utils/fetcher';
-import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
+
+import HashContainer from '../../../components/elements/HashContainer';
+import { ReportSectionHeader } from '../../../components/elements/Headers';
+import Layout from '../../../components/layout/Layout';
+import ReportNav from '../../../components/layout/ReportNav';
+import SecondaryLayout from '../../../components/layout/SecondaryLayout';
+import TabletReportNav from '../../../components/layout/TabletReportNav';
+import CorporateOverview from '../../../components/report-sections/corporate-governance/CorporateOverview';
+import Profiles from '../../../components/report-sections/corporate-governance/Profiles';
+import ShareHolderList from '../../../components/report-sections/corporate-governance/ShareHolderList';
+import ShareHoldingCard from '../../../components/report-sections/corporate-governance/ShareHoldingCard';
+import ESGCard from '../../../components/report-sections/esg-assessment/ESGCard';
+import CTACard from '../../../components/report-sections/highlights/CTACard';
+import DataReliability from '../../../components/report-sections/highlights/DataReliability';
+import FinancialAccounts from '../../../components/report-sections/highlights/FinancialAccounts';
+import ReliabilityIndex from '../../../components/report-sections/highlights/ReliabilityIndex';
+import RiskOutlook from '../../../components/report-sections/highlights/RiskOutlook';
+import LegalEvents from '../../../components/report-sections/legal-events/LegalEvents';
+import ReportHeader from '../../../components/report-sections/ReportHeader';
+import BondRating from '../../../components/report-sections/risk-metrics/BondRating';
+import Hint from '../../../components/elements/Hint';
+import Speedometer from '../../../components/report-sections/risk-metrics/Speedometer';
+import SummaryDetails from '../../../components/report-sections/summary/SummaryDetails';
+import SummaryFinancial from '../../../components/report-sections/summary/SummaryFinancial';
+import SummaryMap from '../../../components/report-sections/summary/SummaryMap';
+import SkeletonReport from '../../../components/skeletons/SkeletonReport';
+import getServerSidePropsWithAuth from '../../../lib/auth/getServerSidePropsWithAuth';
+import fetcher from '../../../lib/utils/fetcher';
+import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
 import {
   FinancialYear,
   LegalEvent,
@@ -39,12 +40,12 @@ import {
   Shareholder,
   SummaryContact,
   SummaryInfo
-} from '../../types/report';
+} from '../../../types/report';
 
-import FinancialTrends from '../../components/report-sections/financial-trends/FinancialTrends';
-import MacroEconomicTrends from '../../components/report-sections/macro-economic-trends/MacroEconomicTrends';
-import NewsFeed from '../../components/report-sections/news/NewsFeed';
-import { REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
+import FinancialTrends from '../../../components/report-sections/financial-trends/FinancialTrends';
+import MacroEconomicTrends from '../../../components/report-sections/macro-economic-trends/MacroEconomicTrends';
+import NewsFeed from '../../../components/report-sections/news/NewsFeed';
+import { REPORT_FETCHING_ERROR } from '../../../lib/utils/error-codes';
 
 export interface ReportDataProps {
   id: string | number;
@@ -352,10 +353,10 @@ export const getServerSideProps = getServerSidePropsWithAuth(
           // You can get the messages from anywhere you like, but the recommended
           // pattern is to put them in JSON files separated by language and read
           // the desired one based on the `locale` received from Next.js.
-          ...require(`../../messages/${locale}/report.${locale}.json`),
-          ...require(`../../messages/${locale}/hints.${locale}.json`),
-          ...require(`../../messages/${locale}/general.${locale}.json`),
-          ...require(`../../messages/${locale}/errors.${locale}.json`)
+          ...require(`../../../messages/${locale}/report.${locale}.json`),
+          ...require(`../../../messages/${locale}/hints.${locale}.json`),
+          ...require(`../../../messages/${locale}/general.${locale}.json`),
+          ...require(`../../../messages/${locale}/errors.${locale}.json`)
         }
       }
     };
