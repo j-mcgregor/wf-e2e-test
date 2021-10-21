@@ -61,8 +61,13 @@ export interface RecoilUserType {
 }
 
 export type Company = {
-  company_id: string;
-  name: string;
-  registered_address: string;
-  registration_date: Date;
+  company_id?: string;
+  name?: string;
+  registered_address?: string;
+  registration_date?: Date;
+  // companies house options
+  address_snippet?: string;
+  company_number?: string;
+  date_of_creation?: string;
+  title?: string;
 };

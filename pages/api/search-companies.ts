@@ -31,65 +31,61 @@ const SearchCompanies = async (
   const searchQuery: string = request.query.query?.toString()?.toLowerCase();
 
   // // country code required for adding different jurisdictions
-  // const countryCode: string = request.query?.country?.toString()?.toLowerCase();
+  const countryCode: string = request.query?.country?.toString()?.toLowerCase();
 
-  // if (!countryCode) {
-  //   return response
-  //     .status(404)
-  //     .json({
-  //       error: COUNTRY_CODE_REQUIRED,
-  //       message:
-  //         'Please provide a country code in order to correctly access the right database.'
-  //     });
-  // }
+  if (!countryCode) {
+    return response.status(404).json({
+      error: COUNTRY_CODE_REQUIRED,
+      message:
+        'Please provide a country code in order to correctly access the right database.'
+    });
+  }
 
   if (!searchQuery) {
     return response.status(200).json([]);
   }
 
-  // if (countryCode === 'gb') {
-  //   const searchResults = await Company.searchUKCompaniesHouse(
-  //     process.env.COMPANIES_HOUSE_BASE64_KEY,
-  //     `companies?q=${searchQuery}`
-  //   );
+  if (countryCode === 'gb') {
+    const searchResults = await Company.searchUKCompaniesHouse(
+      process.env.COMPANIES_HOUSE_BASE64_KEY,
+      `companies?q=${searchQuery}`
+    );
 
-  //   // handle error
-  //   if (!searchResults || !searchResults.ok)
-  //     return handleSearchError(searchResults, response);
+    //   // handle error
+    if (!searchResults || !searchResults.ok)
+      return handleSearchError(searchResults, response);
 
-  //   const reducedCompanies = Company.filterUKCompanyInformation(
-  //     searchResults?.data?.items
-  //   );
+    const reducedCompanies = Company.filterUKCompanyInformation(
+      searchResults?.data?.items
+    );
 
-  //   return response.status(200).json(reducedCompanies);
-  // }
+    return response.status(200).json(reducedCompanies);
+  }
 
   const filterCompanies = (companies: ShortCompany[], searchString: string) => {
     return companies.filter(company =>
       company.name.toLowerCase().includes(searchString)
     );
   };
-  const filteredCompanies = filterCompanies(mockCompanies, searchQuery);
+  // const filteredCompanies = filterCompanies(mockCompanies, searchQuery);
 
-  return response.status(200).json(filteredCompanies);
+  // return response.status(200).json(filteredCompanies);
 
-  // return response
-  //   .status(404)
-  //   .json({ error: INVALID_COUNTRY_CODE, message: 'Invalid country code.' });
+  return response
+    .status(404)
+    .json({ error: INVALID_COUNTRY_CODE, message: 'Invalid country code.' });
 };
 
-// const handleSearchError = (
-//   results: CompanyResType,
-//   response: NextApiResponse
-// ) => {
-//   if (!results || !results.ok) {
-//     return response
-//       .status(500)
-//       .json({
-//         error: SEARCH_ERROR,
-//         message: 'Error when accessing Companies House API.'
-//       });
-//   }
-// };
+const handleSearchError = (
+  results: CompanyResType,
+  response: NextApiResponse
+) => {
+  if (!results || !results.ok) {
+    return response.status(500).json({
+      error: SEARCH_ERROR,
+      message: 'Error when accessing Companies House API.'
+    });
+  }
+};
 
 export default withSentry(SearchCompanies);

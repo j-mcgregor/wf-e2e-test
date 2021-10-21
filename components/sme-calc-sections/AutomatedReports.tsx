@@ -40,7 +40,7 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
 
   const [companySearchValue, setCompanySearchValue] = useState('');
   const [regSearchValue, setRegSearchValue] = useState<string | null>();
-  const [companies, setCompanies] = useState<Company[] | []>([]);
+  const [companies, setCompanies] = useState<Company[] | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<Value>(
     countries[Number(defaultIndex)]
   );
@@ -53,15 +53,17 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
   const selectedCountryIndex = getIndex(selectedCountry, countries);
 
   //? some useEffect hooks for controlling rendering of various options
-  // query to mock companies api - value as query parameter
+
+  const countryCode = 'gb';
+
   const { data } = useSWR(
-    `/api/search-companies?query=${companySearchValue}`,
+    `/api/search-companies?query=${companySearchValue}&country=${countryCode}`,
     fetcher
   );
 
   // run useEffect to set companies to result of SWR api request, via debounce function to delay typed results
   useEffect(() => {
-    const debounceCompanySearch = debounce(() => setCompanies(data), 200);
+    const debounceCompanySearch = debounce(() => setCompanies(data), 500);
     debounceCompanySearch();
   }, [companySearchValue]);
 
@@ -161,10 +163,12 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
 
         {selectedCompany && (
           <div className="bg-bg flex w-full p-6 my-4 justify-between">
-            <p className="font-semibold">{selectedCompany.name}</p>
+            <p className="font-bold">{selectedCompany.title}</p>
             <div className="flex items-center">
-              <p>1232334345</p>
-              <XIcon className="w-5 h-5 ml-4 cursor-pointer hover:opacity-80" />
+              <p>{selectedCompany.company_number}</p>
+              <button onClick={() => setSelectedCompany(null)}>
+                <XIcon className="w-5 h-5 ml-4 cursor-pointer hover:opacity-80" />
+              </button>
             </div>
           </div>
         )}
