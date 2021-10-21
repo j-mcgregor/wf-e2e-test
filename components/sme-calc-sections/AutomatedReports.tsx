@@ -54,7 +54,7 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
 
   //? some useEffect hooks for controlling rendering of various options
 
-  const countryCode = 'gb';
+  const countryCode = 'GB';
 
   const { data } = useSWR(
     `/api/search-companies?query=${companySearchValue}&country=${countryCode}`,
@@ -175,7 +175,7 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
 
         {/* SEARCH OPTIONS TO ONLY SHOW IF NOT UK */}
         {advancedSearch && (
-          <div>
+          <form>
             <div className="my-4 flex justify-between items-center">
               <div className="py-2 w-1/2">
                 <p className="text-lg font-semibold py-1">
@@ -185,6 +185,7 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
               </div>
               <div className="w-1/3">
                 <SearchBox
+                  required={true}
                   placeholder="123456789"
                   onChange={e => handleSearchReg(e)}
                 />
@@ -222,7 +223,7 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
                 />
               </div>
             </div>
-          </div>
+          </form>
         )}
 
         <div className="flex items-center my-6">

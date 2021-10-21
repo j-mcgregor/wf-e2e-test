@@ -1,14 +1,13 @@
 import { useTranslations } from 'use-intl';
 import { useState, useEffect, useRef } from 'react';
 import { Company } from '../../types/global';
-
 import { SearchIcon } from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
-import { Listbox } from '@headlessui/react';
 import useOutsideClick from '../../hooks/useOutsideClick';
 
 interface SearchBoxProps {
   disabled?: boolean;
+  required?: boolean;
   placeholder: TranslateInput;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
@@ -23,6 +22,7 @@ const SearchBox = ({
   value,
   resetValue,
   disabled,
+  required,
   options,
   setOption
 }: SearchBoxProps) => {
@@ -70,46 +70,35 @@ const SearchBox = ({
           <label className="absolute right-5">{options?.length} results</label>
         )}
       </div>
-
       {showList && (
-        <div ref={listboxRef}>
-          <Listbox value={selectedOption} onChange={setSelectedOption}>
-            {({ open }) => (
-              <>
-                {!open && options?.length !== 0 && (
-                  <div className="border border-primary rounded px-6 py-2 cursor-pointer">
-                    <Listbox.Options static>
-                      {options &&
-                        options?.map(option => (
-                          <Listbox.Option
-                            key={option.company_number}
-                            value={option}
-                          >
-                            <li className="border-l-primary border-l flex justify-between my-4 pl-4 hover:bg-bg hover:text-highlight p-2">
-                              <div>
-                                <p className="font-semibold pb-1">
-                                  {option.title}
-                                </p>
-                                <p>
-                                  {t('id')}: {option.company_number}
-                                </p>
-                              </div>
-                              <div className="text-right">
-                                <p>
-                                  {t('registered')}:{' '}
-                                  <strong>{option.date_of_creation}</strong>
-                                </p>
-                                <p>{option.address_snippet}</p>
-                              </div>
-                            </li>
-                          </Listbox.Option>
-                        ))}
-                    </Listbox.Options>
-                  </div>
-                )}
-              </>
-            )}
-          </Listbox>
+        <div ref={listboxRef} className="relative">
+          {options && options.length > 0 && (
+            <ul className="px-4 border border-primary rounded overflow-scroll h-[50vh]">
+              {options.map(option => {
+                return (
+                  <button
+                    key={option.company_number}
+                    className="flex justify-between pl-4 border-l border-primary my-4 hover:bg-bg hover:text-highlight p-2 cursor-pointer"
+                    onClick={() => setSelectedOption(option)}
+                  >
+                    <div>
+                      <p className="font-semibold pb-1">{option.title}</p>
+                      <p>
+                        {t('id')}: {option.company_number}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p>
+                        {t('registered')}:
+                        <strong>{option.date_of_creation}</strong>
+                      </p>
+                      <p>{option.address_snippet}</p>
+                    </div>
+                  </button>
+                );
+              })}
+            </ul>
+          )}
         </div>
       )}
     </div>
