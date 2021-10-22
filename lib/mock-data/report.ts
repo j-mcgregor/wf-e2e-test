@@ -40,11 +40,7 @@ const mockReport = {
       regional_benchmark: null,
       industry_benchmark: null
     },
-    bond_rating: {
-      rating: 'B-',
-      comment:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.'
-    }
+    bond_rating: 'B-'
   },
   highlights: {
     data_reliability: {
