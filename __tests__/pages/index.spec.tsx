@@ -112,10 +112,10 @@ describe('Dashboard', () => {
 
     // STAT CARDS
     const smeLink = screen.getByRole('link', {
-      name: /sme prospector find sme’s that fit your risk criteria and enable your to grow your business sustainably\. we provide all parameters required to complete a successful search\./i
+      name: /something not making sense\? can't quite the data or the details in the report you want\? talk to us today and we can help you resolve these issues and get you back on track\./i
     });
 
-    expect(within(smeLink).getByText(/sme prospector/i)).toBeVisible();
+    expect(within(smeLink).getByText(/get support/i)).toBeVisible();
 
     const automatedReportLink = screen.getByRole('link', {
       name: /with only a company number, automatically source data from millions of sme’s\. take this data and generate a credit risk report using wiserfunding’s sme z-score\./i
