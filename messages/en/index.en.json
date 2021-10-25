@@ -1,7 +1,7 @@
 {
   "home": "Home",
   "welcome_back": "Welcome back,",
-  "last_7_days": "Last 7 days",
+  "all_time": "All time",
   "updates": "Updates",
   "automated_report_header": "Create an Automated Report",
   "automated_report_description": "With only a company number, automatically source data from millions of SME’s. Take this data and generate a credit risk report using Wiserfunding’s SME Z-Score.",
@@ -12,7 +12,7 @@
   "api_docs_header": "API Documentation",
   "api_docs_description": "Do you have a large list of companies to analyse? Or want to integrate our technology into your own. Integrate with our API to achieve all of this and more.",
   "total_reports": "Total Reports",
-  "api_requests": "API Requests",
+  "batched_reports": "Batch Reports",
   "last_login": "Last Login",
   "company_name": "Company Name",
   "sme_z-score": "SME Z-Score",

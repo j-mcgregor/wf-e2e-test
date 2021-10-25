@@ -14,11 +14,13 @@ import ReportTable from '../components/elements/ReportTable';
 import Stats from '../components/elements/Stats';
 import TwitterFeed from '../components/elements/TwitterFeed';
 import Layout from '../components/layout/Layout';
+import useLocalStorage from '../hooks/useLocalStorage';
 import appState from '../lib/appState';
 import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 
 export default function Dashboard() {
   const t = useTranslations();
+  const [userLoginTime] = useLocalStorage<number[]>('wf_last_login', []);
 
   const { user } = useRecoilValue(appState);
   return (
@@ -32,7 +34,7 @@ export default function Dashboard() {
               <h1 className="text-2xl font-semibold">
                 {user && user.full_name}
               </h1>
-              <p className="font-semibold">{t('last_7_days')}</p>
+              <p className="font-semibold">{t('all_time')}</p>
             </div>
           </div>
 
@@ -41,15 +43,15 @@ export default function Dashboard() {
             stats={[
               {
                 header: t('total_reports'),
-                data: user?.recent_usage?.reports_ran || 0
+                data: user?.reports?.length || 0
               },
               {
-                header: t('api_requests'),
-                data: user?.recent_usage?.api_requests || 0
+                header: t('batched_reports'),
+                data: user?.batched_report_jobs?.length || 0
               },
               {
                 header: t('last_login'),
-                data: user?.recent_usage?.last_login,
+                data: userLoginTime[1] || undefined,
                 timeAgo: true
               }
             ]}
