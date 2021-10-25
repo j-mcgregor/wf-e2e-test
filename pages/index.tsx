@@ -3,7 +3,8 @@ import {
   ChipIcon,
   DocumentDuplicateIcon,
   LightningBoltIcon,
-  SearchCircleIcon
+  // SearchCircleIcon,
+  HandIcon
 } from '@heroicons/react/outline';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
@@ -82,14 +83,15 @@ export default function Dashboard() {
           description={t('automated_report_description')}
           linkTo="/sme-calculator"
         />
-        <LinkCard
+        {/* Removed until feature is added */}
+        {/* <LinkCard
           className="mx-auto"
           icon={<SearchCircleIcon className='className="h-6 w-6 text-white' />}
           iconColor="bg-highlight-2"
           header={t('sme_prospector_header')}
           description={t('sme_prospector_description')}
           linkTo="/sme-prospector"
-        />
+        /> */}
         <LinkCard
           className="mx-auto"
           icon={
@@ -107,6 +109,15 @@ export default function Dashboard() {
           header={t('api_docs_header')}
           description={t('api_docs_description')}
           linkTo="/api-documentation"
+        />
+        {/* Temporary card until SME Prospector is implemented and online */}
+        <LinkCard
+          className="mx-auto"
+          icon={<HandIcon className='className="h-6 w-6 text-white ' />}
+          iconColor="bg-highlight-2"
+          header={t('support_header')}
+          description={t('support_description')}
+          linkTo="/support"
         />
       </div>
 

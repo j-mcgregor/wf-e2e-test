@@ -135,7 +135,7 @@ const ReportTable = ({
                   <Button
                     className="max-w-xxs mt-4"
                     variant="highlight"
-                    linkTo="/sme-calc"
+                    linkTo="/sme-calculator"
                   >
                     {t('generate_report')}
                   </Button>
