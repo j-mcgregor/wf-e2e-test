@@ -299,6 +299,8 @@ const mockUsers = {
     full_name: 'John Doe',
     email: 'test@test.com',
     id: 1,
+
+    // to do: remove and refactor
     recent_usage: {
       last_login: 1629657065187,
       api_requests: 142,

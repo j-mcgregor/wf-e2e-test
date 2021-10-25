@@ -13,7 +13,6 @@ import TabletReportNav from '../../../components/layout/TabletReportNav';
 import CorporateOverview from '../../../components/report-sections/corporate-governance/CorporateOverview';
 import Profiles from '../../../components/report-sections/corporate-governance/Profiles';
 import ShareHolderList from '../../../components/report-sections/corporate-governance/ShareHolderList';
-import ShareHoldingCard from '../../../components/report-sections/corporate-governance/ShareHoldingCard';
 import ESGCard from '../../../components/report-sections/esg-assessment/ESGCard';
 import CTACard from '../../../components/report-sections/highlights/CTACard';
 import DataReliability from '../../../components/report-sections/highlights/DataReliability';
@@ -22,7 +21,9 @@ import ReliabilityIndex from '../../../components/report-sections/highlights/Rel
 import RiskOutlook from '../../../components/report-sections/highlights/RiskOutlook';
 import LegalEvents from '../../../components/report-sections/legal-events/LegalEvents';
 import ReportHeader from '../../../components/report-sections/ReportHeader';
-import BondRating from '../../../components/report-sections/risk-metrics/BondRating';
+import BondRating, {
+  RatingType
+} from '../../../components/report-sections/risk-metrics/BondRating';
 import Hint from '../../../components/elements/Hint';
 import Speedometer from '../../../components/report-sections/risk-metrics/Speedometer';
 import SummaryDetails from '../../../components/report-sections/summary/SummaryDetails';
@@ -54,6 +55,24 @@ export interface ReportDataProps {
   contact_details: SummaryContact & SummaryInfo;
   financials: {
     [year: string]: FinancialYear;
+  };
+  risk_metrics: {
+    bond_rating: RatingType;
+    sme_z_score: {
+      value: string;
+      regional_benchmark: string | null;
+      industry_benchmark: string | null;
+    };
+    probability_of_default: {
+      value: string;
+      regional_benchmark: string | null;
+      industry_benchmark: string | null;
+    };
+    loss_given_default: {
+      value: string;
+      regional_benchmark: string | null;
+      industry_benchmark: string | null;
+    };
   };
   highlights: {
     data_reliability: Reliability;
@@ -212,10 +231,7 @@ const ReportTemplate = () => {
                   }
                 />
               </div>
-              <BondRating
-                score="BB"
-                description="Cupidatat sit duis minim voluptate labore ea. Esse mollit eu qui anim exercitation. Quis tempor velit et duis commodo."
-              />
+              <BondRating score={data.risk_metrics.bond_rating} />
             </HashContainer>
             <HashContainer name={'Highlights'} id={`highlights-id`}>
               <ReportSectionHeader text={t('highlights')} />
