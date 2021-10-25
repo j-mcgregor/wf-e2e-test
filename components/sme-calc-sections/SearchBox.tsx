@@ -1,6 +1,6 @@
 import { useTranslations } from 'use-intl';
 import { useState, useEffect, useRef } from 'react';
-import { Company } from '../../types/global';
+import { CompanyType } from '../../types/global';
 import { SearchIcon } from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
 import useOutsideClick from '../../hooks/useOutsideClick';
@@ -12,8 +12,8 @@ interface SearchBoxProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
   resetValue?: () => void;
-  options?: Company[] | null;
-  setOption?: (e: Company | null) => void;
+  options?: CompanyType[] | null;
+  setOption?: (e: CompanyType | null) => void;
 }
 
 const SearchBox = ({
@@ -27,7 +27,9 @@ const SearchBox = ({
   setOption
 }: SearchBoxProps) => {
   const t = useTranslations();
-  const [selectedOption, setSelectedOption] = useState<Company | null>(null);
+  const [selectedOption, setSelectedOption] = useState<CompanyType | null>(
+    null
+  );
   const [showList, setShowList] = useState(false);
 
   useEffect(() => {

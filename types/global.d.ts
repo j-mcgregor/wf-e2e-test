@@ -60,7 +60,7 @@ export interface RecoilUserType {
   // default: {}
 }
 
-export type Company = {
+export type CompanyType = {
   company_id?: string;
   name?: string;
   registered_address?: string;

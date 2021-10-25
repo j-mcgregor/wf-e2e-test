@@ -32,13 +32,13 @@ const useMainNavItems = () => {
         name: `${t('sme_calc')}`,
         href: '/sme-calculator',
         icon: LightningBoltIcon
-      },
-
-      {
-        name: `${t('sme_prospector')}`,
-        href: '/sme-prospector',
-        icon: SearchCircleIcon
       }
+      // removed until being added back in
+      // {
+      //   name: `${t('sme_prospector')}`,
+      //   href: '/sme-prospector',
+      //   icon: SearchCircleIcon
+      // }
     ],
     secondaryNavigation: [
       {

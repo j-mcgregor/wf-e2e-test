@@ -1,18 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'use-intl';
-import { XIcon } from '@heroicons/react/outline';
 import SettingsSettings from '../../lib/settings/settings.settings';
-import SelectMenu from '../elements/SelectMenu';
-import SearchBox from './SearchBox';
 import Button from '../elements/Button';
 import debounce from '../../lib/utils/debounce';
 import useSWR from 'swr';
 import fetcher from '../../lib/utils/fetcher';
-import { Company } from '../../types/global';
-
-type Value = {
-  optionValue: string;
-};
+import AdvancedSearch, { SimpleValue } from './AdvancedSearch';
+import { CompanyType } from '../../types/global';
+import BasicSearch from './BasicSearch';
+import SearchBox from './SearchBox';
 
 interface AutomatedReportsProps {
   disabled: boolean;
@@ -21,14 +17,14 @@ interface AutomatedReportsProps {
 const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
   const t = useTranslations();
 
-  const currencies: Value[] = SettingsSettings.supportedCurrencies;
-  const countries: Value[] = SettingsSettings.supportedCountries;
+  const currencies: SimpleValue[] = SettingsSettings.supportedCurrencies;
+  const countries: SimpleValue[] = SettingsSettings.supportedCountries;
   // default country taken from user profile (settings)
   const defaultCountry =
     SettingsSettings.defaultOptions.preferences.default_reporting_country;
 
   // helper function to get index of an optionValue
-  const getIndex = (item: Value, array: Value[]) => {
+  const getIndex = (item: SimpleValue, array: SimpleValue[]) => {
     return array.findIndex(e => {
       return e.optionValue === item.optionValue ? true : null;
     });
@@ -40,14 +36,16 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
 
   const [companySearchValue, setCompanySearchValue] = useState('');
   const [regSearchValue, setRegSearchValue] = useState<string | null>();
-  const [companies, setCompanies] = useState<Company[] | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState<Value>(
+  const [companies, setCompanies] = useState<CompanyType[] | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<SimpleValue>(
     countries[Number(defaultIndex)]
   );
-  const [selectedCurrency, setSelectedCurrency] = useState<Value>(
+  const [selectedCurrency, setSelectedCurrency] = useState<SimpleValue>(
     currencies[Number(defaultIndex)]
   );
-  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<CompanyType | null>(
+    null
+  );
   const isUK = selectedCountry.optionValue === 'United Kingdom';
   const [advancedSearch, setAdvancedSearch] = useState(isUK ? false : true);
   const selectedCountryIndex = getIndex(selectedCountry, countries);
@@ -70,6 +68,7 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
   useEffect(() => {
     disabled && setAdvancedSearch(false);
   }, [disabled]);
+
   // re-render currency when new country is selected from dropdown & open advanced search if country is not UK
   useEffect(() => {
     setSelectedCurrency(currencies[Number(selectedCountryIndex)]);
@@ -86,7 +85,7 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
   const isValid = selectedCompany || regSearchValue ? true : false;
 
   //? event handlers
-  const handleSelectCountry = (value: Value): void => {
+  const handleSelectCountry = (value: SimpleValue): void => {
     setCompanySearchValue('');
     setSelectedCountry(value);
   };
@@ -105,125 +104,54 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
     setRegSearchValue(e.target.value);
   };
 
-  const handleSelectCurrency = (value: Value): void => {
+  const handleSelectCurrency = (value: SimpleValue): void => {
     const currency = getIndex(value, currencies);
     setSelectedCurrency(currencies[Number(currency)]);
   };
 
   return (
-    <div className="text-sm my">
+    <div className=" text-sm my">
       <div className="py-4">
-        <p className="text-3xl font-semibold py-2">{t('automated_reports')}</p>
-        <p>{t('access_our_powerful_credit_risk_assessment')}</p>
+        <p className="text-3xl font-semibold py-2">{t('sme_calculator')}</p>
+        <p className="max-w-xl leading-loose">
+          {t('access_our_powerful_credit_risk_assessment')}
+        </p>
       </div>
       <div
         className={`${
-          disabled && 'text-opacity-20'
+          disabled && 'opacity-20 pointer-events-none'
         } text-primary bg-white rounded-sm shadow-sm px-8 py-4`}
       >
         <p className="text-2xl font-semibold py-4">{t('find_the_company')}</p>
 
-        <div className="flex justify-between">
-          <div className="py-2">
-            <p className="text-lg font-semibold py-1">{t('country')}</p>
-            <p>{t('the_country_where_the_company_is_based')}</p>
-          </div>
-
-          <div className="w-1/3">
-            <SelectMenu
-              disabled={disabled}
-              values={countries}
-              defaultValue={defaultCountry}
-              selectedValue={selectedCountry}
-              setSelectedValue={handleSelectCountry}
-            />
-          </div>
-        </div>
-
-        <div
-          className={`${
-            disabled === true || advancedSearch === true ? 'opacity-20' : null
-          } text-primary `}
+        <BasicSearch
+          selectedCompany={selectedCompany}
+          isUsingAdvanceSearch={advancedSearch}
+          selectedCountry={selectedCountry}
+          clearCompanySelection={() => setSelectedCompany(null)}
+          handleSelectCountry={handleSelectCountry}
         >
-          <div className="py-2">
-            <p className="text-lg font-semibold py-1">{t('company_search')}</p>
-            <p>{t('search_the_registered_companies_by_name')}</p>
-          </div>
-
           <SearchBox
-            disabled={advancedSearch === true || disabled === true}
+            disabled={advancedSearch}
             placeholder={t('enter_company_name')}
             onChange={e => handleSearchCompany(e)}
             value={companySearchValue}
             resetValue={handleResetSearchValue}
             options={companies}
-            setOption={(company: Company | null) => setSelectedCompany(company)}
+            setOption={(company: CompanyType | null) =>
+              setSelectedCompany(company)
+            }
           />
-        </div>
-
-        {selectedCompany && (
-          <div className="bg-bg flex w-full p-6 my-4 justify-between">
-            <p className="font-bold">{selectedCompany.title}</p>
-            <div className="flex items-center">
-              <p>{selectedCompany.company_number}</p>
-              <button onClick={() => setSelectedCompany(null)}>
-                <XIcon className="w-5 h-5 ml-4 cursor-pointer hover:opacity-80" />
-              </button>
-            </div>
-          </div>
-        )}
+        </BasicSearch>
 
         {/* SEARCH OPTIONS TO ONLY SHOW IF NOT UK */}
         {advancedSearch && (
-          <form>
-            <div className="my-4 flex justify-between items-center">
-              <div className="py-2 w-1/2">
-                <p className="text-lg font-semibold py-1">
-                  {t('company_registration')}
-                </p>
-                <p>{t('the_identification_number_for_the_company')}</p>
-              </div>
-              <div className="w-1/3">
-                <SearchBox
-                  required={true}
-                  placeholder="123456789"
-                  onChange={e => handleSearchReg(e)}
-                />
-              </div>
-            </div>
-
-            <div className="my-4 flex justify-between items-center">
-              <div className="py-2 w-1/2">
-                <p className="text-lg font-semibold py-1">
-                  {t('account_type')}
-                </p>
-                <p>{t('choose_the_type_of_accounts_to_generate')}</p>
-              </div>
-
-              <div className="w-1/3">
-                <SelectMenu
-                  defaultValue={t('account_type')}
-                  setSelectedValue={handleSelectCountry}
-                />
-              </div>
-            </div>
-
-            <div className="my-4 flex justify-between items-center">
-              <div className="py-2 w-1/2">
-                <p className="text-lg font-semibold py-1">{t('currency')}</p>
-                <p>{t('will_switch_based_on_country_selected')}</p>
-              </div>
-
-              <div className="w-1/3">
-                <SelectMenu
-                  values={currencies}
-                  defaultValue={selectedCurrency}
-                  selectedValue={selectedCurrency}
-                  setSelectedValue={handleSelectCurrency}
-                />
-              </div>
-            </div>
-          </form>
+          <AdvancedSearch
+            handleSearchReg={handleSearchReg}
+            handleSelectCountry={handleSelectCountry}
+            selectedCurrency={selectedCurrency}
+            handleSelectCurrency={handleSelectCurrency}
+          />
         )}
 
         <div className="flex items-center my-6">

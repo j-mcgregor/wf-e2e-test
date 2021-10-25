@@ -63,7 +63,7 @@ describe('Layout', () => {
     expect(screen.getByTestId('potato')).toBeInTheDocument();
     expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
     expect(screen.getByText(/sme calc/i)).toBeInTheDocument();
-    expect(screen.getByText(/sme prospector/i)).toBeInTheDocument();
+    // expect(screen.getByText(/sme prospector/i)).toBeInTheDocument();
     expect(screen.getByText(/batched reports/i)).toBeInTheDocument();
     expect(screen.getByText(/api documentation/i)).toBeInTheDocument();
     expect(screen.getByText(/settings/i)).toBeInTheDocument();
