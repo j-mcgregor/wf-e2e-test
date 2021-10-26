@@ -51,9 +51,10 @@ const SearchCompanies = async (
       `companies?q=${searchQuery}`
     );
 
-    //   // handle error
-    if (!searchResults || !searchResults.ok)
+    //  handle error
+    if (!searchResults || !searchResults.ok) {
       return handleSearchError(searchResults, response);
+    }
 
     const reducedCompanies = Company.filterUKCompanyInformation(
       searchResults?.data?.items
@@ -61,15 +62,6 @@ const SearchCompanies = async (
 
     return response.status(200).json(reducedCompanies);
   }
-
-  const filterCompanies = (companies: ShortCompany[], searchString: string) => {
-    return companies.filter(company =>
-      company.name.toLowerCase().includes(searchString)
-    );
-  };
-  // const filteredCompanies = filterCompanies(mockCompanies, searchQuery);
-
-  // return response.status(200).json(filteredCompanies);
 
   return response
     .status(404)

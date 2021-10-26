@@ -9,3 +9,15 @@ export const toTitleCase = (str: string): string => {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 };
+
+export const createCurrencyString = ({
+  Symbol,
+  Currency,
+  CountryName
+}: {
+  Symbol: string;
+  Currency: string;
+  CountryName: string;
+}) => {
+  return `${CountryName} - ${Currency} (${Symbol})`;
+};

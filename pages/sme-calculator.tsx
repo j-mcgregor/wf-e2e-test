@@ -17,12 +17,8 @@ const SMECalculator = () => {
   const t = useTranslations();
 
   return (
-    <Layout title="SME Calculator">
-      <div
-        className={`text-primary ${
-          !showProvideData && '-ml-2 pr-2'
-        } tidy-scrollbar`}
-      >
+    <Layout title="SME Calculator" className="overflow-y-scroll">
+      <div className={`text-primary`}>
         <SearchContainer disabled={showProvideData} />
 
         <div className="flex flex-col w-1/3 text-sm">

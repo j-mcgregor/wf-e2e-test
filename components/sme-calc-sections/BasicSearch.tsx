@@ -5,11 +5,12 @@ import { SimpleValue } from './AdvancedSearch';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import { useTranslations } from 'next-intl';
 import { CompanyType } from '../../types/global';
+import ResultCompany from '../elements/ResultCompany';
 
 type BasicSearchType = {
   selectedCompany: CompanyType | null;
   isUsingAdvanceSearch: boolean;
-  selectedCountry: SimpleValue;
+  selectedCountry?: SimpleValue;
   clearCompanySelection: () => void;
   handleSelectCountry: (v: SimpleValue) => void;
   children?: ReactNode;
@@ -28,15 +29,16 @@ const BasicSearch = ({
   const defaultCountry =
     SettingsSettings.defaultOptions.preferences.default_reporting_country;
   const t = useTranslations();
+
   return (
     <>
       <div className="flex justify-between">
-        <div className="py-2">
+        <div className="pb-4">
           <p className="text-lg font-semibold py-1">{t('country')}</p>
           <p>{t('the_country_where_the_company_is_based')}</p>
         </div>
 
-        <div className="w-1/3">
+        <div className="w-1/3 pt-2">
           <SelectMenu
             values={countries}
             defaultValue={defaultCountry}
@@ -49,7 +51,7 @@ const BasicSearch = ({
       <div
         className={`${
           isUsingAdvanceSearch ? 'opacity-20' : null
-        } text-primary `}
+        } text-primary mb-4 `}
       >
         <div className="py-2">
           <p className="text-lg font-semibold py-1">{t('company_search')}</p>
@@ -61,15 +63,13 @@ const BasicSearch = ({
       </div>
 
       {selectedCompany && (
-        <div className="bg-bg flex w-full p-6 my-4 justify-between">
-          <p className="font-bold">{selectedCompany.title}</p>
-          <div className="flex items-center">
-            <p>{selectedCompany.company_number}</p>
-            <button onClick={clearCompanySelection}>
-              <XIcon className="w-5 h-5 ml-4 cursor-pointer hover:opacity-80" />
-            </button>
-          </div>
-        </div>
+        <ResultCompany
+          name={selectedCompany.title}
+          company_id={selectedCompany.company_number}
+          registered_address={selectedCompany.address_snippet}
+          registration_date={selectedCompany.date_of_creation}
+          clearSelection={clearCompanySelection}
+        />
       )}
     </>
   );
