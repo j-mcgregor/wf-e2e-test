@@ -63,15 +63,6 @@ const SearchCompanies = async (
     return response.status(200).json(reducedCompanies);
   }
 
-  const filterCompanies = (companies: ShortCompany[], searchString: string) => {
-    return companies.filter(company =>
-      company.name.toLowerCase().includes(searchString)
-    );
-  };
-  // const filteredCompanies = filterCompanies(mockCompanies, searchQuery);
-
-  // return response.status(200).json(filteredCompanies);
-
   return response
     .status(404)
     .json({ error: INVALID_COUNTRY_CODE, message: 'Invalid country code.' });
