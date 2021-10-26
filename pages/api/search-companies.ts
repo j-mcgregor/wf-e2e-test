@@ -51,9 +51,10 @@ const SearchCompanies = async (
       `companies?q=${searchQuery}`
     );
 
-    //   // handle error
-    if (!searchResults || !searchResults.ok)
+    //  handle error
+    if (!searchResults || !searchResults.ok) {
       return handleSearchError(searchResults, response);
+    }
 
     const reducedCompanies = Company.filterUKCompanyInformation(
       searchResults?.data?.items

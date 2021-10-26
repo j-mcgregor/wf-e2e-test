@@ -1,8 +1,17 @@
+import countryCodeJSON from '../data/countryCodes.json';
 import currencyJSON from '../data/countryCurrency.json';
+import { createCurrencyString } from '../utils/text-helpers';
 
-export const countries = currencyJSON.map(currency => ({
-  optionValue: currency.CountryName
+export const supportedCountries = countryCodeJSON.map(country => ({
+  optionValue: country.name,
+  code: country.code
 }));
+export const supportedCurrencies = currencyJSON.map(currency => ({
+  optionValue: createCurrencyString(currency),
+  code: currency.Code,
+  name: currency.CountryName
+}));
+
 export const validCountryCodes = ['GB'];
 
 // matches the names in the translation json

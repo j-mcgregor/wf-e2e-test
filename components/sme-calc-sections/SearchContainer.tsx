@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'use-intl';
-import SettingsSettings from '../../lib/settings/settings.settings';
 import Button from '../elements/Button';
-import debounce from '../../lib/utils/debounce';
-import useSWR from 'swr';
-import fetcher from '../../lib/utils/fetcher';
 import AdvancedSearch, { SimpleValue } from './AdvancedSearch';
 import { CompanyType } from '../../types/global';
 import BasicSearch from './BasicSearch';
 import SearchBox from './SearchBox';
+import { useRecoilValue } from 'recoil';
+import appState from '../../lib/appState';
+import {
+  supportedCountries,
+  supportedCurrencies,
+  validCountryCodes
+} from '../../lib/settings/sme-calc.settings';
 
 interface AutomatedReportsProps {
   disabled: boolean;
@@ -17,87 +20,80 @@ interface AutomatedReportsProps {
 const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
   const t = useTranslations();
 
-  const currencies: SimpleValue[] = SettingsSettings.supportedCurrencies;
-  const countries: SimpleValue[] = SettingsSettings.supportedCountries;
-  // default country taken from user profile (settings)
-  const defaultCountry =
-    SettingsSettings.defaultOptions.preferences.default_reporting_country;
+  const currencies: (SimpleValue & { name: string })[] = supportedCurrencies;
+  const countries: SimpleValue[] = supportedCountries;
 
+  const { user } = useRecoilValue(appState);
+  // default country taken from user profile (settings)
+  const defaultCountry = user?.preferences?.defaults?.reporting_country;
+  const defaultCurrency = user?.preferences?.defaults?.currency;
   // helper function to get index of an optionValue
   const getIndex = (item: SimpleValue, array: SimpleValue[]) => {
     return array.findIndex(e => {
-      return e.optionValue === item.optionValue ? true : null;
+      return e.optionValue === item?.optionValue ? true : null;
     });
   };
-  // default index for country upon initial render
-  const defaultIndex = countries.findIndex(e => {
-    return e.optionValue === defaultCountry ? true : null;
-  });
 
-  const [companySearchValue, setCompanySearchValue] = useState('');
   const [regSearchValue, setRegSearchValue] = useState<string | null>();
-  const [companies, setCompanies] = useState<CompanyType[] | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState<SimpleValue>(
-    countries[Number(defaultIndex)]
-  );
-  const [selectedCurrency, setSelectedCurrency] = useState<SimpleValue>(
-    currencies[Number(defaultIndex)]
-  );
+
+  const [selectedCountry, setSelectedCountry] = useState<
+    SimpleValue | undefined
+  >(undefined);
+
+  // get the country code for the search API
+  const countryCode = selectedCountry?.code;
+
+  const [selectedCurrency, setSelectedCurrency] = useState<
+    SimpleValue | undefined
+  >(undefined);
+
   const [selectedCompany, setSelectedCompany] = useState<CompanyType | null>(
     null
   );
-  const isUK = selectedCountry.optionValue === 'United Kingdom';
-  const [advancedSearch, setAdvancedSearch] = useState(isUK ? false : true);
-  const selectedCountryIndex = getIndex(selectedCountry, countries);
 
-  //? some useEffect hooks for controlling rendering of various options
+  // determine if the country has a search API from list
+  // list in sme-calc.settings.ts
+  const countryHasSearchAPI =
+    validCountryCodes.indexOf(`${selectedCountry?.code}`) > -1;
 
-  const countryCode = 'GB';
-
-  const { data } = useSWR(
-    `/api/search-companies?query=${companySearchValue}&country=${countryCode}`,
-    fetcher
-  );
-
-  // run useEffect to set companies to result of SWR api request, via debounce function to delay typed results
-  useEffect(() => {
-    const debounceCompanySearch = debounce(() => setCompanies(data), 500);
-    debounceCompanySearch();
-  }, [companySearchValue]);
+  // toggle the advance search
+  const [showAdvanceSearch, setShowAdvanceSearch] = useState(true);
 
   useEffect(() => {
-    disabled && setAdvancedSearch(false);
+    const country = countries.find(x => x.code === defaultCountry);
+    setSelectedCountry(country);
+    const currency = currencies.find(x => x.code === defaultCurrency);
+    setSelectedCurrency(currency);
+  }, [user]);
+
+  // hides the advance search when disabled
+  useEffect(() => {
+    disabled && setShowAdvanceSearch(false);
   }, [disabled]);
 
   // re-render currency when new country is selected from dropdown & open advanced search if country is not UK
   useEffect(() => {
-    setSelectedCurrency(currencies[Number(selectedCountryIndex)]);
-    !isUK && setAdvancedSearch(true);
+    // TO DO: this is not an effective way to match the two data sets
+    // it is just being used as a placeholder till we create a list of
+    // countries that WF operates in can use
+    const matchedCurrency = currencies.find(
+      x => x.name === selectedCountry?.optionValue
+    );
+    matchedCurrency && setSelectedCurrency(matchedCurrency);
+
+    // if the country does not have a search API then open advance search
+    !countryHasSearchAPI && setShowAdvanceSearch(true);
+
+    // if the country has a search API close advance search to encourage basic search
+    countryHasSearchAPI && setShowAdvanceSearch(false);
   }, [selectedCountry]);
 
-  // if default is UK when 'basic search' is selected, reset country to UK
-  useEffect(() => {
-    !advancedSearch &&
-      !isUK &&
-      setSelectedCountry(countries[Number(selectedCountryIndex)]);
-  }, [advancedSearch]);
-
-  const isValid = selectedCompany || regSearchValue ? true : false;
+  // validate the generate report bu  tton
+  const canGenerateReport = selectedCompany || regSearchValue;
 
   //? event handlers
   const handleSelectCountry = (value: SimpleValue): void => {
-    setCompanySearchValue('');
-    setSelectedCountry(value);
-  };
-
-  const handleSearchCompany = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setCompanySearchValue(e.target.value);
-  };
-
-  const handleResetSearchValue = () => {
-    setCompanySearchValue('');
+    return setSelectedCountry(value);
   };
 
   const handleSearchReg = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -126,26 +122,22 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
 
         <BasicSearch
           selectedCompany={selectedCompany}
-          isUsingAdvanceSearch={advancedSearch}
+          isUsingAdvanceSearch={showAdvanceSearch}
           selectedCountry={selectedCountry}
           clearCompanySelection={() => setSelectedCompany(null)}
           handleSelectCountry={handleSelectCountry}
         >
           <SearchBox
-            disabled={advancedSearch}
-            placeholder={t('enter_company_name')}
-            onChange={e => handleSearchCompany(e)}
-            value={companySearchValue}
-            resetValue={handleResetSearchValue}
-            options={companies}
-            setOption={(company: CompanyType | null) =>
+            disabled={showAdvanceSearch}
+            countryCode={countryCode}
+            setChosenResult={(company: CompanyType | null) =>
               setSelectedCompany(company)
             }
           />
         </BasicSearch>
 
         {/* SEARCH OPTIONS TO ONLY SHOW IF NOT UK */}
-        {advancedSearch && (
+        {showAdvanceSearch && (
           <AdvancedSearch
             handleSearchReg={handleSearchReg}
             handleSelectCountry={handleSelectCountry}
@@ -158,18 +150,21 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
           <Button
             variant="highlight"
             className="text-primary rounded-none"
-            disabled={!isValid}
+            disabled={!canGenerateReport}
           >
             {t('generate_report')}
           </Button>
           <button
             disabled={disabled}
-            onClick={() => setAdvancedSearch(!advancedSearch)}
-            className={`${!isUK && 'hidden'} ${
+            onClick={() => {
+              setShowAdvanceSearch(!showAdvanceSearch);
+              setSelectedCompany(null);
+            }}
+            className={`${!countryHasSearchAPI && 'hidden'} ${
               disabled ? 'cursor-default' : 'cursor-pointer'
             } mx-4 hover:opacity-80`}
           >
-            {!advancedSearch ? t('advanced_search') : t('basic_search')}
+            {!showAdvanceSearch ? t('advanced_search') : t('basic_search')}
           </button>
         </div>
       </div>

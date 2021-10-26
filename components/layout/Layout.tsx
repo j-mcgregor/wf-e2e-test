@@ -16,6 +16,7 @@ interface LayoutProps {
   noNav?: boolean | undefined;
   fullWidth?: boolean;
   noAuthRequired?: boolean;
+  className?: string;
   children?: React.ReactNode;
 }
 
@@ -26,6 +27,7 @@ const Layout = ({
   pageTitle,
   fullWidth,
   noAuthRequired,
+  className,
   children
 }: LayoutProps) => {
   const router = useRouter();
@@ -57,7 +59,7 @@ const Layout = ({
         <main
           className={`flex-1 relative overflow-y-auto focus:outline-none ${
             !noNav && !fullWidth && 'pt-12'
-          }`}
+          } ${className}`}
         >
           <div className={` ${!noNav && !fullWidth && 'py-6'}`}>
             <div className="px-4 sm:px-6 md:px-0">

@@ -1,58 +1,69 @@
 import { useTranslations } from 'use-intl';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, KeyboardEvent } from 'react';
 import { CompanyType } from '../../types/global';
-import { SearchIcon } from '@heroicons/react/outline';
+import {
+  ExclamationCircleIcon,
+  QuestionMarkCircleIcon,
+  SearchIcon
+} from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
 import useOutsideClick from '../../hooks/useOutsideClick';
+import LoadingIcon from '../svgs/LoadingIcon';
+import ResultCompany from '../elements/ResultCompany';
+import useSWR from 'swr';
+import fetcher from '../../lib/utils/fetcher';
+import debounce from '../../lib/utils/debounce';
 
 interface SearchBoxProps {
   disabled?: boolean;
-  required?: boolean;
-  placeholder: TranslateInput;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value?: string;
-  resetValue?: () => void;
-  options?: CompanyType[] | null;
-  setOption?: (e: CompanyType | null) => void;
+  countryCode?: string;
+  setChosenResult: (e: CompanyType | null) => void;
 }
 
 const SearchBox = ({
-  placeholder,
-  onChange,
-  value,
-  resetValue,
   disabled,
-  required,
-  options,
-  setOption
+  countryCode,
+  setChosenResult
 }: SearchBoxProps) => {
   const t = useTranslations();
-  const [selectedOption, setSelectedOption] = useState<CompanyType | null>(
-    null
-  );
-  const [showList, setShowList] = useState(false);
 
-  useEffect(() => {
-    showList && setShowList(!showList);
-    setOption && setOption(selectedOption);
-    resetValue && resetValue();
-  }, [selectedOption]);
+  const [searchHasFocus, setSearchHasFocus] = useState(false);
+  const [searchValue, setSearchValue] = useState<string | null>('');
 
-  const handleShowList = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e);
-    !showList && setShowList(true);
+  const loadingText = t('loading');
+  const searchStartText = t('search_start');
+  const noResultsFoundText = t('no_results_found');
+
+  const handleClick = (option: CompanyType) => {
+    setChosenResult(option);
+    return setSearchHasFocus(false);
+  };
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleKeyUp = (e: KeyboardEvent) => {
+    if (e.code === 'Escape') {
+      inputRef?.current?.blur();
+      return setSearchHasFocus(false);
+    }
   };
 
-  // click outside handler
-  // ref attached to element to control
-  const listboxRef = useRef(null);
-  // hook runs function when clicked outside of ref element - hides list
-  useOutsideClick(listboxRef, () => {
-    setShowList(false);
-  });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const companySearch = debounce(() => setSearchValue(e.target.value), 1000);
+    companySearch();
+  };
+
+  const { data } = useSWR<CompanyType[] & { error?: string }>(
+    `/api/search-companies?query=${searchValue}&country=${countryCode}`,
+    fetcher
+  );
+
+  // handle the closing of the dropdown so that state can be set
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(containerRef, () => setSearchHasFocus(false));
 
   return (
-    <div>
+    <div ref={containerRef}>
       <div className="mt-1 relative rounded-md shadow-sm flex items-center">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon className="h-5 w-5 text-primary" aria-hidden="true" />
@@ -60,42 +71,78 @@ const SearchBox = ({
 
         <input
           disabled={disabled}
+          onFocus={() => setSearchHasFocus(true)}
           type="text"
-          name="email"
-          id="email"
+          ref={inputRef}
+          onKeyUp={handleKeyUp}
+          name="search-companies"
+          id="search-companies"
           className="focus:ring-highlight focus:border-highlight block w-full pl-10 text-sm border-primary rounded bg-bg"
-          placeholder={`${placeholder}`}
-          onChange={e => handleShowList(e)}
-          value={value}
+          placeholder={`${t('enter_company_name')}`}
+          onChange={e => handleChange(e)}
         />
-        {options && options.length > 0 && (
-          <label className="absolute right-5">{options?.length} results</label>
+        {data && data.length > 0 && (
+          <label className="absolute right-5">{data?.length} results</label>
         )}
       </div>
-      {showList && (
-        <div ref={listboxRef} className="relative">
-          {options && options.length > 0 && (
-            <ul className="px-4 border border-primary rounded overflow-scroll h-[50vh]">
-              {options.map(option => {
+
+      {/* Handles pre results, searching and no data */}
+      {searchHasFocus && (
+        <div className="relative">
+          {searchHasFocus && (
+            <div className="px-4 border border-primary rounded h-[100px] absolute w-full z-10 bg-white flex flex-col space-x-6 justify-center items-center text-xl">
+              {searchValue && !data ? (
+                // shows if there is searchValue but no data (loading)
+                <>
+                  <LoadingIcon className="mb-1 w-6 h-6" aria-hidden="true" />
+                  {loadingText}
+                </>
+              ) : !data || (!searchValue && data?.length === 0) ? (
+                // shows if there is no data at all (initial stage)
+                // also shows if there is no text input and the search data has a length of 0
+                <>
+                  <SearchIcon className="mb-1 w-6 h-6" aria-hidden="true" />
+                  {searchStartText}
+                </>
+              ) : (
+                // shows if there is searchValue
+                // is overridden and hidden by the component below
+                // which shows when there is data
+                <>
+                  <QuestionMarkCircleIcon
+                    className="mb-1 w-6 h-6"
+                    aria-hidden="true"
+                  />
+                  {noResultsFoundText}
+                </>
+              )}
+            </div>
+          )}
+
+          {data?.error && (
+            <div className="px-4 border border-primary text-red-600 rounded overflow-y-scroll pt-4 h-[120px] text-center absolute w-full z-10 bg-white">
+              <ExclamationCircleIcon className="h-6 w-6 mx-auto" />
+              <h4 className="text-2xl ">Error fetching company data</h4>
+              <p>Please contact support.</p>
+            </div>
+          )}
+
+          {/* Displays the results */}
+          {data && data?.length > 0 && (
+            <ul className="px-4 border border-primary rounded overflow-y-scroll pt-4 space-y-4 max-h-[400px] min-h-[120px] absolute w-full z-10 bg-white">
+              {data.map(company => {
                 return (
                   <button
-                    key={option.company_number}
-                    className="flex justify-between pl-4 border-l border-primary my-4 hover:bg-bg hover:text-highlight p-2 cursor-pointer"
-                    onClick={() => setSelectedOption(option)}
+                    key={company.company_number}
+                    className="flex justify-between hover:bg-bg hover:text-highlight cursor-pointer w-full"
+                    onClick={() => handleClick(company)}
                   >
-                    <div>
-                      <p className="font-semibold pb-1">{option.title}</p>
-                      <p>
-                        {t('id')}: {option.company_number}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p>
-                        {t('registered')}:
-                        <strong>{option.date_of_creation}</strong>
-                      </p>
-                      <p>{option.address_snippet}</p>
-                    </div>
+                    <ResultCompany
+                      name={company.title}
+                      company_id={company.company_number}
+                      registered_address={company.address_snippet}
+                      registration_date={company.date_of_creation}
+                    />
                   </button>
                 );
               })}
