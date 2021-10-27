@@ -4,7 +4,11 @@ import { Link } from 'react-scroll';
 import { useSettingsNavItems } from '../../hooks/useNavigation';
 import IconTag from '../icons/IconTag';
 
-const SettingsNav = () => {
+const nonTestingProps = {
+  containerId: 'secondary-layout-container'
+};
+
+const SettingsNav = ({ isTesting = false }: { isTesting?: boolean }) => {
   const [activeSettingsItem, setActiveSettingsItem] = useState<string>(
     'personal_information'
   );
@@ -30,10 +34,12 @@ const SettingsNav = () => {
                   offset={-50}
                   smooth={true}
                   activeClass={'bg-gray-400'}
-                  duration={500}
-                  containerId="secondary-layout-container"
+                  duration={300}
                   className={`rounded cursor-pointer w-full hover:text-alt`}
                   onSetActive={() => setActiveSettingsItem(id)}
+                  // prevents testing failures for issues with type requirement
+                  // https://github.com/fisshy/react-scroll/issues/352
+                  {...(isTesting ? {} : nonTestingProps)}
                 >
                   <div className="relative  h-full">
                     <div
