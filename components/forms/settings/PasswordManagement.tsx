@@ -44,6 +44,7 @@ const PasswordManagement = () => {
             })}
             label={t('forms.password-management.new_password')}
             name="newPassword"
+            autoComplete="new-password"
             type="password"
           />
           {errors.newPassword && (
@@ -60,6 +61,7 @@ const PasswordManagement = () => {
             })}
             label={t('forms.password-management.confirm_password')}
             name="confirmPassword"
+            autoComplete="new-password"
             type="password"
           />
           {errors?.confirmPassword && (

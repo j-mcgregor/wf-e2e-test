@@ -17,6 +17,7 @@ const SettingsSettings = {
     optionValue: createCurrencyString(currency),
     code: currency.Code
   })),
+
   defaultOptions: {
     preferences: {
       localisation: 'en-GB',

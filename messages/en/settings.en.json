@@ -7,16 +7,8 @@
   "forms": {
     "personal": {
       "update_your_personal": "Update your personal information",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "email_address": "Email address",
-      "country": "Country / Region",
-      "street_address": "Street Address",
-      "city": "City",
-      "postcode": "Zip / Postcode",
-      "state": "State / Province",
-      "company_name": "Company Name",
-      "company_headquarters": "Company Headquarters Location"
+      "name": "Name",
+      "email_address": "Email address"
     },
     "communication-form": {
       "change_or_update": "Change or update your personal information",
