@@ -17,6 +17,7 @@ import {
 } from '../../../lib/utils/error-codes';
 import SettingsSettings from '../../../lib/settings/settings.settings';
 import { FormWithClassProps } from '../../../pages/settings';
+import HeaderWrapper from '../../elements/HeaderWrapper';
 
 interface PersonalInformationFormInput {
   firstName: string;
@@ -102,9 +103,7 @@ const PersonalInformationForm = ({
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
-            <SettingsSectionHeader>
-              {t('personal_information')}
-            </SettingsSectionHeader>
+            <SettingsSectionHeader text={t('personal_information')} />
             <p className="mt-1 text-sm text-gray-500">
               {t('forms.personal.update_your_personal')}
             </p>
