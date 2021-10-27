@@ -58,12 +58,13 @@ const PreferenceForm = ({
   };
 
   const currentUserValues = {
-    locale: user?.preferences.defaults?.locale,
-    currency: user?.preferences.defaults?.currency,
-    loginScreen: user?.preferences.defaults?.home_page,
-    reporting: user?.preferences.defaults?.reporting_country
+    locale: user?.preferences.defaults.locale,
+    currency: user?.preferences.defaults.currency,
+    loginScreen: user?.preferences.defaults.home_page,
+    reporting: user?.preferences.defaults.reporting_country
   };
 
+  console.log({ currentUserValues });
   const { register, handleSubmit, formState, reset } =
     useForm<PreferenceFormInput>({ defaultValues: currentUserValues });
   const { isDirty, isValid } = formState;
