@@ -42,10 +42,12 @@ export type User = {
   is_SSO?: boolean;
   contact_information?: ContactInformation;
   preferences?: {
-    localisation: string;
-    default_currency: string;
-    default_login_screen: string;
-    default_reporting_country: string;
+    defaults?: {
+      localisation: string;
+      default_currency: string;
+      default_login_screen: string;
+      default_reporting_country: string;
+    };
     communication: {
       comments: boolean;
       candidates: boolean;

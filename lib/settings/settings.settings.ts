@@ -9,21 +9,23 @@ const SettingsSettings = {
   supportedLocales: localisationJSON.map(value => {
     return { optionValue: value.locale };
   }),
+
   supportedCountries: countryCodeJSON.map(country => ({
     optionValue: country.name,
     code: country.code
   })),
+
   supportedCurrencies: currencyJSON.map(currency => ({
     optionValue: createCurrencyString(currency),
     code: currency.Code
   })),
 
-  defaultOptions: {
-    preferences: {
-      localisation: 'en-GB',
-      default_currency: 'GBP',
-      default_login_screen: 'dashboard',
-      default_reporting_country: 'GB'
+  preferences: {
+    defaults: {
+      locale: 'en-GB',
+      currency: 'GBP',
+      home_page: 'dashboard',
+      reporting_country: 'GB'
     }
   }
 };

@@ -18,7 +18,7 @@ type PreferenceFormInput = {
   loginScreen: string;
 };
 
-const { defaultOptions, dashboardOptionValues } = SettingsSettings;
+const { preferences, dashboardOptionValues } = SettingsSettings;
 
 const PreferenceForm = ({
   formClassName,
@@ -39,24 +39,34 @@ const PreferenceForm = ({
     [t]
   );
 
+  const prefs = {
+    preferences: {
+      defaults: {
+        locale: 'en-GB',
+        currency: 'GBP',
+        home_page: 'dashboard',
+        reporting_country: 'GB'
+      }
+    }
+  };
+
   const prefDefaults = {
-    locale: defaultOptions.preferences.localisation,
-    currency: defaultOptions.preferences.default_currency,
-    loginScreen: defaultOptions.preferences.default_login_screen,
-    reporting: defaultOptions.preferences.default_reporting_country
+    locale: preferences.defaults.locale,
+    currency: preferences.defaults.currency,
+    loginScreen: preferences.defaults.home_page,
+    reporting: preferences.defaults.reporting_country
   };
 
   const currentUserValues = {
-    locale: user?.preferences.localisation,
-    currency: user?.preferences.default_currency,
-    loginScreen: user?.preferences.default_login_screen,
-    reporting: user?.preferences.default_reporting_country
+    locale: user?.preferences.defaults?.locale,
+    currency: user?.preferences.defaults?.currency,
+    loginScreen: user?.preferences.defaults?.home_page,
+    reporting: user?.preferences.defaults?.reporting_country
   };
 
   const { register, handleSubmit, formState, reset } =
     useForm<PreferenceFormInput>({ defaultValues: currentUserValues });
   const { isDirty, isValid } = formState;
-
   const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
     // @ts-ignore
     setCurrentUserPrefs(currentUser => ({
@@ -78,7 +88,6 @@ const PreferenceForm = ({
     if (formState.isSubmitSuccessful) {
       reset(currentUserValues, {
         keepDirty: true
-        // keepDefaultValues: true
       });
     }
   }, [formState, reset]);
@@ -109,7 +118,7 @@ const PreferenceForm = ({
               <Select
                 {...register('locale')}
                 options={SettingsSettings.supportedLocales}
-                label={t('forms.preference.localisation')}
+                label={t('forms.preference.locale')}
                 name={'locale'}
                 labelClassName={formLabelClassName}
                 className={formClassName}

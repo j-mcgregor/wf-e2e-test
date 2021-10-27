@@ -22,7 +22,7 @@
       "save": "save"
     },
     "preference": {
-      "localisation": "Localisation",
+      "locale": "Localisation",
       "reporting": "Default reporting country",
       "loginScreen": "Default Login Screen",
       "currency": "Default currency",

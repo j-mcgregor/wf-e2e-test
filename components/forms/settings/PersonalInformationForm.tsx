@@ -17,11 +17,9 @@ import SettingsSettings from '../../../lib/settings/settings.settings';
 import { FormWithClassProps } from '../../../pages/settings';
 
 interface PersonalInformationFormInput {
-  full_name: string;
+  fullName: string;
   email: string;
 }
-
-const { supportedCountries } = SettingsSettings;
 
 const PersonalInformationForm = ({
   formClassName,
@@ -32,9 +30,9 @@ const PersonalInformationForm = ({
   const setCurrentUserContactInfo = useSetRecoilState(appState);
   const contactInfo = user?.contact_information;
   const t = useTranslations();
-  console.log({ user });
+  console.log('BELOW T:', { user });
   const currentUserValues = {
-    full_name: `${contactInfo?.full_name}`,
+    full_name: contactInfo?.full_name,
     email: user?.email
   };
   const { register, handleSubmit, formState, reset } =
@@ -45,24 +43,28 @@ const PersonalInformationForm = ({
   React.useEffect(() => {
     reset(currentUserValues);
   }, [user]);
-
   const { isDirty, errors } = formState;
 
   // @ts-ignore
   const onSubmit: SubmitHandler = async (
     data: PersonalInformationFormInput
   ) => {
-    const updatedData = {
-      full_name: data.full_name
-    };
-
+    // const updatedData = {
+    //   full_name: data.fullName
+    // };
+    console.log('INSIDE SUBMIT, ABOVE SETCURRENT:', {
+      data,
+      fullName: data.fullName
+    });
     setCurrentUserContactInfo((curr: { user: any }) => {
+      console.log('INSIDE SUBMIT, UNDER SETCURRENT:', { ...curr.user });
+
       return {
         ...curr,
         user: {
           ...curr.user,
-          contact_information: updatedData,
-          full_name: `${data.full_name}`,
+          // contact_information: updatedData,
+          full_name: data.fullName,
           email: data.email
         }
       };
@@ -82,11 +84,11 @@ const PersonalInformationForm = ({
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <Input
-                {...register('full_name')}
+                {...register('fullName')}
                 label={t('forms.personal.name')}
                 className={formClassName}
               />
-              {errors.full_name && (
+              {errors.fullName && (
                 <ErrorMessage text={`${t(FULL_NAME_REQUIRED)}`} />
               )}
             </div>
