@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-non-literal-require */
 import React from 'react';
 
-import HashContainer from '../components/elements/HashContainer';
 import CommunicationForm from '../components/forms/settings/CommunicationForm';
 import PasswordForm from '../components/forms/settings/PasswordForm';
 import PersonalInformationForm from '../components/forms/settings/PersonalInformationForm';
@@ -12,9 +11,10 @@ import SettingsNav from '../components/layout/SettingsNav';
 import { GetStaticPropsContext } from 'next';
 import { useRecoilValue } from 'recoil';
 import appState from '../lib/appState';
+import { Element } from 'react-scroll';
 
+// default setting formclasses
 const formLabelClassName = 'block text-sm font-medium text-gray-700';
-
 const formClassName =
   'mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm';
 
@@ -29,32 +29,25 @@ const Settings = () => {
   return (
     <Layout title="Settings" fullWidth>
       <SecondaryLayout navigation={<SettingsNav />}>
-        <div className="flex flex-col sm:px-6 lg:px-0 max-w-3xl mx-auto space-y-24 pb-12">
-          <HashContainer
-            className="lg:!pt-12"
-            id={`personal-information-id`}
-            name={'Personal Information'}
-          >
+        <div className="flex flex-col sm:px-6 lg:px-0 max-w-3xl mx-auto space-y-24 pb-[60vh] pt-12">
+          <Element name="personal_information">
             <PersonalInformationForm
               formClassName={formClassName}
               formLabelClassName={formLabelClassName}
             />
-          </HashContainer>
-
-          <HashContainer id={`preferences-id`} name={'Preferences'}>
+          </Element>
+          <Element name="preferences">
             <PreferenceForm
               formClassName={formClassName}
               formLabelClassName={formLabelClassName}
             />
-          </HashContainer>
-
-          <HashContainer id={`password-id`} name={'Password'}>
+          </Element>
+          <Element name="password">
             <PasswordForm isSSO={user?.is_sso} />
-          </HashContainer>
-
-          <HashContainer id={`communication-id`} name={'Communication'}>
+          </Element>
+          <Element name="communication">
             <CommunicationForm />
-          </HashContainer>
+          </Element>
         </div>
       </SecondaryLayout>
     </Layout>

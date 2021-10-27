@@ -10,6 +10,7 @@ import appState from '../../../lib/appState';
 import { useEffect } from 'react';
 import SettingsSettings from '../../../lib/settings/settings.settings';
 import { FormWithClassProps } from '../../../pages/settings';
+import HeaderWrapper from '../../elements/HeaderWrapper';
 
 type PreferenceFormInput = {
   locale: string;
