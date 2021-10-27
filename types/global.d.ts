@@ -59,3 +59,15 @@ export interface RecoilUserType {
   user: User | Promise<User> | RecoilValue<User>;
   // default: {}
 }
+
+export type CompanyType = {
+  company_id?: string;
+  name?: string;
+  registered_address?: string;
+  registration_date?: Date | string;
+  // companies house options
+  address_snippet?: string;
+  company_number?: string;
+  date_of_creation?: string;
+  title?: string;
+};

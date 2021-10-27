@@ -4,11 +4,21 @@ import { bondRatings } from '../../../lib/settings/report.settings';
 
 interface BondRatingProps {
   score: RatingType;
-  description: string;
 }
-type RatingType = 'AAA' | 'AA' | 'A' | 'BBB' | 'BB' | 'B' | 'B-' | 'CCC' | 'CC';
+export type RatingType =
+  | 'A'
+  | 'BBB+'
+  | 'BBB'
+  | 'BBB-'
+  | 'BB'
+  | 'B'
+  | 'B-'
+  | 'CCC+'
+  | 'CCC'
+  | 'CCC-'
+  | 'CC';
 
-const BondRating = ({ score, description }: BondRatingProps) => {
+const BondRating = ({ score }: BondRatingProps) => {
   const t = useTranslations();
 
   return (
@@ -26,7 +36,7 @@ const BondRating = ({ score, description }: BondRatingProps) => {
               key={i}
               className={`${
                 rating.score === score
-                  ? 'h-36 text-4xl font-bold'
+                  ? 'h-36 text-4xl font-bold min-w-[100px]'
                   : 'h-28 text-lg font-semibold'
               } text-white flex items-center justify-center mx-[1px]`}
             >
@@ -38,7 +48,7 @@ const BondRating = ({ score, description }: BondRatingProps) => {
 
       <div className="flex items-center bg-bg p-2 rounded-sm">
         <p className="p-2 font-bold text-4xl">{score}</p>
-        <p className="p-2 text-sm">{description}</p>
+        <p className="p-2 text-sm">{t(`bond_rating_descriptions.${score}`)}</p>
       </div>
     </div>
   );

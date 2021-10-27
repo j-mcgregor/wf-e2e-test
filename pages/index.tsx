@@ -3,7 +3,8 @@ import {
   ChipIcon,
   DocumentDuplicateIcon,
   LightningBoltIcon,
-  SearchCircleIcon
+  // SearchCircleIcon,
+  HandIcon
 } from '@heroicons/react/outline';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
@@ -14,11 +15,13 @@ import ReportTable from '../components/elements/ReportTable';
 import Stats from '../components/elements/Stats';
 import TwitterFeed from '../components/elements/TwitterFeed';
 import Layout from '../components/layout/Layout';
+import useLocalStorage from '../hooks/useLocalStorage';
 import appState from '../lib/appState';
 import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 
 export default function Dashboard() {
   const t = useTranslations();
+  const [userLoginTime] = useLocalStorage<number[]>('wf_last_login', []);
 
   const { user } = useRecoilValue(appState);
   return (
@@ -32,7 +35,7 @@ export default function Dashboard() {
               <h1 className="text-2xl font-semibold">
                 {user && user.full_name}
               </h1>
-              <p className="font-semibold">{t('last_7_days')}</p>
+              <p className="font-semibold">{t('all_time')}</p>
             </div>
           </div>
 
@@ -41,15 +44,15 @@ export default function Dashboard() {
             stats={[
               {
                 header: t('total_reports'),
-                data: user?.recent_usage?.reports_ran || 0
+                data: user?.reports?.length || 0
               },
               {
-                header: t('api_requests'),
-                data: user?.recent_usage?.api_requests || 0
+                header: t('batched_reports'),
+                data: user?.batched_report_jobs?.length || 0
               },
               {
                 header: t('last_login'),
-                data: user?.recent_usage?.last_login,
+                data: userLoginTime[1] || undefined,
                 timeAgo: true
               }
             ]}
@@ -80,14 +83,15 @@ export default function Dashboard() {
           description={t('automated_report_description')}
           linkTo="/sme-calculator"
         />
-        <LinkCard
+        {/* Removed until feature is added */}
+        {/* <LinkCard
           className="mx-auto"
           icon={<SearchCircleIcon className='className="h-6 w-6 text-white' />}
           iconColor="bg-highlight-2"
           header={t('sme_prospector_header')}
           description={t('sme_prospector_description')}
           linkTo="/sme-prospector"
-        />
+        /> */}
         <LinkCard
           className="mx-auto"
           icon={
@@ -105,6 +109,15 @@ export default function Dashboard() {
           header={t('api_docs_header')}
           description={t('api_docs_description')}
           linkTo="/api-documentation"
+        />
+        {/* Temporary card until SME Prospector is implemented and online */}
+        <LinkCard
+          className="mx-auto"
+          icon={<HandIcon className='className="h-6 w-6 text-white ' />}
+          iconColor="bg-highlight-2"
+          header={t('support_header')}
+          description={t('support_description')}
+          linkTo="/support"
         />
       </div>
 

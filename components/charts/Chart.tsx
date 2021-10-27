@@ -17,6 +17,29 @@ interface ChartProps {
 const Chart = ({ title, subtitle, data, hintBody, hintTitle }: ChartProps) => {
   const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 
+  const maxDomain = 1000;
+
+  const InnerChart = () => (
+    <>
+      {' '}
+      <VictoryArea
+        data={data}
+        interpolation="natural"
+        labels={({ datum }) => datum.y}
+        style={{
+          labels: { fill: 'transparent ' },
+          data: { strokeWidth: 1.5 }
+        }}
+      />
+      <VictoryScatter
+        data={data}
+        size={3}
+        style={{ data: { fill: darkBlue } }}
+        labels={({ datum }) => (toolTipValue !== datum.y ? datum.y : null)}
+      />
+    </>
+  );
+
   return (
     <div className="flex flex-col justify-between items-center px-4 pt-4 text-xs bg-white shadow-sm rounded-sm">
       <div className="w-full flex justify-between">
@@ -30,8 +53,8 @@ const Chart = ({ title, subtitle, data, hintBody, hintTitle }: ChartProps) => {
       <div onMouseLeave={() => setToolTipValue(null)}>
         <ChartContainer
           height={250}
-          width={400}
-          max={1000}
+          width={480}
+          max={maxDomain}
           tooltipValue={toolTipValue}
           handleSetTooltip={setToolTipValue}
         >

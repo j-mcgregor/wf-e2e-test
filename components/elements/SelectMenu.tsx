@@ -16,23 +16,36 @@ interface SelectMenuProps {
   values?: Value[];
   selectedValue?: Value;
   setSelectedValue: (value: Value) => void;
+  disabled?: boolean;
 }
 
 const SelectMenu = ({
   values,
   selectedValue,
   setSelectedValue,
-  defaultValue
+  defaultValue,
+  disabled
 }: SelectMenuProps) => {
   return (
-    <Listbox value={selectedValue} onChange={setSelectedValue}>
-      <div className="mt-1 relative">
-        <Listbox.Button className="bg-bg relative w-full border border-primary rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-highlight focus:border-highlight sm:text-sm">
+    <Listbox
+      value={selectedValue}
+      onChange={setSelectedValue}
+      disabled={disabled}
+    >
+      <div className={`mt-1 relative`}>
+        <Listbox.Button
+          className={`${
+            disabled && 'border-opacity-20'
+          } bg-bg relative w-full border border-primary rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-highlight focus:border-highlight sm:text-sm`}
+        >
           <span className={`block truncate'`}>
             {selectedValue ? selectedValue.optionValue : defaultValue}
           </span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-            <SelectorIcon className="h-6 w-6 text-primary" aria-hidden="true" />
+            <SelectorIcon
+              className={`${disabled && 'opacity-20'} h-6 w-6 text-primary`}
+              aria-hidden="true"
+            />
           </span>
         </Listbox.Button>
 

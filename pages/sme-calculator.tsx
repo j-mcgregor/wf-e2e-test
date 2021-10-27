@@ -1,16 +1,44 @@
 /* eslint-disable security/detect-non-literal-require */
+import { useState } from 'react';
+import { useTranslations } from 'use-intl';
 import { GetStaticPropsContext } from 'next';
 import Layout from '../components/layout/Layout';
-import AutomatedReports from '../components/sme-calc-sections/AutomatedReports';
+import Button from '../components/elements/Button';
+import SearchContainer from '../components/sme-calc-sections/SearchContainer';
 import ProvideData from '../components/sme-calc-sections/ProvideData';
 
 const SMECalculator = () => {
+  const [showProvideData, setShowProvideData] = useState(false);
+
+  const toggleProvideData = () => {
+    setShowProvideData(!showProvideData);
+  };
+
+  const t = useTranslations();
+
   return (
-    <Layout title="SME Calc">
-      <div className="text-primary">
-        <h1 className="text-2xl">SME Calculator </h1>
-        <AutomatedReports />
-        <ProvideData />
+    <Layout title="SME Calculator" className="overflow-y-scroll">
+      <div className={`text-primary`}>
+        <SearchContainer disabled={showProvideData} />
+
+        <div className="flex flex-col w-1/3 text-sm">
+          <p
+            className={`${
+              !showProvideData ? 'visible' : 'invisible'
+            } font-semibold py-4`}
+          >
+            {t('cant_find_the_company_you_were_looking_for')}
+          </p>
+
+          <Button
+            variant="primary"
+            className="rounded-none font-normal"
+            onClick={toggleProvideData}
+          >
+            {!showProvideData ? t('provide_own_data') : t('search_for_company')}
+          </Button>
+        </div>
+        {showProvideData && <ProvideData />}
       </div>
     </Layout>
   );

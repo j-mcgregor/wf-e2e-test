@@ -1,96 +1,154 @@
-import { useState, useEffect } from 'react';
-import { Report } from '../../types/global';
-import { SearchIcon } from '@heroicons/react/outline';
+import { useTranslations } from 'use-intl';
+import { useState, useEffect, useRef, KeyboardEvent } from 'react';
+import { CompanyType } from '../../types/global';
+import {
+  ExclamationCircleIcon,
+  QuestionMarkCircleIcon,
+  SearchIcon
+} from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
-import { Listbox } from '@headlessui/react';
+import useOutsideClick from '../../hooks/useOutsideClick';
+import LoadingIcon from '../svgs/LoadingIcon';
+import ResultCompany from '../elements/ResultCompany';
+import useSWR from 'swr';
+import fetcher from '../../lib/utils/fetcher';
+import debounce from '../../lib/utils/debounce';
 
 interface SearchBoxProps {
-  placeholder: TranslateInput;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setCompany?: (e: string | null) => void;
-  value?: string;
   disabled?: boolean;
-  options?: Report[];
+  countryCode?: string;
+  setChosenResult: (e: CompanyType | null) => void;
 }
 
 const SearchBox = ({
-  placeholder,
-  onChange,
-  value,
   disabled,
-  options,
-  setCompany
+  countryCode,
+  setChosenResult
 }: SearchBoxProps) => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [showList, setShowList] = useState(false);
+  const t = useTranslations();
 
-  useEffect(() => {
-    showList && setShowList(!showList);
-    setCompany && setCompany(selectedOption);
-  }, [selectedOption]);
+  const [searchHasFocus, setSearchHasFocus] = useState(false);
+  const [searchValue, setSearchValue] = useState<string | null>('');
 
-  const handleShowList = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e);
-    !showList && setShowList(true);
+  const loadingText = t('loading');
+  const searchStartText = t('search_start');
+  const noResultsFoundText = t('no_results_found');
+
+  const handleClick = (option: CompanyType) => {
+    setChosenResult(option);
+    return setSearchHasFocus(false);
+  };
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleKeyUp = (e: KeyboardEvent) => {
+    if (e.code === 'Escape') {
+      inputRef?.current?.blur();
+      return setSearchHasFocus(false);
+    }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const companySearch = debounce(() => setSearchValue(e.target.value), 1000);
+    companySearch();
+  };
+
+  const { data } = useSWR<CompanyType[] & { error?: string }>(
+    `/api/search-companies?query=${searchValue}&country=${countryCode}`,
+    fetcher
+  );
+
+  // handle the closing of the dropdown so that state can be set
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(containerRef, () => setSearchHasFocus(false));
+
   return (
-    <div>
-      <p>{selectedOption}</p>
-      <div className="mt-1 relative rounded-md shadow-sm">
+    <div ref={containerRef}>
+      <div className="mt-1 relative rounded-md shadow-sm flex items-center">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon className="h-5 w-5 text-primary" aria-hidden="true" />
         </div>
+
         <input
           disabled={disabled}
+          onFocus={() => setSearchHasFocus(true)}
           type="text"
-          name="email"
-          id="email"
-          className="focus:ring-highlight focus:border-highlight block w-full pl-10 sm:text-sm border-primary rounded bg-bg"
-          placeholder={`${placeholder}`}
-          onChange={e => handleShowList(e)}
-          value={value}
+          ref={inputRef}
+          onKeyUp={handleKeyUp}
+          name="search-companies"
+          id="search-companies"
+          className="focus:ring-highlight focus:border-highlight block w-full pl-10 text-sm border-primary rounded bg-bg"
+          placeholder={`${t('enter_company_name')}`}
+          onChange={e => handleChange(e)}
         />
+        {data && data.length > 0 && (
+          <label className="absolute right-5">{data?.length} results</label>
+        )}
       </div>
 
-      {showList && (
-        // <ClickAway action={() => console.log('clicked outside')}>
-        <Listbox value={selectedOption} onChange={setSelectedOption}>
-          {({ open }) => (
-            <>
-              {!open && options?.length !== 0 && (
-                <div className="border border-primary rounded px-6 py-2 cursor-pointer">
-                  <Listbox.Options static>
-                    {options?.map(option => (
-                      <Listbox.Option
-                        key={option.id}
-                        value={option.company_name}
-                      >
-                        {({ active, selected }) => (
-                          <li className="border-l-primary border-l flex justify-between my-4 pl-4 hover:bg-bg hover:text-highlight p-2">
-                            <div>
-                              <p className="font-semibold pb-1">
-                                {option.company_name}
-                              </p>
-                              <p>ID: 1212233434555621</p>
-                            </div>
-                            <div className="text-right">
-                              <p>
-                                Registered: <strong>12th June 1990</strong>
-                              </p>
-                              <p>123 Regent Street, London, England</p>
-                            </div>
-                          </li>
-                        )}
-                      </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
-                </div>
+      {/* Handles pre results, searching and no data */}
+      {searchHasFocus && (
+        <div className="relative">
+          {searchHasFocus && (
+            <div className="px-4 border border-primary rounded h-[100px] absolute w-full z-10 bg-white flex flex-col space-x-6 justify-center items-center text-xl">
+              {searchValue && !data ? (
+                // shows if there is searchValue but no data (loading)
+                <>
+                  <LoadingIcon className="mb-1 w-6 h-6" aria-hidden="true" />
+                  {loadingText}
+                </>
+              ) : !data || (!searchValue && data?.length === 0) ? (
+                // shows if there is no data at all (initial stage)
+                // also shows if there is no text input and the search data has a length of 0
+                <>
+                  <SearchIcon className="mb-1 w-6 h-6" aria-hidden="true" />
+                  {searchStartText}
+                </>
+              ) : (
+                // shows if there is searchValue
+                // is overridden and hidden by the component below
+                // which shows when there is data
+                <>
+                  <QuestionMarkCircleIcon
+                    className="mb-1 w-6 h-6"
+                    aria-hidden="true"
+                  />
+                  {noResultsFoundText}
+                </>
               )}
-            </>
+            </div>
           )}
-        </Listbox>
-        // </ClickAway>
+
+          {data?.error && (
+            <div className="px-4 border border-primary text-red-600 rounded overflow-y-scroll pt-4 h-[120px] text-center absolute w-full z-10 bg-white">
+              <ExclamationCircleIcon className="h-6 w-6 mx-auto" />
+              <h4 className="text-2xl ">Error fetching company data</h4>
+              <p>Please contact support.</p>
+            </div>
+          )}
+
+          {/* Displays the results */}
+          {data && data?.length > 0 && (
+            <ul className="px-4 border border-primary rounded overflow-y-scroll pt-4 space-y-4 max-h-[400px] min-h-[120px] absolute w-full z-10 bg-white">
+              {data.map(company => {
+                return (
+                  <button
+                    key={company.company_number}
+                    className="flex justify-between hover:bg-bg hover:text-highlight cursor-pointer w-full"
+                    onClick={() => handleClick(company)}
+                  >
+                    <ResultCompany
+                      name={company.title}
+                      company_id={company.company_number}
+                      registered_address={company.address_snippet}
+                      registration_date={company.date_of_creation}
+                    />
+                  </button>
+                );
+              })}
+            </ul>
+          )}
+        </div>
       )}
     </div>
   );

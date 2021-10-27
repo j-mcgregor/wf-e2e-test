@@ -1,5 +1,5 @@
 {
-  "automated_reports": "Automated Reports",
+  "sme_calculator": "SME Calculator",
   "access_our_powerful_credit_risk_assessment": "Access our powerful credit risk assessment report by inputting only the company number - our platform does the rest, including sourcing all the inputs.",
   "find_the_company": "Find the company",
   "country": "Country",
@@ -19,6 +19,10 @@
   "currency": "Currency",
   "will_switch_based_on_country_selected": "Will switch based on country selected. You can manually override.",
   "provide_your_own_data": "Provide your own data",
+  "search_for_company": "Search for company",
+  "loading": "Searching...",
+  "search_start": "Start typing to search...",
+  "no_results_found": "No results found.",
   "use_one_of_our_templates_to_add_data": "Use one of our templates to easily add the data needed to create your own report.",
   "upload_the_new_data": "Upload the new data",
   "drag_and_drop_csv_below": "Drag and drop your altered CSV below.",
@@ -30,5 +34,24 @@
   "generate_new_report": "Generate new report",
   "upload_your_csv": "Upload your CSV",
   "or_drag_and_drop_it": "or drag and drop it.",
-  "drop_file_to_upload": "Drop File to Upload"
+  "drop_file_to_upload": "Drop File to Upload",
+  "registered": "Registered",
+  "id": "ID",
+  "templates": "Templates",
+  "full_template": {
+    "title": "Full Template (.csv)",
+    "body": "A full report template in CSV format. Import anywhere and add your own data."
+  },
+  "financials_template": {
+    "title": "Financials Template (.csv)",
+    "body": "Just the financials template in CSV format. Import anywhere and add your own data."
+  },
+  "excel_full_template": {
+    "title": "Excel Full Template",
+    "body": "An Excel workbook created for easy adding of custom data. Upload to run your report."
+  },
+  "excel_financials_template": {
+    "title": "Excel Financials Template",
+    "body": "An Excel spreadsheet where you can add custom financials to run a report."
+  }
 }

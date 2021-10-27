@@ -299,70 +299,49 @@ const mockUsers = {
     full_name: 'John Doe',
     email: 'test@test.com',
     id: 1,
-    recent_usage: {
-      last_login: 1629657065187,
-      api_requests: 142,
-      reports_ran: 32
-    },
-    is_sso: false,
-    contact_information: {
-      first_name: 'John',
-      last_name: 'Doe',
-      country: 'United Kingdom',
-      street_address: '123 A place Street',
-      city: 'London',
-      state: 'Hackney',
-      postcode: 'N42FF',
-      company_name: 'Awesome Stuff LTD',
-      company_hq_location: 'United Kingdom'
-    },
     preferences: {
-      localisation: 'English (GB)',
-      default_currency: 'United Kingdom - Pound (£)',
-      default_login_screen: 'dashboard',
-      default_reporting_country: 'United Kingdom',
+      defaults: {
+        locale: 'en-GB',
+        currency: 'GBP',
+        home_page: 'dashboard',
+        reporting_country: 'GB'
+      },
       communication: {
         batch_report_email: true,
-        service_update: true,
-        company_updates: false
+        service_updates: true, // wiserfunding api updates / service i.e. api back up
+        company_updates: false // wiserfunding company updates i.e. series b raised
       }
     },
-    reports: mockReports
+    reports: mockReports,
+    batched_report_jobs: [
+      {
+        id: 12,
+        name: 'Manufacturing Niche',
+        create_date: 1629657000000,
+        finish_date: 1629657000000,
+        total_reports: 153
+      }
+    ]
   },
   'new@test.com': {
     full_name: 'Jane Doe (new user)',
     email: 'new@test.com',
     id: 2,
-    is_sso: false,
-    recent_usage: {
-      last_login: null,
-      api_requests: 0,
-      reports_ran: 0
-    },
-    contact_information: {
-      first_name: 'John',
-      last_name: 'Doe',
-      country: null,
-      street_address: null,
-      city: null,
-      state: null,
-      postcode: null,
-      company_name: null,
-      company_hq_location: null
-    },
     preferences: {
-      // eslint-disable-next-line sonarjs/no-duplicate-string
-      localisation: 'English (GB)',
-      default_currency: 'United Kingdom - Pound (£)',
-      default_login_screen: 'dashboard',
-      default_reporting_country: 'United Kingdom',
+      defaults: {
+        locale: 'en-GB',
+        currency: 'GBP',
+        home_page: 'dashboard',
+        reporting_country: 'GB'
+      },
       communication: {
         batch_report_email: true,
-        service_update: true,
-        company_updates: true
+        service_updates: true, // wiserfunding api updates / service i.e. api back up
+        company_updates: false // wiserfunding company updates i.e. series b raised
       }
     },
-    reports: []
+    reports: [],
+    batched_report_jobs: []
   }
 };
 

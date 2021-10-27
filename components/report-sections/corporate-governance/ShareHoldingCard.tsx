@@ -23,7 +23,7 @@ const ShareHoldingCard = ({
       <div className="p-6 my-4 bg-white rounded-sm shadow-sm flex flex-col sm:flex-row items-center justify-between">
         <div className="flex flex-col w-full sm:w-1/2 px-8 sm:px-0 sm:mr-10 mb-10 sm:mb-0">
           <div className="flex justify-between font-bold pb-10">
-            <p>{t('total shareholders')}</p>
+            <p>{t('total_shareholders')}</p>
             <p>{total}</p>
           </div>
           <div className="flex justify-between py-1">

@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { HintTypeProps } from '../../components/elements/Hint';
-import { MultiGraphDataType, GraphDataType } from '../../types/charts';
+import { MultiGraphDataType } from '../../types/charts';
 
 const poundsThousands = '£_thousands';
 
@@ -8,42 +8,57 @@ export const bondRatings = [
   {
     score: 'CC',
     bgColor: 'rgb(220,11,23), rgb(220,44,20)',
-    width: '8.5%'
+    width: '10%'
+  },
+  {
+    score: 'CCC-',
+    bgColor: 'rgb(220,11,23), rgb(220,44,20)',
+    width: '5%'
   },
   {
     score: 'CCC',
-    bgColor: 'rgb(220,44,20), rgb(220,80,17)',
-    width: '8.5%'
+    bgColor: 'rgb(220,11,23), rgb(220,44,20)',
+    width: '5%'
+  },
+  {
+    score: 'CCC+',
+    bgColor: 'rgb(220,80,17), rgb(217,124,13)',
+    width: '5%'
   },
   {
     score: 'B-',
-    bgColor: 'rgb(220,80,17), rgb(217,124,13)',
-    width: '17%'
+    bgColor: 'rgb(217,124,13), rgb(216,181,9)',
+    width: '3.8%'
+  },
+  {
+    score: 'B',
+    bgColor: 'rgb(216,181,9), rgb(216,181,9)',
+    width: '3.8%'
   },
   {
     score: 'BB',
-    bgColor: 'rgb(217,124,13), rgb(216,181,9)',
-    width: '17%'
+    bgColor: 'rgb(216,181,9), rgb(159,180,7)',
+    width: '3.7%'
+  },
+  {
+    score: 'BBB-',
+    bgColor: 'rgb(159,180,7), rgb(94,145,5)',
+    width: '5%'
   },
   {
     score: 'BBB',
-    bgColor: 'rgb(216,181,9), rgb(159,180,7)',
-    width: '25.5%'
+    bgColor: 'rgb(94,145,5), rgb(52,120,1)',
+    width: '10%'
+  },
+  {
+    score: 'BBB+',
+    bgColor: 'rgb(94,145,5), rgb(52,120,1)',
+    width: '10%'
   },
   {
     score: 'A',
-    bgColor: 'rgb(159,180,7), rgb(94,145,5)',
-    width: '25.5%'
-  },
-  {
-    score: 'AA',
-    bgColor: 'rgb(94,145,5), rgb(52,120,1)',
-    width: '8.5%'
-  },
-  {
-    score: 'AAA',
     bgColor: 'rgb(52,120,1), rgb(27,102,2)',
-    width: '8.5%'
+    width: '40%'
   }
 ];
 
@@ -213,11 +228,11 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       data
     ),
 
-  turnover2: (data: MultiGraphDataType[]) =>
+  totalAssets: (data: MultiGraphDataType[]) =>
     createChart(
-      'turnover2',
+      'total_assets',
       poundsThousands,
-      { title: 'turnover.title', body: 'turnover.body' },
+      { title: 'total_assets.title', body: 'total_assets.body' },
       data
     ),
 
@@ -314,9 +329,9 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     ),
   equity_total_assets: (data: MultiGraphDataType[]) =>
     createChart(
-      'days_payable',
+      'equity_total_assets',
       poundsThousands,
-      { title: 'days_payable.title', body: 'ebit.body' },
+      { title: 'equity_total_assets.title', body: 'ebit.body' },
       data
     ),
   tangible_fixed_assets_total_assets: (data: MultiGraphDataType[]) =>

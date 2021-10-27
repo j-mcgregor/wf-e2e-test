@@ -84,7 +84,6 @@
   "data_on_company_governance": "Data on company governance and problematic shareholders / directors.",
   "chairman": "Chairman",
   "neutral": "neutral",
-
   "£_thousands": "£ Thousands",
   "turnover": "Turnover",
   "ebit": "EBIT",
@@ -127,5 +126,18 @@
   "quarterly": "Quarterly",
   "yearly": "Yearly",
   "monthly": "Monthly",
-  "daily": "Daily"
+  "daily": "Daily",
+  "bond_rating_descriptions": {
+    "CC": "Significant probability of default in the near future",
+    "CCC-": "Moderate probability of default in the near future",
+    "CCC": "Significant risk of default in case of adverse economic conditions",
+    "CCC+": "Low profitability, low liquidity and debt-heavy.Moderate risk of default in case of adverse economic conditions",
+    "B-": "Low profitability, low liquidity, with debt –heavy capital structure",
+    "B": "Less profitable, lower liquidity and higher proportion of debt. More likely to face difficulty in meeting financial obligations in case of adverse economic conditions",
+    "BB": "Less profitable, lower liquidity and higher proportion of debt. May face some difficulty in meeting financial obligations in case of adverse economic conditions",
+    "BBB-": "Less profitable, decreased liquidity or increased proportion of debt. More susceptible to adverse economic conditions",
+    "BBB": "Slightly less profitable firms, decreased liquidity or increased proportion of debt",
+    "BBB+": "Profitable, liquid and equity-heavy, but more susceptible to adverse economic conditions",
+    "A": "Strong, profitable firms with sufficient liquidity and equity-heavy capital structure"
+  }
 }
