@@ -43,10 +43,10 @@ export type User = {
   contact_information?: ContactInformation;
   preferences?: {
     defaults?: {
-      localisation: string;
-      default_currency: string;
-      default_login_screen: string;
-      default_reporting_country: string;
+      locale: string;
+      currency: string;
+      home_page: string;
+      reporting_country: string;
     };
     communication: {
       comments: boolean;

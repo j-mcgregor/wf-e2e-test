@@ -15,7 +15,7 @@ type PreferenceFormInput = {
   locale: string;
   reporting: string;
   currency: string;
-  loginScreen: string;
+  homePage: string;
 };
 
 const { preferences, dashboardOptionValues } = SettingsSettings;
@@ -39,50 +39,44 @@ const PreferenceForm = ({
     [t]
   );
 
-  const prefs = {
-    preferences: {
-      defaults: {
-        locale: 'en-GB',
-        currency: 'GBP',
-        home_page: 'dashboard',
-        reporting_country: 'GB'
-      }
-    }
-  };
-
   const prefDefaults = {
     locale: preferences.defaults.locale,
     currency: preferences.defaults.currency,
-    loginScreen: preferences.defaults.home_page,
+    homePage: preferences.defaults.home_page,
     reporting: preferences.defaults.reporting_country
   };
 
   const currentUserValues = {
     locale: user?.preferences.defaults.locale,
     currency: user?.preferences.defaults.currency,
-    loginScreen: user?.preferences.defaults.home_page,
+    homePage: user?.preferences.defaults.home_page,
     reporting: user?.preferences.defaults.reporting_country
   };
 
-  console.log({ currentUserValues });
+  console.log({ currentUserValues, prefDefaults });
   const { register, handleSubmit, formState, reset } =
     useForm<PreferenceFormInput>({ defaultValues: currentUserValues });
   const { isDirty, isValid } = formState;
   const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
     // @ts-ignore
-    setCurrentUserPrefs(currentUser => ({
-      ...currentUser,
-      user: {
-        ...currentUser.user,
-        preferences: {
-          localisation: data.locale,
-          default_currency: data.currency,
-          default_login_screen: data.loginScreen,
-          default_reporting_country: data.reporting
-        },
-        ...currentUser.user?.preferences?.communication
-      }
-    }));
+    setCurrentUserPrefs(currentUser => {
+      console.log({ currentUser });
+      return {
+        ...currentUser,
+        user: {
+          ...currentUser.user,
+          preferences: {
+            defaults: {
+              locale: data.locale,
+              currency: data.currency,
+              home_page: data.homePage,
+              reporting: data.reporting
+            },
+            ...currentUser.user?.preferences?.communication
+          }
+        }
+      };
+    });
   };
 
   useEffect(() => {
@@ -165,10 +159,10 @@ const PreferenceForm = ({
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <Select
-                {...register('loginScreen')}
+                {...register('homePage')}
                 options={dashboardOptions}
-                label={t('forms.preference.loginScreen')}
-                name={'loginScreen'}
+                label={t('forms.preference.home_page')}
+                name={'homePage'}
                 labelClassName={formLabelClassName}
                 className={formClassName}
               >

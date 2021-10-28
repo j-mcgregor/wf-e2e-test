@@ -24,7 +24,7 @@
     "preference": {
       "locale": "Localisation",
       "reporting": "Default reporting country",
-      "loginScreen": "Default Login Screen",
+      "home_page": "Default Login Screen",
       "currency": "Default currency",
       "change_your_base": "Change your base preferences",
       "set_your_language": "Set your language preferences.",
