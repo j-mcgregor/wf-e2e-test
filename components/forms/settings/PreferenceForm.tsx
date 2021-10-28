@@ -52,6 +52,8 @@ const PreferenceForm = ({
     homePage: user?.preferences.defaults.home_page,
     reporting: user?.preferences.defaults.reporting_country
   };
+  //TODO: reporting_country from user.prefs.defaults.reporting_country
+  // is coming in as undefined, not sure why as it is present in both settings.settings and users.ts :shrug
 
   console.log({ currentUserValues, prefDefaults });
   const { register, handleSubmit, formState, reset } =
