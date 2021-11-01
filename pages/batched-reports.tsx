@@ -6,7 +6,7 @@ import Layout from '../components/layout/Layout';
 
 const BatchReports = () => {
   return (
-    <Layout title="SME Calc">
+    <Layout title="Batched Reports">
       <h1 className="text-2xl">Batched Reports </h1>
     </Layout>
   );
