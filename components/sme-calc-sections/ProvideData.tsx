@@ -17,7 +17,10 @@ const ProvideData = () => {
           <p>{t('use_one_of_our_templates_to_add_data')}</p>
         </div>
 
-        <UploadNewData hasHeader={false} />
+        <UploadNewData
+          hasHeader={false}
+          buttonText={t('generate_new_report')}
+        />
       </div>
 
       <div>

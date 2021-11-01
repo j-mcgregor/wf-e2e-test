@@ -7,6 +7,8 @@ import {
 import Button from '../elements/Button';
 import UploadFile from './UploadFile';
 import { XIcon, CheckIcon } from '@heroicons/react/outline';
+import { TranslateInput } from '../../types/global';
+import ProgressBar from '../elements/ProgressBar';
 
 type FileType = {
   type: string | null;
@@ -23,9 +25,19 @@ type FileValidationType = {
 
 interface UploadNewDataProps {
   hasHeader: boolean;
+  hasProgressBar?: boolean;
+  progressBarButtonText?: TranslateInput;
+  headerText?: TranslateInput;
+  buttonText: TranslateInput;
 }
 
-const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
+const UploadNewData = ({
+  hasHeader,
+  hasProgressBar,
+  progressBarButtonText,
+  headerText,
+  buttonText
+}: UploadNewDataProps) => {
   const [selectedFile, setSelectedFile] = useState<FileType>({
     type: null,
     name: null
@@ -122,7 +134,8 @@ const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
 
   const header = (
     <div>
-      <p className="text-3xl font-semibold py-2">{t('upload_the_new_data')}</p>
+      {/* <p className="text-3xl font-semibold py-2">{t('upload_the_new_data')}</p> */}
+      <p className="text-3xl font-semibold py-2">{headerText}</p>
       <p className="text-sm py-2">{t('drag_and_drop_csv_below')}</p>
     </div>
   );
@@ -168,9 +181,15 @@ const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
           disabled={!isValidated}
           className="text-primary rounded-none"
         >
-          {t('generate_new_report')}
+          {buttonText}
         </Button>
       </div>
+
+      {hasProgressBar && (
+        <div className="mt-8">
+          <ProgressBar buttonText={progressBarButtonText} />
+        </div>
+      )}
     </div>
   );
 };
