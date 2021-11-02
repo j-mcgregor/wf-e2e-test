@@ -41,7 +41,7 @@ const CreateBatchReport = () => {
   };
 
   return (
-    <Layout title="Create Batch Report">
+    <Layout title="Batched Reports">
       <div className="text-primary">
         <Button
           linkTo="/batched-reports"

@@ -7,7 +7,7 @@ interface ProgressBarProps {
   completedReports: number;
   remainingTime: number;
   buttonText: TranslateInput;
-  complete: boolean;
+  complete?: boolean;
 }
 
 const ProgressBar = ({
@@ -52,8 +52,14 @@ const ProgressBar = ({
           }`}
         />
       </div>
-      <div className="w-1/3 my-4 border border-gray-200 rounded">
-        <Button variant="none" disabled={!complete}>
+      <div className="w-3/12 my-4">
+        <Button
+          className={`${
+            !complete ? 'border-2 border-gray-200 opacity-30' : 'border-none'
+          } rounded-none`}
+          variant={!complete ? 'none' : 'highlight'}
+          disabled={!complete}
+        >
           <p>{buttonText}</p>
         </Button>
       </div>
