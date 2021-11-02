@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'use-intl';
 
 import {
-  requiredValues,
-  validHeaders
-} from '../../lib/settings/report.settings';
+  validHeaders,
+  requiredValues
+} from '../../lib/settings/sme-calc.settings';
 import Button from '../elements/Button';
 import UploadFile from './UploadFile';
 

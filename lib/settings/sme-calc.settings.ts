@@ -37,3 +37,48 @@ export const templateText = [
     backgroundColor: 'bg-highlight-3 bg-opacity-50'
   }
 ];
+
+// these headers are valid in the CSV
+export const validHeaders = [
+  'year',
+  'total_shareholder_equity',
+  'total_assets',
+  'total_liabilities',
+  'turnover',
+  'production_costs',
+  'short_term_debt',
+  'long_term_debt',
+  'total_debt',
+  'cash',
+  'working_capital',
+  'tangible_assets',
+  'intangible_assets',
+  'interest_expenses',
+  'ebitda',
+  'depreciation',
+  'ebit',
+  'net_income',
+  'retained_earnings',
+  'number_directors',
+  'number_employees'
+];
+
+// these values are required in the CSV
+export const requiredValues = [
+  'year',
+  'total_shareholder_equity',
+  'total_assets',
+  'turnover',
+  'short_term_debt',
+  'long_term_debt',
+  'total_debt',
+  'cash',
+  'working_capital',
+  'tangible_assets',
+  'intangible_assets',
+  'interest_expenses',
+  'ebitda',
+  'ebit',
+  'net_income',
+  'retained_earnings'
+];
