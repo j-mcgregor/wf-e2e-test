@@ -30,7 +30,7 @@ type ContactInformation = {
   company_hq_location: string;
 };
 
-export type User = {
+export type UserType = {
   name?: string | null;
   email?: string | null;
   image?: string | null;
@@ -42,10 +42,12 @@ export type User = {
   is_SSO?: boolean;
   contact_information?: ContactInformation;
   preferences?: {
-    localisation: string;
-    default_currency: string;
-    default_login_screen: string;
-    default_reporting_country: string;
+    defaults?: {
+      locale: string;
+      currency: string;
+      home_page: string;
+      reporting_country: string;
+    };
     communication: {
       comments: boolean;
       candidates: boolean;
@@ -56,7 +58,7 @@ export type User = {
 };
 
 export interface RecoilUserType {
-  user: User | Promise<User> | RecoilValue<User>;
+  user: UserType | Promise<UserType> | RecoilValue<UserType>;
   // default: {}
 }
 

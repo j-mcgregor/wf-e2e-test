@@ -11,6 +11,11 @@ interface HashContainerProps {
   children?: React.ReactNode;
 }
 
+// plan
+// header context stores all headers on screen in an array
+// try to limit refresh amount
+// remove container
+
 const HashContainer = ({
   children,
   name,

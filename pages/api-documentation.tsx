@@ -3,11 +3,17 @@ import { GetStaticPropsContext } from 'next';
 import React from 'react';
 
 import Layout from '../components/layout/Layout';
+import Iframe from '../components/elements/Iframe';
+
+const iframeProps = {
+  src: 'https://api.saggio-credito.co.uk/redoc',
+  title: 'API Documentation'
+};
 
 const APIDocumentation = () => {
   return (
-    <Layout title="API Documentation">
-      <h1 className="text-2xl">API Documentation </h1>
+    <Layout title="API Documentation" fullWidth>
+      <Iframe {...iframeProps} />
     </Layout>
   );
 };

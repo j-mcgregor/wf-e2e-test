@@ -5,24 +5,27 @@ import countryCodeJSON from '../../lib/data/countryCodes.json';
 import { createCurrencyString } from '../utils/text-helpers';
 
 const SettingsSettings = {
-  dashboardOptionValues: ['dashboard', 'reports', 'sme_calc', 'sme_prospector'],
+  dashboardOptionValues: ['dashboard', 'reports', 'sme_calculator'],
   supportedLocales: localisationJSON.map(value => {
-    return { optionValue: value.locale };
+    return { optionValue: value.code, optionName: value.locale };
   }),
+
   supportedCountries: countryCodeJSON.map(country => ({
-    optionValue: country.name,
-    code: country.code
+    optionName: country.name,
+    optionValue: country.code
   })),
+
   supportedCurrencies: currencyJSON.map(currency => ({
-    optionValue: createCurrencyString(currency),
-    code: currency.Code
+    optionName: createCurrencyString(currency),
+    optionValue: currency.Code
   })),
-  defaultOptions: {
-    preferences: {
-      localisation: 'en-GB',
-      default_currency: 'GBP',
-      default_login_screen: 'dashboard',
-      default_reporting_country: 'GB'
+
+  preferences: {
+    defaults: {
+      locale: 'en-GB',
+      currency: 'GBP',
+      home_page: 'dashboard',
+      reporting_country: 'GB'
     }
   }
 };
