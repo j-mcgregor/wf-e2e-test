@@ -41,7 +41,10 @@ const Chart = ({ title, subtitle, data, hintBody, hintTitle }: ChartProps) => {
   );
 
   return (
-    <div className="flex flex-col justify-between items-center px-4 pt-4 text-xs bg-white shadow-sm rounded-sm">
+    <div
+      className="flex flex-col justify-between items-center px-4 pt-4 text-xs bg-white shadow-sm rounded-sm"
+      data-testid="chart-testid"
+    >
       <div className="w-full flex justify-between">
         <div>
           <p className="font-bold pb-2">{title}</p>

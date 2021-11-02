@@ -108,8 +108,8 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       'gdp_annual_growth_rate',
       'quarterly',
       {
-        title: 'gdp_annual_growth_rate.title',
-        body: 'gdp_annual_growth_rate.body'
+        title: 'gdp_annual_growth.title',
+        body: 'gdp_annual_growth.body'
       },
       data
     ),

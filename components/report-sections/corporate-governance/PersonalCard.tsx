@@ -36,7 +36,10 @@ const PersonalCard = ({
       : word.slice(word.length - qtyToSlice);
   };
   return (
-    <div className="text-sm sm:text-xs xl:text-sm selection:flex flex-col bg-white p-4 rounded-sm shadow-sm">
+    <div
+      className="text-sm sm:text-xs xl:text-sm selection:flex flex-col bg-white p-4 rounded-sm shadow-sm"
+      data-testid="personal-card-testid"
+    >
       <div className="flex justify-between">
         <div className="flex">
           {profileImage ? (

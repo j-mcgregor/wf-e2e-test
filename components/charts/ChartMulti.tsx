@@ -37,7 +37,10 @@ const ChartMulti = ({
   };
 
   return (
-    <div className="shadow rounded-sm bg-white flex flex-col">
+    <div
+      className="shadow rounded-sm bg-white flex flex-col"
+      data-testid="chart-multi-testid"
+    >
       <div className="flex justify-between items-start px-4 pt-4 text-xs">
         <div>
           <p className="font-bold pb-2">{header}</p>
@@ -58,6 +61,7 @@ const ChartMulti = ({
             (company, i) =>
               company?.data?.length > 0 && (
                 <VictoryArea
+                  key={`victory-area-${i}`}
                   animate={{
                     duration: 500,
                     onLoad: { duration: 500 }
@@ -81,6 +85,7 @@ const ChartMulti = ({
             (company, i) =>
               company.data.length > 0 && (
                 <VictoryScatter
+                  key={`victory-scatter-${i}`}
                   data={company.data}
                   size={2}
                   style={{
