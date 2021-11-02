@@ -419,3 +419,7 @@ export const requiredValues = [
   'company_id',
   'p_d_ratio\r'
 ];
+
+export const batchReport = {
+  averageTime: 100 // average report generation time in ms
+};

@@ -24,18 +24,22 @@ type FileValidationType = {
 
 interface UploadNewDataProps {
   hasHeader: boolean;
-
   headerText?: TranslateInput;
+  description?: TranslateInput;
   buttonText: TranslateInput;
   progressBar?: React.ReactNode;
+  disableButton?: boolean;
+  onSubmit: () => void;
 }
 
 const UploadNewData = ({
   hasHeader,
-
   progressBar,
   headerText,
-  buttonText
+  description,
+  buttonText,
+  disableButton,
+  onSubmit
 }: // add description text
 // props for validations
 UploadNewDataProps) => {
@@ -137,7 +141,7 @@ UploadNewDataProps) => {
     <div>
       {/* <p className="text-3xl font-semibold py-2">{t('upload_the_new_data')}</p> */}
       <p className="text-3xl font-semibold py-2">{headerText}</p>
-      <p className="text-sm py-2">{t('drag_and_drop_csv_below')}</p>
+      <p className="text-sm py-2">{description}</p>
     </div>
   );
 
@@ -179,14 +183,15 @@ UploadNewDataProps) => {
       <div className="w-3/12">
         <Button
           variant="highlight"
-          disabled={!isValidated}
+          disabled={!isValidated || disableButton}
           className="text-primary rounded-none"
+          onClick={onSubmit}
         >
           {buttonText}
         </Button>
       </div>
 
-      {progressBar && <div className="mt-8">{progressBar}</div>}
+      {isValidated && progressBar && <div className="mt-8">{progressBar}</div>}
     </div>
   );
 };

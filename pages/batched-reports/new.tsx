@@ -1,21 +1,50 @@
+/* eslint-disable security/detect-non-literal-require */
+import { useState } from 'react';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'use-intl';
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import Layout from '../../components/layout/Layout';
 import Button from '../../components/elements/Button';
 import LinkCard from '../../components/cards/LinkCard';
-/* eslint-disable security/detect-non-literal-require */
 import UploadNewData from '../../components/uploads/UploadNewData';
 import ProgressBar from '../../components/elements/ProgressBar';
+import { batchReport } from '../../lib/settings/report.settings';
 
 const CreateBatchReport = () => {
   const t = useTranslations();
+
+  const totalReports = 200;
+  const totalTime = Math.round(totalReports * batchReport.averageTime);
+
+  // state for total completed reports
+  const [completedReports, setCompletedReports] = useState(0);
+  const [remainingTime, setRemainingTime] = useState(totalTime);
+  const [processing, setProcessing] = useState(false);
+  const [complete, setComplete] = useState(false);
+
+  const runReports = (): void => {
+    setProcessing(true);
+    let completedReports = 0;
+    let time = remainingTime;
+    let interval = setInterval(() => {
+      completedReports += 1;
+      time -= batchReport.averageTime;
+      setCompletedReports(completedReports);
+      setRemainingTime(time);
+
+      if (completedReports >= totalReports) {
+        clearInterval(interval);
+        setComplete(true);
+        setProcessing(false);
+      }
+    }, batchReport.averageTime);
+  };
 
   return (
     <Layout title="Create Batch Report">
       <div className="text-primary">
         <Button
-          linkTo="/batched-reports" // fix to send back to report
+          linkTo="/batched-reports"
           variant="none"
           newClassName="text-sm flex items-center hover:text-alt"
         >
@@ -31,15 +60,20 @@ const CreateBatchReport = () => {
 
         <UploadNewData
           hasHeader
+          description={t('upload_your_csv_here_to_begin')}
           headerText={t('run_multiple_reports')}
-          buttonText={t('run_batch')}
+          buttonText={!processing ? t('run_batch') : t('running')}
           progressBar={
             <ProgressBar
               buttonText={t('view_results')}
-              averageReportTime={150}
-              totalReports={200}
+              remainingTime={remainingTime}
+              completedReports={completedReports}
+              totalReports={totalReports}
+              complete={complete}
             />
           }
+          onSubmit={runReports}
+          disableButton={complete || processing}
         />
 
         <p className="text-2xl font-semibold my-8">{t('csv_templates')}</p>

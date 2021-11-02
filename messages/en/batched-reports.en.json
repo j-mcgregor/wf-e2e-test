@@ -16,5 +16,7 @@
   "in_order_to_use_our_batch_reporting_feature_you_need_to_upload": "In order to use our Batch Reporting feature you need to upload the company IDs in the correct format. Please download and use this template.",
   "progress": "Progress",
   "estimated_time_to_completion": "Estimated time to completion",
-  "view_results": "View results"
+  "view_results": "View results",
+  "upload_your_csv_here_to_begin": "Upload your CSV here to begin.",
+  "running": "Running..."
 }

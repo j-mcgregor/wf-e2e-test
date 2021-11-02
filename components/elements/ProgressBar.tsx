@@ -1,18 +1,21 @@
-import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { TranslateInput } from '../../types/global';
 import Button from './Button';
 
 interface ProgressBarProps {
   totalReports: number;
-  averageReportTime: number;
+  completedReports: number;
+  remainingTime: number;
   buttonText: TranslateInput;
+  complete: boolean;
 }
 
 const ProgressBar = ({
   buttonText,
-  averageReportTime,
-  totalReports
+  totalReports,
+  completedReports,
+  remainingTime,
+  complete
 }: ProgressBarProps) => {
   const t = useTranslations();
 
@@ -26,26 +29,8 @@ const ProgressBar = ({
     }
   };
 
-  const totalTime = Math.round(totalReports * averageReportTime);
-
-  // state for total completed reports
-  const [completedReports, setCompletedReports] = useState(0);
-  const [remainingTime, setRemainingTime] = useState(totalTime);
-
   // get % of completed for rendering length of progress bar
   let percentComplete = Math.round((completedReports * 100) / totalReports);
-
-  const runReports = (): void => {
-    let completedReports = 0;
-    let time = remainingTime;
-    let interval = setInterval(() => {
-      completedReports += 1;
-      time -= averageReportTime;
-      setCompletedReports(completedReports);
-      setRemainingTime(time);
-      completedReports >= totalReports && clearInterval(interval);
-    }, averageReportTime);
-  };
 
   return (
     <div>
@@ -68,13 +53,8 @@ const ProgressBar = ({
         />
       </div>
       <div className="w-1/3 my-4 border border-gray-200 rounded">
-        <Button variant="none" disabled>
+        <Button variant="none" disabled={!complete}>
           <p>{buttonText}</p>
-        </Button>
-      </div>
-      <div className="w-1/3 my-4 border border-gray-200 rounded">
-        <Button variant="none" onClick={runReports}>
-          <p>Run Reports</p>
         </Button>
       </div>
     </div>
