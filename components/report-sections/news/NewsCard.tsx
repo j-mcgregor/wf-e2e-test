@@ -16,7 +16,10 @@ const NewsItem = ({
   date
 }: NewsItemProps) => {
   return (
-    <div className="bg-white shadow-sm rounded-sm w-full flex flex-col p-4 text-sm my-6">
+    <div
+      className="bg-white shadow-sm rounded-sm w-full flex flex-col p-4 text-sm my-6"
+      data-testid="news-card-testid"
+    >
       <div className="flex w-full justify-between italic pb-3">
         <p className="">{publication}</p>
         <p>{date}</p>

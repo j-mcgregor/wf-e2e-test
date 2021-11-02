@@ -10,9 +10,12 @@ interface ProfilesProps {
 const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
   const t = useTranslations();
   return (
-    <div className="px-4 sm:px-0">
+    <div className="px-4 sm:px-0" data-testid="corp-senior-profiles-testid">
       <p className="my-4 text-xl">{t('directors')}</p>
-      <div className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4">
+      <div
+        className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4"
+        data-testid="corp-directors-list-testid"
+      >
         {directors.map((director, index) => (
           <PersonalCard
             key={director.name + index}
@@ -30,7 +33,10 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
       </div>
 
       <p className="my-4 text-xl">{t('senior_management')}</p>
-      <div className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4">
+      <div
+        className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4"
+        data-testid="corp-snr-mgmt-list-testid"
+      >
         {seniorManagement.map((manager, index) => (
           <PersonalCard
             key={manager.name + index}

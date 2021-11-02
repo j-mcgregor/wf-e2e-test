@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { CheckIcon, XIcon } from '@heroicons/react/outline';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'use-intl';
+
 import {
   validHeaders,
   requiredValues
 } from '../../lib/settings/sme-calc.settings';
 import Button from '../elements/Button';
 import UploadFile from './UploadFile';
-import { XIcon, CheckIcon } from '@heroicons/react/outline';
 
 type FileType = {
   type: string | null;
@@ -69,21 +70,20 @@ const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
     const reader = new FileReader();
     reader.onload = function (file) {
       setFileContent(file.target?.result);
+      // THIS NEEDS TO BE UNMOUNTED
     };
     file && reader.readAsText(file);
   };
 
   const getValidations = (content: FileContentType, selectedFile: FileType) => {
     const str = content?.toString();
-    const headers: string[] | undefined = str?.split('\n')[0].split(',');
-    const values: string[] | undefined = str?.split('\n')[1].split(',');
+    // headeer and value need better verification; I added a CSV validator package, pretty good
+    const headers: string[] | undefined = str?.split('\n')[0]?.split(',');
+    const values: string[] | undefined = str?.split('\n')[1]?.split(',');
+
     const isSubset = validHeaders.every(val => headers?.includes(val));
     // create object & keys from headers and values arrays
-    const contentObject:
-      | {
-          [index: string]: string;
-        }
-      | undefined =
+    const contentObject: Record<string, string> | undefined =
       values &&
       headers?.reduce(
         (acc, curr: string, i) => ({ ...acc, [curr]: values[Number(i)] }),
@@ -105,9 +105,16 @@ const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
 
   const renderValidationCheck = (value: boolean | undefined) => {
     if (value === true) {
-      return <CheckIcon className="w-6 h-6 text-green-500" />;
+      return (
+        <CheckIcon
+          className="w-6 h-6 text-green-500"
+          data-testid="icon-check"
+        />
+      );
     } else {
-      return <XIcon className="w-6 h-6 text-red-500" />;
+      return (
+        <XIcon className="w-6 h-6 text-red-500" data-testid="icon-cross" />
+      );
     }
   };
 

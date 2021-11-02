@@ -1,5 +1,6 @@
 import apiDocumentation from './api-documentation.en.json';
 import batchedReports from './batched-reports.en.json';
+import errors from './errors.en.json';
 import forgottenPassword from './forgotten-password.en.json';
 import general from './general.en.json';
 import hints from './hints.en.json';
@@ -12,7 +13,7 @@ import resetPassword from './reset-password.en.json';
 import settings from './settings.en.json';
 import smeCalculator from './sme-calculator.en.json';
 import smeProspector from './sme-prospector.en.json';
-import errors from './errors.en.json';
+import uploadData from './upload-data.en.json';
 
 // need to re-export for test-utils.tsx
 
@@ -20,6 +21,7 @@ import errors from './errors.en.json';
 export default {
   ...apiDocumentation,
   ...batchedReports,
+  ...errors,
   ...forgottenPassword,
   ...general,
   ...hints,
@@ -32,5 +34,5 @@ export default {
   ...settings,
   ...smeCalculator,
   ...smeProspector,
-  ...errors
+  ...uploadData
 };

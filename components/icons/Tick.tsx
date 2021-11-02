@@ -6,6 +6,7 @@ const Tick = () => {
       fill="none"
       viewBox="0 0 24 24"
       stroke="#2BAD01"
+      data-testid="icon-tick"
     >
       <path
         strokeLinecap="round"

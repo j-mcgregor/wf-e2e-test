@@ -1,12 +1,13 @@
 /* eslint-disable security/detect-non-literal-require */
+import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
-import getServerSidePropsWithAuth from '../../../../lib/auth/getServerSidePropsWithAuth';
-import Layout from '../../../../components/layout/Layout';
-import Button from '../../../../components/elements/Button';
-import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
+
 import LinkCard from '../../../../components/cards/LinkCard';
+import Button from '../../../../components/elements/Button';
+import Layout from '../../../../components/layout/Layout';
 import UploadNewData from '../../../../components/uploads/UploadNewData';
+import getServerSidePropsWithAuth from '../../../../lib/auth/getServerSidePropsWithAuth';
 
 const UploadData = () => {
   const t = useTranslations();

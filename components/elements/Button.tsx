@@ -26,7 +26,7 @@ const buttonClassName = {
   none: ''
 };
 
-const disabledClassName = "opacity-60 pointer-events-none"
+const disabledClassName = 'opacity-60 pointer-events-none';
 
 const Button = ({
   className,
@@ -63,7 +63,9 @@ const Button = ({
       className={
         newClassName
           ? newClassName
-          : `${buttonClassName.base} ${buttonClassName[variant]} ${className} ${disabled ? disabledClassName : ''}`
+          : `${buttonClassName.base} ${buttonClassName[variant]} ${className} ${
+              disabled ? disabledClassName : ''
+            }`
       }
     >
       {loading && <LoadingIcon />}

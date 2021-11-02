@@ -10,7 +10,7 @@ interface LegalEventsProps {
 
 const FILTERS = {
   ALL: 'all_events',
-  NEGATIVE: 'negative_event',
+  NEGATIVE: 'negative_events',
   CHARGES: 'charges'
 };
 
@@ -35,14 +35,20 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
   const t = useTranslations();
 
   return (
-    <div className="text-primary px-4 md:px-1">
+    <div
+      className="text-primary px-4 md:px-1"
+      data-testid="legal-events-testid"
+    >
       <p className="text-xl">{t('summary')}</p>
-      <div className="flex flex-col md:flex-row my-6 justi ">
+      <div
+        className="flex flex-col md:flex-row my-6"
+        data-testid="legal-events-summary-testid"
+      >
         <LegalFilter
           events={allEvents}
           filter={filter}
           handleFilter={() => handleFilter(allEvents, FILTERS.ALL)}
-          title={t('all events')}
+          title={t('all_events')}
           activeFilter={FILTERS.ALL}
         />
         <LegalFilter
@@ -56,7 +62,7 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
           events={negativeEvents}
           filter={filter}
           handleFilter={() => handleFilter(negativeEvents, FILTERS.NEGATIVE)}
-          title={t('negative events')}
+          title={t('negative_events')}
           activeFilter={FILTERS.NEGATIVE}
         />
       </div>
@@ -64,7 +70,10 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
       <p className="text-xl">{t(filter)}</p>
 
       <div className="bg-white shadow-sm p-2 my-6 rounded-sm">
-        <div className="w-full my-6 flex flex-col text-xs px-2">
+        <div
+          className="w-full my-6 flex flex-col text-xs px-2"
+          data-testid="legal-events-table-testid"
+        >
           <div className="flex border-b pb-2 mb-2">
             <p className="w-full">{t('description')}</p>
             <p className="w-full">{t('type')}</p>

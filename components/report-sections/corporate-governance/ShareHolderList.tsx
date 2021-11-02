@@ -10,7 +10,7 @@ const ShareHolderList = ({ shareholders }: ShareHolderListProps) => {
   const t = useTranslations();
 
   return (
-    <div className="my-4">
+    <div className="my-4" data-testid="corp-shareholder-section-testid">
       <p className="text-xl py-4">{t('all_shareholders')}</p>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

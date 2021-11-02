@@ -27,7 +27,7 @@ const FinancialAccounts = ({ financialYears }: FinancialAccountProps) => {
   return (
     <div className="flex flex-col w-full lg:w-5/12 xl:w-4/12">
       <p className="font-bold py-2">{t('financial_accounts')}</p>
-      <ul className="space-y-2">
+      <ul className="space-y-2" data-testid="financial-accounts-list">
         {years.map(year => (
           <li key={year} className="bg-white p-2 rounded flex justify-between">
             {year}{' '}
