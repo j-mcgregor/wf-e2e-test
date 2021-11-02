@@ -1,73 +1,59 @@
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { scroller } from 'react-scroll';
+import React, { useState } from 'react';
+import { Link } from 'react-scroll';
 
 import { useSettingsNavItems } from '../../hooks/useNavigation';
 import IconTag from '../icons/IconTag';
 
-const SettingsNav = () => {
+const nonTestingProps = {
+  containerId: 'secondary-layout-container'
+};
+
+const SettingsNav = ({ isTesting = false }: { isTesting?: boolean }) => {
   const [activeSettingsItem, setActiveSettingsItem] = useState<string>(
-    'personal information'
+    'personal_information'
   );
   const navItems = useSettingsNavItems();
-  const router = useRouter();
-
-  const handleSettingsNavClick = (headerText: string) => {
-    const path = router.asPath.replace(/#[\w+ -]+/, '');
-    const headerId = headerText.replace(/\s/g, '-').toLowerCase();
-    setActiveSettingsItem(headerText);
-
-    // handles the smooth scrolling
-    scroller.scrollTo(`${headerId}-id`, {
-      duration: 400,
-      delay: 0,
-      smooth: true,
-      // refers to the container in the secondary layout
-      containerId: 'secondary-layout-container'
-    });
-
-    // shallow push to avoid forcing re-render
-    return router.push(`${path}#${headerId}`, undefined, { shallow: true });
-  };
-
-  // monitor the changes to the # path and update the menu based on the # path ids
-  useEffect(() => {
-    const dynamicPath = router.asPath.replace(/#[\w+ -]+/, '');
-    const path = router.asPath.replace(`${dynamicPath}#`, '');
-    const header = path.replace(/-/g, ' ').toLowerCase();
-    setActiveSettingsItem(header);
-  }, [router.asPath]);
 
   return (
     <div className="px-6 pt-8 flex flex-col h-full">
       <div className="flow-root mt-8 ">
         <ul className="text-sm p-2">
-          {navItems.map(({ title, icon }, index) => {
-            const lowerHeading = title.toLowerCase();
-            const isActive = activeSettingsItem === lowerHeading;
+          {navItems.map(({ title, icon, id }, index) => {
+            const isActive = activeSettingsItem === id;
             return (
-              <li key={index}>
-                <button
-                  className={`${
-                    isActive ? 'bg-gray-100' : ''
-                  } pt-2 px-1 rounded cursor-pointer w-full hover:text-alt`}
-                  onClick={() => handleSettingsNavClick(lowerHeading)}
+              <li
+                key={index}
+                className={`my-4 py-2 pl-2 ${
+                  isActive && 'bg-primary'
+                } rounded-lg`}
+              >
+                {/* Scroll handling link */}
+                <Link
+                  to={id}
+                  spy={true}
+                  offset={-50}
+                  smooth={true}
+                  activeClass={'bg-gray-400'}
+                  duration={300}
+                  className={`rounded cursor-pointer w-full hover:text-alt`}
+                  onSetActive={() => setActiveSettingsItem(id)}
+                  // prevents testing failures for issues with type requirement
+                  // https://github.com/fisshy/react-scroll/issues/352
+                  {...(isTesting ? {} : nonTestingProps)}
                 >
-                  <div className="relative pb-2 h-full">
-                    <div className="relative flex items-center">
+                  <div className="relative  h-full">
+                    <div
+                      className={`relative flex items-center ${
+                        isActive ? 'text-highlight' : ''
+                      }`}
+                    >
                       {icon && (
                         <IconTag icon={icon} className={'h-5 w-5 mx-1'} />
                       )}
-                      <p
-                        className={`${
-                          isActive ? 'text-highlight' : ''
-                        } ml-2 z-10 text-center`}
-                      >
-                        {title}
-                      </p>
+                      <p className={` ml-2 z-10 text-center`}>{title}</p>
                     </div>
                   </div>
-                </button>
+                </Link>
               </li>
             );
           })}

@@ -9,29 +9,17 @@ import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import Input from '../../elements/Input';
-import Select from '../../elements/Select';
 import {
   EMAIL_REQUIRED,
-  LAST_NAME_REQUIRED,
-  FIRST_NAME_REQUIRED
+  FULL_NAME_REQUIRED
 } from '../../../lib/utils/error-codes';
 import SettingsSettings from '../../../lib/settings/settings.settings';
 import { FormWithClassProps } from '../../../pages/settings';
 
 interface PersonalInformationFormInput {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
-  country: string;
-  streetAddress: string;
-  city: string;
-  state: string;
-  postcode: string;
-  companyName: string;
-  companyHQLocation: string;
 }
-
-const { supportedCountries } = SettingsSettings;
 
 const PersonalInformationForm = ({
   formClassName,
@@ -40,21 +28,11 @@ const PersonalInformationForm = ({
   const { user } = useRecoilValue(appState);
 
   const setCurrentUserContactInfo = useSetRecoilState(appState);
-  const contactInfo = user?.contact_information;
-
   const t = useTranslations();
 
   const currentUserValues = {
-    firstName: contactInfo?.first_name,
-    lastName: contactInfo?.last_name,
-    email: user?.email,
-    country: contactInfo?.country,
-    streetAddress: contactInfo?.street_address,
-    city: contactInfo?.city,
-    state: contactInfo?.state,
-    postcode: contactInfo?.postcode,
-    companyName: contactInfo?.company_name,
-    companyHQLocation: contactInfo?.company_hq_location
+    fullName: user?.full_name,
+    email: user?.email
   };
   const { register, handleSubmit, formState, reset } =
     useForm<PersonalInformationFormInput>({
@@ -64,33 +42,18 @@ const PersonalInformationForm = ({
   React.useEffect(() => {
     reset(currentUserValues);
   }, [user]);
-
   const { isDirty, errors } = formState;
 
   // @ts-ignore
   const onSubmit: SubmitHandler = async (
     data: PersonalInformationFormInput
   ) => {
-    const updatedData = {
-      first_name: data.firstName,
-      last_name: data.lastName,
-      country: data.country,
-      street_address: data.streetAddress,
-      city: data.city,
-      state: data.state,
-      postcode: data.postcode,
-      company_name: data.companyName,
-      company_hq_location: data.companyHQLocation
-    };
-
-    // @ts-ignore
-    setCurrentUserContactInfo(curr => {
+    setCurrentUserContactInfo((curr: { user: any }) => {
       return {
         ...curr,
         user: {
           ...curr.user,
-          contact_information: updatedData,
-          name: `${data.firstName} ${data.lastName}`,
+          full_name: data.fullName,
           email: data.email
         }
       };
@@ -102,9 +65,7 @@ const PersonalInformationForm = ({
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>
-            <SettingsSectionHeader>
-              {t('personal_information')}
-            </SettingsSectionHeader>
+            <SettingsSectionHeader text={t('personal_information')} />
             <p className="mt-1 text-sm text-gray-500">
               {t('forms.personal.update_your_personal')}
             </p>
@@ -112,24 +73,12 @@ const PersonalInformationForm = ({
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <Input
-                {...register('firstName')}
-                label={t('forms.personal.first_name')}
+                {...register('fullName')}
+                label={t('forms.personal.name')}
                 className={formClassName}
               />
-              {errors.firstName && (
-                <ErrorMessage text={`${t(FIRST_NAME_REQUIRED)}`} />
-              )}
-            </div>
-
-            <div className="col-span-6 sm:col-span-3">
-              <Input
-                {...register('lastName', { required: true })}
-                label={t('forms.personal.last_name')}
-                className={formClassName}
-                labelClassName={formLabelClassName}
-              />
-              {errors.lastName && (
-                <ErrorMessage text={`${t(LAST_NAME_REQUIRED)}`} />
+              {errors.fullName && (
+                <ErrorMessage text={`${t(FULL_NAME_REQUIRED)}`} />
               )}
             </div>
 
@@ -143,73 +92,6 @@ const PersonalInformationForm = ({
               />
 
               {errors.email && <ErrorMessage text={`${t(EMAIL_REQUIRED)}`} />}
-            </div>
-
-            <div className="col-span-6 sm:col-span-3">
-              <Select
-                {...register('country')}
-                label={t('forms.personal.country')}
-                options={supportedCountries}
-                className={formClassName}
-                labelClassName={formLabelClassName}
-              />
-            </div>
-
-            <div className="col-span-6">
-              <Input
-                {...register('streetAddress')}
-                label={t('forms.personal.street_address')}
-                className={formClassName}
-                labelClassName={formLabelClassName}
-              />
-            </div>
-
-            <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-              <Input
-                {...register('city')}
-                label={t('forms.personal.city')}
-                className={formClassName}
-                labelClassName={formLabelClassName}
-              />
-            </div>
-
-            <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-              <Input
-                {...register('state')}
-                label={t('forms.personal.state')}
-                className={formClassName}
-                labelClassName={formLabelClassName}
-              />
-            </div>
-
-            <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-              <Input
-                {...register('postcode')}
-                label={t('forms.personal.postcode')}
-                className={formClassName}
-                labelClassName={formLabelClassName}
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-6 gap-6">
-            <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-              <Input
-                {...register('companyName')}
-                label={t('forms.personal.company_name')}
-                className={formClassName}
-                labelClassName={formLabelClassName}
-              />
-            </div>
-
-            <div className="col-span-6 sm:col-span-6 lg:col-span-4">
-              <Select
-                {...register('companyHQLocation')}
-                label={t('forms.personal.company_headquarters')}
-                options={supportedCountries}
-                className={formClassName}
-                placeholder={'Your company headquarters'}
-                labelClassName={formLabelClassName}
-              />
             </div>
           </div>
         </div>

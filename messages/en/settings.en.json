@@ -7,16 +7,8 @@
   "forms": {
     "personal": {
       "update_your_personal": "Update your personal information",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "email_address": "Email address",
-      "country": "Country / Region",
-      "street_address": "Street Address",
-      "city": "City",
-      "postcode": "Zip / Postcode",
-      "state": "State / Province",
-      "company_name": "Company Name",
-      "company_headquarters": "Company Headquarters Location"
+      "name": "Name",
+      "email_address": "Email address"
     },
     "communication-form": {
       "change_or_update": "Change or update your personal information",
@@ -30,9 +22,9 @@
       "save": "save"
     },
     "preference": {
-      "localisation": "Localisation",
+      "locale": "Localisation",
       "reporting": "Default reporting country",
-      "loginScreen": "Default Login Screen",
+      "home_page": "Default Login Screen",
       "currency": "Default currency",
       "change_your_base": "Change your base preferences",
       "set_your_language": "Set your language preferences.",
@@ -45,7 +37,7 @@
       "localisation": "Localisation",
       "dashboard": "Dashboard",
       "reports": "Reports",
-      "sme_calc": "SME Calc",
+      "sme_calculator": "SME Calculator",
       "sme_prospector": "SME Prospector",
       "default_login_screen": "Default login screen"
     },

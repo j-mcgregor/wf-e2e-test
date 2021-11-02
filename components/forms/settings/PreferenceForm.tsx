@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import Select from '../../elements/Select';
 import { useTranslations } from 'next-intl';
+import { UserType } from '../../../types/global';
 
 import Button from '../../elements/Button';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -15,10 +16,10 @@ type PreferenceFormInput = {
   locale: string;
   reporting: string;
   currency: string;
-  loginScreen: string;
+  homePage: string;
 };
 
-const { defaultOptions, dashboardOptionValues } = SettingsSettings;
+const { preferences, dashboardOptionValues } = SettingsSettings;
 
 const PreferenceForm = ({
   formClassName,
@@ -40,45 +41,48 @@ const PreferenceForm = ({
   );
 
   const prefDefaults = {
-    locale: defaultOptions.preferences.localisation,
-    currency: defaultOptions.preferences.default_currency,
-    loginScreen: defaultOptions.preferences.default_login_screen,
-    reporting: defaultOptions.preferences.default_reporting_country
+    locale: preferences.defaults.locale,
+    currency: preferences.defaults.currency,
+    homePage: preferences.defaults.home_page,
+    reporting: preferences.defaults.reporting_country
   };
 
   const currentUserValues = {
-    locale: user?.preferences.localisation,
-    currency: user?.preferences.default_currency,
-    loginScreen: user?.preferences.default_login_screen,
-    reporting: user?.preferences.default_reporting_country
+    locale: user?.preferences.defaults.locale,
+    currency: user?.preferences.defaults.currency,
+    homePage: user?.preferences.defaults.home_page,
+    reporting: user?.preferences.defaults.reporting_country
   };
 
-  const { register, handleSubmit, formState, reset } =
+  const { register, handleSubmit, formState, reset, watch } =
     useForm<PreferenceFormInput>({ defaultValues: currentUserValues });
+
+  // form state
   const { isDirty, isValid } = formState;
 
   const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
-    // @ts-ignore
-    setCurrentUserPrefs(currentUser => ({
-      ...currentUser,
-      user: {
-        ...currentUser.user,
-        preferences: {
-          localisation: data.locale,
-          default_currency: data.currency,
-          default_login_screen: data.loginScreen,
-          default_reporting_country: data.reporting
-        },
-        ...currentUser.user?.preferences?.communication
-      }
-    }));
+    setCurrentUserPrefs((currentUser: { user: UserType }) => {
+      return {
+        user: {
+          ...currentUser.user,
+          preferences: {
+            defaults: {
+              locale: data.locale,
+              currency: data.currency,
+              home_page: data.homePage,
+              reporting_country: data.reporting
+            },
+            ...currentUser.user?.preferences?.communication
+          }
+        }
+      };
+    });
   };
 
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
       reset(currentUserValues, {
         keepDirty: true
-        // keepDefaultValues: true
       });
     }
   }, [formState, reset]);
@@ -109,7 +113,7 @@ const PreferenceForm = ({
               <Select
                 {...register('locale')}
                 options={SettingsSettings.supportedLocales}
-                label={t('forms.preference.localisation')}
+                label={t('forms.preference.locale')}
                 name={'locale'}
                 labelClassName={formLabelClassName}
                 className={formClassName}
@@ -155,10 +159,10 @@ const PreferenceForm = ({
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <Select
-                {...register('loginScreen')}
+                {...register('homePage')}
                 options={dashboardOptions}
-                label={t('forms.preference.loginScreen')}
-                name={'loginScreen'}
+                label={t('forms.preference.home_page')}
+                name={'homePage'}
                 labelClassName={formLabelClassName}
                 className={formClassName}
               >
