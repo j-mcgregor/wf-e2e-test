@@ -37,7 +37,9 @@ const UploadNewData = ({
   progressBarButtonText,
   headerText,
   buttonText
-}: UploadNewDataProps) => {
+}: // add description text
+// props for validations
+UploadNewDataProps) => {
   const [selectedFile, setSelectedFile] = useState<FileType>({
     type: null,
     name: null

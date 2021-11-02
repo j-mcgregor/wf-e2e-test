@@ -9,6 +9,9 @@ interface ProgressBarProps {
 const ProgressBar = ({ buttonText }: ProgressBarProps) => {
   const t = useTranslations();
 
+  // average time of report (variable) 10secs to start
+  //  % to completion
+
   return (
     <div>
       <p className="font-semibold my-2">{t('progress')}</p>

@@ -31,7 +31,8 @@ const BatchReportCard = ({
   return (
     <div className={`${disabled && 'opacity-50'}`}>
       <Link
-        linkTo={!disabled ? linkTo : '#'}
+        disabled={disabled}
+        linkTo={linkTo}
         className={`block text-primary ${className} ${
           disabled && 'cursor-auto'
         }`}
@@ -40,7 +41,7 @@ const BatchReportCard = ({
           className={`${
             !disabled && 'hover:shadow-xl duration-300 transition-shadow'
           }
-            shadow h-full  max-w-xs bg-white rounded p-3`}
+            shadow h-full max-w-xxs bg-white rounded p-3`}
           data-testid="link-card"
         >
           <div className="w-full flex justify-between ">

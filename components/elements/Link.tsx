@@ -7,8 +7,20 @@ interface LinkProps {
   className?: string;
   style?: React.CSSProperties;
   onClick?: () => void;
+  disabled?: boolean;
 }
-const Link = ({ children, linkTo, className, style, onClick }: LinkProps) => {
+const Link = ({
+  children,
+  linkTo,
+  className,
+  style,
+  onClick,
+  disabled
+}: LinkProps) => {
+  if (disabled) {
+    return <>{children}</>;
+  }
+
   if (onClick) {
     return (
       <button className={className} style={style} onClick={onClick}>

@@ -39,7 +39,7 @@ const BatchReports = () => {
             {t('completed_batch_reports')}
           </p>
 
-          <div className="grid  md:grid-cols-3 gap-3">
+          <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
             <BatchReportCard
               header="Batch - 18.10.21"
               linkTo="#"
@@ -74,7 +74,7 @@ const BatchReports = () => {
             {t('in_progress_batch_reports')}
           </p>
 
-          <div className="grid  md:grid-cols-3 gap-3">
+          <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
             <BatchReportCard
               header="Batch - 18.10.21"
               linkTo="#"
