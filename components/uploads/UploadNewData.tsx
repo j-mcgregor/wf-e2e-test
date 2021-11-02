@@ -3,7 +3,7 @@ import { useTranslations } from 'use-intl';
 import {
   validHeaders,
   requiredValues
-} from '../../lib/settings/report.settings';
+} from '../../lib/settings/sme-calc.settings';
 import Button from '../elements/Button';
 import UploadFile from './UploadFile';
 import { XIcon, CheckIcon } from '@heroicons/react/outline';

@@ -405,17 +405,3 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       data
     )
 };
-
-export const validHeaders = [
-  'company_name',
-  'company_id',
-  'sme_z_score',
-  'p_d_ratio\r'
-];
-
-export const requiredValues = [
-  'sme_z_score',
-  'company_name',
-  'company_id',
-  'p_d_ratio\r'
-];
