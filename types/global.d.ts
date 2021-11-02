@@ -30,7 +30,7 @@ type ContactInformation = {
   company_hq_location: string;
 };
 
-export type User = {
+export type UserType = {
   name?: string | null;
   email?: string | null;
   image?: string | null;
@@ -58,7 +58,7 @@ export type User = {
 };
 
 export interface RecoilUserType {
-  user: User | Promise<User> | RecoilValue<User>;
+  user: UserType | Promise<UserType> | RecoilValue<UserType>;
   // default: {}
 }
 

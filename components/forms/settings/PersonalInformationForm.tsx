@@ -28,11 +28,10 @@ const PersonalInformationForm = ({
   const { user } = useRecoilValue(appState);
 
   const setCurrentUserContactInfo = useSetRecoilState(appState);
-  const contactInfo = user?.contact_information;
   const t = useTranslations();
-  console.log('BELOW T:', { user });
+
   const currentUserValues = {
-    full_name: contactInfo?.full_name,
+    fullName: user?.full_name,
     email: user?.email
   };
   const { register, handleSubmit, formState, reset } =
@@ -49,21 +48,11 @@ const PersonalInformationForm = ({
   const onSubmit: SubmitHandler = async (
     data: PersonalInformationFormInput
   ) => {
-    // const updatedData = {
-    //   full_name: data.fullName
-    // };
-    console.log('INSIDE SUBMIT, ABOVE SETCURRENT:', {
-      data,
-      fullName: data.fullName
-    });
     setCurrentUserContactInfo((curr: { user: any }) => {
-      console.log('INSIDE SUBMIT, UNDER SETCURRENT:', { ...curr.user });
-
       return {
         ...curr,
         user: {
           ...curr.user,
-          // contact_information: updatedData,
           full_name: data.fullName,
           email: data.email
         }

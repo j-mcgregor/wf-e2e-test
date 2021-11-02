@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import Select from '../../elements/Select';
 import { useTranslations } from 'next-intl';
+import { UserType } from '../../../types/global';
 
 import Button from '../../elements/Button';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -52,19 +53,16 @@ const PreferenceForm = ({
     homePage: user?.preferences.defaults.home_page,
     reporting: user?.preferences.defaults.reporting_country
   };
-  //TODO: reporting_country from user.prefs.defaults.reporting_country
-  // is coming in as undefined, not sure why as it is present in both settings.settings and users.ts :shrug
 
-  console.log({ currentUserValues, prefDefaults });
-  const { register, handleSubmit, formState, reset } =
+  const { register, handleSubmit, formState, reset, watch } =
     useForm<PreferenceFormInput>({ defaultValues: currentUserValues });
+
+  // form state
   const { isDirty, isValid } = formState;
+
   const onSubmit: SubmitHandler<PreferenceFormInput> = data => {
-    // @ts-ignore
-    setCurrentUserPrefs(currentUser => {
-      console.log({ currentUser });
+    setCurrentUserPrefs((currentUser: { user: UserType }) => {
       return {
-        ...currentUser,
         user: {
           ...currentUser.user,
           preferences: {
@@ -72,7 +70,7 @@ const PreferenceForm = ({
               locale: data.locale,
               currency: data.currency,
               home_page: data.homePage,
-              reporting: data.reporting
+              reporting_country: data.reporting
             },
             ...currentUser.user?.preferences?.communication
           }

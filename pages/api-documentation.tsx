@@ -12,8 +12,7 @@ const iframeProps = {
 
 const APIDocumentation = () => {
   return (
-    <Layout title="API Documentation">
-      <h1 className="text-2xl mb-10">API Documentation </h1>
+    <Layout title="API Documentation" fullWidth>
       <Iframe {...iframeProps} />
     </Layout>
   );
