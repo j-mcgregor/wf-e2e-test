@@ -8,7 +8,6 @@ import Button from '../elements/Button';
 import UploadFile from './UploadFile';
 import { XIcon, CheckIcon } from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
-import ProgressBar from '../elements/ProgressBar';
 
 type FileType = {
   type: string | null;
@@ -25,16 +24,16 @@ type FileValidationType = {
 
 interface UploadNewDataProps {
   hasHeader: boolean;
-  hasProgressBar?: boolean;
-  progressBarButtonText?: TranslateInput;
+
   headerText?: TranslateInput;
   buttonText: TranslateInput;
+  progressBar?: React.ReactNode;
 }
 
 const UploadNewData = ({
   hasHeader,
-  hasProgressBar,
-  progressBarButtonText,
+
+  progressBar,
   headerText,
   buttonText
 }: // add description text
@@ -187,11 +186,7 @@ UploadNewDataProps) => {
         </Button>
       </div>
 
-      {hasProgressBar && (
-        <div className="mt-8">
-          <ProgressBar buttonText={progressBarButtonText} />
-        </div>
-      )}
+      {progressBar && <div className="mt-8">{progressBar}</div>}
     </div>
   );
 };

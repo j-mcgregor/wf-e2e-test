@@ -4,10 +4,16 @@ import { TranslateInput } from '../../types/global';
 import Button from './Button';
 
 interface ProgressBarProps {
-  buttonText: TranslateInput | undefined;
+  totalReports: number;
+  averageReportTime: number;
+  buttonText: TranslateInput;
 }
 
-const ProgressBar = ({ buttonText }: ProgressBarProps) => {
+const ProgressBar = ({
+  buttonText,
+  averageReportTime,
+  totalReports
+}: ProgressBarProps) => {
   const t = useTranslations();
 
   const getTimeRemaining = (ms: number): string => {
@@ -19,10 +25,7 @@ const ProgressBar = ({ buttonText }: ProgressBarProps) => {
       return `${mins} minutes ${secs} seconds`;
     }
   };
-  // all reports - will come from back end / mock data
-  const totalReports = 534;
-  // average time to generate report in ms
-  const averageReportTime = 150;
+
   const totalTime = Math.round(totalReports * averageReportTime);
 
   // state for total completed reports
@@ -56,11 +59,10 @@ const ProgressBar = ({ buttonText }: ProgressBarProps) => {
           {completedReports}/{totalReports}
         </p>
       </div>
-
       <div className="w-full h-3 my-4 rounded-full bg-primary">
         <div
           style={{ width: `${percentComplete}%` }}
-          className={`h-full bg-highlight rounded-l-full ${
+          className={`h-full bg-highlight rounded-l-full transition-all duration-200 ease-linear ${
             percentComplete === 100 && 'rounded-r-full'
           }`}
         />

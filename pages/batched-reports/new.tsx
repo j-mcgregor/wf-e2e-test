@@ -4,6 +4,7 @@ import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import Layout from '../../components/layout/Layout';
 import Button from '../../components/elements/Button';
 import LinkCard from '../../components/cards/LinkCard';
+/* eslint-disable security/detect-non-literal-require */
 import UploadNewData from '../../components/uploads/UploadNewData';
 import ProgressBar from '../../components/elements/ProgressBar';
 
@@ -28,13 +29,17 @@ const CreateBatchReport = () => {
           {t('utilise_our_powerful_automated_reports_at_scale')}
         </p>
 
-        {/* FIXED THE UPLOADNEWDATA COMPONENT TO ACCEPT PROPS FOR HEADER/BUTTON TEXT */}
         <UploadNewData
           hasHeader
           headerText={t('run_multiple_reports')}
           buttonText={t('run_batch')}
-          hasProgressBar
-          progressBarButtonText={t('view_results')}
+          progressBar={
+            <ProgressBar
+              buttonText={t('view_results')}
+              averageReportTime={150}
+              totalReports={200}
+            />
+          }
         />
 
         <p className="text-2xl font-semibold my-8">{t('csv_templates')}</p>
