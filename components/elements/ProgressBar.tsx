@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { TranslateInput } from '../../types/global';
 import Button from './Button';
@@ -10,27 +10,39 @@ interface ProgressBarProps {
 const ProgressBar = ({ buttonText }: ProgressBarProps) => {
   const t = useTranslations();
 
+  const getTimeRemaining = (ms: number): string => {
+    const mins = Math.floor(ms / 60000);
+    const secs = Math.round((ms % 60000) / 1000);
+    if (ms < 60000) {
+      return `${secs} seconds`;
+    } else {
+      return `${mins} minutes ${secs} seconds`;
+    }
+  };
   // all reports - will come from back end / mock data
-  const totalReports = 127;
-
+  const totalReports = 534;
   // average time to generate report in ms
-  const averageReportTime = 100;
+  const averageReportTime = 150;
+  const totalTime = Math.round(totalReports * averageReportTime);
 
   // state for total completed reports
   const [completedReports, setCompletedReports] = useState(0);
+  const [remainingTime, setRemainingTime] = useState(totalTime);
 
-  // get % of completed reports rounded to an integer
+  // get % of completed for rendering length of progress bar
   let percentComplete = Math.round((completedReports * 100) / totalReports);
 
-  // run interval on page load - will need to be run via event handler
-  useEffect(() => {
-    let completed = 0;
-    let timer = setInterval(() => {
-      completed += 1;
-      setCompletedReports(completed);
-      completed >= totalReports && clearInterval(timer);
+  const runReports = (): void => {
+    let completedReports = 0;
+    let time = remainingTime;
+    let interval = setInterval(() => {
+      completedReports += 1;
+      time -= averageReportTime;
+      setCompletedReports(completedReports);
+      setRemainingTime(time);
+      completedReports >= totalReports && clearInterval(interval);
     }, averageReportTime);
-  }, []);
+  };
 
   return (
     <div>
@@ -38,7 +50,7 @@ const ProgressBar = ({ buttonText }: ProgressBarProps) => {
       <div className="flex w-full justify-between text-sm">
         <div className="flex">
           <p className="pr-1 ">{t('estimated_time_to_completion')}:</p>
-          <p>1 mins 36secs</p>
+          <p>{getTimeRemaining(remainingTime)}</p>
         </div>
         <p className="font-bold">
           {completedReports}/{totalReports}
@@ -56,6 +68,11 @@ const ProgressBar = ({ buttonText }: ProgressBarProps) => {
       <div className="w-1/3 my-4 border border-gray-200 rounded">
         <Button variant="none" disabled>
           <p>{buttonText}</p>
+        </Button>
+      </div>
+      <div className="w-1/3 my-4 border border-gray-200 rounded">
+        <Button variant="none" onClick={runReports}>
+          <p>Run Reports</p>
         </Button>
       </div>
     </div>
