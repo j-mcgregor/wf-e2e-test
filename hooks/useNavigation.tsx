@@ -82,15 +82,20 @@ interface useSettingsNavItemsProps {
   // eslint-disable-next-line no-unused-vars
   icon?: (props: React.ComponentProps<'svg'>) => JSX.Element;
   title: string;
+  id: string;
 }
 
 const useSettingsNavItems = (): useSettingsNavItemsProps[] => {
   const t = useTranslations();
   return [
-    { icon: UserCircleIcon, title: `${t('personal_information')}` },
-    { icon: FingerPrintIcon, title: `${t('preferences')}` },
-    { icon: KeyIcon, title: `${t('password')}` },
-    { icon: MailIcon, title: `${t('communication')}` }
+    {
+      icon: UserCircleIcon,
+      title: `${t('personal_information')}`,
+      id: 'personal_information'
+    },
+    { icon: FingerPrintIcon, title: `${t('preferences')}`, id: 'preferences' },
+    { icon: KeyIcon, title: `${t('password')}`, id: 'password' },
+    { icon: MailIcon, title: `${t('communication')}`, id: 'communication' }
   ];
 };
 

@@ -14,7 +14,10 @@ const ShareHolderCard = ({
   linkedin
 }: ShareHolderCardProps) => {
   return (
-    <div className="bg-white flex py-3 px-4 justify-between items-center rounded-sm shadow-sm text-sm">
+    <div
+      className="bg-white flex py-3 px-4 justify-between items-center rounded-sm shadow-sm text-sm"
+      data-testid="shareholder-card-testid"
+    >
       <p>
         {toTitleCase(firstName)} {toTitleCase(lastName)}
       </p>

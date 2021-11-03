@@ -106,6 +106,7 @@ const LoginForm = () => {
                   })}
                   label={`${t('email')}`}
                   type="email"
+                  autoComplete="email"
                   // requires a string to be passed
                   placeholder={`${t('placeholders.email')}`}
                 />
@@ -121,6 +122,7 @@ const LoginForm = () => {
                 <Input
                   {...register('password', { required: true })}
                   type="password"
+                  autoComplete="current-password"
                   label={`${t('password')}`}
                   placeholder={`${t('placeholders.password')}`}
                 />

@@ -14,7 +14,10 @@ const LegalRow = ({ types, description, details, date }: LegalEvent) => {
   const handleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   return (
-    <div className={`${textColor} flex flex-col py-1.5`}>
+    <div
+      className={`${textColor} flex flex-col py-1.5`}
+      data-testid="legal-row-testid"
+    >
       <div className="flex">
         <div className="w-full mr-1">
           <p>{description}</p>

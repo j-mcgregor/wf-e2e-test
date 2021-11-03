@@ -108,8 +108,8 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       'gdp_annual_growth_rate',
       'quarterly',
       {
-        title: 'gdp_annual_growth_rate.title',
-        body: 'gdp_annual_growth_rate.body'
+        title: 'gdp_annual_growth.title',
+        body: 'gdp_annual_growth.body'
       },
       data
     ),
@@ -405,20 +405,6 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       data
     )
 };
-
-export const validReportHeaders = [
-  'company_name',
-  'company_id',
-  'sme_z_score',
-  'p_d_ratio\r'
-];
-
-export const requiredReportValues = [
-  'sme_z_score',
-  'company_name',
-  'company_id',
-  'p_d_ratio\r'
-];
 
 export const batchReport = {
   averageTime: 100 // average report generation time in ms

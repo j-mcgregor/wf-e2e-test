@@ -6,6 +6,7 @@ const Cross = () => {
       fill="none"
       viewBox="0 0 24 24"
       stroke="#EB0909"
+      data-testid="icon-cross"
     >
       <path
         strokeLinecap="round"

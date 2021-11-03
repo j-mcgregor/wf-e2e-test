@@ -5,12 +5,11 @@
   "REPORT_FETCHING_ERROR": "There was an error fetching that report.",
   "VALID_EMAIL_REQUIRED": "Please provide a valid email.",
   "EMAIL_REQUIRED": "Your email is required.",
+  "FULL_NAME_REQUIRED": "Your full name is required.",
   "PASSWORD_REQUIRED": "Your password is required.",
   "NO_REPORT": "No report found.",
   "INVALID_SSO_LOGIN": "We couldn't log you in with your SSO credentials. Please check that you have access and try again. If the problem persists please contact support.",
   "INCORRECT_DETAILS": "Your details are incorrect. Please try again.",
-  "LAST_NAME_REQUIRED": "Please provide your last name.",
-  "FIRST_NAME_REQUIRED": "Please provide your first name.",
   "NEW_PASSWORD_REQUIRED": "Password must have at least 8 characters",
   "CONFIRM_PASSWORD_MATCH": "The passwords do not match."
 }

@@ -6,6 +6,8 @@ import SettingsSettings from '../../lib/settings/settings.settings';
 import { useTranslations } from 'next-intl';
 import { CompanyType } from '../../types/global';
 import ResultCompany from '../elements/ResultCompany';
+import { useRecoilValue } from 'recoil';
+import appState from '../../lib/appState';
 
 type BasicSearchType = {
   selectedCompany: CompanyType | null;
@@ -25,9 +27,12 @@ const BasicSearch = ({
   children
 }: BasicSearchType) => {
   const countries: SimpleValue[] = SettingsSettings.supportedCountries;
-  // default country taken from user profile (settings)
-  const defaultCountry =
-    SettingsSettings.defaultOptions.preferences.default_reporting_country;
+
+  const { user } = useRecoilValue(appState);
+
+  // default country taken from user state
+  const defaultCountry = user?.preferences?.defaults?.reporting_country;
+
   const t = useTranslations();
 
   return (

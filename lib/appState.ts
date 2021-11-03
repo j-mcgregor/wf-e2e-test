@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 
-import { Report, User } from '../types/global';
+import { Report, UserType } from '../types/global';
 
 // https://github.com/facebookexperimental/Recoil/issues/733
 // separate files for state issues NextJS
@@ -13,7 +13,7 @@ const appState = atom<any>({
   }
 });
 
-export const appUser = selector<User>({
+export const appUser = selector<UserType>({
   key: 'appUser',
   get: ({ get }) => {
     return get(appState).user;

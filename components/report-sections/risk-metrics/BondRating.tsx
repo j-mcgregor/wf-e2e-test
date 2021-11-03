@@ -39,6 +39,7 @@ const BondRating = ({ score }: BondRatingProps) => {
                   ? 'h-36 text-4xl font-bold min-w-[100px]'
                   : 'h-28 text-lg font-semibold'
               } text-white flex items-center justify-center mx-[1px]`}
+              data-testid={rating.score === score ? 'bond-rating' : ''}
             >
               {rating.score}
             </div>
