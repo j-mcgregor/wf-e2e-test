@@ -10,6 +10,11 @@ import UploadNewData from '../../components/uploads/UploadNewData';
 import ProgressBar from '../../components/elements/ProgressBar';
 import { batchReport } from '../../lib/settings/report.settings';
 
+import {
+  validReportHeaders,
+  requiredReportValues
+} from '../../lib/settings/report.settings';
+
 const CreateBatchReport = () => {
   const t = useTranslations();
 
@@ -59,9 +64,10 @@ const CreateBatchReport = () => {
         </p>
 
         <UploadNewData
-          hasHeader
+          validHeaders={validReportHeaders}
+          requiredValues={requiredReportValues}
           description={t('upload_your_csv_here_to_begin')}
-          headerText={t('run_multiple_reports')}
+          header={t('run_multiple_reports')}
           buttonText={!processing ? t('run_batch') : t('running')}
           progressBar={
             <ProgressBar

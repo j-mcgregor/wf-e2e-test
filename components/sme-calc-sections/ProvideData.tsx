@@ -18,7 +18,8 @@ const ProvideData = () => {
         </div>
 
         <UploadNewData
-          hasHeader={false}
+          header={t('provide_your_own_data')}
+          description={t('generate_new_report')}
           buttonText={t('generate_new_report')}
         />
       </div>

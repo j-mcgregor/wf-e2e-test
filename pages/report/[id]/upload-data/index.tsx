@@ -47,8 +47,8 @@ const UploadData = () => {
           />
         </div>
         <UploadNewData
-          hasHeader={true}
-          headerText={t('upload_the_new_data')}
+          header={t('upload_the_new_data')}
+          description={t('drag_and_drop_your_altered_csv_below')}
           buttonText={t('generate_new_report')}
         />
       </div>

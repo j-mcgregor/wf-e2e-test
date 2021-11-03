@@ -406,14 +406,14 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     )
 };
 
-export const validHeaders = [
+export const validReportHeaders = [
   'company_name',
   'company_id',
   'sme_z_score',
   'p_d_ratio\r'
 ];
 
-export const requiredValues = [
+export const requiredReportValues = [
   'sme_z_score',
   'company_name',
   'company_id',

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'use-intl';
+
 import {
-  validHeaders,
-  requiredValues
+  validReportHeaders,
+  requiredReportValues
 } from '../../lib/settings/report.settings';
+
 import Button from '../elements/Button';
 import UploadFile from './UploadFile';
 import { XIcon, CheckIcon } from '@heroicons/react/outline';
@@ -23,26 +25,26 @@ type FileValidationType = {
 };
 
 interface UploadNewDataProps {
-  hasHeader: boolean;
-  headerText?: TranslateInput;
-  description?: TranslateInput;
+  validHeaders?: string[];
+  requiredValues?: string[];
+  header: TranslateInput;
+  description: TranslateInput;
   buttonText: TranslateInput;
   progressBar?: React.ReactNode;
   disableButton?: boolean;
-  onSubmit: () => void;
+  onSubmit?: () => void;
 }
 
 const UploadNewData = ({
-  hasHeader,
+  validHeaders = validReportHeaders,
+  requiredValues = requiredReportValues,
   progressBar,
-  headerText,
+  header,
   description,
   buttonText,
   disableButton,
   onSubmit
-}: // add description text
-// props for validations
-UploadNewDataProps) => {
+}: UploadNewDataProps) => {
   const [selectedFile, setSelectedFile] = useState<FileType>({
     type: null,
     name: null
@@ -137,17 +139,12 @@ UploadNewDataProps) => {
 
   const t = useTranslations();
 
-  const header = (
-    <div>
-      {/* <p className="text-3xl font-semibold py-2">{t('upload_the_new_data')}</p> */}
-      <p className="text-3xl font-semibold py-2">{headerText}</p>
-      <p className="text-sm py-2">{description}</p>
-    </div>
-  );
-
   return (
     <div className="bg-white rounded-sm shadow-sm p-8">
-      {hasHeader && header}
+      <div>
+        <p className="text-3xl font-semibold py-2">{header}</p>
+        <p className="text-sm py-2">{description}</p>
+      </div>
       <div className="flex justify-between w-full py-4">
         <UploadFile
           text={t('or_drag_and_drop_it')}
@@ -157,7 +154,6 @@ UploadNewDataProps) => {
           removeFile={handleRemoveFile}
           fileName={selectedFile.name}
         />
-
         <div className="text-sm flex flex-col w-full items-center">
           <div>
             <p className="font-bold py-2">{t('valid_csv_check')}</p>
@@ -190,7 +186,6 @@ UploadNewDataProps) => {
           {buttonText}
         </Button>
       </div>
-
       {isValidated && progressBar && <div className="mt-8">{progressBar}</div>}
     </div>
   );
