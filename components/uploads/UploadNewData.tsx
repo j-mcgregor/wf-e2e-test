@@ -9,7 +9,6 @@ import {
 
 import Button from '../elements/Button';
 import UploadFile from './UploadFile';
-import { XIcon, CheckIcon } from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
 
 type FileType = {
