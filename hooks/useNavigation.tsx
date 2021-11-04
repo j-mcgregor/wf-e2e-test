@@ -66,15 +66,15 @@ const useMainNavItems = () => {
 const useReportNavItems = () => {
   const t = useTranslations();
   return [
-    `${t('summary')}`,
-    `${t('risk_metrics')}`,
-    `${t('highlights')}`,
-    `${t('financial_trends')}`,
-    `${t('corporate_governance')}`,
-    `${t('legal_events')}`,
-    `${t('macro_economic_trends')}`,
-    `${t('esg')}`,
-    `${t('news')}`
+    { title: `${t('summary')}`, id: 'summary' },
+    { title: `${t('risk_metrics')}`, id: 'risk_metrics' },
+    { title: `${t('highlights')}`, id: 'highlights' },
+    { title: `${t('financial_trends')}`, id: 'financial_trends' },
+    { title: `${t('corporate_governance')}`, id: 'corporate_governance' },
+    { title: `${t('legal_events')}`, id: 'legal_events' },
+    { title: `${t('macro_economic_trends')}`, id: 'macro_economic_trends' },
+    { title: `${t('esg')}`, id: 'esg' },
+    { title: `${t('news')}`, id: 'news' }
   ];
 };
 

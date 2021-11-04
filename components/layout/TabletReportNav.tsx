@@ -1,7 +1,6 @@
 import { ArrowLeftIcon } from '@heroicons/react/outline';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { scroller } from 'react-scroll';
+import { Link } from 'react-scroll';
 import { useReportNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';
 import SkeletonMenu from '../skeletons/SkeletonMenu';
@@ -11,50 +10,30 @@ import DownloadFolder from '../icons/DownloadFolder';
 interface ReportNavProps {
   companyName: string;
   loading?: boolean;
+  isTesting?: boolean;
 }
 
-const ReportNav = ({ companyName, loading }: ReportNavProps) => {
+const nonTestingProps = {
+  containerId: 'secondary-layout-container'
+};
+
+const TabletReportNav = ({
+  companyName,
+  loading,
+  isTesting
+}: ReportNavProps) => {
   const navItems = useReportNavItems();
-  const router = useRouter();
 
   const [activeItem, setActiveItem] = useState<string>('summary');
 
-  const handleClick = (headerText: string) => {
-    const path = router.asPath.replace(/#[\w+ -]+/, '');
-    const snakedHeader = headerText.replace(/\s/g, '-').toLowerCase();
-    setActiveItem(headerText);
-
-    // handles the smooth scrolling
-    scroller.scrollTo(`${snakedHeader}-id`, {
-      duration: 400,
-      delay: 0,
-      smooth: true,
-      // refers to the container in the secondary layout
-      containerId: 'secondary-layout-container'
-    });
-
-    // shallow push to avoid forcing re-render
-    return router.push(`${path}#${snakedHeader}`, undefined, { shallow: true });
-  };
-
-  // monitor the changes to the # path and update the menu based on the # path ids
+  // monitor the changes to the active state path and update the menu scroll position based on the id
   useEffect(() => {
-    const dynamicPath = router.asPath.replace(/#[\w+ -]+/, '');
-
-    const path = router.asPath.replace(`${dynamicPath}#`, '');
-    const header = path.replace(/-/g, ' ').toLowerCase();
-    setActiveItem(header);
-
-    // handles the scrolling of the nav to get the menu item into view
-    const snakedHeader = header.replace(/\s/g, '-').toLowerCase();
-
-    // handle no header on first load
-    // errors if there is no #route applied
-    if (!/\//.test(header)) {
-      document.querySelector(`#${snakedHeader}-nav-id`)?.scrollIntoView({behavior: "smooth"})
+    if (activeItem && !isTesting) {
+      document
+        ?.querySelector(`#${activeItem}-top`)
+        ?.scrollIntoView({ behavior: 'smooth' });
     }
-    
-  }, [router.asPath]);
+  }, [activeItem]);
 
   if (loading) {
     return (
@@ -77,25 +56,34 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
       >
         <ArrowLeftIcon className="h-full w-6" />
       </Button>
-     
 
       {/* hide scroll works to allow touch but removes mouse - needs solution */}
-      <div className="overflow-x-auto flex hide-scroll"  id="tablet-report-nav-container">
+      <div
+        className="overflow-x-auto flex hide-scroll"
+        id="tablet-report-nav-container"
+      >
         <ul className="flex items-center justify-between pr-20 sm:pr-40 md:pr-80">
+          <li>
+            {' '}
+            <p className="font-bold whitespace-nowrap px-4">{companyName}</p>
+          </li>
 
-          <li> <p className="font-bold whitespace-nowrap px-4">{companyName}</p></li>
-
-          
-          {navItems.map((heading, index) => {
-            const lowerHeading = heading.toLowerCase();
-            const isActive = activeItem === lowerHeading;
-            const snakedHeader = heading.replace(/\s/g, '-').toLowerCase();
-
+          {navItems.map(({ id, title }, index) => {
+            const isActive = activeItem === id;
             return (
-              <li key={index} id={`${snakedHeader}-nav-id`}>
-                <button
+              <li key={index} id={`${id}-top`}>
+                <Link
                   className="cursor-pointer hover:text-alt"
-                  onClick={() => handleClick(lowerHeading)}
+                  to={id}
+                  spy={true}
+                  offset={-30}
+                  smooth={true}
+                  activeClass={'bg-gray-400'}
+                  duration={300}
+                  onSetActive={() => setActiveItem(id)}
+                  // prevents testing failures for issues with type requirement
+                  // https://github.com/fisshy/react-scroll/issues/352
+                  {...(isTesting ? {} : nonTestingProps)}
                 >
                   <div className="whitespace-nowrap px-6">
                     <p
@@ -103,10 +91,10 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
                         isActive ? 'text-highlight font-bold' : ''
                       } z-10 text-center w-full`}
                     >
-                      {heading}
+                      {title}
                     </p>
                   </div>
-                </button>
+                </Link>
               </li>
             );
           })}
@@ -125,4 +113,4 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
   );
 };
 
-export default ReportNav;
+export default TabletReportNav;

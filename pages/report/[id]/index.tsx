@@ -93,7 +93,7 @@ export interface ReportDataProps {
   message?: string;
 }
 
-const ReportTemplate = () => {
+const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const t = useTranslations();
   const router = useRouter();
 
@@ -132,8 +132,13 @@ const ReportTemplate = () => {
         navigation={
           data?.company_name && (
             <>
-              <ReportNav companyName={data?.company_name} loading={!data} />
+              <ReportNav
+                isTesting={isTesting}
+                companyName={data?.company_name}
+                loading={!data}
+              />
               <TabletReportNav
+                isTesting={isTesting}
                 companyName={data?.company_name}
                 loading={!data}
               />
@@ -155,7 +160,7 @@ const ReportTemplate = () => {
                 reportId={id[0]}
               />
             </div>
-            <HashContainer name={'Summary'} id={`summary-id`}>
+            <HashContainer name={'Summary'} id={`summary`}>
               <ReportSectionHeader text={t('summary')} />
 
               <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm">
@@ -177,7 +182,7 @@ const ReportTemplate = () => {
                 <SummaryFinancial years={lastFiveYearsFinancials} />
               </div>
             </HashContainer>
-            <HashContainer name={'Risk Metrics'} id={`risk-metrics-id`}>
+            <HashContainer name={'Risk Metrics'} id={`risk_metrics`}>
               <ReportSectionHeader text={t('risk_metrics')} />
               <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4">
                 <Speedometer
@@ -233,7 +238,7 @@ const ReportTemplate = () => {
               </div>
               <BondRating score={data.risk_metrics.bond_rating} />
             </HashContainer>
-            <HashContainer name={'Highlights'} id={`highlights-id`}>
+            <HashContainer name={'Highlights'} id={`highlights`}>
               <ReportSectionHeader text={t('highlights')} />
 
               <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 ">
@@ -275,14 +280,14 @@ const ReportTemplate = () => {
               </div>
             </HashContainer>
 
-            <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
+            <HashContainer name={'Financial Trends'} id={`financial_trends`}>
               <ReportSectionHeader text={t('financial_trends')} />
               <FinancialTrends data={[]} />
             </HashContainer>
 
             <HashContainer
               name={'Corporate Governance'}
-              id={`corporate-governance-id`}
+              id={`corporate_governance`}
             >
               <ReportSectionHeader text={t('corporate_governance')} />
 
@@ -314,7 +319,7 @@ const ReportTemplate = () => {
 
             <HashContainer
               name={'Legal Events'}
-              id={`legal-events-id`}
+              id={`legal_events`}
               fullHeight={false}
             >
               <ReportSectionHeader text={t('legal_events')} />
@@ -323,13 +328,13 @@ const ReportTemplate = () => {
 
             <HashContainer
               name={'Macro Economic Trends'}
-              id={`macro-economic-trends-id`}
+              id={`macro_economic_trends`}
             >
               <ReportSectionHeader text={t('macro_economic_trends')} />
               <MacroEconomicTrends trends={[]} />
             </HashContainer>
 
-            <HashContainer name={'ESG'} id={`esg-id`} fullHeight={false}>
+            <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>
               <ReportSectionHeader text={t('esg')} />
               <p className="text-xl">{t('esg_assessment')}</p>
               <ESGCard
@@ -348,7 +353,7 @@ const ReportTemplate = () => {
               />
             </HashContainer>
 
-            <HashContainer name={'News'} id={`news-id`}>
+            <HashContainer name={'News'} id={`news`}>
               <ReportSectionHeader text={t('news')} />
               <NewsFeed />
             </HashContainer>
