@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'use-intl';
 
 import {
-  validHeaders,
-  requiredValues
+  validReportHeaders,
+  requiredReportValues
 } from '../../lib/settings/sme-calc.settings';
+
 import Button from '../elements/Button';
 import UploadFile from './UploadFile';
+import { TranslateInput } from '../../types/global';
 
 type FileType = {
   type: string | null;
@@ -23,10 +25,26 @@ type FileValidationType = {
 };
 
 interface UploadNewDataProps {
-  hasHeader: boolean;
+  validHeaders?: string[];
+  requiredValues?: string[];
+  header: TranslateInput;
+  description: TranslateInput;
+  buttonText: TranslateInput;
+  progressBar?: React.ReactNode;
+  disableButton?: boolean;
+  onSubmit?: () => void;
 }
 
-const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
+const UploadNewData = ({
+  validHeaders = validReportHeaders,
+  requiredValues = requiredReportValues,
+  progressBar,
+  header,
+  description,
+  buttonText,
+  disableButton,
+  onSubmit
+}: UploadNewDataProps) => {
   const [selectedFile, setSelectedFile] = useState<FileType>({
     type: null,
     name: null
@@ -127,16 +145,12 @@ const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
 
   const t = useTranslations();
 
-  const header = (
-    <div>
-      <p className="text-3xl font-semibold py-2">{t('upload_the_new_data')}</p>
-      <p className="text-sm py-2">{t('drag_and_drop_csv_below')}</p>
-    </div>
-  );
-
   return (
     <div className="bg-white rounded-sm shadow-sm p-8">
-      {hasHeader && header}
+      <div>
+        <p className="text-3xl font-semibold py-2">{header}</p>
+        <p className="text-sm py-2">{description}</p>
+      </div>
       <div className="flex justify-between w-full py-4">
         <UploadFile
           text={t('or_drag_and_drop_it')}
@@ -146,7 +160,6 @@ const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
           removeFile={handleRemoveFile}
           fileName={selectedFile.name}
         />
-
         <div className="text-sm flex flex-col w-full items-center">
           <div>
             <p className="font-bold py-2">{t('valid_csv_check')}</p>
@@ -172,12 +185,14 @@ const UploadNewData = ({ hasHeader }: UploadNewDataProps) => {
       <div className="w-3/12">
         <Button
           variant="highlight"
-          disabled={!isValidated}
+          disabled={!isValidated || disableButton}
           className="text-primary rounded-none"
+          onClick={onSubmit}
         >
-          {t('generate_new_report')}
+          {buttonText}
         </Button>
       </div>
+      {isValidated && progressBar && <div className="mt-8">{progressBar}</div>}
     </div>
   );
 };

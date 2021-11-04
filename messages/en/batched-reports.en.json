@@ -1,1 +1,26 @@
-{}
+{
+  "batch_reports": "Batch Reports",
+  "view_and_create_batch_report_jobs": "View and create Batch Report jobs. Analyse 100s or 1000s of companies at once by simply uploading a .csv with the company number and country code.",
+  "create_a_new_batch_report": "Create a new Batch Report",
+  "create_a_batch_report": "Create a Batch Report",
+  "completed_batch_reports": "Completed Batch Reports",
+  "in_progress_batch_reports": "In Progress Batch Reports",
+  "upload_company_numbers_and_country_codes": "Upload company numbers and country codes to start.",
+  "total_companies_analysed": "Total companies analysed",
+  "back_to_all_batch_reports": "Back to all Batch Reports",
+  "utilise_our_powerful_automated_reports_at_scale": "Utlise our powerful Automated Reports at scale and get insights across 1000s of companies at once.",
+  "run_multiple_reports": "Run multiple reports",
+  "run_batch": "Run Batch",
+  "csv_templates": "CSV Templates",
+  "batch_reports_template": "Batch Reports Template",
+  "in_order_to_use_our_batch_reporting_feature_you_need_to_upload": "In order to use our Batch Reporting feature you need to upload the company IDs in the correct format. Please download and use this template.",
+  "progress": "Progress",
+  "estimated_time_to_completion": "Estimated time to completion",
+  "view_results": "View results",
+  "upload_your_csv_here_to_begin": "Upload your CSV here to begin.",
+  "running": "Running...",
+  "download_the_results_of_the_batch_reports_in_csv_or_excel_format": "Download the result of the Batch Reports in CSV or Excel format and see a quick overview of all the results below.",
+  "download_reports": "Download Reports",
+  "batch_results": "Batch Results",
+  "batch_report_results": "Batch Report Results"
+}

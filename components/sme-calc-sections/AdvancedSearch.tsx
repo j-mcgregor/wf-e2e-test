@@ -1,5 +1,4 @@
 import React from 'react';
-import SearchBox from './SearchBox';
 import { useTranslations } from 'next-intl';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import SelectMenu from '../elements/SelectMenu';

@@ -39,7 +39,7 @@ export const templateText = [
 ];
 
 // these headers are valid in the CSV
-export const validHeaders = [
+export const validReportHeaders = [
   'year',
   'total_shareholder_equity',
   'total_assets',
@@ -64,7 +64,7 @@ export const validHeaders = [
 ];
 
 // these values are required in the CSV
-export const requiredValues = [
+export const requiredReportValues = [
   'year',
   'total_shareholder_equity',
   'total_assets',

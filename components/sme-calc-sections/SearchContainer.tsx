@@ -13,11 +13,11 @@ import {
   validCountryCodes
 } from '../../lib/settings/sme-calc.settings';
 
-interface AutomatedReportsProps {
+interface SearchContainerProps {
   disabled: boolean;
 }
 
-const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
+const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const t = useTranslations();
 
   const currencies: (SimpleValue & { name: string })[] = supportedCurrencies;
@@ -172,4 +172,4 @@ const AutomatedReports = ({ disabled }: AutomatedReportsProps) => {
   );
 };
 
-export default AutomatedReports;
+export default SearchContainer;

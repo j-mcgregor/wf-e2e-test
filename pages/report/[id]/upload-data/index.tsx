@@ -47,7 +47,11 @@ const UploadData = () => {
             description={t('add_a_new_year_of_financials')}
           />
         </div>
-        <UploadNewData hasHeader={true} />
+        <UploadNewData
+          header={t('upload_the_new_data')}
+          description={t('drag_and_drop_your_altered_csv_below')}
+          buttonText={t('generate_new_report')}
+        />
       </div>
     </Layout>
   );
