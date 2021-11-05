@@ -22,5 +22,11 @@
   "download_the_results_of_the_batch_reports_in_csv_or_excel_format": "Download the result of the Batch Reports in CSV or Excel format and see a quick overview of all the results below.",
   "download_reports": "Download Reports",
   "batch_results": "Batch Results",
-  "batch_report_results": "Batch Report Results"
+  "batch_report_results": "Batch Report Results",
+  "all_headers_are_valid": "All headers are valid.",
+  "required_values_are_valid": "All required values are valid",
+  "file_is_valid_csv": "File is a valid CSV",
+  "file_is_invalid_format": "File is invalid, please upload a CSV",
+  "is_a_required_header": "is a required header",
+  "header_must_contain_a_value": "header must contain a value"
 }
