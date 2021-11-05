@@ -1,15 +1,12 @@
-import { CheckIcon, XIcon } from '@heroicons/react/outline';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'use-intl';
-
 import { validCSVValues } from '../../lib/settings/sme-calc.settings';
-
+import { CheckIcon, XIcon } from '@heroicons/react/outline';
 import Button from '../elements/Button';
 import UploadFile from './UploadFile';
 import { TranslateInput } from '../../types/global';
-
-import { useCSVValidator } from '../../lib/utils/csv-validator';
-
+// import { useCSVValidator } from '../../lib/utils/csv-validator';
+import useCSVValidator from '../../hooks/useCSVValidator';
 import { FileContentType } from '../../types/report';
 
 interface UploadNewDataProps {
@@ -24,8 +21,6 @@ interface UploadNewDataProps {
 }
 
 const UploadNewData = ({
-  validHeaders = validCSVValues.valid_report_headers,
-  requiredValues = validCSVValues.required_report_values,
   progressBar,
   header,
   description,
@@ -76,7 +71,7 @@ const UploadNewData = ({
         <p className="text-3xl font-semibold py-2">{header}</p>
         <p className="text-sm py-2">{description}</p>
       </div>
-      <div className="flex justify-between w-full py-4">
+      <div className="flex flex-col md:flex-row justify-between w-full py-4">
         <UploadFile
           text={t('or_drag_and_drop_it')}
           linkText={t('upload_your_csv')}
@@ -86,10 +81,10 @@ const UploadNewData = ({
           fileName={fileSelected && fileSelected.name}
         />
 
-        <div className="text-sm flex flex-col w-full items-center">
-          <p className="font-bold py-2">{t('valid_csv_check')}</p>
+        <div className="text-xs flex flex-col md:w-1/2 w-full items-center">
           {fileSelected && (
-            <div>
+            <div className="overflow-y-auto h-52">
+              <p className="font-bold py-2 text-sm">{t('valid_csv_check')}</p>
               <div className="flex py-1">
                 {isCSV ? (
                   <>
@@ -103,12 +98,12 @@ const UploadNewData = ({
                   </>
                 )}
               </div>
-              <div className="flex py-1">
+              <div>
                 {headerErrors?.length === 0 ? (
-                  <>
+                  <div className="flex py-1">
                     {tick}
                     <p>{t('all_headers_are_valid')}</p>
-                  </>
+                  </div>
                 ) : (
                   headerErrors?.map((error, i) => {
                     return (
@@ -151,7 +146,7 @@ const UploadNewData = ({
       <div className="w-3/12">
         <Button
           variant="highlight"
-          disabled={!isValid}
+          disabled={!isValid || disableButton}
           className="text-primary rounded-none"
           onClick={onSubmit}
         >

@@ -1,6 +1,6 @@
-import { FileContentType, ValidCSVType } from '../../types/report';
+import { FileContentType, ValidCSVType } from '../types/report';
 
-export const useCSVValidator = (
+const useCSVValidator = (
   file: File | null,
   fileContent: FileContentType,
   requiredValues: ValidCSVType
@@ -55,3 +55,5 @@ export const useCSVValidator = (
     isValid
   };
 };
+
+export default useCSVValidator;
