@@ -64,6 +64,7 @@ export default function Dashboard() {
             borders={true}
             fillerRows={true}
             headerSize="text-[10px] md:text-xs xl:text-sm"
+            linkRoute="/report"
           />
         </div>
 

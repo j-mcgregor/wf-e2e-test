@@ -71,6 +71,7 @@ const Reports = () => {
             shadow={true}
             borders={true}
             fillerRows={false}
+            linkRoute="/report"
           />
 
           {reportLimit < 30 && allReports.length > 0 && (

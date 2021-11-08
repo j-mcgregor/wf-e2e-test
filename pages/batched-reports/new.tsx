@@ -75,6 +75,7 @@ const CreateBatchReport = () => {
               completedReports={completedReports}
               totalReports={totalReports}
               complete={complete}
+              resultsLinkTo="/batched-reports/1"
             />
           }
           onSubmit={runReports}
