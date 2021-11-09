@@ -14,7 +14,12 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "incremental": true
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "components/report-sections/SummaryMap.tsx"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "components/report-sections/SummaryMap.tsx"
+  ]
 }

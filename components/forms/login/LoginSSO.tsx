@@ -32,13 +32,7 @@ const LoginSSO = () => {
 
   return (
     <div className="pt-8">
-      <p className="text-sm pb-1 ">
-        {t('sign_in_with', {
-          a: function Linked(children: React.ReactNode) {
-            return children;
-          }
-        })}
-      </p>
+      <p className="text-sm pb-1 ">{t('sign_in_with')}</p>
 
       <div className="mt-1">
         {/* <div>
