@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-const MockCompanyNames = {
+export const MockCompanyNames = {
   BIRD: 'Bird Feeding Corp',
   SWAN: 'Swan Feeding Corp',
   GEESE: 'Geese Feeding Corp',
@@ -11,6 +11,93 @@ export const giveUserCorrectStructure = (user: any) => ({
   ...mockUsers['new@test.com'],
   ...user
 });
+
+const mockBatchedReports = [
+  {
+    company_id: '124556',
+    sme_z_score: '110',
+    company_name: 'Swan Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '78'
+  },
+  {
+    company_id: '245561',
+    sme_z_score: '43',
+    company_name: 'Swan Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '129'
+  },
+  {
+    company_id: '455612',
+    sme_z_score: '296',
+    company_name: 'Pigeon Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '5'
+  },
+  {
+    company_id: '556124',
+    sme_z_score: '441',
+    company_name: 'Swan Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '81'
+  },
+  {
+    company_id: '561245',
+    sme_z_score: '298',
+    company_name: 'Pigeon Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '41'
+  },
+  {
+    company_id: '612455',
+    sme_z_score: '416',
+    company_name: 'Geese Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '161'
+  },
+  {
+    company_id: '87262',
+    sme_z_score: '110',
+    company_name: 'Bird Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '70'
+  },
+  {
+    company_id: '123450',
+    sme_z_score: '426',
+    company_name: 'Geese Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '118'
+  },
+  {
+    company_id: '098761',
+    sme_z_score: '232',
+    company_name: 'Swan Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '150'
+  },
+  {
+    company_id: '012312',
+    sme_z_score: '9',
+    company_name: 'Dove Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '77'
+  },
+  {
+    company_id: '123123',
+    sme_z_score: '136',
+    company_name: 'Bird Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '101'
+  },
+  {
+    company_id: '123153',
+    sme_z_score: '469',
+    company_name: 'Swan Feeding Corp',
+    bond_rating: 'B',
+    probability_of_default: '190'
+  }
+];
 
 export const mockReports = [
   {
@@ -316,10 +403,35 @@ const mockUsers = {
     batched_report_jobs: [
       {
         id: 12,
-        name: 'Manufacturing Niche',
+        name: 'Car Niche',
         create_date: 1629657000000,
         finish_date: 1629657000000,
-        total_reports: 153
+        total_reports: mockBatchedReports.length,
+        company_list: mockBatchedReports
+      },
+      {
+        id: 13,
+        name: 'Toaster Niche',
+        create_date: 1629657000000,
+        finish_date: 1629657000000,
+        total_reports: mockBatchedReports.length,
+        company_list: mockBatchedReports
+      },
+      {
+        id: 14,
+        name: 'Tv Niche',
+        create_date: 1629657000000,
+        finish_date: 1629657000000,
+        total_reports: mockBatchedReports.length,
+        company_list: mockBatchedReports
+      },
+      {
+        id: 15,
+        name: 'Teddy bear Niche (in Progress)',
+        create_date: 1629657000000,
+        finish_date: false,
+        total_reports: mockBatchedReports.length,
+        company_list: []
       }
     ]
   },

@@ -17,6 +17,17 @@ export type Report = {
   bookmarked: boolean;
 };
 
+export type BatchedReportType = {
+  id: number;
+  company_name: string;
+  name: string;
+  sme_zscore: number;
+  bond_rating: string;
+  create_date: number;
+  finish_date: number;
+  company_list: Report[];
+};
+
 type ContactInformation = {
   first_name: string;
   last_name: string;

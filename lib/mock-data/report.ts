@@ -1,6 +1,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 const mockReport = {
   created_at: new Date().setFullYear(2020, 1, 1).toString(),
+  id: '1',
   company_name: 'THE WRIGHT GLAZING CO. LIMITED',
   contact_details: {
     address_line_1: '591 LONDON ROAD',
