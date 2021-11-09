@@ -11,9 +11,14 @@ import SkeletonMenu from '../skeletons/SkeletonMenu';
 interface ReportNavProps {
   companyName: string;
   loading?: boolean;
+  onExportPdfClicked?: () => void;
 }
 
-const ReportNav = ({ companyName, loading }: ReportNavProps) => {
+const ReportNav = ({
+  companyName,
+  loading,
+  onExportPdfClicked
+}: ReportNavProps) => {
   const navItems = useReportNavItems();
   const t = useTranslations();
   const router = useRouter();
@@ -45,7 +50,6 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
     const path = router.asPath.replace(`${dynamicPath}#`, '');
     const header = path.replace(/-/g, ' ').toLowerCase();
     setActiveItem(header);
-    
   }, [router.asPath]);
 
   if (loading) {
@@ -120,7 +124,7 @@ const ReportNav = ({ companyName, loading }: ReportNavProps) => {
       </div>
 
       <div className="space-y-2 items-end flex-1 justify-end flex flex-col pb-4">
-        <Button variant="alt" className="w-full">
+        <Button variant="alt" className="w-full" onClick={onExportPdfClicked}>
           {t('export_pdf')}
         </Button>
         <Button variant="secondary">{t('export_csv')}</Button>
