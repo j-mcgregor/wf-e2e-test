@@ -13,7 +13,7 @@ import { batchReport } from '../../lib/settings/report.settings';
 import {
   validReportHeaders,
   requiredReportValues
-} from '../../lib/settings/report.settings';
+} from '../../lib/settings/sme-calc.settings';
 
 const CreateBatchReport = () => {
   const t = useTranslations();
