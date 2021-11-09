@@ -336,7 +336,7 @@ const ReportTemplate = () => {
     const html2pdf = (await import('html2pdf.js')).default;
     const element = document.querySelector<HTMLElement>('#full-report');
     var opt = {
-      margin: [10, 5, 10, 5],
+      margin: 20,
       filename: 'report_using_html2pdf.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       // html2canvas: { scale: 2 },
