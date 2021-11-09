@@ -1,7 +1,6 @@
 import { withSentry } from '@sentry/nextjs';
 import { getSession } from 'next-auth/client';
 
-import mockCompanies, { ShortCompany } from '../../lib/mock-data/companies';
 import {
   UNAUTHORISED,
   SEARCH_ERROR,
@@ -10,7 +9,8 @@ import {
 } from '../../lib/utils/error-codes';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import Company, { CompanyResType } from '../../lib/funcs/company';
+import Company from '../../lib/funcs/company';
+import { ApiResType } from '../../types/global';
 
 // Declaring function for readability with Sentry wrapper
 const SearchCompanies = async (
@@ -68,10 +68,7 @@ const SearchCompanies = async (
     .json({ error: INVALID_COUNTRY_CODE, message: 'Invalid country code.' });
 };
 
-const handleSearchError = (
-  results: CompanyResType,
-  response: NextApiResponse
-) => {
+const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
   if (!results || !results.ok) {
     return response.status(500).json({
       error: SEARCH_ERROR,

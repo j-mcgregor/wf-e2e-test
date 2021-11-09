@@ -67,3 +67,14 @@ export type CompanyType = {
   date_of_creation?: string;
   title?: string;
 };
+
+export type ApiResType = {
+  ok: boolean;
+  data?: ResDataType;
+  error?: boolean;
+};
+
+export type ResDataType = {
+  [index: string]: any;
+  items?: [];
+};

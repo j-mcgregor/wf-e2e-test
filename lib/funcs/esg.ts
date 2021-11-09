@@ -1,10 +1,4 @@
-export type ResType = {
-  ok: boolean;
-  data?: IndustryMatchObj;
-  error?: boolean;
-};
-
-export type IndustryMatchObj = {};
+import { ApiResType } from '../../types/global';
 
 const topXMatches = (
   industries:
@@ -37,7 +31,7 @@ const topXMatches = (
 const analyseWebsite = async (
   companyName: string | undefined,
   companyWebsite: string
-): Promise<ResType> => {
+): Promise<ApiResType> => {
   if (!companyWebsite) {
     return { ok: false };
   }

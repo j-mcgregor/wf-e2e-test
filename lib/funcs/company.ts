@@ -1,4 +1,4 @@
-import { ResType } from './esg';
+import { ApiResType } from '../../types/global';
 
 const UK_COMPANY_KEYS = [
   'company_number',
@@ -6,10 +6,6 @@ const UK_COMPANY_KEYS = [
   'title',
   'address_snippet'
 ];
-
-export type UKCompanyRes = {
-  items: [];
-};
 
 const filterUKCompanyInformation = (companies: [] | undefined) => {
   if (!companies) return companies;
@@ -29,7 +25,7 @@ const filterUKCompanyInformation = (companies: [] | undefined) => {
 const searchUKCompaniesHouse = async (
   token: string | undefined,
   searchQuery: string
-): Promise<ResType> => {
+): Promise<ApiResType> => {
   if (!token) {
     return { ok: false };
   }

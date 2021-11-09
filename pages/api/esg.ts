@@ -9,7 +9,8 @@ import {
 } from '../../lib/utils/error-codes';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import ESG, { ResType } from '../../lib/funcs/esg';
+import ESG from '../../lib/funcs/esg';
+import { ApiResType } from '../../types/global';
 
 // Declaring function for readability with Sentry wrapper
 const ESGApi = async (request: NextApiRequest, response: NextApiResponse) => {
@@ -52,15 +53,13 @@ const ESGApi = async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(200).json(matches);
   }
 
-  return response
-    .status(404)
-    .json({
-      error: INVALID_REQUEST_TYPE,
-      message: 'Invalid request type. Please provide a valid request type.'
-    });
+  return response.status(404).json({
+    error: INVALID_REQUEST_TYPE,
+    message: 'Invalid request type. Please provide a valid request type.'
+  });
 };
 
-const handleSearchError = (results: ResType, response: NextApiResponse) => {
+const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
   if (!results || !results.ok) {
     return response.status(500).json({
       error: SEARCH_ERROR,
