@@ -55,7 +55,7 @@ const UploadFile = ({
       onDragLeave={handleDragLeave}
       className={`${
         draggedOver ? 'bg-highlight bg-opacity-60' : 'bg-bg'
-      } w-full h-52 flex flex-col items-center justify-center rounded`}
+      } md:w-1/2 w-full h-52 flex flex-col items-center justify-center rounded`}
     >
       <div
         className={`${
@@ -91,7 +91,7 @@ const UploadFile = ({
             fileName ? 'visible' : 'invisible'
           } flex items-center justify-center relative`}
         >
-          <p className="text-sm font-semibold">{fileName || 'test'}</p>
+          <p className="text-xs font-semibold">{fileName || 'test'}</p>
           <XIcon
             onClick={removeFile}
             className="h-5 w-5 font-bold ml-2 cursor-pointer hover:opacity-80"

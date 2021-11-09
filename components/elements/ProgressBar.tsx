@@ -8,6 +8,7 @@ interface ProgressBarProps {
   remainingTime: number;
   buttonText: TranslateInput;
   complete?: boolean;
+  resultsLinkTo: string;
 }
 
 const ProgressBar = ({
@@ -15,7 +16,8 @@ const ProgressBar = ({
   totalReports,
   completedReports,
   remainingTime,
-  complete
+  complete,
+  resultsLinkTo
 }: ProgressBarProps) => {
   const t = useTranslations();
 
@@ -59,6 +61,7 @@ const ProgressBar = ({
           } rounded-none`}
           variant={!complete ? 'none' : 'highlight'}
           disabled={!complete}
+          linkTo={resultsLinkTo}
         >
           <p>{buttonText}</p>
         </Button>

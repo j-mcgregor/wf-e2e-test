@@ -82,3 +82,10 @@ export type Shareholder = {
   last_name: string;
   linkedin: string;
 };
+
+export type FileContentType = string | ArrayBuffer | null | undefined;
+
+export type ValidCSVType = {
+  valid_report_headers: string[];
+  required_report_values: string[];
+};

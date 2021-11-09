@@ -1,5 +1,6 @@
 import { JSXElementConstructor, ReactElement, ReactNodeArray } from 'react';
 import { DefaultValue, RecoilValue } from 'recoil';
+import { StringMap } from 'ts-jest/dist/types';
 
 export type TranslateInput =
   | string
@@ -88,4 +89,18 @@ export type ApiResType = {
 export type ResDataType = {
   [index: string]: any;
   items?: [];
+};
+
+export type BatchReportType = {
+  id: number;
+  company_name: string;
+  sme_zscore: string;
+  bond_rating: string;
+  default: string;
+};
+
+export type BatchReportsType = {
+  id: number;
+  results: BatchReportType[];
+  created: string;
 };

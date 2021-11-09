@@ -5679,12 +5679,12 @@ next-auth@^3.28.0:
     preact-render-to-string "^5.1.14"
     querystring "^0.2.0"
 
-next-intl@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/next-intl/-/next-intl-1.5.1.tgz#7a357a332c3024e587150604756309869ae6a9d9"
-  integrity sha512-eewxHASPcFvT5k64nOHAgE75+8QlR859dvXPZajktUS6cSdCuVVeh2Bzd+Pe1k1A1r/2WrCT/Ke0tkCz6AK0cw==
+next-intl@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/next-intl/-/next-intl-2.2.0.tgz#4392baf60fa9b759cfeb74c246ced02d628f1fed"
+  integrity sha512-XYHEE7+qwOsvtsZGkXYQGnZojHs6L6z2CItqPZLNI0rMpfOYgTH4uDEMRjjfk0e2E/fd7n03hAACkKGHNXg4Eg==
   dependencies:
-    use-intl "^1.5.1"
+    use-intl "^2.2.0"
 
 next@11.1.0:
   version "11.1.0"
@@ -7757,10 +7757,10 @@ use-file-picker@^1.4.0:
   dependencies:
     file-selector "0.2.4"
 
-use-intl@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/use-intl/-/use-intl-1.5.1.tgz#06c4895b21f98645c1b9d957748402f8dadd6609"
-  integrity sha512-GVqDf8NjeAxCrHGi3ZiofCmqUyX9gRnC9WNhwl5XLPLZ8b5g2zycGlRP1KxmKvQMu7l3asXZM7ALnj+Ls764iw==
+use-intl@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/use-intl/-/use-intl-2.2.0.tgz#93d5617af91c558e55d4be08ec13493bc7d524c3"
+  integrity sha512-0DXPPRia9DYoSv4K6M6Jh6HG/WOSHy5T9lyfBNYMW2YinQAlXn0o9JWqXPfhK7J4Y+PW0iCcYOT4KPafNTMckA==
   dependencies:
     intl-messageformat "^9.3.18"
 

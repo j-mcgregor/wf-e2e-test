@@ -8,8 +8,7 @@ import Button from '../../components/elements/Button';
 import LinkCard from '../../components/cards/LinkCard';
 import UploadNewData from '../../components/uploads/UploadNewData';
 import ProgressBar from '../../components/elements/ProgressBar';
-import { batchReport } from '../../lib/settings/report.settings';
-
+import { batchReport } from '../../lib/settings/batch-reports.settings';
 import {
   validReportHeaders,
   requiredReportValues
@@ -76,6 +75,7 @@ const CreateBatchReport = () => {
               completedReports={completedReports}
               totalReports={totalReports}
               complete={complete}
+              resultsLinkTo="/batched-reports/1"
             />
           }
           onSubmit={runReports}

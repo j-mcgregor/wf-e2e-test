@@ -9,6 +9,8 @@ import LinkCard from '../../components/cards/LinkCard';
 import Layout from '../../components/layout/Layout';
 import BatchReportCard from '../../components/cards/BatchReportCard';
 
+import batchReports from '../../lib/mock-data/batchReports';
+
 const BatchReports = () => {
   const t = useTranslations();
   return (
@@ -40,30 +42,19 @@ const BatchReports = () => {
           </p>
 
           <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
-            <BatchReportCard
-              header="Batch - 18.10.21"
-              linkTo="#"
-              quantity="244"
-              quantityText={t('total_companies_analysed')}
-              icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
-              iconColor="bg-highlight"
-            />
-            <BatchReportCard
-              header="Batch - 18.10.21"
-              linkTo="#"
-              quantity="244"
-              quantityText={t('total_companies_analysed')}
-              icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
-              iconColor="bg-highlight"
-            />
-            <BatchReportCard
-              header="Batch - 18.10.21"
-              linkTo="#"
-              quantity="244"
-              quantityText={t('total_companies_analysed')}
-              icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
-              iconColor="bg-highlight"
-            />
+            {batchReports.map(report => {
+              return (
+                <BatchReportCard
+                  key={report.id}
+                  header={`Batch - ${report.created}`}
+                  linkTo={`/batched-reports/${report.id}`}
+                  quantity="244"
+                  quantityText={t('total_companies_analysed')}
+                  icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
+                  iconColor="bg-highlight"
+                />
+              );
+            })}
           </div>
         </div>
 

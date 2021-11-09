@@ -14,6 +14,7 @@ interface ReportProps {
   borders: boolean;
   fillerRows: boolean;
   headerSize: string;
+  linkRoute: string;
 }
 
 const ReportTable = ({
@@ -22,7 +23,8 @@ const ReportTable = ({
   shadow,
   borders,
   fillerRows,
-  headerSize
+  headerSize,
+  linkRoute
 }: ReportProps) => {
   const isLoading = !reports;
 
@@ -78,7 +80,7 @@ const ReportTable = ({
                     index < limit && (
                       <Link
                         key={index}
-                        href={`report/${report.id}`}
+                        href={`${linkRoute}/${report.id}`}
                         passHref={true}
                       >
                         <tr
