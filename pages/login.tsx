@@ -10,6 +10,7 @@ import LoginSSO from '../components/forms/login/LoginSSO';
 import Layout from '../components/layout/Layout';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
+import React from 'react';
 
 const Login = () => {
   const t = useTranslations();
@@ -30,7 +31,7 @@ const Login = () => {
                   {t('sign_into_account')}
                 </h1>
                 <p className="text-sm text-highlight">
-                  {t('register_for_demo', {
+                  {t.rich('register_for_demo', {
                     a: function Linked(children: React.ReactNode) {
                       return (
                         <Link
