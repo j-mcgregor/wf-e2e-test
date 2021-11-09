@@ -24,7 +24,8 @@ const moduleExports = {
   },
   images: {
     domains: ['images.unsplash.com']
-  }
+  },
+  outputFileTracing: false
 };
 
 const SentryWebpackPluginOptions = {
