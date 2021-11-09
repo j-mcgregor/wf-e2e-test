@@ -1,11 +1,10 @@
 import { within } from '@testing-library/dom';
 import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import CSVFileValidator from 'csv-file-validator';
 import client from 'next-auth/client';
 import * as nextRouter from 'next/router';
 
-import { validHeaders } from '../../../../lib/settings/report.settings';
+import { validReportHeaders } from '../../../../lib/settings/sme-calc.settings';
 import allMessages from '../../../../messages/en';
 import UploadData from '../../../../pages/report/[id]/upload-data';
 import { makeMockSession, render, screen } from '../../../../test-utils';
@@ -159,7 +158,7 @@ xdescribe('UploadData', () => {
       );
 
       const fileValidator = await CSVFileValidator(file, {
-        headers: validHeaders.map(vh => ({
+        headers: validReportHeaders.map(vh => ({
           name: vh,
           inputName: vh
         }))
