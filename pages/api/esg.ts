@@ -37,6 +37,25 @@ const ESGApi = async (request: NextApiRequest, response: NextApiResponse) => {
     });
   }
 
+  if (type === 'demo') {
+    return response.status(200).json({
+      data: [
+        {
+          name: 'Higher_Education',
+          score: 0.9
+        },
+        {
+          name: 'Computer_Hardware',
+          score: 0.31
+        },
+        {
+          name: 'Business_Supplies_and_Equipment',
+          score: 0.13
+        }
+      ]
+    });
+  }
+
   // allows us to add other ESG API endpoints
   // at a later date
   if (type === 'website') {
