@@ -658,15 +658,11 @@ describe('ReportTemplate', () => {
 
       expect(cards.length).toBe(2);
 
-      expect(within(cards[0]).getByText('Environmental')).toBeInTheDocument();
+      expect(within(cards[0]).getByText('Industry')).toBeInTheDocument();
       expect(
         within(cards[0]).getByText(
-          /Using environmental indicators we can assess the outlook of a companies impact/i
+          /Using machine learning models we can analyse a companies website to determine the companies actual industry/i
         )
-      ).toBeInTheDocument();
-      expect(within(cards[0]).getByText(/neutral/i)).toBeInTheDocument();
-      expect(
-        within(cards[0]).getByText(/environmental impact/i)
       ).toBeInTheDocument();
 
       expect(within(cards[1]).getByText('Governance')).toBeInTheDocument();

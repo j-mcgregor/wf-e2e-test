@@ -47,6 +47,7 @@ import FinancialTrends from '../../../components/report-sections/financial-trend
 import MacroEconomicTrends from '../../../components/report-sections/macro-economic-trends/MacroEconomicTrends';
 import NewsFeed from '../../../components/report-sections/news/NewsFeed';
 import { REPORT_FETCHING_ERROR } from '../../../lib/utils/error-codes';
+import ESGContainer from '../../../components/report-sections/esg-assessment/ESGContainer';
 
 export interface ReportDataProps {
   id: string | number;
@@ -335,21 +336,10 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
             </HashContainer>
 
             <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>
-              <ReportSectionHeader text={t('esg')} />
-              <p className="text-xl">{t('esg_assessment')}</p>
-              <ESGCard
-                title={t('environmental')}
-                description={t('using_environmental_indicators')}
-                result={t('neutral')}
-                resultText={t('environmental_impact')}
-                rating="1"
-              />
-              <ESGCard
-                title={t('governance')}
-                description={t('data_on_company_governance')}
-                result="positive"
-                resultText={t('pep_flags')}
-                rating="3"
+              <ESGContainer
+                governance={{
+                  pepFlags: 3
+                }}
               />
             </HashContainer>
 
