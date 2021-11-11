@@ -1,8 +1,13 @@
 export const UNAUTHORISED = 'UNAUTHORISED';
 export const NO_REPORT_ID = 'NO_ID';
+export const SIGNED_OUT = 'SIGNED_OUT';
+export const USER_404 = 'USER_404';
+export const USER_422 = 'USER_422';
+export const USER_500 = 'USER_500';
 export const NO_REPORT = 'NO_REPORT';
 export const REPORT_FETCHING_ERROR = 'REPORT_FETCHING_ERROR';
 export const GENERIC_API_ERROR = 'GENERIC_API_ERROR';
+export const GENERIC_API_ERROR_FORM = 'GENERIC_API_ERROR_FORM';
 export const VALID_EMAIL_REQUIRED = 'VALID_EMAIL_REQUIRED';
 export const EMAIL_REQUIRED = 'EMAIL_REQUIRED';
 export const INVALID_SSO_LOGIN = 'INVALID_SSO_LOGIN';

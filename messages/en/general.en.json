@@ -9,7 +9,9 @@
   "settings": "Settings",
   "support": "Support",
   "logout": "Logout",
-   "errors": {
+  "errors": {
+    "application_error": "Application error: ",
+    "application_error_general_message": "Unfortunately, the application has suffered a critical error. This has been logged and the development team notified.",
     "header": {
       "default": "Error: something went wrong"
     },

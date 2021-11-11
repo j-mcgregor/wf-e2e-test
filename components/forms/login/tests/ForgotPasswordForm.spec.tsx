@@ -144,7 +144,7 @@ describe('ForgotPasswordForm', () => {
     await waitFor(() => {
       expect(
         screen.getByText(
-          /there was an error submitting your email\. please contact support\./i
+          /There was an error submitting your details\. please contact support\./i
         )
       ).toBeInTheDocument();
     });

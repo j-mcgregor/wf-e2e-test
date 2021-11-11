@@ -17,7 +17,7 @@ interface ButtonProps {
 }
 
 const buttonClassName = {
-  base: 'last:w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2',
+  base: 'last:w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 items-center',
   primary: 'bg-primary hover:bg-indigo-800 focus:ring-indigo-800 text-white ', // dark blue
   secondary: 'bg-secondary hover:bg-gray-800 focus:gray-800 text-white ', // black
   alt: 'bg-alt hover:bg-blue-800 focus:bg-blue-800 text-white', // lighter blue
@@ -68,7 +68,7 @@ const Button = ({
             }`
       }
     >
-      {loading && <LoadingIcon />}
+      {loading && <LoadingIcon className="w-5 h-5" />}
       {!loading && children}
     </button>
   );

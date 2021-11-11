@@ -94,9 +94,12 @@ export default NextAuth({
           ...giveUserCorrectStructure(user),
           is_sso: token.is_sso
         };
+
         return session;
       }
+
       // get the user using the token stored in the token
+      // TO DO: update to backend request
       const user = mockUsers[session.user.email];
       session.user = user;
       return session;

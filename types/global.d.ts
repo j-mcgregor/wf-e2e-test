@@ -43,7 +43,8 @@ type ContactInformation = {
 };
 
 export type UserType = {
-  name?: string | null;
+  //TODO: do we want this as name?
+  full_name?: string | null;
   email?: string | null;
   is_SSO?: boolean;
   contact_information?: ContactInformation;
@@ -55,12 +56,13 @@ export type UserType = {
       reporting_country: string;
     };
     communication: {
-      comments: boolean;
-      candidates: boolean;
-      offers: boolean;
+      batch_report_email: boolean;
+      service_updates: boolean;
+      company_updates: boolean;
     };
   };
   reports?: Report[];
+  batched_report_jobs: BatchedReportType[];
 };
 
 export interface RecoilUserType {

@@ -1,5 +1,9 @@
 {
-  "GENERIC_API_ERROR": "There was an error submitting your email. Please contact support.",
+  "GENERIC_API_ERROR": "There was an error submitting your details. Please contact support.",
+  "USER_404": "We can't find your user account. Please logout and login in. Contact support if you have issues.",
+  "USER_422": "We can't find your user account. Please logout and login in. Contact support if you have issues.",
+  "USER_500": "There was an error saving your settings please try again later or contact support if you have issues.",
+  "GENERIC_API_ERROR_FORM": "There was an error submitting your details. Please contact support.",
   "UNAUTHORISED": "You are not authorised to complete this action.",
   "NO_REPORT_ID": "No report ID provided.",
   "REPORT_FETCHING_ERROR": "There was an error fetching that report.",
@@ -8,8 +12,9 @@
   "FULL_NAME_REQUIRED": "Your full name is required.",
   "PASSWORD_REQUIRED": "Your password is required.",
   "NO_REPORT": "No report found.",
+  "SIGNED_OUT": "You are not signed in. Please log out and then log in.",
   "INVALID_SSO_LOGIN": "We couldn't log you in with your SSO credentials. Please check that you have access and try again. If the problem persists please contact support.",
   "INCORRECT_DETAILS": "Your details are incorrect. Please try again.",
   "NEW_PASSWORD_REQUIRED": "Password must have at least 8 characters",
-  "CONFIRM_PASSWORD_MATCH": "The passwords do not match."
+  "CONFIRM_PASSWORD_MATCH": "Your passwords must match."
 }

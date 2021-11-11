@@ -51,7 +51,7 @@
     },
     "password-management": {
       "new_password": "New Password",
-      "confirm_password": "Confirm Passwordd"
+      "confirm_password": "Confirm Password"
     }
   }
 }
