@@ -29,12 +29,12 @@ const batchedReport = async (
   const session = await getSession({ req: request });
 
   // unauthenticated requests
-  if (!session) {
-    return response.status(403).json({
-      error: UNAUTHORISED,
-      message: 'Unauthorised api request, please login to continue.'
-    });
-  }
+  // if (!session) {
+  //   return response.status(403).json({
+  //     error: UNAUTHORISED,
+  //     message: 'Unauthorised api request, please login to continue.'
+  //   });
+  // }
 
   const { method } = request;
   const isGet = method === 'GET';

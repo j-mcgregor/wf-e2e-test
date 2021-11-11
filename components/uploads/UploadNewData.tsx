@@ -1,43 +1,48 @@
-import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { validCSVValues } from '../../lib/settings/sme-calc.settings';
 import { CheckIcon, XIcon } from '@heroicons/react/outline';
 import Button from '../elements/Button';
 import UploadFile from './UploadFile';
 import { TranslateInput } from '../../types/global';
-// import { useCSVValidator } from '../../lib/utils/csv-validator';
 import useCSVValidator from '../../hooks/useCSVValidator';
-import { FileContentType } from '../../types/report';
+import { FileContentType, ValidCSVType } from '../../types/report';
 
 interface UploadNewDataProps {
-  validHeaders?: string[];
-  requiredValues?: string[];
+  validations: ValidCSVType;
   header: TranslateInput;
   description: TranslateInput;
   buttonText: TranslateInput;
   progressBar?: React.ReactNode;
   disableButton?: boolean;
-  onSubmit?: () => void;
+  onSubmit: () => void;
+  input?: React.ReactNode;
+  fileContent: FileContentType | null;
+  setFileContent: (fileContent: FileContentType) => void;
+  fileSelected: File | null;
+  setFileSelected: (selectedFile: File | null) => void;
 }
 
 const UploadNewData = ({
+  validations = validCSVValues,
   progressBar,
   header,
   description,
   buttonText,
   disableButton,
-  onSubmit
+  input,
+  onSubmit,
+  fileContent,
+  fileSelected,
+  setFileContent,
+  setFileSelected
 }: UploadNewDataProps) => {
-  const [fileContent, setFileContent] = useState<FileContentType | null>(null);
-  const [fileSelected, setFileSelected] = useState<File | null>(null);
-
-  // handles file selection - sets file in state - reads file and sets content in state - passes in both for validations
+  // selects file - sets file in state - reads file and sets content in state - passes in both for validations
   const handleSelectFile = (e: any) => {
     const file = e && e.target.files[0];
     readFile(file);
   };
 
-  // reads file and sets the content in state
+  // reads file and sets content in state
   const readFile = (file: File | null) => {
     setFileSelected(file);
     const reader = new FileReader();
@@ -48,13 +53,15 @@ const UploadNewData = ({
   };
 
   // csv file validator hook
-  const { isCSV, headerErrors, requiredErrors, isValid } = useCSVValidator(
-    fileSelected,
-    fileContent,
-    validCSVValues
-  );
+  const { isCSV, headerErrors, requiredErrors, isValid, invalidValues } =
+    useCSVValidator(
+      fileSelected,
+      fileContent,
+      // validCSVValues
+      validations
+    );
 
-  // handles removing selected file from state
+  // removes selected file from state
   const handleRemoveFile = () => {
     setFileSelected(null);
     setFileContent(null);
@@ -71,6 +78,7 @@ const UploadNewData = ({
         <p className="text-3xl font-semibold py-2">{header}</p>
         <p className="text-sm py-2">{description}</p>
       </div>
+      <div className="w-1/2">{input}</div>
       <div className="flex flex-col md:flex-row justify-between w-full py-4">
         <UploadFile
           text={t('or_drag_and_drop_it')}
@@ -143,6 +151,7 @@ const UploadNewData = ({
           )}
         </div>
       </div>
+
       <div className="w-3/12">
         <Button
           variant="highlight"

@@ -16,6 +16,7 @@ export type Report = {
   bond_rating: string;
   created_at: number;
   bookmarked: boolean;
+  probability_of_default?: string;
 };
 
 export type BatchedReportType = {
@@ -26,6 +27,7 @@ export type BatchedReportType = {
   bond_rating: string;
   create_date: number;
   finish_date: number;
+  total_reports: number;
   company_list: Report[];
 };
 
@@ -93,6 +95,7 @@ export type ResDataType = {
   items?: [];
 };
 
+// redundant?
 export type BatchReportType = {
   id: number;
   company_name: string;

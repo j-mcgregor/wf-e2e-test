@@ -13,7 +13,7 @@ interface BatchReportCardProps {
   header: React.ReactNode;
   quantity: React.ReactNode;
   quantityText: TranslateInput;
-  linkTo: string;
+  linkTo?: string;
   className?: string;
   disabled?: boolean;
 }

@@ -8,17 +8,47 @@ const useCSVValidator = (
   // validate headers
   // get headers & values as array from content
   // convert csv content to string & remove carriage returns ('\r')
+
   const contentString = fileContent?.toString().replace(/[\r]/g, '');
-  const reportHeaders = contentString?.split('\n')[0]?.split(',');
-  const reportValues = contentString?.split('\n')[1]?.split(',');
+  const contentSplit = contentString?.split('\n');
+
+  const reportHeaders = contentSplit?.[0]?.split(',');
+
+  const reportValues = contentSplit
+    ?.slice(1, contentSplit.length)
+    .map(value => value.split(','));
 
   // create object from headers / values
   const reportObject =
     reportValues &&
-    reportHeaders?.reduce(
-      (acc, curr: string, i) => ({ ...acc, [curr]: reportValues[Number(i)] }),
-      {}
-    );
+    reportHeaders?.reduce((acc, curr: string, i) => {
+      const row = reportValues.map(x => x[i]);
+      return {
+        ...acc,
+        [curr]: row
+      };
+    }, {});
+
+  const invalidValues =
+    reportObject && requiredValues.valueValidation
+      ? Object.keys(reportObject).flatMap(key => {
+          const values = reportObject[key];
+
+          // find the validator for the header
+          const validatorArray = requiredValues.valueValidation.find(
+            item => item.header === key
+          );
+          // access the validator function in valueValidation
+          const validator = validatorArray?.validate
+            ? validatorArray.validate
+            : null;
+          // create array of invalid values
+          return (
+            validator &&
+            values.map((value: any) => validator(value)).filter((x: any) => x)
+          );
+        })
+      : [];
 
   // missing required header errors
   const headerErrors =
@@ -52,7 +82,8 @@ const useCSVValidator = (
     isCSV,
     headerErrors,
     requiredErrors,
-    isValid
+    isValid,
+    invalidValues
   };
 };
 

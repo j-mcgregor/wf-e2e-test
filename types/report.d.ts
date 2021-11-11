@@ -85,7 +85,13 @@ export type Shareholder = {
 
 export type FileContentType = string | ArrayBuffer | null | undefined;
 
+interface CSVValueValidation {
+  header: string;
+  validate: (value: any) => string | boolean;
+}
+
 export type ValidCSVType = {
   valid_report_headers: string[];
   required_report_values: string[];
+  valueValidation: CSVValueValidation[];
 };

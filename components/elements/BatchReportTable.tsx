@@ -1,13 +1,13 @@
 import { DownloadIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
-import { BatchReportType } from '../../types/global';
+import { BatchedReportType } from '../../types/global';
 import Button from '../elements/Button';
 
 interface ReportProps {
-  results: BatchReportType[];
+  data?: BatchedReportType;
 }
 
-const BatchReportTable = ({ results }: ReportProps) => {
+const BatchReportTable = ({ data }: ReportProps) => {
   const t = useTranslations();
 
   return (
@@ -48,24 +48,25 @@ const BatchReportTable = ({ results }: ReportProps) => {
                 </tr>
               </thead>
               <tbody className="text-xs">
-                {results.map(result => {
+                {data?.company_list?.map(data => {
                   return (
                     <tr
-                      key={result.id}
+                      key={data.id}
                       className="bg-white odd:bg-gray-50 text-xs lg:text-sm"
                     >
                       <td className="h-12 px-3 sm:px-6 py-1 whitespace-nowrap">
-                        {result.company_name}
+                        {data.company_name}
                       </td>
                       <td className="px-3 sm:px-6 py-1  whitespace-nowrap text-center">
-                        {result.sme_zscore}
+                        {data.sme_zscore}
                       </td>
                       <td className="px-3 sm:px-6 py-1 whitespace-nowrap  text-center">
-                        {result.bond_rating}
+                        {data.bond_rating}
                       </td>
                       <td className="px-3 sm:px-6 py-1 whitespace-nowrap  text-center">
-                        {result.default}
+                        {data.probability_of_default}
                       </td>
+
                       <td className="px-3 sm:px-6 py-1 whitespace-nowrap flex items-center justify-center">
                         <Button onClick={() => null} linkTo="#" variant="none">
                           <DownloadIcon className="h-6 w-6" />

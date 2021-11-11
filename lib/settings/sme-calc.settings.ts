@@ -1,3 +1,4 @@
+import { ValidCSVType } from '../../types/report';
 import countryCodeJSON from '../data/countryCodes.json';
 import currencyJSON from '../data/countryCurrency.json';
 import { createCurrencyString } from '../utils/text-helpers';
@@ -38,7 +39,7 @@ export const templateText = [
   }
 ];
 
-export const validCSVValues = {
+export const validCSVValues: ValidCSVType = {
   valid_report_headers: [
     'year',
     'total_shareholder_equity',
@@ -79,6 +80,19 @@ export const validCSVValues = {
     'ebit',
     'net_income',
     'retained_earnings'
+  ],
+  valueValidation: [
+    {
+      header: 'iso',
+      validate: (value: any) =>
+        (typeof value !== 'string' || value.length !== 2) &&
+        `${value} is not a valid ISO two letter code.`
+    },
+    {
+      header: 'company_id',
+      validate: (value: any) =>
+        !value && 'There must be valid header called company_id.'
+    }
   ]
 };
 

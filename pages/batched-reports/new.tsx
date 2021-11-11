@@ -9,15 +9,36 @@ import LinkCard from '../../components/cards/LinkCard';
 import UploadNewData from '../../components/uploads/UploadNewData';
 import ProgressBar from '../../components/elements/ProgressBar';
 import { batchReport } from '../../lib/settings/batch-reports.settings';
-import {
-  validReportHeaders,
-  requiredReportValues
-} from '../../lib/settings/sme-calc.settings';
+import Input from '../../components/elements/Input';
+import { FileContentType, ValidCSVType } from '../../types/report';
+import fetcher from '../../lib/utils/fetcher';
+import mockBatchReport from '../../lib/mock-data/mockBatchReport';
 
 const CreateBatchReport = () => {
+  // NEED AN EXTRA VALIDATION TO CHECK IF ISO VALUE IS VALID COUNTRY CODE
+  // NOT SURE HOW TO DO THIS YET WITHOUT REDOING LOADS OF THE VALIDATION FILE?
+  const validations: ValidCSVType = {
+    valid_report_headers: ['iso', 'company_id'],
+    required_report_values: ['iso', 'company_id'],
+    valueValidation: [
+      {
+        header: 'iso',
+        validate: (value: any) =>
+          (typeof value !== 'string' || value.length !== 2) &&
+          `${value} is not a valid ISO two letter code.`
+      },
+      {
+        header: 'company_id',
+        validate: (value: any) =>
+          !value && 'There must be valid header called company_id.'
+      }
+    ]
+  };
+
   const t = useTranslations();
 
-  const totalReports = 200;
+  const totalReports = 10;
+
   const totalTime = Math.round(totalReports * batchReport.averageTime);
 
   // state for total completed reports
@@ -25,8 +46,12 @@ const CreateBatchReport = () => {
   const [remainingTime, setRemainingTime] = useState(totalTime);
   const [processing, setProcessing] = useState(false);
   const [complete, setComplete] = useState(false);
+  const [reportName, setReportName] = useState('');
+  const [fileContent, setFileContent] = useState<FileContentType>(null);
+  const [fileSelected, setFileSelected] = useState<File | null>(null);
 
-  const runReports = (): void => {
+  const runReports = async () => {
+    !reportName && setReportName(defaultReportName);
     setProcessing(true);
     let completedReports = 0;
     let time = remainingTime;
@@ -42,7 +67,38 @@ const CreateBatchReport = () => {
         setProcessing(false);
       }
     }, batchReport.averageTime);
+    // if no report name input entered, set report name to default
+
+    const req = await fetcher('/api/batched-requests', 'POST', mockBatchReport);
+    const json = await req.json();
   };
+
+  const handleSetSelectedFile = (file: File | null) => {
+    setFileSelected(file);
+  };
+
+  const handleSetFileContent = (file: FileContentType) => {
+    setFileContent(file);
+  };
+
+  const fileContentString = fileContent?.toString().replace(/[\r]/g, '');
+  const rowQuantity = fileContentString?.split('\n').length;
+
+  const date = new Date();
+  const dateString = date.toDateString();
+  const hours = date.getHours();
+  const mins = date.getMinutes();
+
+  // {date as 11/11/21} - {total_companies}
+
+  const defaultReportName = `${dateString} - ${hours}:${
+    mins < 10 ? '0' + mins : mins
+  } - ${t('batched_report')} - (${rowQuantity})`;
+
+  const inputPlaceholder =
+    processing || (complete && !reportName)
+      ? defaultReportName
+      : t('create_a_name_for_report');
 
   return (
     <Layout title="Batched Reports">
@@ -63,11 +119,16 @@ const CreateBatchReport = () => {
         </p>
 
         <UploadNewData
-          validHeaders={validReportHeaders}
-          requiredValues={requiredReportValues}
+          fileContent={fileContent}
+          setFileContent={handleSetFileContent}
+          setFileSelected={handleSetSelectedFile}
+          fileSelected={fileSelected}
+          validations={validations}
           description={t('upload_your_csv_here_to_begin')}
           header={t('run_multiple_reports')}
           buttonText={!processing ? t('run_batch') : t('running')}
+          onSubmit={runReports}
+          disableButton={complete || processing}
           progressBar={
             <ProgressBar
               buttonText={t('view_results')}
@@ -78,8 +139,17 @@ const CreateBatchReport = () => {
               resultsLinkTo="/batched-reports/1"
             />
           }
-          onSubmit={runReports}
-          disableButton={complete || processing}
+          input={
+            fileSelected && (
+              <Input
+                name="filename"
+                type="text"
+                placeholder={inputPlaceholder}
+                onChange={e => setReportName(e.target.value)}
+                disabled={processing || complete ? true : false}
+              />
+            )
+          }
         />
 
         <p className="text-2xl font-semibold my-8">{t('csv_templates')}</p>

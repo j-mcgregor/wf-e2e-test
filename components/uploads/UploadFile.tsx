@@ -1,11 +1,6 @@
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
-import {
-  UploadIcon,
-  XIcon,
-  DocumentAddIcon,
-  DocumentTextIcon
-} from '@heroicons/react/outline';
+import { UploadIcon, XIcon } from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
 
 interface UploadFileProps {
