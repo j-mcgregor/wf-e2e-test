@@ -40,6 +40,7 @@ const ChartMulti = ({
     <div
       className="shadow rounded-sm bg-white flex flex-col"
       data-testid="chart-multi-testid"
+      style={{ breakInside: 'avoid' }}
     >
       <div className="flex justify-between items-start px-4 pt-4 text-xs">
         <div>

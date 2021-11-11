@@ -18,6 +18,7 @@ const ESGCard = ({
   return (
     <div
       className="flex bg-white rounded-sm shadow-sm my-4 px-8 py-8 items-center justify-between"
+      style={{ breakInside: 'avoid' }}
       data-testid="esg-card-testid"
     >
       <div className="w-1/2">

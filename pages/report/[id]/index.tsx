@@ -146,61 +146,68 @@ const Report = ({ data, id, t }) => {
         </div>
       </HashContainer>
       <HashContainer name={'Risk Metrics'} id={`risk-metrics-id`}>
-        <ReportSectionHeader text={t('risk_metrics')} />
-        <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4">
-          <Speedometer
-            title="SME Z-score"
-            value={304}
-            secondaryValues={[
-              { name: INDUSTRY_BENCHMARK, value: 403 },
-              { name: REGION_BENCHMARK, value: 204 }
-            ]}
-            hint={
-              <Hint
-                title={t('report_hints.risk_metrics.sme_z-score.title')}
-                body={t('report_hints.risk_metrics.sme_z-score.body')}
-              />
-            }
-          />
-          <Speedometer
-            title="Probability of Default"
-            value="12.04%"
-            secondaryValues={[
-              { name: INDUSTRY_BENCHMARK, value: '6%' },
-              { name: REGION_BENCHMARK, value: null }
-            ]}
-            hint={
-              <Hint
-                title={t(
-                  'report_hints.risk_metrics.probability_of_default.title'
-                )}
-                body={t(
-                  'report_hints.risk_metrics.probability_of_default.body'
-                )}
-              />
-            }
-          />
-          <Speedometer
-            title="Loss Given Default"
-            value={304}
-            secondaryValues={[
-              { name: INDUSTRY_BENCHMARK, value: '12.5%' },
-              { name: REGION_BENCHMARK, value: null }
-            ]}
-            hint={
-              <Hint
-                title={t('report_hints.risk_metrics.loss_given_default.title')}
-                body={t('report_hints.risk_metrics.loss_given_default.body')}
-              />
-            }
-          />
+        <div style={{ breakInside: 'avoid' }}>
+          <ReportSectionHeader text={t('risk_metrics')} />
+          <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4">
+            <Speedometer
+              title="SME Z-score"
+              value={304}
+              secondaryValues={[
+                { name: INDUSTRY_BENCHMARK, value: 403 },
+                { name: REGION_BENCHMARK, value: 204 }
+              ]}
+              hint={
+                <Hint
+                  title={t('report_hints.risk_metrics.sme_z-score.title')}
+                  body={t('report_hints.risk_metrics.sme_z-score.body')}
+                />
+              }
+            />
+            <Speedometer
+              title="Probability of Default"
+              value="12.04%"
+              secondaryValues={[
+                { name: INDUSTRY_BENCHMARK, value: '6%' },
+                { name: REGION_BENCHMARK, value: null }
+              ]}
+              hint={
+                <Hint
+                  title={t(
+                    'report_hints.risk_metrics.probability_of_default.title'
+                  )}
+                  body={t(
+                    'report_hints.risk_metrics.probability_of_default.body'
+                  )}
+                />
+              }
+            />
+            <Speedometer
+              title="Loss Given Default"
+              value={304}
+              secondaryValues={[
+                { name: INDUSTRY_BENCHMARK, value: '12.5%' },
+                { name: REGION_BENCHMARK, value: null }
+              ]}
+              hint={
+                <Hint
+                  title={t(
+                    'report_hints.risk_metrics.loss_given_default.title'
+                  )}
+                  body={t('report_hints.risk_metrics.loss_given_default.body')}
+                />
+              }
+            />
+          </div>
         </div>
         <BondRating score={data.risk_metrics.bond_rating} />
       </HashContainer>
       <HashContainer name={'Highlights'} id={`highlights-id`}>
         <ReportSectionHeader text={t('highlights')} />
 
-        <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 ">
+        <div
+          className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 "
+          style={{ breakInside: 'avoid' }}
+        >
           <ReliabilityIndex
             reliability={data.highlights.data_reliability.reliability}
           />
@@ -335,13 +342,13 @@ const ReportTemplate = () => {
      */
     const html2pdf = (await import('html2pdf.js')).default;
     const element = document.querySelector<HTMLElement>('#full-report');
+
     var opt = {
-      margin: 20,
+      margin: [20, 10, 20, 10],
       filename: 'report_using_html2pdf.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       // html2canvas: { scale: 2 },
-      jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['css'] }
+      jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' }
     };
 
     const worker = html2pdf().set(opt).from(element).save();

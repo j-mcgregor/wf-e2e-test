@@ -42,6 +42,7 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
       <p className="text-xl">{t('summary')}</p>
       <div
         className="flex flex-col md:flex-row my-6"
+        style={{ breakInside: 'avoid' }}
         data-testid="legal-events-summary-testid"
       >
         <LegalFilter
