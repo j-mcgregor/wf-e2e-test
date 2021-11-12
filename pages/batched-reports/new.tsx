@@ -8,33 +8,16 @@ import Button from '../../components/elements/Button';
 import LinkCard from '../../components/cards/LinkCard';
 import UploadNewData from '../../components/uploads/UploadNewData';
 import ProgressBar from '../../components/elements/ProgressBar';
-import { batchReport } from '../../lib/settings/batch-reports.settings';
+import {
+  batchReport,
+  batchValidators
+} from '../../lib/settings/batch-reports.settings';
 import Input from '../../components/elements/Input';
 import { FileContentType, ValidCSVType } from '../../types/report';
 import fetcher from '../../lib/utils/fetcher';
 import mockBatchReport from '../../lib/mock-data/mockBatchReport';
 
 const CreateBatchReport = () => {
-  // NEED AN EXTRA VALIDATION TO CHECK IF ISO VALUE IS VALID COUNTRY CODE
-  // NOT SURE HOW TO DO THIS YET WITHOUT REDOING LOADS OF THE VALIDATION FILE?
-  const validations: ValidCSVType = {
-    valid_report_headers: ['iso', 'company_id'],
-    required_report_values: ['iso', 'company_id'],
-    valueValidation: [
-      {
-        header: 'iso',
-        validate: (value: any) =>
-          (typeof value !== 'string' || value.length !== 2) &&
-          `${value} is not a valid ISO two letter code.`
-      },
-      {
-        header: 'company_id',
-        validate: (value: any) =>
-          !value && 'There must be valid header called company_id.'
-      }
-    ]
-  };
-
   const t = useTranslations();
 
   const totalReports = 10;
@@ -123,7 +106,7 @@ const CreateBatchReport = () => {
           setFileContent={handleSetFileContent}
           setFileSelected={handleSetSelectedFile}
           fileSelected={fileSelected}
-          validations={validations}
+          validations={batchValidators}
           description={t('upload_your_csv_here_to_begin')}
           header={t('run_multiple_reports')}
           buttonText={!processing ? t('run_batch') : t('running')}

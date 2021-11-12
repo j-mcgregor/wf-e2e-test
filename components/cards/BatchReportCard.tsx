@@ -49,7 +49,9 @@ const BatchReportCard = ({
             <ArrowNarrowUpIcon className="h-6 w-6 m-2 rotate-45 text-gray-400 cursor-pointer" />
           </div>
           <div className="text-sm pt-2 w-full flex flex-col">
-            <p className="font-bold w-full">{header}</p>
+            <p className="font-bold w-full overflow-ellipsis truncate">
+              {header}
+            </p>
           </div>
           <div className="w-full bg-bg text-center py-4 rounded-sm mt-4">
             <p className="text-xl font-bold">{quantity}</p>

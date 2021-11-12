@@ -80,19 +80,6 @@ export const validCSVValues: ValidCSVType = {
     'ebit',
     'net_income',
     'retained_earnings'
-  ],
-  valueValidation: [
-    {
-      header: 'iso',
-      validate: (value: any) =>
-        (typeof value !== 'string' || value.length !== 2) &&
-        `${value} is not a valid ISO two letter code.`
-    },
-    {
-      header: 'company_id',
-      validate: (value: any) =>
-        !value && 'There must be valid header called company_id.'
-    }
   ]
 };
 
