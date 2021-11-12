@@ -22,7 +22,7 @@ import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
 
-const Report = ({ data, id, t }) => {
+const Report = ({ data, id, t, forPrint }) => {
   const date = new Date(Number(data?.['created_at']));
 
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
@@ -75,7 +75,7 @@ const Report = ({ data, id, t }) => {
         </div>
       </HashContainer>
       <HashContainer name={'Risk Metrics'} id={`risk-metrics-id`}>
-        <div style={{ breakInside: 'avoid' }}>
+        <div>
           <ReportSectionHeader text={t('risk_metrics')} />
           <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4">
             <Speedometer
@@ -133,10 +133,7 @@ const Report = ({ data, id, t }) => {
       <HashContainer name={'Highlights'} id={`highlights-id`}>
         <ReportSectionHeader text={t('highlights')} />
 
-        <div
-          className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 "
-          style={{ breakInside: 'avoid' }}
-        >
+        <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 ">
           <ReliabilityIndex
             reliability={data.highlights.data_reliability.reliability}
           />
@@ -149,7 +146,7 @@ const Report = ({ data, id, t }) => {
             reports={data.highlights.risk_outlook}
           />
         </div>
-        <div className="flex flex-col lg:flex-row py-6 justify-between">
+        <div className="flex flex-col lg:flex-row py-6 justify-between print:hidden">
           <FinancialAccounts financialYears={transformedFinancials} />
           <div className="w-full lg:ml-8">
             <p className="font-bold py-2">{t('add_more_data')}</p>

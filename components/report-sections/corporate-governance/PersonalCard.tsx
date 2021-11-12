@@ -38,7 +38,6 @@ const PersonalCard = ({
   return (
     <div
       className="text-sm sm:text-xs xl:text-sm selection:flex flex-col bg-white p-4 rounded-sm shadow-sm"
-      style={{ breakInside: 'avoid' }}
       data-testid="personal-card-testid"
     >
       <div className="flex justify-between">

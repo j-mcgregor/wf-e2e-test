@@ -16,7 +16,6 @@ const ShareHolderCard = ({
   return (
     <div
       className="bg-white flex py-3 px-4 justify-between items-center rounded-sm shadow-sm text-sm"
-      style={{ breakInside: 'avoid' }}
       data-testid="shareholder-card-testid"
     >
       <p>
