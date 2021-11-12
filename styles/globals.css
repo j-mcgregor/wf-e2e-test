@@ -12,3 +12,25 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* hide header and footer */
+@media print {
+  @page {
+    margin-left: 0.5in;
+    margin-right: 0.5in;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.avoid-break {
+  break-inside: avoid;
+}
+
+.avoid-break-after {
+  break-after: avoid;
+}
+
+.always-break-before {
+  break-before: page;
+}

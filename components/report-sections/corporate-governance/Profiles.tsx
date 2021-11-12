@@ -13,7 +13,7 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
     <div className="px-4 sm:px-0" data-testid="corp-senior-profiles-testid">
       <p className="my-4 text-xl">{t('directors')}</p>
       <div
-        className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4"
+        className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4 print:block"
         data-testid="corp-directors-list-testid"
       >
         {directors.map((director, index) => (
@@ -34,7 +34,7 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
 
       <p className="my-4 text-xl">{t('senior_management')}</p>
       <div
-        className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4"
+        className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4 print:block"
         data-testid="corp-snr-mgmt-list-testid"
       >
         {seniorManagement.map((manager, index) => (

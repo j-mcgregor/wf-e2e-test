@@ -25,7 +25,8 @@ const ReliabilityIndex = ({ reliability }: ReliabilityIndexProps) => {
               : reliability === 'unreliable'
               ? 'top-40'
               : 'top-16'
-          } bg-[#00263C] text-white font-bold p-2 relative -right-28 -ml-2 flex items-center justify-center rounded-sm text-sm`}
+          } bg-[#00263C] text-white font-bold p-2 relative -right-28 -ml-2 flex items-center justify-center rounded-sm text-sm
+          `}
         >
           <div className="h-0 w-0 border-t-[12px] border-b-[12px] border-r-[20px] border-transparent border-r-[#00263C] absolute right-[100px] rounded-b" />
           <span className="uppercase">{reliability}</span>

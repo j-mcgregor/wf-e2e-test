@@ -37,7 +37,8 @@ const PersonalCard = ({
   };
   return (
     <div
-      className="text-sm sm:text-xs xl:text-sm selection:flex flex-col bg-white p-4 rounded-sm shadow-sm"
+      className="text-sm sm:text-xs xl:text-sm selection:flex flex-col bg-white p-4 rounded-sm shadow-sm
+      avoid-break print:block"
       data-testid="personal-card-testid"
     >
       <div className="flex justify-between">

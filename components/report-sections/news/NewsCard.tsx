@@ -17,7 +17,7 @@ const NewsItem = ({
 }: NewsItemProps) => {
   return (
     <div
-      className="bg-white shadow-sm rounded-sm w-full flex flex-col p-4 text-sm my-6"
+      className="bg-white shadow-sm rounded-sm w-full flex flex-col p-4 text-sm my-6 avoid-break"
       data-testid="news-card-testid"
     >
       <div className="flex w-full justify-between italic pb-3">

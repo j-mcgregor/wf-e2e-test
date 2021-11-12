@@ -53,7 +53,7 @@ const Report = ({ data, id, t, forPrint }) => {
         />
       </div>
       <HashContainer name={'Summary'} id={`summary-id`}>
-        <ReportSectionHeader text={t('summary')} />
+        <ReportSectionHeader text={t('summary')} onNewPageForPrint={false} />
 
         <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm">
           <div className="flex w-full md:w-1/2 flex-col py-2">
@@ -70,14 +70,14 @@ const Report = ({ data, id, t, forPrint }) => {
             <SummaryMap contact={data.contact_details} />
           </div>
         </div>
-        <div className="py-4">
+        <div className="py-4 avoid-break">
           <SummaryFinancial years={lastFiveYearsFinancials} />
         </div>
       </HashContainer>
       <HashContainer name={'Risk Metrics'} id={`risk-metrics-id`}>
         <div>
           <ReportSectionHeader text={t('risk_metrics')} />
-          <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4">
+          <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4 print:inline-block">
             <Speedometer
               title="SME Z-score"
               value={304}

@@ -38,7 +38,7 @@ const ChartMulti = ({
 
   return (
     <div
-      className="shadow rounded-sm bg-white flex flex-col"
+      className="shadow rounded-sm bg-white flex flex-col print:inline-block print:w-1/2 avoid-break"
       data-testid="chart-multi-testid"
     >
       <div className="flex justify-between items-start px-4 pt-4 text-xs">

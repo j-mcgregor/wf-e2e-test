@@ -17,7 +17,8 @@ const ESGCard = ({
 }: ESGCardProps) => {
   return (
     <div
-      className="flex bg-white rounded-sm shadow-sm my-4 px-8 py-8 items-center justify-between"
+      className="flex bg-white rounded-sm shadow-sm my-4 px-8 py-8 items-center justify-between
+      block avoid-break"
       data-testid="esg-card-testid"
     >
       <div className="w-1/2">

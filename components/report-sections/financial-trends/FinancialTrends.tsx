@@ -51,18 +51,16 @@ const FinancialTrends = ({ data }: FinancialTrendsProps) => {
   );
 
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
+    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2 print:table">
       {chartsToRender.map((chart, i) => (
-        <div key={chart.header}>
-          <ChartMulti
-            header={`${t(chart.header)}`}
-            subHeader={`${t(chart.subHeader)}`}
-            graphData={chart.data}
-            hintTitle={chart.hint.title}
-            hintBody={chart.hint.body}
-          />
-          {/* {i > 0 && i % 6 === 0 && <div className="html2pdf__page-break" />} */}
-        </div>
+        <ChartMulti
+          key={chart.header}
+          header={`${t(chart.header)}`}
+          subHeader={`${t(chart.subHeader)}`}
+          graphData={chart.data}
+          hintTitle={chart.hint.title}
+          hintBody={chart.hint.body}
+        />
       ))}
     </div>
   );
