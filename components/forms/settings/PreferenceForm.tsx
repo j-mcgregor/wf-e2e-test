@@ -4,7 +4,6 @@ import { SettingsSectionHeader } from '../../elements/Headers';
 import Select from '../../elements/Select';
 import { useTranslations } from 'next-intl';
 import * as Sentry from '@sentry/nextjs';
-import { ErrorBoundary } from '@sentry/react';
 
 import Button from '../../elements/Button';
 import { useRecoilValue, useSetRecoilState } from 'recoil';

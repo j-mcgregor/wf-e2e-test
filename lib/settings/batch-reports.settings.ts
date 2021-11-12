@@ -1,5 +1,5 @@
 export const batchReport = {
-  averageTime: 100 // average report generation time in ms
+  averageTime: 200 // average report generation time in ms
 };
 
 export const batchValidators = [

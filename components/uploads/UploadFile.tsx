@@ -7,18 +7,16 @@ interface UploadFileProps {
   linkText: TranslateInput;
   text: TranslateInput;
   fileName: string | null;
-  selectFile: (e: React.FormEvent<HTMLInputElement>) => void;
   removeFile: () => void;
-  readFile: (file: File | null) => void;
+  setFile: (file: File | null) => void;
 }
 
 const UploadFile = ({
   text,
   linkText,
-  selectFile,
   removeFile,
   fileName,
-  readFile
+  setFile
 }: UploadFileProps) => {
   const t = useTranslations();
 
@@ -36,12 +34,9 @@ const UploadFile = ({
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const file = e.dataTransfer.items[0].getAsFile();
-
-    readFile(file);
-    setIsDraggedOver(false);
+    setFile(file);
+    return setIsDraggedOver(false);
   };
-
-  // -
 
   return (
     <div
@@ -65,7 +60,9 @@ const UploadFile = ({
             type="file"
             id="file-upload"
             accept=".csv"
-            onChange={e => selectFile(e)}
+            onChange={e =>
+              setFile(e?.target?.files?.[0] ? e?.target?.files[0] : null)
+            }
           />
 
           {!fileName && (

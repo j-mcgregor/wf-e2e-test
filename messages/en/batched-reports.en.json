@@ -37,5 +37,5 @@
   "sme_z-score": "SME Z-Score",
   "default": "Default %",
   "download_pdf": "Download PDF",
-  "create_a_name_for_report": "Create a name for the report"
+  "name_batched_report": "Name your batched report"
 }

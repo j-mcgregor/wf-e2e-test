@@ -1,10 +1,44 @@
+import { useState } from 'react';
 import { CSVValueValidation, FileContentType } from '../types/report';
+
+export type ErrorType = string | boolean | null;
+export type ErrorArray = ErrorType[];
+
+const readFile = (
+  file: File | null,
+  setFile: (file: string | ArrayBuffer | null | undefined) => void
+) => {
+  if (typeof FileReader !== 'undefined') {
+    const reader = new FileReader();
+    reader.onload = function (file) {
+      setFile(file.target?.result);
+    };
+
+    if (file) {
+      reader.readAsText(file);
+    } else {
+      return '';
+    }
+  } else {
+    return '';
+  }
+};
 
 const useCSVValidator = (
   file: File | null,
-  fileContent: FileContentType,
   validators: CSVValueValidation[]
 ) => {
+  const [fileContent, setFileContent] = useState<FileContentType>('');
+  const [fileName, setFileName] = useState<string>('');
+
+  // extract the file name
+  if (fileName !== file?.name) {
+    file?.name && setFileName(file.name);
+  }
+
+  // read the file and set the content
+  readFile(file, setFileContent);
+
   // extract the required headers
   const validatorHeaders = validators.map(validator => validator.header);
 
@@ -56,7 +90,9 @@ const useCSVValidator = (
             validator &&
             // calls the validation function and then filters out truthy values
             // these are going to be the error messages if there are any
-            values.map((value: any) => validator(value)).filter((x: any) => x)
+            values
+              .map((value: string) => validator(value))
+              .filter((x: ErrorType) => x)
           );
         })
       : [];
@@ -77,7 +113,10 @@ const useCSVValidator = (
     isCSV,
     errors,
     isValid,
-    missingHeaders
+    missingHeaders,
+    csvData: reportObject,
+    totalRows: csvValues?.length || 0,
+    fileName
   };
 };
 

@@ -48,23 +48,23 @@ const BatchReportTable = ({ data }: ReportProps) => {
                 </tr>
               </thead>
               <tbody className="text-xs">
-                {data?.company_list?.map(data => {
+                {data?.company_list?.map((company, index) => {
                   return (
                     <tr
-                      key={data.id}
+                      key={`${company.id} + ${index}`}
                       className="bg-white odd:bg-gray-50 text-xs lg:text-sm"
                     >
                       <td className="h-12 px-3 sm:px-6 py-1 whitespace-nowrap">
-                        {data.company_name}
+                        {company.company_name}
                       </td>
                       <td className="px-3 sm:px-6 py-1  whitespace-nowrap text-center">
-                        {data.sme_zscore}
+                        {company.sme_zscore}
                       </td>
                       <td className="px-3 sm:px-6 py-1 whitespace-nowrap  text-center">
-                        {data.bond_rating}
+                        {company.bond_rating}
                       </td>
                       <td className="px-3 sm:px-6 py-1 whitespace-nowrap  text-center">
-                        {data.probability_of_default}
+                        {company.probability_of_default}
                       </td>
 
                       <td className="px-3 sm:px-6 py-1 whitespace-nowrap flex items-center justify-center">

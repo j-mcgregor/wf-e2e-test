@@ -17,12 +17,12 @@ const ESGApi = async (request: NextApiRequest, response: NextApiResponse) => {
   const session = await getSession({ req: request });
 
   // unauthenticated requests
-  if (!session) {
-    return response.status(403).json({
-      error: UNAUTHORISED,
-      message: 'Unauthorised api request, please login to continue.'
-    });
-  }
+  // if (!session) {
+  //   return response.status(403).json({
+  //     error: UNAUTHORISED,
+  //     message: 'Unauthorised api request, please login to continue.'
+  //   });
+  // }
 
   // extract search query
   const companyName: string = request?.query?.company_name?.toString();
