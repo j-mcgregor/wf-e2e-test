@@ -124,7 +124,13 @@ const ReportNav = ({
       </div>
 
       <div className="space-y-2 items-end flex-1 justify-end flex flex-col pb-4">
-        <Button variant="alt" className="w-full" linkTo="/report/5/print">
+        <Button
+          variant="alt"
+          className="w-full"
+          linkTo="/report/5/print"
+          target="_blank"
+          rel="noreferrer"
+        >
           {t('export_pdf')}
         </Button>
         <Button variant="secondary">{t('export_csv')}</Button>

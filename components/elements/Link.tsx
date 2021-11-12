@@ -8,16 +8,23 @@ interface LinkProps {
   style?: React.CSSProperties;
   onClick?: () => void;
 }
-const Link = ({ children, linkTo, className, style, onClick }: LinkProps) => {
+const Link = ({
+  children,
+  linkTo,
+  className,
+  style,
+  onClick,
+  ...rest
+}: LinkProps) => {
   if (onClick) {
     return (
-      <button className={className} style={style} onClick={onClick}>
+      <button className={className} style={style} onClick={onClick} {...rest}>
         {children}
       </button>
     );
   }
   if (!linkTo) {
-    return <a>{children}</a>;
+    return <a {...rest}>{children}</a>;
   }
   const regex = new RegExp('https?|wwww');
   const mailRegex = new RegExp('mailto');
@@ -34,6 +41,7 @@ const Link = ({ children, linkTo, className, style, onClick }: LinkProps) => {
         rel="noopener noreferrer"
         className={className}
         style={style}
+        {...rest}
       >
         {children}
       </a>
@@ -41,7 +49,7 @@ const Link = ({ children, linkTo, className, style, onClick }: LinkProps) => {
 
   return (
     <NextLink href={linkTo}>
-      <a className={className} style={style}>
+      <a className={className} style={style} {...rest}>
         {children}
       </a>
     </NextLink>
