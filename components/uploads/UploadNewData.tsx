@@ -18,7 +18,7 @@ interface UploadNewDataProps {
   errors?: (string | boolean | null)[];
   fileSelected: File | null;
   setFileSelected: (selectedFile: File | null) => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const UploadNewData = ({
@@ -48,25 +48,25 @@ const UploadNewData = ({
 
   return (
     <div className="bg-white rounded-sm shadow-sm p-8">
-      <div>
-        <p className="text-3xl font-semibold py-2">{header}</p>
-        {/* Allows optional naming of file */}
-        {nameFileInput && <div className="w-1/2">{nameFileInput}</div>}
-        <p className="text-lg font-bold mt-4">{description}</p>
-      </div>
+      <div className="grid grid-cols-2">
+        <div className="space-y-3">
+          <p className="text-3xl font-semibold py-2">{header}</p>
+          {/* Allows optional naming of file */}
+          {nameFileInput && <div className="">{nameFileInput}</div>}
+          <p className="text-base mt-4 ">{description}</p>
 
-      <div className="flex flex-col md:flex-row justify-between w-full py-4">
-        <UploadFile
-          text={t('or_drag_and_drop_it')}
-          linkText={t('upload_your_csv')}
-          setFile={file => setFileSelected(file)}
-          removeFile={handleRemoveFile}
-          fileName={fileSelected && fileSelected.name}
-        />
+          <UploadFile
+            text={t('or_drag_and_drop_it')}
+            linkText={t('upload_your_csv')}
+            setFile={file => setFileSelected(file)}
+            removeFile={handleRemoveFile}
+            fileName={fileSelected && fileSelected.name}
+          />
+        </div>
 
-        <div className="text-xs flex flex-col md:w-1/2 w-full items-center">
+        <div className="text-xs flex flex-col  items-center pt-16">
           {fileSelected && (
-            <div className="sm:w-3/4 px-6 md:-mt-10">
+            <div className="sm:w-3/4 px-6 ">
               <p className="font-bold mb-2 text-lg">{t('valid_csv_check')}</p>
 
               <div className="overflow-y-auto h-48">
@@ -128,8 +128,7 @@ const UploadNewData = ({
           )}
         </div>
       </div>
-
-      <div className="w-3/12">
+      <div className="w-3/12 mt-2">
         <Button
           variant="highlight"
           disabled={!isValid || disableButton}

@@ -45,7 +45,7 @@ const UploadFile = ({
       onDragLeave={handleDragLeave}
       className={`${
         draggedOver ? 'bg-highlight bg-opacity-60' : 'bg-bg'
-      } md:w-1/2 w-full h-52 flex flex-col items-center justify-center rounded`}
+      }  h-52 flex flex-col items-center justify-center rounded`}
     >
       <div
         className={`${

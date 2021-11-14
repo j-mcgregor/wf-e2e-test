@@ -3,21 +3,26 @@ import { useTranslations } from 'use-intl';
 import UploadNewData from '../uploads/UploadNewData';
 import LinkCard from '../cards/LinkCard';
 import { CloudDownloadIcon } from '@heroicons/react/outline';
-import { templateText } from '../../lib/settings/sme-calc.settings';
-import { FileContentType } from '../../types/report';
-import { validCSVValues } from '../../lib/settings/sme-calc.settings';
+import {
+  manualUploadValidators,
+  templateText
+} from '../../lib/settings/sme-calc.settings';
+import useCSVValidator from '../../hooks/useCSVValidator';
 
 const ProvideData = () => {
-  const [fileContent, setFileContent] = useState<FileContentType>(null);
   const [fileSelected, setFileSelected] = useState<File | null>(null);
 
   const handleSetSelectedFile = (file: File | null) => {
     setFileSelected(file);
   };
 
-  const handleSetFileContent = (file: FileContentType) => {
-    setFileContent(file);
-  };
+  const {
+    isCSV,
+    isValid,
+    errors,
+    missingHeaders
+    // csvData // to be used to send to the backend
+  } = useCSVValidator(fileSelected, manualUploadValidators);
 
   const t = useTranslations();
 
@@ -28,15 +33,16 @@ const ProvideData = () => {
           header={t('provide_your_own_data')}
           description={t('use_one_of_our_templates_to_add_data')}
           buttonText={t('generate_new_report')}
-          fileContent={fileContent}
-          setFileContent={handleSetFileContent}
           setFileSelected={handleSetSelectedFile}
           fileSelected={fileSelected}
-          validations={validCSVValues}
           onSubmit={() => null}
+          isCSV={isCSV}
+          isValid={isValid}
+          errors={errors}
+          missingHeaders={missingHeaders}
+          disableButton={!isValid}
         />
       </div>
-
       <div>
         <p className="text-xl font-semibold">{t('templates')}</p>
         <div className="grid grid-cols-4 gap-3 my-6">

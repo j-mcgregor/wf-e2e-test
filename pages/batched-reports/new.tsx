@@ -15,7 +15,6 @@ import {
 
 import Input from '../../components/elements/Input';
 import fetcher from '../../lib/utils/fetcher';
-import mockBatchReport from '../../lib/mock-data/mockBatchReport';
 import useCSVValidator from '../../hooks/useCSVValidator';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import ErrorMessage from '../../components/elements/ErrorMessage';

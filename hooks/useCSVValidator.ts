@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { useState } from 'react';
 import { CSVValueValidation, FileContentType } from '../types/report';
 
@@ -83,17 +84,19 @@ const useCSVValidator = (
           // access the validator function in valueValidation
           const validator = validatorArray?.validate
             ? validatorArray.validate
-            : null;
+            : false;
 
           // create array of invalid values
-          return (
-            validator &&
-            // calls the validation function and then filters out truthy values
-            // these are going to be the error messages if there are any
-            values
-              .map((value: string) => validator(value))
-              .filter((x: ErrorType) => x)
-          );
+          return [
+            ...(validator
+              ? values
+                  // calls the validation function and then filters out truthy values
+                  // these are going to be the error messages if there are any
+                  .map((value: string) => validator(value))
+              : // if there is no validator function it returns false
+                // which is filtered and removed from the array
+                [false])
+          ].filter((x: ErrorType) => !!x);
         })
       : [];
 
