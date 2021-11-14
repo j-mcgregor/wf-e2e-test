@@ -336,15 +336,14 @@ describe('ReportTemplate', () => {
 
       if (cardOne.parentElement && cardTwo.parentElement) {
         const cardOneButtons = within(cardOne.parentElement).getAllByRole(
-          'button'
+          'link'
         );
         const cardTwoButtons = within(cardTwo.parentElement).getAllByRole(
-          'button'
+          'link'
         );
 
-        expect(cardOneButtons[0].textContent).toBe('Unlock');
-        expect(cardOneButtons[0]).toBeDisabled();
-        expect(cardOneButtons[1].textContent).toBe('Learn more');
+        expect(cardOneButtons[0].textContent).toBe('Learn more');
+        // expect(cardOneButtons[1].textContent).toBe('Unlock');
         expect(cardTwoButtons[0].textContent).toBe('Upload');
         expect(cardTwoButtons[1].textContent).toBe('Learn more');
       } else {
