@@ -5,7 +5,7 @@ import { rest } from 'msw';
 import mockReport from '../../lib/mock-data/report';
 
 export const handlers = [
-  rest.get('http://localhost:3000/api/report/report', (req, res, ctx) => {
+  rest.get('http://localhost:3000/api/reports/report', (req, res, ctx) => {
     const query = req.url.searchParams;
     const id = query.get('id');
     console.info(id);
