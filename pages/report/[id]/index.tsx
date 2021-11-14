@@ -13,7 +13,6 @@ import TabletReportNav from '../../../components/layout/TabletReportNav';
 import CorporateOverview from '../../../components/report-sections/corporate-governance/CorporateOverview';
 import Profiles from '../../../components/report-sections/corporate-governance/Profiles';
 import ShareHolderList from '../../../components/report-sections/corporate-governance/ShareHolderList';
-import ESGCard from '../../../components/report-sections/esg-assessment/ESGCard';
 import CTACard from '../../../components/report-sections/highlights/CTACard';
 import DataReliability from '../../../components/report-sections/highlights/DataReliability';
 import FinancialAccounts from '../../../components/report-sections/highlights/FinancialAccounts';
@@ -101,7 +100,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const { id = [] } = router.query;
 
   const { data, error } = useSWR<ReportDataProps>(
-    `/api/report?id=${id}`,
+    `/api/reports/report?id=${id}`,
     fetcher
   );
 
@@ -153,8 +152,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
           <ErrorSkeleton header={`${t(REPORT_FETCHING_ERROR)}`} />
         ) : (
           <div className="text-primary mt-10 lg:mt-0">
-            <div className="py-8">
-              <h1 className="text-xl pb-4">{t('risk_assessment_report')}</h1>
+            <div className="sm:py-8">
               <ReportHeader
                 company={data?.company_name}
                 created={created}
@@ -265,17 +263,18 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
                     title={t('import_data')}
                     body={t('unlock_api_to_gain_access')}
                     buttonText="Import"
-                    unlocked={false}
+                    locked={true}
                     buttonColor="bg-[#2BAD01]"
+                    learnMoreLink="#"
                     // linkTo='/'
                   />
                   <CTACard
                     title={t('upload_more_data')}
                     body={t('upload_data_for_more_recent_report')}
                     buttonText="Upload"
-                    unlocked={true}
                     buttonColor="bg-alt"
-                    // linkTo="/"
+                    linkTo={`${id}/upload-data`}
+                    learnMoreLink="#"
                   />
                 </div>
               </div>
@@ -340,12 +339,16 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
                 governance={{
                   pepFlags: 3
                 }}
+                companyName={data.contact_details.name}
+                website={
+                  data.contact_details.websites.find((x: string) => x) || ''
+                }
               />
             </HashContainer>
 
             <HashContainer name={'News'} id={`news`}>
               <ReportSectionHeader text={t('news')} />
-              <NewsFeed />
+              <NewsFeed companyName={data.contact_details.name} />
             </HashContainer>
           </div>
         )}

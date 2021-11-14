@@ -37,13 +37,13 @@ const BasicSearch = ({
 
   return (
     <>
-      <div className="flex justify-between">
-        <div className="pb-4">
+      <div className="flex sm:flex-row flex-col justify-between">
+        <div className="pb-2 sm:pb-4">
           <p className="text-lg font-semibold py-1">{t('country')}</p>
           <p>{t('the_country_where_the_company_is_based')}</p>
         </div>
 
-        <div className="w-1/3 pt-2">
+        <div className="sm:w-1/3 sm:pt-2">
           <SelectMenu
             values={countries}
             defaultValue={defaultCountry}

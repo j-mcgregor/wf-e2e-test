@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
 import { getSession } from 'next-auth/client';
 
@@ -6,7 +7,9 @@ import {
   NO_REPORT_ID,
   NO_REPORT,
   UNAUTHORISED,
-  METHOD_NOT_ALLOWED
+  METHOD_NOT_ALLOWED,
+  GENERIC_API_ERROR,
+  MISSING_DATA
 } from '../../lib/utils/error-codes';
 import { BatchedReportType } from '../../types/global';
 
@@ -15,6 +18,8 @@ const randomValue = (amount: number) => {
 };
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { batchReport } from '../../lib/settings/batch-reports.settings';
+import mockBatchReport from '../../lib/mock-data/mockBatchReport';
 
 type CompanyReqType = {
   iso: string;
@@ -29,42 +34,47 @@ const batchedReport = async (
   const session = await getSession({ req: request });
 
   // unauthenticated requests
-  // if (!session) {
-  //   return response.status(403).json({
-  //     error: UNAUTHORISED,
-  //     message: 'Unauthorised api request, please login to continue.'
-  //   });
-  // }
+  if (!session) {
+    return response.status(403).json({
+      error: UNAUTHORISED,
+      message: 'Unauthorised api request, please login to continue.'
+    });
+  }
 
   const { method } = request;
   const isGet = method === 'GET';
   const isPost = method === 'POST';
 
   if (isPost) {
-    const { name, company_list } = request.body;
+    try {
+      const company_list = request?.body?.company_list || [];
+      const name = request?.body?.name || '';
 
-    if (company_list.length > 0) {
-      // create fake company reports
-      const batched_reports = company_list.map((company: CompanyReqType) => {
-        return {
-          company_id: company.company_id,
-          sme_z_score: `${randomValue(500)}`,
-          company_name: Object.values(MockCompanyNames)[randomValue(5)],
-          bond_rating: randomValue(2) > 1 ? 'A' : 'B',
-          probability_of_default: `${randomValue(200)}`
-        };
-      });
-
-      // setTimeout for demo purposes
-      return setTimeout(() => {
-        return response.status(200).json({
-          data: {
-            name,
-            id: '21',
-            batched_reports
-          }
+      if (company_list.length > 0) {
+        // setTimeout for demo purposes
+        return setTimeout(() => {
+          return response.status(200).json({
+            ok: true,
+            data: {
+              name,
+              id: '21'
+              // batched_reports
+            }
+          });
+        }, company_list.length * batchReport.averageTime);
+      } else {
+        return response.status(404).json({
+          error: MISSING_DATA,
+          message: 'No company list provided',
+          ok: false
         });
-      }, company_list.length * 500);
+      }
+    } catch (error) {
+      return response.status(500).json({
+        ok: false,
+        error: GENERIC_API_ERROR,
+        message: error
+      });
     }
   }
 
@@ -76,6 +86,27 @@ const batchedReport = async (
       return response.status(500).json({
         error: NO_REPORT_ID,
         message: 'No report ID provided, please add batched report ID.'
+      });
+    }
+
+    if (request.query.demo === 'true') {
+      // create fake company reports
+      const batched_reports = mockBatchReport.company_list.map(
+        (company: CompanyReqType) => {
+          return {
+            company_id: company.company_id,
+            sme_zscore: `${randomValue(500)}`,
+            company_name: Object.values(MockCompanyNames)[randomValue(5)],
+            bond_rating: randomValue(3) > 1 ? 'A' : 'B',
+            probability_of_default: `${randomValue(200)}`
+          };
+        }
+      );
+      return response.status(200).json({
+        ok: true,
+        id: batchReportId,
+        name: 'Mock Api Report',
+        company_list: batched_reports
       });
     }
 

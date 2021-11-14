@@ -28,14 +28,16 @@ const Reports = () => {
     <Layout noNav={false} title="Reports">
       <div className="text-primary">
         <div>
-          <h1 className="text-3xl font-semibold py-2">{t('reports')}</h1>
-          <p className="text-base py-4">{t('see_all_your_recent_reports')}</p>
-          <h2 className="text-2xl font-semibold py-6">
+          <h1 className="text-3xl font-semibold">{t('reports')}</h1>
+          <p className="text-base py-2 sm:py-4">
+            {t('see_all_your_recent_reports')}
+          </p>
+          <h2 className="text-2xl font-semibold py-3 sm:py-6">
             {t('bookmarked_reports')}
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 leading-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 leading-4">
           {bookmarkedReports &&
             bookmarkedReports.map((report: Report) => {
               return (
@@ -62,7 +64,9 @@ const Reports = () => {
           ))}
 
         <div className="flex flex-col">
-          <p className="text-2xl py-6 font-semibold">{t('recent_reports')}</p>
+          <p className="text-2xl pt-6 pb-2 sm:py-6 font-semibold">
+            {t('recent_reports')}
+          </p>
 
           <ReportTable
             headerSize="text-[10px] md:text-sm lg:text-base"

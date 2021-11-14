@@ -44,14 +44,14 @@ const BatchReports = () => {
             {t('completed_batch_reports')}
           </p>
 
-          <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
+          <div className="grid md:grid-cols-4 grid-cols-2 gap-3">
             {user &&
               user.batched_report_jobs.map(report => {
                 return (
                   report.finish_date && (
                     <BatchReportCard
                       key={report.id}
-                      header={`Batch - ${report.create_date}`}
+                      header={`${report.name}`}
                       linkTo={`/batched-reports/${report.id}`}
                       quantity={report.total_reports}
                       quantityText={t('total_companies_analysed')}
@@ -66,21 +66,19 @@ const BatchReports = () => {
           </div>
         </div>
 
-        {/* in progress batch reports */}
-        {/* NEED TO USE MOCK DATA */}
         <div className="my-6">
           <p className="text-xl font-semibold mb-4">
             {t('in_progress_batch_reports')}
           </p>
 
-          <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
+          <div className="grid md:grid-cols-3 grid-cols-2 gap-3">
             {user &&
               user.batched_report_jobs.map(report => {
                 return (
                   !report.finish_date && (
                     <BatchReportCard
                       key={report.id}
-                      header={`Batch - ${report.create_date}`}
+                      header={report.name}
                       quantity={report.total_reports}
                       quantityText={t('total_companies_analysed')}
                       icon={

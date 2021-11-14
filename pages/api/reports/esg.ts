@@ -6,11 +6,11 @@ import {
   SEARCH_ERROR,
   COMPANY_WEBSITE_REQUIRED,
   INVALID_REQUEST_TYPE
-} from '../../lib/utils/error-codes';
+} from '../../../lib/utils/error-codes';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import ESG from '../../lib/funcs/esg';
-import { ApiResType } from '../../types/global';
+import ESG from '../../../lib/funcs/esg';
+import { ApiResType } from '../../../types/global';
 
 // Declaring function for readability with Sentry wrapper
 const ESGApi = async (request: NextApiRequest, response: NextApiResponse) => {

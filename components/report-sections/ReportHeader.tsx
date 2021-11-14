@@ -30,25 +30,17 @@ const ReportHeader = ({ company, created, reportId }: ReportHeaderProps) => {
 
   const t = useTranslations();
   return (
-    <div className="flex w-full only-of-type:justify-between">
-      <div className="flex flex-col">
+    <div className="flex sm:flex-row flex-col w-full only-of-type:justify-between">
+      <div className="flex flex-col order-2 sm:order-1">
+        <p className="text-xl pb-4">{t('risk_assessment_report')}</p>
         <h1 className="text-3xl font-medium pb-4">{company}</h1>
         <p>
           {t('created')}: {created}
         </p>
       </div>
 
-      <div className="flex">
-        <Button
-          variant="none"
-          newClassName="border-none self-start"
-          onClick={handleClick}
-        >
-          <BookmarkIcon
-            className={`w-10 ${isBookMarked ? 'fill-current' : ''}`}
-          />
-        </Button>
-        <div className="ml-4">
+      <div className="flex order-1 sm:order-2">
+        <div className="">
           <Image
             src={WFLogo}
             alt="Wiserfunding Logo"
@@ -57,6 +49,15 @@ const ReportHeader = ({ company, created, reportId }: ReportHeaderProps) => {
             height={50}
           />
         </div>
+        <Button
+          variant="none"
+          newClassName="border-none self-start ml-auto mr-2 sm:mr-0 sm:ml-4"
+          onClick={handleClick}
+        >
+          <BookmarkIcon
+            className={`w-10 ${isBookMarked ? 'fill-current' : ''}`}
+          />
+        </Button>
       </div>
     </div>
   );

@@ -9,19 +9,25 @@ type ESGContainerProps = {
   governance: {
     pepFlags?: number | string;
   };
+  website: string;
+  companyName: string;
 };
 
 type EsgApiResponse = {
   data: { name: string; score: number }[];
 };
 
-const ESGContainer = ({ governance }: ESGContainerProps) => {
+const ESGContainer = ({
+  governance,
+  website = 'https://w3.com',
+  companyName = 'W3'
+}: ESGContainerProps) => {
   const { pepFlags } = governance;
   const t = useTranslations();
 
   // demo mode is engaged for now
   const { data } = useSWR<EsgApiResponse>(
-    '/api/esg?company_website=https://w3.com&company_name=W3&type=demo',
+    `/api/reports/esg?company_website=${website}&company_name=${companyName}&type=demo`,
     fetcher
   );
 

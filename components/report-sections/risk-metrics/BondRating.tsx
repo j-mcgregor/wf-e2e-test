@@ -22,29 +22,31 @@ const BondRating = ({ score }: BondRatingProps) => {
   const t = useTranslations();
 
   return (
-    <div className="bg-white shadow rounded-sm px-8 py-6">
+    <div className="bg-white shadow rounded-sm px-4 sm:px-8 py-6">
       <p className="text-xl font-bold">{t('bond_rating')}</p>
 
-      <div className="flex w-full items-center my-4 py-4">
-        {bondRatings.map((rating, i) => {
-          return (
-            <div
-              style={{
-                background: `linear-gradient(to right, ${rating.bgColor})`,
-                width: rating.width
-              }}
-              key={i}
-              className={`${
-                rating.score === score
-                  ? 'h-36 text-4xl font-bold min-w-[100px]'
-                  : 'h-28 text-lg font-semibold'
-              } text-white flex items-center justify-center mx-[1px]`}
-              data-testid={rating.score === score ? 'bond-rating' : ''}
-            >
-              {rating.score}
-            </div>
-          );
-        })}
+      <div className="overflow-x-scroll">
+        <div className="flex items-center my-4 py-4 w-[600px] sm:w-full">
+          {bondRatings.map((rating, i) => {
+            return (
+              <div
+                style={{
+                  background: `linear-gradient(to right, ${rating.bgColor})`,
+                  width: rating.width
+                }}
+                key={i}
+                className={`${
+                  rating.score === score
+                    ? 'h-36 text-4xl font-bold min-w-[100px]'
+                    : 'h-28 text-lg font-semibold'
+                } text-white flex items-center justify-center mx-[1px]`}
+                data-testid={rating.score === score ? 'bond-rating' : ''}
+              >
+                {rating.score}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <div className="flex items-center bg-bg p-2 rounded-sm">

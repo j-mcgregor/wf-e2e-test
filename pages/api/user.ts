@@ -86,13 +86,11 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  return res
-    .status(500)
-    .json({
-      ok: false,
-      error: METHOD_NOT_ALLOWED,
-      message: 'Method not allowed.'
-    });
+  return res.status(500).json({
+    ok: false,
+    error: METHOD_NOT_ALLOWED,
+    message: 'Method not allowed.'
+  });
 };
 
 export default withSentry(UserHandler);

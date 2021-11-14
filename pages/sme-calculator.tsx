@@ -21,7 +21,7 @@ const SMECalculator = () => {
       <div className={`text-primary`}>
         <SearchContainer disabled={showProvideData} />
 
-        <div className="flex flex-col w-1/3 text-sm">
+        <div className="flex flex-col sm:w-1/3 text-sm sm:mt-4 text-center sm:text-left">
           <p
             className={`${
               !showProvideData ? 'visible' : 'invisible'
@@ -29,14 +29,17 @@ const SMECalculator = () => {
           >
             {t('cant_find_the_company_you_were_looking_for')}
           </p>
-
-          <Button
-            variant="primary"
-            className="rounded-none font-normal"
-            onClick={toggleProvideData}
-          >
-            {!showProvideData ? t('provide_own_data') : t('search_for_company')}
-          </Button>
+          <div className=" px-8 sm:px-0">
+            <Button
+              variant="primary"
+              className="rounded-none font-normal "
+              onClick={toggleProvideData}
+            >
+              {!showProvideData
+                ? t('provide_own_data')
+                : t('search_for_company')}
+            </Button>
+          </div>
         </div>
         {showProvideData && <ProvideData />}
       </div>

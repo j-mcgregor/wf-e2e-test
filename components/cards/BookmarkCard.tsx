@@ -37,7 +37,7 @@ const BookmarkCard = ({
         <div className="flex flex-col">
           <p className="font-semibold px-2 py-2 truncate">{companyName}</p>
 
-          <div className="flex bg-primary text-white bg-opacity-75 rounded-b mt-2 text-sm">
+          <div className="flex bg-primary text-white bg-opacity-75 rounded-b mt-2 text-xs sm:text-sm">
             <div className="flex flex-col items-center justify-center text-center px-0.5 py-2 w-full">
               <p className="font-bold py-1">{smeZscore}</p>
               <p className="text-[10px]">{t('sme_score')}</p>

@@ -146,10 +146,10 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
           />
         )}
 
-        <div className="flex items-center my-6">
+        <div className="flex sm:flex-row flex-col items-center my-6">
           <Button
             variant="highlight"
-            className="text-primary rounded-none"
+            className="text-primary rounded-none w-full mb-2 sm:mb-0"
             disabled={!canGenerateReport}
           >
             {t('generate_report')}
