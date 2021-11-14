@@ -9,7 +9,9 @@ export const ReportSectionHeader = ({
   children?: ReactNode;
   text?: TranslateInput;
 }) => {
-  return <h2 className="text-3xl py-8 text-primary">{text || children}</h2>;
+  return (
+    <h2 className="text-3xl py-4 sm:py-8 text-primary">{text || children}</h2>
+  );
 };
 export const SettingsSectionHeader = ({
   children,

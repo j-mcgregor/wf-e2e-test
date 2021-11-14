@@ -44,7 +44,11 @@ const CTACard = ({
             <p className="mx-2">{!locked ? buttonText : 'Unlock'}</p>
             {locked && <Lock color="white" />}
           </Button>
-          <Button linkTo={learnMoreLink} className="w-full" variant="none">
+          <Button
+            linkTo={learnMoreLink}
+            className="shadow-none hover:text-alt"
+            variant="none"
+          >
             <p>{t('learn_more')}</p>
           </Button>
         </div>

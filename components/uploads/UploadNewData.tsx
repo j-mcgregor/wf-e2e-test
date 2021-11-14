@@ -47,7 +47,7 @@ const UploadNewData = ({
   const cross = <XIcon className="h-6 w-6 text-red-500 mr-1" />;
 
   return (
-    <div className="bg-white rounded-sm shadow-sm p-8">
+    <div className="bg-white rounded-sm shadow-sm sm:p-8 p-6">
       <div className="grid sm:grid-cols-2">
         <div className="space-y-3">
           <p className="text-3xl font-semibold py-2">{header}</p>
@@ -69,7 +69,7 @@ const UploadNewData = ({
             <div className="sm:w-3/4 sm:px-6 ">
               <p className="font-bold mb-2 text-lg">{t('valid_csv_check')}</p>
 
-              <div className="overflow-y-auto sm:h-48">
+              <div className="overflow-y-auto max-h-48">
                 <div className="flex py-1">
                   {isCSV ? (
                     <>

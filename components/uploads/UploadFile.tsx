@@ -50,9 +50,9 @@ const UploadFile = ({
       <div
         className={`${
           draggedOver ? 'hidden' : 'block'
-        } flex flex-col items-center`}
+        } flex flex-col w-full items-center `}
       >
-        <form className="py-4 mt-2 text-sm">
+        <form className="py-4 mt-2 text-sm w-full px-4">
           {!fileName && (
             <label htmlFor="file-upload">
               <UploadIcon className="h-20 w-20 border-2 border-highlight text-highlight hover:opacity-50  cursor-pointer  p-4 rounded mb-5 mx-auto" />
@@ -74,9 +74,9 @@ const UploadFile = ({
           />
 
           {!fileName ? (
-            <div className="flex">
+            <div className="flex  w-full">
               <label
-                className="text-highlight cursor-pointer hover:opacity-60"
+                className="text-highlight cursor-pointer hover:opacity-60 "
                 htmlFor="file-upload"
               >
                 {linkText}
@@ -84,12 +84,10 @@ const UploadFile = ({
               <span>&nbsp;{text}</span>
             </div>
           ) : (
-            <div
-              className={`${
-                fileName ? 'visible' : 'invisible'
-              } flex items-center justify-center relative`}
-            >
-              <p className="text-sm font-semibold">{fileName}</p>
+            <div className={`w-full  `}>
+              <p className="text-sm font-semibold break-all text-center ">
+                {fileName}
+              </p>
             </div>
           )}
         </form>

@@ -53,7 +53,7 @@ const BatchReportCard = ({
               {header}
             </p>
           </div>
-          <div className="w-full bg-bg text-center py-4 rounded-sm mt-4">
+          <div className="w-full bg-bg text-center py-2 rounded-sm mt-3">
             <p className="text-xl font-bold">{quantity}</p>
             <p className="text-xs">{quantityText}</p>
           </div>
