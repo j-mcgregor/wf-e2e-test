@@ -101,7 +101,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const { id = [] } = router.query;
 
   const { data, error } = useSWR<ReportDataProps>(
-    `/api/report?id=${id}`,
+    `/api/reports/report?id=${id}`,
     fetcher
   );
 
@@ -349,7 +349,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
 
             <HashContainer name={'News'} id={`news`}>
               <ReportSectionHeader text={t('news')} />
-              <NewsFeed />
+              <NewsFeed companyName={data.contact_details.name} />
             </HashContainer>
           </div>
         )}

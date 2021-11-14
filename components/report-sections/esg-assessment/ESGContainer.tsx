@@ -27,7 +27,7 @@ const ESGContainer = ({
 
   // demo mode is engaged for now
   const { data } = useSWR<EsgApiResponse>(
-    `/api/esg?company_website=${website}&company_name=${companyName}&type=demo`,
+    `/api/reports/esg?company_website=${website}&company_name=${companyName}&type=demo`,
     fetcher
   );
 

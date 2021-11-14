@@ -1,14 +1,14 @@
 import { withSentry } from '@sentry/nextjs';
 import { getSession } from 'next-auth/client';
 
-import mockReport from '../../lib/mock-data/report';
-import mockUsers from '../../lib/mock-data/users';
+import mockReport from '../../../lib/mock-data/report';
+import mockUsers from '../../../lib/mock-data/users';
 import {
   NO_REPORT_ID,
   NO_REPORT,
   UNAUTHORISED
-} from '../../lib/utils/error-codes';
-import { Report } from '../../types/global';
+} from '../../../lib/utils/error-codes';
+import { Report } from '../../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 

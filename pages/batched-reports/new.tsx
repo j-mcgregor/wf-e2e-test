@@ -91,7 +91,6 @@ const CreateBatchReport = () => {
 
     try {
       const req = await fetcher('/api/batched-reports', 'POST', reqData);
-
       if (req.ok) {
         return setResults(req.data);
       }

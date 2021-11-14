@@ -6,23 +6,23 @@ import {
   SEARCH_ERROR,
   COMPANY_WEBSITE_REQUIRED,
   INVALID_REQUEST_TYPE
-} from '../../lib/utils/error-codes';
+} from '../../../lib/utils/error-codes';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import ESG from '../../lib/funcs/esg';
-import { ApiResType } from '../../types/global';
+import ESG from '../../../lib/funcs/esg';
+import { ApiResType } from '../../../types/global';
 
 // Declaring function for readability with Sentry wrapper
 const ESGApi = async (request: NextApiRequest, response: NextApiResponse) => {
   const session = await getSession({ req: request });
 
   // unauthenticated requests
-  // if (!session) {
-  //   return response.status(403).json({
-  //     error: UNAUTHORISED,
-  //     message: 'Unauthorised api request, please login to continue.'
-  //   });
-  // }
+  if (!session) {
+    return response.status(403).json({
+      error: UNAUTHORISED,
+      message: 'Unauthorised api request, please login to continue.'
+    });
+  }
 
   // extract search query
   const companyName: string = request?.query?.company_name?.toString();
