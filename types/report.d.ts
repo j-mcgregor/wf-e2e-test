@@ -31,6 +31,7 @@ export type SummaryContact = {
   phone_numbers: string[];
   websites: string[];
   emails: string[];
+  name: string;
   company_description: string | null;
 };
 
@@ -85,7 +86,11 @@ export type Shareholder = {
 
 export type FileContentType = string | ArrayBuffer | null | undefined;
 
+export interface CSVValueValidation {
+  header: string;
+  validate: ((value: string) => boolean | string) | null;
+}
+
 export type ValidCSVType = {
-  valid_report_headers: string[];
-  required_report_values: string[];
+  validator: CSVValueValidation[];
 };

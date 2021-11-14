@@ -8,26 +8,63 @@ import Button from '../../components/elements/Button';
 import LinkCard from '../../components/cards/LinkCard';
 import UploadNewData from '../../components/uploads/UploadNewData';
 import ProgressBar from '../../components/elements/ProgressBar';
-import { batchReport } from '../../lib/settings/batch-reports.settings';
 import {
-  validReportHeaders,
-  requiredReportValues
-} from '../../lib/settings/sme-calc.settings';
+  batchReport,
+  batchValidators
+} from '../../lib/settings/batch-reports.settings';
+
+import Input from '../../components/elements/Input';
+import fetcher from '../../lib/utils/fetcher';
+import mockBatchReport from '../../lib/mock-data/mockBatchReport';
+import useCSVValidator from '../../hooks/useCSVValidator';
+import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
+import ErrorMessage from '../../components/elements/ErrorMessage';
+
+const convertCSVToRequestBody = (
+  csv: { [index: string]: [] },
+  name: string
+) => {
+  const mappedCsv = csv?.company_id?.map((id, index) => ({
+    company_id: id,
+    iso: csv.iso[Number(index)]
+  }));
+
+  if (mappedCsv && name) {
+    return {
+      name: name,
+      company_list: mappedCsv
+    };
+  }
+  return {};
+};
 
 const CreateBatchReport = () => {
   const t = useTranslations();
+  const [fileSelected, setFileSelected] = useState<File | null>(null);
 
-  const totalReports = 200;
-  const totalTime = Math.round(totalReports * batchReport.averageTime);
+  const {
+    isCSV,
+    isValid,
+    errors,
+    missingHeaders,
+    totalRows,
+    csvData,
+    fileName
+  } = useCSVValidator(fileSelected, batchValidators);
 
   // state for total completed reports
   const [completedReports, setCompletedReports] = useState(0);
-  const [remainingTime, setRemainingTime] = useState(totalTime);
+  const [remainingTime, setRemainingTime] = useState(
+    totalRows * -batchReport.averageTime
+  );
   const [processing, setProcessing] = useState(false);
   const [complete, setComplete] = useState(false);
+  const [reportName, setReportName] = useState('');
+  const [results, setResults] = useState<{ id?: string }>({});
+  const [error, setError] = useState('');
 
-  const runReports = (): void => {
-    setProcessing(true);
+  const progressTimer = () => {
+    const totalTime = Math.round(totalRows * batchReport.averageTime);
     let completedReports = 0;
     let time = remainingTime;
     let interval = setInterval(() => {
@@ -35,14 +72,39 @@ const CreateBatchReport = () => {
       time -= batchReport.averageTime;
       setCompletedReports(completedReports);
       setRemainingTime(time);
-
-      if (completedReports >= totalReports) {
+      if (completedReports >= Math.round(totalTime / batchReport.averageTime)) {
         clearInterval(interval);
         setComplete(true);
         setProcessing(false);
       }
     }, batchReport.averageTime);
   };
+
+  const runReports = async () => {
+    // if no report name input entered, set report name to default
+    !reportName && setReportName(fileName);
+
+    setProcessing(true);
+    progressTimer();
+
+    const reqData = convertCSVToRequestBody(csvData, fileName);
+
+    try {
+      const req = await fetcher('/api/batched-reports', 'POST', reqData);
+
+      if (req.ok) {
+        return setResults(req.data);
+      }
+    } catch (err) {
+      setError(BATCH_REPORT_FETCHING_ERROR);
+    }
+  };
+
+  const handleSetSelectedFile = (file: File | null) => {
+    setFileSelected(file);
+  };
+
+  const inputPlaceholder = fileName ? fileName : t('name_batched_report');
 
   return (
     <Layout title="Batched Reports">
@@ -63,24 +125,57 @@ const CreateBatchReport = () => {
         </p>
 
         <UploadNewData
-          validHeaders={validReportHeaders}
-          requiredValues={requiredReportValues}
+          setFileSelected={handleSetSelectedFile}
+          fileSelected={fileSelected}
           description={t('upload_your_csv_here_to_begin')}
           header={t('run_multiple_reports')}
           buttonText={!processing ? t('run_batch') : t('running')}
-          progressBar={
-            <ProgressBar
-              buttonText={t('view_results')}
-              remainingTime={remainingTime}
-              completedReports={completedReports}
-              totalReports={totalReports}
-              complete={complete}
-              resultsLinkTo="/batched-reports/1"
+          onSubmit={runReports}
+          isCSV={isCSV}
+          isValid={isValid}
+          errors={errors}
+          missingHeaders={missingHeaders}
+          disableButton={complete || processing}
+          nameFileInput={
+            <Input
+              name="filename"
+              type="text"
+              placeholder={inputPlaceholder}
+              onChange={e => setReportName(e.target.value)}
+              disabled={processing || complete ? true : false}
             />
           }
-          onSubmit={runReports}
-          disableButton={complete || processing}
-        />
+        >
+          {isValid && (
+            <div className="mt-8">
+              <ProgressBar
+                remainingTime={remainingTime}
+                completedReports={completedReports}
+                totalReports={totalRows}
+              />
+            </div>
+          )}
+
+          <div className="w-3/12 my-4">
+            {results?.id && !error && (
+              <Button
+                className={`${
+                  !complete
+                    ? 'border-2 border-gray-200 opacity-30'
+                    : 'border-none'
+                } rounded-none`}
+                variant={!complete ? 'none' : 'highlight'}
+                disabled={!complete}
+                linkTo={`/batched-reports/${results?.id}?demo=true`}
+              >
+                <p>{t('view_results')}</p>
+              </Button>
+            )}
+          </div>
+          {error === BATCH_REPORT_FETCHING_ERROR && (
+            <ErrorMessage text={t(BATCH_REPORT_FETCHING_ERROR)} />
+          )}
+        </UploadNewData>
 
         <p className="text-2xl font-semibold my-8">{t('csv_templates')}</p>
         <LinkCard

@@ -8,8 +8,10 @@ EBITDA
 EBTIDA
 linkedin
 NewData
+nextjs
 svgs
 Tofive
+UNAUTHORISED
 UPLOADNEWDATA
 Utlise
 voronoi

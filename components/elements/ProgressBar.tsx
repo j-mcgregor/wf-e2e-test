@@ -1,23 +1,15 @@
 import { useTranslations } from 'use-intl';
-import { TranslateInput } from '../../types/global';
-import Button from './Button';
 
 interface ProgressBarProps {
   totalReports: number;
   completedReports: number;
   remainingTime: number;
-  buttonText: TranslateInput;
-  complete?: boolean;
-  resultsLinkTo: string;
 }
 
 const ProgressBar = ({
-  buttonText,
   totalReports,
   completedReports,
-  remainingTime,
-  complete,
-  resultsLinkTo
+  remainingTime
 }: ProgressBarProps) => {
   const t = useTranslations();
 
@@ -53,18 +45,6 @@ const ProgressBar = ({
             percentComplete === 100 && 'rounded-r-full'
           }`}
         />
-      </div>
-      <div className="w-3/12 my-4">
-        <Button
-          className={`${
-            !complete ? 'border-2 border-gray-200 opacity-30' : 'border-none'
-          } rounded-none`}
-          variant={!complete ? 'none' : 'highlight'}
-          disabled={!complete}
-          linkTo={resultsLinkTo}
-        >
-          <p>{buttonText}</p>
-        </Button>
       </div>
     </div>
   );

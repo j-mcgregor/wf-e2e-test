@@ -1,6 +1,8 @@
 /* eslint-disable security/detect-non-literal-require */
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'use-intl';
+import { appUser } from '../../lib/appState';
+import { useRecoilValue } from 'recoil';
 import {
   DocumentDuplicateIcon,
   DocumentReportIcon
@@ -9,10 +11,11 @@ import LinkCard from '../../components/cards/LinkCard';
 import Layout from '../../components/layout/Layout';
 import BatchReportCard from '../../components/cards/BatchReportCard';
 
-import batchReports from '../../lib/mock-data/batchReports';
-
 const BatchReports = () => {
   const t = useTranslations();
+
+  const user = useRecoilValue(appUser);
+
   return (
     <Layout title="Batched Reports">
       <div className="text-primary">
@@ -41,20 +44,25 @@ const BatchReports = () => {
             {t('completed_batch_reports')}
           </p>
 
-          <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
-            {batchReports.map(report => {
-              return (
-                <BatchReportCard
-                  key={report.id}
-                  header={`Batch - ${report.created}`}
-                  linkTo={`/batched-reports/${report.id}`}
-                  quantity="244"
-                  quantityText={t('total_companies_analysed')}
-                  icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
-                  iconColor="bg-highlight"
-                />
-              );
-            })}
+          <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-3">
+            {user &&
+              user.batched_report_jobs.map(report => {
+                return (
+                  report.finish_date && (
+                    <BatchReportCard
+                      key={report.id}
+                      header={`${report.name}`}
+                      linkTo={`/batched-reports/${report.id}`}
+                      quantity={report.total_reports}
+                      quantityText={t('total_companies_analysed')}
+                      icon={
+                        <DocumentReportIcon className="w-6 h-6 text-white" />
+                      }
+                      iconColor="bg-highlight"
+                    />
+                  )
+                );
+              })}
           </div>
         </div>
 
@@ -66,15 +74,24 @@ const BatchReports = () => {
           </p>
 
           <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
-            <BatchReportCard
-              header="Batch - 18.10.21"
-              linkTo="#"
-              quantity="244"
-              quantityText={t('total_companies_analysed')}
-              icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
-              iconColor="bg-highlight"
-              disabled
-            />
+            {user &&
+              user.batched_report_jobs.map(report => {
+                return (
+                  !report.finish_date && (
+                    <BatchReportCard
+                      key={report.id}
+                      header={report.name}
+                      quantity={report.total_reports}
+                      quantityText={t('total_companies_analysed')}
+                      icon={
+                        <DocumentReportIcon className="w-6 h-6 text-white" />
+                      }
+                      iconColor="bg-highlight"
+                      disabled
+                    />
+                  )
+                );
+              })}
           </div>
         </div>
       </div>

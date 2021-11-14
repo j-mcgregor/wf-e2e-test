@@ -1,5 +1,6 @@
 {
   "batch_reports": "Batch Reports",
+  "batched_report": "Batched Report",
   "view_and_create_batch_report_jobs": "View and create Batch Report jobs. Analyse 100s or 1000s of companies at once by simply uploading a .csv with the company number and country code.",
   "create_a_new_batch_report": "Create a new Batch Report",
   "create_a_batch_report": "Create a Batch Report",
@@ -35,5 +36,6 @@
   "bond_rating": "Bond Rating",
   "sme_z-score": "SME Z-Score",
   "default": "Default %",
-  "download_pdf": "Download PDF"
+  "download_pdf": "Download PDF",
+  "name_batched_report": "Name your batched report"
 }

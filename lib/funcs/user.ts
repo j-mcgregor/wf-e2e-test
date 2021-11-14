@@ -1,3 +1,5 @@
+import { UserType } from '../../types/global';
+
 const XMLHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
 };
@@ -110,9 +112,30 @@ const resetPassword = async (
   return { ok: false };
 };
 
+const updateUser = async (
+  user: UserType,
+  token: string
+): Promise<{ user?: UserType; ok?: boolean; status?: number }> => {
+  const res = await fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
+    method: 'PUT',
+    headers: {
+      ...JSONHeaders,
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(user)
+  });
+
+  if (res.ok) {
+    const user = await res.json();
+    return { ok: true, user };
+  }
+  return { ok: false, status: res.status };
+};
+
 const User = {
   authenticate,
   getUser,
+  updateUser,
   resetPassword,
   forgotPassword,
   getSSOToken

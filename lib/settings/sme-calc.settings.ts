@@ -1,3 +1,4 @@
+import { ValidCSVType } from '../../types/report';
 import countryCodeJSON from '../data/countryCodes.json';
 import currencyJSON from '../data/countryCurrency.json';
 import { createCurrencyString } from '../utils/text-helpers';
@@ -38,7 +39,7 @@ export const templateText = [
   }
 ];
 
-export const validCSVValues = {
+export const validCSVValues: ValidCSVType = {
   valid_report_headers: [
     'year',
     'total_shareholder_equity',

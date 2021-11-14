@@ -2,68 +2,77 @@
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
+import useSWR from 'swr';
+import fetcher from '../../lib/utils/fetcher';
+
 import { ArrowLeftIcon, DownloadIcon } from '@heroicons/react/outline';
 import Layout from '../../components/layout/Layout';
 import BatchReportTable from '../../components/elements/BatchReportTable';
 import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
-// temp mock data
-import batchReports from '../../lib/mock-data/batchReports';
+import { BatchedReportType } from '../../types/global';
+import SkeletonReport from '../../components/skeletons/SkeletonReport';
+import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
+import { REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 
 const BatchReport = () => {
   const t = useTranslations();
   const router = useRouter();
 
-  const { id } = router.query;
+  const { id = [], demo = false } = router.query;
 
-  const report = batchReports.find(report => report.id === Number(id));
+  const { data, error } = useSWR<BatchedReportType & { error: boolean }>(
+    `/api/batched-reports?id=${id}${demo ? '&demo=true' : ''}`,
+    fetcher
+  );
 
   return (
     <Layout title="Batched Report">
-      <div className="text-primary">
-        <Button
-          linkTo="/batched-reports"
-          variant="none"
-          newClassName="text-sm flex items-center hover:text-alt"
-        >
-          <ArrowLeftIcon className="h-5 w-5 mr-2" />
-          {t('back_to_all_batch_reports')}
-        </Button>
-        <h1 className="text-3xl font-semibold my-4">{t('batch_reports')}</h1>
-
-        <p className="text-sm my-4">
-          {t(
-            'download_the_results_of_the_batch_reports_in_csv_or_excel_format'
-          )}
-        </p>
-        <p className="text-2xl font-semibold my-8">{t('download_reports')}</p>
-
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          <LinkCard
-            icon={<DownloadIcon className="w-8 h-8" />}
-            iconColor="bg-highlight bg-opacity-50"
-            header="Bath Results.csv"
-            description={t('all_results_in_a_single_csv')}
-            linkTo="#"
-          />
-          <LinkCard
-            icon={<DownloadIcon className="w-8 h-8" />}
-            iconColor="bg-highlight-3 bg-opacity-50"
-            header="Bath Results.csv"
-            description={t('open_excel_immediately')}
-            linkTo="#"
-          />
-        </div>
-
-        {report && (
+      {!data ? (
+        <SkeletonReport />
+      ) : error || data.error ? (
+        <ErrorSkeleton header={`${t(REPORT_FETCHING_ERROR)}`} />
+      ) : (
+        <div className="text-primary">
+          <Button
+            linkTo="/batched-reports"
+            variant="none"
+            newClassName="text-sm flex items-center hover:text-alt"
+          >
+            <ArrowLeftIcon className="h-5 w-5 mr-2" />
+            {t('back_to_all_batch_reports')}
+          </Button>
+          <h1 className="text-3xl font-semibold my-4">{t('batch_reports')}</h1>
+          <p className="text-sm my-4">
+            {t(
+              'download_the_results_of_the_batch_reports_in_csv_or_excel_format'
+            )}
+          </p>
+          <p className="text-2xl font-semibold my-8">{t('download_reports')}</p>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <LinkCard
+              icon={<DownloadIcon className="w-8 h-8" />}
+              iconColor="bg-highlight bg-opacity-50"
+              header={`${data.name}.csv`}
+              description={t('all_results_in_a_single_csv')}
+              linkTo="#"
+            />
+            <LinkCard
+              icon={<DownloadIcon className="w-8 h-8" />}
+              iconColor="bg-highlight-3 bg-opacity-50"
+              header={`${data.name}.xlsx`}
+              description={t('open_excel_immediately')}
+              linkTo="#"
+            />
+          </div>
           <div className="p-8 bg-white my-8">
             <p className="text-xl font-semibold pb-8">
               {t('batch_report_results')}
             </p>
-            <BatchReportTable results={report?.results} />
+            <BatchReportTable data={data} />
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </Layout>
   );
 };

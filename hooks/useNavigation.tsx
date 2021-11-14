@@ -13,6 +13,7 @@ import {
   SupportIcon,
   UserCircleIcon
 } from '@heroicons/react/outline';
+import * as Sentry from '@sentry/react';
 import { signOut } from 'next-auth/client';
 import { useTranslations } from 'next-intl';
 import React from 'react';
@@ -55,8 +56,11 @@ const useMainNavItems = () => {
       { name: `${t('support')}`, href: '/support', icon: SupportIcon },
       {
         name: `${t('logout')}`,
-        onClick: () =>
-          signOut({ callbackUrl: `${window.location.origin}/login` }),
+        onClick: () => {
+          // clear sentry user before logout
+          Sentry.configureScope(scope => scope.setUser(null));
+          return signOut({ callbackUrl: `${window.location.origin}/login` });
+        },
         icon: LogoutIcon
       }
     ]
