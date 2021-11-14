@@ -9,9 +9,10 @@ interface AddDataProps {
   clickButton?: () => void;
   learnMore?: TranslateInput;
   buttonText: string;
-  unlocked: boolean;
+  locked?: boolean;
   buttonColor: string;
   linkTo?: string;
+  learnMoreLink?: string;
 }
 
 const CTACard = ({
@@ -19,11 +20,13 @@ const CTACard = ({
   body,
   clickButton,
   buttonText,
-  unlocked,
+  locked,
   buttonColor,
-  linkTo
+  linkTo,
+  learnMoreLink
 }: AddDataProps) => {
   const t = useTranslations();
+
   return (
     <div>
       <div className="bg-white p-3 mb-3 rounded-sm text-sm">
@@ -32,15 +35,16 @@ const CTACard = ({
 
         <div className="flex w-3/4">
           <Button
-            disabled={!unlocked}
+            disabled={locked}
             onClick={clickButton}
             className={`${buttonColor} w-full mr-2 text-white`}
             variant="none"
+            linkTo={linkTo}
           >
-            <p className="mx-2">{unlocked ? buttonText : 'Unlock'}</p>
-            {!unlocked && <Lock color="white" />}
+            <p className="mx-2">{!locked ? buttonText : 'Unlock'}</p>
+            {locked && <Lock color="white" />}
           </Button>
-          <Button linkTo={linkTo} className="w-full" variant="none">
+          <Button linkTo={learnMoreLink} className="w-full" variant="none">
             <p>{t('learn_more')}</p>
           </Button>
         </div>

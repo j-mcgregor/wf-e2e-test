@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
-import { UploadIcon, XIcon } from '@heroicons/react/outline';
+import { TrashIcon, UploadIcon } from '@heroicons/react/outline';
 import { TranslateInput } from '../../types/global';
 
 interface UploadFileProps {
@@ -52,9 +52,17 @@ const UploadFile = ({
           draggedOver ? 'hidden' : 'block'
         } flex flex-col items-center`}
       >
-        <UploadIcon className="h-20 w-20 border-2 border-primary p-4 rounded mt-5" />
-
         <form className="py-4 mt-2 text-sm">
+          {!fileName && (
+            <label htmlFor="file-upload">
+              <UploadIcon className="h-20 w-20 border-2 border-highlight text-highlight hover:opacity-50  cursor-pointer  p-4 rounded mb-5 mx-auto" />
+            </label>
+          )}
+          {fileName && (
+            <button onClick={removeFile} className="mx-auto block">
+              <TrashIcon className="h-20 w-20 border-2 border-primary hover:border-red-400 hover:text-red-400 p-4 rounded mb-5" />
+            </button>
+          )}
           <input
             className="hidden"
             type="file"
@@ -65,30 +73,26 @@ const UploadFile = ({
             }
           />
 
-          {!fileName && (
+          {!fileName ? (
             <div className="flex">
               <label
-                className="text-highlight cursor-pointer hover:opacity-80"
+                className="text-highlight cursor-pointer hover:opacity-60"
                 htmlFor="file-upload"
               >
                 {linkText}
               </label>
               <span>&nbsp;{text}</span>
             </div>
+          ) : (
+            <div
+              className={`${
+                fileName ? 'visible' : 'invisible'
+              } flex items-center justify-center relative`}
+            >
+              <p className="text-sm font-semibold">{fileName}</p>
+            </div>
           )}
         </form>
-
-        <div
-          className={`${
-            fileName ? 'visible' : 'invisible'
-          } flex items-center justify-center relative`}
-        >
-          <p className="text-xs font-semibold">{fileName || 'test'}</p>
-          <XIcon
-            onClick={removeFile}
-            className="h-5 w-5 font-bold ml-2 cursor-pointer hover:opacity-80"
-          />
-        </div>
       </div>
 
       <p

@@ -48,7 +48,7 @@ const UploadNewData = ({
 
   return (
     <div className="bg-white rounded-sm shadow-sm p-8">
-      <div className="grid grid-cols-2">
+      <div className="grid sm:grid-cols-2">
         <div className="space-y-3">
           <p className="text-3xl font-semibold py-2">{header}</p>
           {/* Allows optional naming of file */}
@@ -64,12 +64,12 @@ const UploadNewData = ({
           />
         </div>
 
-        <div className="text-xs flex flex-col  items-center pt-16">
+        <div className="text-xs flex flex-col  sm:items-center sm:pt-16 pt-4">
           {fileSelected && (
-            <div className="sm:w-3/4 px-6 ">
+            <div className="sm:w-3/4 sm:px-6 ">
               <p className="font-bold mb-2 text-lg">{t('valid_csv_check')}</p>
 
-              <div className="overflow-y-auto h-48">
+              <div className="overflow-y-auto sm:h-48">
                 <div className="flex py-1">
                   {isCSV ? (
                     <>
@@ -128,7 +128,7 @@ const UploadNewData = ({
           )}
         </div>
       </div>
-      <div className="w-3/12 mt-2">
+      <div className="w-full sm:max-w-[200px] mt-2">
         <Button
           variant="highlight"
           disabled={!isValid || disableButton}
