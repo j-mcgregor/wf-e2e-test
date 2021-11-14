@@ -340,6 +340,10 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
                 governance={{
                   pepFlags: 3
                 }}
+                companyName={data.contact_details.name}
+                website={
+                  data.contact_details.websites.find((x: string) => x) || ''
+                }
               />
             </HashContainer>
 

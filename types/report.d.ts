@@ -31,6 +31,7 @@ export type SummaryContact = {
   phone_numbers: string[];
   websites: string[];
   emails: string[];
+  name: string;
   company_description: string | null;
 };
 

@@ -225,7 +225,8 @@ const NavItems = ({ path, navigation, noText }: NavListProps) => {
             onClick={onClick}
             newClassName={`
               ${
-                (href && href !== '/' && path.includes(href)) || path === href
+                (href && path && href !== '/' && path?.includes(href)) ||
+                path === href
                   ? 'bg-secondary text-white '
                   : 'text-white hover:bg-secondary '
               } group rounded-md py-2 px-2 flex items-center text-sm font-medium relative w-full
