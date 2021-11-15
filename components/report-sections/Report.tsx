@@ -27,8 +27,7 @@ import SummaryMap from './summary/SummaryMap';
 
 const Report = ({
   data,
-  id,
-  forPrint
+  id
 }: {
   data: ReportDataProps;
   id: string | string[];
@@ -53,6 +52,14 @@ const Report = ({
 
   const INDUSTRY_BENCHMARK = t('industry_benchmark');
   const REGION_BENCHMARK = t('region_benchmark');
+
+  const pepFlags = React.useMemo(
+    () =>
+      data?.personal?.shareholders?.filter(
+        shareholder => shareholder?.peps_sanctions_enforcements
+      ).length,
+    [data?.personal?.shareholders]
+  );
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0">
@@ -232,16 +239,19 @@ const Report = ({
       <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>
         <ESGContainer
           governance={{
-            pepFlags: 3
+            pepFlags: pepFlags
           }}
-          companyName={data.contact_details.name}
-          website={data.contact_details.websites.find((x: string) => x) || ''}
+          companyName={data?.contact_details?.name}
+          website={data?.contact_details?.websites.find((x: string) => x) || ''}
         />
       </HashContainer>
 
       <HashContainer name={'News'} id={`news`}>
         <ReportSectionHeader text={t('news')} />
-        <NewsFeed companyName={data.contact_details.name} />
+        <NewsFeed
+          companyName={data?.contact_details?.name}
+          country={data?.contact_details?.country}
+        />
       </HashContainer>
     </div>
   );

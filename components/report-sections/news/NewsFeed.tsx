@@ -16,10 +16,16 @@ type NewsFeedApiResProps = {
   }[];
 };
 
-const NewsFeed = ({ companyName }: { companyName: string }) => {
+const NewsFeed = ({
+  companyName,
+  country
+}: {
+  companyName: string;
+  country: string;
+}) => {
   // demo engaged for the moment, returns saved response
   const { data } = useSWR<NewsFeedApiResProps>(
-    `/api/reports/news?company_name=${companyName}&type=demo`,
+    `/api/reports/news?company_name=${companyName}&${country}&type=demo`,
     fetcher
   );
   const newsHits = data?.ok && data?.data ? data.data : [];

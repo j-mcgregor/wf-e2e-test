@@ -32,6 +32,7 @@ export type SummaryContact = {
   websites: string[];
   emails: string[];
   name: string;
+  country: string;
   company_description: string | null;
 };
 
@@ -82,6 +83,7 @@ export type Shareholder = {
   first_name: string;
   last_name: string;
   linkedin: string;
+  peps_sanctions_enforcements: boolean;
 };
 
 export type FileContentType = string | ArrayBuffer | null | undefined;

@@ -1,3 +1,4 @@
+import { convertNumberToPercentage } from '../../../lib/utils/text-helpers';
 import { TranslateInput } from '../../../types/global';
 import LoadingIcon from '../../svgs/LoadingIcon';
 
@@ -57,7 +58,9 @@ const ESGCard = ({
                 key={result.name}
               >
                 <span className="">{result.name.replace(/_/g, ' ')} </span>
-                <span className="font-bold">{result.score}</span>
+                <span className="font-bold">
+                  {convertNumberToPercentage(result.score)}
+                </span>
               </li>
             ))}
           </ul>

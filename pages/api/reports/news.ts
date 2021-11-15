@@ -1,5 +1,6 @@
 import { withSentry } from '@sentry/nextjs';
 import { getSession } from 'next-auth/client';
+import countryCodes from '../../../lib/data/countryCodes.json';
 
 import {
   UNAUTHORISED,
@@ -18,18 +19,19 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
   const session = await getSession({ req: request });
 
   // unauthenticated requests
-  // if (!session) {
-  //   return response.status(403).json({
-  //     error: UNAUTHORISED,
-  //     message: 'Unauthorised api request, please login to continue.'
-  //   });
-  // }
+  if (!session) {
+    return response.status(403).json({
+      error: UNAUTHORISED,
+      message: 'Unauthorised api request, please login to continue.'
+    });
+  }
 
   const isGet = request.method === 'GET';
 
   if (isGet) {
     // extract search query
     const companyName: string = request?.query?.company_name?.toString();
+    const country: string = request?.query?.country?.toString();
     const type: string = request?.query?.type?.toString();
 
     if (!companyName) {
@@ -48,7 +50,12 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
       });
     }
 
-    const newResults = await News.getCompanyNews(companyName);
+    const countryCode = countryCodes.find(x => x.name === country);
+
+    const newResults = await News.getCompanyNews(
+      companyName,
+      countryCode?.code
+    );
 
     //  handle search error
     if (!newResults || !newResults.ok) {

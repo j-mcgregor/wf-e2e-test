@@ -50,10 +50,10 @@ const mockReport = {
         'We have accessed enough data to complete a report. If you would like to supplement the data in this report with the most recent management accounts please use the button below.'
     },
     risk_outlook: [
-      'risk_outlook 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.',
-      'risk_outlook 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.',
-      'risk_outlook 3: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.',
-      'risk_outlook 4: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.'
+      'Risk outlook 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.',
+      'Risk outlook 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.',
+      'Risk outlook 3: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.',
+      'Risk outlook 4: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Justo velit pulvinar venenatis est eu. Aliquet imperdiet ac molestie aliquam netus et augue.'
     ]
   },
   financials: {
@@ -1233,7 +1233,7 @@ const mockReport = {
         is_liability: false,
         last_name: 'HERBERT',
         name: 'MR FRANK HERBERT',
-        peps_sanctions_enforcements: false,
+        peps_sanctions_enforcements: true,
         percentage: '49,00',
         salutation: 'MRS',
         type: 'One or more named individuals or families',
