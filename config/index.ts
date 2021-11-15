@@ -1,12 +1,12 @@
-/* eslint-disable no-console */
 const isOnVercel =
   !!process.env.NEXT_PUBLIC_VERCEL_URL || !!process.env.VERCEL_URL;
-
-console.log(process.env);
+const isProduction = process.env.NODE_ENV === 'production';
 
 const config = {
   URL: isOnVercel
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    ? isProduction
+      ? `https://beta.wiserfunding.com`
+      : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : 'http://localhost:3000'
 };
 
