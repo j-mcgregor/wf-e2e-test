@@ -291,7 +291,6 @@ describe('ReportTemplate', () => {
       skeleton && (await waitForElementToBeRemoved(skeleton));
 
       expect(screen.getByText(/reliability index/i)).toBeInTheDocument();
-      expect(screen.getByText(/risk outlook/i)).toBeInTheDocument();
 
       highlights.risk_outlook.forEach(riskOutlook => {
         expect(
@@ -670,7 +669,7 @@ describe('ReportTemplate', () => {
       //     /Data on company governance and problematic shareholders \/ directors/i
       //   )
       // ).toBeInTheDocument();
-      expect(within(cards[1]).getByText(/3/i)).toBeInTheDocument();
+      expect(within(cards[1]).getByText(/1/i)).toBeInTheDocument();
       expect(within(cards[1]).getByText(/pep flags/i)).toBeInTheDocument();
     });
   });
