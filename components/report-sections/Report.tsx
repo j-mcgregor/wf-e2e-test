@@ -8,6 +8,7 @@ import CorporateOverview from './corporate-governance/CorporateOverview';
 import Profiles from './corporate-governance/Profiles';
 import ShareHolderList from './corporate-governance/ShareHolderList';
 import ESGCard from './esg-assessment/ESGCard';
+import ESGContainer from './esg-assessment/ESGContainer';
 import FinancialTrends from './financial-trends/FinancialTrends';
 import CTACard from './highlights/CTACard';
 import DataReliability from './highlights/DataReliability';
@@ -54,17 +55,16 @@ const Report = ({
   const REGION_BENCHMARK = t('region_benchmark');
 
   return (
-    <div id="full-report" className="text-primary mt-10 lg:mt-0 mx-8">
-      <div className="py-8">
-        <h1 className="text-xl pb-4">{t('risk_assessment_report')}</h1>
+    <div id="full-report" className="text-primary mt-10 lg:mt-0">
+      <div className="sm:py-8">
         <ReportHeader
           company={data?.company_name}
           created={created}
           reportId={id[0]}
         />
       </div>
-      <HashContainer name={'Summary'} id={`summary-id`}>
-        <ReportSectionHeader text={t('summary')} onNewPageForPrint={false} />
+      <HashContainer name={'Summary'} id={`summary`}>
+        <ReportSectionHeader text={t('summary')} />
 
         <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm">
           <div className="flex w-full md:w-1/2 flex-col py-2">
@@ -81,67 +81,63 @@ const Report = ({
             <SummaryMap contact={data.contact_details} />
           </div>
         </div>
-        <div className="py-4 avoid-break">
+        <div className="py-4">
           <SummaryFinancial years={lastFiveYearsFinancials} />
         </div>
       </HashContainer>
-      <HashContainer name={'Risk Metrics'} id={`risk-metrics-id`}>
-        <div>
-          <ReportSectionHeader text={t('risk_metrics')} />
-          <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4 print:inline-block">
-            <Speedometer
-              title="SME Z-score"
-              value={304}
-              secondaryValues={[
-                { name: INDUSTRY_BENCHMARK, value: 403 },
-                { name: REGION_BENCHMARK, value: 204 }
-              ]}
-              hint={
-                <Hint
-                  title={t('report_hints.risk_metrics.sme_z-score.title')}
-                  body={t('report_hints.risk_metrics.sme_z-score.body')}
-                />
-              }
-            />
-            <Speedometer
-              title="Probability of Default"
-              value="12.04%"
-              secondaryValues={[
-                { name: INDUSTRY_BENCHMARK, value: '6%' },
-                { name: REGION_BENCHMARK, value: null }
-              ]}
-              hint={
-                <Hint
-                  title={t(
-                    'report_hints.risk_metrics.probability_of_default.title'
-                  )}
-                  body={t(
-                    'report_hints.risk_metrics.probability_of_default.body'
-                  )}
-                />
-              }
-            />
-            <Speedometer
-              title="Loss Given Default"
-              value={304}
-              secondaryValues={[
-                { name: INDUSTRY_BENCHMARK, value: '12.5%' },
-                { name: REGION_BENCHMARK, value: null }
-              ]}
-              hint={
-                <Hint
-                  title={t(
-                    'report_hints.risk_metrics.loss_given_default.title'
-                  )}
-                  body={t('report_hints.risk_metrics.loss_given_default.body')}
-                />
-              }
-            />
-          </div>
+      <HashContainer name={'Risk Metrics'} id={`risk_metrics`}>
+        <ReportSectionHeader text={t('risk_metrics')} />
+        <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4">
+          <Speedometer
+            title="SME Z-score"
+            value={304}
+            secondaryValues={[
+              { name: INDUSTRY_BENCHMARK, value: 403 },
+              { name: REGION_BENCHMARK, value: 204 }
+            ]}
+            hint={
+              <Hint
+                title={t('report_hints.risk_metrics.sme_z-score.title')}
+                body={t('report_hints.risk_metrics.sme_z-score.body')}
+              />
+            }
+          />
+          <Speedometer
+            title="Probability of Default"
+            value="12.04%"
+            secondaryValues={[
+              { name: INDUSTRY_BENCHMARK, value: '6%' },
+              { name: REGION_BENCHMARK, value: null }
+            ]}
+            hint={
+              <Hint
+                title={t(
+                  'report_hints.risk_metrics.probability_of_default.title'
+                )}
+                body={t(
+                  'report_hints.risk_metrics.probability_of_default.body'
+                )}
+              />
+            }
+          />
+          <Speedometer
+            title="Loss Given Default"
+            value={304}
+            secondaryValues={[
+              { name: INDUSTRY_BENCHMARK, value: '12.5%' },
+              { name: REGION_BENCHMARK, value: null }
+            ]}
+            hint={
+              <Hint
+                title={t('report_hints.risk_metrics.loss_given_default.title')}
+                body={t('report_hints.risk_metrics.loss_given_default.body')}
+              />
+            }
+          />
         </div>
         <BondRating score={data.risk_metrics.bond_rating} />
       </HashContainer>
-      <HashContainer name={'Highlights'} id={`highlights-id`}>
+      <HashContainer name={'Highlights'} id={`highlights`}>
         <ReportSectionHeader text={t('highlights')} />
 
         <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 ">
@@ -157,7 +153,7 @@ const Report = ({
             reports={data.highlights.risk_outlook}
           />
         </div>
-        <div className="flex flex-col lg:flex-row py-6 justify-between print:hidden">
+        <div className="flex flex-col lg:flex-row py-6 justify-between">
           <FinancialAccounts financialYears={transformedFinancials} />
           <div className="w-full lg:ml-8">
             <p className="font-bold py-2">{t('add_more_data')}</p>
@@ -165,31 +161,29 @@ const Report = ({
               title={t('import_data')}
               body={t('unlock_api_to_gain_access')}
               buttonText="Import"
-              unlocked={false}
+              locked={true}
               buttonColor="bg-[#2BAD01]"
+              learnMoreLink="#"
               // linkTo='/'
             />
             <CTACard
               title={t('upload_more_data')}
               body={t('upload_data_for_more_recent_report')}
               buttonText="Upload"
-              unlocked={true}
               buttonColor="bg-alt"
-              // linkTo="/"
+              linkTo={`${id}/upload-data`}
+              learnMoreLink="#"
             />
           </div>
         </div>
       </HashContainer>
 
-      <HashContainer name={'Financial Trends'} id={`financial-trends-id`}>
+      <HashContainer name={'Financial Trends'} id={`financial_trends`}>
         <ReportSectionHeader text={t('financial_trends')} />
         <FinancialTrends data={[]} />
       </HashContainer>
 
-      <HashContainer
-        name={'Corporate Governance'}
-        id={`corporate-governance-id`}
-      >
+      <HashContainer name={'Corporate Governance'} id={`corporate_governance`}>
         <ReportSectionHeader text={t('corporate_governance')} />
 
         <CorporateOverview
@@ -210,17 +204,17 @@ const Report = ({
 
         {/* Removed till we know more about whether it is going to be included */}
         {/* <ShareHoldingCard
-      total={391}
-      above10={2}
-      fiveToTen={18}
-      oneToFive={47}
-      belowOne={324}
-    /> */}
+                total={391}
+                above10={2}
+                fiveToTen={18}
+                oneToFive={47}
+                belowOne={324}
+              /> */}
       </HashContainer>
 
       <HashContainer
         name={'Legal Events'}
-        id={`legal-events-id`}
+        id={`legal_events`}
         fullHeight={false}
       >
         <ReportSectionHeader text={t('legal_events')} />
@@ -229,34 +223,25 @@ const Report = ({
 
       <HashContainer
         name={'Macro Economic Trends'}
-        id={`macro-economic-trends-id`}
+        id={`macro_economic_trends`}
       >
         <ReportSectionHeader text={t('macro_economic_trends')} />
         <MacroEconomicTrends trends={[]} />
       </HashContainer>
 
-      <HashContainer name={'ESG'} id={`esg-id`} fullHeight={false}>
-        <ReportSectionHeader text={t('esg')} />
-        <p className="text-xl">{t('esg_assessment')}</p>
-        <ESGCard
-          title={t('environmental')}
-          description={t('using_environmental_indicators')}
-          result={t('neutral')}
-          resultText={t('environmental_impact')}
-          rating="1"
-        />
-        <ESGCard
-          title={t('governance')}
-          description={t('data_on_company_governance')}
-          result="positive"
-          resultText={t('pep_flags')}
-          rating="3"
+      <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>
+        <ESGContainer
+          governance={{
+            pepFlags: 3
+          }}
+          companyName={data.contact_details.name}
+          website={data.contact_details.websites.find((x: string) => x) || ''}
         />
       </HashContainer>
 
-      <HashContainer name={'News'} id={`news-id`}>
+      <HashContainer name={'News'} id={`news`}>
         <ReportSectionHeader text={t('news')} />
-        <NewsFeed />
+        <NewsFeed companyName={data.contact_details.name} />
       </HashContainer>
     </div>
   );

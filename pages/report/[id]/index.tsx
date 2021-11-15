@@ -111,7 +111,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
         ) : error || data.error ? (
           <ErrorSkeleton header={`${t(REPORT_FETCHING_ERROR)}`} />
         ) : (
-          <Report data={data} t={t} id={id} />
+          <Report data={data} id={id} />
         )}
       </SecondaryLayout>
     </Layout>
