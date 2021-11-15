@@ -1,16 +1,25 @@
 import { ReactNode } from 'react';
+import cn from 'classnames';
 import { TranslateInput } from '../../types/global';
 import { Element } from 'react-scroll';
 
 export const ReportSectionHeader = ({
   children,
-  text
+  text,
+  onNewPageForPrint = true
 }: {
   children?: ReactNode;
   text?: TranslateInput;
+  onNewPageForPrint?: boolean;
 }) => {
   return (
-    <h2 className="text-3xl py-4 sm:py-8 text-primary">{text || children}</h2>
+    <h2
+      className={cn('text-3xl py-8 text-primary', {
+        'always-break-before': onNewPageForPrint
+      })}
+    >
+      {text || children}
+    </h2>
   );
 };
 export const SettingsSectionHeader = ({

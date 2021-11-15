@@ -21,8 +21,10 @@ const LegalFilter = ({
     <button
       onClick={() => handleFilter(events, filter)}
       className={`${
-        filter === activeFilter ? 'border-highlight border-2' : 'border-gray-50 border'
-      }   md:w-1/3 cursor-pointer px-6   my-1 rounded-sm bg-white shadow-sm text-left`}
+        filter === activeFilter
+          ? 'border-highlight border-2'
+          : 'border-gray-50 border'
+      }   md:w-1/3 cursor-pointer px-6   my-1 rounded-sm bg-white shadow-sm text-left avoid-break`}
     >
       <p
         className={`${

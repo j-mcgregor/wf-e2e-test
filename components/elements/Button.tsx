@@ -33,12 +33,12 @@ const Button = ({
   newClassName,
   variant,
   loading,
-  disabled,
   type,
   linkTo,
   children,
-  onClick
-}: ButtonProps) => {
+  disabled,
+  ...rest
+}: ButtonProps & React.HTMLProps<HTMLButtonElement>) => {
   if (linkTo) {
     return (
       <Link
@@ -49,6 +49,7 @@ const Button = ({
             ? newClassName
             : `${buttonClassName.base} ${buttonClassName[variant]} ${className}`
         }
+        {...rest}
       >
         {children}
       </Link>
@@ -57,7 +58,6 @@ const Button = ({
 
   return (
     <button
-      onClick={onClick}
       disabled={disabled}
       type={type}
       className={
@@ -67,6 +67,7 @@ const Button = ({
               disabled ? disabledClassName : ''
             }`
       }
+      {...rest}
     >
       {loading && <LoadingIcon className="w-5 h-5" />}
       {!loading && children}
