@@ -14,6 +14,7 @@
 }
 
 /* hide header and footer */
+
 @media print {
   @page {
     margin-left: 0.5in;

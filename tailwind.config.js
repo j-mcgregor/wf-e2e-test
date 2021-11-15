@@ -11,10 +11,10 @@ module.exports = {
   ],
   theme: {
     extend: {
-      screens: {
-        print: { raw: 'print' }
-        // => @media print { ... }
-      },
+      // screens: {
+      //   // print: { raw: 'print' }
+      //   // => @media print { ... }
+      // },
       colors: {
         primary: '#00263C', //super dark blue
         secondary: '#000000', // black

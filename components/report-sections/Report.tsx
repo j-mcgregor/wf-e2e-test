@@ -64,7 +64,7 @@ const Report = ({
         />
       </div>
       <HashContainer name={'Summary'} id={`summary`}>
-        <ReportSectionHeader text={t('summary')} />
+        <ReportSectionHeader text={t('summary')} onNewPageForPrint={false} />
 
         <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm">
           <div className="flex w-full md:w-1/2 flex-col py-2">
@@ -81,7 +81,7 @@ const Report = ({
             <SummaryMap contact={data.contact_details} />
           </div>
         </div>
-        <div className="py-4">
+        <div className="py-4  avoid-break">
           <SummaryFinancial years={lastFiveYearsFinancials} />
         </div>
       </HashContainer>

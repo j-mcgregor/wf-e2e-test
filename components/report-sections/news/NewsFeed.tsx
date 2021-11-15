@@ -27,7 +27,7 @@ const NewsFeed = ({ companyName }: { companyName: string }) => {
   const t = useTranslations();
 
   return (
-    <div>
+    <div className=" break-before-avoid">
       {/* Loading data response */}
       {!data && [1, 2, 3, 4, 5].map(x => <SkeletonNews key={x} />)}
 

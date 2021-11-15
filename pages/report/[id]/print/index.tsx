@@ -12,12 +12,11 @@ import { useEffect } from 'react';
 import { ReportDataProps } from '..';
 
 const ReportTemplate = () => {
-  const t = useTranslations();
   const router = useRouter();
   const { id = [] } = router.query;
 
   const { data, error } = useSWR<ReportDataProps>(
-    `/api/report?id=${id}`,
+    `/api/reports/report?id=${id}`,
     fetcher
   );
 
@@ -27,7 +26,7 @@ const ReportTemplate = () => {
     }
   }, [data]);
 
-  return (data && <Report data={data} t={t} id={id} />) || 'Loading';
+  return (data && <Report data={data} id={id} />) || 'Loading';
 };
 
 export default ReportTemplate;
