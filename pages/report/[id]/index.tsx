@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
+import { RatingType } from '../../../components/report-sections/risk-metrics/BondRating';
 
 import Layout from '../../../components/layout/Layout';
 import ReportNav from '../../../components/layout/ReportNav';
@@ -24,7 +25,6 @@ import {
 } from '../../../types/report';
 
 import { REPORT_FETCHING_ERROR } from '../../../lib/utils/error-codes';
-import { RatingType } from '../../../components/report-sections/risk-metrics/BondRating';
 
 export interface ReportDataProps {
   id: string | number;
@@ -71,13 +71,13 @@ export interface ReportDataProps {
   message?: string;
 }
 
-const ReportTemplate = () => {
+const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const t = useTranslations();
   const router = useRouter();
   const { id = [] } = router.query;
 
   const { data, error } = useSWR<ReportDataProps>(
-    `/api/report?id=${id}`,
+    `/api/reports/report?id=${id}`,
     fetcher
   );
 
@@ -93,12 +93,12 @@ const ReportTemplate = () => {
           data?.company_name && (
             <>
               <ReportNav
+                isTesting={isTesting}
                 companyName={data?.company_name}
                 loading={!data}
-                onExportPdfClicked={handleExportPdf}
               />
-
               <TabletReportNav
+                isTesting={isTesting}
                 companyName={data?.company_name}
                 loading={!data}
               />

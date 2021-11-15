@@ -1,9 +1,7 @@
-import { TranslateInput } from '../../../types/global';
-
-interface NewsItemProps {
-  publication: TranslateInput;
-  title: TranslateInput;
-  description: TranslateInput;
+export interface NewsItemProps {
+  publication: string;
+  title: string;
+  description: string;
   link: string;
   date: string;
 }
@@ -15,6 +13,8 @@ const NewsItem = ({
   link,
   date
 }: NewsItemProps) => {
+  const relativeDate = new Date(date).toLocaleDateString();
+  const charCleanDescription = description.replace(/\[\+.+\]/g, '');
   return (
     <div
       className="bg-white shadow-sm rounded-sm w-full flex flex-col p-4 text-sm my-6 avoid-break"
@@ -22,12 +22,12 @@ const NewsItem = ({
     >
       <div className="flex w-full justify-between italic pb-3">
         <p className="">{publication}</p>
-        <p>{date}</p>
+        <p>{relativeDate}</p>
       </div>
       <div className="flex flex-col w-full">
         <p className="font-bold">{title}</p>
-        <p className="py-3">{description}</p>
-        <a href={link} className="italic">
+        <p className="py-3">{charCleanDescription}</p>
+        <a href={link} target="_blank no-opener no-referral" className="italic">
           {link}
         </a>
       </div>

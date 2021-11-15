@@ -2,23 +2,44 @@
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import LinkCard from '../../../../components/cards/LinkCard';
 import Button from '../../../../components/elements/Button';
 import Layout from '../../../../components/layout/Layout';
 import UploadNewData from '../../../../components/uploads/UploadNewData';
+import useCSVValidator from '../../../../hooks/useCSVValidator';
 import getServerSidePropsWithAuth from '../../../../lib/auth/getServerSidePropsWithAuth';
+import { manualUploadValidators } from '../../../../lib/settings/sme-calc.settings';
 
 const UploadData = () => {
   const t = useTranslations();
 
   const downloadIconColor = 'bg-highlight bg-opacity-50';
 
+  const [fileSelected, setFileSelected] = useState<File | null>(null);
+
+  const handleSetSelectedFile = (file: File | null) => {
+    setFileSelected(file);
+  };
+
+  const {
+    isCSV,
+    isValid,
+    errors,
+    missingHeaders
+    // csvData // to be used to send to the backend
+  } = useCSVValidator(fileSelected, manualUploadValidators);
+  const router = useRouter();
+
+  const { id = [] } = router.query;
+
   return (
     <Layout noNav={false}>
       <div className="text-primary">
         <Button
-          linkTo="/reports" // fix to send back to report
+          linkTo={`/report/${id}`} // fix to send back to report
           variant="none"
           newClassName="text-sm flex items-center hover:text-alt"
         >
@@ -27,11 +48,11 @@ const UploadData = () => {
         <p className="font-semibold text-4xl py-3">
           {t('upload_additional_data')}
         </p>
-        s<p className="text-sm py-4">{t('add_additional_data_to_report')}</p>
+        <p className="text-sm py-4">{t('add_additional_data_to_report')}</p>
         <p className="text-2xl font-semibold py-2">
           {t('choose_data_to_modify')}
         </p>
-        <div className="flex w-1/2 justify-between py-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 justify-between py-4 space-x-3">
           <LinkCard
             icon={<CloudDownloadIcon className="h-6 w-6" />}
             linkTo="#"
@@ -47,7 +68,19 @@ const UploadData = () => {
             description={t('add_a_new_year_of_financials')}
           />
         </div>
-        <UploadNewData hasHeader={true} />
+        <UploadNewData
+          header={t('upload_the_new_data')}
+          description={t('drag_and_drop_your_altered_csv_below')}
+          buttonText={t('generate_new_report')}
+          setFileSelected={handleSetSelectedFile}
+          fileSelected={fileSelected}
+          onSubmit={() => null}
+          isCSV={isCSV}
+          isValid={isValid}
+          errors={errors}
+          missingHeaders={missingHeaders}
+          disableButton={!isValid}
+        />
       </div>
     </Layout>
   );

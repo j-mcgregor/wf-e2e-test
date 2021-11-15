@@ -13,6 +13,7 @@ import {
   SupportIcon,
   UserCircleIcon
 } from '@heroicons/react/outline';
+import * as Sentry from '@sentry/react';
 import { signOut } from 'next-auth/client';
 import { useTranslations } from 'next-intl';
 import React from 'react';
@@ -55,8 +56,11 @@ const useMainNavItems = () => {
       { name: `${t('support')}`, href: '/support', icon: SupportIcon },
       {
         name: `${t('logout')}`,
-        onClick: () =>
-          signOut({ callbackUrl: `${window.location.origin}/login` }),
+        onClick: () => {
+          // clear sentry user before logout
+          Sentry.configureScope(scope => scope.setUser(null));
+          return signOut({ callbackUrl: `${window.location.origin}/login` });
+        },
         icon: LogoutIcon
       }
     ]
@@ -66,15 +70,15 @@ const useMainNavItems = () => {
 const useReportNavItems = () => {
   const t = useTranslations();
   return [
-    `${t('summary')}`,
-    `${t('risk_metrics')}`,
-    `${t('highlights')}`,
-    `${t('financial_trends')}`,
-    `${t('corporate_governance')}`,
-    `${t('legal_events')}`,
-    `${t('macro_economic_trends')}`,
-    `${t('esg')}`,
-    `${t('news')}`
+    { title: `${t('summary')}`, id: 'summary' },
+    { title: `${t('risk_metrics')}`, id: 'risk_metrics' },
+    { title: `${t('highlights')}`, id: 'highlights' },
+    { title: `${t('financial_trends')}`, id: 'financial_trends' },
+    { title: `${t('corporate_governance')}`, id: 'corporate_governance' },
+    { title: `${t('legal_events')}`, id: 'legal_events' },
+    { title: `${t('macro_economic_trends')}`, id: 'macro_economic_trends' },
+    { title: `${t('esg')}`, id: 'esg' },
+    { title: `${t('news')}`, id: 'news' }
   ];
 };
 

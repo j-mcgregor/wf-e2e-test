@@ -2,11 +2,13 @@ import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
+import * as Sentry from '@sentry/react';
 
 import appState from '../../lib/appState';
 import SkeletonLayout from '../skeletons/SkeletonLayout';
 import Nav from './Nav';
 import Seo from './Seo';
+import { ApplicationError } from '../errors/ApplicationError';
 
 interface LayoutProps {
   title?: string;
@@ -43,6 +45,8 @@ const Layout = ({
 
   React.useEffect(() => {
     if (session && session.user && !user) {
+      // set sentry to identify user
+      Sentry.setUser({ email: session.user.email || '' });
       // @ts-ignore
       setState({ ...appState, user: { ...session?.user } });
     }
@@ -69,8 +73,11 @@ const Layout = ({
                 </h1>
               )}
             </div>
+
             <div
-              className={`${!fullWidth && 'px-4 sm:px-6 max-w-5xl mx-auto'}`}
+              className={`${
+                !fullWidth ? 'px-4 sm:px-6 max-w-5xl mx-auto' : ''
+              }`}
             >
               {children}
             </div>

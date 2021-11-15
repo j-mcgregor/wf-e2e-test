@@ -1,4 +1,6 @@
 import React from 'react';
+import { useTranslations } from 'use-intl';
+import { ReportDataProps } from '../../pages/report/[id]';
 import HashContainer from '../elements/HashContainer';
 import { ReportSectionHeader } from '../elements/Headers';
 import Hint from '../elements/Hint';
@@ -22,7 +24,16 @@ import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
 
-const Report = ({ data, id, t, forPrint }) => {
+const Report = ({
+  data,
+  id,
+  forPrint
+}: {
+  data: ReportDataProps;
+  id: string | string[];
+  forPrint?: boolean;
+}) => {
+  const t = useTranslations();
   const date = new Date(Number(data?.['created_at']));
 
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;

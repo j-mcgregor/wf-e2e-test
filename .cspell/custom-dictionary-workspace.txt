@@ -1,4 +1,5 @@
 # Custom Dictionary Words
+Alidator
 boxplot
 customisability
 Deby
@@ -7,6 +8,10 @@ EBITDA
 EBTIDA
 linkedin
 NewData
+nextjs
 svgs
 Tofive
+UNAUTHORISED
+UPLOADNEWDATA
+Utlise
 voronoi

@@ -1,5 +1,6 @@
 import { JSXElementConstructor, ReactElement, ReactNodeArray } from 'react';
 import { DefaultValue, RecoilValue } from 'recoil';
+import { StringMap } from 'ts-jest/dist/types';
 
 export type TranslateInput =
   | string
@@ -15,6 +16,19 @@ export type Report = {
   bond_rating: string;
   created_at: number;
   bookmarked: boolean;
+  probability_of_default?: string;
+};
+
+export type BatchedReportType = {
+  id: number;
+  company_name: string;
+  name: string;
+  sme_zscore: number;
+  bond_rating: string;
+  create_date: number;
+  finish_date: number;
+  total_reports: number;
+  company_list: Report[];
 };
 
 type ContactInformation = {
@@ -31,7 +45,8 @@ type ContactInformation = {
 };
 
 export type UserType = {
-  name?: string | null;
+  //TODO: do we want this as name?
+  full_name?: string | null;
   email?: string | null;
   is_SSO?: boolean;
   contact_information?: ContactInformation;
@@ -43,12 +58,13 @@ export type UserType = {
       reporting_country: string;
     };
     communication: {
-      comments: boolean;
-      candidates: boolean;
-      offers: boolean;
+      batch_report_email: boolean;
+      service_updates: boolean;
+      company_updates: boolean;
     };
   };
   reports?: Report[];
+  batched_report_jobs: BatchedReportType[];
 };
 
 export interface RecoilUserType {
@@ -66,4 +82,30 @@ export type CompanyType = {
   company_number?: string;
   date_of_creation?: string;
   title?: string;
+};
+
+export type ApiResType = {
+  ok: boolean;
+  data?: ResDataType;
+  error?: boolean;
+};
+
+export type ResDataType = {
+  [index: string]: any;
+  items?: [];
+};
+
+// redundant?
+export type BatchReportType = {
+  id: number;
+  company_name: string;
+  sme_zscore: string;
+  bond_rating: string;
+  default: string;
+};
+
+export type BatchReportsType = {
+  id: number;
+  results: BatchReportType[];
+  created: string;
 };

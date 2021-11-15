@@ -1,7 +1,6 @@
 import { ArrowLeftIcon } from '@heroicons/react/outline';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { scroller } from 'react-scroll';
+import React, { useState } from 'react';
+import { Link } from 'react-scroll';
 import { useTranslations } from 'next-intl';
 
 import { useReportNavItems } from '../../hooks/useNavigation';
@@ -11,46 +10,18 @@ import SkeletonMenu from '../skeletons/SkeletonMenu';
 interface ReportNavProps {
   companyName: string;
   loading?: boolean;
-  onExportPdfClicked?: () => void;
+  isTesting?: boolean;
 }
 
-const ReportNav = ({
-  companyName,
-  loading,
-  onExportPdfClicked
-}: ReportNavProps) => {
+const nonTestingProps = {
+  containerId: 'secondary-layout-container'
+};
+
+const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
   const navItems = useReportNavItems();
   const t = useTranslations();
-  const router = useRouter();
 
   const [activeItem, setActiveItem] = useState<string>('summary');
-
-  const handleClick = (headerText: string) => {
-    const path = router.asPath.replace(/#[\w+ -]+/, '');
-    const snakedHeader = headerText.replace(/\s/g, '-').toLowerCase();
-    setActiveItem(headerText);
-
-    // handles the smooth scrolling
-    scroller.scrollTo(`${snakedHeader}-id`, {
-      duration: 400,
-      delay: 0,
-      smooth: true,
-      // refers to the container in the secondary layout
-      containerId: 'secondary-layout-container'
-    });
-
-    // shallow push to avoid forcing re-render
-    return router.push(`${path}#${snakedHeader}`, undefined, { shallow: true });
-  };
-
-  // monitor the changes to the # path and update the menu based on the # path ids
-  useEffect(() => {
-    const dynamicPath = router.asPath.replace(/#[\w+ -]+/, '');
-
-    const path = router.asPath.replace(`${dynamicPath}#`, '');
-    const header = path.replace(/-/g, ' ').toLowerCase();
-    setActiveItem(header);
-  }, [router.asPath]);
 
   if (loading) {
     return (
@@ -81,14 +52,22 @@ const ReportNav = ({
       <div className="flow-root mt-8 ">
         <h4 className="font-bold ">{t('content')}</h4>
         <ul className="text-sm p-2">
-          {navItems.map((heading, index) => {
-            const lowerHeading = heading.toLowerCase();
-            const isActive = activeItem === lowerHeading;
+          {navItems.map(({ id, title }, index) => {
+            const isActive = activeItem === id;
             return (
               <li key={index}>
-                <button
+                <Link
+                  to={id}
+                  spy={true}
+                  offset={0}
+                  smooth={true}
+                  activeClass={'bg-gray-400'}
+                  duration={300}
                   className="cursor-pointer w-full hover:text-alt"
-                  onClick={() => handleClick(lowerHeading)}
+                  onSetActive={() => setActiveItem(id)}
+                  // prevents testing failures for issues with type requirement
+                  // https://github.com/fisshy/react-scroll/issues/352
+                  {...(isTesting ? {} : nonTestingProps)}
                 >
                   <div className="relative pb-2 h-full">
                     {index !== navItems.length - 1 ? (
@@ -112,11 +91,11 @@ const ReportNav = ({
                           isActive ? 'text-highlight' : ''
                         } ml-6 z-10 text-center`}
                       >
-                        {heading}
+                        {title}
                       </p>
                     </div>
                   </div>
-                </button>
+                </Link>
               </li>
             );
           })}

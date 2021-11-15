@@ -8,57 +8,57 @@ export const bondRatings = [
   {
     score: 'CC',
     bgColor: 'rgb(220,11,23), rgb(220,44,20)',
-    width: '10%'
+    width: '13%'
   },
   {
     score: 'CCC-',
     bgColor: 'rgb(220,11,23), rgb(220,44,20)',
-    width: '5%'
+    width: '10%'
   },
   {
     score: 'CCC',
     bgColor: 'rgb(220,11,23), rgb(220,44,20)',
-    width: '5%'
+    width: '10%'
   },
   {
     score: 'CCC+',
     bgColor: 'rgb(220,80,17), rgb(217,124,13)',
-    width: '5%'
+    width: '10%'
   },
   {
     score: 'B-',
     bgColor: 'rgb(217,124,13), rgb(216,181,9)',
-    width: '3.8%'
+    width: '5%'
   },
   {
     score: 'B',
     bgColor: 'rgb(216,181,9), rgb(216,181,9)',
-    width: '3.8%'
+    width: '5%'
   },
   {
     score: 'BB',
     bgColor: 'rgb(216,181,9), rgb(159,180,7)',
-    width: '3.7%'
+    width: '5%'
   },
   {
     score: 'BBB-',
     bgColor: 'rgb(159,180,7), rgb(94,145,5)',
-    width: '5%'
+    width: '7%'
   },
   {
     score: 'BBB',
     bgColor: 'rgb(94,145,5), rgb(52,120,1)',
-    width: '10%'
+    width: '13%'
   },
   {
     score: 'BBB+',
     bgColor: 'rgb(94,145,5), rgb(52,120,1)',
-    width: '10%'
+    width: '13%'
   },
   {
     score: 'A',
     bgColor: 'rgb(52,120,1), rgb(27,102,2)',
-    width: '40%'
+    width: '25%'
   }
 ];
 
@@ -404,4 +404,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       { title: 'ebit.title', body: 'ebit.body' },
       data
     )
+};
+
+export const batchReport = {
+  averageTime: 100 // average report generation time in ms
 };

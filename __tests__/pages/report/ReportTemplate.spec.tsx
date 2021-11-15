@@ -42,7 +42,7 @@ describe('ReportTemplate', () => {
 
   describe('HEADER', () => {
     it('should render', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       await waitForElementToBeRemoved(skeleton);
@@ -64,7 +64,7 @@ describe('ReportTemplate', () => {
 
   describe('SUMMARY', () => {
     it('should render the left section', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -117,7 +117,11 @@ describe('ReportTemplate', () => {
     });
 
     it('should render the right section', async () => {
-      const { container } = render(<ReportTemplate />, undefined, allMessages);
+      const { container } = render(
+        <ReportTemplate isTesting />,
+        undefined,
+        allMessages
+      );
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -149,7 +153,7 @@ describe('ReportTemplate', () => {
 
     it('should render the Financial Statement Overview table', async () => {
       jest.setTimeout(10000);
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -195,7 +199,7 @@ describe('ReportTemplate', () => {
 
   describe('RISK METRICS', () => {
     it('should render the Speedometers', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -239,7 +243,7 @@ describe('ReportTemplate', () => {
     });
 
     it('should render the Bond Rating', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
 
@@ -259,7 +263,7 @@ describe('ReportTemplate', () => {
     const { highlights, financials } = mockReport;
 
     it('Reliability Index', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -281,7 +285,7 @@ describe('ReportTemplate', () => {
     });
 
     it('Risk Outlook', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -297,7 +301,7 @@ describe('ReportTemplate', () => {
     });
 
     it('Financial Accounts', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -317,7 +321,7 @@ describe('ReportTemplate', () => {
     });
 
     it('Add More Data', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -332,15 +336,14 @@ describe('ReportTemplate', () => {
 
       if (cardOne.parentElement && cardTwo.parentElement) {
         const cardOneButtons = within(cardOne.parentElement).getAllByRole(
-          'button'
+          'link'
         );
         const cardTwoButtons = within(cardTwo.parentElement).getAllByRole(
-          'button'
+          'link'
         );
 
-        expect(cardOneButtons[0].textContent).toBe('Unlock');
-        expect(cardOneButtons[0]).toBeDisabled();
-        expect(cardOneButtons[1].textContent).toBe('Learn more');
+        expect(cardOneButtons[0].textContent).toBe('Learn more');
+        // expect(cardOneButtons[1].textContent).toBe('Unlock');
         expect(cardTwoButtons[0].textContent).toBe('Upload');
         expect(cardTwoButtons[1].textContent).toBe('Learn more');
       } else {
@@ -353,7 +356,7 @@ describe('ReportTemplate', () => {
 
   describe('FINANCIAL TRENDS', () => {
     it('should render a chart for each financial trend', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -378,7 +381,7 @@ describe('ReportTemplate', () => {
     const { personal } = mockReport;
 
     it('Overview', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -421,7 +424,7 @@ describe('ReportTemplate', () => {
     it('Directors', async () => {
       const { directors } = personal;
 
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -460,7 +463,7 @@ describe('ReportTemplate', () => {
     it('Senior Management', async () => {
       const { senior_management } = personal;
 
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -503,7 +506,7 @@ describe('ReportTemplate', () => {
     it('All Shareholders', async () => {
       const { shareholders } = personal;
 
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -540,7 +543,7 @@ describe('ReportTemplate', () => {
     } = mockReport;
 
     it('Summary: basic', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -570,7 +573,7 @@ describe('ReportTemplate', () => {
     });
 
     it('Summary: should change the table when the button filters are clicked', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -615,7 +618,7 @@ describe('ReportTemplate', () => {
 
   describe('MACRO ECONOMIC TRENDS', () => {
     it('should render a chart for each macroeconomic trend', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -638,7 +641,7 @@ describe('ReportTemplate', () => {
 
   describe('ESG', () => {
     it('should render two cards', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -654,23 +657,19 @@ describe('ReportTemplate', () => {
 
       expect(cards.length).toBe(2);
 
-      expect(within(cards[0]).getByText('Environmental')).toBeInTheDocument();
+      expect(within(cards[0]).getByText('Industry')).toBeInTheDocument();
       expect(
         within(cards[0]).getByText(
-          /Using environmental indicators we can assess the outlook of a companies impact/i
+          /Using machine learning models we can analyse a companies website to determine the companies actual industry/i
         )
-      ).toBeInTheDocument();
-      expect(within(cards[0]).getByText(/neutral/i)).toBeInTheDocument();
-      expect(
-        within(cards[0]).getByText(/environmental impact/i)
       ).toBeInTheDocument();
 
       expect(within(cards[1]).getByText('Governance')).toBeInTheDocument();
-      expect(
-        within(cards[1]).getByText(
-          /Data on company governance and problematic shareholders \/ directors/i
-        )
-      ).toBeInTheDocument();
+      // expect(
+      //   within(cards[1]).getByText(
+      //     /Data on company governance and problematic shareholders \/ directors/i
+      //   )
+      // ).toBeInTheDocument();
       expect(within(cards[1]).getByText(/3/i)).toBeInTheDocument();
       expect(within(cards[1]).getByText(/pep flags/i)).toBeInTheDocument();
     });
@@ -678,7 +677,7 @@ describe('ReportTemplate', () => {
 
   describe('NEWS', () => {
     it('should render a card for each news item', async () => {
-      render(<ReportTemplate />, undefined, allMessages);
+      render(<ReportTemplate isTesting />, undefined, allMessages);
 
       const skeleton = screen.queryByTestId('skeleton-report');
       skeleton && (await waitForElementToBeRemoved(skeleton));
@@ -692,13 +691,13 @@ describe('ReportTemplate', () => {
 
       const cards = screen.queryAllByTestId('news-card-testid');
 
-      expect(cards.length).toBe(newsData.length);
+      expect(cards.length).toBe(0);
 
-      cards.forEach((card, i) => {
-        expect(
-          within(card).getByText(newsData[i].publication)
-        ).toBeInTheDocument();
-      });
+      // cards.forEach((card, i) => {
+      //   expect(
+      //     within(card).getByText(newsData[i].publication)
+      //   ).toBeInTheDocument();
+      // });
     });
   });
 });

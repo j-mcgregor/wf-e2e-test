@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import config from '../../config';
+import * as Sentry from '@sentry/nextjs';
 
 const fetcher = async (
   relativeUrl: string,
@@ -31,6 +32,10 @@ const fetcher = async (
     return res.json();
   } catch (error) {
     console.log('ERROR', error);
+
+    // capture error on sentry
+    Sentry.captureException(error);
+
     console.log(`Error making request to ${config.URL}${relativeUrl}`);
     return {
       error: true,

@@ -12,7 +12,7 @@ const { withSentryConfig } = require('@sentry/nextjs');
 const moduleExports = {
   api: {
     // this issue https://github.com/getsentry/sentry-javascript/issues/3852#issuecomment-918820923
-    externalResolver: true,
+    externalResolver: true
   },
   i18n: {
     // These are all the locales you want to support in
@@ -24,7 +24,8 @@ const moduleExports = {
   },
   images: {
     domains: ['images.unsplash.com']
-  }
+  },
+  outputFileTracing: false
 };
 
 const SentryWebpackPluginOptions = {
@@ -44,15 +45,15 @@ const SentryWebpackPluginOptions = {
 module.exports = withSentryConfig(moduleExports, SentryWebpackPluginOptions);
 
 // handles the silencing of the Recoil state errors in development
-const intercept = require("intercept-stdout")
+const intercept = require('intercept-stdout');
 
-// safely ignore recoil stdout warning messages 
+// safely ignore recoil stdout warning messages
 function interceptStdout(text) {
   if (text.includes('Duplicate atom key')) {
-    return ''
+    return '';
   }
-  return text
+  return text;
 }
 
 // Intercept in dev and prod
-intercept(interceptStdout)
+intercept(interceptStdout);
