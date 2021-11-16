@@ -19,19 +19,19 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
   const session = await getSession({ req: request });
 
   // unauthenticated requests
-  if (!session) {
-    return response.status(403).json({
-      error: UNAUTHORISED,
-      message: 'Unauthorised api request, please login to continue.'
-    });
-  }
+  // if (!session) {
+  //   return response.status(403).json({
+  //     error: UNAUTHORISED,
+  //     message: 'Unauthorised api request, please login to continue.'
+  //   });
+  // }
 
   const isGet = request.method === 'GET';
 
   if (isGet) {
     // extract search query
     const companyName: string = request?.query?.company_name?.toString();
-    const country: string = request?.query?.country?.toString();
+    // const country: string = request?.query?.country?.toString();
     const type: string = request?.query?.type?.toString();
 
     if (!companyName) {
@@ -50,11 +50,12 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
       });
     }
 
-    const countryCode = countryCodes.find(x => x.name === country);
+    // removed for now as it's not helping results
+    // const countryCode = countryCodes.find(x => x.name === country);
 
     const newResults = await News.getCompanyNews(
-      companyName,
-      countryCode?.code
+      companyName
+      // countryCode?.code
     );
 
     //  handle search error
