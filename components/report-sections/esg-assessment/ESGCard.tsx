@@ -1,3 +1,4 @@
+import { convertNumberToPercentage } from '../../../lib/utils/text-helpers';
 import { TranslateInput } from '../../../types/global';
 import LoadingIcon from '../../svgs/LoadingIcon';
 
@@ -20,7 +21,8 @@ const ESGCard = ({
 }: ESGCardProps) => {
   return (
     <div
-      className="flex bg-white rounded-sm shadow-sm my-4 px-8 py-8 items-center justify-between"
+      className="flex bg-white rounded-sm shadow-sm my-4 px-8 py-8 items-center justify-between
+      block avoid-break"
       data-testid="esg-card-testid"
     >
       <div className="w-1/2">
@@ -56,7 +58,9 @@ const ESGCard = ({
                 key={result.name}
               >
                 <span className="">{result.name.replace(/_/g, ' ')} </span>
-                <span className="font-bold">{result.score}</span>
+                <span className="font-bold">
+                  {convertNumberToPercentage(result.score)}
+                </span>
               </li>
             ))}
           </ul>

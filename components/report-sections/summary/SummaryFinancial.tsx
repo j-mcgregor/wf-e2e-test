@@ -21,7 +21,7 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                 <thead className="border-b border-black font-semibold">
                   <tr>
                     <td />
-                    {years.map((year) => (
+                    {years.map(year => (
                       <td
                         key={year.year}
                         className="relative px-2 py-3 text-primary"

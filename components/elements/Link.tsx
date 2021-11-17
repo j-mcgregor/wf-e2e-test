@@ -15,21 +15,22 @@ const Link = ({
   className,
   style,
   onClick,
-  disabled
+  disabled,
+  ...rest
 }: LinkProps) => {
+  // who added this?
   if (disabled) {
     return <>{children}</>;
   }
-
   if (onClick) {
     return (
-      <button className={className} style={style} onClick={onClick}>
+      <button className={className} style={style} onClick={onClick} {...rest}>
         {children}
       </button>
     );
   }
   if (!linkTo) {
-    return <a>{children}</a>;
+    return <a {...rest}>{children}</a>;
   }
   const regex = new RegExp('https?|wwww');
   const mailRegex = new RegExp('mailto');
@@ -46,6 +47,7 @@ const Link = ({
         rel="noopener noreferrer"
         className={className}
         style={style}
+        {...rest}
       >
         {children}
       </a>
@@ -53,7 +55,7 @@ const Link = ({
 
   return (
     <NextLink href={linkTo}>
-      <a className={className} style={style}>
+      <a className={className} style={style} {...rest}>
         {children}
       </a>
     </NextLink>

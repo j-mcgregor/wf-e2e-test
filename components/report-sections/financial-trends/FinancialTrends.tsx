@@ -51,8 +51,8 @@ const FinancialTrends = ({ data }: FinancialTrendsProps) => {
   );
 
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
-      {chartsToRender.map(chart => (
+    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2 print:table">
+      {chartsToRender.map((chart, i) => (
         <ChartMulti
           key={chart.header}
           header={`${t(chart.header)}`}

@@ -21,3 +21,6 @@ export const createCurrencyString = ({
 }) => {
   return `${CountryName} - ${Currency} (${Symbol})`;
 };
+
+export const convertNumberToPercentage = (num: number) =>
+  `${Number(num) * 100}%`;

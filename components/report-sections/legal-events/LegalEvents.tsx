@@ -41,7 +41,7 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
     >
       <p className="text-xl">{t('summary')}</p>
       <div
-        className="flex flex-col md:flex-row my-6"
+        className="flex flex-col md:flex-row my-6 print:block"
         data-testid="legal-events-summary-testid"
       >
         <LegalFilter
