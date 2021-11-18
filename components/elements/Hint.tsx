@@ -19,7 +19,7 @@ const Hint = ({ title, body }: HintTypeProps) => {
   return (
     <Popover>
       <Popover.Button ref={setReferenceElement}>
-        <InformationCircleIcon className="h-6 w-6 opacity-50" />
+        <InformationCircleIcon className="h-6 w-6 opacity-50 print:hidden" />
       </Popover.Button>
 
       <Popover.Panel

@@ -11,8 +11,10 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
   const t = useTranslations();
 
   return (
-    <div className="p-6 shadow rounded-sm bg-white">
-      <p className="text-primary">{t('financial_statement_overview')}</p>
+    <div className="p-6 shadow rounded-sm bg-white print:shadow-none">
+      <p className="text-primary print:text-2xl print:pb-8">
+        {t('financial_statement_overview')}
+      </p>
       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="py-2 align-middle inline-block min-w-full ">

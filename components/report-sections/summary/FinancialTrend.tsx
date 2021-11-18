@@ -4,7 +4,7 @@ interface FinancialTrendProps {
 
 const FinancialTrend = ({ data }: FinancialTrendProps) => {
   return (
-    <td className="flex flex-col h-9 w-[80px] print:border print:border-red-500 print:min-w-0 print:z-20 print:min-w-0 print:w-full">
+    <td className="flex flex-col h-9 w-[80px]">
       <div className="h-1/2 w-full flex items-end">
         {data.map((year, index) => {
           return (

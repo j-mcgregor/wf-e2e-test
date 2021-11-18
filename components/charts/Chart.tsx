@@ -43,7 +43,7 @@ const Chart = ({ title, subtitle, data, hintBody, hintTitle }: ChartProps) => {
   return (
     // <div className="avoid-break ">
     <div
-      className="max-w-[450px] flex flex-col justify-between items-center px-4 pt-4 text-xs bg-white shadow-sm rounded-sm"
+      className="max-w-[450px] flex flex-col justify-between items-center px-4 pt-4 text-xs bg-white shadow-sm rounded-sm print:shadow-none"
       data-testid="chart-testid"
     >
       <div className="w-full flex justify-between">

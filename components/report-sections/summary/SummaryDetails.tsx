@@ -18,10 +18,10 @@ const SummaryDetails = ({
   const t = useTranslations();
 
   return (
-    <div className="flex flex-col bg-white border shadow-sm rounded h-full">
-      <div className="flex justify-between h-1/4 border-b border-bg ">
+    <div className="flex flex-col bg-white border shadow-sm rounded h-full print:shadow-none print:border-none">
+      <div className="flex justify-between h-1/4 border-b border-bg print:border-none">
         <div
-          className="border-r border-bg p-3 w-1/2 flex flex-col justify-center"
+          className="border-r border-bg p-3 w-1/2 flex flex-col justify-center print:border-none "
           role="group"
         >
           <p className="py-1 text-primary">{t('registration_number')}</p>
@@ -35,15 +35,15 @@ const SummaryDetails = ({
       </div>
 
       <div
-        className="flex justify-between border-b border-bg h-1/4"
+        className="flex justify-between border-b border-bg h-1/4 print:border-none"
         role="group"
       >
-        <div className="border-r border-bg p-3 w-1/2 flex flex-col justify-center">
+        <div className="border-r border-bg p-3 w-1/2 flex flex-col justify-center print:border-none ">
           <p className="py-1 text-primary">{t('incorporation_date')}</p>
           <p className="py-1 font-bold">
-            {/* 
-            So apparently this renders Jun 20, 2006 on Node 12 but 20 jun 2006 on Node 15. 
-            Will disable the test for now but good to know (issue picked up by Github Actions) 
+            {/*
+            So apparently this renders Jun 20, 2006 on Node 12 but 20 jun 2006 on Node 15.
+            Will disable the test for now but good to know (issue picked up by Github Actions)
             */}
             {new Date(incorporationDate).toLocaleDateString('en-GB', {
               day: 'numeric',

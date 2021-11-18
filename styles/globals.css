@@ -16,6 +16,7 @@
 /* hide header and footer */
 
 @media print {
+  /* forces to print all CSS etc in print preview - otherwise must manually toggle 'Print Backgrounds' in dialogue*/
   * {
     color-adjust: exact;
   }

@@ -63,7 +63,7 @@ const Report = ({
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0">
-      <div className="sm:py-8">
+      <div className="sm:py-8 border print:pb-0 print:border-none">
         <ReportHeader
           company={data?.company_name}
           created={created}
@@ -84,11 +84,11 @@ const Report = ({
             />
           </div>
 
-          <div className="flex w-full md:w-1/2 flex-col py-2">
+          <div className="flex w-full md:w-1/2 flex-col py-2 print:w-full">
             <SummaryMap contact={data.contact_details} />
           </div>
         </div>
-        <div className="py-4  avoid-break">
+        <div className="py-4 avoid-break">
           <SummaryFinancial years={lastFiveYearsFinancials} />
         </div>
       </HashContainer>
@@ -147,7 +147,10 @@ const Report = ({
       <HashContainer name={'Highlights'} id={`highlights`}>
         <ReportSectionHeader text={t('highlights')} />
 
-        <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 ">
+        <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 print:justify-evenly ">
+          <div className="hidden print:block">
+            <FinancialAccounts financialYears={transformedFinancials} />
+          </div>
           <ReliabilityIndex
             reliability={data.highlights.data_reliability.reliability}
           />
@@ -161,8 +164,10 @@ const Report = ({
           />
         </div>
         <div className="flex flex-col lg:flex-row py-6 justify-between">
-          <FinancialAccounts financialYears={transformedFinancials} />
-          <div className="w-full lg:ml-8">
+          <div className="print:hidden">
+            <FinancialAccounts financialYears={transformedFinancials} />
+          </div>
+          <div className="w-full lg:ml-8 print:hidden">
             <p className="font-bold py-2">{t('add_more_data')}</p>
             <CTACard
               title={t('import_data')}
