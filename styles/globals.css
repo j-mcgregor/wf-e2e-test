@@ -16,6 +16,9 @@
 /* hide header and footer */
 
 @media print {
+  * {
+    color-adjust: exact;
+  }
   @page {
     margin-left: 0.5in;
     margin-right: 0.5in;

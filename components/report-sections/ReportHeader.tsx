@@ -51,7 +51,7 @@ const ReportHeader = ({ company, created, reportId }: ReportHeaderProps) => {
         </div>
         <Button
           variant="none"
-          newClassName="border-none self-start ml-auto mr-2 sm:mr-0 sm:ml-4"
+          newClassName="border-none self-start ml-auto mr-2 sm:mr-0 sm:ml-4 print:hidden"
           onClick={handleClick}
         >
           <BookmarkIcon

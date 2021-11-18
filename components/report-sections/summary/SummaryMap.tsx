@@ -13,8 +13,8 @@ const SummaryMap = ({ contact }: SummaryMapProps) => {
   const phone = contact?.phone_numbers?.[0].replace(/[A-z-]/g, '');
 
   return (
-    <div className="bg-white border shadow-sm rounded md:ml-8  h-full flex flex-col text-primary">
-      <div className="flex items-center justify-center bg-gray-500 text-white text-center ">
+    <div className="bg-white border shadow-sm rounded md:ml-8  h-full flex flex-col text-primary print:flex-row print:mt-10">
+      <div className="flex items-center justify-center bg-gray-500 text-white text-center print:w-1/2">
         <Iframe
           width="100%"
           height="100%"
@@ -23,7 +23,7 @@ const SummaryMap = ({ contact }: SummaryMapProps) => {
           &q=${contact?.postal_code}}&zoom=12`}
         />
       </div>
-      <div className="flex flex-col p-4">
+      <div className="flex flex-col p-4 print:px-8 print:w-1/2">
         <div>
           <p>{t('registered_address')}</p>
           <address className="font-bold pb-2">
