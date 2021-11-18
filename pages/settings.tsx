@@ -25,7 +25,6 @@ export type FormWithClassProps = {
 
 const Settings = () => {
   const { user } = useRecoilValue(appState);
-
   return (
     <Layout title="Settings" fullWidth>
       <SecondaryLayout navigation={<SettingsNav />}>

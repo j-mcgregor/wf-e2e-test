@@ -7,11 +7,6 @@ export const MockCompanyNames = {
   DOVE: 'Dove Feeding Corp'
 };
 
-export const giveUserCorrectStructure = (user: any) => ({
-  ...mockUsers['new@test.com'],
-  ...user
-});
-
 const mockBatchedReports = [
   {
     company_id: '124556',
