@@ -46,7 +46,7 @@ const BatchReports = () => {
 
           <div className="grid md:grid-cols-4 grid-cols-2 gap-3">
             {user &&
-              user.batched_report_jobs.map(report => {
+              user.batched_report_jobs?.map(report => {
                 return (
                   report.finish_date && (
                     <BatchReportCard
@@ -73,7 +73,7 @@ const BatchReports = () => {
 
           <div className="grid md:grid-cols-3 grid-cols-2 gap-3">
             {user &&
-              user.batched_report_jobs.map(report => {
+              user.batched_report_jobs?.map(report => {
                 return (
                   !report.finish_date && (
                     <BatchReportCard
