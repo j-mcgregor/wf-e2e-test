@@ -13,7 +13,7 @@ const SummaryMap = ({ contact }: SummaryMapProps) => {
   const phone = contact?.phone_numbers?.[0].replace(/[A-z-]/g, '');
 
   return (
-    <div className="bg-white border shadow-sm rounded md:ml-8  h-full flex flex-col text-primary print:flex-row print:mt-10 print:border-none print:shadow-none">
+    <div className="bg-white border shadow-sm rounded md:ml-8  h-full flex flex-col text-primary print:flex-row print:mt-10 print:border-2 print:p-3  print:shadow-none">
       <div className="flex items-center justify-center bg-gray-500 text-white text-center print:w-1/2">
         <Iframe
           width="100%"

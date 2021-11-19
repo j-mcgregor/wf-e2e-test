@@ -14,7 +14,7 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
       <div className="avoid-break">
         <p className="my-4 text-xl print:text-2xl">{t('directors')}</p>
         <div
-          className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4  avoid-break"
+          className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4 avoid-break print:border-2"
           data-testid="corp-directors-list-testid"
         >
           {directors.map((director, index) => (
@@ -37,7 +37,7 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
       <div className="avoid-break print:pt-16">
         <p className="my-4 text-xl print:text-2xl">{t('senior_management')}</p>
         <div
-          className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4 avoid-break"
+          className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4 avoid-break print:border-2"
           data-testid="corp-snr-mgmt-list-testid"
         >
           {seniorManagement.map((manager, index) => (

@@ -74,7 +74,7 @@ const Report = ({
       <HashContainer name={'Summary'} id={`summary`}>
         <ReportSectionHeader text={t('summary')} onNewPageForPrint={false} />
 
-        <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm">
+        <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm ">
           <div className="flex w-full md:w-1/2 flex-col py-2">
             <SummaryDetails
               regNumber={'SC172288'}
@@ -95,7 +95,7 @@ const Report = ({
       </HashContainer>
       <HashContainer name={'Risk Metrics'} id={`risk_metrics`}>
         <ReportSectionHeader text={t('risk_metrics')} />
-        <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4">
+        <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4 print:border-2">
           <Speedometer
             title="SME Z-score"
             value={304}
@@ -148,19 +148,25 @@ const Report = ({
       <HashContainer name={'Highlights'} id={`highlights`}>
         <ReportSectionHeader text={t('highlights')} />
 
-        <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 print:justify-evenly ">
-          {forPrint && (
-            <div className="hidden print:block">
-              <FinancialAccounts financialYears={transformedFinancials} />
-            </div>
-          )}
-
+        <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 print:items-start print:justify-evenly print:border-2 print:px-4">
           <ReliabilityIndex
             reliability={data.highlights.data_reliability.reliability}
           />
-          <DataReliability comment={data.highlights.data_reliability.comment} />
+          {forPrint && (
+            <div>
+              <FinancialAccounts financialYears={transformedFinancials} />
+            </div>
+          )}
+          {!forPrint && (
+            <DataReliability
+              comment={data.highlights.data_reliability.comment}
+            />
+          )}
         </div>
-        <div className="flex">
+        {forPrint && (
+          <DataReliability comment={data.highlights.data_reliability.comment} />
+        )}
+        <div className="flex ">
           <RiskOutlook
             hintTitle="hint title"
             hintBody="hint body"
@@ -169,7 +175,7 @@ const Report = ({
         </div>
         <div className="flex flex-col lg:flex-row py-6 justify-between">
           {!forPrint && (
-            <div className="print:hidden">
+            <div>
               <FinancialAccounts financialYears={transformedFinancials} />
             </div>
           )}
@@ -237,7 +243,10 @@ const Report = ({
         fullHeight={false}
       >
         <ReportSectionHeader text={t('legal_events')} />
-        <LegalEvents legalEvents={data?.legal_events?.legal_events} />
+        <LegalEvents
+          forPrint={forPrint}
+          legalEvents={data?.legal_events?.legal_events}
+        />
       </HashContainer>
 
       <HashContainer

@@ -58,6 +58,7 @@ export type LegalEvent = {
   id?: number | string;
   source: string;
   types: [];
+  forPrint?: boolean;
 };
 
 export type Association = {

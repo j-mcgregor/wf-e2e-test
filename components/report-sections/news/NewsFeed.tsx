@@ -33,7 +33,7 @@ const NewsFeed = ({
   const t = useTranslations();
 
   return (
-    <div className=" ">
+    <div className="">
       {/* Loading data response */}
       {!data && [1, 2, 3, 4, 5].map(x => <SkeletonNews key={x} />)}
 
@@ -55,17 +55,19 @@ const NewsFeed = ({
       )}
 
       {/* Map over the successfully loaded news */}
-      {newsHits &&
-        newsHits.map((newsItem, i) => (
-          <NewsItem
-            key={i}
-            publication={newsItem.source}
-            title={newsItem.title}
-            description={newsItem.content}
-            link={newsItem.url}
-            date={newsItem.pubDate}
-          />
-        ))}
+      <div className="">
+        {newsHits &&
+          newsHits.map((newsItem, i) => (
+            <NewsItem
+              key={i}
+              publication={newsItem.source}
+              title={newsItem.title}
+              description={newsItem.content}
+              link={newsItem.url}
+              date={newsItem.pubDate}
+            />
+          ))}
+      </div>
     </div>
   );
 };

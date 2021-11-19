@@ -17,6 +17,8 @@ const LegalFilter = ({
   activeFilter,
   title
 }: LegalFilterProps) => {
+  const reverseTextStyle = 'print:flex print:flex-col-reverse';
+
   return (
     <button
       onClick={() => handleFilter(events, filter)}
@@ -24,16 +26,18 @@ const LegalFilter = ({
         filter === activeFilter
           ? 'border-highlight border-2'
           : 'border-gray-50 border'
-      }   md:w-1/3 cursor-pointer px-6   my-1 rounded-sm bg-white shadow-sm text-left avoid-break`}
+      }   md:w-1/3 cursor-pointer px-6  my-1 rounded-sm bg-white shadow-sm text-left avoid-break print:border-none print:text-center print:shadow-none`}
     >
-      <p
-        className={`${
-          activeFilter === 'negative events' && 'text-red-500'
-        } py-2 text-2xl font-semibold`}
-      >
-        {events.length}
-      </p>
-      <p className="pb-2 text-lg">{title}</p>
+      <div className={reverseTextStyle}>
+        <p
+          className={`${
+            activeFilter === 'negative events' && 'text-red-500'
+          } py-2 text-2xl print:text-lg font-semibold `}
+        >
+          {events.length}
+        </p>
+        <p className="pb-2 text-lg print:text-base">{title}</p>
+      </div>
     </button>
   );
 };

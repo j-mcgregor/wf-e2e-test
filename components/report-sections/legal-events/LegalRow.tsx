@@ -1,10 +1,16 @@
 import { LegalEvent } from '../../../types/report';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronUpIcon } from '@heroicons/react/outline';
 import { negativeValues } from '../../../lib/settings/report.settings';
 import { camelCaseToSentenceCase } from '../../../lib/utils/text-helpers';
 
-const LegalRow = ({ types, description, details, date }: LegalEvent) => {
+const LegalRow = ({
+  types,
+  description,
+  details,
+  date,
+  forPrint
+}: LegalEvent) => {
   const textColor = types?.some(value => negativeValues.includes(value))
     ? 'text-red-500'
     : 'text-black';
@@ -13,10 +19,14 @@ const LegalRow = ({ types, description, details, date }: LegalEvent) => {
 
   const handleDropdown = () => setDropdownOpen(!dropdownOpen);
 
+  useEffect(() => {
+    forPrint && setDropdownOpen(true);
+  }, []);
+
   return (
     <div
-      className={`${textColor} flex flex-col py-1.5`}
-      data-testid="legal-row-testid"
+      className={`${textColor} flex flex-col py-1.5 border avoid-break`}
+      data-testid="legal-row-testid "
     >
       <div className="flex">
         <div className="w-full mr-1">
@@ -43,7 +53,7 @@ const LegalRow = ({ types, description, details, date }: LegalEvent) => {
         </div>
       </div>
       {details && dropdownOpen && (
-        <div className="w-full my-2">
+        <div className="w-full my-2 ">
           {details.map((detail, index) => {
             return (
               <div
@@ -63,7 +73,9 @@ const LegalRow = ({ types, description, details, date }: LegalEvent) => {
                       } lg:w-auto`}
                     >
                       <p className="py-1">{header}</p>
-                      <p className={`font-semibold`}>{description}</p>
+                      <p className={`font-semibold print:text-sm`}>
+                        {description}
+                      </p>
                     </div>
                   );
                 })}

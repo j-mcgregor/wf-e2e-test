@@ -6,6 +6,7 @@ import LegalFilter from './LegalFilter';
 
 interface LegalEventsProps {
   legalEvents: LegalEvent[];
+  forPrint?: boolean;
 }
 
 const FILTERS = {
@@ -14,7 +15,7 @@ const FILTERS = {
   CHARGES: 'charges'
 };
 
-const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
+const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
   const allEvents = legalEvents.map(event => event);
 
   const charges = allEvents.filter(event =>
@@ -41,7 +42,7 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
     >
       <p className="text-xl">{t('summary')}</p>
       <div
-        className="flex flex-col md:flex-row my-6 print:block"
+        className="flex flex-col md:flex-row my-6  print:flex-row print:justify-evenly print:border-2 "
         data-testid="legal-events-summary-testid"
       >
         <LegalFilter
@@ -51,6 +52,7 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
           title={t('all_events')}
           activeFilter={FILTERS.ALL}
         />
+        <div className="print:border-l-2" />
         <LegalFilter
           events={charges}
           filter={filter}
@@ -58,6 +60,7 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
           title={t('charges')}
           activeFilter={FILTERS.CHARGES}
         />
+        <div className=" print:border-l-2 " />
         <LegalFilter
           events={negativeEvents}
           filter={filter}
@@ -69,7 +72,7 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
 
       <p className="text-xl">{t(filter)}</p>
 
-      <div className="bg-white shadow-sm p-2 my-6 rounded-sm">
+      <div className="bg-white shadow-sm p-2 my-6 rounded-sm print:shadow-none print:border-2">
         <div
           className="w-full my-6 flex flex-col text-xs px-2"
           data-testid="legal-events-table-testid"
@@ -82,7 +85,7 @@ const LegalEvents = ({ legalEvents }: LegalEventsProps) => {
             </div>
           </div>
           {events.map((event, index) => {
-            return <LegalRow key={index} {...event} />;
+            return <LegalRow forPrint={forPrint} key={index} {...event} />;
           })}
         </div>
       </div>

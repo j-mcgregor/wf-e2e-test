@@ -15,7 +15,7 @@ const RiskOutlook = ({ reports, hintTitle, hintBody }: OutlookProps) => {
         <p className="font-bold pr-8">{t('risk_outlook')}</p>
         <Hint title={hintTitle} body={hintBody} />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col print:border-2">
         <ul className="list-disc px-6" data-testid="risk-outlook-list">
           {reports.map((report, i) => {
             return (
