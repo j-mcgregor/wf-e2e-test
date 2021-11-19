@@ -15,7 +15,7 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
       <p className="text-primary print:text-2xl print:pb-8">
         {t('financial_statement_overview')}
       </p>
-      <div className="flex flex-col">
+      <div className="flex flex-col ">
         <div className="overflow-x-auto">
           <div className="py-2 align-middle inline-block min-w-full ">
             <div className="overflow-hidden text-xs">

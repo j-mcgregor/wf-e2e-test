@@ -10,13 +10,15 @@ const ShareHolderList = ({ shareholders }: ShareHolderListProps) => {
   const t = useTranslations();
 
   return (
-    <div className="my-4" data-testid="corp-shareholder-section-testid">
-      <p className="text-xl py-4">{t('all_shareholders')}</p>
+    <div
+      className="my-4 avoid-break"
+      data-testid="corp-shareholder-section-testid"
+    >
+      <p className="text-xl py-4 print:text-2xl print:py-6">
+        {t('all_shareholders')}
+      </p>
 
-      <div
-        className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4
-                    print:block"
-      >
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 print:flex print:flex-wrap">
         {shareholders.map((shareholder, index) => {
           return (
             <ShareHolderCard
