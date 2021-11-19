@@ -27,7 +27,8 @@ import SummaryMap from './summary/SummaryMap';
 
 const Report = ({
   data,
-  id
+  id,
+  forPrint
 }: {
   data: ReportDataProps;
   id: string | string[];
@@ -148,9 +149,12 @@ const Report = ({
         <ReportSectionHeader text={t('highlights')} />
 
         <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 print:justify-evenly ">
-          <div className="hidden print:block">
-            <FinancialAccounts financialYears={transformedFinancials} />
-          </div>
+          {forPrint && (
+            <div className="hidden print:block">
+              <FinancialAccounts financialYears={transformedFinancials} />
+            </div>
+          )}
+
           <ReliabilityIndex
             reliability={data.highlights.data_reliability.reliability}
           />
@@ -164,9 +168,12 @@ const Report = ({
           />
         </div>
         <div className="flex flex-col lg:flex-row py-6 justify-between">
-          <div className="print:hidden">
-            <FinancialAccounts financialYears={transformedFinancials} />
-          </div>
+          {!forPrint && (
+            <div className="print:hidden">
+              <FinancialAccounts financialYears={transformedFinancials} />
+            </div>
+          )}
+
           <div className="w-full lg:ml-8 print:hidden">
             <p className="font-bold py-2">{t('add_more_data')}</p>
             <CTACard

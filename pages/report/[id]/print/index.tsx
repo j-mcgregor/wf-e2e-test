@@ -26,7 +26,7 @@ const ReportTemplate = () => {
     }
   }, [data]);
 
-  return (data && <Report data={data} id={id} />) || 'Loading';
+  return (data && <Report data={data} id={id} forPrint={true} />) || 'Loading';
 };
 
 export default ReportTemplate;
