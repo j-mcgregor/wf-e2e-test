@@ -1,4 +1,3 @@
-import { reverse } from 'lodash';
 import { useTranslations } from 'next-intl';
 
 interface CorporateOverviewProps {

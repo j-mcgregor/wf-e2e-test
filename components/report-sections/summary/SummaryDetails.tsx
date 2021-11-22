@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import { getBrowser } from '../../../lib/utils/getBrowser';
 
 export type SummaryDetailsProps = {
   regNumber: string;
@@ -6,6 +7,14 @@ export type SummaryDetailsProps = {
   description?: string | null;
   incorporationDate: number | string;
   lastAccountDate: number | string;
+};
+
+const printSummaryClasses: {
+  [index: string]: any;
+} = {
+  chrome: {
+    container: 'print:p-4'
+  }
 };
 
 const SummaryDetails = ({
@@ -17,8 +26,14 @@ const SummaryDetails = ({
 }: SummaryDetailsProps) => {
   const t = useTranslations();
 
+  const browser = getBrowser() || '';
+
+  const additionalClasses = browser ? printSummaryClasses[browser] : '';
+
   return (
-    <div className="flex flex-col bg-white border  shadow-sm rounded h-full print:shadow-none print:border-2">
+    <div
+      className={`flex flex-col bg-white border  shadow-sm rounded h-full print:shadow-none print:border-2 ${additionalClasses.container}`}
+    >
       <div className="flex justify-between h-1/4 border-b print:border-b-2">
         <div
           className="border-r print:border-r-2 last-of-type:p-3 w-1/2 flex flex-col justify-center print:px-3"
