@@ -92,8 +92,8 @@ const Report = ({
       <HashContainer name={'Summary'} id={`summary`}>
         <ReportSectionHeader text={t('summary')} onNewPageForPrint={false} />
 
-        <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm ">
-          <div className="flex w-full md:w-1/2 flex-col py-2">
+        <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm md:print:flex-col ">
+          <div className="flex w-full md:w-1/2 flex-col py-2 md:print:w-full">
             <SummaryDetails
               regNumber={'SC172288'}
               sector={'Travel, Personal & Leisure'}
@@ -103,7 +103,7 @@ const Report = ({
             />
           </div>
 
-          <div className="flex w-full md:w-1/2 flex-col py-2 print:w-full">
+          <div className="flex w-full md:w-1/2 flex-col py-2 md:print:w-full">
             <SummaryMap contact={data.contact_details} />
           </div>
         </div>

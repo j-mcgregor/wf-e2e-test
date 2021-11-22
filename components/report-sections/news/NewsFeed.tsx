@@ -5,15 +5,17 @@ import SkeletonNews from '../../skeletons/SkeletonNews';
 import { ApplicationError } from '../../errors/ApplicationError';
 import { useTranslations } from 'use-intl';
 
+type NewsDataType = {
+  source: string;
+  title: string;
+  content: string;
+  url: string;
+  pubDate: string;
+};
+
 type NewsFeedApiResProps = {
   ok: boolean;
-  data: {
-    source: string;
-    title: string;
-    content: string;
-    url: string;
-    pubDate: string;
-  }[];
+  data: NewsDataType[];
 };
 
 const NewsFeed = ({
@@ -29,6 +31,15 @@ const NewsFeed = ({
     fetcher
   );
   const newsHits = data?.ok && data?.data ? data.data : [];
+
+  const newsHitSections: NewsDataType[][] =
+    newsHits &&
+    newsHits.reduce(
+      (acc: any, curr: any, index) =>
+        (index % 4 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
+        acc,
+      []
+    );
 
   const t = useTranslations();
 
@@ -56,17 +67,28 @@ const NewsFeed = ({
 
       {/* Map over the successfully loaded news */}
       <div className="">
-        {newsHits &&
-          newsHits.map((newsItem, i) => (
-            <NewsItem
-              key={i}
-              publication={newsItem.source}
-              title={newsItem.title}
-              description={newsItem.content}
-              link={newsItem.url}
-              date={newsItem.pubDate}
-            />
-          ))}
+        {newsHitSections &&
+          newsHitSections.map((news, i) => {
+            return (
+              <div
+                key={i}
+                className={`print:avoid-break ${i !== 0 && 'print:pt-10'}`}
+              >
+                {news.map((newsItem: NewsDataType, i: number) => {
+                  return (
+                    <NewsItem
+                      key={i}
+                      publication={newsItem.source}
+                      title={newsItem.title}
+                      description={newsItem.content}
+                      link={newsItem.url}
+                      date={newsItem.pubDate}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
       </div>
     </div>
   );
