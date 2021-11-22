@@ -73,7 +73,9 @@ const PreferenceForm = ({
       const fetchRes = await fetch(`${config.URL}/api/user?id=${user.id}`, {
         method: 'PUT',
         body: JSON.stringify({
+          ...user,
           preferences: {
+            ...user.preferences,
             defaults: {
               locale: data.locale,
               currency: data.currency,

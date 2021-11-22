@@ -64,7 +64,7 @@ export type UserType = {
     };
   };
   reports?: Report[];
-  batched_report_jobs: BatchedReportType[];
+  batched_report_jobs?: BatchedReportType[];
 };
 
 export interface RecoilUserType {

@@ -2,9 +2,7 @@ import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 
 import User from '../../../lib/funcs/user';
-import mockUsers, {
-  giveUserCorrectStructure
-} from '../../../lib/mock-data/users';
+import mockUsers from '../../../lib/mock-data/users';
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -26,7 +24,7 @@ export default NextAuth({
           // use the backend api auth token to get the user information
           const user = await User.getUser(wfToken.access_token);
           if (user.ok) {
-            return { ...giveUserCorrectStructure(user), is_sso: 'microsoft' };
+            return { ...User.giveDefaults(user), ...user, is_sso: 'microsoft' };
           }
         }
         return false;
@@ -52,20 +50,24 @@ export default NextAuth({
 
       async authorize(credentials, _req) {
         if (
-          credentials.email === 'test@test.com' ||
-          credentials.email === 'new@test.com'
+          credentials?.email === 'test@test.com' ||
+          credentials?.email === 'new@test.com'
         ) {
-          return mockUsers[credentials.email];
+          return mockUsers[credentials?.email];
         }
         // authenticate the user with the backend
         const authenticated = await User.authenticate(
-          credentials.email,
-          credentials.password
+          credentials?.email,
+          credentials?.password
         );
         // // if no error and we have user data, return it
         if (authenticated && authenticated.token) {
-          const user = User.getUser(authenticated.token);
-          return await { ...giveUserCorrectStructure(user), is_sso: false };
+          const user = await User.getUser(authenticated.token);
+          return await {
+            ...User.giveDefaults(user),
+            ...user,
+            is_sso: false
+          };
         }
         // Return null if user data could not be retrieved
         return null;
@@ -78,30 +80,30 @@ export default NextAuth({
   },
   callbacks: {
     async jwt(token, user) {
-      // Persist the backend access token to the token right after signin
+      // Persist the backend access token to the token right after sign in
       if (user) {
-        token.accessToken = user.token;
-        token.is_sso = user.is_sso;
+        token.accessToken = user?.token;
+        token.is_sso = user?.is_sso;
       }
       return token;
     },
     async session(session, token, _user) {
-      if (token.accessToken) {
+      if (token?.accessToken) {
         const user = await User.getUser(token.accessToken);
-
         // add the mock user data in the use session hook
         session.user = {
-          ...giveUserCorrectStructure(user),
+          ...User.giveDefaults(user),
+          ...user,
           is_sso: token.is_sso
         };
+        session.token = token.accessToken;
 
         return session;
       }
 
       // get the user using the token stored in the token
       // TO DO: update to backend request
-      const user = mockUsers[session.user.email];
-      session.user = user;
+      session.user = mockUsers[session.user.email];
       return session;
     }
   }

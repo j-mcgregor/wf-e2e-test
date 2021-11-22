@@ -44,6 +44,32 @@ const getUser = async (token: string) => {
   return null;
 };
 
+const giveDefaults = (user: any) => {
+  const structuredUser: any = {
+    preferences: {
+      communication: {
+        batch_report_email: true,
+        service_updates: true,
+        company_updates: false
+      },
+      defaults: {
+        locale: 'en-GB',
+        currency: 'GBP',
+        home_page: 'dashboard',
+        reporting_country: 'GB'
+      }
+    },
+    reports: [],
+    batched_report_jobs: []
+  };
+
+  if (!user?.preferences) {
+    return { ...user, ...structuredUser };
+  }
+
+  return user;
+};
+
 const forgotPassword = async (email: string) => {
   if (!email) {
     return { ok: false };
@@ -116,18 +142,20 @@ const updateUser = async (
   user: UserType,
   token: string
 ): Promise<{ user?: UserType; ok?: boolean; status?: number }> => {
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
+  const params = {
     method: 'PUT',
     headers: {
       ...JSONHeaders,
       Authorization: `Bearer ${token}`
     },
     body: JSON.stringify(user)
-  });
+  };
+
+  const res = await fetch(`${process.env.WF_AP_ROUTE}/users/me`, params);
 
   if (res.ok) {
     const user = await res.json();
-    return { ok: true, user };
+    return { ok: true, user, status: res.status };
   }
   return { ok: false, status: res.status };
 };
@@ -138,7 +166,8 @@ const User = {
   updateUser,
   resetPassword,
   forgotPassword,
-  getSSOToken
+  getSSOToken,
+  giveDefaults
 };
 
 export default User;

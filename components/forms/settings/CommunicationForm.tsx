@@ -40,7 +40,9 @@ const CommunicationForm = () => {
       const fetchRes = await fetch(`${config.URL}/api/user?id=${user.id}`, {
         method: 'PUT',
         body: JSON.stringify({
+          ...user,
           preferences: {
+            ...user?.preferences,
             communication: {
               service_updates: data?.service_updates,
               batch_report_email: data?.batch_report_email,

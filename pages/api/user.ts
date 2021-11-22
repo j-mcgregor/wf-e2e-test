@@ -5,44 +5,42 @@ import {
   GENERIC_API_ERROR,
   METHOD_NOT_ALLOWED,
   SIGNED_OUT,
+  UNAUTHORISED,
   USER_404,
   USER_422,
   USER_500
 } from '../../lib/utils/error-codes';
-
-import { UserType } from '../../types/global';
+import User from '../../lib/funcs/user';
+import { getSession } from 'next-auth/client';
 
 const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const session = await getSession({ req: req });
+  // unauthenticated requests
+  if (!session) {
+    return res.status(403).json({
+      error: UNAUTHORISED,
+      message: 'Unauthorised api request, please login to continue.'
+    });
+  }
   const { method } = req;
 
-  const user: UserType = req.body as UserType;
+  const json = JSON.parse(req.body);
+
+  const user = {
+    full_name: json.full_name,
+    email: json.email,
+    preferences: json.preferences,
+    ...(json.password ? { password: json.password } : {})
+  };
 
   if (method === 'PUT' && user) {
-    console.log('req', req.body);
-    console.log('id', req.query.id);
     try {
-      const fetchRes = await fetch(
-        `https://618cb05261c8d0001780ff4b.mockapi.io/users/${
-          req.body?.id || req.query?.id
-        }`,
-        {
-          method: 'PUT',
-          headers: {
-            Accept: 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
-          },
-          body: req.body
-        }
-      );
-
-      const json = await fetchRes.json();
-
-      console.log('json', json);
+      const fetchRes = await User.updateUser(user, `${session.token}`);
 
       switch (fetchRes.status) {
-        case 403:
-          return res.status(403).json({
-            okay: false,
+        case 401:
+          return res.status(401).json({
+            ok: fetchRes.ok,
             //user facing message
             error: SIGNED_OUT,
             //dev message
@@ -51,7 +49,7 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           });
         case 404:
           return res.status(404).json({
-            okay: false,
+            ok: fetchRes.ok,
             //user facing message
             error: USER_404,
             //dev message
@@ -59,7 +57,7 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           });
         case 422:
           res.status(422).json({
-            ok: false,
+            ok: fetchRes.ok,
             //user facing message
             error: USER_422,
             //dev message
@@ -69,7 +67,7 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           break;
         case 500:
           return res.status(500).json({
-            ok: false,
+            ok: fetchRes.ok,
             //user facing message
             error: USER_500,
             //dev message
@@ -77,7 +75,7 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               "Internal Server Error: Didn't get anything usable from the server, chances are the server didn't respond."
           });
         case 200:
-          return res.status(200).json({ ok: true, data: json });
+          return res.status(200).json({ ok: fetchRes.ok, data: fetchRes.user });
       }
     } catch (err) {
       return res
