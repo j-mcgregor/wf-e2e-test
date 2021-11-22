@@ -24,7 +24,7 @@ export default NextAuth({
           // use the backend api auth token to get the user information
           const user = await User.getUser(wfToken.access_token);
           if (user.ok) {
-            return { ...User.giveDefaults(user), is_sso: 'microsoft' };
+            return { ...User.giveDefaults(user), ...user, is_sso: 'microsoft' };
           }
         }
         return false;
@@ -93,6 +93,7 @@ export default NextAuth({
         // add the mock user data in the use session hook
         session.user = {
           ...User.giveDefaults(user),
+          ...user,
           is_sso: token.is_sso
         };
         session.token = token.accessToken;
