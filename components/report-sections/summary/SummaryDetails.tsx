@@ -28,11 +28,11 @@ const SummaryDetails = ({
 
   const browser = getBrowser() || '';
 
-  const additionalClasses = browser ? printSummaryClasses[browser] : '';
+  const additionalClasses = browser ? printSummaryClasses[browser] : {};
 
   return (
     <div
-      className={`flex flex-col bg-white border  shadow-sm rounded h-full print:shadow-none print:border-2 ${additionalClasses.container}`}
+      className={`flex flex-col bg-white border  shadow-sm rounded h-full print:shadow-none print:border-2 ${additionalClasses?.container}`}
     >
       <div className="flex justify-between h-1/4 border-b print:border-b-2">
         <div
