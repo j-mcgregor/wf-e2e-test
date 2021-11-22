@@ -5,6 +5,12 @@ interface ReliabilityIndexProps {
   reliability: string;
 }
 
+const reliabilityIndexClasses = {
+  chrome: {
+    container: 'flex justify-center items-center'
+  }
+};
+
 const ReliabilityIndex = ({ reliability }: ReliabilityIndexProps) => {
   const t = useTranslations();
 

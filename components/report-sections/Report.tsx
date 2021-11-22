@@ -25,6 +25,8 @@ import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
 
+import usePrintClasses from '../../hooks/usePrintClasses';
+
 const Report = ({
   data,
   id,
@@ -61,6 +63,17 @@ const Report = ({
       ).length,
     [data?.personal?.shareholders]
   );
+
+  const reportClasses = {
+    chrome: {
+      highlights: {
+        container:
+          'flex print:flex-row sm:print:flex-row md:print:flex-row border-2 border-red-500'
+      }
+    }
+  };
+
+  const printClasses = usePrintClasses(reportClasses);
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0">
@@ -148,7 +161,9 @@ const Report = ({
       <HashContainer name={'Highlights'} id={`highlights`}>
         <ReportSectionHeader text={t('highlights')} />
 
-        <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 print:items-start print:justify-evenly print:border-2 print:px-4">
+        <div
+          className={`flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 print:items-start print:justify-evenly print:border-2 print:px-4 ${printClasses?.highlights?.container}`}
+        >
           <ReliabilityIndex
             reliability={data.highlights.data_reliability.reliability}
           />

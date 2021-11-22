@@ -34,7 +34,7 @@ const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
   );
 
   return (
-    <div className="grid sm:grid-cols-2 gap-2 ">
+    <div className="grid sm:grid-cols-2 gap-2 print:grid-cols-3 ">
       {chartsToRender.map((chart, index) => (
         <Chart
           key={index}

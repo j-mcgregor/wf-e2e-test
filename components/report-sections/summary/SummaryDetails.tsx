@@ -1,5 +1,4 @@
 import { useTranslations } from 'next-intl';
-import usePrintClasses from '../../../hooks/usePrintClasses';
 
 export type SummaryDetailsProps = {
   regNumber: string;
@@ -7,12 +6,6 @@ export type SummaryDetailsProps = {
   description?: string | null;
   incorporationDate: number | string;
   lastAccountDate: number | string;
-};
-
-const printSummaryClasses = {
-  chrome: {
-    container: 'print:p-4'
-  }
 };
 
 const SummaryDetails = ({
@@ -24,12 +17,8 @@ const SummaryDetails = ({
 }: SummaryDetailsProps) => {
   const t = useTranslations();
 
-  const printClasses = usePrintClasses(printSummaryClasses);
-
   return (
-    <div
-      className={`flex flex-col bg-white border  shadow-sm rounded h-full print:shadow-none print:border-2 ${printClasses?.container}`}
-    >
+    <div className="flex flex-col bg-white border  shadow-sm rounded h-full print:shadow-none print:border-2 ${printClasses?.container">
       <div className="flex justify-between h-1/4 border-b print:border-b-2">
         <div
           className="border-r print:border-r-2 last-of-type:p-3 w-1/2 flex flex-col justify-center print:px-3"
