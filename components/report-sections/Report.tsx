@@ -67,8 +67,13 @@ const Report = ({
   const reportClasses = {
     chrome: {
       highlights: {
+        container: 'flex print:flex-row sm:print:flex-row md:print:flex-row'
+      }
+    },
+    'microsoft edge': {
+      highlights: {
         container:
-          'flex print:flex-row sm:print:flex-row md:print:flex-row border-2 border-red-500'
+          'flex print:flex-row sm:print:flex-row md:print:flex-row border-2'
       }
     }
   };

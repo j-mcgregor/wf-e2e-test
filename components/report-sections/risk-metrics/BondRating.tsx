@@ -6,6 +6,9 @@ import usePrintClasses from '../../../hooks/usePrintClasses';
 const bondRatingClasses = {
   chrome: {
     container: 'flex justify-center items-center'
+  },
+  'microsoft edge': {
+    container: 'flex justify-center items-center'
   }
 };
 
