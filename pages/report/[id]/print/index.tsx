@@ -9,7 +9,7 @@ import getServerSidePropsWithAuth from '../../../../lib/auth/getServerSidePropsW
 import fetcher from '../../../../lib/utils/fetcher';
 
 import { useEffect } from 'react';
-import { ReportDataProps } from '..';
+import { ReportDataProps } from '../index';
 
 const ReportTemplate = () => {
   const router = useRouter();

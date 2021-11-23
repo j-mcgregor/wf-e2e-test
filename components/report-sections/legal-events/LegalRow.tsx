@@ -19,9 +19,11 @@ const LegalRow = ({
 
   const handleDropdown = () => setDropdownOpen(!dropdownOpen);
 
-  useEffect(() => {
-    forPrint && setDropdownOpen(true);
-  }, []);
+  // useEffect for opening dropdown's in print mode - disabled for now
+
+  // useEffect(() => {
+  //   forPrint && setDropdownOpen(true);
+  // }, []);
 
   return (
     <div
@@ -42,7 +44,7 @@ const LegalRow = ({
             onClick={handleDropdown}
             className="text-black cursor-pointer"
           >
-            {details && (
+            {details && !forPrint && (
               <ChevronUpIcon
                 className={`${
                   !dropdownOpen && 'rotate-180'

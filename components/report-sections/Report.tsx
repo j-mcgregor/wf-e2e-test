@@ -59,7 +59,7 @@ const Report = ({
   const pepFlags = React.useMemo(
     () =>
       data?.personal?.shareholders?.filter(
-        shareholder => shareholder?.peps_sanctions_enforcements
+        (shareholder: any) => shareholder?.peps_sanctions_enforcements
       ).length,
     [data?.personal?.shareholders]
   );
@@ -82,7 +82,7 @@ const Report = ({
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0">
-      <div className="sm:py-8 border print:pb-0 print:border-none">
+      <div className="sm:py-8 border print:pb-0 print:border-none print:-mb-16">
         <ReportHeader
           company={data?.company_name}
           created={created}

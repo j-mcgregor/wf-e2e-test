@@ -43,7 +43,9 @@ const PersonalCard = ({
     >
       <div className="flex justify-between">
         <div className="flex">
-          {profileImage ? (
+          {/* profile image / icon section disabled temporarily */}
+
+          {/* {profileImage ? (
             <div className="relative overflow-hidden h-12 w-12 border rounded-full mr-3">
               <Image
                 src={profileImage}
@@ -54,7 +56,7 @@ const PersonalCard = ({
             </div>
           ) : (
             <ProfileIcon className="mr-3" />
-          )}
+          )} */}
 
           <div>
             <p className="font-semibold">

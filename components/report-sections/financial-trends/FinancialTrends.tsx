@@ -50,18 +50,40 @@ const FinancialTrends = ({ data }: FinancialTrendsProps) => {
     []
   );
 
+  const graphSections: MultiGraphDataType[][] = chartsToRender.reduce(
+    (acc: any, curr: any, index) =>
+      (index % 6 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
+      acc,
+    []
+  );
+
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2 print:table">
-      {chartsToRender.map((chart, i) => (
-        <ChartMulti
-          key={chart.header}
-          header={`${t(chart.header)}`}
-          subHeader={`${t(chart.subHeader)}`}
-          graphData={chart.data}
-          hintTitle={chart.hint.title}
-          hintBody={chart.hint.body}
-        />
-      ))}
+    <div>
+      {graphSections.map(
+        (graphSection: MultiGraphDataType[], index: number) => {
+          return (
+            <div
+              key={index}
+              className={`grid sm:grid-cols-2 md:grid-cols-3 gap-2 print:grid-cols-3 sm:print:grid-cols-3 md:print:grid-cols-3 avoid-break ${
+                index !== 0 && 'print:pt-20'
+              }`}
+            >
+              {graphSection.map((chart: any) => {
+                return (
+                  <ChartMulti
+                    key={chart.header}
+                    header={`${t(chart.header)}`}
+                    subHeader={`${t(chart.subHeader)}`}
+                    graphData={chart.data}
+                    hintTitle={chart.hint.title}
+                    hintBody={chart.hint.body}
+                  />
+                );
+              })}
+            </div>
+          );
+        }
+      )}
     </div>
   );
 };

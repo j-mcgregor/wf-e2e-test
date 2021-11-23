@@ -18,10 +18,10 @@ const SummaryDetails = ({
   const t = useTranslations();
 
   return (
-    <div className="flex flex-col bg-white border  shadow-sm rounded h-full print:shadow-none print:border-2 ${printClasses?.container">
+    <div className="flex flex-col bg-white border  shadow-sm rounded h-full print:shadow-none print:border-2">
       <div className="flex justify-between h-1/4 border-b print:border-b-2">
         <div
-          className="border-r print:border-r-2 last-of-type:p-3 w-1/2 flex flex-col justify-center print:px-3"
+          className="border-r print:border-r-2 last-of-type:p-3 w-1/2 flex flex-col justify-center print:px-3 p-3"
           role="group"
         >
           <p className="py-1 text-primary">{t('registration_number')}</p>

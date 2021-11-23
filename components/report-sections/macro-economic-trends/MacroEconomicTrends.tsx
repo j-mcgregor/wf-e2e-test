@@ -33,20 +33,42 @@ const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
     []
   );
 
+  const graphSections: MacroTrend[][] = chartsToRender.reduce(
+    (acc: any, curr: any, index) =>
+      (index % 8 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
+      acc,
+    []
+  );
+
   return (
-    <div className="grid sm:grid-cols-2 gap-2 print:grid-cols-3 ">
-      {chartsToRender.map((chart, index) => (
-        <Chart
-          key={index}
-          title={`${t(chart.header)}`}
-          subtitle={`${t(chart.subHeader)}`}
-          data={chart.data[0].data}
-          hintBody={t(`report_hints.macro_economic_trends.${chart.hint.body}`)}
-          hintTitle={t(
-            `report_hints.macro_economic_trends.${chart.hint.title}`
-          )}
-        />
-      ))}
+    <div className="">
+      {graphSections.map((graphSection: MacroTrend[], index: number) => {
+        return (
+          <div
+            key={index}
+            className={`grid lg:grid-cols-2 sm:print:grid-cols-2 print:grid-cols-2 gap-2 avoid-break ${
+              index !== 0 && 'print:pt-10'
+            }`}
+          >
+            {graphSection.map((chart: any, i: number) => {
+              return (
+                <Chart
+                  key={i}
+                  title={`${t(chart.header)}`}
+                  subtitle={`${t(chart.subHeader)}`}
+                  data={chart.data[0].data}
+                  hintBody={t(
+                    `report_hints.macro_economic_trends.${chart.hint.body}`
+                  )}
+                  hintTitle={t(
+                    `report_hints.macro_economic_trends.${chart.hint.title}`
+                  )}
+                />
+              );
+            })}
+          </div>
+        );
+      })}
     </div>
   );
 };
