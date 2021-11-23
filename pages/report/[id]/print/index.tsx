@@ -10,10 +10,13 @@ import fetcher from '../../../../lib/utils/fetcher';
 
 import { useEffect } from 'react';
 import { ReportDataProps } from '../index';
+import LoadingIcon from '../../../../components/svgs/LoadingIcon';
 
 const ReportTemplate = () => {
   const router = useRouter();
   const { id = [] } = router.query;
+
+  const t = useTranslations();
 
   const { data, error } = useSWR<ReportDataProps>(
     `/api/reports/report?id=${id}`,
@@ -26,7 +29,16 @@ const ReportTemplate = () => {
     }
   }, [data]);
 
-  return (data && <Report data={data} id={id} forPrint={true} />) || 'Loading';
+  const Loader = () => (
+    <div className="w-screen h-screen flex flex-col items-center justify-center">
+      <LoadingIcon className="h-12 w-12" stroke="#E58A2E" />
+      <p className="py-8 text-sm font-semibold text-primary">
+        {t('loading_printable_report')} ...
+      </p>
+    </div>
+  );
+
+  return (data && <Report data={data} id={id} forPrint={true} />) || <Loader />;
 };
 
 export default ReportTemplate;

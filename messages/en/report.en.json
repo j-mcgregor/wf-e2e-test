@@ -143,5 +143,6 @@
     "BBB": "Slightly less profitable firms, decreased liquidity or increased proportion of debt",
     "BBB+": "Profitable, liquid and equity-heavy, but more susceptible to adverse economic conditions",
     "A": "Strong, profitable firms with sufficient liquidity and equity-heavy capital structure"
-  }
+  },
+  "loading_printable_report": "Loading printable report"
 }

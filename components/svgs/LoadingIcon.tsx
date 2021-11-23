@@ -1,11 +1,14 @@
 import React from 'react';
 
 interface LoadingIconProps {
-  className?: string
+  className?: string;
+  stroke?: string;
 }
 
-
-const LoadingIcon = ({ className="h-6 w-6" }: LoadingIconProps) => {
+const LoadingIcon = ({
+  className = 'h-6 w-6',
+  stroke = 'black'
+}: LoadingIconProps) => {
   return (
     <svg
       width="20"
@@ -17,7 +20,7 @@ const LoadingIcon = ({ className="h-6 w-6" }: LoadingIconProps) => {
     >
       <path
         d="M10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1"
-        stroke="currentColor"
+        stroke={stroke}
         strokeWidth="2"
       />
     </svg>
