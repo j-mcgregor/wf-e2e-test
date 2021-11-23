@@ -191,6 +191,7 @@ const Report = ({
             hintTitle="hint title"
             hintBody="hint body"
             reports={data.highlights.risk_outlook}
+            financials={transformedFinancials}
           />
         </div>
         <div className="flex flex-col lg:flex-row py-6 justify-between">
