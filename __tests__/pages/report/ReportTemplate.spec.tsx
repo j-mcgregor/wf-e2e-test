@@ -292,11 +292,6 @@ describe('ReportTemplate', () => {
 
       expect(screen.getByText(/reliability index/i)).toBeInTheDocument();
 
-      highlights.risk_outlook.forEach(riskOutlook => {
-        expect(
-          within(screen.getByTestId('risk-outlook-list'))
-        ).toBeInTheDocument();
-      });
       // highlights.risk_outlook.forEach(riskOutlook => {
       //   expect(
       //     within(screen.getByTestId('risk-outlook-list')).getByText(riskOutlook)
