@@ -3,19 +3,19 @@ import Hint from '../../elements/Hint';
 
 import { FinancialYear } from '../../../types/report';
 
+type BenchmarksType = {
+  value: string;
+  industry_benchmark: string | null;
+  regional_benchmark: string | null;
+};
+
 interface OutlookProps {
-  reports: string[];
   hintTitle: string;
   hintBody: string;
   financials: FinancialYear[];
+  benchmarks: BenchmarksType;
+  country: string;
 }
-
-// fake vales for Benchmark score (5)
-const sme_zscore_benchmark = {
-  this_company: 456,
-  industry_benchmark: 903,
-  country_benchmark: 782
-};
 
 const riskOutlookSettings = {
   overLeveragedValue: 4000,
@@ -23,18 +23,21 @@ const riskOutlookSettings = {
   profitabilityMarkerValue: 4000
 };
 
-// type for result of outlook function - 5 string array - might be re-useable
-type Outlook = [string, string, string, string, string];
+const governance = {
+  payment_remarks_12_months: 234,
+  ccj_12_months: 334
+};
 
 const RiskOutlook = ({
-  reports,
   hintTitle,
   hintBody,
-  financials
+  financials,
+  benchmarks,
+  country
 }: OutlookProps) => {
   const t = useTranslations();
 
-  const getRiskOutlook = (data: FinancialYear): Outlook => {
+  const getRiskOutlook = (data: FinancialYear): string[] => {
     const totalAssets = Number(data.total_assets);
 
     const shareholderFundsByAssets =
@@ -44,24 +47,16 @@ const RiskOutlook = ({
 
     const ebitdaByAssets = Number(data.ebitda) / totalAssets;
 
-    // 1. Leveraged
-    // shareholder_funds / total_assets > "overLeveragedValue"
+    const industryBenchmark =
+      benchmarks.industry_benchmark &&
+      benchmarks.value < benchmarks.industry_benchmark;
+    const regionalBenchmark =
+      benchmarks.regional_benchmark &&
+      benchmarks.value < benchmarks.regional_benchmark;
 
-    // 2. Liquidity
-    // working_capital / total_assets > "liquidityOptimalValue"
-
-    // 3. Profitability
-    // ebitda / total_assets > "profitabilityMarkerValue"
-
-    // 4. Governance
-    // ...
-    // 5. Benchmark
-    // ...
-
-    //! need to add strings to translation messages
     const leveragedString =
       shareholderFundsByAssets > riskOutlookSettings.overLeveragedValue
-        ? t('this_company_is_highly)leveraged')
+        ? t('this_company_is_highly_leveraged')
         : t('the_company_is_well_collateralised');
 
     const liquidityString =
@@ -74,11 +69,17 @@ const RiskOutlook = ({
         ? t('an_efficiently_run_company')
         : t('assets_are_not_being_used_profitably');
 
-    const governanceString = '';
+    const governanceString = `${t('in_the_last_12_months')} ${
+      governance.ccj_12_months
+    } ${t('judgments')} ${governance.payment_remarks_12_months} ${t(
+      'payment_remarks'
+    )}`;
 
-    const benchmarkString = '';
-
-    // must return array of 5 strings
+    const benchmarkString = `${t('the_credit_risk_is')} ${
+      industryBenchmark ? t('below') : t('above')
+    } ${t('the_average_for_this_sector_and')} ${
+      regionalBenchmark ? t('below') : t('above')
+    } ${t('the_average_for')} ${country}.`;
 
     return [
       leveragedString,
@@ -90,7 +91,7 @@ const RiskOutlook = ({
   };
 
   // first index from financials = most recent financial year available
-  // console.log(getRiskOutlook(financials[0]));
+  const reports = getRiskOutlook(financials[0]);
 
   return (
     <div className="flex flex-col">

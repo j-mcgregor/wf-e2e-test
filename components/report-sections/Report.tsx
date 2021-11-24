@@ -190,8 +190,9 @@ const Report = ({
           <RiskOutlook
             hintTitle="hint title"
             hintBody="hint body"
-            reports={data.highlights.risk_outlook}
             financials={transformedFinancials}
+            benchmarks={data.risk_metrics.sme_z_score}
+            country={data.contact_details.country}
           />
         </div>
         <div className="flex flex-col lg:flex-row py-6 justify-between">

@@ -144,5 +144,19 @@
     "BBB+": "Profitable, liquid and equity-heavy, but more susceptible to adverse economic conditions",
     "A": "Strong, profitable firms with sufficient liquidity and equity-heavy capital structure"
   },
-  "loading_printable_report": "Loading printable report"
+  "loading_printable_report": "Loading printable report",
+  "the_company_is_well_collateralised": "The company is well collateralised.",
+  "this_company_is_highly_leveraged": "This company is highly leveraged.",
+  "there_is_good_liquidity": "There is good liquidity.",
+  "liquidity_is_below_optimum": "Liquidity is below the optimum.",
+  "an_efficiently_run_company": "An efficiently run company making a good return on assets.",
+  "assets_are_not_being_used_profitably": "Assets are not being used as profitably as they could.",
+  "the_credit_risk_is": "The credit risk is",
+  "above": "above",
+  "below": "below",
+  "the_average_for_this_sector_and": "the average for this sector and",
+  "the_average_for": "the average for",
+  "in_the_last_12_months": "In the last 12 months there were",
+  "judgments": "Judgments and",
+  "payment_remarks": "payment remarks for this company."
 }
