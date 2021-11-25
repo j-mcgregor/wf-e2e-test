@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@azure/msal-browser": "^2.18.0",
+    "@fullstory/browser": "^1.4.9",
     "@headlessui/react": "^1.4.0",
     "@heroicons/react": "^1.0.3",
     "@popperjs/core": "^2.10.2",
