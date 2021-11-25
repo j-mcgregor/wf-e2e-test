@@ -79,7 +79,7 @@ const Reports = () => {
             linkRoute="/report"
           />
 
-          {reportLimit < 30 && allReports.length > 0 && (
+          {reportLimit < 30 && allReports.length > reportLimit && (
             <Button
               variant="none"
               className="border-alt border max-w-[120px] my-2 mx-auto"
