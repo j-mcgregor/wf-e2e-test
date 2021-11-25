@@ -53,7 +53,7 @@ const BondRating = ({ score }: BondRatingProps) => {
                   rating.score === score
                     ? 'h-36 text-4xl font-bold min-w-[100px]'
                     : 'h-28 text-lg font-semibold'
-                } text-white flex items-center justify-center print:mx-[2px]`}
+                } text-white flex items-center justify-center print:mx-[2px] border border-white`}
                 data-testid={rating.score === score ? 'bond-rating' : ''}
               >
                 {rating.score}

@@ -31,6 +31,6 @@
   "bond_rating": "Bond Rating",
   "sme_z-score": "SME Z-Score",
   "default": "Default %",
-  "download_pdf": "Download PDF",
+  "view_report": "View Report",
   "name_batched_report": "Name your batched report"
 }

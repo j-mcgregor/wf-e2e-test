@@ -81,8 +81,6 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     fetcher
   );
 
-  const handleExportPdf = async () => {};
-
   return (
     <Layout
       title={`${data?.company_name || 'Loading'} | ${t('report')}`}
