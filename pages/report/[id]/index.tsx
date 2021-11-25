@@ -67,7 +67,7 @@ export interface ReportDataProps {
     cfo: string;
     chairman: string;
   };
-  error?: boolean;
+  error?: string;
   message?: string;
 }
 
@@ -80,10 +80,11 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     `/api/reports/report?id=${id}`,
     fetcher
   );
-
   return (
     <Layout
-      title={`${data?.company_name || 'Loading'} | ${t('report')}`}
+      title={`${
+        data?.company_name || (data?.error ? t(data.error) : false) || 'Loading'
+      } | ${t('report')}`}
       fullWidth
     >
       <SecondaryLayout
@@ -107,7 +108,10 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
         {!data ? (
           <SkeletonReport />
         ) : error || data.error ? (
-          <ErrorSkeleton header={`${t(REPORT_FETCHING_ERROR)}`} />
+          <ErrorSkeleton
+            header={data.error ? t(data?.error) : ''}
+            message={data?.message}
+          />
         ) : (
           <Report data={data} id={id} />
         )}

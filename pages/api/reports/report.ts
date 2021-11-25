@@ -8,7 +8,7 @@ import {
   NO_REPORT,
   UNAUTHORISED
 } from '../../../lib/utils/error-codes';
-import { Report } from '../../../types/global';
+import { ReportSnippetType } from '../../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -40,7 +40,7 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
   // eslint-disable-next-line security/detect-object-injection
   const user = mockUsers[email];
   const report = user?.reports?.find(
-    (report: Report) => report.id === Number(reportId)
+    (report: ReportSnippetType) => report.id === reportId
   );
 
   if (!report) {
