@@ -1,4 +1,4 @@
-import { UserType } from '../../types/global';
+import { UserType, ReportSnippetType } from '../../types/global';
 
 const XMLHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -37,11 +37,25 @@ const getUser = async (token: string) => {
       Authorization: `Bearer ${token}`
     }
   });
+
+  // fetch the user reports history from separate endpoint
+  const userReports = await getReportsHistory(token);
   if (res.ok) {
     const user = await res.json();
-    return { ok: true, ...user, token };
+
+    const userWithReports = {
+      // structure the user correctly if missing data (preferences etc)
+      ...user,
+      // check for preferences and add defaults if missing
+      ...giveDefaults(user),
+      // add in the reports history, handle failed request
+      reports: userReports.ok ? userReports.reports : [],
+      // to add later
+      batched_report_jobs: []
+    };
+    return { ok: true, ...userWithReports, token };
   }
-  return null;
+  return { ok: false, status: res.status };
 };
 
 const giveDefaults = (user: any) => {
@@ -58,9 +72,7 @@ const giveDefaults = (user: any) => {
         home_page: 'dashboard',
         reporting_country: 'GB'
       }
-    },
-    reports: [],
-    batched_report_jobs: []
+    }
   };
 
   if (!user?.preferences) {
@@ -160,9 +172,35 @@ const updateUser = async (
   return { ok: false, status: res.status };
 };
 
+// get the history of the reports run by the user
+const getReportsHistory = async (
+  token: string
+): Promise<{ reports?: ReportSnippetType[]; ok?: boolean; status: number }> => {
+  const params = {
+    method: 'GET',
+    headers: {
+      ...XMLHeaders,
+      Authorization: `Bearer ${token}`
+    }
+  };
+
+  const res = await fetch(
+    `${process.env.WF_AP_ROUTE}/reports/history/me`,
+    params
+  );
+  if (res.ok) {
+    const reports = await res.json();
+
+    return { ok: true, reports, status: res.status };
+  }
+
+  return { ok: false, status: res.status };
+};
+
 const User = {
   authenticate,
   getUser,
+  getReportsHistory,
   updateUser,
   resetPassword,
   forgotPassword,

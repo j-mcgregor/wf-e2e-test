@@ -20,11 +20,13 @@ export default NextAuth({
       profile: async (_profile, token) => {
         // use the SSO token to get the backend api auth token
         const wfToken = await User.getSSOToken(token.id_token);
+
         if (wfToken.ok) {
           // use the backend api auth token to get the user information
           const user = await User.getUser(wfToken.access_token);
+
           if (user.ok) {
-            return { ...User.giveDefaults(user), ...user, is_sso: 'microsoft' };
+            return { ...user, is_sso: 'microsoft' };
           }
         }
         return false;
@@ -64,7 +66,6 @@ export default NextAuth({
         if (authenticated && authenticated.token) {
           const user = await User.getUser(authenticated.token);
           return await {
-            ...User.giveDefaults(user),
             ...user,
             is_sso: false
           };
@@ -92,12 +93,10 @@ export default NextAuth({
         const user = await User.getUser(token.accessToken);
         // add the mock user data in the use session hook
         session.user = {
-          ...User.giveDefaults(user),
           ...user,
           is_sso: token.is_sso
         };
         session.token = token.accessToken;
-
         return session;
       }
 
