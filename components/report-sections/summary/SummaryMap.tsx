@@ -1,16 +1,36 @@
 import Iframe from 'react-iframe';
 import { useTranslations } from 'next-intl';
 
-import { SummaryContact } from '../../../types/report';
-
 interface SummaryMapProps {
-  contact: SummaryContact;
+  postCode?: string | null;
+  addressLines: AddressLineType[];
+  city?: string | null;
+  county?: string | null;
+  region?: string | null;
+  country?: string | null;
+  emails: string[];
+  websites: string[];
+  phoneNumbers: string[];
 }
 
-const SummaryMap = ({ contact }: SummaryMapProps) => {
+type AddressLineType = string | null | undefined;
+
+const SummaryMap = ({
+  postCode,
+  addressLines,
+  city,
+  county,
+  // region,
+  country,
+  emails,
+  websites,
+  phoneNumbers
+}: SummaryMapProps) => {
   const t = useTranslations();
 
-  const phone = contact?.phone_numbers?.[0].replace(/[A-z-]/g, '');
+  const phone = phoneNumbers?.[0]?.replace(/[A-z-]/g, '');
+
+  const validAddressLines = addressLines.filter(x => x).flatMap(x => [x, ', ']);
 
   return (
     <div className="bg-white border shadow-sm rounded md:ml-8  h-full flex flex-col text-primary print:flex-row print:mt-10 print:border-2 print:p-3  print:shadow-none">
@@ -20,34 +40,38 @@ const SummaryMap = ({ contact }: SummaryMapProps) => {
           height="100%"
           loading="lazy"
           url={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_MAPS_API_KEY}
-          &q=${contact?.postal_code}}&zoom=12`}
+          &q=${postCode}}&zoom=12`}
         />
       </div>
       <div className="flex flex-col p-4 print:px-8 print:w-1/2">
         <div>
           <p>{t('registered_address')}</p>
           <address className="font-bold pb-2">
-            <p>{contact?.address_line_1}</p>
-            <p>{contact?.address_line_2}</p>
-            <p>{contact?.address_line_3}</p>
-            <p>{contact?.address_line_4}</p>
-            <p>{contact?.postal_code}</p>
+            {validAddressLines?.map((line: AddressLineType, index: number) => {
+              return line && <span key={index}>{line}</span>;
+            })}
+            {city && <p>{city}</p>}
+            {county && <p>{county}</p>}
+            {country && <p>{country}</p>}
+            {postCode && <p>{postCode}</p>}
+            {/* {region && <p>{region}</p>} */}
           </address>
         </div>
         <div className="flex justify-between flex-wrap">
           <p>{t('email')}</p>
-
-          {contact?.emails && <p className="font-bold">{contact.emails[0]}</p>}
+          <p className="font-bold">
+            {emails?.length > 0 ? emails[0] : t('na')}
+          </p>
         </div>
         <div className="flex justify-between flex-wrap">
           <p>{t('website')}</p>
-          {contact?.websites && (
-            <p className="font-bold">{contact.websites[0]}</p>
-          )}
+          <p className="font-bold">
+            {websites?.length > 0 ? websites[0] : t('na')}
+          </p>
         </div>
         <div className="flex justify-between flex-wrap">
           <p>{t('telephone')}</p>
-          {contact?.phone_numbers && <p className="font-bold">{phone}</p>}
+          <p className="font-bold">{phone ? phone : t('na')}</p>
         </div>
       </div>
     </div>

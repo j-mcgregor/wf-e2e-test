@@ -23,7 +23,7 @@ const NewsFeed = ({
   country
 }: {
   companyName: string;
-  country: string;
+  country?: string;
 }) => {
   // demo engaged for the moment, returns saved response
   const { data } = useSWR<NewsFeedApiResProps>(

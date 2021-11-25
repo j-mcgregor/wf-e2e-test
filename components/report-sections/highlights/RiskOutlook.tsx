@@ -14,7 +14,7 @@ interface OutlookProps {
   hintBody: string;
   financials: FinancialYear[];
   benchmarks: BenchmarksType;
-  country: string;
+  country?: string;
 }
 
 const riskOutlookSettings = {
@@ -48,11 +48,11 @@ const RiskOutlook = ({
     const ebitdaByAssets = Number(data.ebitda) / totalAssets;
 
     const industryBenchmark =
-      benchmarks.industry_benchmark &&
-      benchmarks.value < benchmarks.industry_benchmark;
+      benchmarks?.industry_benchmark &&
+      benchmarks?.value < benchmarks?.industry_benchmark;
     const regionalBenchmark =
-      benchmarks.regional_benchmark &&
-      benchmarks.value < benchmarks.regional_benchmark;
+      benchmarks?.regional_benchmark &&
+      benchmarks?.value < benchmarks?.regional_benchmark;
 
     const leveragedString =
       shareholderFundsByAssets > riskOutlookSettings.overLeveragedValue

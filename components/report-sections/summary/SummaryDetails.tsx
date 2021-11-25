@@ -2,9 +2,9 @@ import { useTranslations } from 'next-intl';
 
 export type SummaryDetailsProps = {
   regNumber: string;
-  sector: string;
+  sector: string | null;
   description?: string | null;
-  incorporationDate: number | string;
+  incorporationDate: number | string | null;
   lastAccountDate: number | string;
 };
 
@@ -30,7 +30,7 @@ const SummaryDetails = ({
 
         <div className="p-3 w-1/2 flex flex-col justify-center" role="group">
           <p className="py-1 text-primary">{t('industry_sector')}</p>
-          <p className="py-1 font-bold">{sector}</p>
+          <p className="py-1 font-bold">{sector || t('na')}</p>
         </div>
       </div>
 
@@ -45,11 +45,13 @@ const SummaryDetails = ({
             So apparently this renders Jun 20, 2006 on Node 12 but 20 jun 2006 on Node 15.
             Will disable the test for now but good to know (issue picked up by Github Actions)
             */}
-            {new Date(incorporationDate).toLocaleDateString('en-GB', {
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric'
-            })}
+            {incorporationDate
+              ? new Date(incorporationDate).toLocaleDateString('en-GB', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric'
+                })
+              : t('na')}
           </p>
         </div>
 
@@ -64,7 +66,7 @@ const SummaryDetails = ({
         role="group"
       >
         <p className="py-2 text-primary">{t('company_description')}</p>
-        <p>{description}</p>
+        <p className=" font-bold">{description || t('na')}</p>
       </div>
     </div>
   );

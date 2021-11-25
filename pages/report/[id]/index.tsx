@@ -24,13 +24,12 @@ import {
   SummaryInfo
 } from '../../../types/report';
 
-import { REPORT_FETCHING_ERROR } from '../../../lib/utils/error-codes';
-
 export interface ReportDataProps {
   id: string | number;
+  company_id: string;
   created_at?: string;
   company_name: string;
-  contact_details: SummaryContact & SummaryInfo;
+  details: SummaryContact & SummaryInfo;
   financials: {
     [year: string]: FinancialYear;
   };
@@ -56,9 +55,7 @@ export interface ReportDataProps {
     data_reliability: Reliability;
     risk_outlook: string[];
   };
-  legal_events: {
-    legal_events: LegalEvent[];
-  };
+  legal_events: LegalEvent[];
   personal: {
     directors: Profile[];
     senior_management: Profile[];
@@ -80,25 +77,29 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     `/api/reports/report?id=${id}`,
     fetcher
   );
+
+  const companyName = data?.details?.company_name || data?.details?.name;
+
+  // console.log(data)
   return (
     <Layout
       title={`${
-        data?.company_name || (data?.error ? t(data.error) : false) || 'Loading'
+        companyName || (data?.error ? t(data.error) : false) || 'Loading'
       } | ${t('report')}`}
       fullWidth
     >
       <SecondaryLayout
         navigation={
-          data?.company_name && (
+          companyName && (
             <>
               <ReportNav
                 isTesting={isTesting}
-                companyName={data?.company_name}
+                companyName={companyName}
                 loading={!data}
               />
               <TabletReportNav
                 isTesting={isTesting}
-                companyName={data?.company_name}
+                companyName={companyName}
                 loading={!data}
               />
             </>

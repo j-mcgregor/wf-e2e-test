@@ -19,16 +19,17 @@ const ShareHolderList = ({ shareholders }: ShareHolderListProps) => {
       </p>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 print:gap-0 print:grid-cols-4 sm:print:grid-cols-4 lg:print:grid-cols-4 print:border-2 print:px-4 print:py-2">
-        {shareholders.map((shareholder, index) => {
-          return (
-            <ShareHolderCard
-              key={shareholder.first_name + index}
-              firstName={shareholder.first_name}
-              lastName={shareholder.last_name}
-              linkedin={shareholder.linkedin}
-            />
-          );
-        })}
+        {shareholders &&
+          shareholders.map((shareholder, index) => {
+            return (
+              <ShareHolderCard
+                key={shareholder.first_name + index}
+                firstName={shareholder.first_name}
+                lastName={shareholder.last_name}
+                linkedin={shareholder.linkedin}
+              />
+            );
+          })}
       </div>
     </div>
   );

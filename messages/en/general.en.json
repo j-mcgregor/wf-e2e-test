@@ -9,6 +9,7 @@
   "settings": "Settings",
   "support": "Support",
   "logout": "Logout",
+  "na": "N/A",
   "is_a_required_header": "is a required header",
   "uploaded_file": "Uploaded File",
   "is_valid_csv": "Is valid CSV",

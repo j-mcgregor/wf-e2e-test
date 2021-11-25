@@ -18,21 +18,28 @@ export type SummaryInfo = {
   reg_number: string;
   sector: string;
   description: string;
-  incorporation_date: number | string;
+  date_of_incorporation: number | string;
   last_account_date: number | string;
+  industry_sector: string | null;
 };
 
 export type SummaryContact = {
-  address_line_1: string | null;
-  address_line_2: string | null;
-  address_line_3: string | null;
-  address_line_4: string | null;
-  postal_code: string | null;
-  phone_numbers: string[];
+  address?: {
+    line_1: string;
+    line_2: string;
+    line_3: string;
+    line_4: string;
+    city: string;
+    county: string;
+    post_code: string;
+    region: string;
+    country: string;
+  };
+  company_name: string | null;
+  phone: string[];
   websites: string[];
   emails: string[];
-  name: string;
-  country: string;
+  name: string | null;
   company_description: string | null;
 };
 

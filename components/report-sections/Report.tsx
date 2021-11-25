@@ -37,7 +37,7 @@ const Report = ({
   forPrint?: boolean;
 }) => {
   const t = useTranslations();
-  const date = new Date(Number(data?.['created_at']));
+  const date = new Date(`${data?.created_at}`);
 
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
 
@@ -80,11 +80,18 @@ const Report = ({
 
   const printClasses = usePrintClasses(reportClasses);
 
+  const companyName = data?.details?.company_name || data?.details?.name || '';
+
+  const lastFiledAccount = data?.financials?.[0]?.period || t('na');
+
+  const companyDetails = data?.details;
+  const companyAddress = companyDetails?.address;
+
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0">
       <div className="sm:py-8 border print:pb-0 print:border-none print:-mb-16">
         <ReportHeader
-          company={data?.company_name}
+          company={companyName}
           created={created}
           reportId={id[0]}
         />
@@ -95,16 +102,31 @@ const Report = ({
         <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm md:print:flex-col ">
           <div className="flex w-full md:w-1/2 flex-col py-2 md:print:w-full">
             <SummaryDetails
-              regNumber={'SC172288'}
-              sector={'Travel, Personal & Leisure'}
-              description={data.contact_details.company_description}
-              incorporationDate={data.contact_details.incorporation_date}
-              lastAccountDate={'31/01/2020'}
+              regNumber={data.company_id}
+              sector={data.details?.industry_sector}
+              description={data?.details?.company_description}
+              incorporationDate={data?.details?.date_of_incorporation}
+              lastAccountDate={lastFiledAccount}
             />
           </div>
 
           <div className="flex w-full md:w-1/2 flex-col py-2 md:print:w-full">
-            <SummaryMap contact={data.contact_details} />
+            <SummaryMap
+              postCode={companyAddress?.post_code}
+              addressLines={[
+                companyAddress?.line_1,
+                companyAddress?.line_2,
+                companyAddress?.line_3,
+                companyAddress?.line_4
+              ]}
+              city={companyAddress?.city}
+              county={companyAddress?.county}
+              region={companyAddress?.region}
+              country={companyAddress?.country}
+              emails={companyDetails?.emails}
+              phoneNumbers={companyDetails?.phone}
+              websites={companyDetails?.websites}
+            />
           </div>
         </div>
         <div className="py-4 avoid-break">
@@ -161,7 +183,7 @@ const Report = ({
             }
           />
         </div>
-        <BondRating score={data.risk_metrics.bond_rating} />
+        <BondRating score={data?.risk_metrics?.bond_rating} />
       </HashContainer>
       <HashContainer name={'Highlights'} id={`highlights`}>
         <ReportSectionHeader text={t('highlights')} />
@@ -170,7 +192,7 @@ const Report = ({
           className={`flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 print:items-start print:justify-evenly print:border-2 print:px-4 ${printClasses?.highlights?.container}`}
         >
           <ReliabilityIndex
-            reliability={data.highlights.data_reliability.reliability}
+            reliability={data?.highlights?.data_reliability.reliability}
           />
           {forPrint && (
             <div>
@@ -179,20 +201,22 @@ const Report = ({
           )}
           {!forPrint && (
             <DataReliability
-              comment={data.highlights.data_reliability.comment}
+              comment={data?.highlights?.data_reliability?.comment}
             />
           )}
         </div>
         {forPrint && (
-          <DataReliability comment={data.highlights.data_reliability.comment} />
+          <DataReliability
+            comment={data?.highlights?.data_reliability?.comment}
+          />
         )}
         <div className="flex ">
           <RiskOutlook
             hintTitle="hint title"
             hintBody="hint body"
             financials={transformedFinancials}
-            benchmarks={data.risk_metrics.sme_z_score}
-            country={data.contact_details.country}
+            benchmarks={data?.risk_metrics.sme_z_score}
+            country={companyAddress?.country}
           />
         </div>
         <div className="flex flex-col lg:flex-row py-6 justify-between">
@@ -234,20 +258,20 @@ const Report = ({
         <ReportSectionHeader text={t('corporate_governance')} />
 
         <CorporateOverview
-          cfo={data.personal.cfo}
-          ceo={data.personal.ceo}
-          chairman={data.personal.chairman}
-          directors={data.personal.directors.length}
-          seniorManagement={data.personal.senior_management.length}
-          shareholders={data.personal.shareholders.length}
+          cfo={data?.personal?.cfo}
+          ceo={data?.personal?.ceo}
+          chairman={data?.personal?.chairman}
+          directors={data.personal?.directors?.length}
+          seniorManagement={data.personal?.senior_management?.length}
+          shareholders={data?.personal?.shareholders?.length}
         />
 
         <Profiles
-          directors={data.personal.directors}
-          seniorManagement={data.personal.senior_management}
+          directors={data?.personal?.directors}
+          seniorManagement={data?.personal?.senior_management}
         />
 
-        <ShareHolderList shareholders={data.personal.shareholders} />
+        <ShareHolderList shareholders={data?.personal?.shareholders} />
 
         {/* Removed till we know more about whether it is going to be included */}
         {/* <ShareHoldingCard
@@ -265,10 +289,7 @@ const Report = ({
         fullHeight={false}
       >
         <ReportSectionHeader text={t('legal_events')} />
-        <LegalEvents
-          forPrint={forPrint}
-          legalEvents={data?.legal_events?.legal_events}
-        />
+        <LegalEvents forPrint={forPrint} legalEvents={data?.legal_events} />
       </HashContainer>
 
       <HashContainer
@@ -284,17 +305,14 @@ const Report = ({
           governance={{
             pepFlags: pepFlags
           }}
-          companyName={data?.contact_details?.name}
-          website={data?.contact_details?.websites.find((x: string) => x) || ''}
+          companyName={companyName}
+          website={data?.details?.websites.find((x: string) => x) || ''}
         />
       </HashContainer>
 
       <HashContainer name={'News'} id={`news`}>
         <ReportSectionHeader text={t('news')} />
-        <NewsFeed
-          companyName={data?.contact_details?.name}
-          country={data?.contact_details?.country}
-        />
+        <NewsFeed companyName={companyName} country={companyAddress?.country} />
       </HashContainer>
     </div>
   );
