@@ -22,8 +22,8 @@ export const createCurrencyString = ({
   return `${CountryName} - ${Currency} (${Symbol})`;
 };
 
-export const createReportTitle = (companyName: string, createdAt: number) => {
-  const date = new Date(Number(createdAt));
+export const createReportTitle = (companyName: string, createdAt: string) => {
+  const date = new Date(createdAt);
   // this will break in the year 2100
   const year = date?.getFullYear()?.toString()?.replace('20', '');
   // comes back as index so need to add one

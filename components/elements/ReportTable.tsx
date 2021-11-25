@@ -3,13 +3,13 @@ import Link from 'next/link';
 import ReactTimeAgo from 'react-timeago';
 import { useTranslations } from 'next-intl';
 
-import { Report } from '../../types/global';
+import { ReportSnippetType } from '../../types/global';
 import SkeletonRow from '../skeletons/SkeletonRow';
 import Button from './Button';
 import { createReportTitle } from '../../lib/utils/text-helpers';
 
 interface ReportProps {
-  reports?: Report[] | null;
+  reports?: ReportSnippetType[] | null;
   limit: number;
   shadow: boolean;
   borders: boolean;
@@ -39,7 +39,12 @@ const ReportTable = ({
 
   // reports sorted by descending created_at date
   const sortedReports =
-    reports && Array.from(reports).sort((a, b) => b.created_at - a.created_at);
+    reports &&
+    Array.from(reports).sort((a, b) => {
+      const bDate = new Date(b.created_at).getTime();
+      const aDate = new Date(a.created_at).getTime();
+      return bDate - aDate;
+    });
 
   // text-[10px] px-2 lg:text-xs
 
@@ -74,41 +79,43 @@ const ReportTable = ({
               </tr>
             </thead>
             <tbody>
-              {sortedReports?.map((report: Report, index: number) => {
-                const reportTitle = createReportTitle(
-                  report.company_name,
-                  report.created_at
-                );
-                return (
-                  // display reports only up until quantity limit specified in props
-                  index < limit && (
-                    <Link
-                      key={index}
-                      href={`${linkRoute}/${report.id}`}
-                      passHref={true}
-                    >
-                      <tr
-                        key={report.id}
-                        className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm cursor-pointer"
+              {sortedReports?.map(
+                (report: ReportSnippetType, index: number) => {
+                  const reportTitle = createReportTitle(
+                    report.company_name,
+                    report.created_at
+                  );
+                  return (
+                    // display reports only up until quantity limit specified in props
+                    index < limit && (
+                      <Link
+                        key={index}
+                        href={`${linkRoute}/${report.id}`}
+                        passHref={true}
                       >
-                        <td className="h-12 px-3 max-w-[260px] truncate sm:px-6 py-1 whitespace-nowrap font-medium text-gray-900">
-                          {reportTitle}
-                        </td>
-                        <td className="px-3 sm:px-6 py-1  whitespace-nowrap  ">
-                          {report.sme_zscore}
-                        </td>
-                        <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
-                          {report.bond_rating}
-                        </td>
+                        <tr
+                          key={report.id}
+                          className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm cursor-pointer"
+                        >
+                          <td className="h-12 px-3 max-w-[260px] truncate sm:px-6 py-1 whitespace-nowrap font-medium text-gray-900">
+                            {reportTitle}
+                          </td>
+                          <td className="px-3 sm:px-6 py-1  whitespace-nowrap  ">
+                            {report.sme_z_score}
+                          </td>
+                          <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
+                            {report.bond_rating}
+                          </td>
 
-                        <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
-                          <ReactTimeAgo date={report.created_at} />
-                        </td>
-                      </tr>
-                    </Link>
-                  )
-                );
-              })}
+                          <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
+                            <ReactTimeAgo date={report.created_at} />
+                          </td>
+                        </tr>
+                      </Link>
+                    )
+                  );
+                }
+              )}
 
               {/* if quantity of empty reports is less than limit & not negative */}
               {/* fill remaining empty spots with blank filler */}

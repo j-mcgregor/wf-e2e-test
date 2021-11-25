@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 
-import { Report, UserType } from '../types/global';
+import { ReportSnippetType, UserType } from '../types/global';
 
 // https://github.com/facebookexperimental/Recoil/issues/733
 // separate files for state issues NextJS
@@ -24,9 +24,9 @@ export const appUser = selector<UserType>({
 });
 
 export type UserReports = {
-  bookmarkedReports: Report[];
-  allReports: Report[];
-  nonBookmarkedReports: Report[];
+  bookmarkedReports: ReportSnippetType[];
+  allReports: ReportSnippetType[];
+  nonBookmarkedReports: ReportSnippetType[];
 };
 
 export const userReports = selector<UserReports>({
@@ -35,11 +35,11 @@ export const userReports = selector<UserReports>({
     const user = get(appUser);
     const reports = user?.reports;
     const bookmarkedReports = reports?.filter(
-      (report: Report) => report.bookmarked
+      (report: ReportSnippetType) => report.bookmarked
     );
     const allReports = reports;
     const nonBookmarkedReports = reports?.filter(
-      (report: Report) => !report.bookmarked
+      (report: ReportSnippetType) => !report.bookmarked
     );
 
     return {
@@ -53,10 +53,10 @@ export const userReports = selector<UserReports>({
 
     const allOtherReports =
       user?.reports?.filter(
-        (report: Report) => `${report.id}` !== `${reportId}`
+        (report: ReportSnippetType) => `${report.id}` !== `${reportId}`
       ) || [];
     const updatedReport = user?.reports?.find(
-      (report: Report) => `${report.id}` === `${reportId}`
+      (report: ReportSnippetType) => `${report.id}` === `${reportId}`
     );
 
     // handle report match an no match

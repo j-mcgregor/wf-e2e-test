@@ -95,7 +95,7 @@ const batchedReport = async (
         (company: CompanyReqType) => {
           return {
             company_id: company.company_id,
-            sme_zscore: `${randomValue(500)}`,
+            sme_z_score: `${randomValue(500)}`,
             company_name: Object.values(MockCompanyNames)[randomValue(5)],
             bond_rating: randomValue(3) > 1 ? 'A' : 'B',
             probability_of_default: `${randomValue(200)}`

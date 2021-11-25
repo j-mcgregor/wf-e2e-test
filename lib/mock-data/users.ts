@@ -10,84 +10,84 @@ export const MockCompanyNames = {
 const mockBatchedReports = [
   {
     company_id: '124556',
-    sme_zscore: '110',
+    sme_z_score: '110',
     company_name: 'Swan Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '78'
   },
   {
     company_id: '245561',
-    sme_zscore: '43',
+    sme_z_score: '43',
     company_name: 'Swan Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '129'
   },
   {
     company_id: '455612',
-    sme_zscore: '296',
+    sme_z_score: '296',
     company_name: 'Pigeon Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '5'
   },
   {
     company_id: '556124',
-    sme_zscore: '441',
+    sme_z_score: '441',
     company_name: 'Swan Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '81'
   },
   {
     company_id: '561245',
-    sme_zscore: '298',
+    sme_z_score: '298',
     company_name: 'Pigeon Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '41'
   },
   {
     company_id: '612455',
-    sme_zscore: '416',
+    sme_z_score: '416',
     company_name: 'Geese Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '161'
   },
   {
     company_id: '87262',
-    sme_zscore: '110',
+    sme_z_score: '110',
     company_name: 'Bird Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '70'
   },
   {
     company_id: '123450',
-    sme_zscore: '426',
+    sme_z_score: '426',
     company_name: 'Geese Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '118'
   },
   {
     company_id: '098761',
-    sme_zscore: '232',
+    sme_z_score: '232',
     company_name: 'Swan Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '150'
   },
   {
     company_id: '012312',
-    sme_zscore: '9',
+    sme_z_score: '9',
     company_name: 'Dove Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '77'
   },
   {
     company_id: '123123',
-    sme_zscore: '136',
+    sme_z_score: '136',
     company_name: 'Bird Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '101'
   },
   {
     company_id: '123153',
-    sme_zscore: '469',
+    sme_z_score: '469',
     company_name: 'Swan Feeding Corp',
     bond_rating: 'B',
     probability_of_default: '190'
@@ -98,7 +98,7 @@ export const mockReports = [
   {
     id: 1,
     company_name: MockCompanyNames.BIRD,
-    sme_zscore: 456,
+    sme_z_score: 456,
     bond_rating: 'AA',
     created_at: 1629660518563,
     bookmarked: false
@@ -106,7 +106,7 @@ export const mockReports = [
   {
     id: 2,
     company_name: MockCompanyNames.SWAN,
-    sme_zscore: 322,
+    sme_z_score: 322,
     bond_rating: 'A-',
     created_at: 1629660001000,
     bookmarked: false
@@ -114,7 +114,7 @@ export const mockReports = [
   {
     id: 3,
     company_name: MockCompanyNames.GEESE,
-    sme_zscore: 345,
+    sme_z_score: 345,
     bond_rating: 'A',
     created_at: 1629660000000,
     bookmarked: false
@@ -122,7 +122,7 @@ export const mockReports = [
   {
     id: 4,
     company_name: MockCompanyNames.PIGEON,
-    sme_zscore: 311,
+    sme_z_score: 311,
     bond_rating: 'B+',
     created_at: 1629659000000,
     bookmarked: false
@@ -130,7 +130,7 @@ export const mockReports = [
   {
     id: 5,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: true
@@ -138,7 +138,7 @@ export const mockReports = [
   {
     id: 6,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -146,7 +146,7 @@ export const mockReports = [
   {
     id: 7,
     company_name: MockCompanyNames.BIRD,
-    sme_zscore: 456,
+    sme_z_score: 456,
     bond_rating: 'AA',
     created_at: 1629660518563,
     bookmarked: false
@@ -154,7 +154,7 @@ export const mockReports = [
   {
     id: 8,
     company_name: MockCompanyNames.SWAN,
-    sme_zscore: 322,
+    sme_z_score: 322,
     bond_rating: 'A-',
     created_at: 1629660001000,
     bookmarked: true
@@ -162,7 +162,7 @@ export const mockReports = [
   {
     id: 9,
     company_name: MockCompanyNames.GEESE,
-    sme_zscore: 345,
+    sme_z_score: 345,
     bond_rating: 'A',
     created_at: 1629660000000,
     bookmarked: true
@@ -170,7 +170,7 @@ export const mockReports = [
   {
     id: 10,
     company_name: MockCompanyNames.PIGEON,
-    sme_zscore: 311,
+    sme_z_score: 311,
     bond_rating: 'B+',
     created_at: 1629659000000,
     bookmarked: false
@@ -178,7 +178,7 @@ export const mockReports = [
   {
     id: 11,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -186,14 +186,14 @@ export const mockReports = [
   {
     id: 12,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000
   },
   {
     id: 13,
     company_name: MockCompanyNames.BIRD,
-    sme_zscore: 456,
+    sme_z_score: 456,
     bond_rating: 'AA',
     created_at: 1629660518563,
     bookmarked: false
@@ -201,7 +201,7 @@ export const mockReports = [
   {
     id: 14,
     company_name: MockCompanyNames.SWAN,
-    sme_zscore: 322,
+    sme_z_score: 322,
     bond_rating: 'A-',
     created_at: 1629660001000,
     bookmarked: false
@@ -209,7 +209,7 @@ export const mockReports = [
   {
     id: 15,
     company_name: 'THIRD NEWEST ENTRY TEST',
-    sme_zscore: 345,
+    sme_z_score: 345,
     bond_rating: 'A',
     created_at: 1630408290506,
     bookmarked: false
@@ -217,7 +217,7 @@ export const mockReports = [
   {
     id: 16,
     company_name: MockCompanyNames.PIGEON,
-    sme_zscore: 311,
+    sme_z_score: 311,
     bond_rating: 'B+',
     created_at: 1629659000000,
     bookmarked: false
@@ -225,7 +225,7 @@ export const mockReports = [
   {
     id: 17,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -233,7 +233,7 @@ export const mockReports = [
   {
     id: 18,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -241,7 +241,7 @@ export const mockReports = [
   {
     id: 19,
     company_name: MockCompanyNames.BIRD,
-    sme_zscore: 456,
+    sme_z_score: 456,
     bond_rating: 'AA',
     created_at: 1629660518563,
     bookmarked: false
@@ -249,7 +249,7 @@ export const mockReports = [
   {
     id: 20,
     company_name: MockCompanyNames.SWAN,
-    sme_zscore: 322,
+    sme_z_score: 322,
     bond_rating: 'A-',
     created_at: 1629660001000,
     bookmarked: false
@@ -257,7 +257,7 @@ export const mockReports = [
   {
     id: 21,
     company_name: MockCompanyNames.GEESE,
-    sme_zscore: 345,
+    sme_z_score: 345,
     bond_rating: 'A',
     created_at: 1629660000000,
     bookmarked: false
@@ -265,7 +265,7 @@ export const mockReports = [
   {
     id: 22,
     company_name: 'SECOND NEWEST ENTRY TEST',
-    sme_zscore: 311,
+    sme_z_score: 311,
     bond_rating: 'B+',
     created_at: 1630411549699,
     bookmarked: true
@@ -273,7 +273,7 @@ export const mockReports = [
   {
     id: 23,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -281,7 +281,7 @@ export const mockReports = [
   {
     id: 24,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -289,7 +289,7 @@ export const mockReports = [
   {
     id: 25,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -297,7 +297,7 @@ export const mockReports = [
   {
     id: 26,
     company_name: MockCompanyNames.BIRD,
-    sme_zscore: 456,
+    sme_z_score: 456,
     bond_rating: 'AA',
     created_at: 1629660518563,
     bookmarked: false
@@ -305,7 +305,7 @@ export const mockReports = [
   {
     id: 27,
     company_name: MockCompanyNames.SWAN,
-    sme_zscore: 322,
+    sme_z_score: 322,
     bond_rating: 'A-',
     created_at: 1629660001000,
     bookmarked: false
@@ -313,7 +313,7 @@ export const mockReports = [
   {
     id: 28,
     company_name: MockCompanyNames.GEESE,
-    sme_zscore: 345,
+    sme_z_score: 345,
     bond_rating: 'A',
     created_at: 1629660000000,
     bookmarked: false
@@ -321,7 +321,7 @@ export const mockReports = [
   {
     id: 29,
     company_name: MockCompanyNames.PIGEON,
-    sme_zscore: 311,
+    sme_z_score: 311,
     bond_rating: 'B+',
     created_at: 1629659000000,
     bookmarked: false
@@ -329,7 +329,7 @@ export const mockReports = [
   {
     id: 30,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -337,7 +337,7 @@ export const mockReports = [
   {
     id: 31,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -345,7 +345,7 @@ export const mockReports = [
   {
     id: 32,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -353,7 +353,7 @@ export const mockReports = [
   {
     id: 33,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -361,7 +361,7 @@ export const mockReports = [
   {
     id: 34,
     company_name: MockCompanyNames.DOVE,
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1629657000000,
     bookmarked: false
@@ -369,7 +369,7 @@ export const mockReports = [
   {
     id: 35,
     company_name: 'NEWEST TEST ENTRY',
-    sme_zscore: 222,
+    sme_z_score: 222,
     bond_rating: 'D',
     created_at: 1630411922216,
     bookmarked: false

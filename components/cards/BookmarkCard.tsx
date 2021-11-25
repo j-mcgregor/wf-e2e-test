@@ -13,8 +13,8 @@ interface BookmarkCardProps {
   smeZscore: number;
   bondRating: string;
   pdRatio: number;
-  key: number;
-  createdAt: number;
+  key: string;
+  createdAt: string;
 }
 
 const BookmarkCard = ({

@@ -10,7 +10,7 @@ import Button from '../components/elements/Button';
 import ReportTable from '../components/elements/ReportTable';
 import Layout from '../components/layout/Layout';
 import { userReports } from '../lib/appState';
-import { Report } from '../types/global';
+import { ReportSnippetType } from '../types/global';
 
 const Reports = () => {
   const [reportLimit, setReportLimit] = useState(10); // initial limit of 10 reports
@@ -39,13 +39,13 @@ const Reports = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 leading-4">
           {bookmarkedReports &&
-            bookmarkedReports.map((report: Report) => {
+            bookmarkedReports.map((report: ReportSnippetType) => {
               return (
                 <BookmarkCard
                   key={report.id}
                   linkTo={`/report/${report.id}`}
                   companyName={report.company_name}
-                  smeZscore={report.sme_zscore}
+                  smeZscore={report.sme_z_score}
                   bondRating={report.bond_rating}
                   createdAt={report.created_at}
                   pdRatio={32.18} // not currently in mock data

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Listbox } from '@headlessui/react';
-import { Report } from '../../types/global';
+import { ReportSnippetType } from '../../types/global';
 
 interface DropdownProps {
-  options: Report[];
+  options: ReportSnippetType[];
 }
 const Dropdown = ({ options }: DropdownProps) => {
   const [selectedOption, setSelectedOption] = useState(options[0]);

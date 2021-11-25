@@ -58,7 +58,7 @@ const BatchReportTable = ({ data }: ReportProps) => {
                         {company.company_name}
                       </td>
                       <td className="px-3 sm:px-6 py-1  whitespace-nowrap text-center">
-                        {company.sme_zscore}
+                        {company.sme_z_score}
                       </td>
                       <td className="px-3 sm:px-6 py-1 whitespace-nowrap  text-center">
                         {company.bond_rating}

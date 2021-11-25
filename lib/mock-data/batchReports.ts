@@ -4,40 +4,40 @@ const companyName = 'Seabird Company';
 
 const batchReports: BatchReportsType[] = [
   {
-    id: 1,
+    id: '1',
     results: [
       {
-        id: 1,
+        id: '1',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 2,
+        id: '2',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 3,
+        id: '3',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 4,
+        id: '4',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 5,
+        id: '5',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       }
@@ -45,40 +45,40 @@ const batchReports: BatchReportsType[] = [
     created: '20.10.21'
   },
   {
-    id: 2,
+    id: '2',
     results: [
       {
-        id: 1,
+        id: '1',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 2,
+        id: '2',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 3,
+        id: '3',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 4,
+        id: '4',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 5,
+        id: '5',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       }
@@ -86,40 +86,40 @@ const batchReports: BatchReportsType[] = [
     created: '25.10.21'
   },
   {
-    id: 3,
+    id: '3',
     results: [
       {
-        id: 1,
+        id: '1',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 2,
+        id: '2',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 3,
+        id: '3',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 4,
+        id: '4',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       },
       {
-        id: 5,
+        id: '5',
         company_name: companyName,
-        sme_zscore: '234',
+        sme_z_score: '234',
         bond_rating: '2345',
         default: '23%'
       }

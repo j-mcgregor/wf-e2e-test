@@ -9,12 +9,14 @@ export type TranslateInput =
 
 export type StatDataType = string | number | Date;
 
-export type Report = {
-  id: number;
+export type ReportSnippetType = {
+  id: string;
   company_name: string;
-  sme_zscore: number;
+  company_id: number;
+  iso_code: string;
+  sme_z_score: number;
   bond_rating: string;
-  created_at: number;
+  created_at: string;
   bookmarked: boolean;
   probability_of_default?: string;
 };
@@ -23,12 +25,12 @@ export type BatchedReportType = {
   id: number;
   company_name: string;
   name: string;
-  sme_zscore: number;
+  sme_z_score: number;
   bond_rating: string;
   create_date: number;
   finish_date: number;
   total_reports: number;
-  company_list: Report[];
+  company_list: ReportSnippetType[];
 };
 
 type ContactInformation = {
@@ -63,7 +65,7 @@ export type UserType = {
       company_updates: boolean;
     };
   };
-  reports?: Report[];
+  reports?: ReportSnippetType[];
   batched_report_jobs?: BatchedReportType[];
 };
 
@@ -97,15 +99,15 @@ export type ResDataType = {
 
 // redundant?
 export type BatchReportType = {
-  id: number;
+  id: string;
   company_name: string;
-  sme_zscore: string;
+  sme_z_score: string;
   bond_rating: string;
   default: string;
 };
 
 export type BatchReportsType = {
-  id: number;
+  id: string;
   results: BatchReportType[];
   created: string;
 };
