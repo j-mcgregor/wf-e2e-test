@@ -1,3 +1,5 @@
+import { getClientRelativeDate } from './date-helpers';
+
 export const camelCaseToSentenceCase = (str: string): string => {
   return str && str.replace(/([a-z])([A-Z])/g, '$1 $2');
 };
@@ -23,7 +25,9 @@ export const createCurrencyString = ({
 };
 
 export const createReportTitle = (companyName: string, createdAt: string) => {
-  const date = new Date(createdAt);
+  const clientDate = getClientRelativeDate(createdAt);
+
+  const date = new Date(clientDate);
   // this will break in the year 2100
   const year = date?.getFullYear()?.toString()?.replace('20', '');
   // comes back as index so need to add one

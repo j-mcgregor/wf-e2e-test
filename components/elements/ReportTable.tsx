@@ -7,6 +7,7 @@ import { ReportSnippetType } from '../../types/global';
 import SkeletonRow from '../skeletons/SkeletonRow';
 import Button from './Button';
 import { createReportTitle } from '../../lib/utils/text-helpers';
+import { getClientRelativeDate } from '../../lib/utils/date-helpers';
 
 interface ReportProps {
   reports?: ReportSnippetType[] | null;
@@ -108,7 +109,9 @@ const ReportTable = ({
                           </td>
 
                           <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
-                            <ReactTimeAgo date={report.created_at} />
+                            <ReactTimeAgo
+                              date={getClientRelativeDate(report.created_at)}
+                            />
                           </td>
                         </tr>
                       </Link>
