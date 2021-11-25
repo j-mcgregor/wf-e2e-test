@@ -9,6 +9,7 @@ import {
   UNAUTHORISED
 } from '../../../lib/utils/error-codes';
 import { ReportSnippetType } from '../../../types/global';
+import Report from '../../../lib/funcs/report';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -34,6 +35,18 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
   }
 
   const email = session?.user?.email;
+
+  if (session.token) {
+    // console.log(session.token)
+    const report = await Report.getExistingReport(
+      `${reportId}`,
+      `${session.token}`
+    );
+    // console.log(report)
+    if (report.ok) {
+      return response.status(200).json(report.report);
+    }
+  }
 
   // to be replaced by backend call
   // @ts-ignore
