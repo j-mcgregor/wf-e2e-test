@@ -1,4 +1,4 @@
-import { DownloadIcon } from '@heroicons/react/outline';
+import { DownloadIcon, EyeIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { BatchedReportType } from '../../types/global';
 import Button from '../elements/Button';
@@ -43,7 +43,7 @@ const BatchReportTable = ({ data }: ReportProps) => {
                     scope="col"
                     className="px-3 sm:px-6  py-2 text-center font-normal"
                   >
-                    {t('download_pdf')}
+                    {t('view_report')}
                   </th>
                 </tr>
               </thead>
@@ -69,7 +69,7 @@ const BatchReportTable = ({ data }: ReportProps) => {
 
                       <td className="px-3 sm:px-6 py-1 whitespace-nowrap flex items-center justify-center">
                         <Button onClick={() => null} linkTo="#" variant="none">
-                          <DownloadIcon className="h-6 w-6" />
+                          <EyeIcon className="h-6 w-6" />
                         </Button>
                       </td>
                     </tr>

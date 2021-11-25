@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Report } from '../../types/global';
 import SkeletonRow from '../skeletons/SkeletonRow';
 import Button from './Button';
+import { createReportTitle } from '../../lib/utils/text-helpers';
 
 interface ReportProps {
   reports?: Report[] | null;
@@ -73,8 +74,12 @@ const ReportTable = ({
               </tr>
             </thead>
             <tbody>
-              {sortedReports?.map(
-                (report: Report, index: number) =>
+              {sortedReports?.map((report: Report, index: number) => {
+                const reportTitle = createReportTitle(
+                  report.company_name,
+                  report.created_at
+                );
+                return (
                   // display reports only up until quantity limit specified in props
                   index < limit && (
                     <Link
@@ -86,8 +91,8 @@ const ReportTable = ({
                         key={report.id}
                         className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm cursor-pointer"
                       >
-                        <td className="h-12 px-3 sm:px-6 py-1 whitespace-nowrap font-medium text-gray-900">
-                          {report.company_name}
+                        <td className="h-12 px-3 max-w-[260px] truncate sm:px-6 py-1 whitespace-nowrap font-medium text-gray-900">
+                          {reportTitle}
                         </td>
                         <td className="px-3 sm:px-6 py-1  whitespace-nowrap  ">
                           {report.sme_zscore}
@@ -102,7 +107,8 @@ const ReportTable = ({
                       </tr>
                     </Link>
                   )
-              )}
+                );
+              })}
 
               {/* if quantity of empty reports is less than limit & not negative */}
               {/* fill remaining empty spots with blank filler */}

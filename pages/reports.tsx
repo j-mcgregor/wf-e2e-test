@@ -47,6 +47,7 @@ const Reports = () => {
                   companyName={report.company_name}
                   smeZscore={report.sme_zscore}
                   bondRating={report.bond_rating}
+                  createdAt={report.created_at}
                   pdRatio={32.18} // not currently in mock data
                 />
               );
