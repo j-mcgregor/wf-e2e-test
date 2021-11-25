@@ -14,6 +14,11 @@ export type FinancialYear = {
   value: string;
 };
 
+export type DataReliabilityType = {
+  value: number;
+  details: string[];
+};
+
 export type SummaryInfo = {
   reg_number: string;
   sector: string;
@@ -35,6 +40,7 @@ export type SummaryContact = {
     region: string;
     country: string;
   };
+  status: string[];
   company_name: string | null;
   phone: string[];
   websites: string[];
@@ -87,10 +93,13 @@ export type Profile = {
   other_associations: Association[];
 };
 
-export type Shareholder = {
-  first_name: string;
-  last_name: string;
+export type ShareholderType = {
+  first_name: string | null;
+  last_name: string | null;
   linkedin: string;
+  percentage?: number;
+  name: string | null;
+  type?: string;
   peps_sanctions_enforcements: boolean;
 };
 

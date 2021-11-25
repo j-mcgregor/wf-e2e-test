@@ -39,6 +39,8 @@
   "employees": "Employees",
   "bond_rating": "Bond Rating",
   "sme_zscore": "SME Z-Score",
+  "probability_of_default": "Probability of Default",
+  "loss_give_default": "Loss Given Default",
   "industry_benchmark": "Industry Benchmark",
   "region_benchmark": "Region Benchmark",
   "reliability_index": "Reliability Index",

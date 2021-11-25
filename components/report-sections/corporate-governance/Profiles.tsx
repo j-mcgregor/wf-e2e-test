@@ -37,13 +37,13 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
 
   return (
     <div className="px-4 sm:px-0" data-testid="corp-senior-profiles-testid">
-      <div className="avoid-break">
-        <p className="my-4 text-xl print:text-2xl print:py-10">
-          {t('directors')}
-        </p>
-        <div className="" data-testid="corp-directors-list-testid">
-          {directorsSection &&
-            directorsSection.map((section, index) => (
+      {directorsSection && (
+        <div className="avoid-break">
+          <p className="my-4 text-xl print:text-2xl print:py-10">
+            {t('directors')}
+          </p>
+          <div className="" data-testid="corp-directors-list-testid">
+            {directorsSection.map((section, index) => (
               <div
                 key={index}
                 className={`grid grid-cols-2 2xl:grid-cols-3 gap-2 avoid-break my-2 ${
@@ -66,14 +66,17 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
                 ))}
               </div>
             ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="avoid-break print:pt-16 always-break-before">
-        <p className="my-4 text-xl print:text-2xl">{t('senior_management')}</p>
-        <div className="" data-testid="corp-snr-mgmt-list-testid">
-          {seniorManagementSection &&
-            seniorManagementSection.map((section, index) => (
+      {seniorManagementSection && (
+        <div className="avoid-break print:pt-16 always-break-before">
+          <p className="my-4 text-xl print:text-2xl">
+            {t('senior_management')}
+          </p>
+          <div className="" data-testid="corp-snr-mgmt-list-testid">
+            {seniorManagementSection.map((section, index) => (
               <div
                 key={index}
                 className={`grid grid-cols-2 2xl:grid-cols-3 gap-2 avoid-break my-2 ${
@@ -96,8 +99,9 @@ const Profiles = ({ directors, seniorManagement }: ProfilesProps) => {
                 ))}
               </div>
             ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

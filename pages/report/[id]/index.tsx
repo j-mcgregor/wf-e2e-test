@@ -15,11 +15,12 @@ import getServerSidePropsWithAuth from '../../../lib/auth/getServerSidePropsWith
 import fetcher from '../../../lib/utils/fetcher';
 import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
 import {
+  DataReliabilityType,
   FinancialYear,
   LegalEvent,
   Profile,
   Reliability,
-  Shareholder,
+  ShareholderType,
   SummaryContact,
   SummaryInfo
 } from '../../../types/report';
@@ -30,36 +31,35 @@ export interface ReportDataProps {
   created_at?: string;
   company_name: string;
   details: SummaryContact & SummaryInfo;
-  financials: {
-    [year: string]: FinancialYear;
-  };
+  financials: FinancialYear[];
   risk_metrics: {
-    bond_rating: RatingType;
-    sme_z_score: {
-      value: string;
-      regional_benchmark: string | null;
-      industry_benchmark: string | null;
-    };
-    probability_of_default: {
-      value: string;
-      regional_benchmark: string | null;
-      industry_benchmark: string | null;
-    };
-    loss_given_default: {
-      value: string;
-      regional_benchmark: string | null;
-      industry_benchmark: string | null;
-    };
-  };
+    bond_rating_equivalent: RatingType;
+    sme_z_score: number;
+    // value: string;
+    // regional_benchmark: string | null;
+    // industry_benchmark: string | null;
+    // };
+    probability_of_default_1_year: number;
+    // value: string;
+    // regional_benchmark: string | null;
+    // industry_benchmark: string | null;
+    // };
+    loss_given_default: number;
+    // value: string;
+    // regional_benchmark: string | null;
+    // industry_benchmark: string | null;
+    // };
+  }[];
+  reliability_index: DataReliabilityType;
   highlights: {
     data_reliability: Reliability;
     risk_outlook: string[];
   };
   legal_events: LegalEvent[];
+  shareholders: ShareholderType[];
   personal: {
     directors: Profile[];
     senior_management: Profile[];
-    shareholders: Shareholder[];
     ceo: string;
     cfo: string;
     chairman: string;

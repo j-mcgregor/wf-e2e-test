@@ -1,9 +1,9 @@
 import { useTranslations } from 'next-intl';
 import ShareHolderCard from './ShareHolderCard';
-import { Shareholder } from '../../../types/report';
+import { ShareholderType } from '../../../types/report';
 
 interface ShareHolderListProps {
-  shareholders: Shareholder[];
+  shareholders: ShareholderType[];
 }
 
 const ShareHolderList = ({ shareholders }: ShareHolderListProps) => {
@@ -23,10 +23,13 @@ const ShareHolderList = ({ shareholders }: ShareHolderListProps) => {
           shareholders.map((shareholder, index) => {
             return (
               <ShareHolderCard
-                key={shareholder.first_name + index}
+                key={index}
                 firstName={shareholder.first_name}
                 lastName={shareholder.last_name}
+                name={shareholder.name}
                 linkedin={shareholder.linkedin}
+                percentage={shareholder.percentage}
+                type={shareholder.type}
               />
             );
           })}

@@ -13,27 +13,29 @@ type SecondaryValue = {
 interface SpeedometerProps {
   title: string;
   secondaryValues: SecondaryValue[];
-  value: string | number;
+  value: number;
+  rotation: number;
   weighting?: number;
   hint: ReactElement;
+  as?: string;
 }
 
 const Speedometer = ({
   title,
   value,
+  rotation,
   hint,
+  as,
   secondaryValues
 }: SpeedometerProps) => {
   // 260 degrees available
 
   // probably need to add a version where there is no value and its completely disabled
 
-  const arrowDegs = Math.random() * 260 - 130;
-
-  const benchmarks = secondaryValues.map(value => ({
-    rotation: Math.random() * 260 - 130,
-    ...value
-  }));
+  // const benchmarks = secondaryValues.map(value => ({
+  //   rotation: Math.random() * 260 - 130,
+  //   ...value
+  // }));
 
   return (
     <>
@@ -50,20 +52,23 @@ const Speedometer = ({
         <div className="relative ">
           <Dial className="w-full h-full" />
           <SpeedoArrow
-            style={{ transform: `rotate(${arrowDegs}deg)` }}
+            style={{ transform: `rotate(${rotation}deg)` }}
             className="absolute top-0 w-full  h-full transition-transform duration-500"
           />
 
           <div className="absolute top-1/2 w-full text-center text-2xl font-bold pt-5">
-            <span>{value}</span>
+            <span>
+              {value}
+              {as}
+            </span>
           </div>
 
-          {benchmarks.map(
+          {secondaryValues.map(
             (benchmark, index) =>
               benchmark.value && (
                 <BenchmarkArrow
                   key={index}
-                  style={{ transform: `rotate(${benchmark.rotation}deg)` }}
+                  style={{ transform: `rotate(${benchmark.value}deg)` }}
                   className={`absolute top-0 w-full h-full transition-transform duration-500 ${
                     index % 2 === 1 ? 'text-green-500' : 'text-blue-500'
                   }`}
@@ -73,7 +78,7 @@ const Speedometer = ({
         </div>
 
         <div className="text-gray-400 w-full pb-4 px-1 text-xs xl:text-sm -mt-2 overflow-hidden">
-          {benchmarks.map((benchmark, index) => (
+          {secondaryValues.map((benchmark, index) => (
             <SpeedoKey
               key={index}
               name={benchmark.name}

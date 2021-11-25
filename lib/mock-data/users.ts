@@ -96,282 +96,282 @@ const mockBatchedReports = [
 
 export const mockReports = [
   {
-    id: 1,
+    id: '1',
     company_name: MockCompanyNames.BIRD,
     sme_z_score: 456,
     bond_rating: 'AA',
-    created_at: 1629660518563,
+    created_at: '1629660518563',
     bookmarked: false
   },
   {
-    id: 2,
+    id: '2',
     company_name: MockCompanyNames.SWAN,
     sme_z_score: 322,
     bond_rating: 'A-',
-    created_at: 1629660001000,
+    created_at: '1629660001000',
     bookmarked: false
   },
   {
-    id: 3,
+    id: '3',
     company_name: MockCompanyNames.GEESE,
     sme_z_score: 345,
     bond_rating: 'A',
-    created_at: 1629660000000,
+    created_at: '1629660000000',
     bookmarked: false
   },
   {
-    id: 4,
+    id: '4',
     company_name: MockCompanyNames.PIGEON,
     sme_z_score: 311,
     bond_rating: 'B+',
-    created_at: 1629659000000,
+    created_at: '1629659000000',
     bookmarked: false
   },
   {
-    id: 5,
+    id: '5',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: true
   },
   {
-    id: 6,
+    id: '6',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 7,
+    id: '7',
     company_name: MockCompanyNames.BIRD,
     sme_z_score: 456,
     bond_rating: 'AA',
-    created_at: 1629660518563,
+    created_at: '1629660518563',
     bookmarked: false
   },
   {
-    id: 8,
+    id: '8',
     company_name: MockCompanyNames.SWAN,
     sme_z_score: 322,
     bond_rating: 'A-',
-    created_at: 1629660001000,
+    created_at: '1629660001000',
     bookmarked: true
   },
   {
-    id: 9,
+    id: '9',
     company_name: MockCompanyNames.GEESE,
     sme_z_score: 345,
     bond_rating: 'A',
-    created_at: 1629660000000,
+    created_at: '1629660000000',
     bookmarked: true
   },
   {
-    id: 10,
+    id: '10',
     company_name: MockCompanyNames.PIGEON,
     sme_z_score: 311,
     bond_rating: 'B+',
-    created_at: 1629659000000,
+    created_at: '1629659000000',
     bookmarked: false
   },
   {
-    id: 11,
+    id: '11',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 12,
+    id: '12',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000
+    created_at: '1629657000000'
   },
   {
-    id: 13,
+    id: '13',
     company_name: MockCompanyNames.BIRD,
     sme_z_score: 456,
     bond_rating: 'AA',
-    created_at: 1629660518563,
+    created_at: '1629660518563',
     bookmarked: false
   },
   {
-    id: 14,
+    id: '14',
     company_name: MockCompanyNames.SWAN,
     sme_z_score: 322,
     bond_rating: 'A-',
-    created_at: 1629660001000,
+    created_at: '1629660001000',
     bookmarked: false
   },
   {
-    id: 15,
+    id: '15',
     company_name: 'THIRD NEWEST ENTRY TEST',
     sme_z_score: 345,
     bond_rating: 'A',
-    created_at: 1630408290506,
+    created_at: '1630408290506',
     bookmarked: false
   },
   {
-    id: 16,
+    id: '16',
     company_name: MockCompanyNames.PIGEON,
     sme_z_score: 311,
     bond_rating: 'B+',
-    created_at: 1629659000000,
+    created_at: '1629659000000',
     bookmarked: false
   },
   {
-    id: 17,
+    id: '17',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 18,
+    id: '18',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 19,
+    id: '19',
     company_name: MockCompanyNames.BIRD,
     sme_z_score: 456,
     bond_rating: 'AA',
-    created_at: 1629660518563,
+    created_at: '1629660518563',
     bookmarked: false
   },
   {
-    id: 20,
+    id: '20',
     company_name: MockCompanyNames.SWAN,
     sme_z_score: 322,
     bond_rating: 'A-',
-    created_at: 1629660001000,
+    created_at: '1629660001000',
     bookmarked: false
   },
   {
-    id: 21,
+    id: '21',
     company_name: MockCompanyNames.GEESE,
     sme_z_score: 345,
     bond_rating: 'A',
-    created_at: 1629660000000,
+    created_at: '1629660000000',
     bookmarked: false
   },
   {
-    id: 22,
+    id: '22',
     company_name: 'SECOND NEWEST ENTRY TEST',
     sme_z_score: 311,
     bond_rating: 'B+',
-    created_at: 1630411549699,
+    created_at: '1630411549699',
     bookmarked: true
   },
   {
-    id: 23,
+    id: '23',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 24,
+    id: '24',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 25,
+    id: '25',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 26,
+    id: '26',
     company_name: MockCompanyNames.BIRD,
     sme_z_score: 456,
     bond_rating: 'AA',
-    created_at: 1629660518563,
+    created_at: '1629660518563',
     bookmarked: false
   },
   {
-    id: 27,
+    id: '27',
     company_name: MockCompanyNames.SWAN,
     sme_z_score: 322,
     bond_rating: 'A-',
-    created_at: 1629660001000,
+    created_at: '1629660001000',
     bookmarked: false
   },
   {
-    id: 28,
+    id: '28',
     company_name: MockCompanyNames.GEESE,
     sme_z_score: 345,
     bond_rating: 'A',
-    created_at: 1629660000000,
+    created_at: '1629660000000',
     bookmarked: false
   },
   {
-    id: 29,
+    id: '29',
     company_name: MockCompanyNames.PIGEON,
     sme_z_score: 311,
     bond_rating: 'B+',
-    created_at: 1629659000000,
+    created_at: '1629659000000',
     bookmarked: false
   },
   {
-    id: 30,
+    id: '30',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 31,
+    id: '31',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 32,
+    id: '32',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 33,
+    id: '33',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 34,
+    id: '34',
     company_name: MockCompanyNames.DOVE,
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1629657000000,
+    created_at: '1629657000000',
     bookmarked: false
   },
   {
-    id: 35,
+    id: '35',
     company_name: 'NEWEST TEST ENTRY',
     sme_z_score: 222,
     bond_rating: 'D',
-    created_at: 1630411922216,
+    created_at: '1630411922216',
     bookmarked: false
   }
 ];

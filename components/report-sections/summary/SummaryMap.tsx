@@ -30,7 +30,9 @@ const SummaryMap = ({
 
   const phone = phoneNumbers?.[0]?.replace(/[A-z-]/g, '');
 
-  const validAddressLines = addressLines.filter(x => x).flatMap(x => [x, ', ']);
+  const validAddressLines = addressLines
+    ?.filter(x => x)
+    ?.flatMap(x => [x, ', ']);
 
   return (
     <div className="bg-white border shadow-sm rounded md:ml-8  h-full flex flex-col text-primary print:flex-row print:mt-10 print:border-2 print:p-3  print:shadow-none">

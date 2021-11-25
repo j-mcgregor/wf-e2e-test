@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import { addBlankObjects } from '../../../lib/utils/report-helpers';
 
 import { FinancialYear } from '../../../types/report';
 import SummaryFinancialRow from './SummaryFinancialRow';
@@ -9,6 +10,8 @@ interface SummaryFinancialProps {
 
 const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
   const t = useTranslations();
+
+  const yearsWithBlanks = addBlankObjects(years, 5).reverse();
 
   return (
     <div className="p-6 shadow rounded-sm bg-white print:shadow-none">
@@ -23,12 +26,12 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                 <thead className="border-b border-black font-semibold">
                   <tr>
                     <td />
-                    {years.map(year => (
+                    {yearsWithBlanks?.map((year, index) => (
                       <td
-                        key={year.year}
+                        key={index}
                         className="relative px-2 py-3 text-primary"
                       >
-                        <p>{year.year}</p>
+                        <p>{year.period}</p>
                       </td>
                     ))}
                     <td>

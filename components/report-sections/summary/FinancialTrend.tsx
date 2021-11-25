@@ -17,7 +17,7 @@ const FinancialTrend = ({ data }: FinancialTrendProps) => {
                   : year === 0
                   ? 'border-b border-black'
                   : null
-              } w-full mx-[2px]`}
+              } w-full mx-[2px] max-w-[10px]`}
             />
           );
         })}
@@ -28,7 +28,9 @@ const FinancialTrend = ({ data }: FinancialTrendProps) => {
             <span
               key={index}
               style={{ height: `${Math.abs(year)}%` }}
-              className={`${year < 0 && 'bg-red-500'} w-full mx-[2px]`}
+              className={`${
+                year < 0 && 'bg-red-500'
+              } w-full mx-[2px] max-w-[10px]`}
             />
           );
         })}

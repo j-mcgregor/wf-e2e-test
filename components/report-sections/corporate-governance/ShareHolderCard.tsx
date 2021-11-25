@@ -3,15 +3,21 @@ import Link from '../../elements/Link';
 import { toTitleCase } from '../../../lib/utils/text-helpers';
 
 interface ShareHolderCardProps {
-  firstName: string;
-  lastName: string;
-  linkedin?: string;
+  firstName: string | null;
+  lastName: string | null;
+  linkedin: string;
+  percentage?: number;
+  name: string | null;
+  type?: string;
 }
 
 const ShareHolderCard = ({
   firstName,
   lastName,
-  linkedin
+  name,
+  type,
+  linkedin,
+  percentage
 }: ShareHolderCardProps) => {
   return (
     <div
@@ -19,9 +25,14 @@ const ShareHolderCard = ({
       avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs"
       data-testid="shareholder-card-testid"
     >
-      <p>
-        {toTitleCase(firstName)} {toTitleCase(lastName)}
-      </p>
+      {type === 'Corporate' && <p>{name}</p>}
+      {firstName && lastName && (
+        <p>
+          {toTitleCase(firstName)} {toTitleCase(lastName)}
+        </p>
+      )}
+
+      {percentage && <p className="font-bold">{percentage}%</p>}
       {linkedin && (
         <Link className="print:hidden" linkTo={linkedin}>
           <LinkedinIcon />

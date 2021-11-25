@@ -9,7 +9,6 @@ import * as nextRouter from 'next/router';
 
 import allMessages from '../../../../messages/en';
 import { makeMockSession, render } from '../../../../test-utils';
-import { SummaryContact } from '../../../../types/report';
 import SummaryMap from '../SummaryMap';
 
 jest.mock('next-auth/client');
@@ -30,7 +29,21 @@ describe('SummaryMap', () => {
 
   it('render the SummaryMap without issue', () => {
     expect(() =>
-      render(<SummaryMap contact={{} as SummaryContact} />, {}, allMessages)
+      render(
+        <SummaryMap
+          postCode={'KT108LE'}
+          addressLines={['1st Road', 'Beverly Hills', undefined, undefined]}
+          city={'London'}
+          county={'Greater London'}
+          region={'South East'}
+          country={'GB'}
+          emails={['example@example.com']}
+          phoneNumbers={['+4476512349']}
+          websites={['www.example.com']}
+        />,
+        {},
+        allMessages
+      )
     ).not.toThrow();
   });
 });

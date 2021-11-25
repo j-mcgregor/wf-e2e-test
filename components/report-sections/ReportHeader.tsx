@@ -5,7 +5,8 @@ import { useTranslations } from 'next-intl';
 import { BookmarkIcon } from '@heroicons/react/outline';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { UserReports, userReports } from '../../lib/appState';
-import { Report } from '../../types/global';
+import { ReportSnippetType } from '../../types/global';
+
 interface ReportHeaderProps {
   company: string;
   created: string;
@@ -25,7 +26,7 @@ const ReportHeader = ({ company, created, reportId }: ReportHeaderProps) => {
   };
   // compare strings of the id and reportId
   const isBookMarked = bookmarkedReports?.find(
-    (x: Report) => `${x.id}` === `${reportId}`
+    (x: ReportSnippetType) => `${x.id}` === `${reportId}`
   );
 
   const t = useTranslations();

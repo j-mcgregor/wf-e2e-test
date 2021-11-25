@@ -36,7 +36,15 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
 
   const email = session?.user?.email;
 
-  if (session.token) {
+  // to be replaced by backend call
+  // @ts-ignore
+  // eslint-disable-next-line security/detect-object-injection
+  const user = mockUsers[email];
+  const report = user?.reports?.find(
+    (report: ReportSnippetType) => report.id === reportId
+  );
+
+  if (session.token && !report) {
     // console.log(session.token)
     const report = await Report.getExistingReport(
       `${reportId}`,
@@ -47,14 +55,6 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
       return response.status(200).json(report.report);
     }
   }
-
-  // to be replaced by backend call
-  // @ts-ignore
-  // eslint-disable-next-line security/detect-object-injection
-  const user = mockUsers[email];
-  const report = user?.reports?.find(
-    (report: ReportSnippetType) => report.id === reportId
-  );
 
   if (!report) {
     return response

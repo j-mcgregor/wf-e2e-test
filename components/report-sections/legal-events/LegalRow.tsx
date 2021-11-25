@@ -27,7 +27,7 @@ const LegalRow = ({
 
   return (
     <div
-      className={`${textColor} flex flex-col py-1.5 border avoid-break`}
+      className={`${textColor} flex flex-col py-1.5 print:border avoid-break`}
       data-testid="legal-row-testid "
     >
       <div className="flex">

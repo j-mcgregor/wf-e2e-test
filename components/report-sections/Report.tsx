@@ -26,6 +26,11 @@ import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
 
 import usePrintClasses from '../../hooks/usePrintClasses';
+import {
+  calculateLGDRotation,
+  calculatePoDRotation,
+  calculateSMEZScoreRotation
+} from '../../lib/utils/report-helpers';
 
 const Report = ({
   data,
@@ -37,18 +42,29 @@ const Report = ({
   forPrint?: boolean;
 }) => {
   const t = useTranslations();
+
+  const companyName = data?.details?.company_name || data?.details?.name || '';
+
+  const lastFiledAccount = data?.financials?.[0]?.period || t('na');
+
+  const companyDetails = data?.details;
+  const companyAddress = companyDetails?.address;
+
   const date = new Date(`${data?.created_at}`);
+
+  const riskMetrics = data.risk_metrics?.[data.risk_metrics.length - 1];
+  const reliabilityIndex = data.reliability_index;
 
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
 
-  const transformedFinancials =
-    data?.financials &&
-    Object.keys(data.financials)
-      .map(year => {
-        // eslint-disable-next-line security/detect-object-injection
-        return { year, ...data.financials[year] };
-      })
-      .reverse();
+  // remove years that are dormant
+  const transformedFinancials = data?.financials?.filter((_year, index) => {
+    if (companyDetails?.status) {
+      return companyDetails?.status[Number(index)] === 'Active';
+    }
+    // handle issues with status preventing showing any financials
+    return true;
+  });
 
   const lastFiveYearsFinancials =
     (data?.financials && transformedFinancials?.slice(0, 5)) || [];
@@ -58,10 +74,10 @@ const Report = ({
 
   const pepFlags = React.useMemo(
     () =>
-      data?.personal?.shareholders?.filter(
+      data?.shareholders?.filter(
         (shareholder: any) => shareholder?.peps_sanctions_enforcements
       ).length,
-    [data?.personal?.shareholders]
+    [data?.shareholders]
   );
 
   const reportClasses = {
@@ -80,12 +96,13 @@ const Report = ({
 
   const printClasses = usePrintClasses(reportClasses);
 
-  const companyName = data?.details?.company_name || data?.details?.name || '';
-
-  const lastFiledAccount = data?.financials?.[0]?.period || t('na');
-
-  const companyDetails = data?.details;
-  const companyAddress = companyDetails?.address;
+  const smeZScoreRotation = calculateSMEZScoreRotation(
+    riskMetrics?.sme_z_score
+  );
+  const poDRotation = calculatePoDRotation(
+    riskMetrics.probability_of_default_1_year
+  );
+  const lGDDRotation = calculateLGDRotation(riskMetrics.loss_given_default);
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0">
@@ -137,11 +154,12 @@ const Report = ({
         <ReportSectionHeader text={t('risk_metrics')} />
         <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4 print:border-2">
           <Speedometer
-            title="SME Z-score"
-            value={304}
+            title={t('sme_zscore')}
+            value={riskMetrics.sme_z_score}
+            rotation={smeZScoreRotation}
             secondaryValues={[
-              { name: INDUSTRY_BENCHMARK, value: 403 },
-              { name: REGION_BENCHMARK, value: 204 }
+              { name: INDUSTRY_BENCHMARK, value: null },
+              { name: REGION_BENCHMARK, value: null }
             ]}
             hint={
               <Hint
@@ -151,10 +169,12 @@ const Report = ({
             }
           />
           <Speedometer
-            title="Probability of Default"
-            value="12.04%"
+            title={t('probability_of_default')}
+            value={riskMetrics.probability_of_default_1_year * 100}
+            rotation={poDRotation}
+            as="%"
             secondaryValues={[
-              { name: INDUSTRY_BENCHMARK, value: '6%' },
+              { name: INDUSTRY_BENCHMARK, value: null },
               { name: REGION_BENCHMARK, value: null }
             ]}
             hint={
@@ -169,10 +189,12 @@ const Report = ({
             }
           />
           <Speedometer
-            title="Loss Given Default"
-            value={304}
+            title={t('loss_give_default')}
+            value={riskMetrics.loss_given_default * 100}
+            rotation={lGDDRotation}
+            as="%"
             secondaryValues={[
-              { name: INDUSTRY_BENCHMARK, value: '12.5%' },
+              { name: INDUSTRY_BENCHMARK, value: null },
               { name: REGION_BENCHMARK, value: null }
             ]}
             hint={
@@ -183,7 +205,7 @@ const Report = ({
             }
           />
         </div>
-        <BondRating score={data?.risk_metrics?.bond_rating} />
+        <BondRating score={riskMetrics.bond_rating_equivalent} />
       </HashContainer>
       <HashContainer name={'Highlights'} id={`highlights`}>
         <ReportSectionHeader text={t('highlights')} />
@@ -191,31 +213,21 @@ const Report = ({
         <div
           className={`flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 print:items-start print:justify-evenly print:border-2 print:px-4 ${printClasses?.highlights?.container}`}
         >
-          <ReliabilityIndex
-            reliability={data?.highlights?.data_reliability.reliability}
-          />
+          <ReliabilityIndex reliability={data?.reliability_index.value} />
           {forPrint && (
             <div>
               <FinancialAccounts financialYears={transformedFinancials} />
             </div>
           )}
-          {!forPrint && (
-            <DataReliability
-              comment={data?.highlights?.data_reliability?.comment}
-            />
-          )}
+          {!forPrint && <DataReliability reliability={reliabilityIndex} />}
         </div>
-        {forPrint && (
-          <DataReliability
-            comment={data?.highlights?.data_reliability?.comment}
-          />
-        )}
+        {forPrint && <DataReliability reliability={reliabilityIndex} />}
         <div className="flex ">
           <RiskOutlook
             hintTitle="hint title"
             hintBody="hint body"
             financials={transformedFinancials}
-            benchmarks={data?.risk_metrics.sme_z_score}
+            benchmarks={{ value: riskMetrics.sme_z_score }}
             country={companyAddress?.country}
           />
         </div>
@@ -263,7 +275,7 @@ const Report = ({
           chairman={data?.personal?.chairman}
           directors={data.personal?.directors?.length}
           seniorManagement={data.personal?.senior_management?.length}
-          shareholders={data?.personal?.shareholders?.length}
+          shareholders={data?.shareholders?.length}
         />
 
         <Profiles
@@ -271,7 +283,9 @@ const Report = ({
           seniorManagement={data?.personal?.senior_management}
         />
 
-        <ShareHolderList shareholders={data?.personal?.shareholders} />
+        {data.shareholders && (
+          <ShareHolderList shareholders={data?.shareholders} />
+        )}
 
         {/* Removed till we know more about whether it is going to be included */}
         {/* <ShareHoldingCard

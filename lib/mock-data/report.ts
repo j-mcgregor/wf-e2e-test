@@ -658,159 +658,157 @@ const mockReport = {
       working_capital: '28699.0'
     }
   },
-  legal_events: {
-    legal_events: [
-      {
-        date: '2021-06-07',
-        description: 'Confirmation statement / Annual Report',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Financials', 'Annual Report filing']
-      },
-      {
-        date: '2021-05-24',
-        description: 'Accounts filed at Registry',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Financials', 'Statement filing']
-      },
-      {
-        date: '2020-06-20',
-        description: 'Confirmation statement / Annual Report',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Financials', 'Annual Report filing']
-      },
-      {
-        date: '2020-03-30',
-        description: 'Accounts filed at Registry',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Financials', 'Statement filing']
-      },
-      {
-        date: '2019-06-20',
-        description: 'Confirmation statement / Annual Report',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Financials', 'Annual Report filing']
-      },
-      {
-        date: '2019-03-29',
-        description: 'Accounts filed at Registry',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Financials', 'Statement filing']
-      },
-      {
-        date: '2018-06-20',
-        description: 'Confirmation statement / Annual Report',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Financials', 'Annual Report filing']
-      },
-      {
-        date: '2018-05-31',
-        description: 'Change of company officers',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Management', 'Change in position', 'Executive position']
-      },
-      {
-        date: '2018-04-09',
-        description: 'Charge lodged',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Default', 'Charge/mortgage']
-      },
-      {
-        date: '2018-04-10',
-        description: 'Legal IP Dispute',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Default', 'Negative event']
-      },
-      {
-        date: '2018-04-09',
-        description: 'LEGAL CHARGE',
-        details: [
-          {
-            AmountSecured: null,
-            Class: 'LegalEventMortgageData',
-            DateFullySatisfied: null,
-            DatePartiallySatisfied: null,
-            MortgageDetails:
-              'BY WAY OF A FIRST FIXED AND FLOATING CHARGE ON THE PROPERTY KNOWN AS 94A PRIORYROAD, SUTTON, SM3 8LNCONTAINS FIXED CHARGE.CONTAINS FLOATING CHARGE.LOATING CHARGE COVERS ALL THE PROPERTY OR UNDERTAKING OF THE COMPANY.CONTAINS NEGATIVE PLEDGE.',
-            MortgageDetailsFreeText: null,
-            PersonsEntitled: 'ALDERMORE BANK PLC'
-          },
-          {
-            AmountSecured: null, // "N/A"
-            Class: 'LegalEventMortgageData',
-            DateFullySatisfied: null,
-            DatePartiallySatisfied: null,
-            MortgageDetails:
-              "2.1 THE COMPANY WITH FULL TITLE GUARANTEE AND AS A CONTINUING SECURITY FOR THE MONIES AND LIABILITIES REFERRED TO IN CLAUSE 1 HEREBY CHARGES :2.1.1 ALL FREEHOLD AND LEASEHOLD PROPERTY TOGETHER WITH ALL BUILDINGS AND FIXTURES THEREON VESTEDIN THE COMPANY;2.1.2 ALL FUTURE FREEHOLD AND LEASEHOLD PROPERTY TOGETHER WITHALL BUILDINGS AND FIXTURES THEREON;2.1.3ALL BOOK AND OTHER DEBTS NOW OR AT ANYTIME HEREAFTER DUE OR OWING TO THE COMPANY, TOGETHER WITH THE BENEFIT OF ALL GUARANTEES, SECURITIES AND INDEMNITIES THEREOF AND ALL LIENS, RESERVATIONS OF TITLE, RIGHTS OF TRACING AND OTHER RIGHTS ENABLING THE COMPANY TO ENFORCE ANY SUCH DEBTS OR CLAIMS;2.1.4 ALL STOCKS, SHARES, DEBENTURES, LOAN CAPITAL, RIGHTS TO SUBSCRIBE FOR, CONVERT OTHER SECURITIES INTO OR OTHERWISE ACQUIRE ANY STOCKS, SHARES, DEBENTURES AND LOAN CAPITAL OF ANY OTHER BODY CORPORATE NOW OR AT ANY TIME HEREAFTER BELONGING TO THE COMPANY, TOGETHER WITH ALL DIVIDENDS, INTEREST AND OTHER INCOME AND OTHER RIGHTS OF WHATSOEVERKIND DERIVING FROM OR INCIDENTAL TO ANYOF THE FOREGOING;2.1.5 THE GOODWILL OFTHE COMPANY AND ITS UNCALLED CAPITAL NOW OR AT ANY TIME HEREAFTER IN EXISTENCE;2.1.6 ALL COPYRIGHTS, TRADEMARKS, PATENTS, REGISTERED DESIGNS AND OTHER INTELLECTUAL PROPERTY RIGHTS NOW OR AT ANY TIMEHEREAFTER BELONGING TO THE COMPANY;2.1.7 THE WHOLE OF THE COMPANY'S UNDERTAKING A ND ALL ITS PROPERTY AND ASSETS WHATSOEVER OR WHERESOEVER, PRESENT OR FUTURE,OTHER THAN ANY PROPERTY OR ASSETS FROM TIME TO TIME OR FOR THE TIME BEING EFFECTIVELY CHARGED TO THE BANK BY WAY OF FIXED CHARGE PURSUANT TO THIS DEBENTURE. CONTAINS FIXED CHARGE.CONTAINS FLOATING CHARGE.FLOATING CHARGE COVERS ALL THE PROPERTY OR UNDERTAKING OF THE COMPANY.CONTAINS NEGATIVE PLEDGE.",
-            MortgageDetailsFreeText: null,
-            PersonsEntitled: 'ALDERMORE BANK PLC'
-          }
-        ],
-        id: null,
-        source: 'Companies House',
-        types: ['Default', 'Charge/mortgage']
-      },
-      {
-        date: '2018-03-29',
-        description: 'Accounts filed at Registry',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Financials', 'Statement filing']
-      },
-      {
-        date: '2015-07-14',
-        description: 'Change in registered office address',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Change in articles', 'Address change']
-      },
-      {
-        date: '2010-04-27',
-        description: 'Certificate of incorporation on change of name',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Change in articles', 'Company name change']
-      },
-      {
-        date: '2010-04-19',
-        description: 'Change of name',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Change in articles', 'Company name change']
-      },
-      {
-        date: '2006-06-22',
-        description: 'Memorandum and articles',
-        details: null,
-        id: null,
-        source: 'Companies House',
-        types: ['Change in articles']
-      }
-    ]
-  },
+  legal_events: [
+    {
+      date: '2021-06-07',
+      description: 'Confirmation statement / Annual Report',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Financials', 'Annual Report filing']
+    },
+    {
+      date: '2021-05-24',
+      description: 'Accounts filed at Registry',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Financials', 'Statement filing']
+    },
+    {
+      date: '2020-06-20',
+      description: 'Confirmation statement / Annual Report',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Financials', 'Annual Report filing']
+    },
+    {
+      date: '2020-03-30',
+      description: 'Accounts filed at Registry',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Financials', 'Statement filing']
+    },
+    {
+      date: '2019-06-20',
+      description: 'Confirmation statement / Annual Report',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Financials', 'Annual Report filing']
+    },
+    {
+      date: '2019-03-29',
+      description: 'Accounts filed at Registry',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Financials', 'Statement filing']
+    },
+    {
+      date: '2018-06-20',
+      description: 'Confirmation statement / Annual Report',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Financials', 'Annual Report filing']
+    },
+    {
+      date: '2018-05-31',
+      description: 'Change of company officers',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Management', 'Change in position', 'Executive position']
+    },
+    {
+      date: '2018-04-09',
+      description: 'Charge lodged',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Default', 'Charge/mortgage']
+    },
+    {
+      date: '2018-04-10',
+      description: 'Legal IP Dispute',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Default', 'Negative event']
+    },
+    {
+      date: '2018-04-09',
+      description: 'LEGAL CHARGE',
+      details: [
+        {
+          AmountSecured: null,
+          Class: 'LegalEventMortgageData',
+          DateFullySatisfied: null,
+          DatePartiallySatisfied: null,
+          MortgageDetails:
+            'BY WAY OF A FIRST FIXED AND FLOATING CHARGE ON THE PROPERTY KNOWN AS 94A PRIORYROAD, SUTTON, SM3 8LNCONTAINS FIXED CHARGE.CONTAINS FLOATING CHARGE.LOATING CHARGE COVERS ALL THE PROPERTY OR UNDERTAKING OF THE COMPANY.CONTAINS NEGATIVE PLEDGE.',
+          MortgageDetailsFreeText: null,
+          PersonsEntitled: 'ALDERMORE BANK PLC'
+        },
+        {
+          AmountSecured: null, // "N/A"
+          Class: 'LegalEventMortgageData',
+          DateFullySatisfied: null,
+          DatePartiallySatisfied: null,
+          MortgageDetails:
+            "2.1 THE COMPANY WITH FULL TITLE GUARANTEE AND AS A CONTINUING SECURITY FOR THE MONIES AND LIABILITIES REFERRED TO IN CLAUSE 1 HEREBY CHARGES :2.1.1 ALL FREEHOLD AND LEASEHOLD PROPERTY TOGETHER WITH ALL BUILDINGS AND FIXTURES THEREON VESTEDIN THE COMPANY;2.1.2 ALL FUTURE FREEHOLD AND LEASEHOLD PROPERTY TOGETHER WITHALL BUILDINGS AND FIXTURES THEREON;2.1.3ALL BOOK AND OTHER DEBTS NOW OR AT ANYTIME HEREAFTER DUE OR OWING TO THE COMPANY, TOGETHER WITH THE BENEFIT OF ALL GUARANTEES, SECURITIES AND INDEMNITIES THEREOF AND ALL LIENS, RESERVATIONS OF TITLE, RIGHTS OF TRACING AND OTHER RIGHTS ENABLING THE COMPANY TO ENFORCE ANY SUCH DEBTS OR CLAIMS;2.1.4 ALL STOCKS, SHARES, DEBENTURES, LOAN CAPITAL, RIGHTS TO SUBSCRIBE FOR, CONVERT OTHER SECURITIES INTO OR OTHERWISE ACQUIRE ANY STOCKS, SHARES, DEBENTURES AND LOAN CAPITAL OF ANY OTHER BODY CORPORATE NOW OR AT ANY TIME HEREAFTER BELONGING TO THE COMPANY, TOGETHER WITH ALL DIVIDENDS, INTEREST AND OTHER INCOME AND OTHER RIGHTS OF WHATSOEVERKIND DERIVING FROM OR INCIDENTAL TO ANYOF THE FOREGOING;2.1.5 THE GOODWILL OFTHE COMPANY AND ITS UNCALLED CAPITAL NOW OR AT ANY TIME HEREAFTER IN EXISTENCE;2.1.6 ALL COPYRIGHTS, TRADEMARKS, PATENTS, REGISTERED DESIGNS AND OTHER INTELLECTUAL PROPERTY RIGHTS NOW OR AT ANY TIMEHEREAFTER BELONGING TO THE COMPANY;2.1.7 THE WHOLE OF THE COMPANY'S UNDERTAKING A ND ALL ITS PROPERTY AND ASSETS WHATSOEVER OR WHERESOEVER, PRESENT OR FUTURE,OTHER THAN ANY PROPERTY OR ASSETS FROM TIME TO TIME OR FOR THE TIME BEING EFFECTIVELY CHARGED TO THE BANK BY WAY OF FIXED CHARGE PURSUANT TO THIS DEBENTURE. CONTAINS FIXED CHARGE.CONTAINS FLOATING CHARGE.FLOATING CHARGE COVERS ALL THE PROPERTY OR UNDERTAKING OF THE COMPANY.CONTAINS NEGATIVE PLEDGE.",
+          MortgageDetailsFreeText: null,
+          PersonsEntitled: 'ALDERMORE BANK PLC'
+        }
+      ],
+      id: null,
+      source: 'Companies House',
+      types: ['Default', 'Charge/mortgage']
+    },
+    {
+      date: '2018-03-29',
+      description: 'Accounts filed at Registry',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Financials', 'Statement filing']
+    },
+    {
+      date: '2015-07-14',
+      description: 'Change in registered office address',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Change in articles', 'Address change']
+    },
+    {
+      date: '2010-04-27',
+      description: 'Certificate of incorporation on change of name',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Change in articles', 'Company name change']
+    },
+    {
+      date: '2010-04-19',
+      description: 'Change of name',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Change in articles', 'Company name change']
+    },
+    {
+      date: '2006-06-22',
+      description: 'Memorandum and articles',
+      details: null,
+      id: null,
+      source: 'Companies House',
+      types: ['Change in articles']
+    }
+  ],
   personal: {
     ceo: 'John Smith',
     cfo: 'Jane Doe',
