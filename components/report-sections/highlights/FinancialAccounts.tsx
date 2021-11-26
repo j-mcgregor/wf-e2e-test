@@ -20,7 +20,7 @@ const FinancialAccounts = ({ financialYears }: FinancialAccountProps) => {
   const years = preYears.map(index => `${currentYear - index}`);
 
   const availableFinancialYears = financialYears?.map(
-    financialData => financialData.year
+    financialData => financialData.period
   );
 
   const t = useTranslations();

@@ -233,7 +233,7 @@ const Report = ({
         </div>
         <div className="flex flex-col lg:flex-row py-6 justify-between">
           {!forPrint && (
-            <div>
+            <div className="min-w-[160px]">
               <FinancialAccounts financialYears={transformedFinancials} />
             </div>
           )}
