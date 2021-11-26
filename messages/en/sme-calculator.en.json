@@ -34,6 +34,7 @@
   "registered": "Registered",
   "id": "ID",
   "templates": "Templates",
+  "search": "Search",
   "full_template": {
     "title": "Full Template (.csv)",
     "body": "A full report template in CSV format. Import anywhere and add your own data."

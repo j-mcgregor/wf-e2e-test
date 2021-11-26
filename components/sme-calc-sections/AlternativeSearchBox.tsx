@@ -1,5 +1,5 @@
 import { useTranslations } from 'use-intl';
-import { useState, useEffect, useRef, KeyboardEvent } from 'react';
+import { useState, useRef, KeyboardEvent } from 'react';
 import { CompanyType } from '../../types/global';
 import {
   ExclamationCircleIcon,
@@ -11,7 +11,6 @@ import LoadingIcon from '../svgs/LoadingIcon';
 import ResultCompany from '../elements/ResultCompany';
 import useSWR from 'swr';
 import fetcher from '../../lib/utils/fetcher';
-import debounce from '../../lib/utils/debounce';
 
 interface SearchBoxProps {
   disabled?: boolean;
@@ -19,7 +18,7 @@ interface SearchBoxProps {
   setChosenResult: (e: CompanyType | null) => void;
 }
 
-const SearchBox = ({
+const AlternativeSearchBox = ({
   disabled,
   countryCode,
   setChosenResult
@@ -27,7 +26,10 @@ const SearchBox = ({
   const t = useTranslations();
 
   const [searchHasFocus, setSearchHasFocus] = useState(false);
+  const [inputValue, setInputValue] = useState('');
   const [searchValue, setSearchValue] = useState<string | null>('');
+
+  const [searchSubmitted, setSearchSubmitted] = useState(false);
 
   const loadingText = t('loading');
   const searchStartText = t('search_start');
@@ -46,13 +48,16 @@ const SearchBox = ({
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const companySearch = debounce(() => setSearchValue(e.target.value), 1000);
-    companySearch();
+  const handleSearch = (): void => {
+    if (inputValue.length > 0) {
+      setSearchHasFocus(!searchHasFocus);
+      setSearchValue(inputValue);
+    }
   };
 
+  // COUNTRY FORCED TO GB TO TEST API - NEEDS TO BE SET BACK TO 'countryCode' for alt counties API's
   const { data } = useSWR<CompanyType[] & { error?: string }>(
-    `/api/search-companies?query=${searchValue}&country=${countryCode}`,
+    `/api/search-companies?query=${searchValue}&country=${'GB'}`,
     fetcher
   );
 
@@ -70,7 +75,6 @@ const SearchBox = ({
 
         <input
           disabled={disabled}
-          onFocus={() => setSearchHasFocus(true)}
           type="text"
           ref={inputRef}
           onKeyUp={handleKeyUp}
@@ -78,11 +82,18 @@ const SearchBox = ({
           id="search-companies"
           className="focus:ring-highlight focus:border-highlight block w-full pl-10 text-sm border-primary rounded bg-bg"
           placeholder={`${t('enter_company_name')}`}
-          onChange={e => handleChange(e)}
+          onChange={e => setInputValue(e.target.value)}
         />
         {data && data.length > 0 && (
           <label className="absolute right-5">{data?.length} results</label>
         )}
+
+        <button
+          className="absolute right-0 bg-primary h-full w-[120px] text-white text-base rounded"
+          onClick={() => handleSearch()}
+        >
+          {t('search')}
+        </button>
       </div>
 
       {/* Handles pre results, searching and no data */}
@@ -153,4 +164,4 @@ const SearchBox = ({
   );
 };
 
-export default SearchBox;
+export default AlternativeSearchBox;

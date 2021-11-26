@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import ErrorMessage from '../elements/ErrorMessage';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import * as Sentry from '@sentry/nextjs';
+import AlternativeSearchBox from './AlternativeSearchBox';
 
 interface SearchContainerProps {
   disabled: boolean;
@@ -23,11 +24,13 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const router = useRouter();
 
   const currencies: SimpleValue[] = SettingsSettings.supportedCurrencies;
+
   const countries: SimpleValue[] = SettingsSettings.supportedCountries;
 
   const { user } = useRecoilValue(appState);
   // default country taken from user profile (settings)
   const defaultCountry = user?.preferences?.defaults?.reporting_country;
+
   const defaultCurrency = user?.preferences?.defaults?.currency;
 
   // helper function to get index of an optionValue
@@ -62,6 +65,13 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   // toggle the advance search
   const [showAdvanceSearch, setShowAdvanceSearch] = useState(true);
 
+  // NEW - Array for countries to show alternative search component
+  const alternativeSearchCountries = ['US', 'DE'];
+  // NEW - Matches if selected country is in the alternative countries array
+  const isAlternativeSearchCountry = alternativeSearchCountries.filter(
+    x => x === selectedCountry?.code
+  );
+
   useEffect(() => {
     const country = countries.find(x => x.code === defaultCountry);
     setSelectedCountry(country);
@@ -79,9 +89,11 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     // TO DO: this is not an effective way to match the two data sets
     // it is just being used as a placeholder till we create a list of
     // countries that WF operates in can use
+
     const matchedCurrency = currencies.find(
-      x => x.optionName === selectedCountry?.optionValue
+      x => x.code === selectedCountry?.code
     );
+
     matchedCurrency && setSelectedCurrency(matchedCurrency);
 
     // if the country does not have a search API then open advance search
@@ -89,12 +101,16 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
 
     // if the country has a search API close advance search to encourage basic search
     countryHasSearchAPI && setShowAdvanceSearch(false);
+
+    // if it is an active alternative search country, set advance search to false
+    isAlternativeSearchCountry.length !== 0 && setShowAdvanceSearch(false);
   }, [selectedCountry]);
 
   // validate the generate report button
   const canGenerateReport = selectedCompany || regSearchValue;
 
   //? event handlers
+
   const handleSelectCountry = (value: SimpleValue): void => {
     return setSelectedCountry(value);
   };
@@ -105,6 +121,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
 
   const handleSelectCurrency = (value: SimpleValue): void => {
     const currency = getIndex(value, currencies);
+
     setSelectedCurrency(currencies[Number(currency)]);
   };
 
@@ -156,13 +173,26 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
           clearCompanySelection={() => setSelectedCompany(null)}
           handleSelectCountry={handleSelectCountry}
         >
-          <SearchBox
-            disabled={showAdvanceSearch}
-            countryCode={selectedCountry?.optionValue}
-            setChosenResult={(company: CompanyType | null) =>
-              setSelectedCompany(company)
-            }
-          />
+          {/* show original search box when UK is selected  */}
+          {selectedCountry?.code === 'GB' && (
+            <SearchBox
+              disabled={showAdvanceSearch}
+              countryCode={selectedCountry?.optionValue}
+              setChosenResult={(company: CompanyType | null) =>
+                setSelectedCompany(company)
+              }
+            />
+          )}
+
+          {isAlternativeSearchCountry.length !== 0 && (
+            <AlternativeSearchBox
+              disabled={showAdvanceSearch}
+              countryCode={selectedCountry?.optionValue}
+              setChosenResult={(company: CompanyType | null) =>
+                setSelectedCompany(company)
+              }
+            />
+          )}
         </BasicSearch>
 
         {/* SEARCH OPTIONS TO ONLY SHOW IF NOT UK */}
