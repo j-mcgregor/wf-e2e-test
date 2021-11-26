@@ -100,9 +100,9 @@ const Report = ({
     riskMetrics?.sme_z_score
   );
   const poDRotation = calculatePoDRotation(
-    riskMetrics.probability_of_default_1_year
+    riskMetrics?.probability_of_default_1_year
   );
-  const lGDDRotation = calculateLGDRotation(riskMetrics.loss_given_default);
+  const lGDDRotation = calculateLGDRotation(riskMetrics?.loss_given_default);
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0">
@@ -155,7 +155,7 @@ const Report = ({
         <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4 print:border-2">
           <Speedometer
             title={t('sme_zscore')}
-            value={riskMetrics.sme_z_score}
+            value={riskMetrics?.sme_z_score}
             rotation={smeZScoreRotation}
             secondaryValues={[
               { name: INDUSTRY_BENCHMARK, value: null },
@@ -170,7 +170,7 @@ const Report = ({
           />
           <Speedometer
             title={t('probability_of_default')}
-            value={riskMetrics.probability_of_default_1_year * 100}
+            value={riskMetrics?.probability_of_default_1_year * 100}
             rotation={poDRotation}
             as="%"
             secondaryValues={[
@@ -190,7 +190,7 @@ const Report = ({
           />
           <Speedometer
             title={t('loss_give_default')}
-            value={riskMetrics.loss_given_default * 100}
+            value={riskMetrics?.loss_given_default * 100}
             rotation={lGDDRotation}
             as="%"
             secondaryValues={[
@@ -205,7 +205,7 @@ const Report = ({
             }
           />
         </div>
-        <BondRating score={riskMetrics.bond_rating_equivalent} />
+        <BondRating score={riskMetrics?.bond_rating_equivalent} />
       </HashContainer>
       <HashContainer name={'Highlights'} id={`highlights`}>
         <ReportSectionHeader text={t('highlights')} />
@@ -213,7 +213,7 @@ const Report = ({
         <div
           className={`flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 print:items-start print:justify-evenly print:border-2 print:px-4 ${printClasses?.highlights?.container}`}
         >
-          <ReliabilityIndex reliability={data?.reliability_index.value} />
+          <ReliabilityIndex reliability={data?.reliability_index?.value} />
           {forPrint && (
             <div>
               <FinancialAccounts financialYears={transformedFinancials} />
@@ -227,7 +227,7 @@ const Report = ({
             hintTitle="hint title"
             hintBody="hint body"
             financials={transformedFinancials}
-            benchmarks={{ value: riskMetrics.sme_z_score }}
+            benchmarks={{ value: riskMetrics?.sme_z_score }}
             country={companyAddress?.country}
           />
         </div>

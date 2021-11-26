@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { useReportNavItems } from '../../hooks/useNavigation';
 import Button from '../elements/Button';
 import SkeletonMenu from '../skeletons/SkeletonMenu';
+import { useRouter } from 'next/router';
 
 interface ReportNavProps {
   companyName: string;
@@ -20,7 +21,8 @@ const nonTestingProps = {
 const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
   const navItems = useReportNavItems();
   const t = useTranslations();
-
+  const router = useRouter();
+  const { id = [] } = router.query;
   const [activeItem, setActiveItem] = useState<string>('summary');
 
   if (loading) {
@@ -106,7 +108,7 @@ const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
         <Button
           variant="alt"
           className="w-full"
-          linkTo="/report/5/print"
+          linkTo={`/report/${id}/print`}
           target="_blank"
           rel="noreferrer"
         >

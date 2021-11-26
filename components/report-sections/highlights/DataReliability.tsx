@@ -9,9 +9,9 @@ const DataReliability = ({
   const t = useTranslations();
 
   const reliabilityObj = {
-    isReliable: reliability.value >= 0.65,
-    isCaution: reliability.value >= 0.35 && reliability.value < 0.65,
-    isConcern: reliability.value < 0.35
+    isReliable: reliability?.value >= 0.65,
+    isCaution: reliability?.value >= 0.35 && reliability.value < 0.65,
+    isConcern: reliability?.value < 0.35
   };
 
   const reliableText =
