@@ -51,30 +51,33 @@ const ReportTable = ({
 
   return (
     <div className="flex flex-col">
-      <div className="py-2 align-middle min-w-full min-h-full">
+      <div className="py-4 align-middle min-w-full min-h-full">
         <div className={`${shadowClasses} overflow-auto rounded`}>
           <table className="min-w-full divide-y-2 divide-gray-200">
             <thead className="bg-gray-50">
               <tr className={`${headerSize} text-left  tracking-wider`}>
                 <th
                   scope="col"
-                  className={`${borderClasses} px-3 sm:px-6 py-2 font-medium`}
+                  className={`${borderClasses} px-3 sm:px-4 py-2 text-center font-medium`}
                 >
                   {t('company_name')}
                 </th>
                 <th
                   scope="col"
-                  className={`${borderClasses} px-3 sm:px-6  py-2 font-medium`}
+                  className={`${borderClasses} px-3 sm:px-4  py-2 text-center font-medium`}
                 >
                   {t('sme_z-score')}
                 </th>
                 <th
                   scope="col"
-                  className={`${borderClasses} px-3 sm:px-6 py-3 font-medium`}
+                  className={`${borderClasses} px-3 sm:px-4 py-3 text-center font-medium`}
                 >
                   {t('bond_rating')}
                 </th>
-                <th scope="col" className="px-3 sm:px-6 py-3 font-medium ">
+                <th
+                  scope="col"
+                  className="px-3 sm:px-4 py-3 text-center font-medium "
+                >
                   {t('created')}
                 </th>
               </tr>
@@ -145,7 +148,7 @@ const ReportTable = ({
           {/* display when reports array is empty */}
           {!isLoading && reports?.length === 0 && (
             <div className="flex items-center justify-center text-center bg-gray-200">
-              <div className="my-8 mx-8 md:mx-14 py-6 px-4 sm:px-6 md:px-1 flex flex-col items-center">
+              <div className="mt-8 mx-8 md:mx-14 py-6 px-4 sm:px-6 md:px-1 flex flex-col items-center">
                 <DocumentReportIcon className="h-10 w-10 mb-2" />
                 <h3 className="font-bold">{t('no_reports_generated')}</h3>
                 <p>{t('get_started_with_new_report')}</p>
