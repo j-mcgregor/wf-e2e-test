@@ -22,7 +22,7 @@ const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
   const navItems = useReportNavItems();
   const t = useTranslations();
   const router = useRouter();
-  const { id = [] } = router.query;
+  const { id = [] } = router?.query;
   const [activeItem, setActiveItem] = useState<string>('summary');
 
   if (loading) {
