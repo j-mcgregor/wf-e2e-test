@@ -7,11 +7,12 @@ import BasicSearch from './BasicSearch';
 import SearchBox from './SearchBox';
 import { useRecoilValue } from 'recoil';
 import appState from '../../lib/appState';
-import {
-  supportedCountries,
-  supportedCurrencies,
-  validCountryCodes
-} from '../../lib/settings/sme-calc.settings';
+import { validCountryCodes } from '../../lib/settings/sme-calc.settings';
+import fetcher from '../../lib/utils/fetcher';
+import { useRouter } from 'next/router';
+import ErrorMessage from '../elements/ErrorMessage';
+import SettingsSettings from '../../lib/settings/settings.settings';
+import * as Sentry from '@sentry/nextjs';
 
 interface SearchContainerProps {
   disabled: boolean;
@@ -19,14 +20,16 @@ interface SearchContainerProps {
 
 const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const t = useTranslations();
+  const router = useRouter();
 
-  const currencies: (SimpleValue & { name: string })[] = supportedCurrencies;
-  const countries: SimpleValue[] = supportedCountries;
+  const currencies: SimpleValue[] = SettingsSettings.supportedCurrencies;
+  const countries: SimpleValue[] = SettingsSettings.supportedCountries;
 
   const { user } = useRecoilValue(appState);
   // default country taken from user profile (settings)
   const defaultCountry = user?.preferences?.defaults?.reporting_country;
   const defaultCurrency = user?.preferences?.defaults?.currency;
+
   // helper function to get index of an optionValue
   const getIndex = (item: SimpleValue, array: SimpleValue[]) => {
     return array.findIndex(e => {
@@ -34,14 +37,14 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     });
   };
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ error: false, message: '' });
+
   const [regSearchValue, setRegSearchValue] = useState<string | null>();
 
   const [selectedCountry, setSelectedCountry] = useState<
     SimpleValue | undefined
   >(undefined);
-
-  // get the country code for the search API
-  const countryCode = selectedCountry?.code;
 
   const [selectedCurrency, setSelectedCurrency] = useState<
     SimpleValue | undefined
@@ -77,7 +80,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     // it is just being used as a placeholder till we create a list of
     // countries that WF operates in can use
     const matchedCurrency = currencies.find(
-      x => x.name === selectedCountry?.optionValue
+      x => x.optionName === selectedCountry?.optionValue
     );
     matchedCurrency && setSelectedCurrency(matchedCurrency);
 
@@ -88,7 +91,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     countryHasSearchAPI && setShowAdvanceSearch(false);
   }, [selectedCountry]);
 
-  // validate the generate report bu  tton
+  // validate the generate report button
   const canGenerateReport = selectedCompany || regSearchValue;
 
   //? event handlers
@@ -103,6 +106,32 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const handleSelectCurrency = (value: SimpleValue): void => {
     const currency = getIndex(value, currencies);
     setSelectedCurrency(currencies[Number(currency)]);
+  };
+
+  const handleGenerateReport = async (): Promise<void> => {
+    setLoading(true);
+    const params = {
+      iso_code: selectedCountry?.optionValue,
+      company_id: showAdvanceSearch
+        ? regSearchValue
+        : selectedCompany?.company_number,
+      currency: selectedCurrency?.optionValue,
+      accounts_type: 0
+    };
+
+    try {
+      const res = await fetcher('/api/reports/report', 'POST', params);
+      if (res?.reportId) {
+        router.push(`/report/${res.reportId}`);
+      }
+      if (!res?.reportId) {
+        Sentry.captureException({ error: res.error, message: res.message });
+        setError({ error: true, message: res.message });
+        setLoading(false);
+      }
+    } catch (err) {
+      Sentry.captureException(err);
+    }
   };
 
   return (
@@ -129,7 +158,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         >
           <SearchBox
             disabled={showAdvanceSearch}
-            countryCode={countryCode}
+            countryCode={selectedCountry?.optionValue}
             setChosenResult={(company: CompanyType | null) =>
               setSelectedCompany(company)
             }
@@ -146,11 +175,18 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
           />
         )}
 
+        <div>
+          {error.error && <ErrorMessage text={t('REPORT_FETCHING_ERROR')} />}
+          {error.message && <ErrorMessage text={error.message} />}
+        </div>
+
         <div className="flex sm:flex-row flex-col items-center my-6">
           <Button
             variant="highlight"
             className="text-primary rounded-none w-full mb-2 sm:mb-0 sm:max-w-[200px]"
-            disabled={!canGenerateReport}
+            disabled={!canGenerateReport || loading}
+            loading={loading}
+            onClick={handleGenerateReport}
           >
             {t('generate_report')}
           </Button>

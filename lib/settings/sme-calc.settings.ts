@@ -2,15 +2,16 @@ import countryCodeJSON from '../data/countryCodes.json';
 import currencyJSON from '../data/countryCurrency.json';
 import { createCurrencyString } from '../utils/text-helpers';
 
-export const supportedCountries = countryCodeJSON.map(country => ({
-  optionValue: country.name,
-  code: country.code
-}));
-export const supportedCurrencies = currencyJSON.map(currency => ({
-  optionValue: createCurrencyString(currency),
-  code: currency.Code,
-  name: currency.CountryName
-}));
+// export const supportedCountries = countryCodeJSON.map(country => ({
+//   optionName: country.name,
+//   optionValue: country.code,
+//   code: country.code,
+// }));
+// export const supportedCurrencies = currencyJSON.map(currency => ({
+//   optionValue: createCurrencyString(currency),
+//   code: currency.Code,
+//   optionName: currency.CountryName
+// }));
 
 export const validCountryCodes = ['GB'];
 

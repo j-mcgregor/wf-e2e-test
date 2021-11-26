@@ -1,3 +1,4 @@
+import { useTranslations } from 'use-intl';
 import { convertNumberToPercentage } from '../../../lib/utils/text-helpers';
 import { TranslateInput } from '../../../types/global';
 import LoadingIcon from '../../svgs/LoadingIcon';
@@ -5,7 +6,7 @@ import LoadingIcon from '../../svgs/LoadingIcon';
 interface ESGCardProps {
   result?: TranslateInput;
   rating?: string | number;
-  resultText: TranslateInput;
+  resultText?: TranslateInput;
   title: TranslateInput;
   description: TranslateInput;
   results?: { name: string; score: number }[];
@@ -19,6 +20,7 @@ const ESGCard = ({
   rating,
   results
 }: ESGCardProps) => {
+  const t = useTranslations();
   return (
     <div
       className="flex bg-white rounded-sm shadow-sm my-4 px-8 py-8 items-center justify-between
@@ -40,7 +42,7 @@ const ESGCard = ({
                 : 'bg-bg'
             } w-40 px-10 py-6 rounded-lg uppercase font-bold`}
           >
-            {result !== 'neutral' ? <p>{rating}</p> : <p>NEUTRAL</p>}
+            {result !== 'neutral' ? <p>{rating}</p> : <p>{t('neutral')}</p>}
           </div>
         )}
 

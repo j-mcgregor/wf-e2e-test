@@ -12,12 +12,14 @@ const SettingsSettings = {
 
   supportedCountries: countryCodeJSON.map(country => ({
     optionName: country.name,
-    optionValue: country.code
+    optionValue: country.code,
+    code: country.code
   })),
 
   supportedCurrencies: currencyJSON.map(currency => ({
     optionName: createCurrencyString(currency),
-    optionValue: currency.Code
+    optionValue: currency.Code,
+    code: currency.Code
   })),
 
   preferences: {

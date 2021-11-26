@@ -27,7 +27,7 @@ const NewsFeed = ({
 }) => {
   // demo engaged for the moment, returns saved response
   const { data } = useSWR<NewsFeedApiResProps>(
-    `/api/reports/news?company_name=${companyName}&${country}&type=demo`,
+    `/api/reports/news?company_name=${companyName}&${country}`,
     fetcher
   );
   const newsHits = data?.ok && data?.data ? data.data : [];

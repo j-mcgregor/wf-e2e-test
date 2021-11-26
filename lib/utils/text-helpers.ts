@@ -5,6 +5,10 @@ export const camelCaseToSentenceCase = (str: string): string => {
   return (isString(str) && str.replace(/([a-z])([A-Z])/g, '$1 $2')) || '';
 };
 
+export const makeWebSafe = (str: string): string => {
+  return /https?/.test(str) ? str : `http://${str}`;
+};
+
 export const toTitleCase = (str: string): string => {
   return isString(str)
     ? str
@@ -48,4 +52,4 @@ export const createReportTitle = (companyName: string, createdAt: string) => {
 };
 
 export const convertNumberToPercentage = (num: number) =>
-  `${Number(num) * 100}%`;
+  `${Number(num * 100).toFixed(1)}%`;

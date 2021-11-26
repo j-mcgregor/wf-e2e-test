@@ -7,6 +7,7 @@ import Input from '../elements/Input';
 export type SimpleValue = {
   optionValue: string;
   code?: string;
+  optionName?: string;
 };
 
 type AdvancedSearchType = {

@@ -2,6 +2,7 @@ import React from 'react';
 import useSWR from 'swr';
 import { useTranslations } from 'use-intl';
 import fetcher from '../../../lib/utils/fetcher';
+import { addHttps } from '../../../lib/utils/text-helpers';
 import { ReportSectionHeader } from '../../elements/Headers';
 import ESGCard from './ESGCard';
 
@@ -25,9 +26,12 @@ const ESGContainer = ({
   const { pepFlags } = governance;
   const t = useTranslations();
 
+  const validWebsite = addHttps(website);
+
   // demo mode is engaged for now
   const { data } = useSWR<EsgApiResponse>(
-    `/api/reports/esg?company_website=${website}&company_name=${companyName}&type=demo`,
+    `/api/reports/esg?company_website=${validWebsite}&company_name=${companyName}&type=website`,
+    // `/api/reports/esg?company_website=${website}&company_name=${companyName}&type=website`,
     fetcher
   );
 
@@ -46,7 +50,11 @@ const ESGContainer = ({
       <ESGCard
         title={t('industry')}
         description={t('data_on_industry')}
-        resultText={t('top_3_industries')}
+        resultText={
+          data?.data?.length && data.data.length > 0
+            ? t('top_3_industries')
+            : t('no_esg_results_found')
+        }
         results={data?.data}
       />
       <ESGCard

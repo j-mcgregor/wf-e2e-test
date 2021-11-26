@@ -9,6 +9,7 @@ function classNames(...classes: string[]) {
 
 type Value = {
   optionValue: string;
+  optionName: string;
 };
 
 interface SelectMenuProps {
@@ -39,7 +40,7 @@ const SelectMenu = ({
           } bg-bg relative w-full border border-primary rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-highlight focus:border-highlight sm:text-sm`}
         >
           <span className={`block truncate'`}>
-            {selectedValue ? selectedValue.optionValue : defaultValue}
+            {selectedValue ? selectedValue.optionName : defaultValue}
           </span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
             <SelectorIcon
@@ -75,7 +76,7 @@ const SelectMenu = ({
                         'block truncate'
                       )}
                     >
-                      {value.optionValue}
+                      {value.optionName}
                     </span>
 
                     {selected ? (
