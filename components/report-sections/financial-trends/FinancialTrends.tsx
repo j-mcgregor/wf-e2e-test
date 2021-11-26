@@ -64,7 +64,7 @@ const FinancialTrends = ({ data }: FinancialTrendsProps) => {
           return (
             <div
               key={index}
-              className={`grid sm:grid-cols-2 md:grid-cols-3 gap-2 print:grid-cols-3 sm:print:grid-cols-3 md:print:grid-cols-3 avoid-break ${
+              className={`grid sm:grid-cols-2 md:grid-cols-3 gap-2 print:grid-cols-3 sm:print:grid-cols-3  mt-2  md:print:grid-cols-3 avoid-break ${
                 index !== 0 && 'print:pt-20'
               }`}
             >

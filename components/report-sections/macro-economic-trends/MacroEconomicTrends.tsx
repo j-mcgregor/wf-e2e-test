@@ -46,7 +46,7 @@ const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
         return (
           <div
             key={index}
-            className={`grid lg:grid-cols-2 sm:print:grid-cols-2 print:grid-cols-2 gap-2 avoid-break ${
+            className={`grid md:grid-cols-2 sm:print:grid-cols-2 print:grid-cols-2 gap-2 mt-2 avoid-break ${
               index !== 0 && 'print:pt-10'
             }`}
           >

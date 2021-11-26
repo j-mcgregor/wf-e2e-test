@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import SelectMenu from '../elements/SelectMenu';
-import { XIcon } from '@heroicons/react/outline';
 import { SimpleValue } from './AdvancedSearch';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import { useTranslations } from 'next-intl';
