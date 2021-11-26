@@ -5,7 +5,7 @@ export const camelCaseToSentenceCase = (str: string): string => {
   return (isString(str) && str.replace(/([a-z])([A-Z])/g, '$1 $2')) || '';
 };
 
-export const makeWebSafe = (str: string): string => {
+export const addHttps = (str: string): string => {
   return /https?/.test(str) ? str : `http://${str}`;
 };
 

@@ -2,21 +2,17 @@ import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { TranslateInput } from '../../types/global';
+import { SimpleValue } from '../sme-calc-sections/AdvancedSearch';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-type Value = {
-  optionValue: string;
-  optionName: string;
-};
-
 interface SelectMenuProps {
-  defaultValue?: TranslateInput | Value;
-  values?: Value[];
-  selectedValue?: Value;
-  setSelectedValue: (value: Value) => void;
+  defaultValue?: TranslateInput | SimpleValue;
+  values?: SimpleValue[];
+  selectedValue?: SimpleValue;
+  setSelectedValue: (value: SimpleValue) => void;
   disabled?: boolean;
 }
 
