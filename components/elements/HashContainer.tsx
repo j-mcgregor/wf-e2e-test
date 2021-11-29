@@ -20,9 +20,7 @@ const HashContainer = ({
 
   return (
     <div
-      className={`${
-        fullHeight && 'min-h-screen'
-      } sm:pt-10 lg:pt-0 ${className}`}
+      className={`sm:pt-10 lg:pt-0 ${className}`}
       ref={containerRef}
       id={id}
       {...restProps}

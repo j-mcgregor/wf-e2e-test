@@ -19,12 +19,12 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
   const session = await getSession({ req: request });
 
   // unauthenticated requests
-  // if (!session) {
-  //   return response.status(403).json({
-  //     error: UNAUTHORISED,
-  //     message: 'Unauthorised api request, please login to continue.'
-  //   });
-  // }
+  if (!session) {
+    return response.status(403).json({
+      error: UNAUTHORISED,
+      message: 'Unauthorised api request, please login to continue.'
+    });
+  }
 
   const isGet = request.method === 'GET';
 

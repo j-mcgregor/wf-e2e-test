@@ -107,7 +107,7 @@ const Report = ({
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0">
-      <div className="sm:py-8 border print:pb-0 print:border-none print:-mb-16">
+      <div className="sm:py-8 print:border print:pb-0 print:border-none print:-mb-16">
         <ReportHeader
           company={companyName}
           created={created}

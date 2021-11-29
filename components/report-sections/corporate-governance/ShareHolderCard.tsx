@@ -25,7 +25,7 @@ const ShareHolderCard = ({
       avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs"
       data-testid="shareholder-card-testid"
     >
-      {type === 'Corporate' && <p>{name}</p>}
+      {type !== 'One or more named individuals or families' && <p>{name}</p>}
       {firstName && lastName && (
         <p>
           {toTitleCase(firstName)} {toTitleCase(lastName)}
