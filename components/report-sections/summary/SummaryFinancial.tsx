@@ -44,7 +44,7 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                   <SummaryFinancialRow
                     rowHeader={t('sales')}
                     data={years}
-                    rowKey="sales"
+                    rowKey="turnover"
                   />
                   <SummaryFinancialRow
                     rowHeader={t('profit_before_taxes')}
@@ -54,7 +54,7 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                   <SummaryFinancialRow
                     rowHeader={t('equity_shareholder_funds')}
                     data={years}
-                    rowKey="total_shareholder_funds"
+                    rowKey="total_shareholder_equity"
                   />
                   <SummaryFinancialRow
                     rowHeader={t('tangible_worth')}
@@ -79,7 +79,7 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                   <SummaryFinancialRow
                     rowHeader={t('total_current_liabilities')}
                     data={years}
-                    rowKey="current_liabilities"
+                    rowKey="short_term_debt"
                   />
                   <SummaryFinancialRow
                     rowHeader={t('net_current_assets')}
@@ -89,7 +89,7 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                   <SummaryFinancialRow
                     rowHeader={t('employees')}
                     data={years}
-                    rowKey="employees"
+                    rowKey="number_of_employees"
                   />
                 </tbody>
               </table>
