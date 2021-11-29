@@ -3,10 +3,11 @@ interface FinancialTrendProps {
 }
 
 const FinancialTrend = ({ data }: FinancialTrendProps) => {
+  const reverseOrderDate = data?.reverse();
   return (
     <td className="flex flex-col h-9 w-[80px]">
       <div className="h-1/2 w-full flex items-end">
-        {data.map((year, index) => {
+        {reverseOrderDate?.map((year, index) => {
           return (
             <span
               key={index}
@@ -23,7 +24,7 @@ const FinancialTrend = ({ data }: FinancialTrendProps) => {
         })}
       </div>
       <div className="h-1/2 w-full flex items-start">
-        {data.map((year, index) => {
+        {reverseOrderDate?.map((year, index) => {
           return (
             <span
               key={index}
