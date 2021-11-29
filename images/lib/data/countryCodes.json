@@ -77,7 +77,11 @@
   },
   {
     "name": "Austria",
-    "code": "AT"
+    "code": "AT",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Bahamas",
@@ -113,7 +117,11 @@
   },
   {
     "name": "Belgium",
-    "code": "BE"
+    "code": "BE",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Belize",
@@ -322,7 +330,11 @@
   },
   {
     "name": "Cyprus",
-    "code": "CY"
+    "code": "CY",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Czech Republic",
@@ -418,11 +430,19 @@
   },
   {
     "name": "Finland",
-    "code": "FI"
+    "code": "FI",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "France",
-    "code": "FR"
+    "code": "FR",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "French Guiana",
@@ -454,7 +474,11 @@
   },
   {
     "name": "Germany",
-    "code": "DE"
+    "code": "DE",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Ghana",
@@ -474,7 +498,11 @@
   },
   {
     "name": "Greece",
-    "code": "GR"
+    "code": "GR",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Greenland",
@@ -598,7 +626,11 @@
   },
   {
     "name": "Ireland",
-    "code": "IE"
+    "code": "IE",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Isle of Man",
@@ -618,7 +650,11 @@
   },
   {
     "name": "Italy",
-    "code": "IT"
+    "code": "IT",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Jamaica",
@@ -746,7 +782,11 @@
   },
   {
     "name": "Luxembourg",
-    "code": "LU"
+    "code": "LU",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Macao",
@@ -786,7 +826,11 @@
   },
   {
     "name": "Malta",
-    "code": "MT"
+    "code": "MT",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Marshall Islands",
@@ -883,10 +927,10 @@
   {
     "name": "Netherlands",
     "code": "NL",
-    "currency_code": "ANG",
-    "currency": "Antilles Guilder",
-    "currency_symbol": "ƒ",
-    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/netherlands.png"
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Netherlands Antilles",
@@ -1014,7 +1058,11 @@
   },
   {
     "name": "Portugal",
-    "code": "PT"
+    "code": "PT",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Puerto Rico",
@@ -1130,7 +1178,11 @@
   },
   {
     "name": "Slovakia",
-    "code": "SK"
+    "code": "SK",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Slovenia",
@@ -1162,7 +1214,11 @@
   },
   {
     "name": "Spain",
-    "code": "ES"
+    "code": "ES",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
   {
     "name": "Sri Lanka",
