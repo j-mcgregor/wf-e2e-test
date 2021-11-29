@@ -14,6 +14,7 @@ import ErrorMessage from '../elements/ErrorMessage';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import * as Sentry from '@sentry/nextjs';
 import AlternativeSearchBox from './AlternativeSearchBox';
+import { CurrencyEuroIcon } from '@heroicons/react/outline';
 
 interface SearchContainerProps {
   disabled: boolean;
@@ -66,7 +67,9 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const [showAdvanceSearch, setShowAdvanceSearch] = useState(true);
 
   // NEW - Array for countries to show alternative search component
+
   const alternativeSearchCountries = ['US', 'DE'];
+
   // NEW - Matches if selected country is in the alternative countries array
   const isAlternativeSearchCountry = alternativeSearchCountries.filter(
     x => x === selectedCountry?.code
@@ -91,7 +94,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     // countries that WF operates in can use
 
     const matchedCurrency = currencies.find(
-      x => x.code === selectedCountry?.code
+      x => x.optionValue === selectedCountry?.optionName
     );
 
     matchedCurrency && setSelectedCurrency(matchedCurrency);

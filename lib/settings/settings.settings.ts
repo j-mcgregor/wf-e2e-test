@@ -18,7 +18,7 @@ const SettingsSettings = {
 
   supportedCurrencies: currencyJSON.map(currency => ({
     optionName: createCurrencyString(currency),
-    optionValue: currency.Code,
+    optionValue: currency.CountryName,
     code: currency.Code
   })),
 
