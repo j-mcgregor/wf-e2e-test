@@ -8,6 +8,13 @@ export const camelCaseToSentenceCase = (str: string): string => {
 export const addHttps = (str: string): string => {
   return /https?/.test(str) ? str : `http://${str}`;
 };
+export const getDomain = (str: string): string | false | undefined => {
+  // eslint-disable-next-line security/detect-unsafe-regex
+  return (
+    str &&
+    /^(?:https?:\/\/)?(?:[^@/\n]+@)?(?:www\.)?([^:/?\n]+)/gi.exec(str)?.[1]
+  );
+};
 
 export const toTitleCase = (str: string): string => {
   return isString(str)

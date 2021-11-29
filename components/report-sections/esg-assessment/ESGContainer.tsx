@@ -2,7 +2,7 @@ import React from 'react';
 import useSWR from 'swr';
 import { useTranslations } from 'use-intl';
 import fetcher from '../../../lib/utils/fetcher';
-import { addHttps } from '../../../lib/utils/text-helpers';
+import { getDomain } from '../../../lib/utils/text-helpers';
 import { ReportSectionHeader } from '../../elements/Headers';
 import ESGCard from './ESGCard';
 
@@ -26,12 +26,12 @@ const ESGContainer = ({
   const { pepFlags } = governance;
   const t = useTranslations();
 
-  const validWebsite = addHttps(website);
+  // extract just the domain
+  const validWebsite = getDomain(website) || '';
 
   // demo mode is engaged for now
   const { data } = useSWR<EsgApiResponse>(
     `/api/reports/esg?company_website=${validWebsite}&company_name=${companyName}&type=website`,
-    // `/api/reports/esg?company_website=${website}&company_name=${companyName}&type=website`,
     fetcher
   );
 
