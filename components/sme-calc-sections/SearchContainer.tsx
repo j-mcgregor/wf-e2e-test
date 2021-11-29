@@ -7,14 +7,16 @@ import BasicSearch from './BasicSearch';
 import SearchBox from './SearchBox';
 import { useRecoilValue } from 'recoil';
 import appState from '../../lib/appState';
-import { validCountryCodes } from '../../lib/settings/sme-calc.settings';
+import {
+  validCountryCodes,
+  apiSearchCountries
+} from '../../lib/settings/sme-calc.settings';
 import fetcher from '../../lib/utils/fetcher';
 import { useRouter } from 'next/router';
 import ErrorMessage from '../elements/ErrorMessage';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import * as Sentry from '@sentry/nextjs';
 import AlternativeSearchBox from './AlternativeSearchBox';
-import { CurrencyEuroIcon } from '@heroicons/react/outline';
 
 interface SearchContainerProps {
   disabled: boolean;
@@ -58,26 +60,27 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     null
   );
 
-  // determine if the country has a search API from list
-  // list in sme-calc.settings.ts
-  const countryHasSearchAPI =
-    validCountryCodes.indexOf(`${selectedCountry?.code}`) > -1;
-
   // toggle the advance search
   const [showAdvanceSearch, setShowAdvanceSearch] = useState(true);
 
   // NEW - Array for countries to show alternative search component
 
-  const alternativeSearchCountries = ['US', 'DE'];
-
   // NEW - Matches if selected country is in the alternative countries array
-  const isAlternativeSearchCountry = alternativeSearchCountries.filter(
+  const isApiSearchCountry = apiSearchCountries.filter(
     x => x === selectedCountry?.code
   );
+
+  // determine if the country has a search API from list
+  // list in sme-calc.settings.ts
+  const countryHasSearchAPI =
+    validCountryCodes.indexOf(`${selectedCountry?.code}`) > -1 ||
+    isApiSearchCountry.length !== 0;
 
   useEffect(() => {
     const country = countries.find(x => x.code === defaultCountry);
     setSelectedCountry(country);
+
+    // const currency = countries.find(x => x.currency_code === defaultCurrency);
     const currency = currencies.find(x => x.code === defaultCurrency);
     setSelectedCurrency(currency);
   }, [user]);
@@ -106,7 +109,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     countryHasSearchAPI && setShowAdvanceSearch(false);
 
     // if it is an active alternative search country, set advance search to false
-    isAlternativeSearchCountry.length !== 0 && setShowAdvanceSearch(false);
+    isApiSearchCountry.length !== 0 && setShowAdvanceSearch(false);
   }, [selectedCountry]);
 
   // validate the generate report button
@@ -187,7 +190,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
             />
           )}
 
-          {isAlternativeSearchCountry.length !== 0 && (
+          {isApiSearchCountry.length !== 0 && (
             <AlternativeSearchBox
               disabled={showAdvanceSearch}
               countryCode={selectedCountry?.optionValue}
