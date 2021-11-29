@@ -59,9 +59,10 @@ const Report = ({
 
   // remove years that are dormant
   const transformedFinancials = data?.financials?.filter((_year, index) => {
-    if (companyDetails?.status) {
-      return companyDetails?.status[Number(index)] === 'Active';
-    }
+    // console.log(companyDetails?.status[Number(index)])
+    // if (companyDetails?.status) {
+    //   return companyDetails?.status[Number(index)] === 'Active';
+    // }
     // handle issues with status preventing showing any financials
     return true;
   });
