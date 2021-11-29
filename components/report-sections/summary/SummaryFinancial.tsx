@@ -44,7 +44,7 @@ const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
                   <SummaryFinancialRow
                     rowHeader={t('sales')}
                     data={years}
-                    rowKey="turnover"
+                    rowKey="operating_revenue"
                   />
                   <SummaryFinancialRow
                     rowHeader={t('profit_before_taxes')}
