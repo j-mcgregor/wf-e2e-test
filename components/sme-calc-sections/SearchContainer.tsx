@@ -9,7 +9,7 @@ import { useRecoilValue } from 'recoil';
 import appState from '../../lib/appState';
 import {
   validCountryCodes,
-  apiSearchCountries
+  orbisAvailableSearchCountries
 } from '../../lib/settings/sme-calc.settings';
 import fetcher from '../../lib/utils/fetcher';
 import { useRouter } from 'next/router';
@@ -66,7 +66,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   // NEW - Array for countries to show alternative search component
 
   // NEW - Matches if selected country is in the alternative countries array
-  const isApiSearchCountry = apiSearchCountries.filter(
+  const isApiSearchCountry = orbisAvailableSearchCountries.filter(
     x => x === selectedCountry?.code
   );
 
