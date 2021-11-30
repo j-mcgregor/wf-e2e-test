@@ -23,9 +23,8 @@ const moduleExports = {
     defaultLocale: 'en'
   },
   images: {
-    domains: ['images.unsplash.com']
-  },
-  outputFileTracing: false
+    domains: ['images.unsplash.com', 'icon.horse']
+  }
 };
 
 const SentryWebpackPluginOptions = {

@@ -73,7 +73,7 @@ const NewsFeed = ({
               <div
                 key={i}
                 className={`print:avoid-break ${i !== 0 && 'print:pt-10'} ${
-                  i === 0 && 'print:-m-10'
+                  i === 0 && 'print:-mt-10'
                 }`}
               >
                 {news.map((newsItem: NewsDataType, i: number) => {

@@ -17,7 +17,7 @@ const NewsItem = ({
   const charCleanDescription = description.replace(/\[\+.+\]/g, '');
   return (
     <div
-      className="bg-white shadow-sm rounded-sm w-full flex flex-col p-4 text-sm my-6 always-break print:shadow-none print:border-2  "
+      className="bg-white shadow-sm rounded-sm w-full flex flex-col p-4 text-sm my-6 always-break print:shadow-none print:border-2"
       data-testid="news-card-testid"
     >
       <div className="flex w-full justify-between italic pb-3">

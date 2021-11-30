@@ -11,8 +11,14 @@ interface ReportHeaderProps {
   company: string;
   created: string;
   reportId: string | number;
+  website: string;
 }
-const ReportHeader = ({ company, created, reportId }: ReportHeaderProps) => {
+const ReportHeader = ({
+  company,
+  created,
+  reportId,
+  website
+}: ReportHeaderProps) => {
   const { bookmarkedReports } = useRecoilValue<UserReports>(userReports);
 
   const setBookmarkedReports = useSetRecoilState(userReports);
@@ -42,13 +48,21 @@ const ReportHeader = ({ company, created, reportId }: ReportHeaderProps) => {
 
       <div className="flex order-1 sm:order-2">
         <div className="">
+          {/* icon.horse url to grab companies icon - currently fetching small images without paid api */}
           <Image
+            src={`https://icon.horse/icon/${website}`}
+            alt="company icon"
+            objectFit="contain"
+            width={50}
+            height={50}
+          />
+          {/* <Image
             src={WFLogo}
             alt="Wiserfunding Logo"
             objectFit="contain"
             width={50}
             height={50}
-          />
+          /> */}
         </div>
         <Button
           variant="none"
