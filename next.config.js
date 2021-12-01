@@ -22,6 +22,8 @@ const moduleExports = {
     // a non-locale prefixed path e.g. `/hello`
     defaultLocale: 'en'
   },
+  // required to prevent sentry from crashing next server
+  outputFileTracing: false,
   images: {
     domains: ['images.unsplash.com', 'icon.horse', 'logo.clearbit.com']
   }
