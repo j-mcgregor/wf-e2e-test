@@ -6,6 +6,7 @@ import { BookmarkIcon } from '@heroicons/react/outline';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { UserReports, userReports } from '../../lib/appState';
 import { ReportSnippetType } from '../../types/global';
+import FaviconWithFallback from '../elements/FaviconWithFallback';
 
 interface ReportHeaderProps {
   company: string;
@@ -22,6 +23,8 @@ const ReportHeader = ({
   const { bookmarkedReports } = useRecoilValue<UserReports>(userReports);
 
   const setBookmarkedReports = useSetRecoilState(userReports);
+
+  const firstLetter = company.charAt(0);
 
   const handleClick = () => {
     // recoil requires that what comes out of state is the same as what goes in,
@@ -49,19 +52,12 @@ const ReportHeader = ({
       <div className="flex order-1 sm:order-2">
         <div className="print:w-24 print:h-24 w-12 h-12 relative">
           {/* icon.horse url to grab companies icon - currently fetching small images without paid api */}
-          <Image
+
+          <FaviconWithFallback
             src={`https://logo.clearbit.com/${website}`}
+            fallbackLetter={firstLetter}
             alt={`${company} logo`}
-            objectFit="contain"
-            layout="fill"
           />
-          {/* <Image
-            src={WFLogo}
-            alt="Wiserfunding Logo"
-            objectFit="contain"
-            width={50}
-            height={50}
-          /> */}
         </div>
         <Button
           variant="none"
