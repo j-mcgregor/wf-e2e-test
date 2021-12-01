@@ -51,7 +51,7 @@ const ReportHeader = ({
           {/* icon.horse url to grab companies icon - currently fetching small images without paid api */}
           <Image
             src={`https://icon.horse/icon/${website}`}
-            alt="company icon"
+            alt={`${company} logo`}
             objectFit="contain"
             width={50}
             height={50}

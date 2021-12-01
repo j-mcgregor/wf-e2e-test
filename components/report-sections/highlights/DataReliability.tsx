@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { useTranslations } from 'next-intl';
 import { DataReliabilityType } from '../../../types/report';
 

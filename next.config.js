@@ -23,7 +23,7 @@ const moduleExports = {
     defaultLocale: 'en'
   },
   images: {
-    domains: ['images.unsplash.com', 'icon.horse']
+    domains: ['images.unsplash.com', 'icon.horse', 'logo.clearbit.com']
   }
 };
 
