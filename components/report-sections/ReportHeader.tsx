@@ -24,7 +24,7 @@ const ReportHeader = ({
 
   const setBookmarkedReports = useSetRecoilState(userReports);
 
-  const firstLetter = company.charAt(0);
+  const firstLetter = company?.charAt(0);
 
   const handleClick = () => {
     // recoil requires that what comes out of state is the same as what goes in,
