@@ -27,15 +27,15 @@ export const toTitleCase = (str: string): string => {
 };
 
 export const createCurrencyString = ({
-  Symbol,
-  Currency,
-  CountryName
+  currency_symbol,
+  currency_code,
+  name
 }: {
-  Symbol: string;
-  Currency: string;
-  CountryName: string;
+  currency_symbol?: string;
+  currency_code?: string;
+  name: string;
 }) => {
-  return `${CountryName} - ${Currency} (${Symbol})`;
+  return `${name} - ${currency_code} (${currency_symbol})`;
 };
 
 export const createReportTitle = (companyName: string, createdAt: string) => {

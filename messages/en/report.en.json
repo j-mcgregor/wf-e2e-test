@@ -161,5 +161,15 @@
   "the_average_for": "the average for",
   "in_the_last_12_months": "In the last 12 months there were",
   "judgments": "Judgments and",
-  "payment_remarks": "payment remarks for this company."
+  "payment_remarks": "payment remarks for this company.",
+  "for_a_more_reliable_report_supplement_the_data": "For a more reliable report you can supplement the data in this report with recent management accounts using the button below.",
+  "reliable_turnover": "The results could be improved with more recent data.",
+  "reliable_volatility": "The company's financials have some volatility.",
+  "reliable_assets": "The companies fixed assets are lower than expected.",
+  "caution_turnover": "The company is only just big enough to fit into the proven range for our model to operate on.",
+  "caution_volatility": "The company's financials have been too volatile.",
+  "caution_assets": "The company has submitted abridged reports.",
+  "concern_turnover": "There are not enough years of financial data available for this company.",
+  "concern_volatility": "The company's financials have been too volatile.",
+  "concern_assets": "The company is too small for a reliable report to be created."
 }

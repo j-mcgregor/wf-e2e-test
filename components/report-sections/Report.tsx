@@ -110,6 +110,7 @@ const Report = ({
       <div className="sm:py-8 print:border print:pb-0 print:border-none print:-mb-16">
         <ReportHeader
           company={companyName}
+          website={data.details.websites[0]}
           created={created}
           reportId={id[0]}
         />

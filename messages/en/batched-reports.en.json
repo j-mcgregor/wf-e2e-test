@@ -32,5 +32,7 @@
   "sme_z-score": "SME Z-Score",
   "default": "Default %",
   "view_report": "View Report",
-  "name_batched_report": "Name your batched report"
+  "name_batched_report": "Name your batched report",
+  "no_completed_batch_reports": "No completed Batch Reports",
+  "no_batch_reports_in_progress": "No Batch Reports in progress"
 }

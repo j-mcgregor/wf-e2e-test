@@ -1,5 +1,4 @@
 const relativeTrend = (data: number[]) => {
-
   const largestValue = data.reduce((prevValue, value) => {
     return prevValue > value ? prevValue : value;
   }, 0);
@@ -8,7 +7,7 @@ const relativeTrend = (data: number[]) => {
   }, 0);
 
   const diffBetweenSmallAndLarge = largestValue - smallestValue;
-  
+
   return data.map(value => {
     const valueSubtractLowestValue =
       smallestValue >= 0 ? value - smallestValue : value + smallestValue;

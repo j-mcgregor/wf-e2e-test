@@ -5,11 +5,13 @@ import { appUser } from '../../lib/appState';
 import { useRecoilValue } from 'recoil';
 import {
   DocumentDuplicateIcon,
+  RefreshIcon,
   DocumentReportIcon
 } from '@heroicons/react/outline';
 import LinkCard from '../../components/cards/LinkCard';
 import Layout from '../../components/layout/Layout';
 import BatchReportCard from '../../components/cards/BatchReportCard';
+import EmptyCard from '../../components/cards/EmptyCard';
 
 const BatchReports = () => {
   const t = useTranslations();
@@ -38,7 +40,6 @@ const BatchReports = () => {
         </div>
 
         {/* completed batch reports */}
-        {/* NEED TO USE MOCK DATA */}
         <div className="my-6">
           <p className="text-xl font-semibold mb-4">
             {t('completed_batch_reports')}
@@ -63,6 +64,12 @@ const BatchReports = () => {
                   )
                 );
               })}
+            {user && user?.batched_report_jobs?.length === 0 && (
+              <EmptyCard
+                text={t('no_completed_batch_reports')}
+                icon={<DocumentDuplicateIcon className="h-10 w-10" />}
+              />
+            )}
           </div>
         </div>
 
@@ -90,6 +97,12 @@ const BatchReports = () => {
                   )
                 );
               })}
+            {user && user?.batched_report_jobs?.length === 0 && (
+              <EmptyCard
+                text={t('no_batch_reports_in_progress')}
+                icon={<RefreshIcon className="h-10 w-10" />}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -80,7 +80,6 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
 
   const companyName = data?.details?.company_name || data?.details?.name;
 
-  // console.log(data)
   return (
     <Layout
       title={`${

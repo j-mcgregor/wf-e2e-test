@@ -1,4 +1,5 @@
 # Custom Dictionary Words
+Åland
 Alidator
 boxplot
 customisability
@@ -9,6 +10,7 @@ EBTIDA
 linkedin
 NewData
 nextjs
+Rica
 svgs
 Tofive
 UNAUTHORISED
