@@ -35,6 +35,8 @@ const ESGContainer = ({
     fetcher
   );
 
+  const isLoading = !data;
+
   return (
     <>
       <ReportSectionHeader text={t('esg')} />
@@ -48,10 +50,12 @@ const ESGContainer = ({
               /> */}
 
       <ESGCard
-        title={t('industry')}
-        description={t('data_on_industry')}
+        title={t('activities')}
+        description={t('data_on_activities')}
         resultText={
-          data?.data?.length && data.data.length > 0
+          isLoading
+            ? t('loading')
+            : data?.data?.length && data.data.length > 0
             ? t('top_3_industries')
             : t('no_esg_results_found')
         }

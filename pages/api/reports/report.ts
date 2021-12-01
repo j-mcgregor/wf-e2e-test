@@ -67,6 +67,14 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
           .status(200)
           .json({ ok: true, reportId: report.report?.id });
       }
+
+      // handle the 500 error when API Fails
+      if (!report.ok || report.status === 500) {
+        return response.status(500).json({
+          error: REPORT_FETCHING_ERROR,
+          message: `Error fetching report. Wiserfunding API issue: ${report?.details}`
+        });
+      }
     } catch (error) {
       return response.status(500).json({
         error: REPORT_FETCHING_ERROR,

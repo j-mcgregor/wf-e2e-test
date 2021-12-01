@@ -28,7 +28,8 @@ const FinancialTrend = ({ data }: FinancialTrendProps) => {
           return (
             <span
               key={index}
-              style={{ height: `${Math.abs(year)}%` }}
+              // temp fix halving negative values as they are overflowing
+              style={{ height: `${Math.abs(year / 2)}%` }}
               className={`${
                 year < 0 && 'bg-red-500'
               } w-full mx-[2px] max-w-[10px]`}

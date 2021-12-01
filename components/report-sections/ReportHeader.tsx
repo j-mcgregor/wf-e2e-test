@@ -47,14 +47,13 @@ const ReportHeader = ({
       </div>
 
       <div className="flex order-1 sm:order-2">
-        <div className="">
+        <div className="print:w-24 print:h-24 w-12 h-12 relative">
           {/* icon.horse url to grab companies icon - currently fetching small images without paid api */}
           <Image
-            src={`https://icon.horse/icon/${website}`}
+            src={`https://logo.clearbit.com/${website}`}
             alt={`${company} logo`}
             objectFit="contain"
-            width={50}
-            height={50}
+            layout="fill"
           />
           {/* <Image
             src={WFLogo}

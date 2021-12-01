@@ -4,13 +4,13 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 
-import Report from '../../../../components/report-sections/Report';
-import getServerSidePropsWithAuth from '../../../../lib/auth/getServerSidePropsWithAuth';
-import fetcher from '../../../../lib/utils/fetcher';
+import Report from '../../../components/report-sections/Report';
+import getServerSidePropsWithAuth from '../../../lib/auth/getServerSidePropsWithAuth';
+import fetcher from '../../../lib/utils/fetcher';
 
 import { useEffect } from 'react';
-import { ReportDataProps } from '../index';
-import LoadingIcon from '../../../../components/svgs/LoadingIcon';
+import { ReportDataProps } from '.';
+import LoadingIcon from '../../../components/svgs/LoadingIcon';
 
 const ReportTemplate = () => {
   const router = useRouter();
@@ -51,10 +51,10 @@ export const getServerSideProps = getServerSidePropsWithAuth(
           // You can get the messages from anywhere you like, but the recommended
           // pattern is to put them in JSON files separated by language and read
           // the desired one based on the `locale` received from Next.js.
-          ...require(`../../../../messages/${locale}/report.${locale}.json`),
-          ...require(`../../../../messages/${locale}/hints.${locale}.json`),
-          ...require(`../../../../messages/${locale}/general.${locale}.json`),
-          ...require(`../../../../messages/${locale}/errors.${locale}.json`)
+          ...require(`../../../messages/${locale}/report.${locale}.json`),
+          ...require(`../../../messages/${locale}/hints.${locale}.json`),
+          ...require(`../../../messages/${locale}/general.${locale}.json`),
+          ...require(`../../../messages/${locale}/errors.${locale}.json`)
         }
       }
     };

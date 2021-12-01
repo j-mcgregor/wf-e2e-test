@@ -1,11 +1,9 @@
 import { within } from '@testing-library/dom';
 import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import CSVFileValidator from 'csv-file-validator';
 import client from 'next-auth/client';
 import * as nextRouter from 'next/router';
 
-import { validReportHeaders } from '../../../../lib/settings/sme-calc.settings';
 import allMessages from '../../../../messages/en';
 import UploadData from '../../../../pages/report/[id]/upload-data';
 import { makeMockSession, render, screen } from '../../../../test-utils';
@@ -63,7 +61,7 @@ xdescribe('UploadData', () => {
 
     expect(
       screen.getByText(
-        /make changes to any report values and re\-upload to see the effect\./i
+        /make changes to any report values and re-upload to see the effect\./i
       )
     ).toBeInTheDocument();
 
@@ -86,7 +84,7 @@ xdescribe('UploadData', () => {
 
     expect(
       screen.getByText(
-        /add a new year of financials and re\-upload to quickly see what this years effect\./i
+        /add a new year of financials and re-upload to quickly see what this years effect\./i
       )
     ).toBeInTheDocument();
 
@@ -158,14 +156,14 @@ xdescribe('UploadData', () => {
         }
       );
 
-      const fileValidator = await CSVFileValidator(file, {
-        headers: validReportHeaders.map(vh => ({
-          name: vh,
-          inputName: vh
-        }))
-      });
+      // const fileValidator = await CSVFileValidator(file, {
+      //   headers: validReportHeaders.map(vh => ({
+      //     name: vh,
+      //     inputName: vh
+      //   }))
+      // });
 
-      const isFileValid = fileValidator.inValidMessages.length === 0;
+      // const isFileValid = fileValidator.inValidMessages.length === 0;
 
       render(<UploadData />, undefined, allMessages);
       const input = screen.getByLabelText(

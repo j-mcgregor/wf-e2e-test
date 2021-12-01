@@ -40,8 +40,8 @@ const DataReliability = ({
   const reliabilityStyles = reliabilityObj.isReliable
     ? 'bg-[#2BAD0133] border-[#2BAD01]'
     : reliabilityObj.isCaution
-    ? 'bg-highlight bg-opacity-60 border-highlight'
-    : 'bg-red-500 bg-opacity-60 border-red-500';
+    ? 'bg-yellow-400 bg-opacity-30 border-yellow-400'
+    : 'bg-red-400 bg-opacity-30 border-red-400';
 
   return (
     <div className="sm:w-1/2 md:w-full lg:w-1/2 h-full py-6 print:w-full sm:print:w-full print:flex">
@@ -49,7 +49,7 @@ const DataReliability = ({
         className={`${reliabilityStyles} border-2 rounded h-1/2 text-sm py-4 px-3`}
       >
         <p className="font-bold pb-2">{t('data_reliability')}</p>
-        <p>{reliabilityText}</p>
+        <p className="mb-2">{reliabilityText}</p>
         <p>{t('for_a_more_reliable_report_supplement_the_data')}</p>
       </div>
     </div>

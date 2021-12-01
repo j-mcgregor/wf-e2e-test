@@ -1,3 +1,4 @@
+import { ErrorType } from '../../hooks/useCSVValidator';
 import { ReportDataProps } from '../../pages/report/[id]';
 
 const getExistingReport = async (
@@ -28,7 +29,12 @@ const createReport = async (
     accounts_type: number;
   },
   token: string
-): Promise<{ ok: boolean; status: number; report?: ReportDataProps }> => {
+): Promise<{
+  ok: boolean;
+  status: number;
+  report?: ReportDataProps;
+  details?: string | {};
+}> => {
   const res = await fetch(`${process.env.WF_AP_ROUTE}/reports`, {
     method: 'POST',
     headers: {
@@ -43,7 +49,13 @@ const createReport = async (
     return { ok: true, report, status: res.status };
   }
 
-  return { ok: false, status: res.status };
+  try {
+    const error = await res?.json();
+
+    return { ok: false, status: res.status, details: error?.details };
+  } catch (e: any) {
+    return { ok: false, status: res.status, details: e.message };
+  }
 };
 
 const Report = {

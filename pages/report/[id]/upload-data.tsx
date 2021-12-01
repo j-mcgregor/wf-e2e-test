@@ -5,13 +5,13 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import LinkCard from '../../../../components/cards/LinkCard';
-import Button from '../../../../components/elements/Button';
-import Layout from '../../../../components/layout/Layout';
-import UploadNewData from '../../../../components/uploads/UploadNewData';
-import useCSVValidator from '../../../../hooks/useCSVValidator';
-import getServerSidePropsWithAuth from '../../../../lib/auth/getServerSidePropsWithAuth';
-import { manualUploadValidators } from '../../../../lib/settings/sme-calc.settings';
+import LinkCard from '../../../components/cards/LinkCard';
+import Button from '../../../components/elements/Button';
+import Layout from '../../../components/layout/Layout';
+import UploadNewData from '../../../components/uploads/UploadNewData';
+import useCSVValidator from '../../../hooks/useCSVValidator';
+import getServerSidePropsWithAuth from '../../../lib/auth/getServerSidePropsWithAuth';
+import { manualUploadValidators } from '../../../lib/settings/sme-calc.settings';
 
 const UploadData = () => {
   const t = useTranslations();

@@ -71,7 +71,7 @@ const RiskOutlook = ({
 
     const governanceString = `${t('in_the_last_12_months')} ${
       governance.ccj_12_months
-    } ${t('judgments')} ${governance.payment_remarks_12_months} ${t(
+    } ${t('judgements')} ${governance.payment_remarks_12_months} ${t(
       'payment_remarks'
     )}`;
 
