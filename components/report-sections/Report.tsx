@@ -58,14 +58,17 @@ const Report = ({
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
 
   // remove years that are dormant
-  const transformedFinancials = data?.financials?.filter((_year, index) => {
-    // console.log(companyDetails?.status[Number(index)])
-    // if (companyDetails?.status) {
-    //   return companyDetails?.status[Number(index)] === 'Active';
-    // }
-    // handle issues with status preventing showing any financials
-    return true;
-  });
+  const transformedFinancials =
+    (data?.financials &&
+      data?.financials?.filter((_year, index) => {
+        // console.log(companyDetails?.status[Number(index)])
+        // if (companyDetails?.status) {
+        //   return companyDetails?.status[Number(index)] === 'Active';
+        // }
+        // handle issues with status preventing showing any financials
+        return true;
+      })) ||
+    [];
 
   const lastFiveYearsFinancials =
     (data?.financials && transformedFinancials?.slice(0, 5)) || [];

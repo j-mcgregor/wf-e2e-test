@@ -17,6 +17,7 @@ import {
 import allMessages from '../../../messages/en';
 import ReportTemplate from '../../../pages/report/[id]';
 import { makeMockSession, render, screen } from '../../../test-utils';
+import ReportHeader from '../../../components/report-sections/ReportHeader';
 
 // import { mockServerGet, server } from '../../../__mocks__/service-worker/server';
 jest.mock('next-auth/client');
@@ -43,10 +44,10 @@ describe('ReportTemplate', () => {
 
   describe('HEADER', () => {
     it('should render', async () => {
-      render(<ReportTemplate isTesting />, undefined, allMessages);
+      render(<ReportHeader />, undefined, allMessages);
 
-      const skeleton = screen.queryByTestId('skeleton-report');
-      await waitForElementToBeRemoved(skeleton);
+      // const skeleton = screen.queryByTestId('skeleton-report');
+      // await waitForElementToBeRemoved(skeleton);
 
       // expect(
       //   screen.queryByRole('heading', {
