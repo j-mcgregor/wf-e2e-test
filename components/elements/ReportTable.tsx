@@ -51,7 +51,7 @@ const ReportTable = ({
 
   return (
     <div className="flex flex-col">
-      <div className="py-4 align-middle min-w-full min-h-full">
+      <div className="pb-4 pt-[6px] align-middle min-w-full min-h-full">
         <div className={`${shadowClasses} overflow-auto rounded`}>
           <table className="min-w-full divide-y-2 divide-gray-200">
             <thead className="bg-gray-50">
