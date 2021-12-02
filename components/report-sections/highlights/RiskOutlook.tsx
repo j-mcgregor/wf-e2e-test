@@ -1,7 +1,9 @@
 import { useTranslations } from 'next-intl';
 import Hint from '../../elements/Hint';
 
-import { FinancialYear } from '../../../types/report';
+import { FinancialYear, LegalEvent } from '../../../types/report';
+import { toUpper } from 'lodash';
+import { Events } from 'react-scroll';
 
 type BenchmarksType = {
   value: number;
@@ -15,6 +17,7 @@ interface OutlookProps {
   financials: FinancialYear[];
   benchmarks: BenchmarksType;
   country?: string;
+  legalEvents: LegalEvent[];
 }
 
 const riskOutlookSettings = {
@@ -23,19 +26,30 @@ const riskOutlookSettings = {
   profitabilityMarkerValue: 4000
 };
 
-const governance = {
-  payment_remarks_12_months: 234,
-  ccj_12_months: 334
-};
-
 const RiskOutlook = ({
   hintTitle,
   hintBody,
   financials,
   benchmarks,
-  country
+  country,
+  legalEvents
 }: OutlookProps) => {
   const t = useTranslations();
+
+  const allJudgements = legalEvents.filter((event: LegalEvent) => {
+    const types = event.types.map((type: string) => type.toLowerCase());
+    return types.includes('default') || types.includes('payment remark')
+      ? event
+      : null;
+  }).length;
+
+  const paymentRemarks = legalEvents.filter((event: LegalEvent) =>
+    event.types
+      .map((type: string) => type.toLowerCase())
+      .includes('payment remark')
+      ? event
+      : null
+  ).length;
 
   const getRiskOutlook = (data: FinancialYear): string[] => {
     const totalAssets = Number(data.total_assets);
@@ -69,9 +83,9 @@ const RiskOutlook = ({
         ? t('an_efficiently_run_company')
         : t('assets_are_not_being_used_profitably');
 
-    const governanceString = `${t('in_the_last_12_months')} ${
-      governance.ccj_12_months
-    } ${t('judgements')} ${governance.payment_remarks_12_months} ${t(
+    const governanceString = `${t(
+      'in_the_last_12_months'
+    )} ${allJudgements} ${t('judgements')} ${paymentRemarks} ${t(
       'payment_remarks'
     )}`;
 

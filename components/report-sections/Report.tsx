@@ -234,6 +234,7 @@ const Report = ({
             financials={transformedFinancials}
             benchmarks={{ value: riskMetrics?.sme_z_score }}
             country={companyAddress?.country}
+            legalEvents={data?.legal_events}
           />
         </div>
         <div className="flex flex-col lg:flex-row py-6 justify-between">
