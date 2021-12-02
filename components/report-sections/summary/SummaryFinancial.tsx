@@ -11,7 +11,7 @@ interface SummaryFinancialProps {
 const SummaryFinancial = ({ years }: SummaryFinancialProps) => {
   const t = useTranslations();
 
-  const yearsWithBlanks = addBlankObjects(years, 5).reverse();
+  const yearsWithBlanks = addBlankObjects(years, 5);
 
   return (
     <div className="p-6 shadow rounded-sm bg-white print:shadow-none">

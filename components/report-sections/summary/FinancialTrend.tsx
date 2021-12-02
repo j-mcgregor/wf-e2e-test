@@ -3,7 +3,7 @@ interface FinancialTrendProps {
 }
 
 const FinancialTrend = ({ data }: FinancialTrendProps) => {
-  const reverseOrderDate = data?.reverse();
+  const reverseOrderDate = data;
   return (
     <td className="flex flex-col h-9 w-[80px] py-2">
       <div className="h-1/2 w-full flex items-end">

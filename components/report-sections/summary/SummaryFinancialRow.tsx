@@ -23,7 +23,7 @@ const SummaryFinancialRow = ({
   );
   const relativeTrendData = relativeTrend(dataAsFloat);
 
-  const yearsWithBlank = addBlankObjects(data, 5).reverse();
+  const yearsWithBlank = addBlankObjects(data, 5);
 
   return (
     <tr>
