@@ -38,9 +38,8 @@ const SearchOrbis = async (
     }
   );
 
-  // const json = await search.json();
-  // console.log('json');
-  // console.log(json);
+  const json = await search.json();
+  console.log(JSON.stringify(json, 0, 2));
 
   return response.status(200).json({ search });
 };
