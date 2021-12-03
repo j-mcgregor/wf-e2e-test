@@ -74,7 +74,7 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
 
       <div className="bg-white shadow-sm p-2 my-6 rounded-sm print:shadow-none print:border-2">
         <div
-          className="w-full my-6 flex flex-col text-xs px-2"
+          className="w-full my-6 flex flex-col text-xs px-2 avoid-break"
           data-testid="legal-events-table-testid"
         >
           <div className="flex border-b pb-2 mb-2">
@@ -85,7 +85,11 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
             </div>
           </div>
           {events.map((event, index) => {
-            return <LegalRow forPrint={forPrint} key={index} {...event} />;
+            return (
+              <>
+                <LegalRow forPrint={forPrint} key={index} {...event} />
+              </>
+            );
           })}
         </div>
       </div>
