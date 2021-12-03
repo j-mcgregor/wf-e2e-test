@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const SearchOrbis = async (
@@ -39,6 +40,7 @@ const SearchOrbis = async (
   );
 
   const json = await search.json();
+  // @ts-ignore
   console.log(JSON.stringify(json, 0, 2));
 
   return response.status(200).json({ search });
