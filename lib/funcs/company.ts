@@ -50,6 +50,8 @@ const searchUKCompaniesHouse = async (
   return { ok: false };
 };
 
+// new function for searching Orbis countries
+
 const Company = {
   searchUKCompaniesHouse,
   filterUKCompanyInformation
