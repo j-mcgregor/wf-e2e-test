@@ -1,4 +1,4 @@
-import { ApiResType, EUCompanyType } from '../../types/global';
+import { ApiResType } from '../../types/global';
 
 const UK_COMPANY_KEYS = [
   'company_number',
@@ -66,6 +66,7 @@ const searchUKCompaniesHouse = async (
 
   if (res.ok) {
     const results = await res.json();
+
     return { ok: true, data: results };
   }
 

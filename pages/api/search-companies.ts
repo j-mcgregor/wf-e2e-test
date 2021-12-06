@@ -61,7 +61,7 @@ const SearchCompanies = async (
       searchResults?.data?.items
     );
 
-    return response.status(200).json(reducedCompanies);
+    response.status(200).json(reducedCompanies);
   } else if (
     countryCode &&
     orbisAvailableSearchCountries.includes(countryCode)

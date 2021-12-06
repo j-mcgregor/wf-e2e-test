@@ -64,7 +64,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const [showAdvanceSearch, setShowAdvanceSearch] = useState(true);
 
   // NEW - Matches if selected country is in the alternative countries array
-  const isApiSearchCountry = orbisAvailableSearchCountries.filter(
+  const isOrbisSearchCountry = orbisAvailableSearchCountries.filter(
     x => x === selectedCountry?.code?.toLowerCase()
   );
 
@@ -72,7 +72,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   // list in sme-calc.settings.ts
   const countryHasSearchAPI =
     validCountryCodes.indexOf(`${selectedCountry?.code}`) > -1 ||
-    isApiSearchCountry.length !== 0;
+    isOrbisSearchCountry.length !== 0;
 
   useEffect(() => {
     const country = countries.find(x => x.code === defaultCountry);
@@ -107,7 +107,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     countryHasSearchAPI && setShowAdvanceSearch(false);
 
     // if it is an active alternative search country, set advance search to false
-    isApiSearchCountry.length !== 0 && setShowAdvanceSearch(false);
+    isOrbisSearchCountry.length !== 0 && setShowAdvanceSearch(false);
   }, [selectedCountry]);
 
   // validate the generate report button
@@ -131,17 +131,22 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
 
   const handleGenerateReport = async (): Promise<void> => {
     setLoading(true);
+
+    const trimmedBVDID = selectedCompany?.BVDID?.substring(2);
+
+    const companyNumber =
+      selectedCompany?.company_number || trimmedBVDID || regSearchValue;
+
     const params = {
       iso_code: selectedCountry?.optionValue,
-      company_id: showAdvanceSearch
-        ? regSearchValue
-        : selectedCompany?.company_number,
+      company_id: companyNumber,
       currency: selectedCurrency?.optionValue,
       accounts_type: 0
     };
 
     try {
       const res = await fetcher('/api/reports/report', 'POST', params);
+
       if (res?.reportId) {
         router.push(`/report/${res.reportId}`);
       }
@@ -188,7 +193,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
             />
           )}
 
-          {isApiSearchCountry.length !== 0 && (
+          {isOrbisSearchCountry.length !== 0 && (
             <AlternativeSearchBox
               disabled={showAdvanceSearch}
               countryCode={selectedCountry?.optionValue}
