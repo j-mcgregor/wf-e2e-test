@@ -111,3 +111,14 @@ export type BatchReportsType = {
   results: BatchReportType[];
   created: string;
 };
+
+export type EUCompanyType = {
+  NAME: string | null;
+  BVDID: string | null;
+  ADDRESS_LINE1: string | null;
+  ADDRESS_LINE2: string | null;
+  CITY: string | null;
+  COUNTRY: string | null;
+  POSTCODE: string | null;
+  WEBSITE: string[] | null;
+};

@@ -11,6 +11,7 @@ import {
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Company from '../../lib/funcs/company';
 import { ApiResType } from '../../types/global';
+import { orbisAvailableSearchCountries } from '../../lib/settings/sme-calc.settings';
 
 // Declaring function for readability with Sentry wrapper
 const SearchCompanies = async (
@@ -30,14 +31,14 @@ const SearchCompanies = async (
   // extract search query
   const searchQuery: string = request.query.query?.toString()?.toLowerCase();
 
-  // // country code required for adding different jurisdictions
+  // country code required for adding different jurisdictions
   const countryCode: string = request.query?.country?.toString()?.toLowerCase();
 
   if (!countryCode) {
     return response.status(404).json({
       error: COUNTRY_CODE_REQUIRED,
       message:
-        'Please provide a country code in order to correctly access the right database.'
+        'Please provide a country code in order to correctly access the right database'
     });
   }
 
@@ -61,11 +62,26 @@ const SearchCompanies = async (
     );
 
     return response.status(200).json(reducedCompanies);
-  }
+  } else if (
+    countryCode &&
+    orbisAvailableSearchCountries.includes(countryCode)
+  ) {
+    const searchResults = await Company.SearchOrbisCompanies(
+      process.env.ORBIS_SEARCH_API_KEY,
+      searchQuery,
+      countryCode
+    );
 
-  return response
-    .status(404)
-    .json({ error: INVALID_COUNTRY_CODE, message: 'Invalid country code.' });
+    const reducedCompanies = Company.filterEUCompanyInformation(
+      searchResults?.data
+    );
+
+    return response.status(200).json(reducedCompanies);
+  } else {
+    return response
+      .status(404)
+      .json({ error: INVALID_COUNTRY_CODE, message: 'Invalid country code.' });
+  }
 };
 
 const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
