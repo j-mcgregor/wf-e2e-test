@@ -63,11 +63,9 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   // toggle the advance search
   const [showAdvanceSearch, setShowAdvanceSearch] = useState(true);
 
-  // NEW - Array for countries to show alternative search component
-
   // NEW - Matches if selected country is in the alternative countries array
   const isApiSearchCountry = orbisAvailableSearchCountries.filter(
-    x => x === selectedCountry?.code
+    x => x === selectedCountry?.code?.toLowerCase()
   );
 
   // determine if the country has a search API from list

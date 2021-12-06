@@ -84,6 +84,15 @@ export type CompanyType = {
   company_number?: string;
   date_of_creation?: string;
   title?: string;
+  // EU API result options
+  NAME?: string;
+  BVDID?: string;
+  ADDRESS_LINE1?: string;
+  ADDRESS_LINE2?: string;
+  CITY?: string;
+  COUNTRY?: string;
+  POSTCODE?: string;
+  WEBSITE?: string[];
 };
 
 export type ApiResType = {
@@ -110,15 +119,4 @@ export type BatchReportsType = {
   id: string;
   results: BatchReportType[];
   created: string;
-};
-
-export type EUCompanyType = {
-  NAME: string | null;
-  BVDID: string | null;
-  ADDRESS_LINE1: string | null;
-  ADDRESS_LINE2: string | null;
-  CITY: string | null;
-  COUNTRY: string | null;
-  POSTCODE: string | null;
-  WEBSITE: string[] | null;
 };

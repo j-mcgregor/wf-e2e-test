@@ -29,7 +29,7 @@ const AlternativeSearchBox = ({
   const [inputValue, setInputValue] = useState('');
   const [searchValue, setSearchValue] = useState<string | null>('');
 
-  const [searchSubmitted, setSearchSubmitted] = useState(false);
+  // const [searchSubmitted, setSearchSubmitted] = useState(false);
 
   const loadingText = t('loading');
   const searchStartText = t('search_start');
@@ -57,7 +57,7 @@ const AlternativeSearchBox = ({
 
   // COUNTRY FORCED TO GB TO TEST API - NEEDS TO BE SET BACK TO 'countryCode' for alt counties API's
   const { data } = useSWR<CompanyType[] & { error?: string }>(
-    `/api/search-companies?query=${searchValue}&country=${'GB'}`,
+    `/api/search-companies?query=${searchValue}&country=${countryCode}`,
     fetcher
   );
 
@@ -142,18 +142,23 @@ const AlternativeSearchBox = ({
             <ul className="px-4 border border-primary rounded overflow-y-scroll pt-4 space-y-4 max-h-[400px] min-h-[120px] absolute w-full z-10 bg-white">
               {data.map(company => {
                 return (
-                  <button
-                    key={company.company_number}
-                    className="flex justify-between hover:bg-bg hover:text-highlight cursor-pointer w-full"
-                    onClick={() => handleClick(company)}
-                  >
-                    <ResultCompany
-                      name={company.title}
-                      company_id={company.company_number}
-                      registered_address={company.address_snippet}
-                      registration_date={company.date_of_creation}
-                    />
-                  </button>
+                  company.BVDID && (
+                    <button
+                      key={company.BVDID}
+                      className="flex justify-between hover:bg-bg hover:text-highlight cursor-pointer w-full"
+                      onClick={() => handleClick(company)}
+                    >
+                      <ResultCompany
+                        name={company.NAME || ''}
+                        company_id={company.BVDID || ''}
+                        registered_address={`${company.ADDRESS_LINE1 || ''} ${
+                          company.ADDRESS_LINE2 || ''
+                        } ${company.CITY || ''} ${company.COUNTRY} ${
+                          company.POSTCODE || ''
+                        } `}
+                      />
+                    </button>
+                  )
                 );
               })}
             </ul>
