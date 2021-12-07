@@ -26,6 +26,8 @@ export type SummaryInfo = {
   date_of_incorporation: number | string;
   last_account_date: number | string;
   industry_sector: string | null;
+  nace_code: string;
+  nace_name: string;
 };
 
 export type SummaryContact = {

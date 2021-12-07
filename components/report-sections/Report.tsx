@@ -327,6 +327,10 @@ const Report = ({
           }}
           companyName={companyName}
           website={data?.details?.websites?.find((x: string) => x) || ''}
+          environmental_details={{
+            nace_code: data?.details?.nace_code,
+            nace_description: data?.details?.nace_name
+          }}
         />
       </HashContainer>
 

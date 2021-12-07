@@ -80,6 +80,8 @@
   "below_1": "Below 1%",
   "esg_assessment": "ESG Assessment",
   "environmental": "Environmental",
+  "nace_code": "NACE Code",
+  "nace_industrial_sector_description": "NACE Industrial Sector Description",
   "using_environmental_indicators": "Using environmental indicators we can assess the outlook of a companies impact.",
   "environmental_impact": "Environmental Impact",
   "governance": "Governance",
