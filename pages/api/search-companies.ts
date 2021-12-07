@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/cognitive-complexity */
+
 import { withSentry } from '@sentry/nextjs';
 import { getSession } from 'next-auth/client';
 
@@ -74,7 +76,26 @@ const SearchCompanies = async (
 
     const reducedCompanies = Company.filterEUCompanyInformation(
       searchResults?.data
-    );
+    )?.map((company: any) => {
+      // check first two characters of the BVDID code against the country code (from query)
+      // if so, returns BVDID with first to characters removed
+      // else returns original BVDID
+      const BVDID =
+        company?.BVDID?.slice(0, 2).toLowerCase() === countryCode
+          ? company.BVDID?.substring(2)
+          : company.BVDID;
+
+      return {
+        company_number: BVDID,
+        date_of_creation: null, // not available in Orbis API
+        address_snippet: `${company?.ADDRESS_LINE1 || ''} ${
+          company?.ADDRESS_LINE2 || ''
+        } ${company?.CITY || ''} ${company?.COUNTRY} ${
+          company?.POSTCODE || ''
+        } `,
+        title: company?.NAME
+      };
+    });
 
     return response.status(200).json(reducedCompanies);
   } else {

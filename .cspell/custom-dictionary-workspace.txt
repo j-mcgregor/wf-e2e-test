@@ -13,6 +13,7 @@ NewData
 nextjs
 orbis
 Rica
+standardised
 svgs
 Tofive
 UNAUTHORISED

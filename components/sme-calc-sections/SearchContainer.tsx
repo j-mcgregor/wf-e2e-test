@@ -132,15 +132,10 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const handleGenerateReport = async (): Promise<void> => {
     setLoading(true);
 
-    const trimmedBVDID = selectedCompany?.BVDID?.substring(2);
-
-    const companyNumber =
-      selectedCompany?.company_number || trimmedBVDID || regSearchValue;
-
     const params = {
       iso_code: selectedCountry?.optionValue,
-      company_id: companyNumber,
-      currency: selectedCurrency?.optionValue,
+      company_id: selectedCompany?.company_number || regSearchValue,
+      currency: selectedCurrency?.optionName,
       accounts_type: 0
     };
 
@@ -159,6 +154,8 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
       Sentry.captureException(err);
     }
   };
+
+  const countryCode = selectedCountry?.code;
 
   return (
     <div className=" text-sm my">

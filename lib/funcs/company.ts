@@ -1,4 +1,4 @@
-import { ApiResType } from '../../types/global';
+import { ApiResType, CompanyType } from '../../types/global';
 
 const UK_COMPANY_KEYS = [
   'company_number',
@@ -41,8 +41,9 @@ const filterEUCompanyInformation = (companies: [] | undefined) => {
   if (!companies) return companies;
   return (
     companies &&
-    companies.map(company => {
-      return reduceCompanies(EU_COMPANY_KEYS, company);
+    companies.map((company: CompanyType) => {
+      // only return companies with a BVDID
+      return company.BVDID && reduceCompanies(EU_COMPANY_KEYS, company);
     })
   );
 };
@@ -51,29 +52,31 @@ const searchUKCompaniesHouse = async (
   token: string | undefined,
   searchQuery: string
 ): Promise<ApiResType> => {
-  if (!token) {
-    return { ok: false };
-  }
-  const res = await fetch(
-    `https://api.company-information.service.gov.uk/search/${searchQuery}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Basic ${token}`
-      }
+  try {
+    if (!token) {
+      return { ok: false };
     }
-  );
+    const res = await fetch(
+      `https://api.company-information.service.gov.uk/search/${searchQuery}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Basic ${token}`
+        }
+      }
+    );
 
-  if (res.ok) {
-    const results = await res.json();
-
-    return { ok: true, data: results };
+    if (res.ok) {
+      const results = await res.json();
+      return { ok: true, data: results };
+    }
+    if (!res.ok) {
+      return { ok: false, error: true, message: res.statusText };
+    }
+  } catch (e: any) {
+    return { ok: false, error: true, message: e.message };
   }
-
-  if (!res.ok) {
-    return { ok: false, error: true };
-  }
-  return { ok: false };
+  return { ok: false, error: true, message: 'Failed request' };
 };
 
 const SearchOrbisCompanies = async (
@@ -82,7 +85,7 @@ const SearchOrbisCompanies = async (
   searchCountry: string
 ) => {
   try {
-    const search = await fetch(
+    const res = await fetch(
       'https://Orbis4europe.bvdinfo.com/api/orbis4europe//Companies/data',
       {
         method: 'POST',
@@ -115,11 +118,16 @@ const SearchOrbisCompanies = async (
         })
       }
     );
-    const results = await search.json();
+
+    if (!res.ok) {
+      return { ok: false, error: true, message: res.statusText };
+    }
+
+    const results = await res.json();
 
     return { ok: true, data: results.Data };
   } catch (e: any) {
-    return { ok: false, error: true };
+    return { ok: false, error: true, message: e.message };
   }
 };
 

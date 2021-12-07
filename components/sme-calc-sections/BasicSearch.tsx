@@ -32,15 +32,6 @@ const BasicSearch = ({
   // default country taken from user state
   const defaultCountry = user?.preferences?.defaults?.reporting_country;
 
-  const companyAddress = selectedCompany
-    ? selectedCompany?.address_snippet ||
-      `${selectedCompany.ADDRESS_LINE1 || ''} ${
-        selectedCompany.ADDRESS_LINE2 || ''
-      } ${selectedCompany.CITY || ''} ${selectedCompany.COUNTRY} ${
-        selectedCompany.POSTCODE || ''
-      } `
-    : '';
-
   const t = useTranslations();
 
   return (
@@ -77,9 +68,9 @@ const BasicSearch = ({
 
       {selectedCompany && (
         <ResultCompany
-          name={selectedCompany.title || selectedCompany.NAME}
-          company_id={selectedCompany.company_number || selectedCompany.BVDID}
-          registered_address={companyAddress}
+          name={selectedCompany.title}
+          company_id={selectedCompany.company_number}
+          registered_address={selectedCompany.address_snippet}
           registration_date={selectedCompany.date_of_creation}
           clearSelection={clearCompanySelection}
         />

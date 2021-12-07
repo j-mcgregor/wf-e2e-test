@@ -142,23 +142,17 @@ const AlternativeSearchBox = ({
             <ul className="px-4 border border-primary rounded overflow-y-scroll pt-4 space-y-4 max-h-[400px] min-h-[120px] absolute w-full z-10 bg-white">
               {data.map(company => {
                 return (
-                  company.BVDID && (
-                    <button
-                      key={company.BVDID}
-                      className="flex justify-between hover:bg-bg hover:text-highlight cursor-pointer w-full"
-                      onClick={() => handleClick(company)}
-                    >
-                      <ResultCompany
-                        name={company.NAME || ''}
-                        company_id={company.BVDID || ''}
-                        registered_address={`${company.ADDRESS_LINE1 || ''} ${
-                          company.ADDRESS_LINE2 || ''
-                        } ${company.CITY || ''} ${company.COUNTRY} ${
-                          company.POSTCODE || ''
-                        } `}
-                      />
-                    </button>
-                  )
+                  <button
+                    key={company.company_number}
+                    className="flex justify-between hover:bg-bg hover:text-highlight cursor-pointer w-full"
+                    onClick={() => handleClick(company)}
+                  >
+                    <ResultCompany
+                      name={company.title}
+                      company_id={company.company_number}
+                      registered_address={company.address_snippet}
+                    />
+                  </button>
                 );
               })}
             </ul>
