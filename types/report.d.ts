@@ -70,7 +70,8 @@ export type LegalEvent = {
   details: LegalEventDetails[];
   id?: number | string;
   source: string;
-  types: [];
+  // was previously [] which I assume is a typo. Delete comment if appropriate - Jack
+  types: string[];
   forPrint?: boolean;
 };
 

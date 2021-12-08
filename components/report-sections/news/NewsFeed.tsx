@@ -27,9 +27,12 @@ const NewsFeed = ({
 }) => {
   // demo engaged for the moment, returns saved response
   const { data } = useSWR<NewsFeedApiResProps>(
+    // shouldn't country be `&country=${country}` ? - Jack
+    // if so, change the unit test accoringly from country="country=EN" to country="EN"
     `/api/reports/news?company_name=${companyName}&${country}`,
     fetcher
   );
+
   const newsHits = data?.ok && data?.data ? data.data : [];
 
   const newsHitSections: NewsDataType[][] =

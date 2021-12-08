@@ -1,14 +1,15 @@
-/**
- * THIS IS A VERY BASIC TEST SUITE SETUP.
- * IT ONLY TESTS THE COMPONENT DOESN'T THROW WHEN RENDERING.
- * MORE TESTS SHOULD BE ADDED BY DEVS AS THE PROJECT GROWS.
- * REMOVE THIS NOTE WHEN MORE TESTS ARE ADDED.
- */
+/* eslint-disable security/detect-object-injection */
 import client from 'next-auth/client';
 import * as nextRouter from 'next/router';
+import { mockReport } from '../../../../lib/mock-data/newReport';
 
 import allMessages from '../../../../messages/en';
-import { makeMockSession, render } from '../../../../test-utils';
+import {
+  makeMockSession,
+  render,
+  waitForElementToBeRemoved,
+  screen
+} from '../../../../test-utils';
 import SummaryFinancial from '../SummaryFinancial';
 
 jest.mock('next-auth/client');
@@ -31,5 +32,45 @@ describe('SummaryFinancial', () => {
     expect(() =>
       render(<SummaryFinancial years={[]} />, {}, allMessages)
     ).not.toThrow();
+  });
+
+  it('should render the Financial Statement Overview table', async () => {
+    const { financials } = mockReport;
+
+    // @ts-ignore
+    render(<SummaryFinancial years={financials} />, {}, allMessages);
+
+    const skeleton = screen.queryByTestId('skeleton-report');
+    skeleton && (await waitForElementToBeRemoved(skeleton));
+
+    const rowsToTest = [
+      { rowName: 'Sales / Turnover', key: 'operating_revenue' },
+      {
+        rowName: 'Profit / (Loss) Before Taxes',
+        key: 'profit_and_loss_before_tax'
+      },
+      { rowName: 'Equity Shareholder Funds', key: 'total_shareholder_equity' },
+      { rowName: 'Tangible Worth', key: 'capital' },
+      { rowName: 'Total Fixed Assets', key: 'tangible_fixed_assets' },
+      { rowName: 'Total Assets', key: 'total_assets' },
+      { rowName: 'Total Current Assets', key: 'current_assets' },
+      { rowName: 'Total Current Liabilities', key: 'short_term_debt' },
+      { rowName: 'Net Current Assets', key: 'net_current_assets' },
+      { rowName: 'Employees', key: 'number_of_employees' }
+    ];
+
+    rowsToTest.forEach((rowData, i) => {
+      // get the parent element of the found row and all of its cells, minus the first cell
+      const row = screen.getByText(rowData.rowName).parentElement;
+      const cells = row?.querySelectorAll('td');
+
+      if (cells) {
+        financials.forEach((column, index) => {
+          // + 1 as col 0 is row name
+          // @ts-ignore
+          expect(cells[index + 1].textContent).toBe(`${column[rowData.key]}`);
+        });
+      }
+    });
   });
 });
