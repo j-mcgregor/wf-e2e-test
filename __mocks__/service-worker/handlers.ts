@@ -2,7 +2,7 @@
 // src/mocks/handlers.js
 import { rest } from 'msw';
 
-import mockReport from '../../lib/mock-data/report';
+import { mockReport } from '../../lib/mock-data/newReport';
 
 export const handlers = [
   rest.get('http://localhost:3000/api/reports/report', (req, res, ctx) => {

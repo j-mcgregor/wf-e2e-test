@@ -10,7 +10,7 @@ import {
 } from '../../../../test-utils';
 import MacroEconomicTrends from '../MacroEconomicTrends';
 
-describe('MACRO ECONOMIC TRENDS', () => {
+xdescribe('MACRO ECONOMIC TRENDS', () => {
   it('should render', () => {
     expect(
       render(<MacroEconomicTrends trends={[]} />, {}, allMessages)
