@@ -11,7 +11,8 @@ import {
   REPORT_FETCHING_ERROR,
   NO_COMPANY_ID,
   NO_CURRENCY,
-  NO_ISO_CODE
+  NO_ISO_CODE,
+  NO_REPORT_FOUND
 } from '../../../lib/utils/error-codes';
 import { ReportSnippetType } from '../../../types/global';
 import Report from '../../../lib/funcs/report';
@@ -59,7 +60,6 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
         });
       }
       const report = await Report.createReport(body, `${session?.token}`);
-
       // const tempReport = await Report.getExistingReport('fafd5ee8-8bd1-4c11-aea8-457e862bc06a', `${session?.token}`)
 
       if (report.ok) {
@@ -69,11 +69,20 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
       }
 
       // handle the 500 error when API Fails
-      if (!report.ok || report.status === 500) {
-        return response.status(500).json({
-          error: REPORT_FETCHING_ERROR,
-          message: `Error fetching report. Wiserfunding API issue: ${report?.details}`
-        });
+      if (!report.ok) {
+        if (report.status === 404) {
+          return response.status(404).json({
+            error: NO_REPORT_FOUND
+            // message: `Error details: ${report?.details}`
+          });
+        }
+
+        if (report.status === 500) {
+          return response.status(500).json({
+            error: REPORT_FETCHING_ERROR,
+            message: `Error details: ${report?.details}`
+          });
+        }
       }
     } catch (error) {
       return response.status(500).json({

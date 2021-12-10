@@ -77,13 +77,14 @@ const SearchCompanies = async (
     const reducedCompanies = Company.filterAndReduceEUCompanyInformation(
       searchResults?.data
     )?.map((company: any) => {
+      const cleanBVDID = company?.BVDID?.replace('*', '') || company.BVDID;
       // check first two characters of the BVDID code against the country code (from query)
       // if so, returns BVDID with first to characters removed
       // else returns original BVDID
       const BVDID =
-        company?.BVDID?.slice(0, 2).toLowerCase() === countryCode
-          ? company?.BVDID?.substring(2)
-          : company?.BVDID;
+        cleanBVDID?.slice(0, 2).toLowerCase() === countryCode
+          ? cleanBVDID.substring(2)
+          : cleanBVDID;
 
       return {
         company_number: BVDID,

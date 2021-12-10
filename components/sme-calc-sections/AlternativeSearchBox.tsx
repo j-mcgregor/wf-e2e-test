@@ -88,7 +88,7 @@ const AlternativeSearchBox = ({
           onChange={e => setInputValue(e.target.value)}
         />
         {data && data.length > 0 && (
-          <label className="absolute right-5 top-2 sm:top-0 sm:right-[8.5rem]">
+          <label className="absolute right-5 top-2 sm:right-[8.5rem]">
             {data?.length} results
           </label>
         )}

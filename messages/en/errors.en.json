@@ -7,6 +7,7 @@
   "UNAUTHORISED": "You are not authorised to complete this action.",
   "NO_REPORT_ID": "No report ID provided",
   "REPORT_FETCHING_ERROR": "There was an error fetching that report. Please refresh and try again. If the problem persists, please contact support.",
+  "NO_REPORT_FOUND": "We couldn't find a company associated with this ID. If you are sure that this company exists please contact support.",
   "BATCH_REPORT_FETCHING_ERROR": "There was an error processing this batched report request. Please contact support.",
   "VALID_EMAIL_REQUIRED": "Please provide a valid email.",
   "EMAIL_REQUIRED": "Your email is required.",
