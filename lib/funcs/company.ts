@@ -52,6 +52,40 @@ const filterAndReduceEUCompanyInformation = (companies: [] | undefined) => {
   );
 };
 
+// maps the Orbis Data returned to the correct response format
+const mapEUCompanyDataToResponseFormat = (
+  companies: {}[] | undefined,
+  countryCode: string
+) => {
+  if (!companies) return companies;
+
+  return companies.map((company: any) => {
+    // was used to remove the * that some id's returned
+    const cleanBVDID = company?.BVDID;
+
+    // check first two characters of the BVDID code against the country code (from query)
+    // if so, returns BVDID with first to characters removed
+    // else returns original BVDID
+    const BVDID =
+      cleanBVDID?.slice(0, 2).toLowerCase() === countryCode
+        ? cleanBVDID.substring(2)
+        : cleanBVDID;
+
+    const addressLine1 = company?.ADDRESS_LINE1 || '';
+    const addressLine2 = company?.ADDRESS_LINE2 || '';
+    const addressLine3 = company?.CITY || '';
+    const addressLine4 = company?.COUNTRY || '';
+    const addressLine5 = company?.POSTCODE || '';
+
+    return {
+      company_number: BVDID,
+      date_of_creation: null, // not available in Orbis API
+      address_snippet: `${addressLine1} ${addressLine2} ${addressLine3} ${addressLine4} ${addressLine5} `,
+      title: company?.NAME
+    };
+  });
+};
+
 const searchUKCompaniesHouse = async (
   token: string | undefined,
   searchQuery: string
@@ -138,7 +172,8 @@ const Company = {
   searchUKCompaniesHouse,
   SearchOrbisCompanies,
   filterUKCompanyInformation,
-  filterAndReduceEUCompanyInformation
+  filterAndReduceEUCompanyInformation,
+  mapEUCompanyDataToResponseFormat
 };
 
 export default Company;
