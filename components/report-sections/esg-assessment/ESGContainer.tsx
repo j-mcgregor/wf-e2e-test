@@ -4,6 +4,7 @@ import { useTranslations } from 'use-intl';
 import fetcher from '../../../lib/utils/fetcher';
 import { getDomain } from '../../../lib/utils/text-helpers';
 import { ReportSectionHeader } from '../../elements/Headers';
+import EnvironmentalAssessment from './EnvironmentalAssessment';
 import ESGCard from './ESGCard';
 
 type ESGContainerProps = {
@@ -12,6 +13,10 @@ type ESGContainerProps = {
   };
   website: string;
   companyName: string;
+  environmental_details: {
+    nace_code: string;
+    nace_description: string;
+  };
 };
 
 type EsgApiResponse = {
@@ -21,7 +26,8 @@ type EsgApiResponse = {
 const ESGContainer = ({
   governance,
   website = 'https://w3.com',
-  companyName = 'W3'
+  companyName = 'W3',
+  environmental_details
 }: ESGContainerProps) => {
   const { pepFlags } = governance;
   const t = useTranslations();
@@ -67,6 +73,10 @@ const ESGContainer = ({
         resultText={t('pep_flags')}
         rating={pepFlags}
         result={pepFlags && pepFlags > 0 ? 'negative' : 'neutral'}
+      />
+      <EnvironmentalAssessment
+        nace_code={environmental_details.nace_code}
+        nace_description={environmental_details.nace_description}
       />
     </>
   );

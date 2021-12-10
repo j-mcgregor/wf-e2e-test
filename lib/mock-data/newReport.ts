@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/no-duplicate-string */
+
 export const mockReport = {
   iso_code: 'GB',
   company_id: '00519500',

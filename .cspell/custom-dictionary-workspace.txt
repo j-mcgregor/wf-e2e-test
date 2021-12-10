@@ -2,6 +2,7 @@
 Åland
 Alidator
 boxplot
+BVDID
 customisability
 Deby
 ebit
@@ -10,7 +11,9 @@ EBTIDA
 linkedin
 NewData
 nextjs
+orbis
 Rica
+standardised
 svgs
 Tofive
 UNAUTHORISED

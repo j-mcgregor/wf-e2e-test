@@ -84,12 +84,22 @@ export type CompanyType = {
   company_number?: string;
   date_of_creation?: string;
   title?: string;
+  // EU API result options
+  NAME?: string;
+  BVDID?: string;
+  ADDRESS_LINE1?: string;
+  ADDRESS_LINE2?: string;
+  CITY?: string;
+  COUNTRY?: string;
+  POSTCODE?: string;
+  WEBSITE?: string[];
 };
 
 export type ApiResType = {
   ok: boolean;
   data?: ResDataType;
   error?: boolean;
+  message?: string;
 };
 
 export type ResDataType = {

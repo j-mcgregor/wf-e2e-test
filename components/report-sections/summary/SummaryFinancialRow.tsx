@@ -17,9 +17,10 @@ const SummaryFinancialRow = ({
   rowKey
 }: FinancialRowProps) => {
   const t = useTranslations();
+  const rowKeyStr = rowKey.toString();
+
   const dataAsFloat = data.map(
-    year =>
-      (year[rowKey?.toString()] && parseFloat(year[rowKey?.toString()])) || 0
+    year => (year[rowKeyStr] && parseFloat(year[rowKeyStr])) || 0
   );
   const relativeTrendData = relativeTrend(dataAsFloat);
 
@@ -33,14 +34,14 @@ const SummaryFinancialRow = ({
           <td key={index} className="relative px-2 py-1 min-w-[50px]">
             <p
               className={`${
-                parseFloat(year[rowKey?.toString()]) < 0 && 'text-red-400'
+                parseFloat(year[rowKeyStr]) < 0 && 'text-red-400'
               } ${!year.period && 'text-gray-200'}`}
             >
-              {!year[rowKey?.toString()]
+              {!year[rowKeyStr]
                 ? year.period
                   ? 0
                   : t('na')
-                : year[rowKey?.toString()]}
+                : parseFloat(year[rowKeyStr])?.toFixed(2)}
             </p>
           </td>
         ))}

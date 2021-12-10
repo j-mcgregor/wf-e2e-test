@@ -68,7 +68,9 @@ describe('SummaryFinancial', () => {
         financials.forEach((column, index) => {
           // + 1 as col 0 is row name
           // @ts-ignore
-          expect(cells[index + 1].textContent).toBe(`${column[rowData.key]}`);
+          expect(cells[index + 1].textContent).toBe(
+            `${parseFloat(column[rowData.key]).toFixed(2)}`
+          );
         });
       }
     });
