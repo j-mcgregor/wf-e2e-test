@@ -70,6 +70,8 @@ const Report = ({
       })) ||
     [];
 
+  // used for report financials summary
+  // and used for financial charts
   const lastFiveYearsFinancials =
     (data?.financials && transformedFinancials?.slice(0, 5)) || [];
 
@@ -269,7 +271,7 @@ const Report = ({
 
       <HashContainer name={'Financial Trends'} id={`financial_trends`}>
         <ReportSectionHeader text={t('financial_trends')} />
-        <FinancialTrends data={[]} />
+        <FinancialTrends data={lastFiveYearsFinancials} />
       </HashContainer>
 
       <HashContainer name={'Corporate Governance'} id={`corporate_governance`}>

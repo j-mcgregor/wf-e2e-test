@@ -3,19 +3,27 @@ import { useMemo } from 'react';
 import ChartMulti from '../../charts/ChartMulti';
 import { MultiGraphDataType } from '../../../types/charts';
 import { financialTrendsCharts } from '../../../lib/settings/report.settings';
+import { FinancialYear } from '../../../types/report';
 
+// add company name to graph data
+// add in as a prop
 interface FinancialTrendsProps {
-  data: MultiGraphDataType[][]; // 2D array of arrays of objects
+  data: FinancialYear[]; // 2D array of arrays of objects
 }
 
 const FinancialTrends = ({ data }: FinancialTrendsProps) => {
   const t = useTranslations();
+
+  // 5 years of financial data
+  // data = array of chart data
+  //
 
   const chartsToRender = useMemo(
     () =>
       Object.keys(financialTrendsCharts).map((key: string) =>
         financialTrendsCharts[key.toString()]([
           {
+            // replace with company name
             name: 'Scottish Seabird Center LTD',
             data: [
               { x: '2016', y: 200 },
@@ -24,32 +32,33 @@ const FinancialTrends = ({ data }: FinancialTrendsProps) => {
               { x: '2019', y: 389 },
               { x: '2020', y: 700 }
             ]
-          },
-          {
-            name: 'Industry Benchmark',
-            data: [
-              { x: '2016', y: 400 },
-              { x: '2017', y: 380 },
-              { x: '2018', y: 341 },
-              { x: '2019', y: 500 },
-              { x: '2020', y: 645 }
-            ]
-          },
-          {
-            name: 'Region Benchmark',
-            data: [
-              { x: '2016', y: 500 },
-              { x: '2017', y: 480 },
-              { x: '2018', y: 580 },
-              { x: '2019', y: 740 },
-              { x: '2020', y: 780 }
-            ]
           }
+          // {
+          //   name: 'Industry Benchmark',
+          //   data: [
+          //     { x: '2016', y: 400 },
+          //     { x: '2017', y: 380 },
+          //     { x: '2018', y: 341 },
+          //     { x: '2019', y: 500 },
+          //     { x: '2020', y: 645 }
+          //   ]
+          // },
+          // {
+          //   name: 'Region Benchmark',
+          //   data: [
+          //     { x: '2016', y: 500 },
+          //     { x: '2017', y: 480 },
+          //     { x: '2018', y: 580 },
+          //     { x: '2019', y: 740 },
+          //     { x: '2020', y: 780 }
+          //   ]
+          // }
         ])
       ),
     []
   );
 
+  // print assistance (breaking up page)
   const graphSections: MultiGraphDataType[][] = chartsToRender.reduce(
     (acc: any, curr: any, index) =>
       (index % 6 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&

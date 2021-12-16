@@ -26,6 +26,8 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
     });
   }
 
+  console.log(session)
+
   const isGet = request.method === 'GET';
 
   if (isGet) {

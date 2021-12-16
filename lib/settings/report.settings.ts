@@ -225,6 +225,9 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'turnover',
       poundsThousands,
       { title: 'turnover.title', body: 'turnover.body' },
+      // convert the years object of financial data into
+      // [{x: 'year', y: 'value'}]
+      // eg. data.map((year) => ({x: year.year, y.turnover}))
       data
     ),
 
