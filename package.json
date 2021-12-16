@@ -23,7 +23,6 @@
     "@heroicons/react": "^1.0.3",
     "@popperjs/core": "^2.10.2",
     "@sentry/nextjs": "^6.13.2",
-    "@unicef/react-org-chart": "^0.3.4",
     "@welldone-software/why-did-you-render": "^6.2.1",
     "aos": "^2.3.4",
     "axios": "^0.21.1",
@@ -54,8 +53,6 @@
     "swr": "^1.0.0",
     "ts-jest": "^27.0.5",
     "tsparticles": "^1.33.3",
-    "types": "unicef/react-org-chart",
-    "underscore": "^1.13.1",
     "use-file-picker": "^1.4.0",
     "victory": "^36.0.1"
   },

@@ -25,7 +25,6 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
       message: 'Unauthorised api request, please login to continue.'
     });
   }
-
   const isGet = request.method === 'GET';
 
   if (isGet) {
