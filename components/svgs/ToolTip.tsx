@@ -8,8 +8,8 @@ const ToolTip = ({
 }) => {
   return (
     <svg
-      transform="translate(-12 -31)"
-      width="13"
+      transform="translate(-14 -31)"
+      width="140"
       height="12"
       viewBox="0 0 13 12"
       fill="none"

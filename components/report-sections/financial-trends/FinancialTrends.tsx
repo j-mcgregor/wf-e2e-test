@@ -1,37 +1,32 @@
 import { useTranslations } from 'use-intl';
 import { useMemo } from 'react';
 import ChartMulti from '../../charts/ChartMulti';
-import { MultiGraphDataType } from '../../../types/charts';
+import { MultiGraphDataType, GraphDataType } from '../../../types/charts';
 import { financialTrendsCharts } from '../../../lib/settings/report.settings';
 import { FinancialYear } from '../../../types/report';
 
-// add company name to graph data
-// add in as a prop
 interface FinancialTrendsProps {
-  data: FinancialYear[]; // 2D array of arrays of objects
+  financialData: FinancialYear[]; // 2D array of arrays of objects
+  companyName: string;
 }
 
-const FinancialTrends = ({ data }: FinancialTrendsProps) => {
+const FinancialTrends = ({
+  financialData,
+  companyName
+}: FinancialTrendsProps) => {
   const t = useTranslations();
 
   // 5 years of financial data
   // data = array of chart data
-  //
-
+  // console.log(financialData);
   const chartsToRender = useMemo(
     () =>
       Object.keys(financialTrendsCharts).map((key: string) =>
         financialTrendsCharts[key.toString()]([
           {
             // replace with company name
-            name: 'Scottish Seabird Center LTD',
-            data: [
-              { x: '2016', y: 200 },
-              { x: '2017', y: 210 },
-              { x: '2018', y: 410 },
-              { x: '2019', y: 389 },
-              { x: '2020', y: 700 }
-            ]
+            name: companyName,
+            data: financialData
           }
           // {
           //   name: 'Industry Benchmark',
@@ -57,6 +52,9 @@ const FinancialTrends = ({ data }: FinancialTrendsProps) => {
       ),
     []
   );
+
+  // eslint-disable-next-line no-console
+  console.log(chartsToRender);
 
   // print assistance (breaking up page)
   const graphSections: MultiGraphDataType[][] = chartsToRender.reduce(

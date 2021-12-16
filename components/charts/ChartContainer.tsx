@@ -27,13 +27,14 @@ const ChartContainer = ({
       theme={theme}
       containerComponent={
         <VictoryVoronoiContainer
-          onActivated={points => handleSetTooltip(points[0]._voronoiY)}
+          onActivated={points => handleSetTooltip(points[0]?._voronoiY)}
           labels={({ datum }) => datum.y}
           labelComponent={
             <VictoryTooltip
               style={{
-                fontSize: 10,
-                padding: 4
+                fontSize: 6,
+                padding: 4,
+                width: 100
               }}
               flyoutComponent={<ToolTip text={tooltipValue} />}
             />

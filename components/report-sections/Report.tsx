@@ -48,6 +48,7 @@ const Report = ({
   const lastFiledAccount = data?.financials?.[0]?.period || t('na');
 
   const companyDetails = data?.details;
+
   const companyAddress = companyDetails?.address;
 
   const date = new Date(`${data?.created_at}`);
@@ -271,7 +272,10 @@ const Report = ({
 
       <HashContainer name={'Financial Trends'} id={`financial_trends`}>
         <ReportSectionHeader text={t('financial_trends')} />
-        <FinancialTrends data={lastFiveYearsFinancials} />
+        <FinancialTrends
+          financialData={lastFiveYearsFinancials}
+          companyName={companyName}
+        />
       </HashContainer>
 
       <HashContainer name={'Corporate Governance'} id={`corporate_governance`}>

@@ -4,6 +4,7 @@ import ChartContainer from './ChartContainer';
 import { GraphDataType, MultiGraphDataType } from '../../types/charts';
 import { TranslateInput } from '../../types/global';
 import Hint from '../elements/Hint';
+import { FinancialYear } from '../../types/report';
 
 interface ChartMultiProps {
   graphData: MultiGraphDataType[];
@@ -26,6 +27,7 @@ const ChartMulti = ({
 
   useEffect(() => {
     data !== graphData && setData(graphData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const black = '#022D45';
@@ -36,9 +38,45 @@ const ChartMulti = ({
     return i === 0 ? black : i === 1 ? blue : green;
   };
 
+  // check null / undefined / NaN value
+  const emptyValueCheck = (value: any) => {
+    return (
+      value === null ||
+      value === undefined ||
+      Number.isNaN(value) ||
+      value === 0
+    );
+  };
+
+  // for filtering out graphs with some null data points
+  const hasNullValue = graphData[0].data.some(graph =>
+    emptyValueCheck(graph.y)
+  );
+
+  // for filtering out graphs with all null data points
+  const hasAllNullValues = graphData.every((graph: any) =>
+    graph.data.every((value: any) => emptyValueCheck(value.y))
+  );
+
+  const maxValue =
+    Math.round(
+      Math.max(
+        ...graphData.map((graph: any) =>
+          Math.max(...graph.data.map((value: GraphDataType) => value.y))
+        )
+      )
+    ) * 1.2;
+
+  // remove objects with null y values
+  const filteredGraphData = graphData.filter(
+    (graph: any) => !hasAllNullValues && !hasNullValue
+  );
+
   return (
     <div
-      className="shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break "
+      className={`${
+        hasAllNullValues && 'opacity-60 -z-10'
+      } shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break`}
       data-testid="chart-multi-testid"
     >
       <div className="flex justify-between items-start px-4 pt-4 text-xs">
@@ -54,7 +92,7 @@ const ChartMulti = ({
       <ChartContainer
         height={220}
         width={200}
-        max={800}
+        max={maxValue}
         tooltipValue={toolTipValue}
         handleSetTooltip={setToolTipValue}
       >

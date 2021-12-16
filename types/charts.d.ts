@@ -1,4 +1,5 @@
 import { TranslateInput } from './global';
+import { FinancialYear } from './report';
 
 export type ChartType = {
   header: TranslateInput;
@@ -21,7 +22,7 @@ export type GraphDataType = {
 
 export type MultiGraphDataType = {
   name?: string;
-  data: GraphDataType[];
+  data: GraphDataType[] | FinancialYear[];
 };
 
 export type MacroTrend = {

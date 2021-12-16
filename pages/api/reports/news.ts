@@ -26,7 +26,8 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
     });
   }
 
-  console.log(session)
+  // eslint-disable-next-line no-console
+  console.log(session);
 
   const isGet = request.method === 'GET';
 
@@ -86,7 +87,7 @@ const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
 export default withSentry(NewsApi);
 
 // example website ESG response
-/* 
+/*
 [
   {
     "name": "Capital_Markets",
