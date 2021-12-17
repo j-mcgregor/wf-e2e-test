@@ -92,10 +92,6 @@ type AllMultiGraphChartsType = {
   [index: string]: (data: MultiGraphDataType[]) => ReportChartType;
 };
 
-const fixedNum = (value: number) => {
-  return value && Number(value.toFixed(2));
-};
-
 export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
   gdp_growth_rate: (data: MultiGraphDataType[]) =>
     createChart(
@@ -229,13 +225,12 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'turnover',
       poundsThousands,
       { title: 'turnover.title', body: 'turnover.body' },
-
       [
         {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.turnover
+            y: year.turnover || undefined
           }))
         }
       ]
@@ -250,7 +245,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.total_assets
+            y: year.total_assets || undefined
           }))
         }
       ]
@@ -266,7 +261,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.ebit
+            y: year.ebit || undefined
           }))
         }
       ]
@@ -281,7 +276,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.ebitda
+            y: year.ebitda || undefined
           }))
         }
       ]
@@ -296,7 +291,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.total_debt
+            y: year.total_debt || undefined
           }))
         }
       ]
@@ -311,7 +306,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.cash_and_cash_equivalents
+            y: year.cash_and_equivalents || undefined
           }))
         }
       ]
@@ -326,7 +321,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.interest_expenses
+            y: year.interest_expenses || undefined
           }))
         }
       ]
@@ -341,7 +336,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.net_income
+            y: year.net_income || undefined
           }))
         }
       ]
@@ -356,7 +351,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.total_shareholders_equity
+            y: year.total_shareholder_equity || undefined
           }))
         }
       ]
@@ -371,7 +366,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.retained_earnings
+            y: year.retained_earnings || undefined
           }))
         }
       ]
@@ -381,21 +376,45 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'days_receivable',
       poundsThousands,
       { title: 'ebit.title', body: 'ebit.body' },
-      data
+      [
+        {
+          name: data[0].name,
+          data: data[0].data.map((year: any) => ({
+            x: year.period,
+            y: year.days_receivable || undefined
+          }))
+        }
+      ]
     ),
   days_payable: (data: MultiGraphDataType[]) =>
     createChart(
       'days_payable',
       poundsThousands,
       { title: 'ebit.title', body: 'ebit.body' },
-      data
+      [
+        {
+          name: data[0].name,
+          data: data[0].data.map((year: any) => ({
+            x: year.period,
+            y: year.days_payable || undefined
+          }))
+        }
+      ]
     ),
   ebitda_margin: (data: MultiGraphDataType[]) =>
     createChart(
       'ebitda_margin',
       poundsThousands,
       { title: 'ebit.title', body: 'ebit.body' },
-      data
+      [
+        {
+          name: data[0].name,
+          data: data[0].data.map((year: any) => ({
+            x: year.period,
+            y: year.ebitda_margin || undefined
+          }))
+        }
+      ]
     ),
   total_debt_total_assets: (data: MultiGraphDataType[]) =>
     createChart(
@@ -407,7 +426,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: fixedNum(year.total_debt / year.total_assets)
+            y: year.debt_total_assets.toFixed(2) || undefined
           }))
         }
       ]
@@ -422,7 +441,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: fixedNum(year.total_debt / year.total_shareholders_equity)
+            y: year.debt_equity || undefined
           }))
         }
       ]
@@ -432,7 +451,15 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'equity_total_assets',
       poundsThousands,
       { title: 'equity_total_assets.title', body: 'ebit.body' },
-      data
+      [
+        {
+          name: data[0].name,
+          data: data[0].data.map((year: any) => ({
+            x: year.period,
+            y: year.equity_book_value_total_assets || undefined
+          }))
+        }
+      ]
     ),
   tangible_fixed_assets_total_assets: (data: MultiGraphDataType[]) =>
     createChart(
@@ -444,7 +471,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: fixedNum(year.tangible_fixed_assets / year.total_assets)
+            y: year.tangible_fixed_assets || undefined
           }))
         }
       ]
@@ -459,7 +486,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: fixedNum(year.intangible_fixed_assets / year.total_assets)
+            y: year.intangible_fixed_assets || undefined
           }))
         }
       ]
@@ -474,7 +501,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.turnover
+            y: year.interest_cover || undefined
           }))
         }
       ]
@@ -484,21 +511,45 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'return_on_equity',
       poundsThousands,
       { title: 'ebit.title', body: 'ebit.body' },
-      data
+      [
+        {
+          name: data[0].name,
+          data: data[0].data.map((year: any) => ({
+            x: year.period,
+            y: year.return_on_equity || undefined
+          }))
+        }
+      ]
     ),
   return_on_assets: (data: MultiGraphDataType[]) =>
     createChart(
       'return_on_assets',
       poundsThousands,
       { title: 'ebit.title', body: 'ebit.body' },
-      data
+      [
+        {
+          name: data[0].name,
+          data: data[0].data.map((year: any) => ({
+            x: year.period,
+            y: year.return_on_capital_employed || undefined
+          }))
+        }
+      ]
     ),
   liquidity_ratio: (data: MultiGraphDataType[]) =>
     createChart(
       'liquidity_ratio',
       poundsThousands,
       { title: 'ebit.title', body: 'ebit.body' },
-      data
+      [
+        {
+          name: data[0].name,
+          data: data[0].data.map((year: any) => ({
+            x: year.period,
+            y: year.liquidity || undefined
+          }))
+        }
+      ]
     ),
   current_ratio: (data: MultiGraphDataType[]) =>
     createChart(
@@ -510,7 +561,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: fixedNum(year.current_ratio)
+            y: year.current_ratio || undefined
           }))
         }
       ]
@@ -525,7 +576,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           name: data[0].name,
           data: data[0].data.map((year: any) => ({
             x: year.period,
-            y: year.net_debt
+            y: year.net_debt || undefined
           }))
         }
       ]
@@ -535,14 +586,30 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'net_debt_ebitda',
       poundsThousands,
       { title: 'ebit.title', body: 'ebit.body' },
-      data
+      [
+        {
+          name: data[0].name,
+          data: data[0].data.map((year: any) => ({
+            x: year.period,
+            y: year.net_debt_ebitda || undefined
+          }))
+        }
+      ]
     ),
-  deby_service_coverage_ratio: (data: MultiGraphDataType[]) =>
+  debt_service_coverage_ratio: (data: MultiGraphDataType[]) =>
     createChart(
-      'deby_service_coverage_ratio',
+      'debt_service_coverage_ratio',
       poundsThousands,
       { title: 'ebit.title', body: 'ebit.body' },
-      data
+      [
+        {
+          name: data[0].name,
+          data: data[0].data.map((year: any) => ({
+            x: year.period,
+            y: year.debt_service_coverage || undefined
+          }))
+        }
+      ]
     )
 };
 

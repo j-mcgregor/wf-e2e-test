@@ -76,6 +76,15 @@ const Report = ({
   const lastFiveYearsFinancials =
     (data?.financials && transformedFinancials?.slice(0, 5)) || [];
 
+  const lastFiveYearsFinancialRatios =
+    (data?.financial_ratios && data.financial_ratios?.slice(0, 5)) || [];
+
+  const mergedLastFiveYearFinancials = lastFiveYearsFinancials.map(
+    (year, index) => {
+      return { ...year, ...lastFiveYearsFinancialRatios[index] };
+    }
+  );
+
   const INDUSTRY_BENCHMARK = t('industry_benchmark');
   const REGION_BENCHMARK = t('region_benchmark');
 
@@ -273,7 +282,7 @@ const Report = ({
       <HashContainer name={'Financial Trends'} id={`financial_trends`}>
         <ReportSectionHeader text={t('financial_trends')} />
         <FinancialTrends
-          financialData={lastFiveYearsFinancials}
+          financialData={mergedLastFiveYearFinancials}
           companyName={companyName}
         />
       </HashContainer>

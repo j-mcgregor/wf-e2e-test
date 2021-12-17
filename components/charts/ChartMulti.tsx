@@ -4,7 +4,6 @@ import ChartContainer from './ChartContainer';
 import { GraphDataType, MultiGraphDataType } from '../../types/charts';
 import { TranslateInput } from '../../types/global';
 import Hint from '../elements/Hint';
-import { FinancialYear } from '../../types/report';
 
 interface ChartMultiProps {
   graphData: MultiGraphDataType[];
@@ -38,38 +37,22 @@ const ChartMulti = ({
     return i === 0 ? black : i === 1 ? blue : green;
   };
 
-  // check null / undefined / NaN value
-  const emptyValueCheck = (value: any) => {
-    return (
-      value === null ||
-      value === undefined ||
-      Number.isNaN(value) ||
-      value === 0
-    );
-  };
-
-  // for filtering out graphs with some null data points
-  const hasNullValue = graphData[0].data.some(graph =>
-    emptyValueCheck(graph.y)
-  );
-
-  // for filtering out graphs with all null data points
+  //  filter graphs with no data
+  //  when creating the object we make falsey values undefined
   const hasAllNullValues = graphData.every((graph: any) =>
-    graph.data.every((value: any) => emptyValueCheck(value.y))
+    graph.data.every((value: any) => value.y === undefined)
   );
 
-  const maxValue =
-    Math.round(
-      Math.max(
-        ...graphData.map((graph: any) =>
-          Math.max(...graph.data.map((value: GraphDataType) => value.y))
-        )
-      )
-    ) * 1.2;
+  const maxValue = Math.max(
+    ...graphData.map((graph: any) =>
+      Math.max(...graph.data.map((value: GraphDataType) => value.y))
+    )
+  );
 
-  // remove objects with null y values
-  const filteredGraphData = graphData.filter(
-    (graph: any) => !hasAllNullValues && !hasNullValue
+  const minValue = Math.min(
+    ...graphData.map((graph: any) =>
+      Math.min(...graph.data.map((value: GraphDataType) => value.y))
+    )
   );
 
   return (
@@ -89,10 +72,12 @@ const ChartMulti = ({
 
         <Hint title={hintTitle} body={hintBody} />
       </div>
+
       <ChartContainer
         height={220}
         width={200}
-        max={maxValue}
+        max={maxValue < 1 ? maxValue * 1.5 : maxValue * 1.2}
+        min={minValue}
         tooltipValue={toolTipValue}
         handleSetTooltip={setToolTipValue}
       >
@@ -107,7 +92,8 @@ const ChartMulti = ({
                     onLoad: { duration: 500 }
                   }}
                   data={company.data}
-                  interpolation="natural"
+                  y0={() => minValue} // sets baseline of graph to min value
+                  interpolation="monotoneX" // creates smoother curve than 'natural'
                   style={{
                     data: {
                       fill: graphColors(i),
@@ -137,18 +123,11 @@ const ChartMulti = ({
                       fillOpacity: i === selectedCompany ? '1' : '0'
                     }
                   }}
-                  labels={({ datum }) =>
-                    data.indexOf(company) === selectedCompany &&
-                    toolTipValue !== datum.y
-                      ? datum.y
-                      : null
-                  }
                 />
               )
           )}
         </VictoryGroup>
       </ChartContainer>
-
       <div className="flex flex-col text-xxs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
         {data?.map((company, i) => {
           const bg =
