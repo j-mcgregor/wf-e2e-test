@@ -52,14 +52,14 @@ const RiskOutlook = ({
   ).length;
 
   const getRiskOutlook = (data: FinancialYear): string[] => {
-    const totalAssets = Number(data.total_assets);
+    const totalAssets = Number(data?.total_assets);
 
     const shareholderFundsByAssets =
-      Number(data.total_shareholder_funds) / totalAssets;
+      Number(data?.total_shareholder_funds) / totalAssets;
 
-    const workingCapitalByAssets = Number(data.working_capital) / totalAssets;
+    const workingCapitalByAssets = Number(data?.working_capital) / totalAssets;
 
-    const ebitdaByAssets = Number(data.ebitda) / totalAssets;
+    const ebitdaByAssets = Number(data?.ebitda) / totalAssets;
 
     const industryBenchmark =
       benchmarks?.industry_benchmark &&

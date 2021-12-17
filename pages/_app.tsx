@@ -2,13 +2,12 @@
 // import '../lib/wdyr.ts'
 import '../styles/globals.css';
 
-import { useEffect } from 'react';
 import memoize from 'lodash/memoize';
 import { Provider } from 'next-auth/client';
 import { NextIntlProvider } from 'next-intl';
 import { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
-import * as FullStory from '@fullstory/browser';
+import useFullstory from '../hooks/useFullstory';
 
 // ignore in-browser next/js recoil warnings until its fixed.
 const mutedConsole = memoize(console => ({
@@ -26,10 +25,7 @@ if (
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    process.env.NEXT_PUBLIC_FULLSTORY_ID &&
-      FullStory.init({ orgId: process.env.NEXT_PUBLIC_FULLSTORY_ID });
-  }, []);
+  useFullstory();
 
   return (
     <RecoilRoot>

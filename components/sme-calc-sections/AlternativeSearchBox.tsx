@@ -11,6 +11,7 @@ import LoadingIcon from '../svgs/LoadingIcon';
 import ResultCompany from '../elements/ResultCompany';
 import useSWR from 'swr';
 import fetcher from '../../lib/utils/fetcher';
+import Button from '../elements/Button';
 
 interface SearchBoxProps {
   disabled?: boolean;
@@ -61,6 +62,8 @@ const AlternativeSearchBox = ({
     fetcher
   );
 
+  const disableSearch = inputValue.length === 0 || (!!searchValue && !data);
+
   // handle the closing of the dropdown so that state can be set
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -68,8 +71,8 @@ const AlternativeSearchBox = ({
 
   return (
     <div ref={containerRef}>
-      <div className="mt-1 relative rounded-md shadow-sm flex items-center">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+      <div className="mt-1 relative rounded-md shadow-sm flex flex-col sm:flex-row items-center">
+        <div className="absolute inset-y-0 left-0 pl-3 h-10 flex items-center pointer-events-none">
           <SearchIcon className="h-5 w-5 text-primary" aria-hidden="true" />
         </div>
 
@@ -80,16 +83,21 @@ const AlternativeSearchBox = ({
           onKeyUp={handleKeyUp}
           name="search-companies"
           id="search-companies"
-          className="focus:ring-highlight focus:border-highlight block w-full pl-10 text-sm border-primary rounded bg-bg"
+          className="focus:ring-highlight focus:border-highlight block w-full pl-10 text-sm border-primary rounded bg-bg pr-56"
           placeholder={`${t('enter_company_name')}`}
           onChange={e => setInputValue(e.target.value)}
         />
         {data && data.length > 0 && (
-          <label className="absolute right-5">{data?.length} results</label>
+          <label className="absolute right-5 top-2 sm:right-[8.5rem]">
+            {data?.length} results
+          </label>
         )}
 
         <button
-          className="absolute right-0 bg-primary h-full w-[120px] text-white text-base rounded"
+          disabled={disableSearch}
+          className={`sm:absolute block right-0 bg-primary h-full sm:!w-[120px] py-2 sm:py-0 w-full text-white text-base mt-2 sm:mt-0 sm:rounded-l-none rounded-md ${
+            disableSearch && 'opacity-75 pointer-events-none'
+          } `}
           onClick={() => handleSearch()}
         >
           {t('search')}

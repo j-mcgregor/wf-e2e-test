@@ -26,6 +26,18 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
   );
 
   const [events, setEvents] = useState(allEvents);
+
+  const legalEventSections: LegalEvent[][] =
+    events &&
+    events.reduce(
+      (acc: any, curr: any, index) =>
+        (index % 12 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
+        acc,
+      []
+    );
+
+  // console.log(legalEventSections);
+
   const [filter, setFilter] = useState(FILTERS.ALL);
 
   const handleFilter = (event: LegalEvent[], filter: string): void => {
@@ -72,9 +84,9 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
 
       <p className="text-xl">{t(filter)}</p>
 
-      <div className="bg-white shadow-sm p-2 my-6 rounded-sm print:shadow-none print:border-2">
+      <div className="bg-white shadow-sm p-2 my-6 rounded-sm print:shadow-none break-after-page ">
         <div
-          className="w-full my-6 flex flex-col text-xs px-2 avoid-break"
+          className="w-full my-6 flex flex-col text-xs px-2"
           data-testid="legal-events-table-testid"
         >
           <div className="flex border-b pb-2 mb-2">
@@ -84,13 +96,19 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
               <p>{t('date')}</p>
             </div>
           </div>
-          {events.map((event, index) => {
+
+          {/* {legalEventSections.map((eventsArray, index) => {
             return (
-              <>
-                <LegalRow forPrint={forPrint} key={index} {...event} />
-              </>
-            );
+              <div
+                key={index}
+                className={``}
+              > */}
+          {events.map((event, index) => {
+            return <LegalRow forPrint={forPrint} key={index} {...event} />;
           })}
+          {/* </div>
+            );
+          })} */}
         </div>
       </div>
     </div>

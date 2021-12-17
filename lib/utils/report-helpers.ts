@@ -10,15 +10,24 @@ export const addBlankObjects = (array: any[], lengthRequired: number) => {
 };
 
 export const calculateSMEZScoreRotation = (value: number) => {
-  const rotationPercentage = (260 / value) * 100;
-  return 260 * rotationPercentage - 130;
+  // initial algo
+  // Z-Score angle = min ( max(Z-Score – 100, 0.0 ) / 500, 1.0 )
+  const max = value - 100 > 0.0 ? value - 100 : 0.0;
+  const min = max / 500 > 1.0 ? 1.0 : max / 500;
+
+  const rotationPercentage = min * 260;
+  // halved for the 130deg
+  return rotationPercentage - 130;
 };
 
 export const calculatePoDRotation = (value: number) => {
-  const rotationPercentage = 260 * value;
-  return 130 - rotationPercentage;
+  // PD angle = LOG10(PD) * -1.0
+  const rotationPercentage = (1.0 - Math.log10(value) * -1.0) * 260;
+  return rotationPercentage - 130;
 };
 export const calculateLGDRotation = (value: number) => {
-  const rotationPercentage = 260 * value;
-  return 130 - rotationPercentage;
+  // LGD angle = 1.0 – LGD
+  const rotationPercentage = (1.0 - value) * 260;
+  // halved for the 130deg
+  return rotationPercentage - 130;
 };

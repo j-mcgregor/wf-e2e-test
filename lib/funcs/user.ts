@@ -184,10 +184,7 @@ const getReportsHistory = async (
     }
   };
 
-  const res = await fetch(
-    `${process.env.WF_AP_ROUTE}/reports/history/me`,
-    params
-  );
+  const res = await fetch(`${process.env.WF_AP_ROUTE}/reports`, params);
   if (res.ok) {
     const reports = await res.json();
 

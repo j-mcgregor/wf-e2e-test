@@ -43,7 +43,6 @@ const createReport = async (
     },
     body: JSON.stringify(report)
   });
-
   if (res.ok) {
     const report = await res.json();
     return { ok: true, report, status: res.status };
@@ -51,8 +50,7 @@ const createReport = async (
 
   try {
     const error = await res?.json();
-
-    return { ok: false, status: res.status, details: error?.details };
+    return { ok: false, status: res.status, details: error?.detail };
   } catch (e: any) {
     return { ok: false, status: res.status, details: e.message };
   }

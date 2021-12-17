@@ -98,6 +98,30 @@ const SearchCompanies = async (
     });
 
     return response.status(200).json(reducedCompanies);
+  } else if (
+    countryCode &&
+    orbisAvailableSearchCountries.includes(countryCode)
+  ) {
+    // search orbis for matching companies in the country
+    const searchResults = await Company.SearchOrbisCompanies(
+      process.env.ORBIS_SEARCH_API_KEY,
+      searchQuery,
+      countryCode
+    );
+
+    // filter out those without a BVDID
+    // reduce to a consistent format
+    const reducedCompanies = Company.filterAndReduceEUCompanyInformation(
+      searchResults?.data
+    );
+
+    // map to the required format to return
+    const mappedCompanies = Company.mapEUCompanyDataToResponseFormat(
+      reducedCompanies,
+      countryCode
+    );
+
+    return response.status(200).json(mappedCompanies);
   } else {
     return response
       .status(404)

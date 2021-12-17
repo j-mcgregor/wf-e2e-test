@@ -147,7 +147,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
       }
       if (!res?.reportId) {
         Sentry.captureException({ error: res.error, message: res.message });
-        setError({ error: true, message: res.message });
+        setError({ error: res.error, message: res.message });
         setLoading(false);
       }
     } catch (err) {
@@ -211,10 +211,14 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
           />
         )}
 
-        <div>
-          {error.error && <ErrorMessage text={t('REPORT_FETCHING_ERROR')} />}
-          {error.message && <ErrorMessage text={error.message} />}
-        </div>
+        {(error.error || error.message) && (
+          <div className="py-4 px-2 border-2 rounded-md border-red-400 bg-red-50 my-2">
+            {error.error && <ErrorMessage text={t(`${error.error}`)} />}
+            {error.message && (
+              <ErrorMessage className="font-bold mt-2" text={error.message} />
+            )}
+          </div>
+        )}
 
         <div className="flex sm:flex-row flex-col items-center my-6">
           <Button

@@ -5,6 +5,7 @@ export const USER_404 = 'USER_404';
 export const USER_422 = 'USER_422';
 export const USER_500 = 'USER_500';
 export const NO_REPORT = 'NO_REPORT';
+export const NO_REPORT_FOUND = 'NO_REPORT_FOUND';
 export const REPORT_FETCHING_ERROR = 'REPORT_FETCHING_ERROR';
 export const BATCH_REPORT_FETCHING_ERROR = 'BATCH_REPORT_FETCHING_ERROR';
 export const GENERIC_API_ERROR = 'GENERIC_API_ERROR';

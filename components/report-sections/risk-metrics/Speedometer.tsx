@@ -41,7 +41,7 @@ const Speedometer = ({
     <>
       <div
         className="bg-white mt-6 mx-auto xl:mx-0 flex flex-col items-center w-[250px] overflow-hidden
-         print:inline-block print:w-[200px] avoid-break"
+        print:inline-block print:w-[200px] avoid-break"
         role="contentinfo"
       >
         <div className="flex w-full items-center justify-between px-4 pt-4 pb-2">
