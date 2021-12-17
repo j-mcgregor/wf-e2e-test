@@ -68,40 +68,6 @@ const SearchCompanies = async (
     countryCode &&
     orbisAvailableSearchCountries.includes(countryCode)
   ) {
-    const searchResults = await Company.SearchOrbisCompanies(
-      process.env.ORBIS_SEARCH_API_KEY,
-      searchQuery,
-      countryCode
-    );
-
-    const reducedCompanies = Company.filterEUCompanyInformation(
-      searchResults?.data
-    )?.map((company: any) => {
-      // check first two characters of the BVDID code against the country code (from query)
-      // if so, returns BVDID with first to characters removed
-      // else returns original BVDID
-      const BVDID =
-        company?.BVDID?.slice(0, 2).toLowerCase() === countryCode
-          ? company.BVDID?.substring(2)
-          : company.BVDID;
-
-      return {
-        company_number: BVDID,
-        date_of_creation: null, // not available in Orbis API
-        address_snippet: `${company?.ADDRESS_LINE1 || ''} ${
-          company?.ADDRESS_LINE2 || ''
-        } ${company?.CITY || ''} ${company?.COUNTRY} ${
-          company?.POSTCODE || ''
-        } `,
-        title: company?.NAME
-      };
-    });
-
-    return response.status(200).json(reducedCompanies);
-  } else if (
-    countryCode &&
-    orbisAvailableSearchCountries.includes(countryCode)
-  ) {
     // search orbis for matching companies in the country
     const searchResults = await Company.SearchOrbisCompanies(
       process.env.ORBIS_SEARCH_API_KEY,
