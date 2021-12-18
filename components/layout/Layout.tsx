@@ -1,4 +1,5 @@
-import { useSession } from 'next-auth/client';
+import { useSession, signOut } from 'next-auth/client';
+
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
@@ -8,7 +9,6 @@ import appState from '../../lib/appState';
 import SkeletonLayout from '../skeletons/SkeletonLayout';
 import Nav from './Nav';
 import Seo from './Seo';
-import { ApplicationError } from '../errors/ApplicationError';
 
 interface LayoutProps {
   title?: string;
@@ -44,6 +44,14 @@ const Layout = ({
   const { user } = useRecoilValue(appState);
 
   React.useEffect(() => {
+    // if there is a session but no token
+    // sign the user out
+    // this is to handle the instances of a backend update
+    // the users access token will be invalidated
+    if (session && !session?.token) {
+      signOut();
+    }
+
     if (session && session.user && !user) {
       // set sentry to identify user
       Sentry.setUser({ email: session.user.email || '' });

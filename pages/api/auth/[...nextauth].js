@@ -91,6 +91,15 @@ export default NextAuth({
     async session(session, token, _user) {
       if (token?.accessToken) {
         const user = await User.getUser(token.accessToken);
+
+        // if there is no user or the user cannot be authenticated
+        // then revoke the session accessToken
+        // this will trigger a logout through the Layout Component
+        if (!user.ok) {
+          session.token = '';
+          return session;
+        }
+
         // add the mock user data in the use session hook
         session.user = {
           ...user,

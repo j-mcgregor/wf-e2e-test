@@ -18,7 +18,6 @@ const authenticate = async (email: string, password: string) => {
       password: password
     })
   });
-
   if (res.ok) {
     const json = await res.json();
     return { token: json.access_token };
@@ -28,7 +27,7 @@ const authenticate = async (email: string, password: string) => {
 
 const getUser = async (token: string) => {
   if (!token) {
-    return false;
+    return { ok: false };
   }
   const res = await fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
     method: 'GET',
@@ -184,7 +183,10 @@ const getReportsHistory = async (
     }
   };
 
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/reports`, params);
+  const res = await fetch(
+    `${process.env.WF_AP_ROUTE}/users/me/history/reports`,
+    params
+  );
   if (res.ok) {
     const reports = await res.json();
 
