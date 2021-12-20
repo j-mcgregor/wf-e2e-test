@@ -8,7 +8,7 @@ const ToolTip = ({
 }) => {
   return (
     <svg
-      transform="translate(-14 -31)"
+      transform="translate(-8 -25)"
       width="140"
       height="12"
       viewBox="0 0 13 12"
@@ -25,13 +25,13 @@ const ToolTip = ({
         transform="rotate(45 6.3335 8.2328)"
         fill="#022D45"
       />
-      <rect width="12.6664" height="10.1331" rx="0.949979" fill="#022D45" />
+      <rect width="16.6664" height="10.1331" rx="0.949979" fill="#022D45" />
       <text
         fill="white"
         xmlSpace="preserve"
         style={{ whiteSpace: 'pre' }}
         fontFamily="Helvetica"
-        fontSize="3.79991"
+        fontSize="8"
         letterSpacing="0.126664px"
         fontWeight="bold"
       >

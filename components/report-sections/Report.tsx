@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import React from 'react';
 import { useTranslations } from 'use-intl';
 import { ReportDataProps } from '../../pages/report/[id]';
@@ -62,7 +63,6 @@ const Report = ({
   const transformedFinancials =
     (data?.financials &&
       data?.financials?.filter((_year, index) => {
-        // console.log(companyDetails?.status[Number(index)])
         // if (companyDetails?.status) {
         //   return companyDetails?.status[Number(index)] === 'Active';
         // }
@@ -76,8 +76,13 @@ const Report = ({
   const lastFiveYearsFinancials =
     (data?.financials && transformedFinancials?.slice(0, 5)) || [];
 
+  // TEMPORARILY REVERSING FINANCIAL_RATIOS UNTIL BACK END FIXES
   const lastFiveYearsFinancialRatios =
-    (data?.financial_ratios && data.financial_ratios?.slice(0, 5)) || [];
+    (data?.financial_ratios && data.financial_ratios.reverse()?.slice(0, 5)) ||
+    [];
+
+  const lastFiveYearsBenchmarks =
+    (data?.benchmarks && data.benchmarks?.slice(0, 5)) || [];
 
   const mergedLastFiveYearFinancials = lastFiveYearsFinancials.map(
     (year, index) => {
@@ -283,6 +288,7 @@ const Report = ({
         <ReportSectionHeader text={t('financial_trends')} />
         <FinancialTrends
           financialData={mergedLastFiveYearFinancials}
+          benchmarkData={lastFiveYearsBenchmarks}
           companyName={companyName}
         />
       </HashContainer>

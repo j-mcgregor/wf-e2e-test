@@ -42,9 +42,9 @@ const ChartContainer = ({
             labelComponent={
               <VictoryTooltip
                 style={{
-                  fontSize: 6,
-                  padding: 4,
-                  width: 100
+                  // setting fontSize here causes conflicts and varying font sizes
+
+                  padding: 8
                 }}
                 flyoutComponent={<ToolTip text={tooltipValue} />}
               />
@@ -54,12 +54,7 @@ const ChartContainer = ({
       >
         {/* these VictoryAxis components are needed offset the axis labels when negative values  */}
         <VictoryAxis offsetY={50} />
-        <VictoryAxis
-          dependentAxis
-          offsetX={50}
-          crossAxis={false}
-          // style={{ tickLabels: { angle: -60 } }}
-        />
+        <VictoryAxis dependentAxis offsetX={40} crossAxis={false} />
         {children}
       </VictoryChart>
     </div>
