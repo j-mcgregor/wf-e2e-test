@@ -46,7 +46,7 @@ const EnvironmentalAssessment = ({
         <div
           className={`${percentageColour} rounded-full h-32 w-32 flex items-center justify-center text-white font-bold text-2xl`}
         >
-          <p>{!percentage ? 'N/A' : `${percentage}%`}</p>
+          <p>{`${percentage}%`}</p>
         </div>
         <div className="w-8 h-full ml-10 flex flex-col">
           <div className="h-full w-full my-[1px] bg-red-500" />
