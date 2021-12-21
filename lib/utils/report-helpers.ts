@@ -23,7 +23,12 @@ export const calculateSMEZScoreRotation = (value: number) => {
 export const calculatePoDRotation = (value: number) => {
   // PD angle = LOG10(PD) * -1.0
   const rotationPercentage = (1.0 - Math.log10(value) * -1.0) * 260;
-  return rotationPercentage - 130;
+
+  // handle 0 values
+  if (value === 0) {
+    return 130;
+  }
+  return rotationPercentage - 100;
 };
 export const calculateLGDRotation = (value: number) => {
   // LGD angle = 1.0 – LGD
