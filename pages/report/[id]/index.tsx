@@ -32,6 +32,10 @@ export interface ReportDataProps {
   company_name: string;
   details: SummaryContact & SummaryInfo;
   financials: FinancialYear[];
+  benchmarks: FinancialYear[];
+  financial_ratios: {
+    [key: string]: number;
+  }[];
   risk_metrics: {
     bond_rating_equivalent: RatingType;
     sme_z_score: number;

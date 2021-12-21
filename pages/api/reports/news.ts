@@ -83,7 +83,7 @@ const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
 export default withSentry(NewsApi);
 
 // example website ESG response
-/* 
+/*
 [
   {
     "name": "Capital_Markets",

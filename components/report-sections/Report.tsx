@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import React from 'react';
 import { useTranslations } from 'use-intl';
 import { ReportDataProps } from '../../pages/report/[id]';
@@ -48,6 +49,7 @@ const Report = ({
   const lastFiledAccount = data?.financials?.[0]?.period || t('na');
 
   const companyDetails = data?.details;
+
   const companyAddress = companyDetails?.address;
 
   const date = new Date(`${data?.created_at}`);
@@ -61,7 +63,6 @@ const Report = ({
   const transformedFinancials =
     (data?.financials &&
       data?.financials?.filter((_year, index) => {
-        // console.log(companyDetails?.status[Number(index)])
         // if (companyDetails?.status) {
         //   return companyDetails?.status[Number(index)] === 'Active';
         // }
@@ -70,8 +71,25 @@ const Report = ({
       })) ||
     [];
 
+  // used for report financials summary
+  // and used for financial charts
   const lastFiveYearsFinancials =
     (data?.financials && transformedFinancials?.slice(0, 5)) || [];
+
+  // TEMPORARILY REVERSING FINANCIAL_RATIOS UNTIL BACK END FIXES
+  const lastFiveYearsFinancialRatios =
+    (data?.financial_ratios && data.financial_ratios.reverse()?.slice(0, 5)) ||
+    [];
+
+  const lastFiveYearsBenchmarks =
+    (data?.benchmarks && data.benchmarks?.slice(0, 5)) || [];
+
+  const mergedLastFiveYearFinancials = lastFiveYearsFinancials.map(
+    (year, index) => {
+      // eslint-disable-next-line security/detect-object-injection
+      return { ...year, ...lastFiveYearsFinancialRatios[index] };
+    }
+  );
 
   const INDUSTRY_BENCHMARK = t('industry_benchmark');
   const REGION_BENCHMARK = t('region_benchmark');
@@ -269,7 +287,11 @@ const Report = ({
 
       <HashContainer name={'Financial Trends'} id={`financial_trends`}>
         <ReportSectionHeader text={t('financial_trends')} />
-        <FinancialTrends data={[]} />
+        <FinancialTrends
+          financialData={mergedLastFiveYearFinancials.reverse()}
+          benchmarkData={lastFiveYearsBenchmarks.reverse()}
+          companyName={companyName}
+        />
       </HashContainer>
 
       <HashContainer name={'Corporate Governance'} id={`corporate_governance`}>

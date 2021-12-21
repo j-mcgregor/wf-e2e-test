@@ -1,48 +1,59 @@
-import { VictoryChart, VictoryTooltip, VictoryVoronoiContainer } from 'victory';
-import ToolTip from '../svgs/ToolTip';
+import {
+  VictoryChart,
+  VictoryTooltip,
+  VictoryVoronoiContainer,
+  VictoryAxis
+} from 'victory';
 
 import { theme } from './theme';
 
 interface ChartContainerProps {
   children: React.ReactNode;
-  handleSetTooltip: (point: number) => void;
-  tooltipValue: number | null;
   height: number;
   width: number;
   max: number;
+  min?: number;
 }
 const ChartContainer = ({
   children,
-  tooltipValue,
   height,
   width,
   max,
-  handleSetTooltip
+  min = 0
 }: ChartContainerProps) => {
   return (
-    <VictoryChart
-      maxDomain={{ y: max }}
-      height={height}
-      width={width}
-      theme={theme}
-      containerComponent={
-        <VictoryVoronoiContainer
-          onActivated={points => handleSetTooltip(points[0]._voronoiY)}
-          labels={({ datum }) => datum.y}
-          labelComponent={
-            <VictoryTooltip
-              style={{
-                fontSize: 10,
-                padding: 4
-              }}
-              flyoutComponent={<ToolTip text={tooltipValue} />}
-            />
-          }
-        />
-      }
-    >
-      {children}
-    </VictoryChart>
+    <div className="px-1">
+      <VictoryChart
+        maxDomain={{ y: max }}
+        minDomain={{ y: min }}
+        height={height}
+        width={width}
+        theme={theme}
+        padding={{ left: 50, top: 20, right: 20, bottom: 50 }}
+        containerComponent={
+          <VictoryVoronoiContainer
+            labels={({ datum }) => datum.y}
+            labelComponent={
+              <VictoryTooltip
+                flyoutHeight={25}
+                style={{
+                  fontFamily: 'Helvetica',
+                  fontSize: '8px',
+                  fontWeight: 'bold',
+                  fill: 'white',
+                  padding: 6
+                }}
+              />
+            }
+          />
+        }
+      >
+        {/* ==== VictoryAxis components needed offset axis labels when negative values ==== */}
+        <VictoryAxis offsetY={50} />
+        <VictoryAxis dependentAxis offsetX={40} crossAxis={false} />
+        {children}
+      </VictoryChart>
+    </div>
   );
 };
 

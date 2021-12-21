@@ -17,7 +17,7 @@ const padding = 10;
 const baseProps = {
   width: 200,
   height: 250,
-  padding: 30
+  padding: 50
 };
 
 //  DEFAULT LABEL STYLES
@@ -109,14 +109,14 @@ export const theme = {
       }
     },
     baseProps
-  ),
+  )
 
-  tooltip: {
-    style: {
-      fontFamily: sansSerif,
-      fill: 'transparent',
-      stroke: 'transparent',
-      strokeWidth: 0
-    }
-  }
+  // tooltip: {
+  //   style: {
+  //     fontFamily: sansSerif,
+  //     fill: 'transparent',
+  //     stroke: 'transparent',
+  //     strokeWidth: 0
+  //   }
+  // }
 };

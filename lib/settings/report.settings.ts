@@ -3,6 +3,7 @@ import { HintTypeProps } from '../../components/elements/Hint';
 import { MultiGraphDataType } from '../../types/charts';
 
 const poundsThousands = '£_thousands';
+const ratio = 'ratio';
 
 export const bondRatings = [
   {
@@ -220,189 +221,398 @@ type AllFinancialTrendsChartsType = {
 };
 
 export const financialTrendsCharts: AllFinancialTrendsChartsType = {
-  turnover: (data: MultiGraphDataType[]) =>
+  turnover: (data: any) =>
     createChart(
       'turnover',
       poundsThousands,
-      { title: 'turnover.title', body: 'turnover.body' },
-      data
+      { title: 'charts.turnover.title', body: 'charts.turnover.body' },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.turnover / 1000).toFixed(2)) || 0
+        }))
+      }))
     ),
-
   totalAssets: (data: MultiGraphDataType[]) =>
     createChart(
       'total_assets',
       poundsThousands,
-      { title: 'total_assets.title', body: 'total_assets.body' },
-      data
+      { title: 'charts.total_assets.title', body: 'charts.total_assets.body' },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.total_assets / 1000).toFixed(2)) || 0
+        }))
+      }))
     ),
 
   ebit: (data: MultiGraphDataType[]) =>
     createChart(
       'ebit',
       poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      { title: 'charts.ebit.title', body: 'charts.ebit.body' },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.ebit / 1000).toFixed(2)) || 0
+        }))
+      }))
     ),
   ebitda: (data: MultiGraphDataType[]) =>
     createChart(
       'ebitda',
       poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      { title: 'charts.ebitda.title', body: 'charts.ebitda.body' },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.ebitda / 1000).toFixed(2)) || 0
+        }))
+      }))
     ),
   total_debt: (data: MultiGraphDataType[]) =>
     createChart(
       'total_debt',
       poundsThousands,
       { title: 'total_debt.title', body: 'total_debt.body' },
-      data
+      data.map((chart: any, i) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.total_debt / 1000).toFixed(2)) || 0
+        }))
+      }))
     ),
   cash_and_cash_equivalent: (data: MultiGraphDataType[]) =>
     createChart(
       'cash_and_cash_equivalent',
       poundsThousands,
-      { title: 'cash_and_cash_equivalent.title', body: 'ebit.body' },
-      data
+      {
+        title: 'charts.cash_and_cash_equivalent.title',
+        body: 'charts.cash_and_cash_equivalent.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year.cash_and_equivalents / 1000).toFixed(2)) || 0
+        }))
+      }))
     ),
   interest_expenses: (data: MultiGraphDataType[]) =>
     createChart(
       'interest_expenses',
       poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      {
+        title: 'charts.interest_expenses.title',
+        body: 'charts.interest_expenses.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.interest_expenses / 1000).toFixed(2)) || 0
+        }))
+      }))
     ),
   net_income: (data: MultiGraphDataType[]) =>
     createChart(
       'net_income',
       poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      { title: 'charts.net_income.title', body: 'charts.net_income.body' },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.net_income / 1000).toFixed(2)) || 0
+        }))
+      }))
     ),
   shareholders_equity: (data: MultiGraphDataType[]) =>
     createChart(
       'shareholders_equity',
       poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      {
+        title: 'charts.shareholders_equity.title',
+        body: 'charts.shareholders_equity.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.total_shareholder_equity / 1000).toFixed(2)) || 0
+        }))
+      }))
     ),
   retained_earnings: (data: MultiGraphDataType[]) =>
     createChart(
       'retained_earnings',
       poundsThousands,
       { title: 'ebit.title', body: 'ebit.body' },
-      data
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year.retained_earnings / 1000).toFixed(3)) || 0
+        }))
+      }))
     ),
   days_receivable: (data: MultiGraphDataType[]) =>
     createChart(
       'days_receivable',
       poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      {
+        title: 'charts.days_receivable.title',
+        body: 'charts.days_receivable.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year.days_receivable / 1000).toFixed(3)) || 0
+        }))
+      }))
     ),
   days_payable: (data: MultiGraphDataType[]) =>
     createChart(
       'days_payable',
       poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      {
+        title: 'charts.days_payable.title',
+        body: 'charts.days_payable.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.days_payable / 1000).toFixed(3)) || 0
+        }))
+      }))
     ),
   ebitda_margin: (data: MultiGraphDataType[]) =>
     createChart(
       'ebitda_margin',
       poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      {
+        title: 'charts.ebitda_margin.title',
+        body: 'charts.ebitda_margin.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.ebitda_margin / 1000).toFixed(3)) || 0
+        }))
+      }))
     ),
   total_debt_total_assets: (data: MultiGraphDataType[]) =>
     createChart(
       'total_debt_total_assets',
-      poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      ratio,
+      {
+        title: 'charts.total_debt_total_assets.title',
+        body: 'charts.total_debt_total_assets.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number(year?.debt_total_assets?.toFixed(3)) || 0
+        }))
+      }))
     ),
   debt_equity_ratio: (data: MultiGraphDataType[]) =>
     createChart(
       'debt_equity_ratio',
-      poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      ratio,
+      {
+        title: 'charts.debt_equity_ratio.title',
+        body: 'charts.debt_equity_ratio.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number(year?.debt_equity?.toFixed(3)) || 0
+        }))
+      }))
     ),
   equity_total_assets: (data: MultiGraphDataType[]) =>
     createChart(
       'equity_total_assets',
       poundsThousands,
-      { title: 'equity_total_assets.title', body: 'ebit.body' },
-      data
+      {
+        title: 'charts.equity_total_assets.title',
+        body: 'charts.equity_total_assets.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number(year?.equity_book_value_total_assets?.toFixed(3)) || 0
+        }))
+      }))
     ),
   tangible_fixed_assets_total_assets: (data: MultiGraphDataType[]) =>
     createChart(
       'tangible_fixed_assets_total_assets',
-      poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      ratio,
+      {
+        title: 'charts.tangible_fixed_assets_total_assets.title',
+        body: 'charts.tangible_fixed_assets_total_assets.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number(year?.tangible_total_assets?.toFixed(3)) || 0
+        }))
+      }))
     ),
   intangible_fixed_assets: (data: MultiGraphDataType[]) =>
     createChart(
       'intangible_fixed_assets',
-      poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      ratio,
+      {
+        title: 'charts.intangible_fixed_assets.title',
+        body: 'charts.intangible_fixed_assets.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number(year?.intangible_total_assets?.toFixed(3)) || 0
+        }))
+      }))
     ),
   interest_coverage_ratio: (data: MultiGraphDataType[]) =>
     createChart(
       'interest_coverage_ratio',
-      poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      ratio,
+      {
+        title: 'charts.interest_coverage_ratio.title',
+        body: 'charts.interest_coverage_ratio.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number(year?.interest_cover?.toFixed(3)) || 0
+        }))
+      }))
     ),
   return_on_equity: (data: MultiGraphDataType[]) =>
     createChart(
       'return_on_equity',
       poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      {
+        title: 'charts.return_on_equity.title',
+        body: 'charts.return_on_equity.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.return_on_equity / 1000).toFixed(3)) || 0
+        }))
+      }))
     ),
   return_on_assets: (data: MultiGraphDataType[]) =>
     createChart(
       'return_on_assets',
       poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      {
+        title: 'charts.return_on_assets.title',
+        body: 'charts.return_on_assets.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.return_on_capital_employed / 1000).toFixed(3)) || 0
+        }))
+      }))
     ),
   liquidity_ratio: (data: MultiGraphDataType[]) =>
     createChart(
       'liquidity_ratio',
-      poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      ratio,
+      {
+        title: 'charts.liquidity_ratio.title',
+        body: 'charts.liquidity_ratio.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number(year?.liquidity?.toFixed(3)) || 0
+        }))
+      }))
     ),
   current_ratio: (data: MultiGraphDataType[]) =>
     createChart(
       'current_ratio',
-      poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      ratio,
+      {
+        title: 'charts.current_ratio.title',
+        body: 'charts.current_ratio.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number(year?.current_ratio?.toFixed(3)) || 0
+        }))
+      }))
     ),
   net_debt: (data: MultiGraphDataType[]) =>
     createChart(
       'net_debt',
       poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      {
+        title: 'charts.liquidity_ratio.title',
+        body: 'charts.liquidity_ratio.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.net_debt / 1000).toFixed(3)) || 0
+        }))
+      }))
     ),
   net_debt_ebitda: (data: MultiGraphDataType[]) =>
     createChart(
       'net_debt_ebitda',
       poundsThousands,
       { title: 'ebit.title', body: 'ebit.body' },
-      data
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number((year?.net_debt_ebitda / 1000).toFixed(3)) || 0
+        }))
+      }))
     ),
-  deby_service_coverage_ratio: (data: MultiGraphDataType[]) =>
+  debt_service_coverage_ratio: (data: MultiGraphDataType[]) =>
     createChart(
-      'deby_service_coverage_ratio',
-      poundsThousands,
-      { title: 'ebit.title', body: 'ebit.body' },
-      data
+      'debt_service_coverage_ratio',
+      ratio,
+      {
+        title: 'charts.debt_service_coverage_ratio.title',
+        body: 'charts.debt_service_coverage_ratio.body'
+      },
+      data.map((chart: any) => ({
+        name: chart.name,
+        data: chart.data.map((year: any) => ({
+          x: year.period,
+          y: Number(year?.debt_service_coverage?.toFixed(3)) || 0
+        }))
+      }))
     )
 };
 

@@ -1,14 +1,21 @@
+/* eslint-disable security/detect-object-injection */
 import { useTranslations } from 'use-intl';
 import { useMemo } from 'react';
 import ChartMulti from '../../charts/ChartMulti';
-import { MultiGraphDataType } from '../../../types/charts';
 import { financialTrendsCharts } from '../../../lib/settings/report.settings';
+import { MultiGraphDataType } from '../../../types/charts';
 
 interface FinancialTrendsProps {
-  data: MultiGraphDataType[][]; // 2D array of arrays of objects
+  financialData: any[];
+  benchmarkData: any[];
+  companyName: string;
 }
 
-const FinancialTrends = ({ data }: FinancialTrendsProps) => {
+const FinancialTrends = ({
+  financialData,
+  benchmarkData,
+  companyName
+}: FinancialTrendsProps) => {
   const t = useTranslations();
 
   const chartsToRender = useMemo(
@@ -16,50 +23,34 @@ const FinancialTrends = ({ data }: FinancialTrendsProps) => {
       Object.keys(financialTrendsCharts).map((key: string) =>
         financialTrendsCharts[key.toString()]([
           {
-            name: 'Scottish Seabird Center LTD',
-            data: [
-              { x: '2016', y: 200 },
-              { x: '2017', y: 210 },
-              { x: '2018', y: 410 },
-              { x: '2019', y: 389 },
-              { x: '2020', y: 700 }
-            ]
+            name: companyName,
+            data: financialData
           },
           {
-            name: 'Industry Benchmark',
-            data: [
-              { x: '2016', y: 400 },
-              { x: '2017', y: 380 },
-              { x: '2018', y: 341 },
-              { x: '2019', y: 500 },
-              { x: '2020', y: 645 }
-            ]
-          },
-          {
-            name: 'Region Benchmark',
-            data: [
-              { x: '2016', y: 500 },
-              { x: '2017', y: 480 },
-              { x: '2018', y: 580 },
-              { x: '2019', y: 740 },
-              { x: '2020', y: 780 }
-            ]
+            name: 'Wiserfunding Benchmarks',
+            data: benchmarkData
           }
         ])
       ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  const graphSections: MultiGraphDataType[][] = chartsToRender.reduce(
-    (acc: any, curr: any, index) =>
-      (index % 6 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
-      acc,
-    []
-  );
+  // remove all charts with all empty company chart y values and divide into arrays of 6 for print layout
+  const filteredCharts = chartsToRender
+    .filter((chart: any) =>
+      chart.data[0].data.every((data: any) => data.y !== 0)
+    )
+    .reduce(
+      (acc: any, curr: any, index) =>
+        (index % 6 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
+        acc,
+      []
+    );
 
   return (
     <div>
-      {graphSections.map(
+      {filteredCharts.map(
         (graphSection: MultiGraphDataType[], index: number) => {
           return (
             <div
