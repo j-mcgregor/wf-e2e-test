@@ -54,13 +54,7 @@ const Chart = ({ title, subtitle, data, hintBody, hintTitle }: ChartProps) => {
       </div>
 
       <div onMouseLeave={() => setToolTipValue(null)}>
-        <ChartContainer
-          height={250}
-          width={480}
-          max={maxDomain}
-          tooltipValue={toolTipValue}
-          handleSetTooltip={setToolTipValue}
-        >
+        <ChartContainer height={250} width={480} max={maxDomain}>
           <VictoryArea
             data={data}
             interpolation="natural"
