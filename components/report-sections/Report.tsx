@@ -126,7 +126,7 @@ const Report = ({
             <SummaryDetails
               regNumber={data.company_id}
               sector={data.details?.industry_sector}
-              description={data?.details?.company_description}
+              description={data?.details?.overview_full}
               incorporationDate={data?.details?.date_of_incorporation}
               lastAccountDate={lastFiledAccount}
             />

@@ -23,6 +23,7 @@ export type SummaryInfo = {
   reg_number: string;
   sector: string;
   description: string;
+  overview_full?: string;
   date_of_incorporation: number | string;
   last_account_date: number | string;
   industry_sector: string | null;

@@ -62,11 +62,11 @@ const SummaryDetails = ({
       </div>
 
       <div
-        className="p-3 flex flex-col justify-start first-line:border print:first-line:border-2  h-1/2"
+        className="p-3 flex flex-col justify-start first-line:border print:first-line:border-2  min-h-1/2"
         role="group"
       >
         <p className="py-2 text-primary">{t('company_description')}</p>
-        <p className=" font-bold">{description || t('na')}</p>
+        <p className="font-bold">{description || t('na')}</p>
       </div>
     </div>
   );
