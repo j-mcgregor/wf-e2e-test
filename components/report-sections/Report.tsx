@@ -86,6 +86,7 @@ const Report = ({
 
   const mergedLastFiveYearFinancials = lastFiveYearsFinancials.map(
     (year, index) => {
+      // eslint-disable-next-line security/detect-object-injection
       return { ...year, ...lastFiveYearsFinancialRatios[index] };
     }
   );
@@ -287,8 +288,8 @@ const Report = ({
       <HashContainer name={'Financial Trends'} id={`financial_trends`}>
         <ReportSectionHeader text={t('financial_trends')} />
         <FinancialTrends
-          financialData={mergedLastFiveYearFinancials}
-          benchmarkData={lastFiveYearsBenchmarks}
+          financialData={mergedLastFiveYearFinancials.reverse()}
+          benchmarkData={lastFiveYearsBenchmarks.reverse()}
           companyName={companyName}
         />
       </HashContainer>

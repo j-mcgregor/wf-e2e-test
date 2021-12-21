@@ -27,7 +27,7 @@ const FinancialTrends = ({
             data: financialData
           },
           {
-            name: 'Industry Benchmarks',
+            name: 'Wiserfunding Benchmarks',
             data: benchmarkData
           }
         ])

@@ -9,7 +9,6 @@ import { theme } from './theme';
 
 interface ChartContainerProps {
   children: React.ReactNode;
-  handleSetTooltip: (point: number) => void;
   height: number;
   width: number;
   max: number;
@@ -20,8 +19,7 @@ const ChartContainer = ({
   height,
   width,
   max,
-  min = 0,
-  handleSetTooltip
+  min = 0
 }: ChartContainerProps) => {
   return (
     <div className="px-1">
@@ -34,24 +32,23 @@ const ChartContainer = ({
         padding={{ left: 50, top: 20, right: 20, bottom: 50 }}
         containerComponent={
           <VictoryVoronoiContainer
-            onActivated={points => handleSetTooltip(points[0]?._voronoiY)}
             labels={({ datum }) => datum.y}
             labelComponent={
               <VictoryTooltip
+                flyoutHeight={25}
                 style={{
                   fontFamily: 'Helvetica',
-                  fontSize: '7px',
+                  fontSize: '8px',
                   fontWeight: 'bold',
                   fill: 'white',
-                  padding: 10,
-                  background: 'white'
+                  padding: 6
                 }}
               />
             }
           />
         }
       >
-        {/* these VictoryAxis components are needed offset the axis labels when negative values  */}
+        {/* ==== VictoryAxis components needed offset axis labels when negative values ==== */}
         <VictoryAxis offsetY={50} />
         <VictoryAxis dependentAxis offsetX={40} crossAxis={false} />
         {children}

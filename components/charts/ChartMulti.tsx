@@ -28,7 +28,6 @@ const ChartMulti = ({
   const [selectedGraphIndex, setSelectedGraphIndex] = useState<number | null>(
     0
   );
-  const [toolTipValue, setToolTipValue] = useState<number | null>(null);
 
   useEffect(() => {
     data !== graphData && setData(graphData);
@@ -68,6 +67,13 @@ const ChartMulti = ({
 
   const t = useTranslations();
 
+  // capital case company name from uppercase
+  const companyName = companyGraph.name
+    ?.toLowerCase()
+    .split(' ')
+    .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
   return (
     <div
       className={` shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break`}
@@ -89,7 +95,6 @@ const ChartMulti = ({
         width={200}
         max={maxValue < 1 ? maxValue * 1.5 : maxValue * 1.2}
         min={minValue}
-        handleSetTooltip={setToolTipValue}
       >
         <VictoryGroup style={{ data: { strokeWidth: 1.5 } }}>
           {/* ============= */}
@@ -102,13 +107,13 @@ const ChartMulti = ({
               onLoad: { duration: 500 }
             }}
             data={companyGraph.data}
-            y0={() => minValue}
+            y0={() => minValue * 1.2}
             interpolation="monotoneX"
             style={{
               data: {
                 fill: companyColour,
                 fillOpacity:
-                  companyIndex === selectedGraphIndex ? '0.8' : '0.2',
+                  companyIndex === selectedGraphIndex ? '0.65' : '0.2',
                 stroke: companyColour,
                 strokeOpacity: 1
               }
@@ -152,7 +157,7 @@ const ChartMulti = ({
                 strokeWidth: 1,
                 stroke: graphColors(companyIndex),
                 strokeOpacity:
-                  companyIndex === selectedGraphIndex ? '1' : '0.3',
+                  companyIndex === selectedGraphIndex ? '1' : '0.4',
                 fill:
                   companyIndex !== selectedGraphIndex
                     ? 'white'
@@ -174,7 +179,7 @@ const ChartMulti = ({
                   strokeWidth: 1,
                   stroke: graphColors(benchmarkIndex),
                   strokeOpacity:
-                    benchmarkIndex === selectedGraphIndex ? '1' : '0.3',
+                    benchmarkIndex === selectedGraphIndex ? '1' : '0.7',
                   fill:
                     benchmarkIndex !== selectedGraphIndex
                       ? 'white'
@@ -190,7 +195,7 @@ const ChartMulti = ({
         <ChartButton
           onClick={setSelectedGraphIndex}
           selectedGraphIndex={selectedGraphIndex}
-          graph={companyGraph}
+          title={companyName}
           graphIndex={companyIndex}
           bg="bg-[#022D45]"
           border="border-2 border-[#022D45]"
@@ -199,7 +204,7 @@ const ChartMulti = ({
           <ChartButton
             onClick={setSelectedGraphIndex}
             selectedGraphIndex={selectedGraphIndex}
-            graph={benchmarkGraph}
+            title={benchmarkGraph.name}
             graphIndex={benchmarkIndex}
             bg="bg-[#278EC8]"
             border="border-2 border-[#278EC8]"

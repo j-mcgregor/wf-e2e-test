@@ -1,11 +1,10 @@
 import React from 'react';
-import { MultiGraphDataType } from '../../types/charts';
 
 interface ChartButtonProps {
   onClick: (index: number) => void;
   selectedGraphIndex: number | null;
   graphIndex: number;
-  graph: MultiGraphDataType;
+  title: string | undefined;
   border: string;
   bg: string;
 }
@@ -14,7 +13,7 @@ const ChartButton = ({
   onClick,
   selectedGraphIndex,
   graphIndex,
-  graph,
+  title,
   border,
   bg
 }: ChartButtonProps) => {
@@ -30,7 +29,7 @@ const ChartButton = ({
           selectedGraphIndex !== graphIndex ? border : bg
         } w-3 h-3 mx-2`}
       />
-      <p>{graph.name}</p>
+      <p>{title}</p>
     </button>
   );
 };
