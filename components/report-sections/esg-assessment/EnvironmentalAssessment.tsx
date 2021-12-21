@@ -1,47 +1,19 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 
 import { useTranslations } from 'use-intl';
+import { getCarbonImpact } from '../../../lib/utils/carbon-impact';
 
 interface EnvironmentalAssessmentProps {
-  nace_code: string;
-  nace_description: string;
+  industry_string: string | null;
 }
 
 const EnvironmentalAssessment = ({
-  nace_code,
-  nace_description
+  industry_string
 }: EnvironmentalAssessmentProps) => {
   const t = useTranslations();
 
-  // extract first two numbers from code
-  const codeNum = nace_code.substring(0, 2);
-
-  // extract first letter from description
-  const codeLetter = nace_description.substring(0, 1);
-  // extract description as substring from 4th character onwards
-  // eg: F - Food processing, manufacturing and retailing => Food processing, manufacturing and retailing
-  const description = nace_description.substring(4);
-
-  const percentage =
-    codeLetter === 'A'
-      ? 74
-      : codeLetter === 'B'
-      ? 105
-      : codeLetter === 'C'
-      ? 45
-      : codeLetter === 'D'
-      ? 310
-      : codeLetter === 'E'
-      ? 21
-      : codeLetter === 'F'
-      ? 11
-      : codeLetter === 'G'
-      ? 7
-      : codeLetter === 'H'
-      ? 107
-      : codeLetter === 'L'
-      ? 0
-      : null;
+  const industryCategory = getCarbonImpact(`${industry_string}`);
+  const percentage = industryCategory.percentage;
 
   const percentageColour =
     percentage === null
@@ -61,12 +33,12 @@ const EnvironmentalAssessment = ({
       <div className="py-14 w-full">
         <p className="text-xl">{t('environmental')}</p>
         <div className="py-6">
-          <p>{t('nace_code')}</p>
-          <p className="font-bold">{codeLetter + codeNum}</p>
+          <p>{t('industry_code')}</p>
+          <p className="font-bold">{industryCategory.code}</p>
         </div>
         <div>
-          <p>{t('nace_industrial_sector_description')}</p>
-          <p className="font-bold">{description}</p>
+          <p>{t('industry_description')}</p>
+          <p className="font-bold">{industry_string}</p>
         </div>
       </div>
 

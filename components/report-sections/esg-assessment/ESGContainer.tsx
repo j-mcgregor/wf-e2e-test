@@ -14,8 +14,7 @@ type ESGContainerProps = {
   website: string;
   companyName: string;
   environmental_details: {
-    nace_code: string;
-    nace_description: string;
+    industry_sector: string | null;
   };
 };
 
@@ -75,8 +74,7 @@ const ESGContainer = ({
         result={pepFlags && pepFlags > 0 ? 'negative' : 'neutral'}
       />
       <EnvironmentalAssessment
-        nace_code={environmental_details.nace_code}
-        nace_description={environmental_details.nace_description}
+        industry_string={environmental_details.industry_sector}
       />
     </>
   );
