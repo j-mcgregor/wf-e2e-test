@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable sonarjs/cognitive-complexity */
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { VictoryArea, VictoryScatter, VictoryGroup } from 'victory';
 import ChartContainer from './ChartContainer';
 import { GraphDataType, MultiGraphDataType } from '../../types/charts';
@@ -34,12 +35,12 @@ const ChartMulti = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const black = '#022D45';
-  const blue = '#278EC8';
+  const companyColour = '#022D45';
+  const benchmarkColour = '#278EC8';
   const green = '#2BAD01';
 
   const graphColors = (i: number): string => {
-    return i === 0 ? black : i === 1 ? blue : green;
+    return i === 0 ? companyColour : i === 1 ? benchmarkColour : green;
   };
 
   const companyIndex = 0;
@@ -48,13 +49,11 @@ const ChartMulti = ({
   const companyGraph = graphData[companyIndex];
   const benchmarkGraph = graphData[benchmarkIndex];
 
-  const isEmptyGraph = (graph: MultiGraphDataType): boolean => {
-    return graph.data.every((value: GraphDataType) => value.y === 0);
+  const isGraphData = (graph: any): boolean => {
+    return graph.data.some((value: GraphDataType) => value.y !== 0);
   };
-  const noCompanyData = isEmptyGraph(companyGraph);
-  const noBenchmarks = isEmptyGraph(benchmarkGraph);
-  const noData =
-    (noCompanyData && noBenchmarks) || (noCompanyData && !noBenchmarks);
+
+  const isBenchmarkData = isGraphData(benchmarkGraph);
 
   const maxValue = Math.max(
     ...graphData.map((graph: any) =>
@@ -67,11 +66,11 @@ const ChartMulti = ({
     )
   );
 
+  const t = useTranslations();
+
   return (
     <div
-      className={`${
-        noData && 'hidden'
-      } shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break`}
+      className={` shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break`}
       data-testid="chart-multi-testid"
     >
       <div className="flex justify-between items-start px-4 pt-4 text-xs">
@@ -82,7 +81,7 @@ const ChartMulti = ({
           </p>
         </div>
 
-        <Hint title={hintTitle} body={hintBody} />
+        <Hint title={t(`${hintTitle}`)} body={t(`${hintBody}`)} />
       </div>
 
       <ChartContainer
@@ -90,46 +89,35 @@ const ChartMulti = ({
         width={200}
         max={maxValue < 1 ? maxValue * 1.5 : maxValue * 1.2}
         min={minValue}
-        tooltipValue={toolTipValue}
         handleSetTooltip={setToolTipValue}
       >
         <VictoryGroup style={{ data: { strokeWidth: 1.5 } }}>
-          {/* -------- */}
-          {/* tried to extract this to component but won't render? */}
-          {/* -------- */}
-
-          {/* <MultiChartArea
-            graph={companyGraph}
-            allGraphs={graphData}
-            fillColor={black}
-            selectedGraph={selectedGraphIndex}
-            minValue={minValue}
-          /> */}
-
-          {!noCompanyData && (
-            <VictoryArea
-              key={`victory-area-${companyGraph.name}`}
-              animate={{
-                duration: 500,
-                onLoad: { duration: 500 }
-              }}
-              data={companyGraph.data}
-              y0={() => minValue}
-              interpolation="monotoneX"
-              style={{
-                data: {
-                  fill: black,
-                  fillOpacity:
-                    companyIndex === selectedGraphIndex ? '0.8' : '0.05',
-                  stroke: black,
-                  strokeOpacity:
-                    companyIndex === selectedGraphIndex ? '0.8' : '0.05'
-                }
-              }}
-            />
-          )}
-
-          {!noBenchmarks && (
+          {/* ============= */}
+          {/* Company Graph */}
+          {/* ============= */}
+          <VictoryArea
+            key={`victory-area-${companyGraph.name}`}
+            animate={{
+              duration: 500,
+              onLoad: { duration: 500 }
+            }}
+            data={companyGraph.data}
+            y0={() => minValue}
+            interpolation="monotoneX"
+            style={{
+              data: {
+                fill: companyColour,
+                fillOpacity:
+                  companyIndex === selectedGraphIndex ? '0.8' : '0.2',
+                stroke: companyColour,
+                strokeOpacity: 1
+              }
+            }}
+          />
+          {/* ============= */}
+          {/* Benchmark Graph */}
+          {/* ============= */}
+          {isBenchmarkData && (
             <VictoryArea
               key={`victory-area-${benchmarkGraph.name}`}
               animate={{
@@ -141,40 +129,42 @@ const ChartMulti = ({
               interpolation="monotoneX"
               style={{
                 data: {
-                  fill: blue,
+                  fill: benchmarkColour,
                   fillOpacity:
-                    benchmarkIndex === selectedGraphIndex ? '0.8' : '0.05',
-                  stroke: blue,
-                  strokeOpacity:
-                    benchmarkIndex === selectedGraphIndex ? '0.8' : '0.05'
+                    benchmarkIndex === selectedGraphIndex ? '0.8' : '0.2',
+                  stroke: benchmarkColour,
+                  strokeOpacity: 1
                 }
               }}
             />
           )}
         </VictoryGroup>
         <VictoryGroup>
-          {!noCompanyData && (
-            <VictoryScatter
-              key={`victory-scatter-${companyGraph.name}`}
-              data={companyGraph.data}
-              size={2}
-              style={{
-                data: {
-                  strokeWidth: 1,
-                  stroke: graphColors(companyIndex),
-                  strokeOpacity:
-                    companyIndex === selectedGraphIndex ? '1' : '0.15',
-                  fill:
-                    companyIndex !== selectedGraphIndex
-                      ? 'white'
-                      : graphColors(companyIndex),
-                  fillOpacity: companyIndex === selectedGraphIndex ? '1' : '0'
-                }
-              }}
-            />
-          )}
-
-          {!noBenchmarks && (
+          {/* ====================== */}
+          {/* Company Scatter Points */}
+          {/* ====================== */}
+          <VictoryScatter
+            key={`victory-scatter-${companyGraph.name}`}
+            data={companyGraph.data}
+            size={2}
+            style={{
+              data: {
+                strokeWidth: 1,
+                stroke: graphColors(companyIndex),
+                strokeOpacity:
+                  companyIndex === selectedGraphIndex ? '1' : '0.3',
+                fill:
+                  companyIndex !== selectedGraphIndex
+                    ? 'white'
+                    : graphColors(companyIndex),
+                fillOpacity: companyIndex === selectedGraphIndex ? '1' : '0'
+              }
+            }}
+          />
+          {/* ====================== */}
+          {/* Benchmark Scatter Points */}
+          {/* ====================== */}
+          {isBenchmarkData && (
             <VictoryScatter
               key={`victory-scatter-${benchmarkGraph.name}`}
               data={benchmarkGraph.data}
@@ -184,7 +174,7 @@ const ChartMulti = ({
                   strokeWidth: 1,
                   stroke: graphColors(benchmarkIndex),
                   strokeOpacity:
-                    benchmarkIndex === selectedGraphIndex ? '1' : '0.15',
+                    benchmarkIndex === selectedGraphIndex ? '1' : '0.3',
                   fill:
                     benchmarkIndex !== selectedGraphIndex
                       ? 'white'
@@ -205,7 +195,7 @@ const ChartMulti = ({
           bg="bg-[#022D45]"
           border="border-2 border-[#022D45]"
         />
-        {!noBenchmarks && (
+        {isBenchmarkData && (
           <ChartButton
             onClick={setSelectedGraphIndex}
             selectedGraphIndex={selectedGraphIndex}

@@ -109,14 +109,14 @@ export const theme = {
       }
     },
     baseProps
-  ),
+  )
 
-  tooltip: {
-    style: {
-      fontFamily: sansSerif,
-      fill: 'transparent',
-      stroke: 'transparent',
-      strokeWidth: 0
-    }
-  }
+  // tooltip: {
+  //   style: {
+  //     fontFamily: sansSerif,
+  //     fill: 'transparent',
+  //     stroke: 'transparent',
+  //     strokeWidth: 0
+  //   }
+  // }
 };

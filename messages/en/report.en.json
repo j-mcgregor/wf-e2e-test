@@ -175,5 +175,99 @@
   "caution_assets": "The company has submitted abridged reports.",
   "concern_turnover": "There are not enough years of financial data available for this company.",
   "concern_volatility": "The company's financials have been too volatile.",
-  "concern_assets": "The company is too small for a reliable report to be created."
+  "concern_assets": "The company is too small for a reliable report to be created.",
+  "charts": {
+    "turnover": {
+      "title": "turnover",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "total_assets": {
+      "title": "Total Assets",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "ebit": {
+      "title": "EBIT",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "ebitda": {
+      "title": "EBITDA",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "total_debt": {
+      "title": "Total Debt",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "cash_and_cash_equivalent": {
+      "title": "Cash and Cash Equivalent",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "interest_expenses": {
+      "title": "Interest Expenses",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "net_income": {
+      "title": "Net Income",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "shareholders_equity": {
+      "title": "Shareholders Equity",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "retained_earnings": {
+      "title": "Retained Earnings",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "ebitda_margin": {
+      "title": "EBITDA Margin",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "total_debt_total_assets": {
+      "title": "Total Debt / Total Assets",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "debt_equity_ratio": {
+      "title": "Debt / Equity Ratio",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "equity_total_assets": {
+      "title": "Equity / Total Assets",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "tangible_fixed_assets_total_assets": {
+      "title": "Tangible Fixed Assets / Total Assets",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "intangible_fixed_assets": {
+      "title": "Intangible Fixed Assets",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "interest_coverage_ratio": {
+      "title": "Interest Coverage Ratio",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "return_on_equity": {
+      "title": "Return on Equity",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "return_on_assets": {
+      "title": "Return on Assets",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "liquidity_ratio": {
+      "title": "Liquidity Ratio",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "current_ratio": {
+      "title": "Current Ratio",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "net_debt_ebitda": {
+      "title": "Net Debt / EBITDA",
+      "body": "Lorem eu aliquip enim irure."
+    },
+    "debt_service_coverage_ratio": {
+      "title": "Debt Service Coverage Ratio",
+      "body": "Lorem eu aliquip enim irure."
+    }
+  }
 }

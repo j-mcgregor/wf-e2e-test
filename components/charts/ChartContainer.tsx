@@ -4,14 +4,12 @@ import {
   VictoryVoronoiContainer,
   VictoryAxis
 } from 'victory';
-import ToolTip from '../svgs/ToolTip';
 
 import { theme } from './theme';
 
 interface ChartContainerProps {
   children: React.ReactNode;
   handleSetTooltip: (point: number) => void;
-  tooltipValue: number | null;
   height: number;
   width: number;
   max: number;
@@ -19,7 +17,6 @@ interface ChartContainerProps {
 }
 const ChartContainer = ({
   children,
-  tooltipValue,
   height,
   width,
   max,
@@ -42,11 +39,13 @@ const ChartContainer = ({
             labelComponent={
               <VictoryTooltip
                 style={{
-                  // setting fontSize here causes conflicts and varying font sizes
-
-                  padding: 8
+                  fontFamily: 'Helvetica',
+                  fontSize: '7px',
+                  fontWeight: 'bold',
+                  fill: 'white',
+                  padding: 10,
+                  background: 'white'
                 }}
-                flyoutComponent={<ToolTip text={tooltipValue} />}
               />
             }
           />

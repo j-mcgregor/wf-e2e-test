@@ -3,6 +3,7 @@ import { useTranslations } from 'use-intl';
 import { useMemo } from 'react';
 import ChartMulti from '../../charts/ChartMulti';
 import { financialTrendsCharts } from '../../../lib/settings/report.settings';
+import { MultiGraphDataType } from '../../../types/charts';
 
 interface FinancialTrendsProps {
   financialData: any[];
@@ -35,33 +36,21 @@ const FinancialTrends = ({
     []
   );
 
-  // print assistance (breaking up page)
-  // const graphSections: MultiGraphDataType[][] = chartsToRender.reduce(
-  //   (acc: any, curr: any, index) =>
-  //     (index % 6 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
-  //     acc,
-  //   []
-  // );
-
-  const allCharts = chartsToRender.reduce((obj: any, key) => {
-    obj[key.header] = key;
-    return obj;
-  }, {});
+  // remove all charts with all empty company chart y values and divide into arrays of 6 for print layout
+  const filteredCharts = chartsToRender
+    .filter((chart: any) =>
+      chart.data[0].data.every((data: any) => data.y !== 0)
+    )
+    .reduce(
+      (acc: any, curr: any, index) =>
+        (index % 6 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
+        acc,
+      []
+    );
 
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2 print:grid-cols-3 sm:print:grid-cols-3  mt-2  md:print:grid-cols-3 avoid-break">
-      {Object.keys(allCharts).map((key: any) => (
-        <ChartMulti
-          key={allCharts[key].header}
-          header={`${t(allCharts[key].header)}`}
-          subHeader={`${t(allCharts[key].subHeader)}`}
-          graphData={allCharts[key].data}
-          hintTitle={allCharts[key].hint.title}
-          hintBody={allCharts[key].hint.body}
-        />
-      ))}
-
-      {/* {graphSections.map(
+    <div>
+      {filteredCharts.map(
         (graphSection: MultiGraphDataType[], index: number) => {
           return (
             <div
@@ -82,11 +71,10 @@ const FinancialTrends = ({
                   />
                 );
               })}
-
             </div>
           );
         }
-      )} */}
+      )}
     </div>
   );
 };
