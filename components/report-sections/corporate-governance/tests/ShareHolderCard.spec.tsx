@@ -19,11 +19,12 @@ describe('ShareHolderCard', () => {
       linkedin: 'http://linkedin.com/daffy',
       name: 'Loony Toon'
     };
+    const linkedInLink = `https://www.linkedin.com/search/results/all/?keywords=${props.name}`;
+
     render(
       <ShareHolderCard
         firstName={props.firstName}
         lastName={props.lastName}
-        linkedin={props.linkedin}
         name={props.name}
       />,
       {},
@@ -33,7 +34,7 @@ describe('ShareHolderCard', () => {
     expect(screen.getByText(/daffy duck/i)).toBeInTheDocument();
     expect(screen.getByText(props.name)).toBeInTheDocument();
     expect(screen.getByRole('link')).toBeInTheDocument();
-    expect(screen.getByRole('link')).toHaveAttribute('href', props.linkedin);
+    expect(screen.getByRole('link')).toHaveAttribute('href', linkedInLink);
   });
 });
 

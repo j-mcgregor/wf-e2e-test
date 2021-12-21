@@ -5,7 +5,7 @@ import { toTitleCase } from '../../../lib/utils/text-helpers';
 interface ShareHolderCardProps {
   firstName: string | null;
   lastName: string | null;
-  linkedin: string;
+  linkedin?: string;
   percentage?: number;
   name: string | null;
   type?: string;

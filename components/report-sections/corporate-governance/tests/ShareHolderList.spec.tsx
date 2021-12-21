@@ -2,6 +2,7 @@
 /* eslint-disable security/detect-non-literal-regexp */
 import * as nextRouter from 'next/router';
 import React from 'react';
+import { toTitleCase } from '../../../../lib/utils/text-helpers';
 
 import allMessages from '../../../../messages/en';
 import { render, screen, within } from '../../../../test-utils';
@@ -20,21 +21,18 @@ describe('ShareHolderList', () => {
         {
           first_name: 'Bugs',
           last_name: 'Bunny',
-          linkedin: 'http://linkedin.com/bugs',
           name: 'Loony Toon 1',
           peps_sanctions_enforcements: true
         },
         {
           first_name: 'Lola',
           last_name: 'Bunny',
-          linkedin: 'http://linkedin.com/Lola',
           name: 'Loony Toon 2',
           peps_sanctions_enforcements: true
         },
         {
           first_name: 'Daffy',
           last_name: 'Duck',
-          linkedin: 'http://linkedin.com/daffy',
           name: 'Loony Toon 3',
           peps_sanctions_enforcements: true
         }
@@ -62,11 +60,17 @@ describe('ShareHolderList', () => {
         within(card).getByText(new RegExp(props.shareholders[i].last_name, 'i'))
       ).toBeInTheDocument();
 
-      if (props.shareholders[i].linkedin) {
+      const fullName = `${toTitleCase(
+        props.shareholders[i].first_name || ''
+      )} ${toTitleCase(props.shareholders[i].last_name || '')}`;
+
+      const linkedInLink = `https://www.linkedin.com/search/results/all/?keywords=${props.shareholders[i].name}`;
+
+      if (fullName) {
         expect(within(card).getByRole('link')).toBeInTheDocument();
         expect(within(card).getByRole('link')).toHaveAttribute(
           'href',
-          props.shareholders[i].linkedin
+          linkedInLink
         );
 
         expect(within(card).getByTestId('icon-linkedin')).toBeInTheDocument();

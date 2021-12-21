@@ -100,7 +100,7 @@ export type Profile = {
 export type ShareholderType = {
   first_name: string | null;
   last_name: string | null;
-  linkedin: string;
+  linkedin?: string;
   percentage?: number;
   name: string | null;
   type?: string;
