@@ -62,7 +62,7 @@ const PreferenceForm = ({
     useForm<PreferenceFormInput>({ defaultValues: currentUserValues });
 
   // form state
-  const { isDirty, isValid } = formState;
+  const { isDirty, isValid, isSubmitting } = formState;
   const [submitError, setSubmitError] = useState({ type: '' });
 
   // @ts-ignore
@@ -219,6 +219,7 @@ const PreferenceForm = ({
               </Button>
               <Button
                 disabled={!isDirty}
+                loading={isSubmitting}
                 type="submit"
                 variant="primary"
                 className="max-w-[150px] ml-3"

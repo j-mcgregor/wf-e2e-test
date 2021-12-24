@@ -9,12 +9,11 @@ import {
   USER_404,
   USER_422,
   USER_500
-} from '../../../lib/utils/error-codes';
-import User from '../../../lib/funcs/user';
+} from '../../lib/utils/error-codes';
+import User from '../../lib/funcs/user';
 import { getSession } from 'next-auth/client';
 
 const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log('hit');
   const session = await getSession({ req: req });
   // unauthenticated requests
   if (!session) {
