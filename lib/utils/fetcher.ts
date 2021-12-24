@@ -7,9 +7,6 @@ const fetcher = async (
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
   data?: object
 ) => {
-  // const { method, data } = options
-  // there a better way to do this?
-  // but I figured you'd know more about what you want / require for the testing
   try {
     if (method === 'GET') {
       const res = await fetch(`${config.URL}${relativeUrl}`, {
@@ -20,8 +17,6 @@ const fetcher = async (
 
       return res.json();
     }
-
-    console.log(data, method);
 
     try {
       JSON.stringify(data);
@@ -36,7 +31,6 @@ const fetcher = async (
         'Content-Type': 'application/json'
       }
     });
-    console.log(res);
     return res.json();
   } catch (error) {
     console.log('ERROR', error);

@@ -133,7 +133,7 @@ const Report = ({
           company={companyName}
           website={data.details?.websites?.[0]}
           created={created}
-          reportId={id[0]}
+          reportId={id.toString()} // id == string || string[]
         />
       </div>
       <HashContainer name={'Summary'} id={`summary`}>

@@ -31,6 +31,6 @@ describe('NewsCard', () => {
         name: props.link
       })
     ).toBeInTheDocument();
-    expect(screen.getByText(/25\/12\/2021/i)).toBeInTheDocument();
+    expect(screen.getByText(/12\/25\/2021/i)).toBeInTheDocument();
   });
 });

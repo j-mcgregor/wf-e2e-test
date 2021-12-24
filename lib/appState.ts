@@ -34,45 +34,26 @@ export const userReports = selector<UserReports>({
   get: ({ get }): UserReports => {
     const user = get(appUser);
     const reports = user?.reports;
-    const bookmarkedReports = reports?.filter(
-      (report: ReportSnippetType) => report.bookmarked
-    );
     const allReports = reports;
     const nonBookmarkedReports = reports?.filter(
       (report: ReportSnippetType) => !report.bookmarked
     );
 
     return {
-      bookmarkedReports: bookmarkedReports || [],
+      bookmarkedReports: user?.bookmarked_reports || [],
       allReports: allReports || [],
       nonBookmarkedReports: nonBookmarkedReports || []
     };
   },
-  set: ({ set, get }, reportId) => {
+  set: ({ set, get }, newReports) => {
     const user = get(appUser);
 
-    const allOtherReports =
-      user?.reports?.filter(
-        (report: ReportSnippetType) => `${report.id}` !== `${reportId}`
-      ) || [];
-    const updatedReport = user?.reports?.find(
-      (report: ReportSnippetType) => `${report.id}` === `${reportId}`
-    );
-
-    // handle report match an no match
-    const reports = updatedReport
-      ? [
-          ...allOtherReports,
-          {
-            ...updatedReport,
-            bookmarked: !updatedReport?.bookmarked
-          }
-        ]
-      : [...allOtherReports];
-
-    const newUser = {
+    // report.bookmarked no longer used
+    // use user.bookmarked_reports instead, returned from server
+    const newUser: UserType = {
       ...user,
-      reports
+      // @ts-ignore
+      bookmarked_reports: newReports.bookmarkedReports
     };
 
     return set(appUser, newUser);

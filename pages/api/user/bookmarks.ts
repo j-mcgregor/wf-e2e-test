@@ -9,11 +9,13 @@ import {
   USER_404,
   USER_422,
   USER_500
-} from '../../lib/utils/error-codes';
-import User from '../../lib/funcs/user';
+} from '../../../lib/utils/error-codes';
+import User from '../../../lib/funcs/user';
 import { getSession } from 'next-auth/client';
 
-const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const allowedMethods = ['GET', 'POST', 'DELETE'];
+
+const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req: req });
   // unauthenticated requests
   if (!session) {
@@ -24,18 +26,36 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   const { method } = req;
 
-  const json = JSON.parse(req.body);
+  if (!allowedMethods.includes(`${method}`)) {
+    return res.status(500).json({
+      ok: false,
+      error: METHOD_NOT_ALLOWED,
+      message: 'Method not allowed.'
+    });
+  }
 
-  const user = {
-    full_name: json.full_name,
-    email: json.email,
-    preferences: json.preferences,
-    ...(json.password ? { password: json.password } : {})
-  };
-
-  if (method === 'PUT' && user) {
+  if (method === 'GET') {
     try {
-      const fetchRes = await User.updateUser(user, `${session.token}`);
+      const fetchRes = await User.getUserBookmarks(`${session.token}`);
+
+      return res.status(fetchRes.status).json({
+        ok: fetchRes.ok,
+        bookmarks: fetchRes.bookmarks
+      });
+    } catch (err) {
+      return res
+        .status(500)
+        .json({ ok: false, error: GENERIC_API_ERROR, message: err });
+    }
+  }
+
+  if (allowedMethods.includes(`${method}`)) {
+    try {
+      const fetchRes = await User.bookmarkReport(
+        `${req.query.reportId}`,
+        `${session.token}`,
+        method as any
+      );
 
       switch (fetchRes.status) {
         case 401:
@@ -74,8 +94,11 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             message:
               "Internal Server Error: Didn't get anything usable from the server, chances are the server didn't respond."
           });
-        case 200:
-          return res.status(200).json({ ok: fetchRes.ok, data: fetchRes.user });
+        case 201: // created (post)
+        case 204: // no content (delete)
+          return res
+            .status(res.statusCode)
+            .json({ ok: fetchRes.ok, data: fetchRes.details });
       }
     } catch (err) {
       return res
@@ -83,12 +106,6 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         .json({ ok: false, error: GENERIC_API_ERROR, message: err });
     }
   }
-
-  return res.status(500).json({
-    ok: false,
-    error: METHOD_NOT_ALLOWED,
-    message: 'Method not allowed.'
-  });
 };
 
-export default withSentry(UserHandler);
+export default withSentry(BookmarkHandler);

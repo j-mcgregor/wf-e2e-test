@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { UserType, ReportSnippetType } from '../../types/global';
 
 const XMLHeaders = {
@@ -39,6 +40,8 @@ const getUser = async (token: string) => {
 
   // fetch the user reports history from separate endpoint
   const userReports = await getReportsHistory(token);
+  const userBookmarks = await User.getUserBookmarks(token);
+
   if (res.ok) {
     const user = await res.json();
 
@@ -49,6 +52,8 @@ const getUser = async (token: string) => {
       ...giveDefaults(user),
       // add in the reports history, handle failed request
       reports: userReports.ok ? userReports.reports : [],
+      // bookmarks
+      bookmarked_reports: userBookmarks.bookmarks || [],
       // to add later
       batched_report_jobs: []
     };
@@ -196,6 +201,68 @@ const getReportsHistory = async (
   return { ok: false, status: res.status };
 };
 
+const bookmarkReport = async (
+  reportId: string,
+  token: string,
+  method: 'POST' | 'DELETE' = 'POST'
+): Promise<{
+  ok: boolean;
+  status: number;
+  details?: string | {};
+}> => {
+  const res = await fetch(
+    `${process.env.WF_AP_ROUTE}/users/me/bookmarks/${reportId}`,
+    {
+      method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+
+  if (res.ok) {
+    return { ok: true, status: res.status };
+  }
+
+  try {
+    const error = await res?.json();
+    return { ok: false, status: res.status, details: error?.detail };
+  } catch (e: any) {
+    return { ok: false, status: res.status, details: e.message };
+  }
+};
+
+const getUserBookmarks = async (
+  token: string
+): Promise<{
+  ok: boolean;
+  status: number;
+  bookmarks?: ReportSnippetType[];
+  details?: string | {};
+}> => {
+  const res = await fetch(`${process.env.WF_AP_ROUTE}/users/me/bookmarks`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (res.ok) {
+    const bookmarks = await res.json();
+
+    return { ok: true, bookmarks, status: res.status };
+  }
+
+  try {
+    const error = await res?.json();
+    return { ok: false, status: res.status, details: error?.detail };
+  } catch (e: any) {
+    return { ok: false, status: res.status, details: e.message };
+  }
+};
+
 const User = {
   authenticate,
   getUser,
@@ -204,7 +271,9 @@ const User = {
   resetPassword,
   forgotPassword,
   getSSOToken,
-  giveDefaults
+  giveDefaults,
+  bookmarkReport,
+  getUserBookmarks
 };
 
 export default User;

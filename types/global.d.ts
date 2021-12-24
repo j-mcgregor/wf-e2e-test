@@ -66,6 +66,7 @@ export type UserType = {
     };
   };
   reports?: ReportSnippetType[];
+  bookmarked_reports?: ReportSnippetType[];
   batched_report_jobs?: BatchedReportType[];
 };
 
