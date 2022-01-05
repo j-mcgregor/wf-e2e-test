@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/prefer-immediate-return */
 // adds blank objects to the array to make it the same length as the other arrays
 export const addBlankObjects = (array: any[], lengthRequired: number) => {
   const length = array.length;
@@ -21,15 +22,19 @@ export const calculateSMEZScoreRotation = (value: number) => {
 };
 
 export const calculatePoDRotation = (value: number) => {
-  // PD angle = LOG10(PD) * -1.0
-  const rotationPercentage = (1.0 - Math.log10(value) * -1.0) * 260;
+  // if value zero set to default
+  if (value === 0) return 130;
 
-  // handle 0 values
-  if (value === 0) {
-    return 130;
-  }
-  return rotationPercentage - 100;
+  // PD RATION = 1 - LOG10(PD*100)/2
+  // see tests for greater understanding of calculation with different results
+  const pdRatio = (1 - Math.log10(value * 100)) / 2;
+
+  // The result needs to be times by 260º and then subtract 130 to get the correct rotation value.
+  const angle = pdRatio * 260 - 130;
+
+  return angle;
 };
+
 export const calculateLGDRotation = (value: number) => {
   // LGD angle = 1.0 – LGD
   const rotationPercentage = (1.0 - value) * 260;
