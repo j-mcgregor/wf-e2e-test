@@ -33,11 +33,7 @@ const EnvironmentalAssessment = ({
       <div className="py-14 w-full">
         <p className="text-xl">{t('environmental')}</p>
         <div className="py-6">
-          <p>{t('industry_code')}</p>
-          <p className="font-bold">{industryCategory.code}</p>
-        </div>
-        <div>
-          <p>{t('industry_description')}</p>
+          <p>{t('industry_string')}</p>
           <p className="font-bold">{industry_string}</p>
         </div>
       </div>
