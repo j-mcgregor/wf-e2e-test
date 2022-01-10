@@ -18,7 +18,7 @@ describe('CorporateOverview', () => {
       cfo: 'Lola Bunny',
       chairman: 'Daffy Duck',
       directors: 3,
-      seniorManagement: 4,
+      employees: 4,
       shareholders: 5
     };
     render(
@@ -27,7 +27,7 @@ describe('CorporateOverview', () => {
         cfo={props.cfo}
         chairman={props.chairman}
         directors={props.directors}
-        seniorManagement={props.seniorManagement}
+        employees={props.employees}
         shareholders={props.shareholders}
       />,
       {},
@@ -57,7 +57,7 @@ describe('CorporateOverview', () => {
     ).toBeInTheDocument();
     expect(
       within(screen.getByTestId('corp-snr-mgmt-testid')).getByText(
-        props.seniorManagement
+        props.employees
       )
     ).toBeInTheDocument();
   });

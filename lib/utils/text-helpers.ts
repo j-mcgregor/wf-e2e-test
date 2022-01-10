@@ -1,3 +1,5 @@
+/* eslint-disable security/detect-object-injection */
+import { BoardMember } from '../../types/report';
 import { getClientRelativeDate } from './date-helpers';
 const isString = (str: any): str is string => typeof str === 'string';
 
@@ -60,3 +62,34 @@ export const createReportTitle = (companyName: string, createdAt: string) => {
 
 export const convertNumberToPercentage = (num: number) =>
   `${Number(num * 100).toFixed(1)}%`;
+
+export type BoardRole = 'CEO' | 'CFO' | 'Chairman';
+
+// function is in here because it was initially a class with various string and regex methods
+// after refactoring its simpler but not sure if it belongs here. Can move it, just not sure where
+export const getBoardMember = (
+  role: BoardRole,
+  board_members?: BoardMember[]
+) => {
+  if (!board_members) return '';
+
+  const keywords: Record<BoardRole, RegExp[]> = {
+    CEO: [/chief executive officer/gi, /ceo/gi],
+    CFO: [/chief financial officer/gi, /cfo/gi],
+    Chairman: [/chairman/gi]
+  };
+
+  return (
+    board_members
+      .filter(b => b.is_current)
+      .find(b => {
+        const isMatch = keywords[role]
+          .map(keyword => (b.job_title.match(keyword) !== null ? b : null))
+          .filter(Boolean);
+
+        if (isMatch.length) {
+          return isMatch[0];
+        }
+      })?.name || ''
+  );
+};

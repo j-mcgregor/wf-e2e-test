@@ -1,6 +1,14 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import React from 'react';
 import { useTranslations } from 'use-intl';
+
+import usePrintClasses from '../../hooks/usePrintClasses';
+import {
+  calculateLGDRotation,
+  calculatePoDRotation,
+  calculateSMEZScoreRotation
+} from '../../lib/utils/report-helpers';
+import { getBoardMember } from '../../lib/utils/text-helpers';
 import { ReportDataProps } from '../../pages/report/[id]';
 import HashContainer from '../elements/HashContainer';
 import { ReportSectionHeader } from '../elements/Headers';
@@ -8,7 +16,6 @@ import Hint from '../elements/Hint';
 import CorporateOverview from './corporate-governance/CorporateOverview';
 import Profiles from './corporate-governance/Profiles';
 import ShareHolderList from './corporate-governance/ShareHolderList';
-import ESGCard from './esg-assessment/ESGCard';
 import ESGContainer from './esg-assessment/ESGContainer';
 import FinancialTrends from './financial-trends/FinancialTrends';
 import CTACard from './highlights/CTACard';
@@ -25,13 +32,6 @@ import Speedometer from './risk-metrics/Speedometer';
 import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
-
-import usePrintClasses from '../../hooks/usePrintClasses';
-import {
-  calculateLGDRotation,
-  calculatePoDRotation,
-  calculateSMEZScoreRotation
-} from '../../lib/utils/report-helpers';
 
 const Report = ({
   data,
@@ -284,7 +284,6 @@ const Report = ({
           </div>
         </div>
       </HashContainer>
-
       <HashContainer name={'Financial Trends'} id={`financial_trends`}>
         <ReportSectionHeader text={t('financial_trends')} />
         <FinancialTrends
@@ -296,14 +295,13 @@ const Report = ({
 
       <HashContainer name={'Corporate Governance'} id={`corporate_governance`}>
         <ReportSectionHeader text={t('corporate_governance')} />
-
         <CorporateOverview
-          cfo={data?.personal?.cfo}
-          ceo={data?.personal?.ceo}
-          chairman={data?.personal?.chairman}
-          directors={data.personal?.directors?.length}
-          seniorManagement={data.personal?.senior_management?.length}
-          shareholders={data?.shareholders?.length}
+          cfo={getBoardMember('CFO', data?.board_members)}
+          ceo={getBoardMember('CEO', data?.board_members)}
+          chairman={getBoardMember('Chairman', data?.board_members)}
+          directors={data?.details?.directors}
+          employees={data?.details?.employees}
+          shareholders={data?.details?.shareholders}
         />
 
         <Profiles

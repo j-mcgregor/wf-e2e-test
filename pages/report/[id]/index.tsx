@@ -3,18 +3,19 @@ import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { RatingType } from '../../../components/report-sections/risk-metrics/BondRating';
 
 import Layout from '../../../components/layout/Layout';
 import ReportNav from '../../../components/layout/ReportNav';
 import SecondaryLayout from '../../../components/layout/SecondaryLayout';
 import TabletReportNav from '../../../components/layout/TabletReportNav';
 import Report from '../../../components/report-sections/Report';
+import { RatingType } from '../../../components/report-sections/risk-metrics/BondRating';
+import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
 import SkeletonReport from '../../../components/skeletons/SkeletonReport';
 import getServerSidePropsWithAuth from '../../../lib/auth/getServerSidePropsWithAuth';
 import fetcher from '../../../lib/utils/fetcher';
-import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
 import {
+  BoardMember,
   DataReliabilityType,
   FinancialYear,
   LegalEvent,
@@ -33,6 +34,7 @@ export interface ReportDataProps {
   details: SummaryContact & SummaryInfo;
   financials: FinancialYear[];
   benchmarks: FinancialYear[];
+  board_members?: BoardMember[];
   financial_ratios: {
     [key: string]: number;
   }[];
@@ -61,6 +63,10 @@ export interface ReportDataProps {
   };
   legal_events: LegalEvent[];
   shareholders: ShareholderType[];
+  /**
+   * @deprecated
+   * use ReportDataProps.details & ReportDataProps.board_members
+   */
   personal: {
     directors: Profile[];
     senior_management: Profile[];

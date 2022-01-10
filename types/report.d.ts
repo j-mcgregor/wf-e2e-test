@@ -23,6 +23,9 @@ export type SummaryInfo = {
   reg_number: string;
   sector: string;
   description: string;
+  directors: number;
+  shareholders: number;
+  employees: number;
   overview_full?: string;
   date_of_incorporation: number | string;
   last_account_date: number | string;
@@ -116,4 +119,12 @@ export interface CSVValueValidation {
 
 export type ValidCSVType = {
   validator: CSVValueValidation[];
+};
+
+export type BoardMember = {
+  name: string;
+  job_title: string;
+  appointment_date: string | Date;
+  resignation_date: string | Date;
+  is_current: boolean;
 };

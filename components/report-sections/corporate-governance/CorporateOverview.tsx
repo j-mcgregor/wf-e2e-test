@@ -5,8 +5,8 @@ interface CorporateOverviewProps {
   cfo: string;
   chairman: string;
   directors: number;
-  seniorManagement: number;
   shareholders: number;
+  employees: number;
 }
 
 const CorporateOverview = ({
@@ -14,8 +14,8 @@ const CorporateOverview = ({
   cfo,
   chairman,
   directors,
-  seniorManagement,
-  shareholders
+  shareholders,
+  employees
 }: CorporateOverviewProps) => {
   const t = useTranslations();
 
@@ -63,8 +63,8 @@ const CorporateOverview = ({
           className={`${reverseTextPrint} p-4 print:border-b-2 print:border-t-2 print:border-r-2`}
           data-testid="corp-snr-mgmt-testid"
         >
-          <p className="font-bold">{seniorManagement || 0}</p>
-          <p>{t('senior_management')}</p>
+          <p className="font-bold">{employees || 0}</p>
+          <p>{t('employees')}</p>
         </div>
       </div>
     </div>
