@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-regexp */
 import * as nextRouter from 'next/router';
 import React from 'react';
 
@@ -12,110 +13,76 @@ describe('ShareHolderCard', () => {
     nextRouter.useRouter = jest.fn().mockImplementation(() => ({}));
   });
 
-  it('should render', () => {
+  it('should render with LinkedIn link if type === "One or more named individuals or families"', () => {
     const props = {
-      firstName: 'Daffy',
-      lastName: 'Duck',
-      linkedin: 'http://linkedin.com/daffy',
-      name: 'Loony Toon'
+      id: 'IT*110178163813',
+      name: 'MS GABRIELLE SABATO',
+      salutation: 'MS',
+      first_name: 'GABRIELLE',
+      last_name: 'SABATO',
+      uci: 'P340226916',
+      country: 'IT',
+      type: 'One or more named individuals or families',
+      percentage: null,
+      information_date: '04/2021',
+      is_liability: false,
+      also_a_manager: 'Current manager',
+      is_beneficially_held: false,
+      peps_sanctions_enforcements: false
     };
-    const linkedInLink = `https://www.linkedin.com/search/results/all/?keywords=${props.name}`;
+    const linkedInLink = `https://www.linkedin.com/search/results/all/?keywords=Gabrielle Sabato`;
 
     render(
       <ShareHolderCard
-        firstName={props.firstName}
-        lastName={props.lastName}
+        firstName={props.first_name}
+        lastName={props.last_name}
         name={props.name}
+        type={props.type}
       />,
       {},
       allMessages
     );
 
-    expect(screen.getByText(/daffy duck/i)).toBeInTheDocument();
-    expect(screen.getByText(props.name)).toBeInTheDocument();
+    expect(
+      screen.getByText(new RegExp(props.first_name, 'i'))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(new RegExp(props.last_name, 'i'))
+    ).toBeInTheDocument();
     expect(screen.getByRole('link')).toBeInTheDocument();
     expect(screen.getByRole('link')).toHaveAttribute('href', linkedInLink);
   });
+
+  it('should not render with LinkedIn link if type === "Corporate"', () => {
+    const props = {
+      id: 'IT*110178163813',
+      name: 'MS GABRIELLE SABATO',
+      salutation: 'MS',
+      first_name: 'GABRIELLE',
+      last_name: 'SABATO',
+      uci: 'P340226916',
+      country: 'IT',
+      type: 'Corporate',
+      percentage: null,
+      information_date: '04/2021',
+      is_liability: false,
+      also_a_manager: 'Current manager',
+      is_beneficially_held: false,
+      peps_sanctions_enforcements: false
+    };
+
+    render(
+      <ShareHolderCard
+        firstName={props.first_name}
+        lastName={props.last_name}
+        name={props.name}
+        type={props.type}
+      />,
+      {},
+      allMessages
+    );
+
+    expect(screen.getByText(new RegExp(props.name, 'i'))).toBeInTheDocument();
+    expect(screen.queryByRole('link')).toBeNull();
+  });
 });
-
-// it('Directors', async () => {
-//   const { directors } = personal;
-
-//   render(<ReportTemplate isTesting />, undefined, allMessages);
-
-//   const skeleton = screen.queryByTestId('skeleton-report');
-//   skeleton && (await waitForElementToBeRemoved(skeleton));
-
-//   expect(
-//     within(screen.getByTestId('corp-senior-profiles-testid')).getByText(
-//       /directors/i
-//     )
-//   ).toBeInTheDocument();
-
-//   const cards = within(
-//     screen.getByTestId('corp-directors-list-testid')
-//   ).queryAllByTestId('personal-card-testid');
-
-//   expect(cards.length).toBe(directors.length);
-
-//   cards.forEach((card, i) => {
-//     expect(
-//       within(card).getByText(new RegExp(directors[i].title, 'i'))
-//     ).toBeInTheDocument();
-//     expect(
-//       within(card).getByText(new RegExp(directors[i].name, 'i'))
-//     ).toBeInTheDocument();
-//     expect(
-//       within(card).getByText(new RegExp(directors[i].role, 'i'))
-//     ).toBeInTheDocument();
-//     expect(
-//       within(card).getByText(new RegExp(directors[i].date_of_birth, 'i'))
-//     ).toBeInTheDocument();
-//     expect(
-//       within(card).getByText(new RegExp(directors[i].nationality, 'i'))
-//     ).toBeInTheDocument();
-//   });
-// });
-
-// it('Senior Management', async () => {
-//   const { senior_management } = personal;
-
-//   render(<ReportTemplate isTesting />, undefined, allMessages);
-
-//   const skeleton = screen.queryByTestId('skeleton-report');
-//   skeleton && (await waitForElementToBeRemoved(skeleton));
-
-//   expect(
-//     within(screen.getByTestId('corp-senior-profiles-testid')).getByText(
-//       /senior management/i
-//     )
-//   ).toBeInTheDocument();
-
-//   const cards = within(
-//     screen.getByTestId('corp-snr-mgmt-list-testid')
-//   ).queryAllByTestId('personal-card-testid');
-
-//   expect(cards.length).toBe(senior_management.length);
-
-//   cards.forEach((card, i) => {
-//     expect(
-//       within(card).getByText(new RegExp(senior_management[i].title, 'i'))
-//     ).toBeInTheDocument();
-//     expect(
-//       within(card).getByText(new RegExp(senior_management[i].name, 'i'))
-//     ).toBeInTheDocument();
-//     expect(
-//       within(card).getByText(new RegExp(senior_management[i].role, 'i'))
-//     ).toBeInTheDocument();
-//     expect(
-//       within(card).getByText(
-//         new RegExp(senior_management[i].date_of_birth, 'i')
-//       )
-//     ).toBeInTheDocument();
-//     expect(
-//       within(card).getByText(
-//         new RegExp(senior_management[i].nationality, 'i')
-//       )
-//     ).toBeInTheDocument();
-//   });
-// });
