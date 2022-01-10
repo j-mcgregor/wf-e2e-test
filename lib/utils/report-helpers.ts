@@ -27,7 +27,7 @@ export const calculatePoDRotation = (value: number) => {
 
   // PD RATION = 1 - LOG10(PD*100)/2
   // see tests for greater understanding of calculation with different results
-  const pdRatio = (1 - Math.log10(value * 100)) / 2;
+  const pdRatio = 1 - Math.log10(value * 100) / 2;
 
   // The result needs to be times by 260º and then subtract 130 to get the correct rotation value.
   const angle = pdRatio * 260 - 130;

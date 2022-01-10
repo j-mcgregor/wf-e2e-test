@@ -37,6 +37,10 @@ const Speedometer = ({
   //   ...value
   // }));
 
+  const isFloat = Number(value) === value && value % 1 !== 0;
+
+  const renderValue = isFloat ? value.toFixed(1) : value;
+
   return (
     <>
       <div
@@ -56,9 +60,13 @@ const Speedometer = ({
             className="absolute top-0 w-full  h-full transition-transform duration-500"
           />
 
-          <div className="absolute top-1/2 w-full text-center text-2xl font-bold pt-5">
+          <div
+            className={`absolute top-1/2 w-full text-center text-2xl font-bold pt-5 ${
+              isFloat ? 'ml-[4px]' : ''
+            }`}
+          >
             <span>
-              {value}
+              {renderValue}
               {as}
             </span>
           </div>
