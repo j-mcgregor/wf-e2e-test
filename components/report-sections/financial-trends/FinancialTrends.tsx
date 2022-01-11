@@ -36,17 +36,27 @@ const FinancialTrends = ({
     []
   );
 
-  // remove all charts with all empty company chart y values and divide into arrays of 6 for print layout
-  const filteredCharts = chartsToRender
-    .filter((chart: any) =>
-      chart.data[0].data.every((data: any) => data.y !== 0)
-    )
-    .reduce(
-      (acc: any, curr: any, index) =>
-        (index % 6 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
-        acc,
-      []
-    );
+  // OLD CODE BELOW
+  //* remove all charts with all empty company chart y values and divide into arrays of 6 for print layout
+  // const filteredCharts = chartsToRender
+  //   .filter((chart: any) =>
+  //     chart.data[0].data.every((data: any) => data.y !== 0)
+  //   )
+  //   .reduce(
+  //     (acc: any, curr: any, index) =>
+  //       (index % 6 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
+  //       acc,
+  //     []
+  //   );
+
+  // NEW CODE BELOW -
+  // charts split into arrays of 6 for print layout
+  const filteredCharts = chartsToRender.reduce(
+    (acc: any, curr: any, index) =>
+      (index % 6 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
+      acc,
+    []
+  );
 
   return (
     <div>
@@ -62,6 +72,10 @@ const FinancialTrends = ({
               {graphSection.map((chart: any) => {
                 return (
                   <ChartMulti
+                    // render graph as disabled when no data
+                    disabled={chart.data[0].data.every(
+                      (data: any) => data.y === 0
+                    )}
                     key={chart.header}
                     header={`${t(chart.header)}`}
                     subHeader={`${t(chart.subHeader)}`}

@@ -12,13 +12,13 @@ interface ChartContainerProps {
   height: number;
   width: number;
   max: number;
-  min?: number;
+  min: number;
 }
 const ChartContainer = ({
   children,
   height,
   width,
-  max,
+  max = 1,
   min = 0
 }: ChartContainerProps) => {
   return (

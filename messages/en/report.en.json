@@ -37,7 +37,7 @@
   "total_current_liabilities": "Total Current Liabilities",
   "net_current_assets": "Net Current Assets",
   "employees": "Employees",
-  "bond_rating": "Bond Rating",
+  "bond_rating_equivalent": "Bond Rating Equivalent",
   "sme_zscore": "SME Z-Score",
   "probability_of_default": "Probability of Default",
   "loss_give_default": "Loss Given Default",
