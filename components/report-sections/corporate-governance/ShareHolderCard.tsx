@@ -21,13 +21,19 @@ const ShareHolderCard = ({
   const isShareholderIndividual =
     type === 'One or more named individuals or families';
 
-  const fullName = `${toTitleCase(firstName || '')} ${toTitleCase(
-    lastName || ''
-  )}`;
+  let fullName = '';
+  let linkedInLink = '';
 
-  const linkedInLink = `https://www.linkedin.com/search/results/all/?keywords=${
-    isShareholderIndividual ? fullName : name
-  }`;
+  if (firstName && lastName) {
+    fullName = `${toTitleCase(firstName)} ${toTitleCase(lastName)}`;
+  }
+
+  if (isShareholderIndividual) {
+    linkedInLink = `https://www.linkedin.com/search/results/all/?keywords=${
+      fullName || name
+    }`;
+  }
+
   return (
     <div
       className="bg-white flex py-3 space-x-2 px-4 justify-between items-center rounded-sm shadow-sm text-sm
@@ -35,12 +41,9 @@ const ShareHolderCard = ({
       data-testid="shareholder-card-testid"
     >
       {isShareholderIndividual ? (
-        firstName &&
-        lastName && (
-          <p className="flex-1 text-left">
-            {toTitleCase(firstName)} {toTitleCase(lastName)}
-          </p>
-        )
+        <p className="flex-1 text-left">
+          {fullName ? fullName : name ? `${toTitleCase(name)}` : null}
+        </p>
       ) : (
         <p className="flex-1 text-left">{name}</p>
       )}
