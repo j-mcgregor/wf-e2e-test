@@ -4,17 +4,20 @@ import { useMemo } from 'react';
 import ChartMulti from '../../charts/ChartMulti';
 import { financialTrendsCharts } from '../../../lib/settings/report.settings';
 import { MultiGraphDataType } from '../../../types/charts';
+import countryCodes from '../../../lib/data/countryCodes.json';
 
 interface FinancialTrendsProps {
   financialData: any[];
   benchmarkData: any[];
   companyName: string;
+  currency: string;
 }
 
 const FinancialTrends = ({
   financialData,
   benchmarkData,
-  companyName
+  companyName,
+  currency
 }: FinancialTrendsProps) => {
   const t = useTranslations();
 
@@ -58,6 +61,11 @@ const FinancialTrends = ({
     []
   );
 
+  // find currency symbol from currency code
+  const currencySymbol = countryCodes.find(
+    country => country.currency_code === currency
+  )?.currency_symbol;
+
   return (
     <div>
       {filteredCharts.map(
@@ -72,6 +80,7 @@ const FinancialTrends = ({
               {graphSection.map((chart: any) => {
                 return (
                   <ChartMulti
+                    currencySymbol={currencySymbol}
                     // render graph as disabled when no data
                     disabled={chart.data[0].data.every(
                       (data: any) => data.y === 0

@@ -16,6 +16,7 @@ interface ChartMultiProps {
   hintTitle: TranslateInput;
   hintBody: TranslateInput;
   disabled?: boolean;
+  currencySymbol?: string;
 }
 
 const ChartMulti = ({
@@ -24,7 +25,8 @@ const ChartMulti = ({
   subHeader,
   hintBody,
   hintTitle,
-  disabled
+  disabled,
+  currencySymbol
 }: ChartMultiProps) => {
   const [data, setData] = useState<MultiGraphDataType[] | null>(null);
   const [selectedGraphIndex, setSelectedGraphIndex] = useState<number | null>(
@@ -90,7 +92,7 @@ const ChartMulti = ({
             {header}
           </h5>
           <p className="opacity-70 print:opacity-100 print:text-gray-400  text-base sm:text-sm md:text-xs 2xl:text-sm">
-            {subHeader}
+            {currencySymbol} {subHeader}
           </p>
         </div>
 

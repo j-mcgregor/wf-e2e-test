@@ -76,6 +76,7 @@ export interface ReportDataProps {
   };
   error?: string;
   message?: string;
+  currency: string;
 }
 
 const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {

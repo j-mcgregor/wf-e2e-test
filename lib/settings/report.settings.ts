@@ -2,7 +2,7 @@
 import { HintTypeProps } from '../../components/elements/Hint';
 import { MultiGraphDataType } from '../../types/charts';
 
-const poundsThousands = '£_thousands';
+const thousands = 'thousands';
 const ratio = 'ratio';
 
 export const bondRatings = [
@@ -224,7 +224,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   turnover: (data: any) =>
     createChart(
       'turnover',
-      poundsThousands,
+      thousands,
       { title: 'charts.turnover.title', body: 'charts.turnover.body' },
       data.map((chart: any) => ({
         name: chart.name,
@@ -237,7 +237,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   totalAssets: (data: MultiGraphDataType[]) =>
     createChart(
       'total_assets',
-      poundsThousands,
+      thousands,
       { title: 'charts.total_assets.title', body: 'charts.total_assets.body' },
       data.map((chart: any) => ({
         name: chart.name,
@@ -251,7 +251,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   ebit: (data: MultiGraphDataType[]) =>
     createChart(
       'ebit',
-      poundsThousands,
+      thousands,
       { title: 'charts.ebit.title', body: 'charts.ebit.body' },
       data.map((chart: any) => ({
         name: chart.name,
@@ -264,7 +264,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   ebitda: (data: MultiGraphDataType[]) =>
     createChart(
       'ebitda',
-      poundsThousands,
+      thousands,
       { title: 'charts.ebitda.title', body: 'charts.ebitda.body' },
       data.map((chart: any) => ({
         name: chart.name,
@@ -277,7 +277,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   total_debt: (data: MultiGraphDataType[]) =>
     createChart(
       'total_debt',
-      poundsThousands,
+      thousands,
       { title: 'total_debt.title', body: 'total_debt.body' },
       data.map((chart: any, i) => ({
         name: chart.name,
@@ -290,7 +290,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   cash_and_cash_equivalent: (data: MultiGraphDataType[]) =>
     createChart(
       'cash_and_cash_equivalent',
-      poundsThousands,
+      thousands,
       {
         title: 'charts.cash_and_cash_equivalent.title',
         body: 'charts.cash_and_cash_equivalent.body'
@@ -306,7 +306,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   interest_expenses: (data: MultiGraphDataType[]) =>
     createChart(
       'interest_expenses',
-      poundsThousands,
+      thousands,
       {
         title: 'charts.interest_expenses.title',
         body: 'charts.interest_expenses.body'
@@ -322,7 +322,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   net_income: (data: MultiGraphDataType[]) =>
     createChart(
       'net_income',
-      poundsThousands,
+      thousands,
       { title: 'charts.net_income.title', body: 'charts.net_income.body' },
       data.map((chart: any) => ({
         name: chart.name,
@@ -335,7 +335,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   shareholders_equity: (data: MultiGraphDataType[]) =>
     createChart(
       'shareholders_equity',
-      poundsThousands,
+      thousands,
       {
         title: 'charts.shareholders_equity.title',
         body: 'charts.shareholders_equity.body'
@@ -351,7 +351,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   retained_earnings: (data: MultiGraphDataType[]) =>
     createChart(
       'retained_earnings',
-      poundsThousands,
+      thousands,
       { title: 'ebit.title', body: 'ebit.body' },
       data.map((chart: any) => ({
         name: chart.name,
@@ -364,7 +364,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   days_receivable: (data: MultiGraphDataType[]) =>
     createChart(
       'days_receivable',
-      poundsThousands,
+      thousands,
       {
         title: 'charts.days_receivable.title',
         body: 'charts.days_receivable.body'
@@ -380,7 +380,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   days_payable: (data: MultiGraphDataType[]) =>
     createChart(
       'days_payable',
-      poundsThousands,
+      thousands,
       {
         title: 'charts.days_payable.title',
         body: 'charts.days_payable.body'
@@ -396,7 +396,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   ebitda_margin: (data: MultiGraphDataType[]) =>
     createChart(
       'ebitda_margin',
-      poundsThousands,
+      thousands,
       {
         title: 'charts.ebitda_margin.title',
         body: 'charts.ebitda_margin.body'
@@ -444,7 +444,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   equity_total_assets: (data: MultiGraphDataType[]) =>
     createChart(
       'equity_total_assets',
-      poundsThousands,
+      thousands,
       {
         title: 'charts.equity_total_assets.title',
         body: 'charts.equity_total_assets.body'
@@ -508,7 +508,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   return_on_equity: (data: MultiGraphDataType[]) =>
     createChart(
       'return_on_equity',
-      poundsThousands,
+      thousands,
       {
         title: 'charts.return_on_equity.title',
         body: 'charts.return_on_equity.body'
@@ -524,7 +524,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   return_on_assets: (data: MultiGraphDataType[]) =>
     createChart(
       'return_on_assets',
-      poundsThousands,
+      thousands,
       {
         title: 'charts.return_on_assets.title',
         body: 'charts.return_on_assets.body'
@@ -572,7 +572,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   net_debt: (data: MultiGraphDataType[]) =>
     createChart(
       'net_debt',
-      poundsThousands,
+      thousands,
       {
         title: 'charts.liquidity_ratio.title',
         body: 'charts.liquidity_ratio.body'
@@ -588,7 +588,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
   net_debt_ebitda: (data: MultiGraphDataType[]) =>
     createChart(
       'net_debt_ebitda',
-      poundsThousands,
+      thousands,
       { title: 'ebit.title', body: 'ebit.body' },
       data.map((chart: any) => ({
         name: chart.name,

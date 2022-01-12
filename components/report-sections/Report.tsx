@@ -287,6 +287,7 @@ const Report = ({
       <HashContainer name={'Financial Trends'} id={`financial_trends`}>
         <ReportSectionHeader text={t('financial_trends')} />
         <FinancialTrends
+          currency={data.currency}
           financialData={mergedLastFiveYearFinancials.reverse()}
           benchmarkData={lastFiveYearsBenchmarks.reverse()}
           companyName={companyName}
