@@ -28,6 +28,7 @@ import MacroEconomicTrends from './macro-economic-trends/MacroEconomicTrends';
 import NewsFeed from './news/NewsFeed';
 import ReportHeader from './ReportHeader';
 import BondRating from './risk-metrics/BondRating';
+import RiskMetricGraphs from './risk-metrics/RiskMetricGraphs';
 import Speedometer from './risk-metrics/Speedometer';
 import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
@@ -55,6 +56,7 @@ const Report = ({
   const date = new Date(`${data?.created_at}`);
 
   const riskMetrics = data.risk_metrics?.[data.risk_metrics.length - 1];
+
   const reliabilityIndex = data.reliability_index;
 
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
@@ -83,6 +85,9 @@ const Report = ({
 
   const lastFiveYearsBenchmarks =
     (data?.benchmarks && data.benchmarks?.slice(0, 5)) || [];
+
+  const lastFiveYearsRiskMetrics =
+    (data?.risk_metrics && data.risk_metrics.reverse()?.slice(0, 5)) || [];
 
   const mergedLastFiveYearFinancials = lastFiveYearsFinancials.map(
     (year, index) => {
@@ -228,6 +233,10 @@ const Report = ({
             }
           />
         </div>
+        <RiskMetricGraphs
+          data={lastFiveYearsRiskMetrics.reverse()}
+          companyName={companyName}
+        />
         <BondRating score={riskMetrics?.bond_rating_equivalent} />
       </HashContainer>
       <HashContainer name={'Highlights'} id={`highlights`}>

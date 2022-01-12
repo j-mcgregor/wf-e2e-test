@@ -41,6 +41,7 @@ export interface ReportDataProps {
   risk_metrics: {
     bond_rating_equivalent: RatingType;
     sme_z_score: number;
+    period: string;
     // value: string;
     // regional_benchmark: string | null;
     // industry_benchmark: string | null;

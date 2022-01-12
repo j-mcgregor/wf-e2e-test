@@ -12,7 +12,7 @@ import ChartButton from './ChartButton';
 interface ChartMultiProps {
   graphData: MultiGraphDataType[];
   header: TranslateInput;
-  subHeader: TranslateInput;
+  subHeader?: TranslateInput;
   hintTitle: TranslateInput;
   hintBody: TranslateInput;
 }
@@ -49,7 +49,7 @@ const ChartMulti = ({
   const benchmarkGraph = graphData[benchmarkIndex];
 
   const isGraphData = (graph: any): boolean => {
-    return graph.data.some((value: GraphDataType) => value.y !== 0);
+    return graph?.data.some((value: GraphDataType) => value.y !== 0);
   };
 
   const isBenchmarkData = isGraphData(benchmarkGraph);
@@ -107,7 +107,7 @@ const ChartMulti = ({
               onLoad: { duration: 500 }
             }}
             data={companyGraph.data}
-            y0={() => minValue * 1.2}
+            y0={() => minValue * 0.9}
             interpolation="monotoneX"
             style={{
               data: {
