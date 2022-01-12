@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable security/detect-non-literal-regexp */
 import * as nextRouter from 'next/router';
 import React from 'react';
