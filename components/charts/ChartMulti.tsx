@@ -15,6 +15,7 @@ interface ChartMultiProps {
   subHeader: TranslateInput;
   hintTitle: TranslateInput;
   hintBody: TranslateInput;
+  disabled?: boolean;
 }
 
 const ChartMulti = ({
@@ -22,7 +23,8 @@ const ChartMulti = ({
   header,
   subHeader,
   hintBody,
-  hintTitle
+  hintTitle,
+  disabled
 }: ChartMultiProps) => {
   const [data, setData] = useState<MultiGraphDataType[] | null>(null);
   const [selectedGraphIndex, setSelectedGraphIndex] = useState<number | null>(
@@ -59,6 +61,7 @@ const ChartMulti = ({
       Math.max(...graph.data.map((value: GraphDataType) => value.y))
     )
   );
+
   const minValue = Math.min(
     ...graphData.map((graph: any) =>
       Math.min(...graph.data.map((value: GraphDataType) => value.y))
@@ -76,13 +79,17 @@ const ChartMulti = ({
 
   return (
     <div
-      className={` shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break`}
+      className={`${
+        disabled && 'opacity-50 -z-10'
+      } shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break`}
       data-testid="chart-multi-testid"
     >
-      <div className="flex justify-between items-start px-4 pt-4 text-xs">
+      <div className="flex justify-between items-start px-4 pt-4">
         <div>
-          <p className="font-bold pb-2">{header}</p>
-          <p className="opacity-70 print:opacity-100 print:text-gray-400">
+          <h5 className="font-bold pb  text-lg sm:text-base md:text-sm 2xl:text-base">
+            {header}
+          </h5>
+          <p className="opacity-70 print:opacity-100 print:text-gray-400  text-base sm:text-sm md:text-xs 2xl:text-sm">
             {subHeader}
           </p>
         </div>
@@ -93,103 +100,109 @@ const ChartMulti = ({
       <ChartContainer
         height={220}
         width={200}
-        max={maxValue < 1 ? maxValue * 1.5 : maxValue * 1.2}
-        min={minValue}
+        max={disabled ? 1 : maxValue < 1 ? maxValue * 1.5 : maxValue * 1.2}
+        min={disabled ? 0 : minValue}
       >
-        <VictoryGroup style={{ data: { strokeWidth: 1.5 } }}>
-          {/* ============= */}
-          {/* Company Graph */}
-          {/* ============= */}
-          <VictoryArea
-            key={`victory-area-${companyGraph.name}`}
-            animate={{
-              duration: 500,
-              onLoad: { duration: 500 }
-            }}
-            data={companyGraph.data}
-            y0={() => minValue * 1.2}
-            interpolation="monotoneX"
-            style={{
-              data: {
-                fill: companyColour,
-                fillOpacity:
-                  companyIndex === selectedGraphIndex ? '0.65' : '0.2',
-                stroke: companyColour,
-                strokeOpacity: 1
-              }
-            }}
-          />
-          {/* ============= */}
-          {/* Benchmark Graph */}
-          {/* ============= */}
-          {isBenchmarkData && (
+        {!disabled && (
+          <VictoryGroup style={{ data: { strokeWidth: 1.5 } }}>
+            {/* ============= */}
+            {/* Company Graph */}
+            {/* ============= */}
             <VictoryArea
-              key={`victory-area-${benchmarkGraph.name}`}
+              key={`victory-area-${companyGraph.name}`}
               animate={{
                 duration: 500,
                 onLoad: { duration: 500 }
               }}
-              data={benchmarkGraph.data}
-              y0={() => minValue}
+              data={companyGraph.data}
+              y0={() => minValue * 1.2}
               interpolation="monotoneX"
               style={{
                 data: {
-                  fill: benchmarkColour,
+                  fill: companyColour,
                   fillOpacity:
-                    benchmarkIndex === selectedGraphIndex ? '0.8' : '0.2',
-                  stroke: benchmarkColour,
+                    companyIndex === selectedGraphIndex ? '0.65' : '0.2',
+                  stroke: companyColour,
                   strokeOpacity: 1
                 }
               }}
             />
-          )}
-        </VictoryGroup>
-        <VictoryGroup>
-          {/* ====================== */}
-          {/* Company Scatter Points */}
-          {/* ====================== */}
-          <VictoryScatter
-            key={`victory-scatter-${companyGraph.name}`}
-            data={companyGraph.data}
-            size={2}
-            style={{
-              data: {
-                strokeWidth: 1,
-                stroke: graphColors(companyIndex),
-                strokeOpacity:
-                  companyIndex === selectedGraphIndex ? '1' : '0.4',
-                fill:
-                  companyIndex !== selectedGraphIndex
-                    ? 'white'
-                    : graphColors(companyIndex),
-                fillOpacity: companyIndex === selectedGraphIndex ? '1' : '0'
-              }
-            }}
-          />
-          {/* ====================== */}
-          {/* Benchmark Scatter Points */}
-          {/* ====================== */}
-          {isBenchmarkData && (
+            {/* ============= */}
+            {/* Benchmark Graph */}
+            {/* ============= */}
+            {isBenchmarkData && (
+              <VictoryArea
+                key={`victory-area-${benchmarkGraph.name}`}
+                animate={{
+                  duration: 500,
+                  onLoad: { duration: 500 }
+                }}
+                data={benchmarkGraph.data}
+                y0={() => minValue}
+                interpolation="monotoneX"
+                style={{
+                  data: {
+                    fill: benchmarkColour,
+                    fillOpacity:
+                      benchmarkIndex === selectedGraphIndex ? '0.8' : '0.2',
+                    stroke: benchmarkColour,
+                    strokeOpacity: 1
+                  }
+                }}
+              />
+            )}
+          </VictoryGroup>
+        )}
+
+        {!disabled && (
+          <VictoryGroup>
+            {/* ====================== */}
+            {/* Company Scatter Points */}
+            {/* ====================== */}
             <VictoryScatter
-              key={`victory-scatter-${benchmarkGraph.name}`}
-              data={benchmarkGraph.data}
+              key={`victory-scatter-${companyGraph.name}`}
+              data={companyGraph.data}
               size={2}
               style={{
                 data: {
                   strokeWidth: 1,
-                  stroke: graphColors(benchmarkIndex),
+                  stroke: graphColors(companyIndex),
                   strokeOpacity:
-                    benchmarkIndex === selectedGraphIndex ? '1' : '0.7',
+                    companyIndex === selectedGraphIndex ? '1' : '0.4',
                   fill:
-                    benchmarkIndex !== selectedGraphIndex
+                    companyIndex !== selectedGraphIndex
                       ? 'white'
-                      : graphColors(benchmarkIndex),
-                  fillOpacity: benchmarkIndex === selectedGraphIndex ? '1' : '0'
+                      : graphColors(companyIndex),
+                  fillOpacity: companyIndex === selectedGraphIndex ? '1' : '0'
                 }
               }}
             />
-          )}
-        </VictoryGroup>
+            {/* ====================== */}
+            {/* Benchmark Scatter Points */}
+            {/* ====================== */}
+            {isBenchmarkData && (
+              <VictoryScatter
+                key={`victory-scatter-${benchmarkGraph.name}`}
+                data={benchmarkGraph.data}
+                size={2}
+                style={{
+                  data: {
+                    strokeWidth: 1,
+                    stroke: graphColors(benchmarkIndex),
+                    strokeOpacity:
+                      benchmarkIndex === selectedGraphIndex ? '1' : '0.7',
+                    fill:
+                      benchmarkIndex !== selectedGraphIndex
+                        ? 'white'
+                        : graphColors(benchmarkIndex),
+                    fillOpacity:
+                      benchmarkIndex === selectedGraphIndex ? '1' : '0'
+                  }
+                }}
+              />
+            )}
+          </VictoryGroup>
+        )}
       </ChartContainer>
       <div className="flex flex-col text-xxs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
         <ChartButton

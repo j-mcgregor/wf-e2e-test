@@ -22,7 +22,7 @@ const ChartButton = ({
       onClick={() => onClick(graphIndex)}
       className={`${
         selectedGraphIndex === graphIndex && 'font-bold'
-      } flex items-center justify-start w-full `}
+      } flex items-center justify-start w-full text-base sm:text-sm md:text-xs 2xl:text-sm`}
     >
       <div
         className={`${
