@@ -59,7 +59,10 @@ const Report = ({
   const riskMetrics = data.risk_metrics?.[data.risk_metrics.length - 1];
   const reliabilityIndex = data.reliability_index;
 
-  const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+  const month =
+    date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+
+  const created = `${date.getDate()}.${month}.${date.getFullYear()}`;
 
   // remove years that are dormant
   const transformedFinancials =
