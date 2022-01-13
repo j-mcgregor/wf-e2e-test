@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslations } from 'use-intl';
 
 import usePrintClasses from '../../hooks/usePrintClasses';
+import { mockSubsidiaries } from '../../lib/mock-data/subsidiaries';
 import {
   calculateLGDRotation,
   calculatePoDRotation,
@@ -29,6 +30,7 @@ import NewsFeed from './news/NewsFeed';
 import ReportHeader from './ReportHeader';
 import BondRating from './risk-metrics/BondRating';
 import Speedometer from './risk-metrics/Speedometer';
+import { SubsidiaryList } from './subsidiaries/SubsidiaryList';
 import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
@@ -321,6 +323,18 @@ const Report = ({
                 oneToFive={47}
                 belowOne={324}
               /> */}
+      </HashContainer>
+
+      <HashContainer
+        name={'Subsidiaries'}
+        id={`subsidiaries`}
+        fullHeight={false}
+      >
+        <ReportSectionHeader text={t('structure')} />
+        <SubsidiaryList
+          subsidiaries={data?.subsidiaries}
+          companyName={companyName}
+        />
       </HashContainer>
 
       <HashContainer
