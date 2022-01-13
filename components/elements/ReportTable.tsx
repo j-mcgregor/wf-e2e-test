@@ -104,14 +104,14 @@ const ReportTable = ({
                           <td className="h-12 px-3 max-w-[260px] truncate sm:px-6 py-1 whitespace-nowrap font-medium text-gray-900">
                             {reportTitle}
                           </td>
-                          <td className="px-3 sm:px-6 py-1  whitespace-nowrap  ">
+                          <td className="px-3 sm:px-6 py-1  whitespace-nowrap text-center  ">
                             {report.sme_z_score}
                           </td>
-                          <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
+                          <td className="px-3 sm:px-6 py-1 whitespace-nowrap text-center  ">
                             {report.bond_rating}
                           </td>
 
-                          <td className="px-3 sm:px-6 py-1 whitespace-nowrap  ">
+                          <td className="px-3 sm:px-6 py-1 whitespace-nowrap text-center  ">
                             <ReactTimeAgo
                               date={getClientRelativeDate(report.created_at)}
                             />
