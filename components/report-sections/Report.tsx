@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslations } from 'use-intl';
 
 import usePrintClasses from '../../hooks/usePrintClasses';
+import { mockSubsidiaries } from '../../lib/mock-data/subsidiaries';
 import {
   calculateLGDRotation,
   calculatePoDRotation,
@@ -30,6 +31,7 @@ import ReportHeader from './ReportHeader';
 import BondRating from './risk-metrics/BondRating';
 import RiskMetricGraphs from './risk-metrics/RiskMetricGraphs';
 import Speedometer from './risk-metrics/Speedometer';
+import { SubsidiaryList } from './subsidiaries/SubsidiaryList';
 import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
@@ -57,7 +59,10 @@ const Report = ({
 
   const reliabilityIndex = data.reliability_index;
 
-  const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+  const month =
+    date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+
+  const created = `${date.getDate()}.${month}.${date.getFullYear()}`;
 
   // remove years that are dormant
   const transformedFinancials =
@@ -338,6 +343,18 @@ const Report = ({
                 oneToFive={47}
                 belowOne={324}
               /> */}
+      </HashContainer>
+
+      <HashContainer
+        name={'Subsidiaries'}
+        id={`subsidiaries`}
+        fullHeight={false}
+      >
+        <ReportSectionHeader text={t('structure')} />
+        <SubsidiaryList
+          subsidiaries={data?.subsidiaries}
+          companyName={companyName}
+        />
       </HashContainer>
 
       <HashContainer

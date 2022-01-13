@@ -128,3 +128,9 @@ export type BoardMember = {
   resignation_date: string | Date;
   is_current: boolean;
 };
+
+// schema from Swagger
+export type Subsidiary = {
+  id: string;
+  name: string;
+};

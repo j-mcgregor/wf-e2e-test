@@ -18,7 +18,7 @@ const ChartContainer = ({
   children,
   height,
   width,
-  max,
+  max = 1,
   min = 0
 }: ChartContainerProps) => {
   return (
