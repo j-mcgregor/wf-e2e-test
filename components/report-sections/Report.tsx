@@ -55,8 +55,6 @@ const Report = ({
 
   const date = new Date(`${data?.created_at}`);
 
-  const riskMetrics = data.risk_metrics?.[data.risk_metrics.length - 1];
-
   const reliabilityIndex = data.reliability_index;
 
   const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
@@ -78,16 +76,24 @@ const Report = ({
   const lastFiveYearsFinancials =
     (data?.financials && transformedFinancials?.slice(0, 5)) || [];
 
+  const financialRatios = [...(data?.financial_ratios || [])];
+
   // TEMPORARILY REVERSING FINANCIAL_RATIOS UNTIL BACK END FIXES
-  const lastFiveYearsFinancialRatios =
-    (data?.financial_ratios && data.financial_ratios.reverse()?.slice(0, 5)) ||
-    [];
+  const lastFiveYearsFinancialRatios = financialRatios.reverse()?.slice(0, 5);
 
   const lastFiveYearsBenchmarks =
     (data?.benchmarks && data.benchmarks?.slice(0, 5)) || [];
 
-  const lastFiveYearsRiskMetrics =
-    (data?.risk_metrics && data.risk_metrics.reverse()?.slice(0, 5)) || [];
+  const riskMetrics = [...(data?.risk_metrics || [])];
+
+  // reversing array to get the latest 5 years of financials
+  const lastFiveYearsRiskMetrics = React.useMemo(
+    () => riskMetrics.slice(0, 5) || [],
+    [data.risk_metrics]
+  );
+
+  // take the latest year of financial risk metrics
+  const latestRiskMetrics = data.risk_metrics?.[data.risk_metrics.length - 1];
 
   const mergedLastFiveYearFinancials = lastFiveYearsFinancials.map(
     (year, index) => {
@@ -124,12 +130,14 @@ const Report = ({
   const printClasses = usePrintClasses(reportClasses);
 
   const smeZScoreRotation = calculateSMEZScoreRotation(
-    riskMetrics?.sme_z_score
+    latestRiskMetrics?.sme_z_score
   );
   const poDRotation = calculatePoDRotation(
-    riskMetrics?.probability_of_default_1_year
+    latestRiskMetrics?.probability_of_default_1_year
   );
-  const lGDDRotation = calculateLGDRotation(riskMetrics?.loss_given_default);
+  const lGDDRotation = calculateLGDRotation(
+    latestRiskMetrics?.loss_given_default
+  );
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0">
@@ -183,7 +191,7 @@ const Report = ({
         <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4 print:border-2">
           <Speedometer
             title={t('sme_zscore')}
-            value={riskMetrics?.sme_z_score}
+            value={latestRiskMetrics?.sme_z_score}
             rotation={smeZScoreRotation}
             secondaryValues={[
               { name: INDUSTRY_BENCHMARK, value: null },
@@ -198,7 +206,7 @@ const Report = ({
           />
           <Speedometer
             title={t('probability_of_default')}
-            value={riskMetrics?.probability_of_default_1_year * 100}
+            value={latestRiskMetrics?.probability_of_default_1_year * 100}
             rotation={poDRotation}
             as="%"
             secondaryValues={[
@@ -218,7 +226,7 @@ const Report = ({
           />
           <Speedometer
             title={t('loss_give_default')}
-            value={riskMetrics?.loss_given_default * 100}
+            value={latestRiskMetrics?.loss_given_default * 100}
             rotation={lGDDRotation}
             as="%"
             secondaryValues={[
@@ -234,10 +242,10 @@ const Report = ({
           />
         </div>
         <RiskMetricGraphs
-          data={lastFiveYearsRiskMetrics.reverse()}
+          data={lastFiveYearsRiskMetrics}
           companyName={companyName}
         />
-        <BondRating score={riskMetrics?.bond_rating_equivalent} />
+        <BondRating score={latestRiskMetrics?.bond_rating_equivalent} />
       </HashContainer>
       <HashContainer name={'Highlights'} id={`highlights`}>
         <ReportSectionHeader text={t('highlights')} />
@@ -259,7 +267,7 @@ const Report = ({
             hintTitle="hint title"
             hintBody="hint body"
             financials={transformedFinancials}
-            benchmarks={{ value: riskMetrics?.sme_z_score }}
+            benchmarks={{ value: latestRiskMetrics?.sme_z_score }}
             country={companyAddress?.country}
             legalEvents={data?.legal_events}
           />

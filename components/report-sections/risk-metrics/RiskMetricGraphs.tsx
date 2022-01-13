@@ -27,30 +27,40 @@ const RiskMetricGraphs = ({ data, companyName }: RiskMetricGraphsProps) => {
   const lossGivenDefault = renderChart('loss_given_default');
 
   return (
-    <div className="px-2 my-8 grid sm:grid-cols-2 md:grid-cols-3 gap-2  mt-2">
+    <div className=" my-8 flex flex-wrap gap-x-4  mt-2 justify-center xl:justify-between mb-4 print:border-2">
       {/* === sme z-score === */}
-      <ChartMulti
-        header={t('sme_zscore')}
-        hintBody="Ea pariatur commodo anim proident sunt non eu ut."
-        hintTitle={t('sme_zscore')}
-        graphData={smeZScore}
-      />
+
+      <div className=" w-[300px] mb-4 print:inline-block print:w-[200px] avoid-break">
+        <ChartMulti
+          header={t('sme_zscore_trend')}
+          subHeader={t('trend_yearly')}
+          hintBody="Ea pariatur commodo anim proident sunt non eu ut."
+          hintTitle={t('sme_zscore')}
+          graphData={smeZScore}
+        />
+      </div>
 
       {/* === probability of default */}
-      <ChartMulti
-        header={t('probability_of_default')}
-        hintBody="Reprehenderit nisi dolore non ea nisi officia laborum."
-        hintTitle={t('probability_of_default')}
-        graphData={probabilityOfDefault}
-      />
+      <div className=" w-[300px] mb-4 print:inline-block print:w-[200px] avoid-break">
+        <ChartMulti
+          header={t('probability_of_default_trend')}
+          subHeader={t('trend_yearly')}
+          hintBody="Reprehenderit nisi dolore non ea nisi officia laborum."
+          hintTitle={t('probability_of_default')}
+          graphData={probabilityOfDefault}
+        />
+      </div>
 
       {/* === loss given default ===  */}
-      <ChartMulti
-        header={t('loss_give_default')}
-        hintBody="Anim ea officia ut pariatur laborum est amet."
-        hintTitle={t('loss_give_default')}
-        graphData={lossGivenDefault}
-      />
+      <div className=" w-[300px] mb-4 print:inline-block print:w-[200px] avoid-break">
+        <ChartMulti
+          header={t('loss_give_default_trend')}
+          subHeader={t('trend_yearly')}
+          hintBody="Anim ea officia ut pariatur laborum est amet."
+          hintTitle={t('loss_give_default')}
+          graphData={lossGivenDefault}
+        />
+      </div>
     </div>
   );
 };

@@ -79,9 +79,9 @@ const ChartMulti = ({
       className={` shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break`}
       data-testid="chart-multi-testid"
     >
-      <div className="flex justify-between items-start px-4 pt-4 text-xs">
+      <div className="flex justify-between items-start px-4 pt-4 text-base">
         <div>
-          <p className="font-bold pb-2">{header}</p>
+          <p className="pb-2">{header}</p>
           <p className="opacity-70 print:opacity-100 print:text-gray-400">
             {subHeader}
           </p>
