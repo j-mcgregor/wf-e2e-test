@@ -165,6 +165,9 @@ const Report = ({
               description={data?.details?.overview_full}
               incorporationDate={data?.details?.date_of_incorporation}
               lastAccountDate={lastFiledAccount}
+              country={companyDetails?.address?.country}
+              naceCode={companyDetails?.nace_code}
+              naceName={companyDetails?.nace_name}
             />
           </div>
 
