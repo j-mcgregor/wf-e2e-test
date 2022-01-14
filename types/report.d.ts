@@ -32,6 +32,7 @@ export type SummaryInfo = {
   industry_sector: string | null;
   nace_code: string;
   nace_name: string;
+  subsidiaries: number;
 };
 
 export type SummaryContact = {

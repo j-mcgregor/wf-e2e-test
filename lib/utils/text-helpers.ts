@@ -11,9 +11,9 @@ export const addHttps = (str: string): string => {
   return /https?/.test(str) ? str : `http://${str}`;
 };
 export const getDomain = (str: string): string | false | undefined => {
-  // eslint-disable-next-line security/detect-unsafe-regex
   return (
     str &&
+    // eslint-disable-next-line security/detect-unsafe-regex
     /^(?:https?:\/\/)?(?:[^@/\n]+@)?(?:www\.)?([^:/?\n]+)/gi.exec(str)?.[1]
   );
 };
@@ -91,5 +91,18 @@ export const getBoardMember = (
           return isMatch[0];
         }
       })?.name || ''
+  );
+};
+
+export const getDirectorsFromBoardMembers = (board_members?: BoardMember[]) => {
+  if (!board_members) return null;
+
+  return (
+    board_members
+      // remove duplicate names
+      .filter((val, i, self) => {
+        return i === self.findIndex(s => s.name === val.name);
+      })
+      .filter(b => (b.job_title.match(/director/gi) !== null ? b : null))
   );
 };

@@ -1,5 +1,6 @@
+import { BoardMember } from '../../../types/report';
 import { MockBoardMembers } from '../../mock-data/boardMembers';
-import { getBoardMember } from '../text-helpers';
+import { getBoardMember, getDirectorsFromBoardMembers } from '../text-helpers';
 
 describe('Text Helpers', () => {
   describe('getBoardMember', () => {
@@ -30,6 +31,17 @@ describe('Text Helpers', () => {
       expect(getBoardMember('CEO')).toBe('');
       expect(getBoardMember('CFO')).toBe('');
       expect(getBoardMember('Chairman')).toBe('');
+    });
+  });
+
+  describe('getDirectorsFromBoardMembers', () => {
+    it('should return all board members with director in their job title', () => {
+      const directors = getDirectorsFromBoardMembers(
+        MockBoardMembers as BoardMember[]
+      );
+
+      expect(MockBoardMembers?.length).toBe(167);
+      expect(directors?.length).toBe(62);
     });
   });
 });
