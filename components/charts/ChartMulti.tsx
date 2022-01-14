@@ -86,14 +86,15 @@ const ChartMulti = ({
       } shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break`}
       data-testid="chart-multi-testid"
     >
-      {' '}
-      <div>
-        <h5 className="pb-2">{header}</h5>
-        <p className="opacity-70 print:opacity-100 print:text-gray-400">
-          {currencySymbol} {subHeader}
-        </p>
+      <div className="flex justify-between items-start px-4 pt-4 text-base">
+        <div className="">
+          <h5 className="pb-2">{header}</h5>
+          <p className="opacity-70 print:opacity-100 print:text-gray-400">
+            {currencySymbol} {subHeader}
+          </p>
+        </div>
+        <Hint title={t(`${hintTitle}`)} body={t(`${hintBody}`)} />
       </div>
-      <Hint title={t(`${hintTitle}`)} body={t(`${hintBody}`)} />
       <ChartContainer
         height={220}
         width={200}

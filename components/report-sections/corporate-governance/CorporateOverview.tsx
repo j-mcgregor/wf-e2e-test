@@ -89,8 +89,8 @@ const CorporateOverview = ({
         <div
           className={`${reverseTextPrint} p-4 print:border-b-2 print:border-t-2 print:border-r-2`}
         >
-          <p className="font-bold">{employees || t('na')}</p>
-          <p>{t('placeholder')}</p>
+          {/* <p className="font-bold">{employees || t('na')}</p>
+          <p>{t('placeholder')}</p> */}
         </div>
       </div>
     </div>
