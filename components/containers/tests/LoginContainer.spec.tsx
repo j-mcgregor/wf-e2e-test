@@ -30,7 +30,6 @@ describe('LoginContainer', () => {
     const canvas = document.querySelector('canvas');
 
     expect(canvas).toBeInTheDocument();
-    expect(canvas?.classList.contains('tsparticles-canvas-el')).toBe(true);
 
     expect(screen.getByTestId('potato')).toBeInTheDocument();
   });
