@@ -135,7 +135,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     const params = {
       iso_code: selectedCountry?.optionValue,
       company_id: selectedCompany?.company_number || regSearchValue,
-      currency: selectedCurrency?.optionName,
+      currency: selectedCurrency?.code,
       accounts_type: 0
     };
 
