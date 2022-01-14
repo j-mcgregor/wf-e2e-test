@@ -22,6 +22,7 @@ import {
   Profile,
   Reliability,
   ShareholderType,
+  Subsidiary,
   SummaryContact,
   SummaryInfo
 } from '../../../types/report';
@@ -41,6 +42,7 @@ export interface ReportDataProps {
   risk_metrics: {
     bond_rating_equivalent: RatingType;
     sme_z_score: number;
+    period: string;
     // value: string;
     // regional_benchmark: string | null;
     // industry_benchmark: string | null;
@@ -63,6 +65,7 @@ export interface ReportDataProps {
   };
   legal_events: LegalEvent[];
   shareholders: ShareholderType[];
+  subsidiaries: Subsidiary[];
   /**
    * @deprecated
    * use ReportDataProps.details & ReportDataProps.board_members

@@ -47,6 +47,9 @@ const AlternativeSearchBox = ({
       inputRef?.current?.blur();
       return setSearchHasFocus(false);
     }
+    if (e.code === 'Enter') {
+      handleSearch();
+    }
   };
 
   const handleSearch = (): void => {

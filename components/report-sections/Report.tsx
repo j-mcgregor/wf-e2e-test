@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslations } from 'use-intl';
 
 import usePrintClasses from '../../hooks/usePrintClasses';
+import { mockSubsidiaries } from '../../lib/mock-data/subsidiaries';
 import {
   calculateLGDRotation,
   calculatePoDRotation,
@@ -28,7 +29,9 @@ import MacroEconomicTrends from './macro-economic-trends/MacroEconomicTrends';
 import NewsFeed from './news/NewsFeed';
 import ReportHeader from './ReportHeader';
 import BondRating from './risk-metrics/BondRating';
+import RiskMetricGraphs from './risk-metrics/RiskMetricGraphs';
 import Speedometer from './risk-metrics/Speedometer';
+import { SubsidiaryList } from './subsidiaries/SubsidiaryList';
 import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
@@ -54,10 +57,12 @@ const Report = ({
 
   const date = new Date(`${data?.created_at}`);
 
-  const riskMetrics = data.risk_metrics?.[data.risk_metrics.length - 1];
   const reliabilityIndex = data.reliability_index;
 
-  const created = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+  const month =
+    date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+
+  const created = `${date.getDate()}.${month}.${date.getFullYear()}`;
 
   // remove years that are dormant
   const transformedFinancials =
@@ -76,13 +81,24 @@ const Report = ({
   const lastFiveYearsFinancials =
     (data?.financials && transformedFinancials?.slice(0, 5)) || [];
 
+  const financialRatios = [...(data?.financial_ratios || [])];
+
   // TEMPORARILY REVERSING FINANCIAL_RATIOS UNTIL BACK END FIXES
-  const lastFiveYearsFinancialRatios =
-    (data?.financial_ratios && data.financial_ratios.reverse()?.slice(0, 5)) ||
-    [];
+  const lastFiveYearsFinancialRatios = financialRatios.reverse()?.slice(0, 5);
 
   const lastFiveYearsBenchmarks =
     (data?.benchmarks && data.benchmarks?.slice(0, 5)) || [];
+
+  const riskMetrics = [...(data?.risk_metrics || [])];
+
+  // reversing array to get the latest 5 years of financials
+  const lastFiveYearsRiskMetrics = React.useMemo(
+    () => riskMetrics.slice(0, 5) || [],
+    [data.risk_metrics]
+  );
+
+  // take the latest year of financial risk metrics
+  const latestRiskMetrics = data.risk_metrics?.[data.risk_metrics.length - 1];
 
   const mergedLastFiveYearFinancials = lastFiveYearsFinancials.map(
     (year, index) => {
@@ -119,12 +135,14 @@ const Report = ({
   const printClasses = usePrintClasses(reportClasses);
 
   const smeZScoreRotation = calculateSMEZScoreRotation(
-    riskMetrics?.sme_z_score
+    latestRiskMetrics?.sme_z_score
   );
   const poDRotation = calculatePoDRotation(
-    riskMetrics?.probability_of_default_1_year
+    latestRiskMetrics?.probability_of_default_1_year
   );
-  const lGDDRotation = calculateLGDRotation(riskMetrics?.loss_given_default);
+  const lGDDRotation = calculateLGDRotation(
+    latestRiskMetrics?.loss_given_default
+  );
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0">
@@ -178,7 +196,7 @@ const Report = ({
         <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4 print:border-2">
           <Speedometer
             title={t('sme_zscore')}
-            value={riskMetrics?.sme_z_score}
+            value={latestRiskMetrics?.sme_z_score}
             rotation={smeZScoreRotation}
             secondaryValues={[
               { name: INDUSTRY_BENCHMARK, value: null },
@@ -193,7 +211,7 @@ const Report = ({
           />
           <Speedometer
             title={t('probability_of_default')}
-            value={riskMetrics?.probability_of_default_1_year * 100}
+            value={latestRiskMetrics?.probability_of_default_1_year * 100}
             rotation={poDRotation}
             as="%"
             secondaryValues={[
@@ -213,7 +231,7 @@ const Report = ({
           />
           <Speedometer
             title={t('loss_give_default')}
-            value={riskMetrics?.loss_given_default * 100}
+            value={latestRiskMetrics?.loss_given_default * 100}
             rotation={lGDDRotation}
             as="%"
             secondaryValues={[
@@ -228,7 +246,11 @@ const Report = ({
             }
           />
         </div>
-        <BondRating score={riskMetrics?.bond_rating_equivalent} />
+        <RiskMetricGraphs
+          data={lastFiveYearsRiskMetrics}
+          companyName={companyName}
+        />
+        <BondRating score={latestRiskMetrics?.bond_rating_equivalent} />
       </HashContainer>
       <HashContainer name={'Highlights'} id={`highlights`}>
         <ReportSectionHeader text={t('highlights')} />
@@ -250,7 +272,7 @@ const Report = ({
             hintTitle="hint title"
             hintBody="hint body"
             financials={transformedFinancials}
-            benchmarks={{ value: riskMetrics?.sme_z_score }}
+            benchmarks={{ value: latestRiskMetrics?.sme_z_score }}
             country={companyAddress?.country}
             legalEvents={data?.legal_events}
           />
@@ -322,6 +344,18 @@ const Report = ({
                 oneToFive={47}
                 belowOne={324}
               /> */}
+      </HashContainer>
+
+      <HashContainer
+        name={'Subsidiaries'}
+        id={`subsidiaries`}
+        fullHeight={false}
+      >
+        <ReportSectionHeader text={t('structure')} />
+        <SubsidiaryList
+          subsidiaries={data?.subsidiaries}
+          companyName={companyName}
+        />
       </HashContainer>
 
       <HashContainer

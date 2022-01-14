@@ -12,7 +12,7 @@ import ChartButton from './ChartButton';
 interface ChartMultiProps {
   graphData: MultiGraphDataType[];
   header: TranslateInput;
-  subHeader: TranslateInput;
+  subHeader?: TranslateInput;
   hintTitle: TranslateInput;
   hintBody: TranslateInput;
   disabled?: boolean;
@@ -53,7 +53,7 @@ const ChartMulti = ({
   const benchmarkGraph = graphData[benchmarkIndex];
 
   const isGraphData = (graph: any): boolean => {
-    return graph.data.some((value: GraphDataType) => value.y !== 0);
+    return graph?.data.some((value: GraphDataType) => value.y !== 0);
   };
 
   const isBenchmarkData = isGraphData(benchmarkGraph);
@@ -86,74 +86,61 @@ const ChartMulti = ({
       } shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break`}
       data-testid="chart-multi-testid"
     >
-      <div className="flex justify-between items-start px-4 pt-4">
-        <div>
-          <h5 className="font-bold pb  text-lg sm:text-base md:text-sm 2xl:text-base">
-            {header}
-          </h5>
-          <p className="opacity-70 print:opacity-100 print:text-gray-400  text-base sm:text-sm md:text-xs 2xl:text-sm">
-            {currencySymbol} {subHeader}
-          </p>
-        </div>
-
-        <Hint title={t(`${hintTitle}`)} body={t(`${hintBody}`)} />
+      {' '}
+      <div>
+        <h5 className="pb-2">{header}</h5>
+        <p className="opacity-70 print:opacity-100 print:text-gray-400">
+          {currencySymbol} {subHeader}
+        </p>
       </div>
-
+      <Hint title={t(`${hintTitle}`)} body={t(`${hintBody}`)} />
       <ChartContainer
         height={220}
         width={200}
         max={disabled ? 1 : maxValue < 1 ? maxValue * 1.5 : maxValue * 1.2}
         min={disabled ? 0 : minValue}
       >
-        {!disabled && (
-          <VictoryGroup style={{ data: { strokeWidth: 1.5 } }}>
-            {/* ============= */}
-            {/* Company Graph */}
-            {/* ============= */}
-            <VictoryArea
-              key={`victory-area-${companyGraph.name}`}
-              animate={{
-                duration: 500,
-                onLoad: { duration: 500 }
-              }}
-              data={companyGraph.data}
-              y0={() => minValue * 1.2}
-              interpolation="monotoneX"
-              style={{
-                data: {
-                  fill: companyColour,
-                  fillOpacity:
-                    companyIndex === selectedGraphIndex ? '0.65' : '0.2',
-                  stroke: companyColour,
-                  strokeOpacity: 1
-                }
-              }}
-            />
-            {/* ============= */}
-            {/* Benchmark Graph */}
-            {/* ============= */}
-            {isBenchmarkData && (
-              <VictoryArea
-                key={`victory-area-${benchmarkGraph.name}`}
-                animate={{
-                  duration: 500,
-                  onLoad: { duration: 500 }
-                }}
-                data={benchmarkGraph.data}
-                y0={() => minValue}
-                interpolation="monotoneX"
-                style={{
-                  data: {
-                    fill: benchmarkColour,
-                    fillOpacity:
-                      benchmarkIndex === selectedGraphIndex ? '0.8' : '0.2',
-                    stroke: benchmarkColour,
-                    strokeOpacity: 1
-                  }
-                }}
-              />
-            )}
-          </VictoryGroup>
+        {/* Company Graph */}
+
+        <VictoryArea
+          key={`victory-area-${companyGraph.name}`}
+          animate={{
+            duration: 500,
+            onLoad: { duration: 500 }
+          }}
+          data={companyGraph.data}
+          y0={() => minValue * 0.9}
+          interpolation="monotoneX"
+          style={{
+            data: {
+              fill: companyColour,
+              fillOpacity: companyIndex === selectedGraphIndex ? '0.65' : '0.2',
+              stroke: companyColour,
+              strokeOpacity: 1
+            }
+          }}
+        />
+        {/* Benchmark Graph */}
+        {isBenchmarkData && (
+          <VictoryArea
+            key={`victory-area-${benchmarkGraph.name}`}
+            animate={{
+              duration: 500,
+              onLoad: { duration: 500 }
+            }}
+            data={benchmarkGraph.data}
+            y0={() => minValue}
+            interpolation="monotoneX"
+            style={{
+              data: {
+                fill: benchmarkColour,
+                fillOpacity:
+                  benchmarkIndex === selectedGraphIndex ? '0.8' : '0.2',
+                stroke: benchmarkColour,
+                strokeOpacity: 1
+              }
+            }}
+          />
         )}
 
         {!disabled && (

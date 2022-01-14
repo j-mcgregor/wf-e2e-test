@@ -58,7 +58,9 @@ const BasicSearch = ({
         } text-primary mb-4 `}
       >
         <div className="py-2">
-          <p className="text-lg font-semibold py-1">{t('company_search')}</p>
+          <p className="text-lg font-semibold py-1">{`${t(
+            'company_search_in'
+          )} ${selectedCountry?.optionName}`}</p>
           <p>{t('search_the_registered_companies_by_name')}</p>
         </div>
 
