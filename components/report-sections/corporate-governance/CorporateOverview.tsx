@@ -7,6 +7,8 @@ interface CorporateOverviewProps {
   directors: number;
   shareholders: number;
   employees: number;
+  subsidiaries: number;
+  seniorManagement?: number;
 }
 
 const CorporateOverview = ({
@@ -15,7 +17,9 @@ const CorporateOverview = ({
   chairman,
   directors,
   shareholders,
-  employees
+  employees,
+  subsidiaries,
+  seniorManagement
 }: CorporateOverviewProps) => {
   const t = useTranslations();
 
@@ -45,26 +49,48 @@ const CorporateOverview = ({
           <p className="font-bold">{chairman || t('na')}</p>
           <p>{t('chairman')}</p>
         </div>
+
+        {/* ===== middle row ===== */}
         <div
-          className={`${reverseTextPrint} p-4 print:border-b-2 md:border-r print:border-t-2 print:border-r-2`}
+          className={`${reverseTextPrint} p-4 print:border-b-2 border-b md:border-r print:border-t-2 print:border-r-2`}
           data-testid="corp-directors-testid"
         >
-          <p className="font-bold">{directors || 0}</p>
+          <p className="font-bold">{directors || t('na')}</p>
           <p>{t('directors')}</p>
         </div>
         <div
-          className={`${reverseTextPrint} p-4 border-r print:border-b-2 print:border-t-2`}
+          className={`${reverseTextPrint} p-4 border-r border-b print:border-b-2 print:border-t-2`}
+        >
+          <p className="font-bold">{seniorManagement || t('na')}</p>
+          <p>{t('senior_management')}</p>
+        </div>
+        <div
+          className={`${reverseTextPrint} p-4 print:border-b-2 print:border-t-2 print:border-r-2 border-b `}
+          data-testid="corp-snr-mgmt-testid"
+        >
+          <p className="font-bold">{employees || t('na')}</p>
+          <p>{t('employees')}</p>
+        </div>
+
+        {/* ===== new row  */}
+        <div
+          className={`${reverseTextPrint} p-4 print:border-b-2 border-r border-b md:border-b-0 print:border-t-2 print:border-r-2`}
+        >
+          <p className="font-bold">{subsidiaries || t('na')}</p>
+          <p>{t('subsidiaries')}</p>
+        </div>
+        <div
+          className={`${reverseTextPrint} p-4 border-r border-b print:border-b-2 print:border-t-2`}
           data-testid="corp-shareholders-testid"
         >
-          <p className="font-bold">{shareholders || 0}</p>
+          <p className="font-bold">{shareholders || t('na')}</p>
           <p>{t('shareholders')}</p>
         </div>
         <div
           className={`${reverseTextPrint} p-4 print:border-b-2 print:border-t-2 print:border-r-2`}
-          data-testid="corp-snr-mgmt-testid"
         >
-          <p className="font-bold">{employees || 0}</p>
-          <p>{t('employees')}</p>
+          <p className="font-bold">{employees || t('na')}</p>
+          <p>{t('placeholder')}</p>
         </div>
       </div>
     </div>

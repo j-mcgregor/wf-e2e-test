@@ -327,6 +327,7 @@ const Report = ({
           directors={data?.details?.directors}
           employees={data?.details?.employees}
           shareholders={data?.details?.shareholders}
+          subsidiaries={data?.details?.subsidiaries}
         />
 
         <Profiles
