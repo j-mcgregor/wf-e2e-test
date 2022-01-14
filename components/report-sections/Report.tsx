@@ -9,12 +9,16 @@ import {
   calculatePoDRotation,
   calculateSMEZScoreRotation
 } from '../../lib/utils/report-helpers';
-import { getBoardMember } from '../../lib/utils/text-helpers';
+import {
+  getBoardMember,
+  getDirectorsFromBoardMembers
+} from '../../lib/utils/text-helpers';
 import { ReportDataProps } from '../../pages/report/[id]';
 import HashContainer from '../elements/HashContainer';
 import { ReportSectionHeader } from '../elements/Headers';
 import Hint from '../elements/Hint';
 import CorporateOverview from './corporate-governance/CorporateOverview';
+import { DirectorsList } from './corporate-governance/DirectorsList';
 import Profiles from './corporate-governance/Profiles';
 import ShareHolderList from './corporate-governance/ShareHolderList';
 import ESGContainer from './esg-assessment/ESGContainer';
@@ -143,6 +147,8 @@ const Report = ({
   const lGDDRotation = calculateLGDRotation(
     latestRiskMetrics?.loss_given_default
   );
+
+  const directors = getDirectorsFromBoardMembers(data?.board_members) || [];
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0">
@@ -329,6 +335,8 @@ const Report = ({
           shareholders={data?.details?.shareholders}
           subsidiaries={data?.details?.subsidiaries}
         />
+
+        {directors.length && <DirectorsList directors={directors} />}
 
         <Profiles
           directors={data?.personal?.directors}
