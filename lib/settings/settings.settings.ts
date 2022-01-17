@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import localisationJSON from '../../lib/data/localisation.json';
 import countryCodeJSON from '../../lib/data/countryCodes.json';
+import localisationJSON from '../../lib/data/localisation.json';
 import { createCurrencyString } from '../utils/text-helpers';
 
 const SettingsSettings = {
