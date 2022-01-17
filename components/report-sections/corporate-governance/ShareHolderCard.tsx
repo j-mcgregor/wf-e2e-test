@@ -1,6 +1,6 @@
-import LinkedinIcon from '../../svgs/LinkedinIcon';
 import Link from '../../elements/Link';
 import { toTitleCase } from '../../../lib/utils/text-helpers';
+import LinkedinLogo from '../../elements/LinkedinLogo';
 
 interface ShareHolderCardProps {
   firstName: string | null;
@@ -49,7 +49,7 @@ const ShareHolderCard = ({
       )}
       {isShareholderIndividual && (
         <Link className="print:hidden" linkTo={linkedInLink}>
-          <LinkedinIcon />
+          <LinkedinLogo />
         </Link>
       )}
       {percentage && <p className="font-bold">{percentage}%</p>}

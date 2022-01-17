@@ -1,8 +1,7 @@
 import React from 'react';
-
 import Link from '../../elements/Link';
-import LinkedinIcon from '../../svgs/LinkedinIcon';
 import ProfileIcon from '../../svgs/ProfileIcon';
+import LinkedinLogo from '../../elements/LinkedinLogo';
 
 interface DirectorsCardProps {
   name: string;
@@ -38,7 +37,7 @@ export const DirectorsCard = ({
         </div>
         <div className="ml-4">
           <Link className="print:hidden" linkTo={linkedInLink}>
-            <LinkedinIcon />
+            <LinkedinLogo />
           </Link>
         </div>
       </div>
