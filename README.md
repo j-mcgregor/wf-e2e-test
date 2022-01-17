@@ -1,6 +1,6 @@
 # Wiserfunding Platform Build
 
-## Get Started 
+## Get Started
 
 1. Install dependencies
 
@@ -27,8 +27,8 @@ There are several scripts and pre-scripts:
 "test:watch": "jest --runInBand --watchAll",
 # single run with coverage
 "test:coverage": "yarn jest --coverage ",
-# use this when commiting instead of git commit -m '' - it enforces solid git commit messages making it easier to see past work
+# use this when committing instead of git commit -m '' - it enforces solid git commit messages making it easier to see past work
 "commit-cli": "git-cz"
 ```
 
-Husky is also implemented to run linting before commiting and testing before pushing
+Husky is also implemented to run linting before committing and testing before pushing
