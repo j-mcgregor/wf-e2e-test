@@ -7,6 +7,11 @@ const ratio = 'ratio';
 
 export const bondRatings = [
   {
+    score: 'D',
+    bgColor: 'rgb(187, 37, 17), rgb(220,44,20)',
+    width: '9.09%'
+  },
+  {
     score: 'CC',
     bgColor: 'rgb(220,11,23), rgb(220,44,20)',
     width: '9.09%'

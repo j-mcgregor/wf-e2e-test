@@ -8,8 +8,9 @@ import { usePopper } from 'react-popper';
 export type HintTypeProps = {
   title: TranslateInput;
   body: TranslateInput;
+  className?: string;
 };
-const Hint = ({ title, body }: HintTypeProps) => {
+const Hint = ({ title, body, className }: HintTypeProps) => {
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
@@ -20,7 +21,9 @@ const Hint = ({ title, body }: HintTypeProps) => {
   return (
     <Popover>
       <Popover.Button ref={setReferenceElement}>
-        <InformationCircleIcon className="h-6 w-6 opacity-50 print:hidden" />
+        <InformationCircleIcon
+          className={`${className} h-6 w-6 opacity-50 print:hidden `}
+        />
       </Popover.Button>
 
       <Popover.Panel

@@ -151,6 +151,7 @@
   "monthly": "Monthly",
   "daily": "Daily",
   "bond_rating_descriptions": {
+    "D": "Has defaulted on obligations or WiserFunding believes that it will generally default on most or all obligations",
     "CC": "Significant probability of default in the near future",
     "CCC-": "Moderate probability of default in the near future",
     "CCC": "Significant risk of default in case of adverse economic conditions",

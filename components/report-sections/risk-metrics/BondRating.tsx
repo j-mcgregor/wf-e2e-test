@@ -1,8 +1,7 @@
 import { useTranslations } from 'next-intl';
-
 import { bondRatings } from '../../../lib/settings/report.settings';
 import usePrintClasses from '../../../hooks/usePrintClasses';
-
+import Hint from '../../elements/Hint';
 const bondRatingClasses = {
   chrome: {
     container: 'flex justify-center items-center'
@@ -26,7 +25,8 @@ export type RatingType =
   | 'CCC+'
   | 'CCC'
   | 'CCC-'
-  | 'CC';
+  | 'CC'
+  | 'D';
 
 const BondRating = ({ score }: BondRatingProps) => {
   const t = useTranslations();
@@ -37,7 +37,13 @@ const BondRating = ({ score }: BondRatingProps) => {
     <div
       className={`bg-white shadow rounded-sm px-4 sm:px-8 py-6 print:shadow-none print:border-2`}
     >
-      <p className="text-xl font-bold">{t('bond_rating_equivalent')}</p>
+      <div className="flex w-full justify-between">
+        <p className="text-xl font-bold">{t('bond_rating_equivalent')}</p>
+        <Hint
+          title="Est velit sit ad adipisicing."
+          body="Aute officia sit ut ullamco commodo consectetur cillum ad eu nulla velit."
+        />
+      </div>
 
       <div className={`${printClasses.container} overflow-x-scroll `}>
         <div className={`flex items-center my-4 py-4 w-[600px] sm:w-full`}>
