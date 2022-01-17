@@ -1,7 +1,3 @@
-import countryCodeJSON from '../data/countryCodes.json';
-import currencyJSON from '../data/countryCurrency.json';
-import { createCurrencyString } from '../utils/text-helpers';
-
 // export const supportedCountries = countryCodeJSON.map(country => ({
 //   optionName: country.name,
 //   optionValue: country.code,
