@@ -15,9 +15,9 @@ const FinancialAccounts = ({ financialYears }: FinancialAccountProps) => {
   // if accounts (year) doesn't exist render cross css
 
   const preYears = [...Array(5).keys()];
-  const currentYear = new Date().getFullYear();
+  const latestYearAvailable = new Date().getFullYear() - 1;
 
-  const years = preYears.map(index => `${currentYear - index}`);
+  const years = preYears.map(index => `${latestYearAvailable - index}`);
 
   const availableFinancialYears = financialYears?.map(
     financialData => financialData.period
