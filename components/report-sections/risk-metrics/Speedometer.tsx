@@ -13,11 +13,13 @@ type SecondaryValue = {
 interface SpeedometerProps {
   title: string;
   secondaryValues: SecondaryValue[];
-  value: number;
+  value?: number;
   rotation: number;
   weighting?: number;
   hint: ReactElement;
-  as?: string;
+  asMetric?: string;
+  decimalPoints?: number;
+  reverseX?: boolean;
 }
 
 const Speedometer = ({
@@ -25,21 +27,19 @@ const Speedometer = ({
   value,
   rotation,
   hint,
-  as,
-  secondaryValues
+  asMetric,
+  secondaryValues,
+  decimalPoints,
+  reverseX
 }: SpeedometerProps) => {
-  // 260 degrees available
+  const isFloat = value && Number(value) === value && value % 1 !== 0;
 
-  // probably need to add a version where there is no value and its completely disabled
-
-  // const benchmarks = secondaryValues.map(value => ({
-  //   rotation: Math.random() * 260 - 130,
-  //   ...value
-  // }));
-
-  const isFloat = Number(value) === value && value % 1 !== 0;
-
-  const renderValue = isFloat ? value.toFixed(1) : value;
+  const renderValue =
+    value &&
+    new Intl.NumberFormat('en-GB', {
+      minimumFractionDigits: decimalPoints,
+      maximumFractionDigits: decimalPoints
+    }).format(value);
 
   return (
     <>
@@ -54,20 +54,20 @@ const Speedometer = ({
         </div>
 
         <div className="relative ">
-          <Dial className="w-full h-full" />
+          <Dial className="w-full h-full" reverseX={reverseX} />
           <SpeedoArrow
             style={{ transform: `rotate(${rotation}deg)` }}
             className="absolute top-0 w-full  h-full transition-transform duration-500"
           />
 
           <div
-            className={`absolute top-1/2 w-full text-center text-2xl font-bold pt-5 ${
+            className={`absolute top-1/2 w-full text-center text-base font-bold pt-5 ${
               isFloat ? 'ml-[4px]' : ''
             }`}
           >
             <span>
-              {renderValue}
-              {as}
+              {value ? renderValue : 'No data'}
+              {value && asMetric ? asMetric : null}
             </span>
           </div>
 

@@ -222,7 +222,7 @@ const Report = ({
             title={t('probability_of_default')}
             value={latestRiskMetrics?.probability_of_default_1_year * 100}
             rotation={poDRotation}
-            as="%"
+            asMetric="%"
             secondaryValues={[
               { name: INDUSTRY_BENCHMARK, value: null },
               { name: REGION_BENCHMARK, value: null }
@@ -237,12 +237,14 @@ const Report = ({
                 )}
               />
             }
+            decimalPoints={4}
+            reverseX
           />
           <Speedometer
             title={t('loss_give_default')}
             value={latestRiskMetrics?.loss_given_default * 100}
             rotation={lGDDRotation}
-            as="%"
+            asMetric="%"
             secondaryValues={[
               { name: INDUSTRY_BENCHMARK, value: null },
               { name: REGION_BENCHMARK, value: null }
@@ -253,6 +255,8 @@ const Report = ({
                 body={t('report_hints.risk_metrics.loss_given_default.body')}
               />
             }
+            decimalPoints={3}
+            reverseX
           />
         </div>
         <RiskMetricGraphs

@@ -45,7 +45,7 @@ describe('Speedometer', () => {
       rotation: 30,
       weighting: 40,
       hint: <div />,
-      as: 'hello'
+      asMetric: 'hello'
     };
     render(<Speedometer {...props} />, {}, allMessages);
 
