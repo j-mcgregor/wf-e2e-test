@@ -237,7 +237,7 @@ const Report = ({
                 )}
               />
             }
-            decimalPoints={4}
+            decimalPoints={2}
             reverseX
           />
           <Speedometer
@@ -255,7 +255,7 @@ const Report = ({
                 body={t('report_hints.risk_metrics.loss_given_default.body')}
               />
             }
-            decimalPoints={3}
+            decimalPoints={1}
             reverseX
           />
         </div>

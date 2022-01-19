@@ -99,7 +99,6 @@ export default NextAuth({
           session.token = '';
           return session;
         }
-
         // add the mock user data in the use session hook
         session.user = {
           ...user,

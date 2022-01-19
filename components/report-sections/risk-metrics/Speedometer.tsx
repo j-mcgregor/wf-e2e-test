@@ -3,6 +3,7 @@ import SpeedoArrow from '../../svgs/SpeedoArrow';
 import BenchmarkArrow from '../../svgs/BenchmarkArrow';
 import { TranslateInput } from '../../../types/global';
 import { ReactElement } from 'react';
+import { useTranslations } from 'next-intl';
 
 type SecondaryValue = {
   name: TranslateInput;
@@ -41,6 +42,8 @@ const Speedometer = ({
       maximumFractionDigits: decimalPoints
     }).format(value);
 
+  const t = useTranslations();
+
   return (
     <>
       <div
@@ -61,12 +64,12 @@ const Speedometer = ({
           />
 
           <div
-            className={`absolute top-1/2 w-full text-center text-base font-bold pt-5 ${
+            className={`absolute top-1/2 w-full text-center text-xl font-bold pt-5 ${
               isFloat ? 'ml-[4px]' : ''
             }`}
           >
             <span>
-              {value ? renderValue : 'No data'}
+              {value ? renderValue : t('na')}
               {value && asMetric ? asMetric : null}
             </span>
           </div>
