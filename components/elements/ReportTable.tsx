@@ -108,7 +108,7 @@ const ReportTable = ({
                             {report.sme_z_score}
                           </td>
                           <td className="px-3 sm:px-6 py-1 whitespace-nowrap text-center  ">
-                            {report.bond_rating}
+                            {report.bond_rating_equivalent}
                           </td>
 
                           <td className="px-3 sm:px-6 py-1 whitespace-nowrap text-center  ">

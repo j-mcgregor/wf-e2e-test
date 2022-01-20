@@ -1,48 +1,75 @@
+import { useMemo } from 'react';
 import { useTranslations } from 'use-intl';
-import Chart from '../../charts/Chart';
+
 import { macroEconomicTrendCharts } from '../../../lib/settings/report.settings';
 import { MacroTrend } from '../../../types/charts';
-import { useMemo } from 'react';
+import { MacroEconomic, MacroEconomics } from '../../../types/report';
+import Chart from '../../charts/Chart';
 
 interface MacroEconomicTrendsProps {
-  trends: MacroTrend[];
+  trends: MacroEconomics;
 }
+
+interface ChartData {
+  header: string;
+  subHeader: string;
+  hint: {
+    title: string;
+    body: string;
+  };
+  data: [
+    {
+      data: Array<{ x: string; y: number }>;
+    }
+  ];
+}
+
 const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
   const t = useTranslations();
 
   const chartsToRender = useMemo(
     () =>
-      Object.keys(macroEconomicTrendCharts).map((key: string) =>
-        macroEconomicTrendCharts[key.toString()]([
-          {
-            data: [
-              { x: '2011', y: 304 },
-              { x: '2012', y: 410 },
-              { x: '2013', y: 350 },
-              { x: '2014', y: 371 },
-              { x: '2015', y: 510 },
-              { x: '2016', y: 649 },
-              { x: '2017', y: 600 },
-              { x: '2018', y: 604 },
-              { x: '2019', y: 867 },
-              { x: '2020', y: 880 }
-            ]
+      Object.entries(trends)
+        .map(([key, value]: [string, MacroEconomic]) => {
+          if (macroEconomicTrendCharts[key.toString()]) {
+            const data = value.history.map(h => ({
+              // DD/MM/YY eg 29/06/21
+              x: new Date(h.date).toLocaleString('en-GB', {
+                year: '2-digit',
+                month: '2-digit',
+                day: '2-digit'
+              }),
+              y: !isNaN(Number(h.value)) ? Number(h.value) : 0
+            }));
+
+            return macroEconomicTrendCharts[key.toString()]?.([
+              {
+                data
+              }
+            ]);
           }
-        ])
-      ),
+        })
+        .filter(Boolean),
     []
   );
 
-  const graphSections: MacroTrend[][] = chartsToRender.reduce(
+  const graphSections: ChartData[][] = chartsToRender.reduce(
     (acc: any, curr: any, index) =>
       (index % 8 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
       acc,
     []
   );
 
+  const chartTicksXaxis: Record<string, number> = {
+    daily: 12,
+    monthly: 12,
+    quarterly: 16,
+    yearly: 20
+  };
+
   return (
     <div className="">
-      {graphSections.map((graphSection: MacroTrend[], index: number) => {
+      {graphSections.map((graphSection: ChartData[], index: number) => {
         return (
           <div
             key={index}
@@ -50,7 +77,7 @@ const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
               index !== 0 && 'print:pt-10'
             }`}
           >
-            {graphSection.map((chart: any, i: number) => {
+            {graphSection.map((chart, i) => {
               return (
                 <Chart
                   key={i}
@@ -63,6 +90,8 @@ const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
                   hintTitle={t(
                     `report_hints.macro_economic_trends.${chart.hint.title}`
                   )}
+                  showLabels={false}
+                  tickCount={chartTicksXaxis[chart.subHeader]}
                 />
               );
             })}

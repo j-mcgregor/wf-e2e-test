@@ -25,7 +25,6 @@ const RiskMetricGraphs = ({ data, companyName }: RiskMetricGraphsProps) => {
   const smeZScore = renderChart('sme_z_score');
   const probabilityOfDefault = renderChart('probability_of_default_1_year');
   const lossGivenDefault = renderChart('loss_given_default');
-
   return (
     <div className=" my-8 flex flex-wrap gap-x-4  mt-2 justify-center xl:justify-between mb-4 print:border-2">
       {/* === sme z-score === */}

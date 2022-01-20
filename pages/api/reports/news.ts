@@ -75,7 +75,7 @@ const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
   if (!results || !results.ok) {
     return response.status(500).json({
       error: SEARCH_ERROR,
-      message: 'Error when accessing News API.'
+      message: results.message || 'Error when accessing News API.'
     });
   }
 };

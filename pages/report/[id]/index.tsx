@@ -19,6 +19,7 @@ import {
   DataReliabilityType,
   FinancialYear,
   LegalEvent,
+  MacroEconomics,
   Profile,
   Reliability,
   ShareholderType,
@@ -80,6 +81,7 @@ export interface ReportDataProps {
   error?: string;
   message?: string;
   currency: string;
+  macroeconomics: MacroEconomics;
 }
 
 const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {

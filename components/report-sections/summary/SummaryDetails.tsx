@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import countryCodes from '../../../lib/data/countryCodes.json';
 
 export type SummaryDetailsProps = {
@@ -124,9 +125,35 @@ const SummaryDetails = ({
         role="group"
       >
         <h4>{t('company_description')}</h4>
-        <p>{description || t('na')}</p>
+        {description ? (
+          <ExpandableText text={description} length={400} />
+        ) : (
+          t('na')
+        )}
       </div>
     </div>
+  );
+};
+
+const ExpandableText = ({ text, length }: { text: string; length: number }) => {
+  const textIsLongEnough = text?.length > length;
+  const trimmedText = textIsLongEnough ? text?.substring(0, length) : text;
+  const t = useTranslations();
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  if (!textIsLongEnough) {
+    return <p>{text}</p>;
+  }
+
+  return (
+    <p>
+      {isExpanded ? text : `${trimmedText}...`}
+      {textIsLongEnough && !isExpanded ? (
+        <button onClick={() => setIsExpanded(true)}>{t('show_more')}</button>
+      ) : (
+        ''
+      )}
+    </p>
   );
 };
 

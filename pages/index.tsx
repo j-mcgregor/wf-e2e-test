@@ -44,11 +44,13 @@ export default function Dashboard() {
             stats={[
               {
                 header: t('total_reports'),
-                data: user?.reports?.length || 0
+                data: user?.reports?.length || 0,
+                linkTo: '/reports'
               },
               {
                 header: t('batched_reports'),
-                data: user?.batched_report_jobs?.length || 0
+                data: user?.batched_report_jobs?.length || 0,
+                linkTo: '/batched-reports'
               },
               {
                 header: t('last_login'),

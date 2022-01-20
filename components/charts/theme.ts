@@ -13,9 +13,9 @@ const sansSerif = "'Helvetica Neue', 'Helvetica', sans-serif";
 const fontSize = 8;
 
 // Layout
-const padding = 10;
+const padding = 0;
 const baseProps = {
-  width: 200,
+  width: 250,
   height: 250,
   padding: 50
 };
@@ -24,7 +24,7 @@ const baseProps = {
 const baseLabelStyles = {
   fontFamily: sansSerif,
   fontSize,
-  padding,
+  // padding,
   fill: darkBlue,
   stroke: 'transparent',
   strokeWidth: 0
@@ -76,7 +76,7 @@ export const theme = {
           strokeLinejoin
         },
         axisLabel: assign({}, centeredLabelStyles, {
-          padding,
+          // padding,
           stroke: 'transparent'
         }),
         grid: {

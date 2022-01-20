@@ -57,7 +57,12 @@ const getCompanyNews = async (
   }
 
   if (!res.ok) {
-    return { ok: false, error: true };
+    return {
+      ok: false,
+      error: true,
+      message: res.statusText,
+      status: res.status
+    };
   }
   return { ok: false };
 };

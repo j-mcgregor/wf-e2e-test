@@ -21,9 +21,7 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
   const charges = allEvents.filter(event =>
     /Charge\/mortgage/.test(event.types.join(', '))
   );
-  const negativeEvents = allEvents.filter(event =>
-    /Negative event/.test(event.types.join(', '))
-  );
+  const negativeEvents = allEvents.filter(event => event.is_negative);
 
   const [events, setEvents] = useState(allEvents);
 

@@ -151,7 +151,7 @@ const Report = ({
   const directors = getDirectorsFromBoardMembers(data?.board_members) || [];
 
   return (
-    <div id="full-report" className="text-primary mt-10 lg:mt-0">
+    <div id="full-report" className="text-primary mt-10 lg:mt-0 pb-24">
       <div className="sm:py-8 print:border print:pb-0 print:border-none print:-mb-16">
         <ReportHeader
           company={companyName}
@@ -388,7 +388,7 @@ const Report = ({
         id={`macro_economic_trends`}
       >
         <ReportSectionHeader text={t('macro_economic_trends')} />
-        <MacroEconomicTrends trends={[]} />
+        <MacroEconomicTrends trends={data?.macroeconomics} />
       </HashContainer>
 
       <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>

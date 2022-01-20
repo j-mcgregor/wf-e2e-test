@@ -18,12 +18,6 @@ const fetcher = async (
       return res.json();
     }
 
-    try {
-      JSON.stringify(data);
-    } catch (e) {
-      console.log('ERROR', e);
-    }
-
     const res = await fetch(`${config.URL}${relativeUrl}`, {
       method: method,
       body: data && JSON.stringify(data),

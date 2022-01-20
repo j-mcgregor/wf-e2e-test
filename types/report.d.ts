@@ -80,6 +80,7 @@ export type LegalEvent = {
   // was previously [] which I assume is a typo. Delete comment if appropriate - Jack
   types: string[];
   forPrint?: boolean;
+  is_negative: boolean;
 };
 
 export type Association = {
@@ -135,3 +136,31 @@ export type Subsidiary = {
   id: string;
   name: string;
 };
+
+export interface DatedValue {
+  date: Date | string;
+  value: string;
+}
+
+export interface MacroEconomic {
+  name: string;
+  unit: string;
+  frequency: string;
+  details: string;
+  history: DatedValue[];
+}
+export interface MacroEconomics {
+  gdp_growth_rate: MacroEconomic;
+  gdp_annual_growth_rate: MacroEconomic;
+  gdp_per_capita: MacroEconomic;
+  unemployment_rate: MacroEconomic;
+  annual_inflation_rate: MacroEconomic;
+  interest_rate: MacroEconomic;
+  consumer_spending: MacroEconomic;
+  government_debt_to_gdp: MacroEconomic;
+  house_price_index: MacroEconomic;
+  consumer_price_index: MacroEconomic;
+  bankruptcies: MacroEconomic;
+  credit_rating: MacroEconomic;
+  stock_market: MacroEconomic;
+}

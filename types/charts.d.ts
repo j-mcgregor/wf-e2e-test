@@ -15,14 +15,19 @@ export type IndexedGraphDataType = {
   [index: string]: GraphDataType;
 };
 
-export type GraphDataType = {
+export interface GraphDataType {
   x: string;
   y: number;
-};
+}
 
-export type MultiGraphDataType = {
+export interface MultiGraphDataType {
   name?: string;
   data: GraphDataType[] | FinancialYear[];
+}
+
+export type FinancialGraphType = {
+  name: string;
+  data: GraphDataType[];
 };
 
 export type MacroTrend = {

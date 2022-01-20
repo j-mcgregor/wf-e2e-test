@@ -103,6 +103,7 @@ export type ApiResType = {
   data?: ResDataType;
   error?: boolean;
   message?: string;
+  status?: number;
 };
 
 export type ResDataType = {
