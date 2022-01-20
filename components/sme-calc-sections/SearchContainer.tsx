@@ -1,22 +1,23 @@
-import { useState, useEffect } from 'react';
+import * as Sentry from '@sentry/nextjs';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useTranslations } from 'use-intl';
-import Button from '../elements/Button';
-import AdvancedSearch, { SimpleValue } from './AdvancedSearch';
-import { CompanyType } from '../../types/global';
-import BasicSearch from './BasicSearch';
-import SearchBox from './SearchBox';
-import { useRecoilValue } from 'recoil';
-import appState from '../../lib/appState';
+
+import appState, { userReports } from '../../lib/appState';
+import SettingsSettings from '../../lib/settings/settings.settings';
 import {
-  validCountryCodes,
-  orbisAvailableSearchCountries
+  orbisAvailableSearchCountries,
+  validCountryCodes
 } from '../../lib/settings/sme-calc.settings';
 import fetcher from '../../lib/utils/fetcher';
-import { useRouter } from 'next/router';
+import { CompanyType } from '../../types/global';
+import Button from '../elements/Button';
 import ErrorMessage from '../elements/ErrorMessage';
-import SettingsSettings from '../../lib/settings/settings.settings';
-import * as Sentry from '@sentry/nextjs';
+import AdvancedSearch, { SimpleValue } from './AdvancedSearch';
 import AlternativeSearchBox from './AlternativeSearchBox';
+import BasicSearch from './BasicSearch';
+import SearchBox from './SearchBox';
 
 interface SearchContainerProps {
   disabled: boolean;
@@ -129,6 +130,8 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     setSelectedCurrency(currencies[Number(currency)]);
   };
 
+  const setReports = useSetRecoilState(userReports);
+
   const handleGenerateReport = async (): Promise<void> => {
     setLoading(true);
 
@@ -140,14 +143,35 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     };
 
     try {
-      const res = await fetcher('/api/reports/report', 'POST', params);
+      const createReportRes = await fetcher(
+        '/api/reports/report',
+        'POST',
+        params
+      );
 
-      if (res?.reportId) {
-        router.push(`/report/${res.reportId}`);
+      // update state on creation of report with the new total list of reports from the API
+      const fetchReportsRes = await fetcher('/api/user/reports');
+
+      if (createReportRes?.reportId) {
+        // set the global state to the new list of reports
+        if (fetchReportsRes.ok) {
+          setReports(reports => ({
+            ...reports,
+            allReports: fetchReportsRes.data
+          }));
+        }
+        // redirect to the report page
+        router.push(`/report/${createReportRes.reportId}`);
       }
-      if (!res?.reportId) {
-        Sentry.captureException({ error: res.error, message: res.message });
-        setError({ error: res.error, message: res.message });
+      if (!createReportRes?.reportId) {
+        Sentry.captureException({
+          error: createReportRes.error,
+          message: createReportRes.message
+        });
+        setError({
+          error: createReportRes.error,
+          message: createReportRes.message
+        });
         setLoading(false);
       }
     } catch (err) {

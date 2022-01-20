@@ -1,4 +1,3 @@
-import { ErrorType } from '../../hooks/useCSVValidator';
 import { ReportDataProps } from '../../pages/report/[id]';
 
 const getExistingReport = async (

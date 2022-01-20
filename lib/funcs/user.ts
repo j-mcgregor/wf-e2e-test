@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { UserType, ReportSnippetType } from '../../types/global';
 
-const XMLHeaders = {
+export const XMLHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
 };
 const JSONHeaders = {
@@ -192,6 +192,7 @@ const getReportsHistory = async (
     `${process.env.WF_AP_ROUTE}/users/me/history/reports`,
     params
   );
+
   if (res.ok) {
     const reports = await res.json();
 

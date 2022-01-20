@@ -53,6 +53,8 @@ export const userReports = selector<UserReports>({
     const newUser: UserType = {
       ...user,
       // @ts-ignore
+      ...(newReports?.allReports?.length && { reports: newReports.allReports }),
+      // @ts-ignore
       bookmarked_reports: newReports.bookmarkedReports
     };
 

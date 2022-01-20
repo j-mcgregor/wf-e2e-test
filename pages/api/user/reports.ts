@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import { withSentry } from '@sentry/nextjs';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/client';
+
+import User from '../../../lib/funcs/user';
 import {
   GENERIC_API_ERROR,
   METHOD_NOT_ALLOWED,
@@ -9,10 +11,9 @@ import {
   USER_404,
   USER_422,
   USER_500
-} from '../../lib/utils/error-codes';
-import User from '../../lib/funcs/user';
-import { getSession } from 'next-auth/client';
+} from '../../../lib/utils/error-codes';
 
+import type { NextApiRequest, NextApiResponse } from 'next';
 const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req: req });
   // unauthenticated requests
@@ -24,18 +25,9 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   const { method } = req;
 
-  const json = JSON.parse(req.body);
-
-  const user = {
-    full_name: json.full_name,
-    email: json.email,
-    preferences: json.preferences,
-    ...(json.password ? { password: json.password } : {})
-  };
-
-  if (method === 'PUT' && user) {
+  if (method === 'GET') {
     try {
-      const fetchRes = await User.updateUser(user, `${session.token}`);
+      const fetchRes = await User.getReportsHistory(`${session.token}`);
 
       switch (fetchRes.status) {
         case 401:
@@ -75,7 +67,9 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               "Internal Server Error: Didn't get anything usable from the server, chances are the server didn't respond."
           });
         case 200:
-          return res.status(200).json({ ok: fetchRes.ok, data: fetchRes.user });
+          return res
+            .status(200)
+            .json({ ok: fetchRes.ok, data: fetchRes.reports });
       }
     } catch (err) {
       return res
