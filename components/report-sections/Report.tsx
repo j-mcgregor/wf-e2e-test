@@ -387,7 +387,7 @@ const Report = ({
         name={'Macro Economic Trends'}
         id={`macro_economic_trends`}
       >
-        <ReportSectionHeader text={t('macro_economic_trends')} />
+        <ReportSectionHeader text={t('macroeconomic_trends')} />
         <MacroEconomicTrends trends={data?.macroeconomics} />
       </HashContainer>
 
