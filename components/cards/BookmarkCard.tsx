@@ -29,6 +29,13 @@ const BookmarkCard = ({
 
   const reportTitle = createReportTitle(companyName, createdAt);
 
+  const renderpdRatio =
+    pdRatio &&
+    new Intl.NumberFormat('en-GB', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(pdRatio * 100);
+
   return (
     <Link linkTo={linkTo}>
       <div className="bg-white shadow hover:shadow-2xl transition-shadow duration-300 rounded w-full flex flex-col">
@@ -44,15 +51,21 @@ const BookmarkCard = ({
 
           <div className="flex bg-primary text-white bg-opacity-75 rounded-b mt-2 text-xs sm:text-sm">
             <div className="flex flex-col items-center justify-center text-center px-0.5 py-2 w-full">
-              <p className="font-bold py-1">{smeZscore}</p>
-              <p className="text-[10px]">{t('sme_score')}</p>
+              <p className="font-bold py-1">
+                {smeZscore ? `${smeZscore}` : t('na')}
+              </p>
+              <p className="text-[10px]">{t('sme_z-score')}</p>
             </div>
             <div className="flex flex-col items-center justify-center text-center px-0.5 py-2 border-l border-r border-gray-300 w-full">
-              <p className="font-bold py-1">{bondRating}</p>
-              <p className="text-[10px]">{t('bond_rating')}</p>
+              <p className="font-bold py-1">
+                {bondRating ? `${bondRating}` : t('na')}
+              </p>
+              <p className="text-[10px]">{t('bre')}</p>
             </div>
             <div className="flex flex-col items-center justify-center text-center px-0.5 py-2 w-full">
-              <p className="font-bold py-1">{pdRatio}%</p>
+              <p className="font-bold py-1">
+                {renderpdRatio ? `${renderpdRatio}%` : t('na')}
+              </p>
               <p className="text-[10px]">{t('pd_ratio')}</p>
             </div>
           </div>

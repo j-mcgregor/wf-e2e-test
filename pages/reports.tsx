@@ -46,9 +46,9 @@ const Reports = () => {
                   linkTo={`/report/${report.id}`}
                   companyName={report.company_name}
                   smeZscore={report.sme_z_score}
-                  bondRating={report.bond_rating}
+                  bondRating={report.bond_rating_equivalent}
                   createdAt={report.created_at}
-                  pdRatio={32.18} // not currently in mock data
+                  pdRatio={report.probability_of_default_1_year}
                 />
               );
             })}

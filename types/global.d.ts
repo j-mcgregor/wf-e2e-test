@@ -15,10 +15,12 @@ export type ReportSnippetType = {
   company_id: number;
   iso_code: string;
   sme_z_score: number;
+  bond_rating_equivalent: string;
   bond_rating: string;
   created_at: string;
   bookmarked: boolean;
-  probability_of_default?: string;
+  probability_of_default_1_year: number;
+  probability_of_default: number;
 };
 
 export type BatchedReportType = {

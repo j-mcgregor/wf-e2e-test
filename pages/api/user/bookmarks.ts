@@ -50,12 +50,19 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (allowedMethods.includes(`${method}`)) {
+    let all_bookmarks;
     try {
       const fetchRes = await User.bookmarkReport(
         `${req.query.reportId}`,
         `${session.token}`,
         method as any
       );
+
+      // add in all bookmarks on post request
+      if (req.query.return_all) {
+        const user_bookmarks = await User.getUserBookmarks(`${session.token}`);
+        all_bookmarks = user_bookmarks.bookmarks;
+      }
 
       switch (fetchRes.status) {
         case 401:
@@ -76,7 +83,7 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             message: "User not found: Can't find the user. Probably wrong id."
           });
         case 422:
-          res.status(422).json({
+          return res.status(422).json({
             ok: fetchRes.ok,
             //user facing message
             error: USER_422,
@@ -84,7 +91,6 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             message:
               'Unprocessable Entity: The server has received the data, understands the request but was unable to complete it.'
           });
-          break;
         case 500:
           return res.status(500).json({
             ok: fetchRes.ok,
@@ -95,10 +101,18 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               "Internal Server Error: Didn't get anything usable from the server, chances are the server didn't respond."
           });
         case 201: // created (post)
+          return res.status(201).json({
+            bookmarks: all_bookmarks,
+            ok: true
+          });
         case 204: // no content (delete)
           return res
             .status(res.statusCode)
-            .json({ ok: fetchRes.ok, data: fetchRes.details });
+            .json({
+              ok: fetchRes.ok,
+              data: fetchRes.details,
+              bookmarks: all_bookmarks
+            });
       }
     } catch (err) {
       return res

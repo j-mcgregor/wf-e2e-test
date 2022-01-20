@@ -40,30 +40,31 @@ const ReportHeader = ({
 
   const handleBookmark = useRecoilCallback(() => async () => {
     try {
+      // optimistically update bookmark state
+      setIsBookMarked(!isBookMarked);
+
       const method = isBookMarked ? 'DELETE' : 'POST';
+
+      // added return_all so that we can return the bookmarks in the same request
       const updater = await fetcher(
-        `/api/user/bookmarks?reportId=${reportId}`,
+        `/api/user/bookmarks?reportId=${reportId}&return_all=true`,
         method
       );
 
-      if (updater.ok) {
+      if (!updater.ok) {
+        // if fails to save, revert to previous state
         setIsBookMarked(!isBookMarked);
+      }
 
-        const updatedReports = await fetcher(
-          `/api/user/bookmarks?reportId=${reportId}`,
-          'GET'
-        );
-
-        if (updatedReports.ok) {
-          // recoil requires that what comes out of state is the same as what goes in,
-          // but that is in efficient and problematic
-          // we're working around it for now
-          // @ts-ignore
-          setReportBookmarks(reports => ({
-            ...reports,
-            bookmarkedReports: updatedReports.bookmarks
-          }));
-        }
+      if (updater.ok && updater.bookmarks) {
+        // recoil requires that what comes out of state is the same as what goes in,
+        // but that is in efficient and problematic
+        // we're working around it for now
+        // @ts-ignore
+        setReportBookmarks(reports => ({
+          ...reports,
+          bookmarkedReports: updater.bookmarks
+        }));
       }
     } catch (err) {
       Sentry.captureException(err);
