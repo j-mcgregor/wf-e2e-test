@@ -1,4 +1,4 @@
-import ReactTimeAgo from 'react-timeago'; //unsure of ts/linting error - is working?
+import ReactTimeAgo from 'react-timeago';
 
 import { useTranslations } from 'next-intl';
 import Link from './Link';
