@@ -28,8 +28,6 @@ const SummaryMap = ({
 }: SummaryMapProps) => {
   const t = useTranslations();
 
-  const phone = phoneNumbers?.[0]?.replace(/[A-z-]/g, '');
-
   const validAddressLines = addressLines
     ?.filter(x => x)
     ?.flatMap(x => [x, ', ']);
@@ -69,7 +67,7 @@ const SummaryMap = ({
         </div>
         <div className="flex justify-between flex-wrap">
           <h4>{t('telephone')}</h4>
-          <p>{phone ? phone : t('na')}</p>
+          <p>{phoneNumbers ? phoneNumbers[0] : t('na')}</p>
         </div>
       </div>
     </div>

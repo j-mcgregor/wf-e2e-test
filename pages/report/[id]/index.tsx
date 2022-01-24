@@ -29,6 +29,7 @@ import {
 } from '../../../types/report';
 
 export interface ReportDataProps {
+  [x: string]: any;
   id: string | number;
   company_id: string;
   created_at?: string;
@@ -37,6 +38,8 @@ export interface ReportDataProps {
   financials: FinancialYear[];
   benchmarks: FinancialYear[];
   board_members?: BoardMember[];
+  directors: BoardMember[];
+  executives: BoardMember[];
   financial_ratios: {
     [key: string]: number;
   }[];

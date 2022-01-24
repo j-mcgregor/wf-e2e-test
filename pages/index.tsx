@@ -24,6 +24,7 @@ export default function Dashboard() {
   const [userLoginTime] = useLocalStorage<number[]>('wf_last_login', []);
 
   const { user } = useRecoilValue(appState);
+
   return (
     <Layout title="Dashboard">
       <div className="grid grid-cols-7 gap-x-4 text-primary">
@@ -48,9 +49,9 @@ export default function Dashboard() {
                 linkTo: '/reports'
               },
               {
-                header: t('batched_reports'),
-                data: user?.batched_report_jobs?.length || 0,
-                linkTo: '/batched-reports'
+                header: t('bookmarked_reports'),
+                data: user?.bookmarked_reports?.length || 0,
+                linkTo: '/reports'
               },
               {
                 header: t('last_login'),

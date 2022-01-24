@@ -1,3 +1,5 @@
+import { CompanyStatusType } from './global';
+
 export type FinancialYear = {
   [index: string]: string;
   year?: string;
@@ -20,15 +22,18 @@ export type DataReliabilityType = {
 };
 
 export type SummaryInfo = {
+  status: CompanyStatusType[];
   reg_number: string;
   sector: string;
   description: string;
   directors: number;
   shareholders: number;
   employees: number;
+  number_of_employees: number;
   overview_full?: string;
   date_of_incorporation: number | string;
-  last_account_date: number | string;
+  // last_account_date: number | string;
+  last_annual_accounts_date: string; //* new replacing above type
   industry_sector: string | null;
   nace_code: string;
   nace_name: string;
@@ -49,7 +54,7 @@ export type SummaryContact = {
   };
   status: string[];
   company_name: string | null;
-  phone: string[];
+  phone_numbers: string[];
   websites: string[];
   emails: string[];
   name: string | null;

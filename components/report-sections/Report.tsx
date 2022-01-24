@@ -98,6 +98,7 @@ const Report = ({
   // reversing array to get the latest 5 years of financials
   const lastFiveYearsRiskMetrics = React.useMemo(
     () => riskMetrics.slice(0, 5) || [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [data.risk_metrics]
   );
 
@@ -148,7 +149,10 @@ const Report = ({
     latestRiskMetrics?.loss_given_default
   );
 
-  const directors = getDirectorsFromBoardMembers(data?.board_members) || [];
+  //* replaced this with new `directors` array from backend
+  // const directors = getDirectorsFromBoardMembers(data?.board_members) || [];
+
+  const latestFinancialYear = data?.financials[data.financials.length - 1];
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0 pb-24">
@@ -170,10 +174,11 @@ const Report = ({
               sector={data.details?.industry_sector}
               description={data?.details?.overview_full}
               incorporationDate={data?.details?.date_of_incorporation}
-              lastAccountDate={lastFiledAccount}
+              lastAccountDate={data?.details?.last_annual_accounts_date}
               country={companyDetails?.address?.country}
               naceCode={companyDetails?.nace_code}
               naceName={companyDetails?.nace_name}
+              companyStatus={companyDetails?.status}
             />
           </div>
 
@@ -191,7 +196,7 @@ const Report = ({
               region={companyAddress?.region}
               country={companyAddress?.country}
               emails={companyDetails?.emails}
-              phoneNumbers={companyDetails?.phone}
+              phoneNumbers={companyDetails?.phone_numbers}
               websites={companyDetails?.websites}
             />
           </div>
@@ -335,13 +340,24 @@ const Report = ({
           cfo={getBoardMember('CFO', data?.board_members)}
           ceo={getBoardMember('CEO', data?.board_members)}
           chairman={getBoardMember('Chairman', data?.board_members)}
-          directors={data?.details?.directors}
-          employees={data?.details?.employees}
-          shareholders={data?.details?.shareholders}
-          subsidiaries={data?.details?.subsidiaries}
+          directors={data?.directors.length}
+          employees={latestFinancialYear.number_of_employees}
+          shareholders={data?.shareholders.length}
+          subsidiaries={data?.subsidiaries.length}
+          seniorManagement={data?.executives?.length}
         />
 
-        {directors.length && <DirectorsList directors={directors} />}
+        {data.directors.length && (
+          <DirectorsList title={t('directors')} directors={data.directors} />
+        )}
+
+        {/*? ==== added copy of directors list for senior management/directors - should rename components? ==== */}
+        {data.executives.length && (
+          <DirectorsList
+            title={t('senior_management')}
+            directors={data.executives}
+          />
+        )}
 
         <Profiles
           directors={data?.personal?.directors}

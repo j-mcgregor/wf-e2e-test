@@ -40,7 +40,8 @@ describe('Dashboard', () => {
     expect(statCards[0].textContent?.includes('Total Reports')).toBe(true);
     expect(statCards[0].textContent?.includes('35')).toBe(true);
 
-    expect(statCards[1].textContent?.includes('Batched Reports')).toBe(true);
+    // expect(statCards[1].textContent?.includes('Batched Reports')).toBe(true);
+    expect(statCards[1].textContent?.includes('Bookmarked Reports')).toBe(true);
     expect(statCards[1].textContent?.includes('0')).toBe(true);
 
     // expect(statCards[2].textContent?.includes('weeks ago')).toBe(true);

@@ -125,3 +125,16 @@ export type BatchReportsType = {
   results: BatchReportType[];
   created: string;
 };
+
+type CompanyStatusOptions =
+  | 'Active'
+  | 'Distressed'
+  | 'Active (protection)'
+  | 'Active (dormant)'
+  | 'Bankrupt'
+  | 'In liquidation'
+  | 'Dissolved'
+  | 'Inactive'
+  | 'N.A.';
+
+export type CompanyStatusType = CompanyStatusOptions[];

@@ -6,7 +6,7 @@ interface CorporateOverviewProps {
   chairman: string;
   directors: number;
   shareholders: number;
-  employees: number;
+  employees: string;
   subsidiaries: number;
   seniorManagement?: number;
 }
