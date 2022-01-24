@@ -31,6 +31,8 @@ export const DirectorsList = ({
               <DirectorsCard
                 key={`director-${index}`}
                 name={director.name}
+                firstName={director.first_name}
+                lastName={director.last_name}
                 jobrole={director.job_title}
                 profilePic=""
                 showAppointmentDate={showAppointmentDate}

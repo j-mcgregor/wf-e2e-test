@@ -45,8 +45,8 @@ const BondRating = ({ score }: BondRatingProps) => {
         />
       </div>
 
-      <div className={`${printClasses.container} overflow-x-scroll `}>
-        <div className={`flex items-center my-4 py-4 w-[600px] sm:w-full`}>
+      <div className={`${printClasses.container}`}>
+        <div className={`flex items-center my-4 py-4 sm:w-full`}>
           {bondRatings.map((rating, i) => {
             return (
               <div
@@ -57,8 +57,8 @@ const BondRating = ({ score }: BondRatingProps) => {
                 key={i}
                 className={`${
                   rating.score === score
-                    ? 'h-36 text-4xl font-bold min-w-[100px]'
-                    : 'h-28 text-lg font-semibold'
+                    ? 'h-36 text-2xl sm:text-4xl font-bold min-w-[70px] sm:min-w-[100px]'
+                    : 'h-28 text-sm sm:text-lg font-semibold px-1'
                 } text-white flex items-center justify-center print:mx-[2px] border border-white`}
                 data-testid={rating.score === score ? 'bond-rating' : ''}
               >

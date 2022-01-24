@@ -6,6 +6,8 @@ import { useTranslations } from 'next-intl';
 
 interface DirectorsCardProps {
   name: string;
+  firstName: string;
+  lastName: string;
   jobrole: string;
   profilePic: string;
   appointmentDate: string | Date;
@@ -17,6 +19,8 @@ interface DirectorsCardProps {
 
 export const DirectorsCard = ({
   name,
+  firstName,
+  lastName,
   jobrole,
   profilePic,
   appointmentDate,
@@ -25,7 +29,8 @@ export const DirectorsCard = ({
   isLiability,
   showAppointmentDate
 }: DirectorsCardProps) => {
-  const linkedInLink = `https://www.linkedin.com/search/results/all/?keywords=${name}`;
+  //! API currently returning both first names - implementing this any way and back end will fix
+  const linkedInLink = `https://www.linkedin.com/search/results/all/?keywords=${firstName} ${lastName}`;
 
   const formatDate = (date: string | Date) =>
     new Date(date).toLocaleDateString('en-us', {

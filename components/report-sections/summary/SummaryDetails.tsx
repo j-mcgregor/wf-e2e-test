@@ -6,7 +6,7 @@ import { CompanyStatusType } from '../../../types/global';
 export type SummaryDetailsProps = {
   regNumber: string;
   sector: string | null;
-  naceName: string | null;
+  naceName?: string | null;
   description?: string | null;
   incorporationDate: number | string | null;
   lastAccountDate: number | string;
@@ -116,7 +116,11 @@ const SummaryDetails = ({
           role="group"
         >
           <h4>{t('company_status')}</h4>
-          <p>{companyStatus || t('na')}</p>
+          <p>
+            {companyStatus && companyStatus.length > 0
+              ? companyStatus[0]
+              : t('na')}
+          </p>
         </div>
       </div>
 

@@ -130,6 +130,8 @@ export type ValidCSVType = {
 
 export type BoardMember = {
   name: string;
+  first_name: string;
+  last_name: string;
   job_title: string;
   appointment_date: string | Date;
   resignation_date: string | Date;
