@@ -12,6 +12,7 @@ interface DirectorsCardProps {
   resignationDate: string | Date;
   isCurrent: boolean;
   isLiability: boolean;
+  showAppointmentDate?: boolean;
 }
 
 export const DirectorsCard = ({
@@ -21,7 +22,8 @@ export const DirectorsCard = ({
   appointmentDate,
   resignationDate,
   isCurrent,
-  isLiability
+  isLiability,
+  showAppointmentDate
 }: DirectorsCardProps) => {
   const linkedInLink = `https://www.linkedin.com/search/results/all/?keywords=${name}`;
 
@@ -46,22 +48,14 @@ export const DirectorsCard = ({
           </Link>
         </div>
       </div>
-      <div className="flex flex-col space-y-1">
-        <div className="flex flex-row justify-between">
-          <p className="text-xs">Appointment Date</p>
-          <p className="text-xs">{formatDate(appointmentDate)}</p>
-        </div>
-        <div className="flex flex-row justify-between">
-          <p className="text-xs">Is Active</p>
-          <p className="text-xs">{isCurrent ? 'Yes' : 'No'}</p>
-        </div>
-        {!isCurrent && resignationDate && (
+      {showAppointmentDate && (
+        <div className="flex flex-col space-y-1">
           <div className="flex flex-row justify-between">
-            <p className="text-xs">Resignation Date</p>
-            <p className="text-xs">{formatDate(resignationDate)}</p>
+            <p className="text-xs">Appointment Date</p>
+            <p className="text-xs">{formatDate(appointmentDate)}</p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
       {isLiability && (
         <div className="text-xs mt-2 flex space-x-4 items-center w-full pt-3">
           <div className="rounded-full bg-pink-100 w-8 h-8 flex items-center justify-center p-2 font-bold text-primary ">

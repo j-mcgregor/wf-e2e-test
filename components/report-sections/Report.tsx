@@ -354,7 +354,11 @@ const Report = ({
         />
 
         {data.directors.length && (
-          <DirectorsList title={t('directors')} directors={data.directors} />
+          <DirectorsList
+            title={t('directors')}
+            directors={data.directors}
+            showAppointmentDate
+          />
         )}
 
         {/*? ==== added copy of directors list for senior management/directors - should rename components? ==== */}

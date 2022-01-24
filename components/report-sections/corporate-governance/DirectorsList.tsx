@@ -7,9 +7,14 @@ import { DirectorsCard } from './DirectorsCard';
 interface DirectorsListProps {
   directors: BoardMember[];
   title: TranslateInput;
+  showAppointmentDate?: boolean;
 }
 
-export const DirectorsList = ({ directors, title }: DirectorsListProps) => {
+export const DirectorsList = ({
+  directors,
+  title,
+  showAppointmentDate
+}: DirectorsListProps) => {
   const t = useTranslations();
 
   return (
@@ -28,6 +33,7 @@ export const DirectorsList = ({ directors, title }: DirectorsListProps) => {
                 name={director.name}
                 jobrole={director.job_title}
                 profilePic=""
+                showAppointmentDate={showAppointmentDate}
                 appointmentDate={director.appointment_date}
                 resignationDate={director.appointment_date}
                 isCurrent={director.is_current}
