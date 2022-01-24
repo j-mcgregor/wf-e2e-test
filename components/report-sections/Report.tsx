@@ -90,8 +90,10 @@ const Report = ({
   // TEMPORARILY REVERSING FINANCIAL_RATIOS UNTIL BACK END FIXES
   const lastFiveYearsFinancialRatios = financialRatios.reverse()?.slice(0, 5);
 
-  const lastFiveYearsBenchmarks =
-    (data?.benchmarks && data.benchmarks?.slice(0, 5)) || [];
+  // remove benchmarks from financial trends
+  // add to speedos later
+  // const lastFiveYearsBenchmarks =
+  //   (data?.benchmarks && data.benchmarks?.slice(0, 5)) || [];
 
   const riskMetrics = [...(data?.risk_metrics || [])];
 
@@ -332,7 +334,8 @@ const Report = ({
         <FinancialTrends
           currency={data.currency}
           financialData={mergedLastFiveYearFinancials.reverse()}
-          benchmarkData={lastFiveYearsBenchmarks.reverse()}
+          // been removed
+          benchmarkData={[]}
           companyName={companyName}
         />
       </HashContainer>
