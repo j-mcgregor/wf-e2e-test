@@ -3,22 +3,18 @@ import React from 'react';
 import { useTranslations } from 'use-intl';
 
 import usePrintClasses from '../../hooks/usePrintClasses';
-import { mockSubsidiaries } from '../../lib/mock-data/subsidiaries';
 import {
   calculateLGDRotation,
   calculatePoDRotation,
   calculateSMEZScoreRotation
 } from '../../lib/utils/report-helpers';
-import {
-  getBoardMember,
-  getDirectorsFromBoardMembers
-} from '../../lib/utils/text-helpers';
+import { getBoardMember } from '../../lib/utils/text-helpers';
 import { ReportDataProps } from '../../pages/report/[id]';
 import HashContainer from '../elements/HashContainer';
 import { ReportSectionHeader } from '../elements/Headers';
 import Hint from '../elements/Hint';
 import CorporateOverview from './corporate-governance/CorporateOverview';
-import { DirectorsList } from './corporate-governance/DirectorsList';
+import ExecutiveCardList from './corporate-governance/ExecutiveList';
 import Profiles from './corporate-governance/Profiles';
 import ShareHolderList from './corporate-governance/ShareHolderList';
 import ESGContainer from './esg-assessment/ESGContainer';
@@ -52,8 +48,6 @@ const Report = ({
   const t = useTranslations();
 
   const companyName = data?.details?.company_name || data?.details?.name || '';
-
-  const lastFiledAccount = data?.financials?.[0]?.period || t('na');
 
   const companyDetails = data?.details;
 
@@ -316,7 +310,7 @@ const Report = ({
               locked={true}
               buttonColor="bg-[#2BAD01]"
               learnMoreLink="#"
-              // linkTo='/'
+              disabled={true}
             />
             <CTACard
               title={t('upload_more_data')}
@@ -353,19 +347,19 @@ const Report = ({
           seniorManagement={data?.executives?.length}
         />
 
-        {data.directors.length && (
-          <DirectorsList
+        {data?.directors?.length && (
+          <ExecutiveCardList
             title={t('directors')}
-            directors={data.directors}
+            executives={data.directors}
             showAppointmentDate
           />
         )}
 
         {/*? ==== added copy of directors list for senior management/directors - should rename components? ==== */}
-        {data.executives.length && (
-          <DirectorsList
+        {data.executives?.length && (
+          <ExecutiveCardList
             title={t('senior_management')}
-            directors={data.executives}
+            executives={data.executives}
           />
         )}
 

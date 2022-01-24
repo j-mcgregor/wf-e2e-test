@@ -4,31 +4,27 @@ import ProfileIcon from '../../svgs/ProfileIcon';
 import LinkedinLogo from '../../elements/LinkedinLogo';
 import { useTranslations } from 'next-intl';
 
-interface DirectorsCardProps {
+interface ExecutiveCardProps {
   name: string;
   firstName: string;
   lastName: string;
   jobrole: string;
   profilePic: string;
   appointmentDate: string | Date;
-  resignationDate: string | Date;
-  isCurrent: boolean;
   isLiability: boolean;
   showAppointmentDate?: boolean;
 }
 
-export const DirectorsCard = ({
+const ExecutiveCard = ({
   name,
   firstName,
   lastName,
   jobrole,
   profilePic,
   appointmentDate,
-  resignationDate,
-  isCurrent,
   isLiability,
   showAppointmentDate
-}: DirectorsCardProps) => {
+}: ExecutiveCardProps) => {
   //! API currently returning both first names - implementing this any way and back end will fix
   const linkedInLink = `https://www.linkedin.com/search/results/all/?keywords=${firstName} ${lastName}`;
 
@@ -38,6 +34,8 @@ export const DirectorsCard = ({
     });
 
   const t = useTranslations();
+
+  const appointmentDateString = t('appointment_date');
 
   return (
     <div className="px-4 py-6 flex flex-col bg-white">
@@ -56,7 +54,7 @@ export const DirectorsCard = ({
       {showAppointmentDate && (
         <div className="flex flex-col space-y-1">
           <div className="flex flex-row justify-between">
-            <p className="text-xs">Appointment Date</p>
+            <p className="text-xs">{appointmentDateString}</p>
             <p className="text-xs">{formatDate(appointmentDate)}</p>
           </div>
         </div>
@@ -72,6 +70,8 @@ export const DirectorsCard = ({
     </div>
   );
 };
+
+export default ExecutiveCard;
 
 const Flag = () => {
   return (

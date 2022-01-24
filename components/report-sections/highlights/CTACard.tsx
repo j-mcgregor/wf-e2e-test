@@ -13,6 +13,7 @@ interface AddDataProps {
   buttonColor: string;
   linkTo?: string;
   learnMoreLink?: string;
+  disabled?: boolean;
 }
 
 const CTACard = ({
@@ -23,12 +24,13 @@ const CTACard = ({
   locked,
   buttonColor,
   linkTo,
-  learnMoreLink
+  learnMoreLink,
+  disabled
 }: AddDataProps) => {
   const t = useTranslations();
 
   return (
-    <div>
+    <div className={`${disabled ? 'pointer-events-none opacity-40' : ''}`}>
       <div className="bg-white p-3 mb-3 rounded-sm text-sm">
         <p className="font-bold">{title}</p>
         <p className="py-3">{body}</p>

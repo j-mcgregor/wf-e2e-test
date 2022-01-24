@@ -2,19 +2,19 @@ import { useTranslations } from 'next-intl';
 import React from 'react';
 import { TranslateInput } from '../../../types/global';
 import { BoardMember } from '../../../types/report';
-import { DirectorsCard } from './DirectorsCard';
+import ExecutiveCard from './ExecutiveCard';
 
-interface DirectorsListProps {
-  directors: BoardMember[];
+interface ExecutiveCardListProps {
+  executives: BoardMember[];
   title: TranslateInput;
   showAppointmentDate?: boolean;
 }
 
-export const DirectorsList = ({
-  directors,
+const ExecutiveCardList = ({
+  executives,
   title,
   showAppointmentDate
-}: DirectorsListProps) => {
+}: ExecutiveCardListProps) => {
   const t = useTranslations();
 
   return (
@@ -25,21 +25,19 @@ export const DirectorsList = ({
       <p className="text-xl py-4 print:text-2xl print:py-6">{title}</p>
 
       <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-4 print:gap-0 print:grid-cols-4 sm:print:grid-cols-4 lg:print:grid-cols-4 print:border-2 print:px-4 print:py-2">
-        {directors &&
-          directors.map((director, index) => {
+        {executives &&
+          executives.map((executive, index) => {
             return (
-              <DirectorsCard
-                key={`director-${index}`}
-                name={director.name}
-                firstName={director.first_name}
-                lastName={director.last_name}
-                jobrole={director.job_title}
+              <ExecutiveCard
+                key={`executive-${index}`}
+                name={executive.name}
+                firstName={executive.first_name}
+                lastName={executive.last_name}
+                jobrole={executive.job_title}
                 profilePic=""
                 showAppointmentDate={showAppointmentDate}
-                appointmentDate={director.appointment_date}
-                resignationDate={director.appointment_date}
-                isCurrent={director.is_current}
-                isLiability={director.is_liability}
+                appointmentDate={executive.appointment_date}
+                isLiability={executive.is_liability}
               />
             );
           })}
@@ -47,3 +45,5 @@ export const DirectorsList = ({
     </div>
   );
 };
+
+export default ExecutiveCardList;
