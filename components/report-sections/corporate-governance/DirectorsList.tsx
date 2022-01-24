@@ -26,6 +26,8 @@ export const DirectorsList = ({ directors, title }: DirectorsListProps) => {
               <DirectorsCard
                 key={`director-${index}`}
                 name={director.name}
+                firstName={director.first_name}
+                lastName={director.last_name}
                 jobrole={director.job_title}
                 profilePic=""
                 appointmentDate={director.appointment_date}
