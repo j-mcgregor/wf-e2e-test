@@ -9,6 +9,7 @@ interface ESGCardProps {
   resultText?: TranslateInput;
   title: TranslateInput;
   description: TranslateInput;
+  asteriskText?: TranslateInput;
   results?: { name: string; score: number }[];
 }
 
@@ -18,7 +19,8 @@ const ESGCard = ({
   result,
   resultText,
   rating,
-  results
+  results,
+  asteriskText
 }: ESGCardProps) => {
   const t = useTranslations();
   return (
@@ -30,16 +32,15 @@ const ESGCard = ({
       <div className="w-1/2">
         <p className="text-lg pb-4">{title}</p>
         <p className="text-sm">{description}</p>
+        {asteriskText && result === 'negative' && (
+          <p className="text-xs mt-2 ">*{asteriskText}</p>
+        )}
       </div>
       <div className="text-center relative top-2">
         {result && rating && (
           <div
             className={`${
-              result === 'positive'
-                ? 'bg-green-300'
-                : result === 'negative'
-                ? 'bg-red-300'
-                : 'bg-bg'
+              result === 'positive' ? 'bg-green-300' : 'bg-bg'
             } w-40 px-10 py-6 rounded-lg uppercase font-bold`}
           >
             {result !== 'neutral' ? <p>{rating}</p> : <p>{t('neutral')}</p>}

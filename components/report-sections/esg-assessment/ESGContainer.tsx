@@ -69,6 +69,9 @@ const ESGContainer = ({
       <ESGCard
         title={t('governance')}
         description={t('data_on_company_governance')}
+        asteriskText={t(
+          'there_are_names_that_are_the_same_or_similar_to_a_risk_relevant_name'
+        )}
         resultText={t('pep_flags')}
         rating={pepFlags}
         result={pepFlags && pepFlags > 0 ? 'negative' : 'neutral'}

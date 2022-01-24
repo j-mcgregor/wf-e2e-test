@@ -202,7 +202,10 @@ const Report = ({
           </div>
         </div>
         <div className="py-4 avoid-break">
-          <SummaryFinancial years={lastFiveYearsFinancials} />
+          <SummaryFinancial
+            currencyCode={data.currency}
+            years={lastFiveYearsFinancials}
+          />
         </div>
       </HashContainer>
       <HashContainer name={'Risk Metrics'} id={`risk_metrics`}>

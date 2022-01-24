@@ -31,6 +31,7 @@ export const DirectorsList = ({ directors, title }: DirectorsListProps) => {
                 appointmentDate={director.appointment_date}
                 resignationDate={director.appointment_date}
                 isCurrent={director.is_current}
+                isLiability={director.is_liability}
               />
             );
           })}

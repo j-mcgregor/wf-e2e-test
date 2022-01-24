@@ -134,6 +134,7 @@ export type BoardMember = {
   appointment_date: string | Date;
   resignation_date: string | Date;
   is_current: boolean;
+  is_liability: boolean;
 };
 
 // schema from Swagger

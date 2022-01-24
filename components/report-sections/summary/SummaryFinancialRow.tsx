@@ -31,17 +31,20 @@ const SummaryFinancialRow = ({
       <td className="min-w-[160px] font-semibold">{rowHeader}</td>
       {yearsWithBlank &&
         yearsWithBlank.map((year, index) => (
-          <td key={index} className="relative px-2 py-1 min-w-[50px]">
+          <td
+            key={index}
+            className="relative px-2 py-1 min-w-[50px] text-right"
+          >
             <p
               className={`${
-                parseFloat(year[rowKeyStr]) < 0 && 'text-red-400'
+                parseFloat(year[rowKeyStr]) < 0 && 'text-red-500'
               } ${!year.period && 'text-gray-200'}`}
             >
               {!year[rowKeyStr]
                 ? year.period
                   ? 0
                   : t('na')
-                : parseFloat(year[rowKeyStr])?.toFixed(2)}
+                : Number(year[rowKeyStr]).toLocaleString()}
             </p>
           </td>
         ))}

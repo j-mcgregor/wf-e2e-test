@@ -2,6 +2,7 @@ import React from 'react';
 import Link from '../../elements/Link';
 import ProfileIcon from '../../svgs/ProfileIcon';
 import LinkedinLogo from '../../elements/LinkedinLogo';
+import { useTranslations } from 'next-intl';
 
 interface DirectorsCardProps {
   name: string;
@@ -10,6 +11,7 @@ interface DirectorsCardProps {
   appointmentDate: string | Date;
   resignationDate: string | Date;
   isCurrent: boolean;
+  isLiability: boolean;
 }
 
 export const DirectorsCard = ({
@@ -18,7 +20,8 @@ export const DirectorsCard = ({
   profilePic,
   appointmentDate,
   resignationDate,
-  isCurrent
+  isCurrent,
+  isLiability
 }: DirectorsCardProps) => {
   const linkedInLink = `https://www.linkedin.com/search/results/all/?keywords=${name}`;
 
@@ -26,6 +29,8 @@ export const DirectorsCard = ({
     new Date(date).toLocaleDateString('en-us', {
       dateStyle: 'medium'
     });
+
+  const t = useTranslations();
 
   return (
     <div className="px-4 py-6 flex flex-col bg-white">
@@ -57,6 +62,33 @@ export const DirectorsCard = ({
           </div>
         )}
       </div>
+      {isLiability && (
+        <div className="text-xs mt-2 flex space-x-4 items-center w-full pt-3">
+          <div className="rounded-full bg-pink-100 w-8 h-8 flex items-center justify-center p-2 font-bold text-primary ">
+            <Flag />
+          </div>
+          <p>{t('this_person_is_risk_relevant_name')}</p>
+        </div>
+      )}
     </div>
+  );
+};
+
+const Flag = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-8 w-8"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
+      />
+    </svg>
   );
 };
