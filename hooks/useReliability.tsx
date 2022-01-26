@@ -63,6 +63,5 @@ export const useReliability = ({
     res.infoBoxText = concernText;
     res.styles = 'bg-red-400 bg-opacity-30 border-red-400';
   }
-
   return res;
 };
