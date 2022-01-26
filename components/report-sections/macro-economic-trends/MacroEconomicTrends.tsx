@@ -83,7 +83,7 @@ const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
                   key={i}
                   title={`${t(chart.header)}`}
                   subtitle={`${t(chart.subHeader)}`}
-                  data={chart.data[0].data}
+                  data={chart.data[0].data.reverse()}
                   hintBody={t(
                     `report_hints.macro_economic_trends.${chart.hint.body}`
                   )}

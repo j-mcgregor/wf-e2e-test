@@ -35,3 +35,11 @@ export type MacroTrend = {
   period: string;
   data: GraphDataType[];
 };
+
+export type FinancialTrendCategories =
+  | 'currency'
+  | 'percentage'
+  | 'ratio'
+  | 'zscore'
+  | 'days'
+  | undefined;

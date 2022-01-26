@@ -6,13 +6,29 @@ import {
   VictoryArea,
   VictoryScatter,
   VictoryGroup,
-  VictoryLine
+  VictoryLine,
+  VictoryTooltip
 } from 'victory';
 import ChartContainer from './ChartContainer';
-import { GraphDataType, FinancialGraphType } from '../../types/charts';
+import {
+  GraphDataType,
+  FinancialGraphType,
+  FinancialTrendCategories
+} from '../../types/charts';
 import { TranslateInput } from '../../types/global';
 import Hint from '../elements/Hint';
 import ChartButton from './ChartButton';
+import {
+  getMaxGraphValue,
+  getMinGraphValue,
+  numberLength,
+  isGraphData,
+  getMaxValue,
+  getMinValue,
+  getCompanyName,
+  convertData,
+  formatToolTip
+} from './graph-helpers';
 
 interface ChartMultiProps {
   graphData: FinancialGraphType[];
@@ -22,7 +38,8 @@ interface ChartMultiProps {
   disabled?: boolean;
   subHeader?: TranslateInput;
   currencySymbol?: string;
-  chartType?: 'currency' | 'percentage' | 'ratio';
+  chartType?: FinancialTrendCategories;
+  showLabels?: boolean;
 }
 
 const ChartMulti = ({
@@ -33,16 +50,13 @@ const ChartMulti = ({
   disabled,
   currencySymbol,
   chartType,
-  subHeader
+  subHeader,
+  showLabels
 }: ChartMultiProps) => {
   const [data, setData] = useState<FinancialGraphType[] | null>(null);
   const [selectedGraphIndex, setSelectedGraphIndex] = useState<number | null>(
     0
   );
-
-  const numberLength = (num: number) => {
-    return num.toFixed().replace('.', '').length;
-  };
 
   useEffect(() => {
     data !== graphData && setData(graphData);
@@ -50,18 +64,11 @@ const ChartMulti = ({
   }, []);
 
   const companyColour = '#022D45';
-  const benchmarkColour = '#278EC8';
-  const green = '#2BAD01';
+  // const benchmarkColour = '#278EC8';
+  // const green = '#2BAD01';
 
-  const graphColors = (i: number): string => {
-    return i === 0 ? companyColour : i === 1 ? benchmarkColour : green;
-  };
-
-  const companyIndex = 0;
-  const benchmarkIndex = 1;
-
-  const companyGraph = graphData[companyIndex];
-  const benchmarkGraph = graphData[benchmarkIndex];
+  const companyGraph = graphData[0];
+  const benchmarkGraph = graphData[1];
 
   // get largest y value from all graphs
   const largestValue = useMemo(() => {
@@ -85,9 +92,7 @@ const ChartMulti = ({
     return Math.min(smallestCompanyValue || 0, smallestBenchmarkValue || 0);
   }, [companyGraph, benchmarkGraph]);
 
-  // length of number from the largest y value
   const largestValueLength = numberLength(largestValue);
-
   // is largest value over 99,000,000 ? should use as millions
   const useMillions = chartType === 'currency' && largestValueLength > 8;
   //  is largest value over 1000 and less than 100,000,000 ? should use as thousands
@@ -96,62 +101,23 @@ const ChartMulti = ({
     largestValueLength > 4 &&
     largestValueLength <= 8;
 
-  const convertData = (graph: GraphDataType[]) => {
-    return graph?.map((data: GraphDataType) => {
-      return {
-        x: data.x,
-        y: useMillions
-          ? data.y / 1000000
-          : useThousands
-          ? data.y / 1000
-          : data.y
-      };
-    });
-  };
-
   // company graphs with recalculated y values
   const convertedCompanyGraph = {
     name: companyGraph.name,
-    data: convertData(companyGraph.data)
-  };
-
-  // benchmark graphs with recalculated y values
-  const convertedBenchmarkGraph = {
-    name: benchmarkGraph?.name,
-    data: convertData(benchmarkGraph?.data)
-  };
-
-  const isGraphData = (graph: any): boolean => {
-    return graph?.data.some((value: GraphDataType) => value.y !== 0);
+    data: convertData(companyGraph.data, useMillions, useThousands)
   };
 
   const isBenchmarkData = isGraphData(benchmarkGraph);
-
-  const maxValue =
-    largestValueLength > 8
-      ? largestValue / 1000000
-      : largestValueLength >= 4 && largestValueLength <= 8
-      ? largestValue / 1000
-      : largestValue;
-
-  const minValue = Math.min(
-    numberLength(smallestValue) > 8
-      ? smallestValue / 1000000
-      : numberLength(smallestValue) >= 4 && numberLength(smallestValue) <= 8
-      ? smallestValue / 1000
-      : smallestValue
-  );
+  const maximumDataValue = getMaxValue(largestValue, largestValueLength);
+  const minimumDataValue = getMinValue(smallestValue);
+  const maxToRender = getMaxGraphValue(disabled, chartType, maximumDataValue);
+  const minToRender = getMinGraphValue(disabled, chartType, minimumDataValue);
 
   const t = useTranslations();
 
-  // capital case company name from uppercase
-  const companyName = companyGraph.name
-    ?.toLowerCase()
-    .split(' ')
-    .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+  const companyName = getCompanyName(companyGraph);
 
-  const typeSubheader =
+  const chartTypeText =
     chartType === 'currency' && useMillions
       ? `${currencySymbol} ${t('millions')}`
       : chartType === 'currency' && !useMillions
@@ -160,6 +126,8 @@ const ChartMulti = ({
       ? `${t('percentage')} %`
       : chartType === 'ratio'
       ? t('ratio')
+      : chartType === 'days'
+      ? t('days')
       : null;
 
   return (
@@ -173,43 +141,34 @@ const ChartMulti = ({
         <div className="">
           <h5 className="pb-2">{header}</h5>
           <p className="opacity-70 print:opacity-100 print:text-gray-400">
-            {typeSubheader || subHeader}
+            {chartTypeText || subHeader}
           </p>
         </div>
         <Hint title={t(`${hintTitle}`)} body={t(`${hintBody}`)} />
       </div>
       <ChartContainer
+        background={true}
+        tickCount={6}
         height={220}
         width={200}
-        max={
-          disabled
-            ? 1
-            : maxValue <= 0
-            ? 0
-            : maxValue > 0 && 1
-            ? maxValue * 1.4
-            : maxValue * 1.2
-        }
-        min={disabled ? 0 : minValue}
+        max={maxToRender}
+        min={minToRender}
       >
-        {/* ===== Red annotation line through 0 values =====*/}
-
-        {/* ==== used in example here: https://formidable.com/open-source/victory/guides/custom-charts/ ==== */}
-
+        {/* Red annotation line through 0 values */}
         {!disabled && (
           <VictoryLine
-            data={[{ y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }]}
+            data={[{ y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }]}
             style={{
               data: {
-                stroke: 'black',
-                strokeWidth: 1
+                stroke: '#E58A2E',
+                strokeWidth: 2
               }
             }}
             standalone={true}
           />
         )}
 
-        {/* ==== Company Graph ===== */}
+        {/* Company Graph */}
         <VictoryArea
           key={`victory-area-${companyGraph.name}`}
           animate={{
@@ -221,14 +180,80 @@ const ChartMulti = ({
           style={{
             data: {
               fill: companyColour,
-              fillOpacity: companyIndex === selectedGraphIndex ? '0.65' : '0.2',
+              fillOpacity: 0.6,
               stroke: companyColour,
               strokeOpacity: 1
             }
           }}
         />
-        {/* ===== Benchmark Graph ===== */}
+
+        {!disabled && (
+          <VictoryGroup>
+            <VictoryScatter
+              key={`victory-scatter-${companyGraph.name}`}
+              data={convertedCompanyGraph.data}
+              size={2}
+              y0={() => minToRender * 0.8}
+              style={{
+                data: {
+                  strokeWidth: 1,
+                  stroke: companyColour,
+                  strokeOpacity: 1,
+                  fill: companyColour,
+                  fillOpacity: 1
+                }
+              }}
+              labels={({ datum }) =>
+                formatToolTip(datum.y, chartType, useMillions)
+              }
+              {...(showLabels && {
+                labelComponent: (
+                  <VictoryTooltip
+                    flyoutHeight={25}
+                    style={{
+                      fill: '#fff',
+                      fontSize: 10,
+                      padding: 5
+                    }}
+                    flyoutStyle={{
+                      fill: companyColour
+                    }}
+                  />
+                )
+              })}
+            />
+          </VictoryGroup>
+        )}
+      </ChartContainer>
+      <div className="flex flex-col text-xxs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
+        <ChartButton
+          onClick={setSelectedGraphIndex}
+          selectedGraphIndex={selectedGraphIndex}
+          title={companyName}
+          graphIndex={0}
+          bg="bg-[#022D45]"
+          border="border-2 border-[#022D45]"
+        />
         {isBenchmarkData && (
+          <ChartButton
+            onClick={setSelectedGraphIndex}
+            selectedGraphIndex={selectedGraphIndex}
+            title={benchmarkGraph.name}
+            graphIndex={1}
+            bg="bg-[#278EC8]"
+            border="border-2 border-[#278EC8]"
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ChartMulti;
+
+// Benchmark graphs have been removed - might come back - 25.01.22
+// Benchmark graph area
+/* {isBenchmarkData && (
           <VictoryArea
             key={`victory-area-${benchmarkGraph.name}`}
             animate={{
@@ -247,36 +272,10 @@ const ChartMulti = ({
               }
             }}
           />
-        )}
+        )} */
 
-        {!disabled && (
-          <VictoryGroup>
-            {/* ====================== */}
-            {/* Company Scatter Points */}
-            {/* ====================== */}
-            <VictoryScatter
-              key={`victory-scatter-${companyGraph.name}`}
-              data={convertedCompanyGraph.data}
-              size={2}
-              y0={() => minValue * 0.8}
-              style={{
-                data: {
-                  strokeWidth: 1,
-                  stroke: graphColors(companyIndex),
-                  strokeOpacity:
-                    companyIndex === selectedGraphIndex ? '1' : '0.4',
-                  fill:
-                    companyIndex !== selectedGraphIndex
-                      ? 'white'
-                      : graphColors(companyIndex),
-                  fillOpacity: companyIndex === selectedGraphIndex ? '1' : '0'
-                }
-              }}
-            />
-            {/* ====================== */}
-            {/* Benchmark Scatter Points */}
-            {/* ====================== */}
-            {isBenchmarkData && (
+// Benchmark Scatter Points
+/* {isBenchmarkData && (
               <VictoryScatter
                 key={`victory-scatter-${benchmarkGraph.name}`}
                 data={convertedBenchmarkGraph.data}
@@ -297,32 +296,4 @@ const ChartMulti = ({
                   }
                 }}
               />
-            )}
-          </VictoryGroup>
-        )}
-      </ChartContainer>
-      <div className="flex flex-col text-xxs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
-        <ChartButton
-          onClick={setSelectedGraphIndex}
-          selectedGraphIndex={selectedGraphIndex}
-          title={companyName}
-          graphIndex={companyIndex}
-          bg="bg-[#022D45]"
-          border="border-2 border-[#022D45]"
-        />
-        {isBenchmarkData && (
-          <ChartButton
-            onClick={setSelectedGraphIndex}
-            selectedGraphIndex={selectedGraphIndex}
-            title={benchmarkGraph.name}
-            graphIndex={benchmarkIndex}
-            bg="bg-[#278EC8]"
-            border="border-2 border-[#278EC8]"
-          />
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default ChartMulti;
+            )} */

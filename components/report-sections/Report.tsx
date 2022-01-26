@@ -93,7 +93,7 @@ const Report = ({
 
   // reversing array to get the latest 5 years of financials
   const lastFiveYearsRiskMetrics = React.useMemo(
-    () => riskMetrics.slice(0, 5) || [],
+    () => riskMetrics.reverse().slice(0, 5) || [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data.risk_metrics]
   );
@@ -264,7 +264,7 @@ const Report = ({
           />
         </div>
         <RiskMetricGraphs
-          data={lastFiveYearsRiskMetrics}
+          data={lastFiveYearsRiskMetrics.reverse()}
           companyName={companyName}
         />
         <BondRating score={latestRiskMetrics?.bond_rating_equivalent} />

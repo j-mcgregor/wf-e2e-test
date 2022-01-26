@@ -15,9 +15,9 @@ const fontSize = 8;
 // Layout
 const padding = 0;
 const baseProps = {
-  width: 250,
-  height: 250,
-  padding: 50
+  // width: 250,
+  // height: 250,
+  // padding: 50
 };
 
 //  DEFAULT LABEL STYLES
@@ -33,7 +33,7 @@ const baseLabelStyles = {
 // DATA POINTS ALONG GRAPH LINE
 const dataLabelStyles = {
   fontSize: 10,
-  padding: 12,
+  // padding: 12,
   fill: 'black',
   fontWeight: 'bold'
 };
@@ -47,7 +47,7 @@ const areaLabelStyles = {
 const centeredLabelStyles = assign({ textAnchor: 'middle' }, baseLabelStyles);
 
 // Strokes
-const strokeDasharray = '10, 5';
+// const strokeDasharray = '10, 5';
 const strokeLinecap = 'round';
 const strokeLinejoin = 'round';
 
@@ -73,17 +73,16 @@ export const theme = {
           stroke: darkBlue,
           strokeWidth: 0,
           strokeLinecap,
-          strokeLinejoin
+          strokeLinejoin,
+          padding: 20
         },
         axisLabel: assign({}, centeredLabelStyles, {
           // padding,
           stroke: 'transparent'
         }),
         grid: {
-          fill: 'none',
-          stroke: 'black',
-          strokeDasharray,
-          strokeWidth: 0,
+          stroke: 'transparent',
+          strokeWidth: 0.2,
           strokeLinecap,
           strokeLinejoin,
           pointerEvents: 'painted'
@@ -91,6 +90,14 @@ export const theme = {
         tickLabels: assign({}, baseLabelStyles, {
           fill: darkBlue
         })
+        // ticks: {
+        //   fill: 'black',
+        //   size: 5,
+        //   stroke: darkBlue,
+        //   strokeWidth: 1,
+        //   strokeLinecap,
+        //   strokeLinejoin
+        // }
       }
     },
     baseProps
@@ -109,14 +116,12 @@ export const theme = {
       }
     },
     baseProps
-  )
-
-  // tooltip: {
-  //   style: {
-  //     fontFamily: sansSerif,
-  //     fill: 'transparent',
-  //     stroke: 'transparent',
-  //     strokeWidth: 0
-  //   }
-  // }
+  ),
+  line: assign({
+    style: {
+      tooltip: {
+        fontSize: 100
+      }
+    }
+  })
 };

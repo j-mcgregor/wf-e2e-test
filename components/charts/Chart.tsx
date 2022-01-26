@@ -96,6 +96,7 @@ const Chart = ({
             data={data}
             size={3}
             style={{ data: { fill: darkBlue } }}
+            y0={() => minDomain * 0.8}
             {...(showLabels && {
               labels: ({ datum }) => (toolTipValue !== datum.y ? datum.y : null)
             })}

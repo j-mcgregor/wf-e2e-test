@@ -35,7 +35,6 @@ export const calculateSMEZScoreMax = (x: number) => {
 
 export const calculateSMEZScoreRotation = (value: number) => {
   const max = calculateSMEZScoreMax(value);
-  const min = max / 500 > 1.0 ? 1.0 : max / 500;
 
   // The result needs to be times by 260º and then subtract 130 to get the correct rotation value.
   const angle = max * 260 - 130;

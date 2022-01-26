@@ -85,7 +85,7 @@ const createChart = (
   subHeader: string,
   hint: HintTypeProps,
   data: MultiGraphDataType[],
-  type?: 'currency' | 'ratio' | 'percentage'
+  type?: 'currency' | 'ratio' | 'percentage' | 'days'
 ): ReportChartType => {
   // function to find max y value
   return {
@@ -397,7 +397,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           y: Number(year.days_receivable?.toFixed(2)) || 0
         }))
       })),
-      'currency'
+      'days'
     ),
   days_payable: (data: MultiGraphDataType[]) =>
     createChart(
@@ -414,7 +414,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           y: Number(year?.days_payable?.toFixed(2)) || 0
         }))
       })),
-      'currency'
+      'days'
     ),
   ebitda_margin: (data: MultiGraphDataType[]) =>
     createChart(
@@ -428,7 +428,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number(year?.ebitda_margin?.toFixed(3)) || 0
+          y: Number(year?.ebitda_margin?.toFixed(2)) || 0
         }))
       })),
       'ratio'
@@ -445,7 +445,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number(year?.debt_total_assets?.toFixed(3)) || 0
+          y: Number(year?.debt_total_assets?.toFixed(2)) || 0
         }))
       })),
       'ratio'
@@ -462,7 +462,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number(year?.debt_equity?.toFixed(3)) || 0
+          y: Number(year?.debt_equity?.toFixed(2)) || 0
         }))
       })),
       'ratio'
@@ -479,7 +479,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number(year?.equity_book_value_total_assets?.toFixed(3)) || 0
+          y: Number(year?.equity_book_value_total_assets?.toFixed(2)) || 0
         }))
       })),
       'ratio'
@@ -496,10 +496,10 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number((year?.tangible_total_assets * 100).toFixed(3)) || 0
+          y: Number((year?.tangible_total_assets).toFixed(2)) || 0
         }))
       })),
-      'percentage'
+      'ratio'
     ),
   intangible_fixed_assets: (data: MultiGraphDataType[]) =>
     createChart(
@@ -513,10 +513,10 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number((year?.intangible_total_assets * 100).toFixed(3)) || 0
+          y: Number((year?.intangible_total_assets).toFixed(2)) || 0
         }))
       })),
-      'percentage'
+      'ratio'
     ),
   interest_coverage_ratio: (data: MultiGraphDataType[]) =>
     createChart(
@@ -530,7 +530,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number(year?.interest_cover?.toFixed(3)) || 0
+          y: Number(year?.interest_cover?.toFixed(2)) || 0
         }))
       })),
       'ratio'
@@ -581,7 +581,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number(year?.liquidity?.toFixed(3)) || 0
+          y: Number(year?.liquidity?.toFixed(2)) || 0
         }))
       })),
       'ratio'
@@ -598,7 +598,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number(year?.current_ratio?.toFixed(3)) || 0
+          y: Number(year?.current_ratio?.toFixed(2)) || 0
         }))
       })),
       'ratio'
@@ -615,10 +615,10 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number(year?.net_debt?.toFixed(3)) || 0
+          y: Number(year?.net_debt?.toFixed(2)) || 0
         }))
       })),
-      'ratio'
+      'currency'
     ),
   net_debt_ebitda: (data: MultiGraphDataType[]) =>
     createChart(
@@ -632,7 +632,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
           y: Number(year?.net_debt_ebitda?.toFixed(2)) || 0
         }))
       })),
-      'currency'
+      'ratio'
     ),
   debt_service_coverage_ratio: (data: MultiGraphDataType[]) =>
     createChart(
@@ -646,7 +646,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number(year?.debt_service_coverage?.toFixed(3)) || 0
+          y: Number(year?.debt_service_coverage?.toFixed(2)) || 0
         }))
       })),
       'ratio'

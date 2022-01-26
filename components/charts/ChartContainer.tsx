@@ -1,10 +1,10 @@
 import {
   VictoryChart,
-  VictoryTooltip,
   VictoryVoronoiContainer,
   VictoryAxis,
   VictoryLabel,
-  LineSegment
+  LineSegment,
+  Background
 } from 'victory';
 
 import { theme } from './theme';
@@ -19,6 +19,7 @@ interface ChartContainerProps {
   showLabels?: boolean;
   tickCount?: number;
   type?: string;
+  background?: boolean;
 }
 const ChartContainer = ({
   children,
@@ -29,7 +30,7 @@ const ChartContainer = ({
   xAxisLabelAngle = 0,
   showLabels = true,
   tickCount,
-  type
+  background = false
 }: ChartContainerProps) => {
   return (
     <div className="px-1">
@@ -40,31 +41,21 @@ const ChartContainer = ({
         width={width}
         theme={theme}
         padding={{
-          left: 40,
-          top: 25,
+          left: 35,
+          top: 20,
           right: 20,
           bottom: 50
         }}
         containerComponent={
           <VictoryVoronoiContainer
-            responsive={true} // this is used to control responsive mode and allows custom size if needed
+            disable={false}
+            responsive={true}
             labels={({ datum }) => datum.y}
-            {...(showLabels && {
-              labelComponent: (
-                <VictoryTooltip
-                  flyoutHeight={25}
-                  style={{
-                    fontFamily: 'Helvetica',
-                    fontSize: '8px',
-                    fontWeight: 'bold',
-                    fill: 'white',
-                    padding: 6
-                  }}
-                />
-              )
-            })}
           />
         }
+        {...(background && {
+          style: { background: { fill: 'grey', opacity: 0.15 } }
+        })}
       >
         {/* ==== VictoryAxis components needed offset axis labels when negative values ==== */}
         <VictoryAxis
@@ -74,13 +65,14 @@ const ChartContainer = ({
           tickCount={tickCount}
         />
         <VictoryAxis
+          tickCount={6}
           gridComponent={<LineSegment />}
           minDomain={0}
           tickFormat={num =>
-            num % 1 !== 0 ? num.toFixed(2).replace('.', ',') : num
+            num % 1 !== 0 ? Number(num).toFixed(2).toLocaleString() : num
           } // formats tick labels based on data from graph
           dependentAxis
-          offsetX={25}
+          offsetX={22}
           crossAxis={false}
           tickLabelComponent={<VictoryLabel dy={-5} />}
         />
