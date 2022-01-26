@@ -172,3 +172,16 @@ export interface MacroEconomics {
   credit_rating: MacroEconomic;
   stock_market: MacroEconomic;
 }
+
+export interface Benchmarks {
+  region: {
+    sme_z_score: number;
+    probability_of_default_1_year: number;
+    loss_given_default: number;
+  };
+  sector: {
+    sme_z_score: number;
+    probability_of_default_1_year: number;
+    loss_given_default: number;
+  };
+}

@@ -212,8 +212,14 @@ const Report = ({
             value={latestRiskMetrics?.sme_z_score}
             rotation={smeZScoreRotation}
             secondaryValues={[
-              { name: INDUSTRY_BENCHMARK, value: null },
-              { name: REGION_BENCHMARK, value: null }
+              {
+                name: INDUSTRY_BENCHMARK,
+                value: data?.benchmarks?.sector?.sme_z_score ?? null
+              },
+              {
+                name: REGION_BENCHMARK,
+                value: data?.benchmarks?.region?.sme_z_score ?? null
+              }
             ]}
             hint={
               <Hint
@@ -228,8 +234,18 @@ const Report = ({
             rotation={poDRotation}
             asMetric="%"
             secondaryValues={[
-              { name: INDUSTRY_BENCHMARK, value: null },
-              { name: REGION_BENCHMARK, value: null }
+              {
+                name: INDUSTRY_BENCHMARK,
+                value:
+                  data?.benchmarks?.sector?.probability_of_default_1_year ??
+                  null
+              },
+              {
+                name: REGION_BENCHMARK,
+                value:
+                  data?.benchmarks?.region?.probability_of_default_1_year ??
+                  null
+              }
             ]}
             hint={
               <Hint
@@ -250,8 +266,14 @@ const Report = ({
             rotation={lGDDRotation}
             asMetric="%"
             secondaryValues={[
-              { name: INDUSTRY_BENCHMARK, value: null },
-              { name: REGION_BENCHMARK, value: null }
+              {
+                name: INDUSTRY_BENCHMARK,
+                value: data?.benchmarks?.sector?.loss_given_default ?? null
+              },
+              {
+                name: REGION_BENCHMARK,
+                value: data?.benchmarks?.region?.loss_given_default ?? null
+              }
             ]}
             hint={
               <Hint

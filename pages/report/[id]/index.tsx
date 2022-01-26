@@ -15,6 +15,7 @@ import SkeletonReport from '../../../components/skeletons/SkeletonReport';
 import getServerSidePropsWithAuth from '../../../lib/auth/getServerSidePropsWithAuth';
 import fetcher from '../../../lib/utils/fetcher';
 import {
+  Benchmarks,
   BoardMember,
   DataReliabilityType,
   FinancialYear,
@@ -36,7 +37,7 @@ export interface ReportDataProps {
   company_name: string;
   details: SummaryContact & SummaryInfo;
   financials: FinancialYear[];
-  benchmarks: FinancialYear[];
+  benchmarks: Benchmarks;
   board_members?: BoardMember[];
   directors: BoardMember[];
   executives: BoardMember[];
