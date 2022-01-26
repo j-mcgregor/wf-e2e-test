@@ -1,17 +1,20 @@
-import { useTranslations } from 'use-intl';
-import { useState, useEffect, useRef, KeyboardEvent } from 'react';
-import { CompanyType } from '../../types/global';
 import {
   ExclamationCircleIcon,
   QuestionMarkCircleIcon,
   SearchIcon
 } from '@heroicons/react/outline';
-import useOutsideClick from '../../hooks/useOutsideClick';
-import LoadingIcon from '../svgs/LoadingIcon';
-import ResultCompany from '../elements/ResultCompany';
+import * as Sentry from '@sentry/nextjs';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
-import fetcher from '../../lib/utils/fetcher';
+import { useTranslations } from 'use-intl';
+
+import useOutsideClick from '../../hooks/useOutsideClick';
 import debounce from '../../lib/utils/debounce';
+import fetcher from '../../lib/utils/fetcher';
+import { isJsonString } from '../../lib/utils/json-helpers';
+import { CompanyType } from '../../types/global';
+import ResultCompany from '../elements/ResultCompany';
+import LoadingIcon from '../svgs/LoadingIcon';
 
 interface SearchBoxProps {
   disabled?: boolean;
@@ -51,10 +54,23 @@ const SearchBox = ({
     companySearch();
   };
 
-  const { data } = useSWR<CompanyType[] & { error?: string }>(
+  const { data } = useSWR<CompanyType[] & { error?: string; message?: string }>(
     `/api/search-companies?query=${searchValue}&country=${countryCode}`,
     fetcher
   );
+
+  useEffect(() => {
+    if (data?.error) {
+      Sentry.captureException(new Error(data.error), {
+        extra: {
+          data:
+            data.message && isJsonString(data.message)
+              ? JSON.parse(data.message)
+              : data.message
+        }
+      });
+    }
+  }, [data]);
 
   // handle the closing of the dropdown so that state can be set
   const containerRef = useRef<HTMLDivElement>(null);

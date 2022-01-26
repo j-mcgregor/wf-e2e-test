@@ -108,8 +108,25 @@ const searchUKCompaniesHouse = async (
       const results = await res.json();
       return { ok: true, data: results };
     }
+
     if (!res.ok) {
-      return { ok: false, error: true, message: res.statusText };
+      const html = await res.text();
+      // cleaned repsponse to be sent to Sentry
+      const err = {
+        ok: res.ok,
+        status: res.status,
+        statusText: res.statusText,
+        headers: res.headers,
+        url: res.url,
+        html
+      };
+
+      return {
+        ok: false,
+        error: true,
+        message: JSON.stringify(err),
+        status: res.status
+      };
     }
   } catch (e: any) {
     return { ok: false, error: true, message: e.message };

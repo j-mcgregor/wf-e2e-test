@@ -1,17 +1,19 @@
-import { useTranslations } from 'use-intl';
-import { useState, useRef, KeyboardEvent } from 'react';
-import { CompanyType } from '../../types/global';
 import {
   ExclamationCircleIcon,
   QuestionMarkCircleIcon,
   SearchIcon
 } from '@heroicons/react/outline';
-import useOutsideClick from '../../hooks/useOutsideClick';
-import LoadingIcon from '../svgs/LoadingIcon';
-import ResultCompany from '../elements/ResultCompany';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
+import { useTranslations } from 'use-intl';
+import * as Sentry from '@sentry/nextjs';
+
+import useOutsideClick from '../../hooks/useOutsideClick';
 import fetcher from '../../lib/utils/fetcher';
-import Button from '../elements/Button';
+import { CompanyType } from '../../types/global';
+import ResultCompany from '../elements/ResultCompany';
+import LoadingIcon from '../svgs/LoadingIcon';
+import { isJsonString } from '../../lib/utils/json-helpers';
 
 interface SearchBoxProps {
   disabled?: boolean;
@@ -27,10 +29,9 @@ const AlternativeSearchBox = ({
   const t = useTranslations();
 
   const [searchHasFocus, setSearchHasFocus] = useState(false);
-  const [inputValue, setInputValue] = useState('');
   const [searchValue, setSearchValue] = useState<string | null>('');
 
-  // const [searchSubmitted, setSearchSubmitted] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   const loadingText = t('loading');
   const searchStartText = t('search_start');
@@ -54,21 +55,35 @@ const AlternativeSearchBox = ({
 
   const handleSearch = (): void => {
     if (inputValue.length > 0) {
-      setSearchHasFocus(!searchHasFocus);
+      setSearchHasFocus(true);
       setSearchValue(inputValue);
     }
   };
 
-  // COUNTRY FORCED TO GB TO TEST API - NEEDS TO BE SET BACK TO 'countryCode' for alt counties API's
-  const { data } = useSWR<CompanyType[] & { error?: string }>(
+  const { data } = useSWR<CompanyType[] & { error?: string; message?: string }>(
     `/api/search-companies?query=${searchValue}&country=${countryCode}`,
     fetcher
   );
+
+  useEffect(() => {
+    if (data?.error) {
+      Sentry.captureException(new Error(data.error), {
+        extra: {
+          data:
+            data.message && isJsonString(data.message)
+              ? JSON.parse(data.message)
+              : data.message
+        }
+      });
+    }
+  }, [data]);
 
   const disableSearch = inputValue.length === 0 || (!!searchValue && !data);
 
   // handle the closing of the dropdown so that state can be set
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const isLoading = searchValue && !data;
 
   useOutsideClick(containerRef, () => setSearchHasFocus(false));
 
@@ -89,6 +104,7 @@ const AlternativeSearchBox = ({
           className="focus:ring-highlight focus:border-highlight block w-full pl-10 text-sm border-primary rounded bg-bg pr-56"
           placeholder={`${t('enter_company_name')}`}
           onChange={e => setInputValue(e.target.value)}
+          onFocus={() => setSearchHasFocus(true)}
         />
         {data && data.length > 0 && (
           <label className="absolute right-5 top-2 sm:right-[8.5rem]">
@@ -112,7 +128,7 @@ const AlternativeSearchBox = ({
         <div className="relative">
           {searchHasFocus && (
             <div className="px-4 border border-primary rounded h-[100px] absolute w-full z-10 bg-white flex flex-col space-x-6 justify-center items-center text-xl">
-              {searchValue && !data ? (
+              {isLoading ? (
                 // shows if there is searchValue but no data (loading)
                 <>
                   <LoadingIcon className="mb-1 w-6 h-6" aria-hidden="true" />

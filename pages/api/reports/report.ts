@@ -72,7 +72,8 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
       if (!report.ok) {
         if (report.status === 404) {
           return response.status(404).json({
-            error: NO_REPORT_FOUND
+            error: NO_REPORT_FOUND,
+            message: `Error details: ${report?.details}`
           });
         }
 

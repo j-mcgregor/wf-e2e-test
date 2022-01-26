@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-non-literal-regexp */
+import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
 
@@ -22,14 +23,21 @@ describe('AlternativeSearchBox', () => {
 
     expect(screen.queryByText(/searching\.\.\./i)).toBeNull();
 
-    userEvent.type(
-      screen.getByPlaceholderText(/enter company name\.\.\./i),
-      'boo{enter}'
-    );
+    fireEvent.input(screen.getByPlaceholderText(/enter company name\.\.\./i), {
+      target: {
+        value: 'boo'
+      }
+    });
 
     expect(
       screen.getByPlaceholderText(/enter company name\.\.\./i)
     ).toHaveValue('boo');
+
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /search/i
+      })
+    );
 
     expect(screen.getByText(/searching\.\.\./i)).toBeInTheDocument();
 

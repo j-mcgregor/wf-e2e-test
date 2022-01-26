@@ -1,20 +1,17 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-
 import { withSentry } from '@sentry/nextjs';
 import { getSession } from 'next-auth/client';
 
+import Company from '../../lib/funcs/company';
+import { orbisAvailableSearchCountries } from '../../lib/settings/sme-calc.settings';
 import {
-  UNAUTHORISED,
-  SEARCH_ERROR,
+  COUNTRY_CODE_REQUIRED,
   INVALID_COUNTRY_CODE,
-  COUNTRY_CODE_REQUIRED
+  UNAUTHORISED
 } from '../../lib/utils/error-codes';
+import { handleSearchError } from '../../lib/utils/error-handling';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import Company from '../../lib/funcs/company';
-import { ApiResType } from '../../types/global';
-import { orbisAvailableSearchCountries } from '../../lib/settings/sme-calc.settings';
-
 // Declaring function for readability with Sentry wrapper
 const SearchCompanies = async (
   request: NextApiRequest,
@@ -63,7 +60,7 @@ const SearchCompanies = async (
       searchResults?.data?.items
     );
 
-    response.status(200).json(reducedCompanies);
+    return response.status(200).json(reducedCompanies);
   } else if (
     countryCode &&
     orbisAvailableSearchCountries.includes(countryCode)
@@ -92,15 +89,6 @@ const SearchCompanies = async (
     return response
       .status(404)
       .json({ error: INVALID_COUNTRY_CODE, message: 'Invalid country code.' });
-  }
-};
-
-const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
-  if (!results || !results.ok) {
-    return response.status(500).json({
-      error: SEARCH_ERROR,
-      message: 'Error when accessing API.'
-    });
   }
 };
 

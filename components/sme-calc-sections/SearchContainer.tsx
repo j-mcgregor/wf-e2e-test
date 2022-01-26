@@ -142,6 +142,16 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
       accounts_type: 0
     };
 
+    const sentryExtraInfo = {
+      data: {
+        body: {
+          ...params,
+          country: selectedCountry?.optionName,
+          company_name: selectedCompany?.title
+        }
+      }
+    };
+
     try {
       const createReportRes = await fetcher(
         '/api/reports/report',
@@ -163,11 +173,17 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         // redirect to the report page
         router.push(`/report/${createReportRes.reportId}`);
       }
+
       if (!createReportRes?.reportId) {
-        Sentry.captureException({
-          error: createReportRes.error,
-          message: createReportRes.message
+        Sentry.captureException(new Error(createReportRes.error), {
+          extra: {
+            data: {
+              ...sentryExtraInfo.data,
+              ok: createReportRes.ok
+            }
+          }
         });
+
         setError({
           error: createReportRes.error,
           message: createReportRes.message
@@ -175,11 +191,11 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         setLoading(false);
       }
     } catch (err) {
-      Sentry.captureException(err);
+      Sentry.captureException(err, {
+        extra: sentryExtraInfo
+      });
     }
   };
-
-  const countryCode = selectedCountry?.code;
 
   return (
     <div className=" text-sm my">
