@@ -23,6 +23,7 @@ import {
   MacroEconomics,
   Profile,
   Reliability,
+  RiskOutlookData,
   ShareholderType,
   Subsidiary,
   SummaryContact,
@@ -44,6 +45,7 @@ export interface ReportDataProps {
   financial_ratios: {
     [key: string]: number;
   }[];
+  risk_outlook: RiskOutlookData;
   risk_metrics: {
     bond_rating_equivalent: RatingType;
     sme_z_score: number;

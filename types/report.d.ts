@@ -188,6 +188,20 @@ export interface Benchmarks {
     loss_given_default: number;
   };
 }
+
+export interface RiskOutlookData {
+  leverage: string;
+  liquidity: string;
+  profitability: string;
+  governance: {
+    judgements_12_months: number;
+    payment_remarks_12_months: number;
+  };
+  benchmark: {
+    region: string;
+    sector: string;
+  };
+}
 /**
  * **********************
  * CSV Report Upload:

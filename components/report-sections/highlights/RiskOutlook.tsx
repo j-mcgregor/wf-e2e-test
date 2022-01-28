@@ -1,111 +1,22 @@
 import { useTranslations } from 'next-intl';
+
+import { RiskOutlookData } from '../../../types/report';
 import Hint from '../../elements/Hint';
 
-import { FinancialYear, LegalEvent } from '../../../types/report';
-import { toUpper } from 'lodash';
-import { Events } from 'react-scroll';
-
-type BenchmarksType = {
-  value: number;
-  industry_benchmark?: number | null;
-  regional_benchmark?: number | null;
-};
-
-interface OutlookProps {
+interface RiskOutlookProps {
   hintTitle: string;
   hintBody: string;
-  financials: FinancialYear[];
-  benchmarks: BenchmarksType;
   country?: string;
-  legalEvents: LegalEvent[];
+  riskOutlookData?: RiskOutlookData;
 }
-
-const riskOutlookSettings = {
-  overLeveragedValue: 4000,
-  liquidityOptimalValue: 4000,
-  profitabilityMarkerValue: 4000
-};
 
 const RiskOutlook = ({
   hintTitle,
   hintBody,
-  financials,
-  benchmarks,
   country,
-  legalEvents
-}: OutlookProps) => {
+  riskOutlookData
+}: RiskOutlookProps) => {
   const t = useTranslations();
-
-  const allJudgements = legalEvents.filter((event: LegalEvent) => {
-    const types = event.types.map((type: string) => type.toLowerCase());
-    return types.includes('default') || types.includes('payment remark')
-      ? event
-      : null;
-  }).length;
-
-  const paymentRemarks = legalEvents.filter((event: LegalEvent) =>
-    event.types
-      .map((type: string) => type.toLowerCase())
-      .includes('payment remark')
-      ? event
-      : null
-  ).length;
-
-  const getRiskOutlook = (data: FinancialYear): string[] => {
-    const totalAssets = Number(data?.total_assets);
-
-    const shareholderFundsByAssets =
-      Number(data?.total_shareholder_funds) / totalAssets;
-
-    const workingCapitalByAssets = Number(data?.working_capital) / totalAssets;
-
-    const ebitdaByAssets = Number(data?.ebitda) / totalAssets;
-
-    const industryBenchmark =
-      benchmarks?.industry_benchmark &&
-      benchmarks?.value < benchmarks?.industry_benchmark;
-    const regionalBenchmark =
-      benchmarks?.regional_benchmark &&
-      benchmarks?.value < benchmarks?.regional_benchmark;
-
-    const leveragedString =
-      shareholderFundsByAssets > riskOutlookSettings.overLeveragedValue
-        ? t('this_company_is_highly_leveraged')
-        : t('the_company_is_well_collateralised');
-
-    const liquidityString =
-      workingCapitalByAssets > riskOutlookSettings.liquidityOptimalValue
-        ? t('there_is_good_liquidity')
-        : t('liquidity_is_below_optimum');
-
-    const profitabilityString =
-      ebitdaByAssets > riskOutlookSettings.profitabilityMarkerValue
-        ? t('an_efficiently_run_company')
-        : t('assets_are_not_being_used_profitably');
-
-    const governanceString = `${t(
-      'in_the_last_12_months'
-    )} ${allJudgements} ${t('judgements')} ${paymentRemarks} ${t(
-      'payment_remarks'
-    )}`;
-
-    const benchmarkString = `${t('the_credit_risk_is')} ${
-      industryBenchmark ? t('below') : t('above')
-    } ${t('the_average_for_this_sector_and')} ${
-      regionalBenchmark ? t('below') : t('above')
-    } ${t('the_average_for')} ${country}.`;
-
-    return [
-      leveragedString,
-      liquidityString,
-      profitabilityString,
-      governanceString,
-      benchmarkString
-    ];
-  };
-
-  // first index from financials = most recent financial year available
-  const reports = getRiskOutlook(financials[0]);
 
   return (
     <div className="flex flex-col w-full">
@@ -118,13 +29,35 @@ const RiskOutlook = ({
           className="list-disc bg-white px-8 rounded-md py-2 w-full"
           data-testid="risk-outlook-list"
         >
-          {reports.map((report, i) => {
-            return (
-              <li className="py-2 text-sm lg:text-sm" key={i}>
-                {report}
-              </li>
-            );
-          })}
+          <li className="py-2 text-sm lg:text-sm">
+            {riskOutlookData?.leverage === 'positive'
+              ? t('leverage_positive')
+              : t('leverage_negative')}
+          </li>
+          <li className="py-2 text-sm lg:text-sm">
+            {riskOutlookData?.liquidity === 'positive'
+              ? t('liquidity_positive')
+              : t('liquidity_negative')}
+          </li>
+          <li className="py-2 text-sm lg:text-sm">
+            {riskOutlookData?.profitability === 'positive'
+              ? t('profitability_positive')
+              : t('profitability_negative')}
+          </li>
+          <li className="py-2 text-sm lg:text-sm">
+            {t('governance_template', {
+              judgements: riskOutlookData?.governance?.judgements_12_months,
+              paymentRemarks:
+                riskOutlookData?.governance?.payment_remarks_12_months
+            })}
+          </li>
+          <li className="py-2 text-sm lg:text-sm">
+            {t('benchmark_template', {
+              region: riskOutlookData?.benchmark?.region,
+              sector: riskOutlookData?.benchmark?.sector,
+              country: country
+            })}
+          </li>
         </ul>
       </div>
     </div>
