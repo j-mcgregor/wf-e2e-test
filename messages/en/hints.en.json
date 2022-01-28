@@ -12,6 +12,10 @@
       "loss_given_default": {
         "title": "Lost Given Default",
         "body": "The Wiserfunding SME Z-Score is our proprietary algorithm that assess the credit risk of SME's."
+      },
+      "bond_rating_equivalent_default": {
+        "title": "Bond Rating Equivalent",
+        "body": "This is the nearest S&P long-term bond credit rating giving the risk of default matching the SME Z-Score for this company."
       }
     },
     "macro_economic_trends": {

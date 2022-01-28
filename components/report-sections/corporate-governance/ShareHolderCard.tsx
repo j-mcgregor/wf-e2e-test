@@ -37,7 +37,7 @@ const ShareHolderCard = ({
   return (
     <div
       className="bg-white flex py-3 space-x-2 px-4 justify-between items-center rounded-sm shadow-sm text-sm
-      avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs"
+      avoid-break print:shadow-none print:px-1 print:py-1 print:text-xs"
       data-testid="shareholder-card-testid"
     >
       {isShareholderIndividual ? (

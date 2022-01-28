@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import React from 'react';
 import { useTranslations } from 'use-intl';
-
+//
 import usePrintClasses from '../../hooks/usePrintClasses';
 import {
   calculateLGDRotation,
@@ -77,12 +77,12 @@ const Report = ({
   // used for report financials summary
   // and used for financial charts
   const lastFiveYearsFinancials =
-    (data?.financials && transformedFinancials?.slice(0, 5)) || [];
+    (data?.financials && transformedFinancials.slice(0, 5)) || [];
 
   const financialRatios = [...(data?.financial_ratios || [])];
 
   // TEMPORARILY REVERSING FINANCIAL_RATIOS UNTIL BACK END FIXES
-  const lastFiveYearsFinancialRatios = financialRatios.reverse()?.slice(0, 5);
+  const lastFiveYearsFinancialRatios = financialRatios?.reverse().slice(0, 5);
 
   // remove benchmarks from financial trends
   // add to speedos later
@@ -149,6 +149,10 @@ const Report = ({
   // const directors = getDirectorsFromBoardMembers(data?.board_members) || [];
 
   const latestFinancialYear = data?.financials[data.financials.length - 1];
+
+  // check whether to render commentary
+  const shouldRenderCommentary =
+    data.risk_metrics && data.risk_metrics.length > 0;
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0 pb-24">
@@ -289,31 +293,53 @@ const Report = ({
           data={lastFiveYearsRiskMetrics.reverse()}
           companyName={companyName}
         />
-        <BondRating score={latestRiskMetrics?.bond_rating_equivalent} />
+        <BondRating
+          score={latestRiskMetrics?.bond_rating_equivalent}
+          hint={
+            <Hint
+              title={t(
+                'report_hints.risk_metrics.bond_rating_equivalent_default.title'
+              )}
+              body={t(
+                'report_hints.risk_metrics.bond_rating_equivalent_default.body'
+              )}
+            />
+          }
+        />
       </HashContainer>
+
       <HashContainer name={'Highlights'} id={`highlights`}>
         <ReportSectionHeader text={t('highlights')} />
-
         <div
           className={`flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-center pb-6 print:items-start print:justify-evenly print:border-2 print:px-4 ${printClasses?.highlights?.container}`}
         >
-          <ReliabilityIndex reliability={data?.reliability_index?.value} />
+          {shouldRenderCommentary && (
+            <ReliabilityIndex reliability={data?.reliability_index?.value} />
+          )}
           {forPrint && (
             <div>
               <FinancialAccounts financialYears={transformedFinancials} />
             </div>
           )}
-          {!forPrint && <DataReliability reliability={reliabilityIndex} />}
+          {!forPrint && shouldRenderCommentary && (
+            <DataReliability reliability={reliabilityIndex} />
+          )}
         </div>
-        {forPrint && <DataReliability reliability={reliabilityIndex} />}
-        <div className="flex ">
-          <RiskOutlook
-            hintTitle="hint title"
-            hintBody="hint body"
-            country={companyAddress?.country}
-            riskOutlookData={data?.risk_outlook}
-          />
-        </div>
+        {forPrint && shouldRenderCommentary && (
+          <DataReliability reliability={reliabilityIndex} />
+        )}
+        {shouldRenderCommentary && (
+          <div className="flex">
+            <RiskOutlook
+              hintTitle="hint title"
+              hintBody="hint body"
+              financials={transformedFinancials}
+              benchmarks={{ value: latestRiskMetrics?.sme_z_score }}
+              country={companyAddress?.country}
+              legalEvents={data?.legal_events}
+            />
+          </div>
+        )}
         <div className="flex flex-col lg:flex-row py-6 justify-between">
           {!forPrint && (
             <div className="min-w-[160px]">
@@ -343,6 +369,7 @@ const Report = ({
           </div>
         </div>
       </HashContainer>
+
       <HashContainer name={'Financial Trends'} id={`financial_trends`}>
         <ReportSectionHeader text={t('financial_trends')} />
         <FinancialTrends

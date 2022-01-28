@@ -5,6 +5,7 @@ import { CompanyStatusType } from './global';
 
 export type FinancialYear = {
   [index: string]: string;
+  period?: string;
   year?: string;
   sales: string;
   profit_and_loss_before_tax: string;
