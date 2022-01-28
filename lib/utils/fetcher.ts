@@ -5,7 +5,8 @@ import * as Sentry from '@sentry/nextjs';
 const fetcher = async (
   relativeUrl: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
-  data?: object
+  data?: object | null,
+  headers?: object
 ) => {
   try {
     if (method === 'GET') {
@@ -22,7 +23,8 @@ const fetcher = async (
       method: method,
       body: data && JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...headers
       }
     });
     return res.json();

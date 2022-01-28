@@ -148,8 +148,7 @@ const Report = ({
 
   //* replaced this with new `directors` array from backend
   // const directors = getDirectorsFromBoardMembers(data?.board_members) || [];
-
-  const latestFinancialYear = data?.financials[data.financials.length - 1];
+  const latestFinancialYear = data?.financials[data.financials?.length - 1];
 
   // check whether to render commentary
   const shouldRenderCommentary =
