@@ -1,15 +1,11 @@
 import Link from '../../elements/Link';
 import { toTitleCase } from '../../../lib/utils/text-helpers';
 import LinkedinLogo from '../../elements/LinkedinLogo';
-
-interface ShareHolderCardProps {
-  firstName: string | null;
-  lastName: string | null;
-  linkedin?: string;
-  percentage?: number;
-  name: string | null;
-  type?: string;
-}
+// import UserIcon from '../../svgs/UserIcon';
+import ShareholderCardSvg from '../../svgs/backgrounds/ShareholderCardBG';
+import { ShareHolderCardProps } from '../../../types/report';
+import { OfficeBuildingIcon, UserIcon } from '@heroicons/react/outline';
+import { useTranslations } from 'next-intl';
 
 const ShareHolderCard = ({
   firstName,
@@ -34,25 +30,42 @@ const ShareHolderCard = ({
     }`;
   }
 
+  const t = useTranslations();
   return (
     <div
-      className="bg-white flex py-3 space-x-2 px-4 justify-between items-center rounded-sm shadow-sm text-sm
-      avoid-break print:shadow-none print:px-1 print:py-1 print:text-xs"
-      data-testid="shareholder-card-testid"
+      className={
+        'bg-transparent flex flex-col rounded-sm  text-sm  avoid-break  relative  print:text-xs   '
+      }
     >
-      {isShareholderIndividual ? (
-        <p className="flex-1 text-left">
-          {fullName ? fullName : name ? `${toTitleCase(name)}` : null}
+      <div
+        className="flex avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs bg-white py-3 px-2 items-center justify-between"
+        data-testid="shareholder-card-testid "
+      >
+        {isShareholderIndividual ? (
+          <UserIcon className="h-6 w-6" />
+        ) : (
+          <OfficeBuildingIcon className="h-6 w-6" />
+        )}
+        {isShareholderIndividual ? (
+          <p className="flex-1 text-left ml-1">
+            {fullName ? fullName : name ? `${toTitleCase(name)}` : null}
+          </p>
+        ) : (
+          <p className="flex-1 text-left ml-1">{name}</p>
+        )}
+        {isShareholderIndividual && (
+          <Link className="print:hidden" linkTo={linkedInLink}>
+            <LinkedinLogo />
+          </Link>
+        )}
+      </div>
+
+      <div className="relative h-8">
+        <ShareholderCardSvg className="absolute bottom-0 z-0 h-full" />
+        <p className="font-bold relative z-10 ml-3">
+          {percentage ? `${percentage}%` : t('na')}
         </p>
-      ) : (
-        <p className="flex-1 text-left">{name}</p>
-      )}
-      {isShareholderIndividual && (
-        <Link className="print:hidden" linkTo={linkedInLink}>
-          <LinkedinLogo />
-        </Link>
-      )}
-      {percentage && <p className="font-bold">{percentage}%</p>}
+      </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import React from 'react';
 
 import allMessages from '../../../../messages/en';
 import { render, screen } from '../../../../test-utils';
-import { SubsidiaryCard } from '../SubsidiaryCard';
+import EntityCard from '../../../cards/EntityCard';
 
 describe('SubsidiaryCard', () => {
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe('SubsidiaryCard', () => {
     nextRouter.useRouter = jest.fn().mockImplementation(() => ({}));
   });
   it('should render a card with a name', () => {
-    render(<SubsidiaryCard name="pogo" />, {}, allMessages);
+    render(<EntityCard name="pogo" />, {}, allMessages);
 
     expect(screen.getByText('pogo')).toBeInTheDocument();
   });

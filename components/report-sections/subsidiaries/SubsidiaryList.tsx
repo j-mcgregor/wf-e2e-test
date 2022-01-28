@@ -4,17 +4,13 @@ import React from 'react';
 import { Subsidiary } from '../../../types/report';
 import { PlaceholderBox } from '../../elements/PlaceholderBox';
 import { CircleX } from '../../svgs/CircleX';
-import { SubsidiaryCard } from './SubsidiaryCard';
+import EntityCard from '../../cards/EntityCard';
 
 interface SubsidiaryListProps {
   subsidiaries: Subsidiary[];
-  companyName: string;
 }
 
-export const SubsidiaryList = ({
-  subsidiaries,
-  companyName
-}: SubsidiaryListProps) => {
+export const SubsidiaryList = ({ subsidiaries }: SubsidiaryListProps) => {
   const t = useTranslations();
 
   return (
@@ -25,15 +21,17 @@ export const SubsidiaryList = ({
 
       {subsidiaries?.length ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 print:gap-0 print:grid-cols-4 sm:print:grid-cols-4 lg:print:grid-cols-4 print:border-2 print:px-4 print:py-2">
-          {subsidiaries.map((sub, i) => (
-            <SubsidiaryCard key={`subsidiary-${i}`} name={sub.name} />
-          ))}
+          {subsidiaries.map((sub, i) => {
+            const type = sub.iso_code ? 'corporate' : 'individual';
+            return (
+              <EntityCard key={`subsidiary-${i}`} name={sub.name} type={type} />
+            );
+          })}
         </div>
       ) : (
         <PlaceholderBox
           icon={<CircleX className="mr-3 stroke-orange-400" />}
-          message={`Sorry we could not find
-        any subsidiaries for ${companyName}`}
+          message={t('no_subsidiaries_found')}
         />
       )}
     </div>

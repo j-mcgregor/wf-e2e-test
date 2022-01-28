@@ -15,7 +15,7 @@ const SecondaryNav = ({ navigation, children }: SecondaryNavProps) => {
 
       <div
         id="secondary-layout-container"
-        className="z-10 bg-gray-100 w-full px-2 sm:px-4 md:px-8 xl:px-20 overflow-y-auto "
+        className="z-10 bg-gray-100 w-full px-2 sm:px-4 md:px-8 xl:px-12 overflow-y-auto "
       >
         <div className="max-w-5xl mx-auto xl:pt-0 pt-12">{children}</div>
       </div>

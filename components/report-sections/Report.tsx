@@ -35,6 +35,7 @@ import { SubsidiaryList } from './subsidiaries/SubsidiaryList';
 import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
+import { ParentsList } from './parents/ParentsList';
 
 const Report = ({
   data,
@@ -65,7 +66,7 @@ const Report = ({
   // remove years that are dormant
   const transformedFinancials =
     (data?.financials &&
-      data?.financials?.filter((_year, index) => {
+      data?.financials?.filter(_year => {
         // if (companyDetails?.status) {
         //   return companyDetails?.status[Number(index)] === 'Active';
         // }
@@ -241,14 +242,14 @@ const Report = ({
               {
                 name: INDUSTRY_BENCHMARK,
                 value:
-                  data?.benchmarks?.sector?.probability_of_default_1_year ??
-                  null
+                  data?.benchmarks?.sector?.probability_of_default_1_year *
+                    100 ?? null
               },
               {
                 name: REGION_BENCHMARK,
                 value:
-                  data?.benchmarks?.region?.probability_of_default_1_year ??
-                  null
+                  data?.benchmarks?.region?.probability_of_default_1_year *
+                    100 ?? null
               }
             ]}
             hint={
@@ -272,11 +273,13 @@ const Report = ({
             secondaryValues={[
               {
                 name: INDUSTRY_BENCHMARK,
-                value: data?.benchmarks?.sector?.loss_given_default ?? null
+                value:
+                  data?.benchmarks?.sector?.loss_given_default * 100 ?? null
               },
               {
                 name: REGION_BENCHMARK,
-                value: data?.benchmarks?.region?.loss_given_default ?? null
+                value:
+                  data?.benchmarks?.region?.loss_given_default * 100 ?? null
               }
             ]}
             hint={
@@ -333,10 +336,8 @@ const Report = ({
             <RiskOutlook
               hintTitle="hint title"
               hintBody="hint body"
-              financials={transformedFinancials}
-              benchmarks={{ value: latestRiskMetrics?.sme_z_score }}
+              riskOutlookData={data?.risk_outlook}
               country={companyAddress?.country}
-              legalEvents={data?.legal_events}
             />
           </div>
         )}
@@ -429,16 +430,15 @@ const Report = ({
               /> */}
       </HashContainer>
 
+      {/*  Subsidiaries */}
       <HashContainer
         name={'Subsidiaries'}
         id={`subsidiaries`}
         fullHeight={false}
       >
         <ReportSectionHeader text={t('structure')} />
-        <SubsidiaryList
-          subsidiaries={data?.subsidiaries}
-          companyName={companyName}
-        />
+        <ParentsList parents={data?.parents} />
+        <SubsidiaryList subsidiaries={data?.subsidiaries} />
       </HashContainer>
 
       <HashContainer

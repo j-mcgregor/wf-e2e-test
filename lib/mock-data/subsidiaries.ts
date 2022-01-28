@@ -7,5 +7,6 @@ export const mockSubsidiaries: Subsidiary[] = Array(4)
   })
   .map((_, i) => ({
     id: `${i + 1}`,
-    name: `Subsidiary ${i + 1} LTD`
+    name: `Subsidiary ${i + 1} LTD`,
+    iso_code: 'GB'
   }));

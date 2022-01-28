@@ -3,7 +3,7 @@ import linkedInLogo from '../../public/images/logos/linkedin-icon.png';
 
 const LinkedinLogo = () => {
   return (
-    <div data-testid="icon-linkedin" className="h-8 w-8 relative">
+    <div data-testid="icon-linkedin" className="h-6 w-6 relative">
       <Image
         src={linkedInLogo}
         alt="Linkedin icon"

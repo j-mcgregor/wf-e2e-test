@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 
 type SecondaryValue = {
   name: TranslateInput;
-  value: number | string | null;
+  value: number | null;
   colour?: string;
 };
 
@@ -95,21 +95,38 @@ const Speedometer = ({
         </div>
 
         <div className="text-gray-400 w-full pb-4 px-1 text-xs xl:text-sm -mt-2 overflow-hidden">
-          {secondaryValues.map((benchmark, index) => (
-            <SpeedoKey
-              key={index}
-              name={benchmark.name}
-              value={benchmark.value}
-              colour={index % 2 === 1 ? 'bg-green-500' : 'bg-blue-500'}
-            />
-          ))}
+          {secondaryValues.map((benchmark, index) => {
+            const renderValue =
+              benchmark.value &&
+              new Intl.NumberFormat('en-GB', {
+                minimumFractionDigits: decimalPoints,
+                maximumFractionDigits: decimalPoints
+              }).format(benchmark.value);
+
+            return (
+              <SpeedoKey
+                key={index}
+                name={benchmark.name}
+                value={`${renderValue}${asMetric ?? ''}`}
+                colour={index % 2 === 1 ? 'bg-green-500' : 'bg-blue-500'}
+              />
+            );
+          })}
         </div>
       </div>
     </>
   );
 };
 
-const SpeedoKey = ({ name, value, colour }: SecondaryValue) => {
+const SpeedoKey = ({
+  name,
+  value,
+  colour
+}: {
+  name: TranslateInput;
+  value: string;
+  colour: string;
+}) => {
   return (
     <div
       className={`flex items-center ml-4 space-x-3 ${!value && 'opacity-30'}`}

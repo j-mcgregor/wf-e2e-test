@@ -147,6 +147,7 @@ export type BoardMember = {
 export type Subsidiary = {
   id: string;
   name: string;
+  iso_code: string;
 };
 
 export interface DatedValue {
@@ -190,6 +191,15 @@ export interface Benchmarks {
   };
 }
 
+export interface ShareHolderCardProps {
+  firstName?: string | null;
+  lastName?: string | null;
+  linkedin?: string;
+  percentage?: number;
+  name: string | null;
+  type?: string;
+}
+
 export interface RiskOutlookData {
   leverage: string;
   liquidity: string;
@@ -203,6 +213,7 @@ export interface RiskOutlookData {
     sector: string;
   };
 }
+
 /**
  * **********************
  * CSV Report Upload:

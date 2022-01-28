@@ -16,11 +16,7 @@ describe('SubsidiaryList', () => {
   });
 
   it('should render all subsidiaries passed to it as cards', () => {
-    render(
-      <SubsidiaryList subsidiaries={mockSubsidiaries} companyName="Aladdin" />,
-      {},
-      allMessages
-    );
+    render(<SubsidiaryList subsidiaries={mockSubsidiaries} />, {}, allMessages);
 
     const cards = screen.getAllByRole('listbox');
 
@@ -35,14 +31,9 @@ describe('SubsidiaryList', () => {
   });
 
   it('should render the placeholder if no subsidiaries are present', () => {
-    render(
-      <SubsidiaryList subsidiaries={[]} companyName="Aladdin" />,
-      {},
-      allMessages
-    );
-
+    render(<SubsidiaryList subsidiaries={[]} />, {}, allMessages);
     expect(
-      screen.getByText(/sorry we could not find any subsidiaries for aladdin/i)
+      screen.getByText(/this company has no subsidiaries\./i)
     ).toBeInTheDocument();
     expect(screen.queryAllByRole('listbox').length).toBe(0);
   });
