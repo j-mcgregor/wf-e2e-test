@@ -26,6 +26,19 @@ const moduleExports = {
   outputFileTracing: false,
   images: {
     domains: ['images.unsplash.com', 'icon.horse', 'logo.clearbit.com']
+  },
+  webpack: (config, options) => {
+    config.module.rules.push({
+      test: /\.csv$/,
+      loader: 'csv-loader',
+      options: {
+        dynamicTyping: true,
+        header: true,
+        skipEmptyLines: true
+      }
+    });
+
+    return config;
   }
 };
 

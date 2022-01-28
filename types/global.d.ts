@@ -101,9 +101,14 @@ export type CompanyType = {
 export type ApiResType = {
   ok: boolean;
   data?: ResDataType;
-  error?: boolean;
+  error?: boolean; // <- string?
   message?: string;
   status?: number;
+};
+
+export type ApiError = {
+  error: ErrorCodeKeys;
+  message: string | object;
 };
 
 export type ResDataType = {
@@ -126,6 +131,12 @@ export type BatchReportsType = {
   created: string;
 };
 
+export interface CSVValidationHeaderProps {
+  required?: ((value: string) => boolean | string) | false;
+  validator?: (value: string) => boolean | string;
+  formatted: string;
+}
+
 type CompanyStatusOptions =
   | 'Active'
   | 'Distressed'
@@ -138,3 +149,40 @@ type CompanyStatusOptions =
   | 'N.A.';
 
 export type CompanyStatusType = CompanyStatusOptions[];
+
+export type ErrorCodeKeys =
+  | 'UNAUTHORISED'
+  | 'UNPROCESSABLE_ENTITY'
+  | 'NO_REPORT_ID'
+  | 'SIGNED_OUT'
+  | 'USER_404'
+  | 'USER_422'
+  | 'USER_500'
+  | 'COMPANY_404'
+  | 'COMPANY_422'
+  | 'COMPANY_500'
+  | 'NO_REPORT'
+  | 'NO_REPORT_FOUND'
+  | 'REPORT_FETCHING_ERROR'
+  | 'BATCH_REPORT_FETCHING_ERROR'
+  | 'GENERIC_API_ERROR'
+  | 'GENERIC_API_ERROR_FORM'
+  | 'VALID_EMAIL_REQUIRED'
+  | 'EMAIL_REQUIRED'
+  | 'INVALID_SSO_LOGIN'
+  | 'PASSWORD_REQUIRED'
+  | 'INCORRECT_DETAILS'
+  | 'FULL_NAME_REQUIRED'
+  | 'NEW_PASSWORD_REQUIRED'
+  | 'CONFIRM_PASSWORD_MATCH'
+  | 'SEARCH_ERROR'
+  | 'INVALID_COUNTRY_CODE'
+  | 'COUNTRY_CODE_REQUIRED'
+  | 'COMPANY_NAME_REQUIRED'
+  | 'COMPANY_WEBSITE_REQUIRED'
+  | 'INVALID_REQUEST_TYPE'
+  | 'METHOD_NOT_ALLOWED'
+  | 'MISSING_DATA'
+  | 'NO_COMPANY_ID'
+  | 'NO_CURRENCY'
+  | 'NO_ISO_CODE';

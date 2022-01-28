@@ -1,14 +1,13 @@
-import { useTranslations } from 'next-intl';
-
-import Button from '../../elements/Button';
-import GoogleIcon from '../../icons/GoogleIcon';
-import MicrosoftIcon from '../../icons/MicrosoftIcon';
 import { signIn } from 'next-auth/client';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import ErrorMessage from '../../elements/ErrorMessage';
-import { INVALID_SSO_LOGIN } from '../../../lib/utils/error-codes';
-import useLocalStorage from '../../../hooks/useLocalStorage';
 import React from 'react';
+
+import useLocalStorage from '../../../hooks/useLocalStorage';
+import { INVALID_SSO_LOGIN } from '../../../lib/utils/error-codes';
+import Button from '../../elements/Button';
+import ErrorMessage from '../../elements/ErrorMessage';
+import MicrosoftIcon from '../../icons/MicrosoftIcon';
 
 const LoginSSO = () => {
   const t = useTranslations();

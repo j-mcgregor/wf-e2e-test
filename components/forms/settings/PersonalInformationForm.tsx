@@ -1,22 +1,23 @@
+import * as Sentry from '@sentry/nextjs';
+import { getSession } from 'next-auth/client';
 import { useTranslations } from 'next-intl';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import * as Sentry from '@sentry/nextjs';
+
+import config from '../../../config';
 import appState, { appUser } from '../../../lib/appState';
-import { validEmailRegex } from '../../../lib/utils/regexes';
-import Button from '../../elements/Button';
-import ErrorMessage from '../../elements/ErrorMessage';
-import { SettingsSectionHeader } from '../../elements/Headers';
-import Input from '../../elements/Input';
 import {
   EMAIL_REQUIRED,
   FULL_NAME_REQUIRED,
   GENERIC_API_ERROR
 } from '../../../lib/utils/error-codes';
+import { validEmailRegex } from '../../../lib/utils/regexes';
 import { FormWithClassProps } from '../../../pages/settings';
-import config from '../../../config';
-import { getSession } from 'next-auth/client';
+import Button from '../../elements/Button';
+import ErrorMessage from '../../elements/ErrorMessage';
+import { SettingsSectionHeader } from '../../elements/Headers';
+import Input from '../../elements/Input';
 
 interface PersonalInformationFormInput {
   fullName: string;

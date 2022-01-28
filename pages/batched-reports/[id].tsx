@@ -1,19 +1,19 @@
 /* eslint-disable security/detect-non-literal-require */
+import { ArrowLeftIcon, DownloadIcon } from '@heroicons/react/outline';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import fetcher from '../../lib/utils/fetcher';
 
-import { ArrowLeftIcon, DownloadIcon } from '@heroicons/react/outline';
-import Layout from '../../components/layout/Layout';
-import BatchReportTable from '../../components/elements/BatchReportTable';
 import LinkCard from '../../components/cards/LinkCard';
+import BatchReportTable from '../../components/elements/BatchReportTable';
 import Button from '../../components/elements/Button';
-import { BatchedReportType } from '../../types/global';
-import SkeletonReport from '../../components/skeletons/SkeletonReport';
+import Layout from '../../components/layout/Layout';
 import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
+import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import { REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
+import fetcher from '../../lib/utils/fetcher';
+import { BatchedReportType } from '../../types/global';
 
 const BatchReport = () => {
   const t = useTranslations();

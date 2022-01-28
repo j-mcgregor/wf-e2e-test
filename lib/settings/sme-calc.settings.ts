@@ -1,3 +1,6 @@
+import { CsvReportUploadHeaders, CSVValueValidation } from '../../types/report';
+import countryCodes from '../../lib/data/countryCodes.json';
+import { CSVValidationHeaderProps } from '../../types/global';
 // export const supportedCountries = countryCodeJSON.map(country => ({
 //   optionName: country.name,
 //   optionValue: country.code,
@@ -15,153 +18,250 @@ export const validCountryCodes = ['GB'];
 export const templateText = [
   {
     title: 'full_template',
-    templateLink: '#',
-    backgroundColor: 'bg-highlight bg-opacity-50'
-  },
-  {
-    title: 'financials_template',
-    templateLink: '#',
+    templateLink: '/download-templates/WF-Manual-Upload-Template.csv',
     backgroundColor: 'bg-highlight bg-opacity-50'
   },
   {
     title: 'excel_full_template',
-    templateLink: '#',
-    backgroundColor: 'bg-highlight-3 bg-opacity-50'
-  },
-  {
-    title: 'excel_financials_template',
-    templateLink: '#',
+    templateLink: '/download-templates/WF-Manual-Upload-Template.xlsx',
     backgroundColor: 'bg-highlight-3 bg-opacity-50'
   }
 ];
 
-export const manualUploadValidators = [
-  {
-    header: 'year',
-    validate: (x: string) => !x && 'A value for "Year" is required'
+/**
+ * Used to validate user-uploaded CSV report data
+ */
+export const uploadReportCSVHeaders: {
+  [K in CsvReportUploadHeaders]: CSVValidationHeaderProps;
+} = {
+  /**
+   * *********************************
+   * MAIN
+   * *********************************
+   */
+  currency: {
+    required: (x: string) => !x && `A value for "currency" is required`,
+    formatted: 'Currency',
+    validator: (x: string) =>
+      countryCodes.find(country => country.currency_code === x)
+        ? false
+        : `"${x}" is not a valid currency code`
   },
-  {
-    header: 'total_shareholder_equity',
-    validate: (x: string) =>
-      !x && 'A value for "Total shareholder" equity is required'
+  iso_code: {
+    required: (x: string) => !x && `A value for "iso_code" is required`,
+    validator: (x: string) =>
+      countryCodes.find(country => country.code === x)
+        ? false
+        : `"${x}" is not a valid ISO code`,
+    formatted: 'ISO Code'
   },
-  {
-    header: 'total_assets',
-    validate: (x: string) => !x && 'A value for "Total assets" is required'
+  company_id: {
+    required: false,
+    formatted: 'Company ID'
   },
-  {
-    header: 'total_liabilities'
+
+  // default to 0, rather than require
+  accounts_type: {
+    required: (x: string) => !x && `A value for "accounts_type" is required`,
+    formatted: 'Accounts type',
+    validator: (x: string) =>
+      x === '0' || x === '1'
+        ? false
+        : `"${x}" is not a valid value for "accounts_type"`
   },
-  {
-    header: 'turnover',
-    validate: (x: string) => !x && 'A value for "Turnover" is required'
+  /**
+   * *********************************
+   * DETAILS
+   * "name": "Small Business Ltd",
+   * *********************************
+   */
+
+  details_industry_sector_code: {
+    required: (x: string) =>
+      !x && `A value for "details_industry_sector_code" is required`,
+    formatted: 'Industry Sector Code'
   },
-  {
-    header: 'production_costs'
+  details_name: {
+    required: (x: string) => !x && `A value for "company_name" is required`,
+    formatted: 'Company Name'
   },
-  {
-    header: 'short_term_debt',
-    validate: (x: string) => !x && 'A value for "Short term" debt is required'
+  details_nace_code: {
+    required: (x: string) => !x && `A value for "nace_code" is required`,
+    formatted: 'NACE Code'
   },
-  {
-    header: 'long_term_debt',
-    validate: (x: string) => !x && 'A value for "Long term" debt is required'
+  details_status: {
+    required: (x: string) => !x && `A value for "status" is required`,
+    formatted: 'Status',
+    validator: (x: string) =>
+      x.toLowerCase() !== 'active' && `"${x}" is not a valid value for "status"`
   },
-  {
-    header: 'total_debt',
-    validate: (x: string) => !x && 'A value for "Total debt" is required'
+  /**
+   * *********************************
+   * FINANCIALS
+   * *********************************
+   */
+  address_region: {
+    required: (x: string) => !x && `A value for "address_region" is required`,
+    formatted: 'Address Region'
   },
-  {
-    header: 'cash',
-    validate: (x: string) => !x && 'A value for "Cash" is required'
+  net_income: {
+    required: (x: string) => !x && `A value for "net_income" is required`,
+    formatted: 'Net Income'
   },
-  {
-    header: 'working_capital',
-    validate: (x: string) => !x && 'A value for "Working capital" is required'
+  number_of_employees: {
+    required: (x: string) =>
+      !x && `A value for "number_of_employees" is required`,
+    formatted: 'Number of Employees'
   },
-  {
-    header: 'tangible_assets',
-    validate: (x: string) => !x && 'A value for "Tangible assets" is required'
+  cash_and_equivalents: {
+    required: (x: string) =>
+      !x && `A value for "cash_and_equivalents" is required`,
+    formatted: 'Cash'
   },
-  {
-    header: 'intangible_assets',
-    validate: (x: string) => !x && 'A value for "Intangible assets" is required'
+  total_assets: {
+    required: (x: string) => !x && `A value for "total_assets" is required`,
+    formatted: 'Total Assets'
   },
-  {
-    header: 'interest_expenses',
-    validate: (x: string) => !x && 'A value for "Interest expenses" is required'
+  depreciation: {
+    required: false,
+    formatted: 'Depreciation'
   },
-  {
-    header: 'ebitda',
-    validate: (x: string) => !x && 'A value for "EBITDA" is required'
+  ebit: {
+    required: (x: string) => !x && `A value for "ebit" is required`,
+    formatted: 'EBIT'
   },
-  {
-    header: 'depreciation'
+  ebitda: {
+    required: (x: string) => !x && `A value for "ebitda" is required`,
+    formatted: 'EBITDA'
   },
-  {
-    header: 'ebit',
-    validate: (x: string) => !x && 'A value for "EBIT" is required'
+  tangible_fixed_assets: {
+    required: (x: string) =>
+      !x && `A value for "tangible_fixed_assets" is required`,
+    formatted: 'Tangible Fixed Assets'
   },
-  {
-    header: 'net_income',
-    validate: (x: string) => !x && 'A value for "Net income" is required'
+  intangible_fixed_assets: {
+    required: (x: string) =>
+      !x && `A value for "intangible_fixed_assets" is required`,
+    formatted: 'Intangible Fixed Assets'
   },
-  {
-    header: 'retained_earnings',
-    validate: (x: string) => !x && 'A value for "Retained earnings" is required'
+  interest_expenses: {
+    required: (x: string) =>
+      !x && `A value for "interest_expenses" is required`,
+    formatted: 'Interest Expenses'
   },
-  {
-    header: 'number_directors'
+  long_term_debt: {
+    required: (x: string) => !x && `A value for "long_term_debt" is required`,
+    formatted: 'Long Term Debt'
   },
-  {
-    header: 'number_employees'
+  number_of_directors: {
+    required: false,
+    formatted: 'Number of Directors'
+  },
+  period: {
+    required: (x: string) => !x && `A value for "period" is required`,
+    validator: (x: string) =>
+      Number(x).toString().length !== 4 &&
+      'Period must be a year with 4 digits',
+    formatted: 'Period'
+  },
+  production_costs: {
+    required: false,
+    formatted: 'Production Costs'
+  },
+  retained_earnings: {
+    required: (x: string) =>
+      !x && `A value for "retained_earnings" is required`,
+    formatted: 'Retained Earnings'
+  },
+  short_term_debt: {
+    required: (x: string) => !x && `A value for "short_term_debt" is required`,
+    formatted: 'Short Term Debt'
+  },
+  total_debt: {
+    required: (x: string) => !x && `A value for "total_debt" is required`,
+    formatted: 'Total Debt'
+  },
+  total_liabilities: {
+    required: (x: string) =>
+      !x && `A value for "total_liabilities" is required`,
+    formatted: 'Total Liabilities'
+  },
+  total_shareholder_equity: {
+    required: (x: string) =>
+      !x && `A value for "total_shareholder_equity" is required`,
+    formatted: 'Total Shareholder Equity'
+  },
+  turnover: {
+    required: (x: string) => !x && `A value for "turnover" is required`,
+    formatted: 'Turnover'
+  },
+  working_capital: {
+    required: (x: string) => !x && `A value for "working_capital" is required`,
+    formatted: 'Working Capital'
+  },
+  /**
+   * *********************************
+   * FINANCIALS OTHER - in API request but not CSV
+   * Default values are set in in useCSVValidator > makeReqBody > financials
+   * *********************************
+   */
+  management_experience: {
+    required: false,
+    formatted: 'Management Experience'
+  },
+  creditors: {
+    required: false,
+    formatted: 'Creditors'
+  },
+  debtors: {
+    required: false,
+    formatted: 'Debtors'
+  },
+  fixed_assets: {
+    required: false,
+    formatted: 'Fixed Assets'
+  },
+  inventory: {
+    required: false,
+    formatted: 'Inventory'
+  },
+  loans: {
+    required: false,
+    formatted: 'Loans'
+  },
+  non_current_liabilities: {
+    required: false,
+    formatted: 'Non Current Liabilities'
+  },
+  number_of_subsidiaries: {
+    required: false,
+    formatted: 'Number of Subsidiaries'
+  },
+  other_non_current_liabilities: {
+    required: false,
+    formatted: 'Other Non Current Liabilities'
+  },
+  net_debt: {
+    required: false,
+    formatted: 'Net Debt'
   }
-];
+};
 
-// // these headers are valid in the CSV
-// export const validReportHeaders = [
-//   'year',
-//   'total_shareholder_equity',
-//   'total_assets',
-//   'total_liabilities',
-//   'turnover',
-//   'production_costs',
-//   'short_term_debt',
-//   'long_term_debt',
-//   'total_debt',
-//   'cash',
-//   'working_capital',
-//   'tangible_assets',
-//   'intangible_assets',
-//   'interest_expenses',
-//   'ebitda',
-//   'depreciation',
-//   'ebit',
-//   'net_income',
-//   'retained_earnings',
-//   'number_directors',
-//   'number_employees'
-// ];
-
-// // these values are required in the CSV
-// export const requiredReportValues = [
-//   'year',
-//   'total_shareholder_equity',
-//   'total_assets',
-//   'turnover',
-//   'short_term_debt',
-//   'long_term_debt',
-//   'total_debt',
-//   'cash',
-//   'working_capital',
-//   'tangible_assets',
-//   'intangible_assets',
-//   'interest_expenses',
-//   'ebitda',
-//   'ebit',
-//   'net_income',
-//   'retained_earnings'
-// ];
+export const manualUploadValidators: Array<CSVValueValidation> = Object.entries(
+  uploadReportCSVHeaders
+).map(([header, { required, validator }]) => {
+  const validators = required
+    ? validator
+      ? [required, validator]
+      : [required]
+    : [];
+  return {
+    header,
+    ...((required || validator) && {
+      validate: validators
+    })
+  };
+});
 
 export const orbisAvailableSearchCountries = [
   'al',

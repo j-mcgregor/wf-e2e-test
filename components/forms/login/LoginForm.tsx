@@ -1,22 +1,22 @@
-import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/client';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import useLocalStorage from '../../../hooks/useLocalStorage';
+import {
+  EMAIL_REQUIRED,
+  INCORRECT_DETAILS,
+  PASSWORD_REQUIRED,
+  VALID_EMAIL_REQUIRED
+} from '../../../lib/utils/error-codes';
 import { validEmailRegex } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import CheckboxInput from '../../elements/Checkbox';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
 import Link from '../../elements/Link';
-import {
-  EMAIL_REQUIRED,
-  PASSWORD_REQUIRED,
-  VALID_EMAIL_REQUIRED,
-  INCORRECT_DETAILS
-} from '../../../lib/utils/error-codes';
 
 type FormValues = {
   email: string;

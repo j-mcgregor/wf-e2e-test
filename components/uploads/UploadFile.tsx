@@ -1,7 +1,9 @@
+import { TrashIcon, UploadIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
-import { TrashIcon, UploadIcon } from '@heroicons/react/outline';
+
 import { TranslateInput } from '../../types/global';
+import Button from '../elements/Button';
 
 interface UploadFileProps {
   linkText: TranslateInput;
@@ -58,11 +60,7 @@ const UploadFile = ({
               <UploadIcon className="h-20 w-20 border-2 border-highlight text-highlight hover:opacity-50  cursor-pointer  p-4 rounded mb-5 mx-auto" />
             </label>
           )}
-          {fileName && (
-            <button onClick={removeFile} className="mx-auto block">
-              <TrashIcon className="h-20 w-20 border-2 border-primary hover:border-red-400 hover:text-red-400 p-4 rounded mb-5" />
-            </button>
-          )}
+
           <input
             className="hidden"
             type="file"
@@ -74,21 +72,33 @@ const UploadFile = ({
           />
 
           {!fileName ? (
-            <div className="flex  w-full">
-              <label
-                className="text-highlight cursor-pointer hover:opacity-60 "
-                htmlFor="file-upload"
-              >
-                {linkText}
-              </label>
-              <span>&nbsp;{text}</span>
+            <div className="flex w-full">
+              <div className="mx-auto">
+                <label
+                  className="text-highlight cursor-pointer hover:opacity-60"
+                  htmlFor="file-upload"
+                >
+                  {linkText}
+                </label>
+                <span className="ml-1">{text}</span>
+              </div>
             </div>
           ) : (
             <div className={`w-full  `}>
-              <p className="text-sm font-semibold break-all text-center ">
+              <p className="text-sm font-semibold  text-center max-w-sm mx-auto mb-5  ">
                 {fileName}
               </p>
             </div>
+          )}
+          {fileName && (
+            <Button
+              variant="none"
+              onClick={removeFile}
+              className="inline-block max-w-xxs mx-auto shadow-none hover:text-red-400 border-2 border-primary hover:border-red-400 border-opacity-50 hover:border-opacity-100"
+            >
+              {t('remove_file')}
+              <TrashIcon className="h-6 w-6  rounded ml-2" />
+            </Button>
           )}
         </form>
       </div>

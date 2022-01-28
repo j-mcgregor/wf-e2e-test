@@ -14,7 +14,6 @@ const getExistingReport = async (
   if (res.status === 200 && res.ok) {
     const report = await res.json();
 
-    // console.log(report)
     return { ok: true, report, status: res.status };
   }
   return { ok: false, status: res.status };
@@ -55,9 +54,43 @@ const createReport = async (
   }
 };
 
+const uploadReport = async (
+  report: {
+    iso_code: string;
+    company_id: string;
+    currency: string;
+    accounts_type: number;
+  },
+  token: string
+): Promise<{
+  ok: boolean;
+  status: number;
+  report?: ReportDataProps;
+  details?: string | {};
+}> => {
+  const res = await fetch(`${process.env.WF_AP_ROUTE}/reports/upload`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(report)
+  });
+
+  if (res.ok) {
+    const report = await res.json();
+    return { ok: true, report, status: res.status };
+  } else {
+    const error = await res.json();
+
+    return { ok: false, status: res.status, details: error.detail };
+  }
+};
+
 const Report = {
   getExistingReport,
-  createReport
+  createReport,
+  uploadReport
 };
 
 export default Report;

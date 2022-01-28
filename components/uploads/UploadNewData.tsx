@@ -1,16 +1,21 @@
-import { useTranslations } from 'use-intl';
+/* eslint-disable no-console */
 import { CheckIcon, XIcon } from '@heroicons/react/outline';
+import { useState } from 'react';
+import { useTranslations } from 'use-intl';
+
+import { ApiError, ErrorCodeKeys, TranslateInput } from '../../types/global';
+import { SubmitReportType } from '../../types/report';
 import Button from '../elements/Button';
+import ErrorMessage from '../elements/ErrorMessage';
+import { ApplicationError } from '../errors/ApplicationError';
 import UploadFile from './UploadFile';
-import { TranslateInput } from '../../types/global';
-import { CSVValueValidation, FileContentType } from '../../types/report';
 
 interface UploadNewDataProps {
   header: TranslateInput;
   description: TranslateInput;
   buttonText: TranslateInput;
   disableButton?: boolean;
-  onSubmit: () => void;
+  onSubmit: SubmitReportType;
   nameFileInput?: React.ReactNode;
   isCSV?: boolean;
   isValid?: boolean;
@@ -36,6 +41,12 @@ const UploadNewData = ({
   setFileSelected,
   children
 }: UploadNewDataProps) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<ApiError>({
+    error: '' as ErrorCodeKeys,
+    message: ''
+  });
+
   // removes selected file from state
   const handleRemoveFile = () => {
     return setFileSelected(null);
@@ -45,6 +56,46 @@ const UploadNewData = ({
 
   const tick = <CheckIcon className="h-6 w-6 text-green-500 mr-1" />;
   const cross = <XIcon className="h-6 w-6 text-red-500 mr-1" />;
+
+  const ErrorBox = () => {
+    console.error(error.message);
+    let message: string | React.ReactNode = '';
+    switch (typeof error.message) {
+      case 'string':
+        // TODO: check for JSON when other branch merged
+        message = error.message;
+        break;
+      case 'object':
+        if (Array.isArray(error.message)) {
+          const api422response = error.message.map(e => ({
+            msg: `${e.msg}.`,
+            location: `Location in request: ${e.loc.join(' > ')}`
+          }));
+          message = (
+            <>
+              {api422response.map(a => (
+                <>
+                  <p>{a.msg}</p>
+                  <p>{a.location}</p>
+                </>
+              ))}
+            </>
+          );
+        } else {
+          message = JSON.stringify(error.message);
+        }
+    }
+    return (
+      <ApplicationError
+        width="max-w-full mt-2"
+        error={{
+          name: error.error,
+          message
+        }}
+        showConsoleMessage
+      />
+    );
+  };
 
   return (
     <div className="bg-white rounded-sm shadow-sm sm:p-8 p-6">
@@ -90,14 +141,12 @@ const UploadNewData = ({
                       <p>{t('all_headers_are_valid')}</p>
                     </div>
                   ) : (
-                    missingHeaders.map((error, i) => {
+                    missingHeaders.map((e, i) => {
                       return (
                         <div className="flex py-1" key={i}>
                           {cross}
                           <p>
-                            {"'"}
-                            {error}
-                            {"'"}
+                            {`'${e}' `}
                             {t('is_a_required_header')}
                           </p>
                         </div>
@@ -113,11 +162,11 @@ const UploadNewData = ({
                       <p>{t('required_values_are_valid')}</p>
                     </div>
                   ) : (
-                    errors?.map((error, i) => {
+                    errors?.map((e, i) => {
                       return (
                         <div className="flex py-1" key={i}>
                           {cross}
-                          <p>{error}</p>
+                          <p>{e}</p>
                         </div>
                       );
                     })
@@ -131,13 +180,15 @@ const UploadNewData = ({
       <div className="w-full sm:max-w-[200px] mt-2">
         <Button
           variant="highlight"
-          disabled={!isValid || disableButton}
+          disabled={!isValid || disableButton || loading}
+          loading={loading}
           className="text-primary rounded-none"
-          onClick={onSubmit}
+          onClick={() => onSubmit(setError, setLoading)}
         >
           {buttonText}
         </Button>
       </div>
+      {error?.error && <ErrorBox />}
       {children}
     </div>
   );

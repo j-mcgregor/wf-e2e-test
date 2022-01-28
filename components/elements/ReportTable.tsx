@@ -86,7 +86,7 @@ const ReportTable = ({
               {sortedReports?.map(
                 (report: ReportSnippetType, index: number) => {
                   const reportTitle = createReportTitle(
-                    report.company_name,
+                    report.company_name || t('unnamed_company'),
                     report.created_at
                   );
                   return (

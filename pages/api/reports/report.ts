@@ -2,20 +2,21 @@
 import { withSentry } from '@sentry/nextjs';
 import { getSession } from 'next-auth/client';
 
+import Report from '../../../lib/funcs/report';
 import mockReport from '../../../lib/mock-data/report';
 import mockUsers from '../../../lib/mock-data/users';
 import {
-  NO_REPORT_ID,
-  NO_REPORT,
-  UNAUTHORISED,
-  REPORT_FETCHING_ERROR,
+  COMPANY_404,
+  COMPANY_500,
   NO_COMPANY_ID,
   NO_CURRENCY,
   NO_ISO_CODE,
-  NO_REPORT_FOUND
+  NO_REPORT,
+  NO_REPORT_ID,
+  REPORT_FETCHING_ERROR,
+  UNAUTHORISED
 } from '../../../lib/utils/error-codes';
-import { ReportSnippetType } from '../../../types/global';
-import Report from '../../../lib/funcs/report';
+import { ApiError, ReportSnippetType } from '../../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -28,7 +29,7 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
-    });
+    } as ApiError);
   }
 
   const isGet = request.method === 'GET';
@@ -43,21 +44,21 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
         return response.status(500).json({
           error: NO_COMPANY_ID,
           message: `No company ID provided.`
-        });
+        } as ApiError);
       }
 
       if (!body.currency) {
         return response.status(500).json({
           error: NO_CURRENCY,
           message: `No currency code provided.`
-        });
+        } as ApiError);
       }
 
       if (!body.iso_code) {
         return response.status(500).json({
           error: NO_ISO_CODE,
           message: `No ISO code provided.`
-        });
+        } as ApiError);
       }
       const report = await Report.createReport(body, `${session?.token}`);
       // const tempReport = await Report.getExistingReport('fafd5ee8-8bd1-4c11-aea8-457e862bc06a', `${session?.token}`)
@@ -72,34 +73,35 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
       if (!report.ok) {
         if (report.status === 404) {
           return response.status(404).json({
-            error: NO_REPORT_FOUND,
-            message: `Error details: ${report?.details}`
-          });
+            error: COMPANY_404,
+            message: report?.details
+          } as ApiError);
         }
 
         if (report.status === 500) {
           return response.status(500).json({
-            error: REPORT_FETCHING_ERROR,
-            message: `Error details: ${report?.details}`
-          });
+            error: COMPANY_500,
+            message: report?.details
+          } as ApiError);
         }
       }
     } catch (error) {
       return response.status(500).json({
         error: REPORT_FETCHING_ERROR,
         message: `Report couldn't be generated for ${body?.company_id}`
-      });
+      } as ApiError);
     }
   }
 
   if (isGet) {
     // extract report id
     const reportId = request.query.id;
+
     if (!reportId) {
       return response.status(500).json({
         error: NO_REPORT_ID,
         message: 'No report ID provided, please add report id.'
-      });
+      } as ApiError);
     }
 
     const email = session?.user?.email;
@@ -108,16 +110,17 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
     // @ts-ignore
     // eslint-disable-next-line security/detect-object-injection
     const user = mockUsers[email];
+
     const report = user?.reports?.find(
       (report: ReportSnippetType) => report.id === reportId
     );
 
     if (session.token && !report) {
-      // console.log(session.token)
       const report = await Report.getExistingReport(
         `${reportId}`,
         `${session.token}`
       );
+
       // console.log(report)
       if (report.ok) {
         return response.status(200).json(report.report);
@@ -125,9 +128,10 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
     }
 
     if (!report) {
-      return response
-        .status(404)
-        .json({ error: NO_REPORT, message: 'No report found with that ID.' });
+      return response.status(404).json({
+        error: NO_REPORT,
+        message: 'No report found with that ID.'
+      } as ApiError);
     }
 
     const resReport = {

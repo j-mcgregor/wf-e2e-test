@@ -2,15 +2,15 @@ import { withSentry } from '@sentry/nextjs';
 import { getSession } from 'next-auth/client';
 
 import {
-  UNAUTHORISED,
-  SEARCH_ERROR,
   COMPANY_WEBSITE_REQUIRED,
-  INVALID_REQUEST_TYPE
+  INVALID_REQUEST_TYPE,
+  SEARCH_ERROR,
+  UNAUTHORISED
 } from '../../../lib/utils/error-codes';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 import ESG from '../../../lib/funcs/esg';
-import { ApiResType } from '../../../types/global';
+import { ApiError, ApiResType } from '../../../types/global';
 
 // Declaring function for readability with Sentry wrapper
 const ESGApi = async (request: NextApiRequest, response: NextApiResponse) => {
@@ -21,7 +21,7 @@ const ESGApi = async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
-    });
+    } as ApiError);
   }
 
   // extract search query
@@ -34,7 +34,7 @@ const ESGApi = async (request: NextApiRequest, response: NextApiResponse) => {
       error: COMPANY_WEBSITE_REQUIRED,
       message:
         'Please provide a country website and company name in order to make a valid request.'
-    });
+    } as ApiError);
   }
 
   if (type === 'demo') {
@@ -75,7 +75,7 @@ const ESGApi = async (request: NextApiRequest, response: NextApiResponse) => {
   return response.status(404).json({
     error: INVALID_REQUEST_TYPE,
     message: 'Invalid request type. Please provide a valid request type.'
-  });
+  } as ApiError);
 };
 
 const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
@@ -83,7 +83,7 @@ const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
     return response.status(500).json({
       error: SEARCH_ERROR,
       message: 'Error when accessing ESG API.'
-    });
+    } as ApiError);
   }
 };
 

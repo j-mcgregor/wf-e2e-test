@@ -74,7 +74,9 @@ const UploadData = () => {
           buttonText={t('generate_new_report')}
           setFileSelected={handleSetSelectedFile}
           fileSelected={fileSelected}
-          onSubmit={() => null}
+          // TODO: add submit to fix type
+          // @ts-ignore
+          onSubmit={async () => {}}
           isCSV={isCSV}
           isValid={isValid}
           errors={errors}

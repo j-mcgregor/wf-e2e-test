@@ -210,7 +210,7 @@ const Report = ({
           <Speedometer
             title={t('sme_zscore')}
             value={latestRiskMetrics?.sme_z_score}
-            rotation={smeZScoreRotation}
+            rotationCalculator={calculateSMEZScoreRotation}
             secondaryValues={[
               {
                 name: INDUSTRY_BENCHMARK,
@@ -231,8 +231,8 @@ const Report = ({
           <Speedometer
             title={t('probability_of_default')}
             value={latestRiskMetrics?.probability_of_default_1_year * 100}
-            rotation={poDRotation}
             asMetric="%"
+            rotationCalculator={calculatePoDRotation}
             secondaryValues={[
               {
                 name: INDUSTRY_BENCHMARK,
@@ -263,8 +263,8 @@ const Report = ({
           <Speedometer
             title={t('loss_give_default')}
             value={latestRiskMetrics?.loss_given_default * 100}
-            rotation={lGDDRotation}
             asMetric="%"
+            rotationCalculator={calculateLGDRotation}
             secondaryValues={[
               {
                 name: INDUSTRY_BENCHMARK,
@@ -362,10 +362,10 @@ const Report = ({
           cfo={getBoardMember('CFO', data?.board_members)}
           ceo={getBoardMember('CEO', data?.board_members)}
           chairman={getBoardMember('Chairman', data?.board_members)}
-          directors={data?.directors.length}
-          employees={latestFinancialYear.number_of_employees}
-          shareholders={data?.shareholders.length}
-          subsidiaries={data?.subsidiaries.length}
+          directors={data?.directors?.length}
+          employees={latestFinancialYear?.number_of_employees}
+          shareholders={data?.shareholders?.length}
+          subsidiaries={data?.subsidiaries?.length}
           seniorManagement={data?.executives?.length}
         />
 

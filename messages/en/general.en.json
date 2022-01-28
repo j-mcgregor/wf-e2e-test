@@ -10,10 +10,12 @@
   "support": "Support",
   "logout": "Logout",
   "na": "N/A",
+  "unnamed_company": "Unnamed Company",
+  "remove_file": "Remove file",
   "is_a_required_header": "is a required header",
   "uploaded_file": "Uploaded File",
   "is_valid_csv": "Is valid CSV",
-  "all_headers_are_valid": "All headers are valid.",
+  "all_headers_are_valid": "All headers are valid",
   "has_required_format": "Has Required Format",
   "required_values_are_valid": "All required values are valid",
   "file_is_valid_csv": "File is a valid CSV",
@@ -26,6 +28,7 @@
     },
     "message": {
       "default": "Please refresh the page and try again. If this error persists, please contact Wiserfunding support."
-    }
+    },
+    "see_console": "Please open the console and enable errors for more information."
   }
 }

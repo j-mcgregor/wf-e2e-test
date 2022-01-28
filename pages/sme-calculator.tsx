@@ -1,11 +1,12 @@
 /* eslint-disable security/detect-non-literal-require */
+import { GetStaticPropsContext } from 'next';
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
-import { GetStaticPropsContext } from 'next';
-import Layout from '../components/layout/Layout';
+
 import Button from '../components/elements/Button';
-import SearchContainer from '../components/sme-calc-sections/SearchContainer';
+import Layout from '../components/layout/Layout';
 import ProvideData from '../components/sme-calc-sections/ProvideData';
+import SearchContainer from '../components/sme-calc-sections/SearchContainer';
 
 const SMECalculator = () => {
   const [showProvideData, setShowProvideData] = useState(false);

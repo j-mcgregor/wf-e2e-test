@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import cn from 'classnames';
 import { TranslateInput } from '../../types/global';
-import { Element } from 'react-scroll';
 
 export const ReportSectionHeader = ({
   children,

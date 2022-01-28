@@ -2,25 +2,24 @@
 import { withSentry } from '@sentry/nextjs';
 import { getSession } from 'next-auth/client';
 
+import mockBatchReport from '../../lib/mock-data/mockBatchReport';
 import mockUsers, { MockCompanyNames } from '../../lib/mock-data/users';
+import { batchReport } from '../../lib/settings/batch-reports.settings';
 import {
-  NO_REPORT_ID,
-  NO_REPORT,
-  UNAUTHORISED,
-  METHOD_NOT_ALLOWED,
   GENERIC_API_ERROR,
-  MISSING_DATA
+  METHOD_NOT_ALLOWED,
+  MISSING_DATA,
+  NO_REPORT,
+  NO_REPORT_ID,
+  UNAUTHORISED
 } from '../../lib/utils/error-codes';
-import { BatchedReportType } from '../../types/global';
+import { ApiError, BatchedReportType } from '../../types/global';
 
 const randomValue = (amount: number) => {
   return Math.floor(Math.random() * amount);
 };
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { batchReport } from '../../lib/settings/batch-reports.settings';
-import mockBatchReport from '../../lib/mock-data/mockBatchReport';
-
 type CompanyReqType = {
   iso: string;
   company_id: string;
@@ -38,7 +37,7 @@ const batchedReport = async (
     return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
-    });
+    } as ApiError);
   }
 
   const { method } = request;
@@ -67,14 +66,14 @@ const batchedReport = async (
           error: MISSING_DATA,
           message: 'No company list provided',
           ok: false
-        });
+        } as ApiError);
       }
     } catch (error) {
       return response.status(500).json({
         ok: false,
         error: GENERIC_API_ERROR,
         message: error
-      });
+      } as ApiError);
     }
   }
 
@@ -86,7 +85,7 @@ const batchedReport = async (
       return response.status(500).json({
         error: NO_REPORT_ID,
         message: 'No report ID provided, please add batched report ID.'
-      });
+      } as ApiError);
     }
 
     if (request.query.demo === 'true') {
@@ -124,7 +123,7 @@ const batchedReport = async (
       return response.status(404).json({
         error: NO_REPORT,
         message: 'No batched report job found with that ID.'
-      });
+      } as ApiError);
     }
 
     return response.status(200).json(batchReportJob);
@@ -133,7 +132,7 @@ const batchedReport = async (
   return response.status(500).json({
     error: METHOD_NOT_ALLOWED,
     message: 'Method not allowed, please use allowed method.'
-  });
+  } as ApiError);
 };
 
 export default withSentry(batchedReport);

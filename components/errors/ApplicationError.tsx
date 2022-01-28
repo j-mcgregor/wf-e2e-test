@@ -4,15 +4,23 @@ import { useTranslations } from 'use-intl';
 type ApplicationErrorProps = {
   error?: {
     name?: string;
-    message?: string;
+    message?: string | React.ReactNode;
   };
+  showConsoleMessage?: boolean;
+  width?: string;
 };
 
-export const ApplicationError = ({ error }: ApplicationErrorProps) => {
+export const ApplicationError = ({
+  error,
+  showConsoleMessage,
+  width = 'max-w-sm'
+}: ApplicationErrorProps) => {
   const t = useTranslations();
   return (
     <div>
-      <div className="max-w-sm mx-auto px-4 py-6 border-2 text-red-400 border-red-400 rounded-md text-center">
+      <div
+        className={`${width} mx-auto px-4 py-6 border-2 text-red-400 border-red-400 rounded-md text-center`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6 mx-auto"
@@ -35,6 +43,7 @@ export const ApplicationError = ({ error }: ApplicationErrorProps) => {
             ? t('application_error_general_message')
             : error?.message}{' '}
         </p>
+        {showConsoleMessage && <p>{t('errors.see_console')}</p>}
       </div>
     </div>
   );

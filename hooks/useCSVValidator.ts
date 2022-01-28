@@ -1,6 +1,13 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable sonarjs/cognitive-complexity */
 import { useState } from 'react';
-import { CSVValueValidation, FileContentType } from '../types/report';
+
+import { uploadReportCSVHeaders } from '../lib/settings/sme-calc.settings';
+import {
+  CsvReportUploadHeaders,
+  CSVValueValidation,
+  FileContentType
+} from '../types/report';
 
 export type ErrorType = string | boolean | null;
 export type ErrorArray = ErrorType[];
@@ -40,9 +47,6 @@ const useCSVValidator = (
   // read the file and set the content
   readFile(file, setFileContent);
 
-  // extract the required headers
-  const validatorHeaders = validators.map(validator => validator.header);
-
   // get headers & values as array from content
   // convert csv content to string & remove carriage returns ('\r')
   const csvString = fileContent?.toString().replace(/[\r]/g, '');
@@ -61,38 +65,43 @@ const useCSVValidator = (
     ? contentSplit?.slice(1, contentSplit.length).map(value => value.split(','))
     : [];
 
+  const noSecondRow = contentSplit?.length && contentSplit.length < 2;
+
   // create object from headers / values
-  const reportObject: { [index: string]: [] } =
+  const reportObject =
     csvValues &&
     csvHeaders?.reduce((acc, curr: string, i) => {
+      //
       const row = csvValues.map(x => x[Number(i)]);
       return {
         ...acc,
         [curr]: row
       };
-    }, {});
+    }, {} as { [K in CsvReportUploadHeaders]: string[] });
 
   // create an array of errors based on the validator functions
-  const errors =
+  const valueAndHeaderErrors =
     reportObject && validators
       ? Object.keys(reportObject).flatMap(key => {
-          const values = reportObject[`${key}`];
+          const values = reportObject[`${key as CsvReportUploadHeaders}`];
 
           // find the validator for the header
-          const validatorArray = validators.find(item => item.header === key);
+          const columnHeader = validators.find(item => item.header === key);
 
           // access the validator function in valueValidation
-          const validator = validatorArray?.validate
-            ? validatorArray.validate
+          const validatorFunctions = columnHeader?.validate
+            ? columnHeader.validate
             : false;
 
           // create array of invalid values
           return [
-            ...(validator
+            ...(validatorFunctions
               ? values
                   // calls the validation function and then filters out truthy values
                   // these are going to be the error messages if there are any
-                  .map((value: string) => validator(value))
+                  .flatMap((value: string) =>
+                    validatorFunctions.map(validator => validator(value.trim()))
+                  )
               : // if there is no validator function it returns false
                 // which is filtered and removed from the array
                 [false])
@@ -100,26 +109,36 @@ const useCSVValidator = (
         })
       : [];
 
+  const errors = noSecondRow
+    ? ['This CSV file has no data', ...valueAndHeaderErrors]
+    : valueAndHeaderErrors;
   // checks the reportObject for the headers that are required
   // returns an array of missing header names
-  const missingHeaders = validatorHeaders
-    .map(header => (reportObject[header] ? null : `${header}`))
+  const missingHeaders = Object.entries(uploadReportCSVHeaders)
+    .map(([header, { required }]) => {
+      const isPresent = reportObject[header as CsvReportUploadHeaders];
+      return isPresent ? null : required ? header : null;
+    })
     .filter(x => x);
 
   // check for CSV validity
   const isCSV = file?.type === 'text/csv' ? true : false;
-
   // determine the full validity of the file
-  const isValid = errors?.length === 0 && missingHeaders.length === 0;
+  const isValid =
+    errors?.length === 0 &&
+    missingHeaders.length === 0 &&
+    !noSecondRow &&
+    isCSV;
 
   return {
-    isCSV,
+    csvData: reportObject,
+    csvValues,
     errors,
+    fileName,
+    isCSV,
     isValid,
     missingHeaders,
-    csvData: reportObject,
-    totalRows: csvValues?.length || 0,
-    fileName
+    totalRows: csvValues?.length || 0
   };
 };
 

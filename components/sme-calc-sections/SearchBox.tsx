@@ -55,7 +55,9 @@ const SearchBox = ({
   };
 
   const { data } = useSWR<CompanyType[] & { error?: string; message?: string }>(
-    `/api/search-companies?query=${searchValue}&country=${countryCode}`,
+    searchValue &&
+      searchHasFocus &&
+      `/api/search-companies?query=${searchValue}&country=${countryCode}`,
     fetcher
   );
 

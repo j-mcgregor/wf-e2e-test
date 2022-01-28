@@ -1,12 +1,13 @@
 import { withSentry } from '@sentry/nextjs';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
 import User from '../../lib/funcs/user';
 import {
   GENERIC_API_ERROR,
   VALID_EMAIL_REQUIRED
 } from '../../lib/utils/error-codes';
+import { ApiError } from '../../types/global';
 
+import type { NextApiRequest, NextApiResponse } from 'next';
 // Declaring function for readability with Sentry wrapper
 const passwordReset = async (
   request: NextApiRequest,
@@ -20,7 +21,9 @@ const passwordReset = async (
       return response.status(200).json(status);
     }
     if (!status.ok) {
-      return response.status(404).json({ error: GENERIC_API_ERROR });
+      return response
+        .status(404)
+        .json({ error: GENERIC_API_ERROR } as ApiError);
     }
   }
 
@@ -31,10 +34,12 @@ const passwordReset = async (
     }
 
     if (!status.ok) {
-      return response.status(404).json({ error: GENERIC_API_ERROR });
+      return response
+        .status(404)
+        .json({ error: GENERIC_API_ERROR } as ApiError);
     }
   }
-  return response.status(404).json({ error: VALID_EMAIL_REQUIRED });
+  return response.status(404).json({ error: VALID_EMAIL_REQUIRED } as ApiError);
 };
 
 export default withSentry(passwordReset);

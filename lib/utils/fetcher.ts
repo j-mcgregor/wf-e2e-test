@@ -27,11 +27,9 @@ const fetcher = async (
     });
     return res.json();
   } catch (error) {
-    console.log('ERROR', error);
-
     // capture error on sentry
     Sentry.captureException(error);
-
+    console.log(error);
     console.log(`Error making request to ${config.URL}${relativeUrl}`);
     return {
       error: true,

@@ -3,7 +3,6 @@ import {
   ChipIcon,
   DocumentDuplicateIcon,
   LightningBoltIcon,
-  // SearchCircleIcon,
   HandIcon
 } from '@heroicons/react/outline';
 import { GetServerSidePropsContext } from 'next';

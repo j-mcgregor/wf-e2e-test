@@ -41,8 +41,8 @@ describe('Speedometer', () => {
           colour: 'red'
         }
       ],
+      rotationCalculator: (x: number) => x,
       value: 10,
-      rotation: 30,
       weighting: 40,
       hint: <div />,
       asMetric: 'hello'

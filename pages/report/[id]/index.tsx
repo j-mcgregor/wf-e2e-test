@@ -91,14 +91,16 @@ export interface ReportDataProps {
 const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const t = useTranslations();
   const router = useRouter();
-  const { id = [] } = router.query;
+  const { id } = router.query;
 
   const { data, error } = useSWR<ReportDataProps>(
-    `/api/reports/report?id=${id}`,
+    id && `/api/reports/report?id=${id}`,
     fetcher
   );
 
-  const companyName = data?.details?.company_name || data?.details?.name;
+  const companyName = data?.id
+    ? data?.details?.company_name || data?.details?.name || 'Unnamed Company'
+    : '';
 
   return (
     <Layout
@@ -133,7 +135,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
             message={data?.message}
           />
         ) : (
-          <Report data={data} id={id} />
+          <Report data={data} id={id || []} />
         )}
       </SecondaryLayout>
     </Layout>

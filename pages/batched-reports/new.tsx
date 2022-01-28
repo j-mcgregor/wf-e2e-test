@@ -1,26 +1,28 @@
 /* eslint-disable security/detect-non-literal-require */
-import { useState } from 'react';
-import { GetStaticPropsContext } from 'next';
-import { useTranslations } from 'use-intl';
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
-import Layout from '../../components/layout/Layout';
-import Button from '../../components/elements/Button';
+import { GetStaticPropsContext } from 'next';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useTranslations } from 'use-intl';
+
 import LinkCard from '../../components/cards/LinkCard';
-import UploadNewData from '../../components/uploads/UploadNewData';
+import Button from '../../components/elements/Button';
+import ErrorMessage from '../../components/elements/ErrorMessage';
+import Input from '../../components/elements/Input';
 import ProgressBar from '../../components/elements/ProgressBar';
+import Layout from '../../components/layout/Layout';
+import UploadNewData from '../../components/uploads/UploadNewData';
+import useCSVValidator from '../../hooks/useCSVValidator';
 import {
   batchReport,
-  batchValidators
+  uploadBatchReportValidators
 } from '../../lib/settings/batch-reports.settings';
-
-import Input from '../../components/elements/Input';
-import fetcher from '../../lib/utils/fetcher';
-import useCSVValidator from '../../hooks/useCSVValidator';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
-import ErrorMessage from '../../components/elements/ErrorMessage';
+import fetcher from '../../lib/utils/fetcher';
+import { SubmitReportType } from '../../types/report';
 
 const convertCSVToRequestBody = (
-  csv: { [index: string]: [] },
+  csv: { [index: string]: unknown[] },
   name: string
 ) => {
   const mappedCsv = csv?.company_id?.map((id, index) => ({
@@ -49,7 +51,7 @@ const CreateBatchReport = () => {
     totalRows,
     csvData,
     fileName
-  } = useCSVValidator(fileSelected, batchValidators);
+  } = useCSVValidator(fileSelected, uploadBatchReportValidators);
 
   // state for total completed reports
   const [completedReports, setCompletedReports] = useState(0);
@@ -61,6 +63,8 @@ const CreateBatchReport = () => {
   const [reportName, setReportName] = useState('');
   const [results, setResults] = useState<{ id?: string }>({});
   const [error, setError] = useState('');
+
+  const router = useRouter();
 
   const progressTimer = () => {
     const totalTime = Math.round(totalRows * batchReport.averageTime);
@@ -79,7 +83,8 @@ const CreateBatchReport = () => {
     }, batchReport.averageTime);
   };
 
-  const runReports = async () => {
+  const runReports: SubmitReportType = async (setError, setLoading) => {
+    setLoading(true);
     // if no report name input entered, set report name to default
     !reportName && setReportName(fileName);
 
@@ -89,12 +94,19 @@ const CreateBatchReport = () => {
     const reqData = convertCSVToRequestBody(csvData, fileName);
 
     try {
-      const req = await fetcher('/api/batched-reports', 'POST', reqData);
-      if (req.ok) {
-        return setResults(req.data);
+      const res = await fetcher('/api/batched-reports', 'POST', reqData);
+      if (res.ok) {
+        setResults(res.data);
+      }
+
+      if (res?.reportId) {
+        return router.push(`/report/${res.reportId}`);
       }
     } catch (err) {
-      setError(BATCH_REPORT_FETCHING_ERROR);
+      setError({
+        error: BATCH_REPORT_FETCHING_ERROR,
+        message: 'Could not make post request to batch endpoint.'
+      });
     }
   };
 

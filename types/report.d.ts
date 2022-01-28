@@ -1,3 +1,6 @@
+import { SetStateAction } from 'react';
+import { ApiError } from './global';
+
 import { CompanyStatusType } from './global';
 
 export type FinancialYear = {
@@ -121,7 +124,7 @@ export type FileContentType = string | ArrayBuffer | null | undefined;
 
 export interface CSVValueValidation {
   header: string;
-  validate?: ((value: string) => boolean | string) | null;
+  validate?: ((value: string) => boolean | string)[];
 }
 
 export type ValidCSVType = {
@@ -184,4 +187,144 @@ export interface Benchmarks {
     probability_of_default_1_year: number;
     loss_given_default: number;
   };
+}
+/**
+ * **********************
+ * CSV Report Upload:
+ * * The following type is a list of permitted headers.
+ * * For CSVs with multiple rows per report, only the 'FINANCIALS' should change.
+ * * Should map to ReportUploadRequestBody below
+ * **********************
+ */
+
+export type CsvReportUploadHeaders =
+  // MAIN
+  | 'currency'
+  | 'iso_code'
+  | 'company_id' // TODO - remove when API updated
+  | 'accounts_type'
+  // DETAILS
+  | 'details_industry_sector_code'
+  | 'details_nace_code'
+  | 'details_status'
+  | 'details_name'
+  // FINANCIALS
+  | 'address_region'
+  | 'cash_and_equivalents'
+  | 'depreciation'
+  | 'ebit'
+  | 'ebitda'
+  | 'intangible_fixed_assets'
+  | 'interest_expenses'
+  | 'long_term_debt'
+  | 'net_income'
+  | 'number_of_directors'
+  | 'number_of_employees'
+  | 'period'
+  | 'production_costs'
+  | 'retained_earnings'
+  | 'short_term_debt'
+  | 'tangible_fixed_assets'
+  | 'total_assets'
+  | 'total_debt'
+  | 'total_liabilities'
+  | 'total_shareholder_equity'
+  | 'turnover'
+  | 'working_capital'
+  // OTHER - expected for the API but not necessarily provided by the CSV
+  | 'management_experience' // High, Medium (default) or Low only
+  | 'creditors'
+  | 'debtors'
+  | 'fixed_assets'
+  | 'inventory'
+  | 'loans'
+  | 'non_current_liabilities'
+  | 'number_of_subsidiaries'
+  | 'other_non_current_liabilities'
+  | 'net_debt';
+
+// taken from swagger schema
+export enum AccountTypeEnum {
+  0 = 0,
+  1 = 1,
+  2 = 2,
+  3 = 3,
+  4 = 4,
+  5 = 5,
+  6 = 6,
+  7 = 7
+}
+
+export interface ReportUploadFinancialRequestBody {
+  cash_and_equivalents: number;
+  creditors: number;
+  current_assets: number;
+  current_liabilities: number;
+  debtors: number;
+  ebit: number;
+  ebitda: number;
+  fixed_assets: number;
+  intangible_fixed_assets: number;
+  interest_expenses: number;
+  inventory: number;
+  loans: number;
+  long_term_debt: number;
+  management_experience: string; // High, Medium (default) or Low only
+  net_debt: number;
+  net_income: number;
+  non_current_liabilities: number;
+  number_of_directors: number;
+  number_of_employees: number;
+  number_of_subsidiaries: number;
+  other_non_current_liabilities: number;
+  period: string;
+  retained_earnings: number;
+  short_term_debt: number;
+  tangible_fixed_assets: number;
+  total_assets: number;
+  total_debt: number;
+  total_liabilities: number;
+  total_shareholder_equity: number;
+  turnover: number;
+  working_capital: number;
+}
+
+export interface ReportUploadDetailsReuestBody {
+  nace_code: number;
+  industry_sector_code: number;
+  status: string;
+  name: string;
+}
+
+/**
+ * **********************
+ * CSV Report Upload POST body:
+ * * key-values taken from https://api.saggio-credito.co.uk/docs#/reports/create_manual_data_input_report_api_v1_reports_upload_post
+ * * CsvReportUploadHeaders must map to this as much as possible
+ * * Some values are missing for now but have been marked as such in useCSVValidator > makeReqBody()
+ * **********************
+ */
+export interface ReportUploadRequestBody {
+  // MAIN
+  iso_code: string;
+  company_id?: string; // TODO - remove when API updated
+  currency: string;
+  accounts_type: AccountTypeEnum;
+  // DETAILS
+  details: ReportUploadDetailsReuestBody;
+  // DETAILS
+  financials: ReportUploadFinancialRequestBody[];
+}
+
+export type SubmitReportType = (
+  setError: (value: SetStateAction<ApiError>) => void,
+  setLoading: (value: SetStateAction<boolean>) => void
+) => Promise<boolean | undefined>;
+
+export interface UploadReport422ErrorResponse {
+  detail: Array<{
+    loc: string[];
+    msg: string;
+    type: string;
+  }>;
 }

@@ -1,19 +1,17 @@
 import { withSentry } from '@sentry/nextjs';
 import { getSession } from 'next-auth/client';
-import countryCodes from '../../../lib/data/countryCodes.json';
 
-import {
-  UNAUTHORISED,
-  SEARCH_ERROR,
-  INVALID_REQUEST_TYPE,
-  COMPANY_NAME_REQUIRED
-} from '../../../lib/utils/error-codes';
-
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { ApiResType } from '../../../types/global';
 import News from '../../../lib/funcs/news';
 import newsHits from '../../../lib/mock-data/newsResponse';
+import {
+  COMPANY_NAME_REQUIRED,
+  INVALID_REQUEST_TYPE,
+  SEARCH_ERROR,
+  UNAUTHORISED
+} from '../../../lib/utils/error-codes';
+import { ApiError, ApiResType } from '../../../types/global';
 
+import type { NextApiRequest, NextApiResponse } from 'next';
 // Declaring function for readability with Sentry wrapper
 const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
   const session = await getSession({ req: request });
@@ -23,7 +21,7 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
-    });
+    } as ApiError);
   }
   const isGet = request.method === 'GET';
 
@@ -38,7 +36,7 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
         error: COMPANY_NAME_REQUIRED,
         message:
           'Please provide a company name in order to make a valid request.'
-      });
+      } as ApiError);
     }
 
     // handle demo mode
@@ -68,7 +66,7 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
   return response.status(404).json({
     error: INVALID_REQUEST_TYPE,
     message: 'Invalid request type. Please provide a valid request type.'
-  });
+  } as ApiError);
 };
 
 const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
@@ -76,7 +74,7 @@ const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
     return response.status(500).json({
       error: SEARCH_ERROR,
       message: results.message || 'Error when accessing News API.'
-    });
+    } as ApiError);
   }
 };
 

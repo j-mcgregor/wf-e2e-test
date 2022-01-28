@@ -1,16 +1,16 @@
+import * as Sentry from '@sentry/nextjs';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import * as Sentry from '@sentry/nextjs';
-
-import CheckboxInput from '../../elements/Checkbox';
-import { SettingsSectionHeader } from '../../elements/Headers';
-import { useTranslations } from 'next-intl';
-import Button from '../../elements/Button';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import appState, { appUser } from '../../../lib/appState';
+
 import config from '../../../config';
+import appState, { appUser } from '../../../lib/appState';
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
+import Button from '../../elements/Button';
+import CheckboxInput from '../../elements/Checkbox';
 import ErrorMessage from '../../elements/ErrorMessage';
+import { SettingsSectionHeader } from '../../elements/Headers';
 
 interface CommunicationFormInput {
   batch_report_email: boolean;

@@ -34,8 +34,6 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
       []
     );
 
-  // console.log(legalEventSections);
-
   const [filter, setFilter] = useState(FILTERS.ALL);
 
   const handleFilter = (event: LegalEvent[], filter: string): void => {

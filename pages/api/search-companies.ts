@@ -7,9 +7,10 @@ import { orbisAvailableSearchCountries } from '../../lib/settings/sme-calc.setti
 import {
   COUNTRY_CODE_REQUIRED,
   INVALID_COUNTRY_CODE,
+  SEARCH_ERROR,
   UNAUTHORISED
 } from '../../lib/utils/error-codes';
-import { handleSearchError } from '../../lib/utils/error-handling';
+import { ApiError, ApiResType } from '../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 // Declaring function for readability with Sentry wrapper
@@ -24,7 +25,7 @@ const SearchCompanies = async (
     return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
-    });
+    } as ApiError);
   }
 
   // extract search query
@@ -38,7 +39,7 @@ const SearchCompanies = async (
       error: COUNTRY_CODE_REQUIRED,
       message:
         'Please provide a country code in order to correctly access the right database'
-    });
+    } as ApiError);
   }
 
   if (!searchQuery) {
@@ -86,9 +87,19 @@ const SearchCompanies = async (
 
     return response.status(200).json(mappedCompanies);
   } else {
-    return response
-      .status(404)
-      .json({ error: INVALID_COUNTRY_CODE, message: 'Invalid country code.' });
+    return response.status(404).json({
+      error: INVALID_COUNTRY_CODE,
+      message: 'Invalid country code.'
+    } as ApiError);
+  }
+};
+
+const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
+  if (!results || !results.ok) {
+    return response.status(500).json({
+      error: SEARCH_ERROR,
+      message: 'Error when accessing API.'
+    } as ApiError);
   }
 };
 

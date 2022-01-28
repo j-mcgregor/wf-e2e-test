@@ -1,14 +1,14 @@
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 
+import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
 import Link from '../../elements/Link';
 import Logo from '../../elements/Logo';
-import { useRouter } from 'next/router';
 
 type FormProps = {
   token?: string;
@@ -22,7 +22,7 @@ type FormValues = {
 
 const ResetPasswordForm = ({ token, isValid }: FormProps) => {
   const t = useTranslations();
-  const router = useRouter()
+  const router = useRouter();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState({ type: '' });
@@ -118,9 +118,15 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
                   <ErrorMessage text={t('errors.required')} />
                 )}
               </div>
-              {submitError.type === GENERIC_API_ERROR && <ErrorMessage text={t('errors.submit_error')} />}
+              {submitError.type === GENERIC_API_ERROR && (
+                <ErrorMessage text={t('errors.submit_error')} />
+              )}
               <div className="mt-6">
-                <Button variant="highlight" type="submit" loading={isSubmitting}>
+                <Button
+                  variant="highlight"
+                  type="submit"
+                  loading={isSubmitting}
+                >
                   {t('change_password')}
                 </Button>
               </div>

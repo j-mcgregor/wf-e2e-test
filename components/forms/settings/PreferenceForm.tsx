@@ -1,19 +1,19 @@
+import * as Sentry from '@sentry/nextjs';
+import { useTranslations } from 'next-intl';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+
+import config from '../../../config';
+import appState, { appUser } from '../../../lib/appState';
+import SettingsSettings from '../../../lib/settings/settings.settings';
+import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
+import { FormWithClassProps } from '../../../pages/settings';
+import Button from '../../elements/Button';
+import ErrorMessage from '../../elements/ErrorMessage';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import Select from '../../elements/Select';
-import { useTranslations } from 'next-intl';
-import * as Sentry from '@sentry/nextjs';
-
-import Button from '../../elements/Button';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import appState, { appUser } from '../../../lib/appState';
-import { useEffect, useState } from 'react';
-import SettingsSettings from '../../../lib/settings/settings.settings';
-import { FormWithClassProps } from '../../../pages/settings';
-import config from '../../../config';
-import ErrorMessage from '../../elements/ErrorMessage';
-import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 
 type PreferenceFormInput = {
   locale: string;

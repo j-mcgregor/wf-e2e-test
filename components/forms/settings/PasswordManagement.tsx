@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import Input from '../../elements/Input';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import Button from '../../elements/Button';
-import { useTranslations } from 'next-intl';
-import ErrorMessage from '../../elements/ErrorMessage';
 import * as Sentry from '@sentry/nextjs';
+import { useTranslations } from 'next-intl';
+import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
+import config from '../../../config';
+import appState, { appUser } from '../../../lib/appState';
 import {
   CONFIRM_PASSWORD_MATCH,
   GENERIC_API_ERROR,
   NEW_PASSWORD_REQUIRED
 } from '../../../lib/utils/error-codes';
-import config from '../../../config';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import appState, { appUser } from '../../../lib/appState';
+import Button from '../../elements/Button';
+import ErrorMessage from '../../elements/ErrorMessage';
+import Input from '../../elements/Input';
 
 interface PasswordFormInput {
   newPassword: string;

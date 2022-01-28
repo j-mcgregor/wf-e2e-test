@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import { withSentry } from '@sentry/nextjs';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/client';
+
+import User from '../../../lib/funcs/user';
 import {
   GENERIC_API_ERROR,
   METHOD_NOT_ALLOWED,
@@ -10,9 +12,9 @@ import {
   USER_422,
   USER_500
 } from '../../../lib/utils/error-codes';
-import User from '../../../lib/funcs/user';
-import { getSession } from 'next-auth/client';
+import { ApiError } from '../../../types/global';
 
+import type { NextApiRequest, NextApiResponse } from 'next';
 const allowedMethods = ['GET', 'POST', 'DELETE'];
 
 const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,7 +24,7 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
-    });
+    } as ApiError);
   }
   const { method } = req;
 
@@ -31,7 +33,7 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       ok: false,
       error: METHOD_NOT_ALLOWED,
       message: 'Method not allowed.'
-    });
+    } as ApiError);
   }
 
   if (method === 'GET') {
@@ -43,9 +45,11 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         bookmarks: fetchRes.bookmarks
       });
     } catch (err) {
-      return res
-        .status(500)
-        .json({ ok: false, error: GENERIC_API_ERROR, message: err });
+      return res.status(500).json({
+        ok: false,
+        error: GENERIC_API_ERROR,
+        message: err
+      } as ApiError);
     }
   }
 
@@ -73,7 +77,7 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             //dev message
             message:
               'Access to the source is forbidden, user needs to sign in possibly.'
-          });
+          } as ApiError);
         case 404:
           return res.status(404).json({
             ok: fetchRes.ok,
@@ -81,7 +85,7 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             error: USER_404,
             //dev message
             message: "User not found: Can't find the user. Probably wrong id."
-          });
+          } as ApiError);
         case 422:
           return res.status(422).json({
             ok: fetchRes.ok,
@@ -90,7 +94,7 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             //dev message
             message:
               'Unprocessable Entity: The server has received the data, understands the request but was unable to complete it.'
-          });
+          } as ApiError);
         case 500:
           return res.status(500).json({
             ok: fetchRes.ok,
@@ -99,7 +103,7 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             //dev message
             message:
               "Internal Server Error: Didn't get anything usable from the server, chances are the server didn't respond."
-          });
+          } as ApiError);
         case 201: // created (post)
           return res.status(201).json({
             bookmarks: all_bookmarks,
@@ -113,9 +117,11 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           });
       }
     } catch (err) {
-      return res
-        .status(500)
-        .json({ ok: false, error: GENERIC_API_ERROR, message: err });
+      return res.status(500).json({
+        ok: false,
+        error: GENERIC_API_ERROR,
+        message: err
+      } as ApiError);
     }
   }
 };

@@ -15,23 +15,23 @@ interface SpeedometerProps {
   title: string;
   secondaryValues: SecondaryValue[];
   value?: number;
-  rotation: number;
   weighting?: number;
   hint: ReactElement;
   asMetric?: string;
   decimalPoints?: number;
   reverseX?: boolean;
+  rotationCalculator: (value: number) => number;
 }
 
 const Speedometer = ({
   title,
   value,
-  rotation,
   hint,
   asMetric,
   secondaryValues,
   decimalPoints,
-  reverseX
+  reverseX,
+  rotationCalculator
 }: SpeedometerProps) => {
   const isFloat = value && Number(value) === value && value % 1 !== 0;
 
@@ -43,6 +43,8 @@ const Speedometer = ({
     }).format(value);
 
   const t = useTranslations();
+
+  const arrowRotation = value && rotationCalculator(value);
 
   return (
     <>
@@ -59,7 +61,7 @@ const Speedometer = ({
         <div className="relative ">
           <Dial className="w-full h-full" reverseX={reverseX} />
           <SpeedoArrow
-            style={{ transform: `rotate(${rotation}deg)` }}
+            style={{ transform: `rotate(${arrowRotation}deg)` }}
             className="absolute top-0 w-full  h-full transition-transform duration-500"
           />
 
@@ -79,7 +81,11 @@ const Speedometer = ({
               benchmark.value && (
                 <BenchmarkArrow
                   key={index}
-                  style={{ transform: `rotate(${benchmark.value}deg)` }}
+                  style={{
+                    transform: `rotate(${rotationCalculator(
+                      Number(benchmark.value)
+                    )}deg)`
+                  }}
                   className={`absolute top-0 w-full h-full transition-transform duration-500 ${
                     index % 2 === 1 ? 'text-green-500' : 'text-blue-500'
                   }`}
