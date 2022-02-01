@@ -20,6 +20,7 @@ interface LayoutProps {
   noAuthRequired?: boolean;
   className?: string;
   children?: React.ReactNode;
+  containerClassName?: string;
 }
 
 const Layout = ({
@@ -30,7 +31,8 @@ const Layout = ({
   fullWidth,
   noAuthRequired,
   className,
-  children
+  children,
+  containerClassName
 }: LayoutProps) => {
   const router = useRouter();
 
@@ -73,7 +75,7 @@ const Layout = ({
             !noNav && !fullWidth && 'pt-12'
           } ${className}`}
         >
-          <div className={` ${!noNav && !fullWidth && 'py-6'}`}>
+          <div className={` ${!noNav && !fullWidth ? 'py-6' : ''} h-full`}>
             <div className="px-4 sm:px-6 md:px-0">
               {pageTitle && (
                 <h1 className="text-2xl font-semibold text-gray-900">
@@ -85,7 +87,7 @@ const Layout = ({
             <div
               className={`${
                 !fullWidth ? 'px-4 sm:px-6 max-w-5xl mx-auto' : ''
-              }`}
+              } ${containerClassName}`}
             >
               {children}
             </div>
