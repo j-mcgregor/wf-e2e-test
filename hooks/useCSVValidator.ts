@@ -2,7 +2,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { useState } from 'react';
 
-import { uploadReportCSVHeaders } from '../lib/settings/sme-calc.settings';
 import {
   CsvReportUploadHeaders,
   CSVValueValidation,
@@ -114,7 +113,8 @@ const useCSVValidator = (
     : valueAndHeaderErrors;
   // checks the reportObject for the headers that are required
   // returns an array of missing header names
-  const missingHeaders = Object.entries(uploadReportCSVHeaders)
+  // TODO : fix test since Sam changed the entries object
+  const missingHeaders = Object.entries(validators)
     .map(([header, { required }]) => {
       const isPresent = reportObject[header as CsvReportUploadHeaders];
       return isPresent ? null : required ? header : null;

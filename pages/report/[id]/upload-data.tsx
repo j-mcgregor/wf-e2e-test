@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
-import { GetServerSidePropsContext } from 'next';
+import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -10,7 +10,6 @@ import Button from '../../../components/elements/Button';
 import Layout from '../../../components/layout/Layout';
 import UploadNewData from '../../../components/uploads/UploadNewData';
 import useCSVValidator from '../../../hooks/useCSVValidator';
-import getServerSidePropsWithAuth from '../../../lib/auth/getServerSidePropsWithAuth';
 import { manualUploadValidators } from '../../../lib/settings/sme-calc.settings';
 
 const UploadData = () => {
@@ -90,19 +89,24 @@ const UploadData = () => {
 
 export default UploadData;
 
-export const getServerSideProps = getServerSidePropsWithAuth(
-  ({ locale }: GetServerSidePropsContext) => {
-    return {
-      props: {
-        messages: {
-          // You can get the messages from anywhere you like, but the recommended
-          // pattern is to put them in JSON files separated by language and read
-          // the desired one based on the `locale` received from Next.js.
-          ...require(`../../../messages/${locale}/upload-data.${locale}.json`),
-          ...require(`../../../messages/${locale}/hints.${locale}.json`),
-          ...require(`../../../messages/${locale}/general.${locale}.json`)
-        }
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: {
+        // You can get the messages from anywhere you like, but the recommended
+        // pattern is to put them in JSON files separated by language and read
+        // the desired one based on the `locale` received from Next.js.
+        ...require(`../../../messages/${locale}/upload-data.${locale}.json`),
+        ...require(`../../../messages/${locale}/hints.${locale}.json`),
+        ...require(`../../../messages/${locale}/general.${locale}.json`)
       }
-    };
-  }
-);
+    }
+  };
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: true
+  };
+}

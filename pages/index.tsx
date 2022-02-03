@@ -5,7 +5,7 @@ import {
   LightningBoltIcon,
   HandIcon
 } from '@heroicons/react/outline';
-import { GetServerSidePropsContext } from 'next';
+import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRecoilValue } from 'recoil';
 
@@ -16,7 +16,6 @@ import TwitterFeed from '../components/elements/TwitterFeed';
 import Layout from '../components/layout/Layout';
 import useLocalStorage from '../hooks/useLocalStorage';
 import appState from '../lib/appState';
-import getServerSidePropsWithAuth from '../lib/auth/getServerSidePropsWithAuth';
 
 export default function Dashboard() {
   const t = useTranslations();
@@ -132,18 +131,16 @@ export default function Dashboard() {
   );
 }
 
-export const getServerSideProps = getServerSidePropsWithAuth(
-  ({ locale }: GetServerSidePropsContext) => {
-    return {
-      props: {
-        messages: {
-          // You can get the messages from anywhere you like, but the recommended
-          // pattern is to put them in JSON files separated by language and read
-          // the desired one based on the `locale` received from Next.js.
-          ...require(`../messages/${locale}/index.${locale}.json`),
-          ...require(`../messages/${locale}/general.${locale}.json`)
-        }
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: {
+        // You can get the messages from anywhere you like, but the recommended
+        // pattern is to put them in JSON files separated by language and read
+        // the desired one based on the `locale` received from Next.js.
+        ...require(`../messages/${locale}/index.${locale}.json`),
+        ...require(`../messages/${locale}/general.${locale}.json`)
       }
-    };
-  }
-);
+    }
+  };
+}

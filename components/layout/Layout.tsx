@@ -1,4 +1,4 @@
-import { useSession, signOut } from 'next-auth/client';
+import { useSession, signOut } from 'next-auth/react';
 
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -38,7 +38,10 @@ const Layout = ({
 
   const path: string = router.asPath;
 
-  const [session, loading] = useSession();
+  // renamed for consistency
+  const { data: session, status } = useSession();
+
+  const loading = status === 'loading';
 
   if (!loading && !session && !noAuthRequired) router.push('/login');
 
@@ -69,7 +72,7 @@ const Layout = ({
     <div>
       <Seo title={title} description={description} path={path} />
       <div className="h-screen bg-bg overflow-hidden flex ">
-        {!noNav && <Nav path={path} />}
+        {!noNav && session && <Nav path={path} />}
         <main
           className={`flex-1 relative overflow-y-auto focus:outline-none ${
             !noNav && !fullWidth && 'pt-12'
@@ -77,7 +80,7 @@ const Layout = ({
         >
           <div className={` ${!noNav && !fullWidth ? 'py-6' : ''} h-full`}>
             <div className="px-4 sm:px-6 md:px-0">
-              {pageTitle && (
+              {pageTitle && session && (
                 <h1 className="text-2xl font-semibold text-gray-900">
                   {pageTitle}
                 </h1>
@@ -89,7 +92,7 @@ const Layout = ({
                 !fullWidth ? 'px-4 sm:px-6 max-w-5xl mx-auto' : ''
               } ${containerClassName}`}
             >
-              {children}
+              {(session || noAuthRequired) && children}
             </div>
           </div>
         </main>

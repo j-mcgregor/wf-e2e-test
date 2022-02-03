@@ -10,7 +10,7 @@ const LoginContainer = ({ children }: LoginProps) => {
   return (
     <div className="absolute min-h-screen w-screen left-0 bg-alt z-10 flex justify-center items-center">
       <Particles
-        className="h-full min-h-screen w-full fixed top-0 bg-gray-300"
+        className="h-full min-h-screen w-full fixed top-0 bg-gray-300 pointer-events-none"
         params={{
           fps_limit: 60,
           interactivity: {
@@ -54,7 +54,7 @@ const LoginContainer = ({ children }: LoginProps) => {
       <div
         className={`${
           children ? 'opacity-100' : 'opacity-0'
-        } transition-opacity duration-500 z-20 w-full px-2`}
+        } transition-opacity duration-500 z-20 w-full px-2 h-screen flex items-center`}
       >
         <div className="w-full sm:max-w-xl bg-black text-white flex mx-auto flex-col px-12 sm:px-20 py-6 sm:py-14 sm:text-left my-4">
           {children}

@@ -1,9 +1,11 @@
 import { GetServerSidePropsContext } from 'next';
-import { getSession } from 'next-auth/client';
+import { getServerSession } from 'next-auth';
+import nextAuthConfig from './nextAuthConfig';
 
 function getServerSidePropsWithAuth(propsWithContext?: Function) {
   return async (context: GetServerSidePropsContext) => {
-    const session = await getSession(context);
+
+    const session = await getServerSession(context, nextAuthConfig )
 
     if (!session) {
       return {

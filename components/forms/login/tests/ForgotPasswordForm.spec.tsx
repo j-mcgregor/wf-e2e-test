@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-identical-functions */
-import client from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import * as nextRouter from 'next/router';
 
 import {
@@ -17,7 +17,7 @@ import {
 import ForgotPasswordForm from '../ForgotPasswordForm';
 import { GENERIC_API_ERROR } from '../../../../lib/utils/error-codes';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 
 // @ts-ignore
 // eslint-disable-next-line no-import-assign
@@ -33,7 +33,7 @@ describe('ForgotPasswordForm', () => {
   beforeEach(() => {
     mockSession = makeMockSession();
 
-    (client.useSession as jest.Mock).mockReturnValue([mockSession, false]);
+    (useSession as jest.Mock).mockReturnValue([mockSession, false]);
   });
 
   it('renders the form without issue', () => {

@@ -5,7 +5,7 @@ import Button from '../../elements/Button';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import PasswordManagement from './PasswordManagement';
 import GoogleIcon from '../../icons/GoogleIcon';
-import MicroSoftIcon from '../../icons/MicrosoftIcon';
+import MicrosoftIcon from '../../icons/MicrosoftIcon';
 import Link from '../../elements/Link';
 
 interface PasswordFormProps {
@@ -32,7 +32,7 @@ const SSOPassword = ({ isSSO }: PasswordFormProps) => {
       component = (
         <>
           <div className={'flex justify-center py-4'}>
-            <MicroSoftIcon />
+            <MicrosoftIcon />
           </div>
           <h3 className={'text-center text-base font-bold text-gray-900'}>
             {t('forms.password-form.logged_in_microsoft')}
@@ -44,21 +44,17 @@ const SSOPassword = ({ isSSO }: PasswordFormProps) => {
   return component;
 };
 
-const linkTo = ({ isSSO }: PasswordFormProps) => {
-  let link: string | undefined;
+const ssoLink = ({ isSSO }: PasswordFormProps) => {
   switch (isSSO) {
     case 'google':
-      link = 'https://myaccount.google.com/';
-      break;
-    // eslint-disable-next-line sonarjs/no-duplicated-branches
+      return 'https://myaccount.google.com/';
     case 'microsoft':
-      link = 'https://account.microsoft.com/';
-      break;
+      return 'https://account.microsoft.com/';
   }
-  return link;
 };
 const PasswordForm = ({ isSSO }: PasswordFormProps) => {
   const t = useTranslations();
+  const linkTo = ssoLink({ isSSO });
   return (
     <div className="shadow sm:rounded-md sm:overflow-hidden">
       <div className="bg-white pt-6 px-6 space-y-6 sm:pt-6">
@@ -86,7 +82,7 @@ const PasswordForm = ({ isSSO }: PasswordFormProps) => {
                 <div className={'flex justify-center my-4'}>
                   <Button
                     // @ts-ignore
-                    linkTo={linkTo(isSSO)}
+                    linkTo={linkTo}
                     type="submit"
                     variant="primary"
                     className="max-w-[150px]"

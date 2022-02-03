@@ -4,14 +4,14 @@
  * MORE TESTS SHOULD BE ADDED BY DEVS AS THE PROJECT GROWS.
  * REMOVE THIS NOTE WHEN MORE TESTS ARE ADDED.
  */
-import client from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import * as nextRouter from 'next/router';
 
 import allMessages from '../../../../messages/en';
 import { makeMockSession, render } from '../../../../test-utils';
 import SummaryMap from '../SummaryMap';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 
 describe('SummaryMap', () => {
   let mockSession: any;
@@ -24,7 +24,7 @@ describe('SummaryMap', () => {
     nextRouter.useRouter = jest.fn().mockImplementation(() => ({
       asPath: ''
     }));
-    (client.useSession as jest.Mock).mockReturnValue([mockSession, false]);
+    (useSession as jest.Mock).mockReturnValue([mockSession, false]);
   });
 
   it('render the SummaryMap without issue', () => {

@@ -126,6 +126,7 @@ export type FileContentType = string | ArrayBuffer | null | undefined;
 export interface CSVValueValidation {
   header: string;
   validate?: ((value: string) => boolean | string)[];
+  required?: boolean;
 }
 
 export type ValidCSVType = {

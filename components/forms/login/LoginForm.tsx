@@ -1,4 +1,4 @@
-import { signIn } from 'next-auth/client';
+import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -64,7 +64,7 @@ const LoginForm = () => {
       setUserEmail('');
     }
 
-    const authenticated = await signIn('credentials', {
+    const authenticated = await signIn<'credentials'>('credentials', {
       email: data.email,
       password: data.password,
       redirect: false

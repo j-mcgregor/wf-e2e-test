@@ -1,5 +1,5 @@
 import { withSentry } from '@sentry/nextjs';
-import { getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/react';
 
 import News from '../../../lib/funcs/news';
 import newsHits from '../../../lib/mock-data/newsResponse';
@@ -12,12 +12,16 @@ import {
 import { ApiError, ApiResType } from '../../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getToken } from 'next-auth/jwt';
 // Declaring function for readability with Sentry wrapper
 const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
-  const session = await getSession({ req: request });
+  const token = await getToken({
+    req: request,
+    secret: `${process.env.NEXTAUTH_SECRET}`
+  });
 
   // unauthenticated requests
-  if (!session) {
+  if (!token) {
     return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
@@ -28,6 +32,7 @@ const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
   if (isGet) {
     // extract search query
     const companyName: string = request?.query?.company_name?.toString();
+
     // const country: string = request?.query?.country?.toString();
     const type: string = request?.query?.type?.toString();
 

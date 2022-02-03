@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { withSentry } from '@sentry/nextjs';
-import { getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/react';
 
 import User from '../../../lib/funcs/user';
 import {
@@ -15,10 +15,14 @@ import {
 import { ApiError } from '../../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getToken } from 'next-auth/jwt';
+
+
 const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession({ req: req });
+
+  const token = await getToken({ req, secret: `${process.env.NEXTAUTH_SECRET}` });
   // unauthenticated requests
-  if (!session) {
+  if (!token) {
     return res.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
@@ -37,7 +41,7 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (method === 'PUT' && user) {
     try {
-      const fetchRes = await User.updateUser(user, `${session.token}`);
+      const fetchRes = await User.updateUser(user, `${token.accessToken}`);
 
       switch (fetchRes.status) {
         case 401:

@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-non-literal-require */
-import { GetServerSidePropsContext } from 'next';
+import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
@@ -12,7 +12,6 @@ import Report from '../../../components/report-sections/Report';
 import { RatingType } from '../../../components/report-sections/risk-metrics/BondRating';
 import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
 import SkeletonReport from '../../../components/skeletons/SkeletonReport';
-import getServerSidePropsWithAuth from '../../../lib/auth/getServerSidePropsWithAuth';
 import fetcher from '../../../lib/utils/fetcher';
 import {
   Benchmarks,
@@ -92,6 +91,7 @@ export interface ReportDataProps {
 
 const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const t = useTranslations();
+
   const router = useRouter();
   const { id } = router.query;
 
@@ -107,7 +107,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   return (
     <Layout
       title={`${
-        companyName || (data?.error ? t(data.error) : false) || 'Loading'
+        companyName || (data?.error ? t(data.error) : false) || t('loading')
       } | ${t('report')}`}
       fullWidth
     >
@@ -131,13 +131,13 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
       >
         {!data ? (
           <SkeletonReport />
-        ) : error || data.error ? (
+        ) : error || data?.error ? (
           <ErrorSkeleton
-            header={data.error ? t(data?.error) : ''}
+            header={data?.error ? t(data?.error) : ''}
             message={data?.message}
           />
         ) : (
-          <Report data={data} id={id || []} />
+          data && <Report data={data} id={id || []} />
         )}
       </SecondaryLayout>
     </Layout>
@@ -146,20 +146,25 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
 
 export default ReportTemplate;
 
-export const getServerSideProps = getServerSidePropsWithAuth(
-  ({ locale }: GetServerSidePropsContext) => {
-    return {
-      props: {
-        messages: {
-          // You can get the messages from anywhere you like, but the recommended
-          // pattern is to put them in JSON files separated by language and read
-          // the desired one based on the `locale` received from Next.js.
-          ...require(`../../../messages/${locale}/report.${locale}.json`),
-          ...require(`../../../messages/${locale}/hints.${locale}.json`),
-          ...require(`../../../messages/${locale}/general.${locale}.json`),
-          ...require(`../../../messages/${locale}/errors.${locale}.json`)
-        }
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: {
+        // You can get the messages from anywhere you like, but the recommended
+        // pattern is to put them in JSON files separated by language and read
+        // the desired one based on the `locale` received from Next.js.
+        ...require(`../../../messages/${locale}/report.${locale}.json`),
+        ...require(`../../../messages/${locale}/hints.${locale}.json`),
+        ...require(`../../../messages/${locale}/general.${locale}.json`),
+        ...require(`../../../messages/${locale}/errors.${locale}.json`)
       }
-    };
-  }
-);
+    }
+  };
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: true
+  };
+}

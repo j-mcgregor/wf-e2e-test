@@ -7,7 +7,7 @@ import allMessages from '../../../messages/en';
 import { render, screen } from '../../../test-utils';
 import AlternativeSearchBox from '../AlternativeSearchBox';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 
 // @ts-ignore
 // eslint-disable-next-line no-import-assign

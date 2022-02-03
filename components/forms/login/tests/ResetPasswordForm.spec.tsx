@@ -1,11 +1,11 @@
-import client from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import * as nextRouter from 'next/router';
 
 import resetPasswordMessages from '../../../../messages/en/reset-password.en.json';
 import { makeMockSession, render } from '../../../../test-utils';
 import ResetPasswordForm from '../ResetPasswordForm';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 
 // @ts-ignore
 // eslint-disable-next-line no-import-assign
@@ -17,7 +17,7 @@ describe('ResetPasswordForm', () => {
   beforeEach(() => {
     mockSession = makeMockSession();
 
-    (client.useSession as jest.Mock).mockReturnValue([mockSession, false]);
+    (useSession as jest.Mock).mockReturnValue([mockSession, false]);
   });
 
   it('render the form without issue', () => {

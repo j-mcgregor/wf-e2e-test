@@ -1,11 +1,11 @@
-import client from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import * as nextRouter from 'next/router';
 
 import allMessages from '../../../../messages/en';
 import { makeMockSession, render } from '../../../../test-utils';
 import PasswordManagement from '../PasswordManagement';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 
 // @ts-ignore
 // eslint-disable-next-line no-import-assign

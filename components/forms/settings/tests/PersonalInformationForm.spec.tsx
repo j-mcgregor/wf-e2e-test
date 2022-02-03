@@ -1,11 +1,11 @@
-import client from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import * as nextRouter from 'next/router';
 
 import allMessages from '../../../../messages/en';
 import { makeMockSession, render } from '../../../../test-utils';
 import PersonalInformationForm from '../PersonalInformationForm';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 
 // @ts-ignore
 // eslint-disable-next-line no-import-assign
@@ -17,7 +17,7 @@ describe.skip('PersonalInformationForm', () => {
   beforeEach(() => {
     mockSession = makeMockSession();
 
-    (client.useSession as jest.Mock).mockReturnValue([mockSession, false]);
+    (useSession as jest.Mock).mockReturnValue([mockSession, false]);
   });
 
   it('render the form without issue', () => {

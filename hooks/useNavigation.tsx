@@ -14,7 +14,7 @@ import {
   UserCircleIcon
 } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/react';
-import { signOut } from 'next-auth/client';
+import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 

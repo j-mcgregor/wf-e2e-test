@@ -1,14 +1,14 @@
 import { within } from '@testing-library/dom';
 import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import client from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import * as nextRouter from 'next/router';
 
 import allMessages from '../../../../messages/en';
 import UploadData from '../../../../pages/report/[id]/upload-data';
 import { makeMockSession, render, screen } from '../../../../test-utils';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 
 xdescribe('UploadData', () => {
   let mockSession: any;
@@ -18,7 +18,7 @@ xdescribe('UploadData', () => {
     mockSession = makeMockSession();
     pushSpy = jest.fn();
 
-    (client.useSession as jest.Mock).mockReturnValue([mockSession, false]);
+    (useSession as jest.Mock).mockReturnValue([mockSession, false]);
 
     // @ts-ignore
     // eslint-disable-next-line no-import-assign

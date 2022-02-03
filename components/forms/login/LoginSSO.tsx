@@ -1,4 +1,4 @@
-import { signIn } from 'next-auth/client';
+import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -12,7 +12,7 @@ import MicrosoftIcon from '../../icons/MicrosoftIcon';
 const LoginSSO = () => {
   const t = useTranslations();
   const router = useRouter();
-  const ssoError = router.query.error === 'Callback';
+  const ssoError = router.query?.error === 'Callback';
   const [userLoginTime, setUserLoginTime] = useLocalStorage<number[]>(
     'wf_last_login',
     []

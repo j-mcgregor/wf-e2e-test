@@ -44,7 +44,17 @@ const ReportTemplate = () => {
 export default ReportTemplate;
 
 export const getServerSideProps = getServerSidePropsWithAuth(
-  ({ locale }: GetServerSidePropsContext) => {
+  ({ locale, res }: GetServerSidePropsContext) => {
+    const maxAge = 60 * 60 * 24 * 7 * 4; // 28 days
+    const oneMinute = 60; // 1 day
+
+    // cache the printed pages for 1 minute
+    // cache the stale versions for up to 4 weeks and revalidate them in the background
+    res.setHeader(
+      'Cache-Control',
+      `public, s-maxage=${oneMinute}, stale-while-revalidate=${maxAge}`
+    );
+
     return {
       props: {
         messages: {

@@ -1,5 +1,6 @@
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useSession } from 'next-auth/react';
 import { IntlMessages, NextIntlProvider } from 'next-intl';
 import React, { ReactElement } from 'react';
 import { RecoilRoot } from 'recoil';
@@ -26,20 +27,17 @@ const customRender = (
   messages?: IntlMessages
 ) => render(ui, { wrapper: makeProviders(messages), ...options });
 
-const makeMockSession = () => {
+const makeMockSession = (): ReturnType<typeof useSession> => {
   return {
-    user: {
-      name: 'John Doe',
-      email: 'test@test.com',
-      id: 1,
-      recent_usage: {
-        last_login: 1629657065187,
-        api_requests: 142,
-        reports_ran: 32
+    data: {
+      user: {
+        name: 'John Doe',
+        email: 'test@test.com',
+        image: ''
       },
-      reports: mockReports
+      expires: '2021-10-09T09:00:41.059Z'
     },
-    expires: '2021-10-09T09:00:41.059Z'
+    status: 'authenticated'
   };
 };
 

@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
-import { getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/react';
 
 import mockBatchReport from '../../lib/mock-data/mockBatchReport';
 import mockUsers, { MockCompanyNames } from '../../lib/mock-data/users';
@@ -14,26 +14,33 @@ import {
   UNAUTHORISED
 } from '../../lib/utils/error-codes';
 import { ApiError, BatchedReportType } from '../../types/global';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { getToken } from 'next-auth/jwt';
 
 const randomValue = (amount: number) => {
   return Math.floor(Math.random() * amount);
 };
 
-import type { NextApiRequest, NextApiResponse } from 'next';
+
+
 type CompanyReqType = {
   iso: string;
   company_id: string;
 };
+
+
+// DEMO FUNCTION
 
 // Declaring function for readability with Sentry wrapper
 const batchedReport = async (
   request: NextApiRequest,
   response: NextApiResponse
 ): Promise<any> => {
-  const session = await getSession({ req: request });
+  const token = await getToken({ req: request, secret: `${process.env.NEXTAUTH_SECRET}` });
+
 
   // unauthenticated requests
-  if (!session) {
+  if (!token) {
     return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
@@ -109,7 +116,7 @@ const batchedReport = async (
       });
     }
 
-    const email = session?.user?.email;
+    const email = token?.email;
 
     // to be replaced by backend call
     // @ts-ignore

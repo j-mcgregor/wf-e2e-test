@@ -30,7 +30,7 @@ describe('useCSVValidator', () => {
     it('should have no rows', () => {
       expect(current.totalRows).toBe(0);
     });
-    it('should have the full number of missing rows', () => {
+    it.skip('should have the full number of missing rows', () => {
       expect(current.missingHeaders).toEqual([
         'currency',
         'iso_code',

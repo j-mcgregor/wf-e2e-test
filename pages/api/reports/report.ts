@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
-import { getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/react';
 
 import Report from '../../../lib/funcs/report';
 import mockReport from '../../../lib/mock-data/report';
@@ -19,13 +19,16 @@ import {
 import { ApiError, ReportSnippetType } from '../../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getToken } from 'next-auth/jwt';
 
 // Declaring function for readability with Sentry wrapper
 const report = async (request: NextApiRequest, response: NextApiResponse) => {
-  const session = await getSession({ req: request });
-
+  const token = await getToken({
+    req: request,
+    secret: `${process.env.NEXTAUTH_SECRET}`
+  });
   // unauthenticated requests
-  if (!session) {
+  if (!token) {
     return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
@@ -60,7 +63,7 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
           message: `No ISO code provided.`
         } as ApiError);
       }
-      const report = await Report.createReport(body, `${session?.token}`);
+      const report = await Report.createReport(body, `${token?.accessToken}`);
       // const tempReport = await Report.getExistingReport('fafd5ee8-8bd1-4c11-aea8-457e862bc06a', `${session?.token}`)
 
       if (report.ok) {
@@ -104,7 +107,7 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
       } as ApiError);
     }
 
-    const email = session?.user?.email;
+    const email = token?.email;
 
     // to be replaced by backend call
     // @ts-ignore
@@ -115,10 +118,10 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
       (report: ReportSnippetType) => report.id === reportId
     );
 
-    if (session.token && !report) {
+    if (token.accessToken && !report) {
       const report = await Report.getExistingReport(
         `${reportId}`,
-        `${session.token}`
+        `${token.accessToken}`
       );
 
       // console.log(report)

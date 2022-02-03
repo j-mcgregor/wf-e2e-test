@@ -30,17 +30,19 @@ const getUser = async (token: string) => {
   if (!token) {
     return { ok: false };
   }
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
-    method: 'GET',
-    headers: {
-      ...XMLHeaders,
-      Authorization: `Bearer ${token}`
-    }
-  });
 
-  // fetch the user reports history from separate endpoint
-  const userReports = await getReportsHistory(token);
-  const userBookmarks = await User.getUserBookmarks(token);
+  // run all user requests in parallel
+  const [res, userReports, userBookmarks] = await Promise.all([
+    fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
+      method: 'GET',
+      headers: {
+        ...XMLHeaders,
+        Authorization: `Bearer ${token}`
+      }
+    }),
+    getReportsHistory(token),
+    User.getUserBookmarks(token)
+  ]);
 
   if (res.ok) {
     const user = await res.json();
@@ -124,6 +126,7 @@ const getSSOToken = async (
       sso_token: token
     })
   });
+
   if (res.ok) {
     const { access_token } = await res.json();
     return { access_token, ok: true };
@@ -195,10 +198,8 @@ const getReportsHistory = async (
 
   if (res.ok) {
     const reports = await res.json();
-
     return { ok: true, reports, status: res.status };
   }
-
   return { ok: false, status: res.status };
 };
 

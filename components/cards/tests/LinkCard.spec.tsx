@@ -4,14 +4,14 @@
  * MORE TESTS SHOULD BE ADDED BY DEVS AS THE PROJECT GROWS.
  * REMOVE THIS NOTE WHEN MORE TESTS ARE ADDED.
  */
-import client from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import * as nextRouter from 'next/router';
 
 import allMessages from '../../../messages/en';
 import { makeMockSession, render } from '../../../test-utils';
 import LinkCard from '../LinkCard';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 
 describe('LinkCard', () => {
   let mockSession: any;
@@ -22,7 +22,7 @@ describe('LinkCard', () => {
     // @ts-ignore
     // eslint-disable-next-line no-import-assign
     nextRouter.useRouter = jest.fn().mockImplementation(() => ({}));
-    (client.useSession as jest.Mock).mockReturnValue([mockSession, false]);
+    (useSession as jest.Mock).mockReturnValue([mockSession, false]);
   });
 
   it('render the LinkCard without issue', () => {

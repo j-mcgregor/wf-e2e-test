@@ -1,6 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
-import { getSession } from 'next-auth/client';
 
 import Company from '../../lib/funcs/company';
 import { orbisAvailableSearchCountries } from '../../lib/settings/sme-calc.settings';
@@ -13,15 +12,17 @@ import {
 import { ApiError, ApiResType } from '../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getToken } from 'next-auth/jwt';
 // Declaring function for readability with Sentry wrapper
 const SearchCompanies = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  const session = await getSession({ req: request });
+
+  const token = await getToken({ req: request, secret: `${process.env.NEXTAUTH_SECRET}` });
 
   // unauthenticated requests
-  if (!session) {
+  if (!token) {
     return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'

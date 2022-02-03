@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/nextjs';
-import { getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';

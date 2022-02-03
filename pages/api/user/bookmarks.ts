@@ -1,7 +1,5 @@
 /* eslint-disable no-console */
 import { withSentry } from '@sentry/nextjs';
-import { getSession } from 'next-auth/client';
-
 import User from '../../../lib/funcs/user';
 import {
   GENERIC_API_ERROR,
@@ -15,12 +13,15 @@ import {
 import { ApiError } from '../../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getToken } from 'next-auth/jwt';
 const allowedMethods = ['GET', 'POST', 'DELETE'];
 
 const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession({ req: req });
+
+    const token = await getToken({ req, secret: `${process.env.NEXTAUTH_SECRET}` });
+
   // unauthenticated requests
-  if (!session) {
+  if (!token) {
     return res.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
@@ -38,7 +39,7 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (method === 'GET') {
     try {
-      const fetchRes = await User.getUserBookmarks(`${session.token}`);
+      const fetchRes = await User.getUserBookmarks(`${token.accessToken}`);
 
       return res.status(fetchRes.status).json({
         ok: fetchRes.ok,
@@ -58,13 +59,13 @@ const BookmarkHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const fetchRes = await User.bookmarkReport(
         `${req.query.reportId}`,
-        `${session.token}`,
+        `${token.accessToken}`,
         method as any
       );
 
       // add in all bookmarks on post request
       if (req.query.return_all) {
-        const user_bookmarks = await User.getUserBookmarks(`${session.token}`);
+        const user_bookmarks = await User.getUserBookmarks(`${token.accessToken}`);
         all_bookmarks = user_bookmarks.bookmarks;
       }
 

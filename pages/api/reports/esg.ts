@@ -1,5 +1,5 @@
 import { withSentry } from '@sentry/nextjs';
-import { getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/react';
 
 import {
   COMPANY_WEBSITE_REQUIRED,
@@ -11,13 +11,15 @@ import {
 import type { NextApiRequest, NextApiResponse } from 'next';
 import ESG from '../../../lib/funcs/esg';
 import { ApiError, ApiResType } from '../../../types/global';
+import { getToken } from 'next-auth/jwt';
 
 // Declaring function for readability with Sentry wrapper
 const ESGApi = async (request: NextApiRequest, response: NextApiResponse) => {
-  const session = await getSession({ req: request });
+
+  const token = await getToken({ req: request, secret: `${process.env.NEXTAUTH_SECRET}` });
 
   // unauthenticated requests
-  if (!session && process.env.NODE_ENV !== 'development') {
+  if (!token && process.env.NODE_ENV !== 'development') {
     return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'

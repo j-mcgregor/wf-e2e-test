@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import client from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import * as nextRouter from 'next/router';
 import { mockReport } from '../../../../lib/mock-data/newReport';
 
@@ -12,7 +12,7 @@ import {
 } from '../../../../test-utils';
 import SummaryFinancial from '../SummaryFinancial';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 
 describe('SummaryFinancial', () => {
   let mockSession: any;
@@ -25,7 +25,7 @@ describe('SummaryFinancial', () => {
     nextRouter.useRouter = jest.fn().mockImplementation(() => ({
       asPath: ''
     }));
-    (client.useSession as jest.Mock).mockReturnValue([mockSession, false]);
+    (useSession as jest.Mock).mockReturnValue([mockSession, false]);
   });
 
   it('render the SummaryFinancial without issue', () => {

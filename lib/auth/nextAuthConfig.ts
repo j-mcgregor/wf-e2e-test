@@ -1,9 +1,9 @@
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import User from '../../../lib/funcs/user';
-import mockUsers from '../../../lib/mock-data/users';
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import User from "../funcs/user";
 
-export default NextAuth({
+
+const nextAuthConfig: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   // Configure one or more authentication providers
   providers: [
@@ -12,15 +12,14 @@ export default NextAuth({
       name: 'Microsoft Login',
       type: 'oauth',
       version: '2.0',
-      wellKnown:
-        'https://login.microsoftonline.com/common/.well-known/openid-configuration',
+      wellKnown: 'https://login.microsoftonline.com/common/.well-known/openid-configuration',
       userinfo: 'https://graph.microsoft.com/oidc/userinfo',
       profile: async (_profile, token) => {
         // use the SSO token to get the backend api auth token
-        const wfToken = await User.getSSOToken(token.id_token);
+        const wfToken = await User.getSSOToken(`${token.id_token}`);
         if (wfToken.ok) {
           // use the backend api auth token to get the user information
-          const user = await User.getUser(wfToken.access_token);
+          const user = await User.getUser(`${wfToken.access_token}`);
 
           if (user.ok) {
             return { ...user, is_sso: 'microsoft' };
@@ -50,8 +49,8 @@ export default NextAuth({
       async authorize(credentials, _req) {
         // authenticate the user with the backend
         const authenticated = await User.authenticate(
-          credentials?.email,
-          credentials?.password
+          `${credentials?.email}`,
+          `${credentials?.password}`
         );
         // // if no error and we have user data, return it
         if (authenticated && authenticated.token) {
@@ -81,7 +80,8 @@ export default NextAuth({
     },
     async session({ session, token }) {
       if (token?.accessToken) {
-        const user = await User.getUser(token.accessToken);
+        const user = await User.getUser(`${token.accessToken}`);
+
         // if there is no user or the user cannot be authenticated
         // then revoke the session accessToken
         // this will trigger a logout through the Layout Component
@@ -98,10 +98,9 @@ export default NextAuth({
         return session;
       }
 
-      // get the user using the token stored in the token
-      // TO DO: update to backend request
-      session.user = mockUsers[session.user.email];
       return session;
     }
   }
-});
+}
+
+export default nextAuthConfig;

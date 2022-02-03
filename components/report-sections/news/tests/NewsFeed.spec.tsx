@@ -13,10 +13,10 @@ import {
 } from '../../../../test-utils';
 import NewsFeed from '../NewsFeed';
 import * as nextRouter from 'next/router';
-import client from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 // @ts-ignore
 nextRouter.useRouter = jest.fn().mockImplementation(() => ({
   query: {
@@ -34,7 +34,7 @@ describe('NewsFeed', () => {
   beforeEach(() => {
     mockSession = makeMockSession();
 
-    (client.useSession as jest.Mock).mockReturnValue([mockSession, false]);
+    (useSession as jest.Mock).mockReturnValue([mockSession, false]);
   });
 
   it('should render', async () => {

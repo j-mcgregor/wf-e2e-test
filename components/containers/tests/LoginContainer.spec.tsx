@@ -5,7 +5,7 @@ import allMessages from '../../../messages/en';
 import { render } from '../../../test-utils';
 import LoginContainer from '../LoginContainer';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 
 // @ts-ignore
 // eslint-disable-next-line no-import-assign

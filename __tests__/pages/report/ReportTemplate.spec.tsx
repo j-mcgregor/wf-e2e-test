@@ -2,7 +2,7 @@
 /* eslint-disable security/detect-non-literal-regexp */
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable sonarjs/no-duplicate-string */
-import client from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import * as nextRouter from 'next/router';
 
 import allMessages from '../../../messages/en';
@@ -14,7 +14,7 @@ import {
   waitForElementToBeRemoved
 } from '../../../test-utils';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 // @ts-ignore
 nextRouter.useRouter = jest.fn().mockImplementation(() => ({
   query: {
@@ -32,7 +32,7 @@ xdescribe('ReportTemplate', () => {
   beforeEach(() => {
     mockSession = makeMockSession();
 
-    (client.useSession as jest.Mock).mockReturnValue([mockSession, false]);
+    (useSession as jest.Mock).mockReturnValue([mockSession, false]);
   });
 
   it('should render', async () => {

@@ -9,20 +9,25 @@ import LoginForm from '../components/forms/login/LoginForm';
 import LoginSSO from '../components/forms/login/LoginSSO';
 import Layout from '../components/layout/Layout';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import React from 'react';
+import LoadingIcon from '../components/svgs/LoadingIcon';
 
 const Login = () => {
   const t = useTranslations();
   const router = useRouter();
 
-  const [session, loading] = useSession();
-  if (!loading && session) router.push('/');
+  const { data: session, status } = useSession();
+  const loading = status === 'loading';
+
+  if (!loading && session) {
+    router.push('/');
+  }
 
   return (
     <Layout noNav={true} title="Login" noAuthRequired={true}>
       <LoginContainer>
-        {!loading && !session && (
+        {!loading && !session ? (
           <div>
             <Logo />
             <div>
@@ -48,6 +53,17 @@ const Login = () => {
             </div>
             <LoginSSO />
             <LoginForm />
+          </div>
+        ) : (
+          <div>
+            <div>
+              <div className="bg-secondary">
+                <h1 className="text-xl md:text-3xl font-bold py-3 text-center mb-8">
+                  {t('loading')}
+                </h1>
+                <LoadingIcon stroke="white" className="mx-auto h-10 w-10" />
+              </div>
+            </div>
           </div>
         )}
       </LoginContainer>
