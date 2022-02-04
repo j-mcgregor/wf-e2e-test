@@ -99,7 +99,9 @@ const useCSVValidator = (
                   // calls the validation function and then filters out truthy values
                   // these are going to be the error messages if there are any
                   .flatMap((value: string) =>
-                    validatorFunctions.map(validator => validator(value.trim()))
+                    validatorFunctions.map(
+                      validator => value && validator(value?.trim())
+                    )
                   )
               : // if there is no validator function it returns false
                 // which is filtered and removed from the array
