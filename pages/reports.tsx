@@ -49,6 +49,7 @@ const Reports = () => {
                   bondRating={report.bond_rating_equivalent}
                   createdAt={report.created_at}
                   pdRatio={report.probability_of_default_1_year}
+                  reportId={report.id}
                 />
               );
             })}

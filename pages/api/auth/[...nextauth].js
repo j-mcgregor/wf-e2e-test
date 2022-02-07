@@ -82,6 +82,7 @@ export default NextAuth({
     async session({ session, token }) {
       if (token?.accessToken) {
         const user = await User.getUser(token.accessToken);
+        console.log(token.accessToken)
         // if there is no user or the user cannot be authenticated
         // then revoke the session accessToken
         // this will trigger a logout through the Layout Component

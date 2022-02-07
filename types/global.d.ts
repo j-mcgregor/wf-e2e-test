@@ -12,15 +12,15 @@ export type StatDataType = string | number | Date;
 export type ReportSnippetType = {
   id: string;
   company_name: string;
-  company_id: number;
-  iso_code: string;
+  company_id?: number;
+  iso_code?: string;
   sme_z_score: number;
   bond_rating_equivalent: string;
-  bond_rating: string;
+  bond_rating?: string;
   created_at: string;
-  bookmarked: boolean;
+  bookmarked?: boolean;
   probability_of_default_1_year: number;
-  probability_of_default: number;
+  probability_of_default?: number;
 };
 
 export type BatchedReportType = {

@@ -1,11 +1,16 @@
-import {
-  ArrowNarrowUpIcon,
-  DocumentReportIcon
-} from '@heroicons/react/outline';
+import { useEffect, useState } from 'react';
+import { DocumentReportIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { createReportTitle } from '../../lib/utils/text-helpers';
+import BookmarkDropdown from '../elements/BookmarkDropdown';
+// import * as Sentry from '@sentry/nextjs';
+// import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
+// import { UserReports, userReports } from '../../lib/appState';
+// import fetcher from '../../lib/utils/fetcher';
+import useBookmark from '../../hooks/useBookmark';
 
 import Link from '../elements/Link';
+import { isDisabled } from '@testing-library/user-event/dist/utils';
 
 interface BookmarkCardProps {
   linkTo: string;
@@ -15,6 +20,7 @@ interface BookmarkCardProps {
   pdRatio: number;
   key: string;
   createdAt: string;
+  reportId: string;
 }
 
 const BookmarkCard = ({
@@ -23,11 +29,16 @@ const BookmarkCard = ({
   bondRating,
   pdRatio,
   linkTo,
-  createdAt
+  createdAt,
+  reportId
 }: BookmarkCardProps) => {
   const t = useTranslations();
 
+  // state to toggle disabling the link when mouse is over/clicks the delete button
+  const [disableLink, setDisableLink] = useState(false);
+
   const reportTitle = createReportTitle(companyName, createdAt);
+  const { isBookMarked, handleBookmark } = useBookmark(reportId);
 
   const renderpdRatio =
     pdRatio &&
@@ -36,15 +47,27 @@ const BookmarkCard = ({
       maximumFractionDigits: 2
     }).format(pdRatio * 100);
 
-  return (
-    <Link linkTo={linkTo}>
-      <div className="bg-white shadow hover:shadow-2xl transition-shadow duration-300 rounded w-full flex flex-col">
+  return isBookMarked ? (
+    <Link
+      disabled={disableLink}
+      linkTo={linkTo}
+      className={`${disableLink ? 'pointer-events-none' : ''}`}
+    >
+      <div
+        className={`bg-white shadow hover:shadow-2xl transition-shadow duration-300 rounded w-full flex flex-col relative `}
+      >
         <div className="flex w-full justify-between p-2 ">
           <div className="bg-highlight p-1 rounded-sm">
             <DocumentReportIcon className="h-5 w-5 text-white" />
           </div>
 
-          <ArrowNarrowUpIcon className="h-7 w-7 rotate-45 text-gray-400 cursor-pointer" />
+          <div
+            onMouseEnter={() => setDisableLink(true)}
+            onMouseLeave={() => setDisableLink(false)}
+            className="absolute top-0 right-0  h-12 w-12 flex justify-center items-center z-50 "
+          >
+            <BookmarkDropdown deleteBookmark={() => handleBookmark('REMOVE')} />
+          </div>
         </div>
         <div className="flex flex-col">
           <p className="font-semibold px-2 py-2 truncate">{reportTitle}</p>
@@ -72,7 +95,7 @@ const BookmarkCard = ({
         </div>
       </div>
     </Link>
-  );
+  ) : null;
 };
 
 export default BookmarkCard;

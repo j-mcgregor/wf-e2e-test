@@ -15,5 +15,6 @@
   "get_started_with_new_report": "Get started with your first report today",
   "generate_report": "Generate report",
   "no_reports_bookmarked": "No reports bookmarked",
-  "click_the_bookmark": "Click the bookmark icon in the top right of a report to save it."
+  "click_the_bookmark": "Click the bookmark icon in the top right of a report to save it.",
+  "delete_bookmark": "Delete Bookmark"
 }

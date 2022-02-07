@@ -162,6 +162,12 @@ const Report = ({
           website={data.details?.websites?.[0]}
           created={created}
           reportId={id.toString()} // id == string || string[]
+          snippet={{
+            bond_rating_equivalent: latestRiskMetrics?.bond_rating_equivalent,
+            sme_z_score: latestRiskMetrics?.sme_z_score,
+            probability_of_default_1_year:
+              latestRiskMetrics?.probability_of_default_1_year
+          }}
         />
       </div>
       <HashContainer name={'Summary'} id={`summary`}>

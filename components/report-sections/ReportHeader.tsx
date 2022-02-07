@@ -1,74 +1,39 @@
 /* eslint-disable no-case-declarations */
 import { BookmarkIcon } from '@heroicons/react/outline';
-import * as Sentry from '@sentry/nextjs';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
-import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { UserReports, userReports } from '../../lib/appState';
-import fetcher from '../../lib/utils/fetcher';
-import { ReportSnippetType } from '../../types/global';
 import Button from '../elements/Button';
 import FaviconWithFallback from '../elements/FaviconWithFallback';
+import useBookmark from '../../hooks/useBookmark';
+import { ReportSnippetType } from '../../types/global';
 
 interface ReportHeaderProps {
   company: string;
   created: string;
-  reportId: string | number;
+  reportId: string;
   website: string;
+  snippet: {
+    bond_rating_equivalent: string;
+    sme_z_score: number;
+    probability_of_default_1_year: number;
+  };
 }
 const ReportHeader = ({
   company,
   created,
   reportId,
-  website
+  website,
+  snippet
 }: ReportHeaderProps) => {
-  const [isBookMarked, setIsBookMarked] = useState<boolean>();
-
-  const { bookmarkedReports } = useRecoilValue<UserReports>(userReports);
-  const setReportBookmarks = useSetRecoilState(userReports);
-
   const firstLetter = company?.charAt(0);
 
-  useEffect(() => {
-    const isMarked = bookmarkedReports?.find(
-      (x: ReportSnippetType) => `${x.id}` === `${reportId}`
-    );
-
-    setIsBookMarked(!!isMarked);
-  }, [bookmarkedReports]);
-
-  const handleBookmark = useRecoilCallback(() => async () => {
-    try {
-      // optimistically update bookmark state
-      setIsBookMarked(!isBookMarked);
-
-      const method = isBookMarked ? 'DELETE' : 'POST';
-
-      // added return_all so that we can return the bookmarks in the same request
-      const updater = await fetcher(
-        `/api/user/bookmarks?reportId=${reportId}&return_all=true`,
-        method
-      );
-
-      if (!updater.ok) {
-        // if fails to save, revert to previous state
-        setIsBookMarked(!isBookMarked);
-      }
-
-      if (updater.ok && updater.bookmarks) {
-        // recoil requires that what comes out of state is the same as what goes in,
-        // but that is in efficient and problematic
-        // we're working around it for now
-        // @ts-ignore
-        setReportBookmarks(reports => ({
-          ...reports,
-          bookmarkedReports: updater.bookmarks
-        }));
-      }
-    } catch (err) {
-      Sentry.captureException(err);
-    }
+  const { handleBookmark, isBookMarked } = useBookmark(reportId, {
+    id: reportId,
+    bond_rating_equivalent: snippet.bond_rating_equivalent,
+    sme_z_score: snippet.sme_z_score,
+    probability_of_default_1_year: snippet.probability_of_default_1_year,
+    company_name: company,
+    created_at: created
   });
 
   const t = useTranslations();
@@ -95,7 +60,7 @@ const ReportHeader = ({
         <Button
           variant="none"
           newClassName="border-none self-start ml-auto mr-2 sm:mr-0 sm:ml-4 print:hidden"
-          onClick={handleBookmark}
+          onClick={() => handleBookmark(isBookMarked ? 'REMOVE' : 'ADD')}
         >
           <BookmarkIcon
             className={`w-10 ${isBookMarked ? 'fill-current' : ''}`}
