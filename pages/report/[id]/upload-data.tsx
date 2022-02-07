@@ -56,16 +56,16 @@ const UploadData = () => {
             icon={<CloudDownloadIcon className="h-6 w-6" />}
             linkTo="#"
             iconColor={downloadIconColor}
-            header={t('full_report')}
+            header={t('report_csv')}
             description={t('make_changes_to_any_report')}
           />
-          <LinkCard
+          {/* <LinkCard
             icon={<CloudDownloadIcon className="h-6 w-6" />}
             linkTo="#"
             iconColor={downloadIconColor}
             header={t('financials_only')}
             description={t('add_a_new_year_of_financials')}
-          />
+          /> */}
         </div>
         <UploadNewData
           header={t('upload_the_new_data')}

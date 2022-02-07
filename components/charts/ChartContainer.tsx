@@ -46,11 +46,12 @@ const ChartContainer = ({
           right: 20,
           bottom: 50
         }}
+        // THIS WAS CAUSING THE GHOST 0's TO APPEAR
         containerComponent={
           <VictoryVoronoiContainer
-            disable={false}
-            responsive={true}
-            labels={({ datum }) => datum.y}
+          // disable={false}
+          // responsive={true}
+          // labels={({ datum }) => datum.y}
           />
         }
         {...(background && {

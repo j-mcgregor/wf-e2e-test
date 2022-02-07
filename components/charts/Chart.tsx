@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { VictoryArea, VictoryScatter } from 'victory';
+import { VictoryArea, VictoryScatter, VictoryTooltip } from 'victory';
 
 import { GraphDataType, MultiGraphDataType } from '../../types/charts';
 import { TranslateInput } from '../../types/global';
 import Hint from '../elements/Hint';
 import ChartContainer from './ChartContainer';
-import { darkBlue } from './theme';
+import { companyBlue, orangeFill, orangeLine } from './theme';
 
 interface ChartProps {
   title: TranslateInput;
@@ -55,7 +55,7 @@ const Chart = ({
       <VictoryScatter
         data={data}
         size={3}
-        style={{ data: { fill: darkBlue } }}
+        style={{ data: { fill: companyBlue } }}
         labels={({ datum }) => (toolTipValue !== datum.y ? datum.y : null)}
       />
     </>
@@ -95,11 +95,24 @@ const Chart = ({
           <VictoryScatter
             data={data}
             size={3}
-            style={{ data: { fill: darkBlue } }}
+            style={{ data: { fill: 'transparent' } }} // transparent to hide dots
             y0={() => minDomain * 0.8}
             {...(showLabels && {
               labels: ({ datum }) => (toolTipValue !== datum.y ? datum.y : null)
             })}
+            labelComponent={
+              <VictoryTooltip
+                flyoutHeight={25}
+                style={{
+                  fill: '#fff',
+                  fontSize: 18,
+                  padding: 5
+                }}
+                flyoutStyle={{
+                  fill: companyBlue
+                }}
+              />
+            }
           />
         </ChartContainer>
       </div>

@@ -29,9 +29,9 @@ const ReportHeader = ({
 
   const { handleBookmark, isBookMarked } = useBookmark(reportId, {
     id: reportId,
-    bond_rating_equivalent: snippet.bond_rating_equivalent,
-    sme_z_score: snippet.sme_z_score,
-    probability_of_default_1_year: snippet.probability_of_default_1_year,
+    bond_rating_equivalent: snippet?.bond_rating_equivalent,
+    sme_z_score: snippet?.sme_z_score,
+    probability_of_default_1_year: snippet?.probability_of_default_1_year,
     company_name: company,
     created_at: created
   });

@@ -83,7 +83,7 @@ const Report = ({
   const financialRatios = [...(data?.financial_ratios || [])];
 
   // TEMPORARILY REVERSING FINANCIAL_RATIOS UNTIL BACK END FIXES
-  const lastFiveYearsFinancialRatios = financialRatios?.reverse().slice(0, 5);
+  const lastFiveYearsFinancialRatios = financialRatios?.slice(0, 5);
 
   // remove benchmarks from financial trends
   // add to speedos later
@@ -102,12 +102,12 @@ const Report = ({
   // take the latest year of financial risk metrics
   const latestRiskMetrics = data.risk_metrics?.[data.risk_metrics.length - 1];
 
-  const mergedLastFiveYearFinancials = lastFiveYearsFinancials.map(
-    (year, index) => {
+  const mergedLastFiveYearFinancials = lastFiveYearsFinancials
+    .map((year, index) => {
       // eslint-disable-next-line security/detect-object-injection
       return { ...year, ...lastFiveYearsFinancialRatios[index] };
-    }
-  );
+    })
+    .reverse();
 
   const INDUSTRY_BENCHMARK = t('industry_benchmark');
   const REGION_BENCHMARK = t('region_benchmark');
@@ -216,7 +216,14 @@ const Report = ({
       </HashContainer>
       <HashContainer name={'Risk Metrics'} id={`risk_metrics`}>
         <ReportSectionHeader text={t('risk_metrics')} />
-        <div className="flex w-full flex-wrap justify-center xl:justify-between mb-4 print:border-2">
+        {/* <div
+          className="flex w-full flex-wrap justify-evenly
+        mb-4 print:border-2"
+        > */}
+
+        {/* NEW - Wrapped speedos and graphs in grid that matches financial trends */}
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 print:grid-cols-3 sm:print:grid-cols-3  mt-4 mb-8 md:print:grid-cols-3 avoid-break">
           <Speedometer
             title={t('sme_zscore')}
             value={latestRiskMetrics?.sme_z_score}
@@ -296,11 +303,17 @@ const Report = ({
             decimalPoints={1}
             reverseX
           />
+          <RiskMetricGraphs
+            data={lastFiveYearsRiskMetrics.reverse()}
+            companyName={companyName}
+          />
         </div>
-        <RiskMetricGraphs
+
+        {/* </div> */}
+        {/* <RiskMetricGraphs
           data={lastFiveYearsRiskMetrics.reverse()}
           companyName={companyName}
-        />
+        /> */}
         <BondRating
           score={latestRiskMetrics?.bond_rating_equivalent}
           hint={

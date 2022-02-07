@@ -5,10 +5,10 @@ import { useTranslations } from 'next-intl';
 import {
   VictoryArea,
   VictoryScatter,
-  VictoryGroup,
   VictoryLine,
   VictoryTooltip
 } from 'victory';
+import { orangeFill, orangeLine, companyBlue } from './theme';
 import ChartContainer from './ChartContainer';
 import {
   GraphDataType,
@@ -19,12 +19,12 @@ import { TranslateInput } from '../../types/global';
 import Hint from '../elements/Hint';
 import ChartButton from './ChartButton';
 import {
-  getMaxGraphValue,
-  getMinGraphValue,
-  numberLength,
+  getMaxRenderValue,
+  getMinRenderValue,
+  getNumberLength,
   isGraphData,
-  getMaxValue,
-  getMinValue,
+  calculateMaxDataPoint,
+  calculateMinDataPoint,
   getCompanyName,
   convertData,
   formatToolTip
@@ -63,15 +63,11 @@ const ChartMulti = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const companyColour = '#022D45';
-  // const benchmarkColour = '#278EC8';
-  // const green = '#2BAD01';
-
   const companyGraph = graphData[0];
   const benchmarkGraph = graphData[1];
 
   // get largest y value from all graphs
-  const largestValue = useMemo(() => {
+  const largestYDataPoint = useMemo(() => {
     const largestCompanyValue =
       companyGraph &&
       Math.max(...companyGraph.data.map((data: GraphDataType) => data.y));
@@ -82,7 +78,7 @@ const ChartMulti = ({
   }, [companyGraph, benchmarkGraph]);
 
   // get smallest y value from all graphs
-  const smallestValue = useMemo(() => {
+  const smallestYDataPoint = useMemo(() => {
     const smallestCompanyValue =
       companyGraph &&
       Math.min(...companyGraph.data.map((data: GraphDataType) => data.y));
@@ -92,14 +88,14 @@ const ChartMulti = ({
     return Math.min(smallestCompanyValue || 0, smallestBenchmarkValue || 0);
   }, [companyGraph, benchmarkGraph]);
 
-  const largestValueLength = numberLength(largestValue);
+  const largestNumberLength = getNumberLength(largestYDataPoint);
   // is largest value over 99,000,000 ? should use as millions
-  const useMillions = chartType === 'currency' && largestValueLength > 8;
+  const useMillions = chartType === 'currency' && largestNumberLength > 8;
   //  is largest value over 1000 and less than 100,000,000 ? should use as thousands
   const useThousands =
     chartType === 'currency' &&
-    largestValueLength > 4 &&
-    largestValueLength <= 8;
+    largestNumberLength > 4 &&
+    largestNumberLength <= 8;
 
   // company graphs with recalculated y values
   const convertedCompanyGraph = {
@@ -108,10 +104,13 @@ const ChartMulti = ({
   };
 
   const isBenchmarkData = isGraphData(benchmarkGraph);
-  const maximumDataValue = getMaxValue(largestValue, largestValueLength);
-  const minimumDataValue = getMinValue(smallestValue);
-  const maxToRender = getMaxGraphValue(disabled, chartType, maximumDataValue);
-  const minToRender = getMinGraphValue(disabled, chartType, minimumDataValue);
+  const maxYValue = calculateMaxDataPoint(
+    largestYDataPoint,
+    largestNumberLength
+  );
+  const minYValue = calculateMinDataPoint(smallestYDataPoint);
+  const maxRenderValue = getMaxRenderValue(disabled, chartType, maxYValue);
+  const minRenderValue = getMinRenderValue(disabled, chartType, minYValue);
 
   const t = useTranslations();
 
@@ -139,7 +138,7 @@ const ChartMulti = ({
     >
       <div className="flex justify-between items-start px-4 pt-4 text-base">
         <div className="">
-          <h5 className="pb-2">{header}</h5>
+          <h5 className="pb-2 text-sm whitespace-nowrap pr-2">{header}</h5>
           <p className="opacity-70 print:opacity-100 print:text-gray-400">
             {chartTypeText || subHeader}
           </p>
@@ -151,8 +150,8 @@ const ChartMulti = ({
         tickCount={6}
         height={220}
         width={200}
-        max={maxToRender}
-        min={minToRender}
+        max={maxRenderValue}
+        min={minRenderValue * 1.1}
       >
         {/* Red annotation line through 0 values */}
         {!disabled && (
@@ -179,50 +178,52 @@ const ChartMulti = ({
           interpolation="monotoneX"
           style={{
             data: {
-              fill: companyColour,
+              fill: orangeFill,
               fillOpacity: 0.6,
-              stroke: companyColour,
+              stroke: orangeLine,
+
               strokeOpacity: 1
             }
           }}
         />
 
         {!disabled && (
-          <VictoryGroup>
-            <VictoryScatter
-              key={`victory-scatter-${companyGraph.name}`}
-              data={convertedCompanyGraph.data}
-              size={2}
-              y0={() => minToRender * 0.8}
-              style={{
-                data: {
-                  strokeWidth: 1,
-                  stroke: companyColour,
-                  strokeOpacity: 1,
-                  fill: companyColour,
-                  fillOpacity: 1
-                }
-              }}
-              labels={({ datum }) =>
-                formatToolTip(datum.y, chartType, useMillions)
+          // <VictoryGroup>
+          <VictoryScatter
+            key={`victory-scatter-${companyGraph.name}`}
+            data={convertedCompanyGraph.data}
+            size={2}
+            y0={() => minRenderValue * 0.8}
+            style={{
+              data: {
+                strokeWidth: 1,
+                stroke: orangeLine,
+                strokeOpacity: 1,
+                fill: orangeLine,
+                fillOpacity: 1
               }
-              {...(showLabels && {
-                labelComponent: (
-                  <VictoryTooltip
-                    flyoutHeight={25}
-                    style={{
-                      fill: '#fff',
-                      fontSize: 10,
-                      padding: 5
-                    }}
-                    flyoutStyle={{
-                      fill: companyColour
-                    }}
-                  />
-                )
-              })}
-            />
-          </VictoryGroup>
+            }}
+            labels={({ datum }) =>
+              formatToolTip(datum.y, chartType, useMillions)
+            }
+            // containerComponent={<VictoryVoronoiContainer />}
+            {...(showLabels && {
+              labelComponent: (
+                <VictoryTooltip
+                  flyoutHeight={25}
+                  style={{
+                    fill: '#fff',
+                    fontSize: 10,
+                    padding: 5
+                  }}
+                  flyoutStyle={{
+                    fill: companyBlue
+                  }}
+                />
+              )
+            })}
+          />
+          // </VictoryGroup>
         )}
       </ChartContainer>
       <div className="flex flex-col text-xxs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">

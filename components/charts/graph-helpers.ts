@@ -4,47 +4,57 @@ import {
   FinancialGraphType
 } from '../../types/charts';
 
-export const numberLength = (num: number) => {
+export const getNumberLength = (num: number) => {
   return num.toFixed().replace('.', '').length;
 };
 
-export const getMaxValue = (largestValue: number, largestValueLength: number) =>
+export const calculateMaxDataPoint = (
+  largestValue: number,
+  largestValueLength: number
+) =>
   largestValueLength > 8
     ? largestValue / 1000000
     : largestValueLength >= 4 && largestValueLength <= 8
     ? largestValue / 1000
     : largestValue;
 
-export const getMinValue = (smallestValue: number) =>
+export const calculateMinDataPoint = (smallestValue: number) =>
   Math.min(
-    numberLength(smallestValue) > 8
+    getNumberLength(smallestValue) > 8
       ? smallestValue / 1000000
-      : numberLength(smallestValue) >= 4 && numberLength(smallestValue) <= 8
+      : getNumberLength(smallestValue) >= 4 &&
+        getNumberLength(smallestValue) <= 8
       ? smallestValue / 1000
       : smallestValue
   );
 
-export const getMaxGraphValue = (
+export const getMaxRenderValue = (
   disabled: boolean | undefined,
   chartType: FinancialTrendCategories,
-  maxValue: number
+  maxDataValue: number
 ): number => {
+  const percentageIncrease =
+    maxDataValue * 0.1 > 5 ? maxDataValue * 1.1 : maxDataValue + 5;
+  const maxPercentageValue =
+    percentageIncrease > 100 ? 100 : percentageIncrease;
+
   return disabled
     ? 1
     : chartType === 'percentage'
-    ? 100
+    ? maxPercentageValue
     : chartType === 'zscore'
     ? 1000
-    : maxValue <= 0
+    : maxDataValue <= 0
     ? 0
-    : maxValue * 1.2;
+    : maxDataValue * 1.1;
 };
 
-export const getMinGraphValue = (
+export const getMinRenderValue = (
   disabled: boolean | undefined,
   chartType: FinancialTrendCategories,
-  minValue: number
-) => (disabled ? 0 : chartType === 'percentage' ? 0 : minValue);
+  minDataValue: number
+) =>
+  disabled ? 0 : chartType === 'percentage' ? minDataValue * 1.1 : minDataValue;
 
 export const isGraphData = (graph: any): boolean => {
   return graph?.data.some((value: GraphDataType) => value.y !== 0);

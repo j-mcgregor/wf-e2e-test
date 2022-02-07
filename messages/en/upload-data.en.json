@@ -4,6 +4,7 @@
   "add_additional_data_to_report": "Add additional data to your report to improve its accuracy or update its findings with the most recent information.",
   "choose_data_to_modify": "Choose type of data to modify",
   "full_report": "Full Report",
+  "report_csv": "Report CSV",
   "make_changes_to_any_report": "Make changes to any report values and re-upload to see the effect.",
   "financials_only": "Financials Only",
   "add_a_new_year_of_financials": "Add a new year of financials and re-upload to quickly see what this years effect.",

@@ -34,7 +34,16 @@ const SummaryMap = ({
 
   const addressLinesString = validAddressLines.toString().replace(/,/g, '');
 
-  const fullAddress = `${addressLinesString ?? ''} ${city ?? ''} ${country ?? ''} ${postCode ?? '' }`;
+  const fullAddress = `${addressLinesString ?? ''} ${city ?? ''} ${
+    country ?? ''
+  } ${postCode ?? ''}`;
+  const emailAddress = emails?.length > 0 ? emails[0] : null;
+  const website = websites?.length > 0 ? websites[0] : null;
+
+  const isValidWebsite = website && website.replace(/^https?:\/\//, '');
+  const validWebsiteAddress = isValidWebsite
+    ? `https://${isValidWebsite}`
+    : null;
 
   return (
     <div className="bg-white border shadow-sm rounded md:ml-8  h-full flex flex-col text-primary print:flex-row print:mt-10 print:border-2 print:p-3  print:shadow-none prose-h4:font-bold  justify-between">
@@ -58,16 +67,33 @@ const SummaryMap = ({
             {county && <p>{county}</p>}
             {country && <p>{country}</p>}
             {postCode && <p>{postCode}</p>}
-            {/* {region && <p>{region}</p>} */}
           </address>
         </div>
         <div className="flex justify-between flex-wrap">
           <h4>{t('email')}</h4>
-          <p>{emails?.length > 0 ? emails[0] : t('na')}</p>
+
+          {emailAddress ? (
+            <a href={`mailto:${emailAddress}`} target="_blank" rel="noreferrer">
+              {emailAddress}
+            </a>
+          ) : (
+            <span>{t('na')}</span>
+          )}
         </div>
         <div className="flex justify-between flex-wrap">
           <h4>{t('website')}</h4>
-          <p>{websites?.length > 0 ? websites[0] : t('na')}</p>
+          {validWebsiteAddress ? (
+            <a
+              className="hover:text-highlight"
+              href={validWebsiteAddress}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {website}
+            </a>
+          ) : (
+            <span>{t('na')}</span>
+          )}
         </div>
         <div className="flex justify-between flex-wrap">
           <h4>{t('telephone')}</h4>

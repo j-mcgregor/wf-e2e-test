@@ -190,7 +190,7 @@
   "profitability_positive": "An efficiently run company making a good return on assets.",
   "profitability_negative": "Assets are not being used as profitably as they could.",
   "governance_template": "In the last 12 months there were {judgements} judgements and {paymentRemarks} payment remarks for this company.",
-  "benchmark_template": "The credit risk is {sector} the average for this sector and {region} the average for {country}",
+  "benchmark_template": "The credit score is {sector} the average for this sector and {region} the average for {country}",
   "for_a_more_reliable_report_supplement_the_data": "For a more reliable report you can supplement the data in this report with recent management accounts using the button below.",
   "reliable_turnover": "The results could be improved with more recent data.",
   "reliable_volatility": "The company's financials have some volatility.",

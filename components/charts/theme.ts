@@ -6,7 +6,10 @@ import { assign } from 'lodash';
 // COLOURS FROM FIGMA DESIGNS
 const lightBlue = '#c0deee';
 export const darkBlue = '#005889';
-const orange = '#E58A2E';
+// '#022D45''
+export const orangeFill = '#FBE5D6';
+export const orangeLine = '#E58A2E';
+export const companyBlue = '#022D45';
 
 // TEXT
 const sansSerif = "'Helvetica Neue', 'Helvetica', sans-serif";
@@ -56,8 +59,8 @@ export const theme = {
     {
       style: {
         data: {
-          fill: lightBlue,
-          stroke: orange,
+          fill: orangeFill,
+          stroke: orangeLine,
           strokeWidth: 1
         },
         labels: areaLabelStyles

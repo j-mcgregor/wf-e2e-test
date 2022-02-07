@@ -48,10 +48,15 @@ const Speedometer = ({
 
   return (
     <>
-      <div
-        className="bg-white mt-6 mx-auto xl:mx-0 flex flex-col items-center w-[300px] overflow-hidden
+      {/* <div
+        className="bg-white mt-6 mx-auto flex flex-col items-center justify-center w-[280px] md:w-[250px] 2xl:w-[280px] overflow-hidden
         print:inline-block print:w-[200px] avoid-break"
         role="contentinfo"
+      > */}
+
+      <div
+        className="bg-white flex flex-col items-center   overflow-hidden
+        print:inline-block h-auto  avoid-break"
       >
         <div className="flex w-full items-center justify-between px-4 pt-4 pb-2">
           <p>{title}</p>

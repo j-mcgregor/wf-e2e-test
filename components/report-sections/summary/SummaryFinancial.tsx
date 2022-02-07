@@ -20,7 +20,7 @@ const SummaryFinancial = ({ years, currencyCode }: SummaryFinancialProps) => {
   )?.currency_symbol;
 
   return (
-    <div className="p-6 shadow rounded-sm bg-white print:shadow-none">
+    <div className="p-6 shadow rounded-sm bg-white print:shadow-none ">
       <p className="text-primary print:text-2xl print:pb-8">
         {t('financial_overview')}
       </p>
@@ -39,12 +39,12 @@ const SummaryFinancial = ({ years, currencyCode }: SummaryFinancialProps) => {
                     {yearsWithBlanks?.map((year, index) => (
                       <td
                         key={index}
-                        className="relative px-2 py-3 text-primary text-center"
+                        className="relative px-2 py-3 text-primary text-right"
                       >
                         <p>{year.period}</p>
                       </td>
                     ))}
-                    <td className="text-center">
+                    <td className="text-center  w-[80px]">
                       <p>{t('trend')}</p>
                     </td>
                   </tr>

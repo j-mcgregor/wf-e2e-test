@@ -33,10 +33,11 @@ const RiskMetricGraphs = ({ data, companyName }: RiskMetricGraphsProps) => {
   const lossGivenDefault = renderChart('loss_given_default', true);
 
   return (
-    <div className=" my-8 flex flex-wrap gap-x-4  mt-2 justify-center xl:justify-between mb-4 print:border-2">
-      {/* === sme z-score === */}
+    // <div className=" my-8 flex  mt-2 flex-wrap justify-evenly mb-4 print:border-2 ">
 
-      <div className=" w-[300px] mb-4 print:inline-block print:w-[200px] avoid-break">
+    <>
+      {/* <div className=" w-[300px] mb-4 print:inline-block print:w-[200px] avoid-break  md:w-[250px] 2xl:w-[280px] mx-auto"> */}
+      <div className="print:inline-block avoid-break">
         <ChartMulti
           header={t('sme_zscore_trend')}
           subHeader={t('trend_yearly')}
@@ -48,8 +49,8 @@ const RiskMetricGraphs = ({ data, companyName }: RiskMetricGraphsProps) => {
         />
       </div>
 
-      {/* === probability of default */}
-      <div className=" w-[300px] mb-4 print:inline-block print:w-[200px] avoid-break">
+      {/* <div className=" w-[300px] mb-4 print:inline-block print:w-[200px] avoid-break  md:w-[250px] 2xl:w-[280px] mx-auto"> */}
+      <div className="print:inline-block avoid-break">
         <ChartMulti
           header={t('probability_of_default_trend')}
           subHeader={`${t('percentage')} %`}
@@ -61,8 +62,8 @@ const RiskMetricGraphs = ({ data, companyName }: RiskMetricGraphsProps) => {
         />
       </div>
 
-      {/* === loss given default ===  */}
-      <div className=" w-[300px] mb-4 print:inline-block print:w-[200px] avoid-break">
+      {/* <div className=" w-[300px] mb-4 print:inline-block print:w-[200px] avoid-break  md:w-[250px] 2xl:w-[280px] mx-auto"> '*/}
+      <div className="print:inline-block avoid-break ">
         <ChartMulti
           header={t('loss_give_default_trend')}
           subHeader={`${t('percentage')} %`}
@@ -73,7 +74,7 @@ const RiskMetricGraphs = ({ data, companyName }: RiskMetricGraphsProps) => {
           showLabels={true}
         />
       </div>
-    </div>
+    </>
   );
 };
 

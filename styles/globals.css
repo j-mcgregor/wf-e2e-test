@@ -39,3 +39,11 @@
 .always-break-before {
   break-before: page;
 }
+
+/* temp coloured borders as quick visual check for break points */
+
+@layer utilities {
+  .breaks {
+    @apply border-2 border-yellow-500 sm:border-pink-400 md:border-red-500 lg:border-green-500 xl:border-blue-500 2xl:border-purple-500;
+  }
+}

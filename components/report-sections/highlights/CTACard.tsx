@@ -47,8 +47,9 @@ const CTACard = ({
             {locked && <Lock color="white" />}
           </Button>
           <Button
+            disabled
             linkTo={learnMoreLink}
-            className="shadow-none hover:text-alt"
+            className="shadow-none hover:text-alt invisible" // made invisible rather than comment out - so as to not break the layout
             variant="none"
           >
             <p>{t('learn_more')}</p>
