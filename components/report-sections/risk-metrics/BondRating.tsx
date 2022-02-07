@@ -19,20 +19,41 @@ export type RatingType =
   | 'A'
   | 'BBB+'
   | 'BBB'
+  | 'BB+'
   | 'BBB-'
+  | 'BB-'
   | 'BB'
+  | 'B+'
   | 'B'
   | 'B-'
   | 'CCC+'
   | 'CCC'
   | 'CCC-'
   | 'CC'
+  | 'CC-'
+  | 'CC+'
   | 'D';
 
 const BondRating = ({ score, hint }: BondRatingProps) => {
   const t = useTranslations();
 
+  // does score fit within the CC/CC+/CC- range?
+  const isCC = score === 'CC+' || score === 'CC' || score === 'CC-';
+
+  // decide which index the score should correspond to in the bondRatings array
+  // then use this value when rendering to specify the option to focus on/value to display
+  const indexOfScoreToRender = isCC
+    ? 1
+    : score === ('B+' || 'B')
+    ? 6
+    : score === ('BB-' || 'BB')
+    ? 7
+    : score === ('BB+' || 'BBB-')
+    ? 8
+    : bondRatings.findIndex(rating => rating.score === score);
+
   const printClasses = usePrintClasses(bondRatingClasses);
+
   return (
     <div
       className={`bg-white shadow rounded-sm px-4 sm:px-8 py-6 print:shadow-none print:border-2`}
@@ -53,13 +74,13 @@ const BondRating = ({ score, hint }: BondRatingProps) => {
                 }}
                 key={i}
                 className={`${
-                  rating.score === score
+                  indexOfScoreToRender === i
                     ? 'h-36 text-2xl sm:text-4xl font-bold min-w-[70px] sm:min-w-[100px]'
                     : 'h-28 text-sm sm:text-lg font-semibold px-1'
                 } text-white flex items-center justify-center print:mx-[2px] border border-white`}
                 data-testid={rating.score === score ? 'bond-rating' : ''}
               >
-                {rating.score}
+                {i === indexOfScoreToRender ? score : rating.score}
               </div>
             );
           })}
