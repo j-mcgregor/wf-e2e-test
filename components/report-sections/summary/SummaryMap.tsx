@@ -32,6 +32,10 @@ const SummaryMap = ({
     ?.filter(x => x)
     ?.flatMap(x => [x, ', ']);
 
+  const addressLinesString = validAddressLines.toString().replace(/,/g, '');
+
+  const fullAddress = `${addressLinesString ?? ''} ${city ?? ''} ${country ?? ''} ${postCode ?? '' }`;
+
   return (
     <div className="bg-white border shadow-sm rounded md:ml-8  h-full flex flex-col text-primary print:flex-row print:mt-10 print:border-2 print:p-3  print:shadow-none prose-h4:font-bold  justify-between">
       <div className="flex items-center justify-center bg-gray-500 text-white text-center print:w-1/2 flex-1 md:max-h-[55%]">
@@ -40,7 +44,7 @@ const SummaryMap = ({
           height="100%"
           loading="lazy"
           url={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_MAPS_API_KEY}
-          &q=${postCode}}&zoom=12`}
+          &q=${fullAddress}&zoom=12`}
         />
       </div>
       <div className="flex flex-col p-4 print:px-8 print:w-1/2 justify-center min-h-1/2">
