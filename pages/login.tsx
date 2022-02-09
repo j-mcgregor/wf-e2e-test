@@ -10,8 +10,11 @@ import LoginSSO from '../components/forms/login/LoginSSO';
 import Layout from '../components/layout/Layout';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import React from 'react';
+
+import React, { useEffect } from 'react';
+
 import LoadingIcon from '../components/svgs/LoadingIcon';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const Login = () => {
   const t = useTranslations();
@@ -20,9 +23,20 @@ const Login = () => {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
 
+  const [userLoginTime, setUserLoginTime] = useLocalStorage<number[]>(
+    'wf_last_login',
+    []
+  );
+
   if (!loading && session) {
     router.push('/');
   }
+
+  const currentTimeAndDate = Date.now();
+
+  useEffect(() => {
+    setUserLoginTime([currentTimeAndDate, userLoginTime[0]]);
+  }, []);
 
   return (
     <Layout noNav={true} title="Login" noAuthRequired={true}>

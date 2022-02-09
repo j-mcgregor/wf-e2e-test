@@ -13,17 +13,11 @@ const LoginSSO = () => {
   const t = useTranslations();
   const router = useRouter();
   const ssoError = router.query?.error === 'Callback';
-  const [userLoginTime, setUserLoginTime] = useLocalStorage<number[]>(
-    'wf_last_login',
-    []
-  );
+
   const [ssoIsLoading, setSsoIsLoading] = React.useState(false);
   const handleMSALClick = () => {
     // show indicator for loading of SSO auth parameters
     setSsoIsLoading(true);
-
-    // set the most recent login time into local state
-    setUserLoginTime([Date.now(), userLoginTime[0]]);
 
     // sign in with the correct provider
     return signIn('msal');

@@ -51,9 +51,10 @@ export default function Dashboard() {
                 data: user?.bookmarked_reports?.length || 0,
                 linkTo: '/reports'
               },
+              //Takes the most recent login from the stored array, last login is still available
               {
                 header: t('last_login'),
-                data: userLoginTime[1] || undefined,
+                data: userLoginTime[0] || undefined,
                 timeAgo: true
               }
             ]}

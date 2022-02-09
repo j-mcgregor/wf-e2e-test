@@ -37,10 +37,6 @@ const LoginForm = () => {
   const [, setActiveUser] = useLocalStorage<string | null>('user', null);
   const [authError, setAuthError] = useState(false);
   const [userEmail, setUserEmail] = useLocalStorage('wf_user_email', '');
-  const [userLoginTime, setUserLoginTime] = useLocalStorage<number[]>(
-    'wf_last_login',
-    []
-  );
 
   // handle the remember functions
   React.useEffect(() => {
@@ -51,9 +47,6 @@ const LoginForm = () => {
 
   // only runs if form is valid
   const onSubmit = async (data: FormValues) => {
-    // set login time for most recent login on dashboard
-    setUserLoginTime([Date.now(), userLoginTime[0]]);
-
     // if remember add email to local state
     if (data.remember) {
       setUserEmail(data.email);
