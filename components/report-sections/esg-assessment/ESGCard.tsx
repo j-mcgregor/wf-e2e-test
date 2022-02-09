@@ -10,7 +10,7 @@ interface ESGCardProps {
   title: TranslateInput;
   description: TranslateInput;
   asteriskText?: TranslateInput;
-  results?: { name: string; score: number }[];
+  results?: { sector: string; match: string }[];
 }
 
 const ESGCard = ({
@@ -49,23 +49,26 @@ const ESGCard = ({
 
         {results && (
           <ul className="space-y-3">
-            {results.map((result, index) => (
-              <li
-                className={`text-sm text-left flex justify-between space-x-3 bg-primary ${
-                  index === 0
-                    ? 'bg-opacity-20'
-                    : index === 1
-                    ? 'bg-opacity-10'
-                    : 'bg-opacity-5'
-                } px-2 py-1 rounded-md `}
-                key={result.name}
-              >
-                <span className="">{result.name.replace(/_/g, ' ')} </span>
-                <span className="font-bold">
-                  {convertNumberToPercentage(result.score)}
-                </span>
-              </li>
-            ))}
+            {results.map((result, index) => {
+              const industry = `industries.${result.sector.toLowerCase()}`;
+              return (
+                <li
+                  className={`text-sm text-left flex justify-between space-x-3 bg-primary ${
+                    index === 0
+                      ? 'bg-opacity-20'
+                      : index === 1
+                      ? 'bg-opacity-10'
+                      : 'bg-opacity-5'
+                  } px-2 py-1 rounded-md `}
+                  key={result.sector}
+                >
+                  <span className="">{t(industry)}</span>
+                  <span className="font-bold">
+                    {convertNumberToPercentage(Number(result.match))}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         )}
 

@@ -108,7 +108,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     <Layout
       title={`${
         companyName || (data?.error ? t(data.error) : false) || t('loading')
-      } | ${t('report')}`}
+      } ${t('report')}`}
       fullWidth
     >
       <SecondaryLayout

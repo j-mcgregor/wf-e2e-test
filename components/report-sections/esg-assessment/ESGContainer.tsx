@@ -1,46 +1,32 @@
 import React from 'react';
-import useSWR from 'swr';
 import { useTranslations } from 'use-intl';
-import fetcher from '../../../lib/utils/fetcher';
+import ESG from '../../../lib/funcs/esg';
 import { getDomain } from '../../../lib/utils/text-helpers';
 import { ReportSectionHeader } from '../../elements/Headers';
 import EnvironmentalAssessment from './EnvironmentalAssessment';
 import ESGCard from './ESGCard';
 
 type ESGContainerProps = {
+  sectors: { sector: string; match: string }[];
   governance: {
     pepFlags?: number | string;
   };
-  website: string;
-  companyName: string;
   environmental_details: {
     industry_sector: string | null;
   };
 };
 
-type EsgApiResponse = {
-  data: { name: string; score: number }[];
-};
-
 const ESGContainer = ({
+  sectors,
   governance,
-  website = 'https://w3.com',
-  companyName = 'W3',
   environmental_details
 }: ESGContainerProps) => {
   const { pepFlags } = governance;
   const t = useTranslations();
 
-  // extract just the domain
-  const validWebsite = getDomain(website) || '';
+  const topThreeMatches = ESG.topXMatches(sectors, 3);
 
-  // demo mode is engaged for now
-  const { data } = useSWR<EsgApiResponse>(
-    `/api/reports/esg?company_website=${validWebsite}&company_name=${companyName}&type=website`,
-    fetcher
-  );
-
-  const isLoading = !data;
+  const isLoading = !sectors;
 
   return (
     <>
@@ -60,11 +46,11 @@ const ESGContainer = ({
         resultText={
           isLoading
             ? t('loading')
-            : data?.data?.length && data.data.length > 0
+            : sectors?.length && sectors.length > 0
             ? t('top_3_industries')
             : t('no_esg_results_found')
         }
-        results={data?.data}
+        results={topThreeMatches}
       />
       <ESGCard
         title={t('governance')}

@@ -1,24 +1,15 @@
 import { ApiResType } from '../../types/global';
 
 const topXMatches = (
-  industries:
-    | {
-        [index: string]: number;
-      }
-    | undefined,
+  // industries:{[index: string]: number;} | undefined,
+  industries: { sector: string; match: string }[] | undefined,
   toReturn: number
 ) => {
   if (!industries) return industries;
 
-  // create array of industry objects with name and score
-  const industryArray = Object.keys(industries).map(industry => ({
-    name: industry,
-    score: industries[industry.toString()]
-  }));
-
-  // sort the industries by size
-  const sorted = industryArray.sort(
-    (a: { score: number }, b: { score: number }) => b.score - a.score
+  const sorted = industries.sort(
+    (a: { match: string }, b: { match: string }) =>
+      Number(b.match) - Number(a.match)
   );
 
   // check that the amount sliced isn't more than the total length of the array

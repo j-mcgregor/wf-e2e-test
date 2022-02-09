@@ -52,6 +52,8 @@ const Report = ({
 
   const companyDetails = data?.details;
 
+  const companySectors = data?.esg?.sectors;
+
   const companyAddress = companyDetails?.address;
 
   const date = new Date(`${data?.created_at}`);
@@ -485,8 +487,8 @@ const Report = ({
           governance={{
             pepFlags: pepFlags
           }}
-          companyName={companyName}
-          website={data?.details?.websites?.find((x: string) => x) || ''}
+          sectors={companySectors}
+          // website={data?.details?.websites?.find((x: string) => x) || ''}
           environmental_details={{
             industry_sector: data?.details?.industry_sector
           }}

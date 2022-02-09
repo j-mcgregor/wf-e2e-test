@@ -11,7 +11,7 @@ describe('ESG', () => {
     // eslint-disable-next-line no-import-assign
     nextRouter.useRouter = jest.fn().mockImplementation(() => ({}));
   });
-  it('should render', () => {
+  it.skip('should render', () => {
     const props = {
       description: 'some description',
       rating: 10,
@@ -24,7 +24,6 @@ describe('ESG', () => {
       title: 'some title'
     };
     render(<ESGCard {...props} />, {}, allMessages);
-
     expect(screen.getByText(props.title)).toBeInTheDocument();
     expect(screen.getByText(props.description)).toBeInTheDocument();
     expect(screen.getByText(props.resultText)).toBeInTheDocument();
