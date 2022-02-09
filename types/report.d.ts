@@ -42,6 +42,7 @@ export type SummaryInfo = {
   nace_code: string;
   nace_name: string;
   subsidiaries: number;
+  is_accounts_filing_overdue: boolean;
 };
 
 export type SummaryContact = {

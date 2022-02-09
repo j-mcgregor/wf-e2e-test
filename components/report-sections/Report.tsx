@@ -339,7 +339,10 @@ const Report = ({
           )}
           {forPrint && (
             <div>
-              <FinancialAccounts financialYears={transformedFinancials} />
+              <FinancialAccounts
+                financialYears={transformedFinancials}
+                accountsOverdue={data?.details?.is_accounts_filing_overdue}
+              />
             </div>
           )}
           {!forPrint && shouldRenderCommentary && (
