@@ -418,7 +418,7 @@ const Report = ({
           seniorManagement={data?.executives?.length}
         />
 
-        {data?.directors?.length && (
+        {data?.directors?.length > 0 && (
           <ExecutiveCardList
             title={t('directors')}
             executives={data.directors}
@@ -427,7 +427,7 @@ const Report = ({
         )}
 
         {/*? ==== added copy of directors list for senior management/directors - should rename components? ==== */}
-        {data.executives?.length && (
+        {data?.executives?.length > 0 && (
           <ExecutiveCardList
             title={t('senior_management')}
             executives={data.executives}
@@ -439,7 +439,7 @@ const Report = ({
           seniorManagement={data?.personal?.senior_management}
         />
 
-        {data.shareholders && (
+        {data.shareholders.length > 0 && (
           <ShareHolderList shareholders={data?.shareholders} />
         )}
 
