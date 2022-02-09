@@ -128,6 +128,7 @@
   "no_esg_results_found": "No results found for this company.",
   "no_parents_found": "This company is not a subsidiary.",
   "no_subsidiaries_found": "This company has no subsidiaries.",
+  "no_legal_events_found": "This company has no registered legal events.",
   "shareholders_equity": "Shareholders Equity",
   "retained_earnings": "Retained Earnings",
   "days_receivable": "Days Receivable",

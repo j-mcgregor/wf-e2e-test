@@ -3,6 +3,8 @@ import { useTranslations } from 'next-intl';
 import { LegalEvent } from '../../../types/report';
 import LegalRow from './LegalRow';
 import LegalFilter from './LegalFilter';
+import { PlaceholderBox } from '../../elements/PlaceholderBox';
+import { CircleX } from '../../svgs/CircleX';
 
 interface LegalEventsProps {
   legalEvents: LegalEvent[];
@@ -16,23 +18,26 @@ const FILTERS = {
 };
 
 const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
-  const allEvents = legalEvents.map(event => event);
+  const hasEvents = legalEvents.length > 0;
 
-  const charges = allEvents.filter(event =>
-    /Charge\/mortgage/.test(event.types.join(', '))
+  const charges = legalEvents?.filter(
+    event => /Charge\/mortgage/.test(event.types.join(', ')) || []
   );
-  const negativeEvents = allEvents.filter(event => event.is_negative);
+  const negativeEvents = legalEvents?.filter(event => event.is_negative) || [];
 
-  const [events, setEvents] = useState(allEvents);
+  const [events, setEvents] = useState(legalEvents);
 
-  const legalEventSections: LegalEvent[][] =
-    events &&
-    events.reduce(
-      (acc: any, curr: any, index) =>
-        (index % 12 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
-        acc,
-      []
-    );
+  // was used to create sections to try and parse better for print
+  // was removed because it was not working well
+  // ToDO: try again and improve
+  // const legalEventSections: LegalEvent[][] =
+  //   events &&
+  //   events.reduce(
+  //     (acc: any, curr: any, index) =>
+  //       (index % 12 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
+  //       acc,
+  //     []
+  //   );
 
   const [filter, setFilter] = useState(FILTERS.ALL);
 
@@ -54,9 +59,9 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
         data-testid="legal-events-summary-testid"
       >
         <LegalFilter
-          events={allEvents}
+          events={events}
           filter={filter}
-          handleFilter={() => handleFilter(allEvents, FILTERS.ALL)}
+          handleFilter={() => handleFilter(events, FILTERS.ALL)}
           title={t('all_events')}
           activeFilter={FILTERS.ALL}
         />
@@ -77,36 +82,35 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
           activeFilter={FILTERS.NEGATIVE}
         />
       </div>
+      {hasEvents ? (
+        <>
+          <p className="text-xl">{t(filter)}</p>
 
-      <p className="text-xl">{t(filter)}</p>
+          <div className="bg-white shadow-sm p-2 my-6 rounded-sm print:shadow-none break-after-page ">
+            <div
+              className="w-full my-6 flex flex-col text-xs px-2"
+              data-testid="legal-events-table-testid"
+            >
+              <div className="flex border-b pb-2 mb-2">
+                <p className="w-full">{t('description')}</p>
+                <p className="w-full">{t('type')}</p>
+                <div className="w-[230px]">
+                  <p>{t('date')}</p>
+                </div>
+              </div>
 
-      <div className="bg-white shadow-sm p-2 my-6 rounded-sm print:shadow-none break-after-page ">
-        <div
-          className="w-full my-6 flex flex-col text-xs px-2"
-          data-testid="legal-events-table-testid"
-        >
-          <div className="flex border-b pb-2 mb-2">
-            <p className="w-full">{t('description')}</p>
-            <p className="w-full">{t('type')}</p>
-            <div className="w-[230px]">
-              <p>{t('date')}</p>
+              {events.map((event, index) => {
+                return <LegalRow forPrint={forPrint} key={index} {...event} />;
+              })}
             </div>
           </div>
-
-          {/* {legalEventSections.map((eventsArray, index) => {
-            return (
-              <div
-                key={index}
-                className={``}
-              > */}
-          {events.map((event, index) => {
-            return <LegalRow forPrint={forPrint} key={index} {...event} />;
-          })}
-          {/* </div>
-            );
-          })} */}
-        </div>
-      </div>
+        </>
+      ) : (
+        <PlaceholderBox
+          icon={<CircleX className="mr-3 stroke-orange-400" />}
+          message={t('no_legal_events_found')}
+        />
+      )}
     </div>
   );
 };

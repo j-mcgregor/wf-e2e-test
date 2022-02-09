@@ -468,6 +468,7 @@ const Report = ({
         fullHeight={false}
       >
         <ReportSectionHeader text={t('legal_events')} />
+
         <LegalEvents forPrint={forPrint} legalEvents={data?.legal_events} />
       </HashContainer>
 
