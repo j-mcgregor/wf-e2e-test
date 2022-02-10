@@ -295,7 +295,7 @@ describe('report helpers', () => {
 
   describe('calculatePoDRotation', () => {
     it('should correctly calculate the rotation', () => {
-      expect(calculatePoDRotation(0)).toBe(130);
+      expect(calculatePoDRotation(0)).toBe(-130);
       expect(calculatePoDRotation(0.5)).toBe(-127.4);
       expect(calculatePoDRotation(1)).toBe(-124.8);
       expect(calculatePoDRotation(1.5)).toBe(-122.2);
