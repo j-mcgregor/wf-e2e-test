@@ -138,16 +138,6 @@ const Report = ({
 
   const printClasses = usePrintClasses(reportClasses);
 
-  const smeZScoreRotation = calculateSMEZScoreRotation(
-    latestRiskMetrics?.sme_z_score
-  );
-  const poDRotation = calculatePoDRotation(
-    latestRiskMetrics?.probability_of_default_1_year
-  );
-  const lGDDRotation = calculateLGDRotation(
-    latestRiskMetrics?.loss_given_default
-  );
-
   //* replaced this with new `directors` array from backend
   // const directors = getDirectorsFromBoardMembers(data?.board_members) || [];
   const latestFinancialYear = data?.financials[data.financials?.length - 1];

@@ -35,8 +35,9 @@ const Speedometer = ({
 }: SpeedometerProps) => {
   const isFloat = value && Number(value) === value && value % 1 !== 0;
 
+  const isValidValue = value || value === 0;
   const renderValue =
-    value &&
+    isValidValue &&
     new Intl.NumberFormat('en-GB', {
       minimumFractionDigits: decimalPoints,
       maximumFractionDigits: decimalPoints
@@ -44,7 +45,7 @@ const Speedometer = ({
 
   const t = useTranslations();
 
-  const arrowRotation = value && rotationCalculator(value);
+  const arrowRotation = isValidValue && rotationCalculator(value);
 
   return (
     <>
@@ -76,13 +77,14 @@ const Speedometer = ({
             }`}
           >
             <span>
-              {value ? renderValue : t('na')}
-              {value && asMetric ? asMetric : null}
+              {isValidValue ? renderValue : t('na')}
+              {isValidValue && asMetric ? asMetric : null}
             </span>
           </div>
 
           {secondaryValues.map((benchmark, index) => {
-            return benchmark.value ? (
+            const isValidBenchmark = benchmark.value || benchmark.value === 0;
+            return isValidBenchmark ? (
               <BenchmarkArrow
                 key={index}
                 style={{
@@ -102,13 +104,17 @@ const Speedometer = ({
 
         <div className="text-gray-400 w-full pb-4 px-1 text-xs xl:text-sm -mt-2 overflow-hidden">
           {secondaryValues.map((benchmark, index) => {
-            const renderValue =
-              (benchmark.value &&
-                new Intl.NumberFormat('en-GB', {
+            const isValidBenchmark = benchmark?.value || benchmark?.value === 0;
+
+            const value = benchmark.value as number | bigint;
+
+            const renderValue = isValidBenchmark
+              ? new Intl.NumberFormat('en-GB', {
                   minimumFractionDigits: decimalPoints,
                   maximumFractionDigits: decimalPoints
-                }).format(benchmark.value)) ||
-              t('na');
+                }).format(value)
+              : t('na');
+
             return (
               <SpeedoKey
                 key={index}

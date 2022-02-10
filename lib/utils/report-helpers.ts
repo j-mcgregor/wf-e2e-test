@@ -150,7 +150,7 @@ export const calculatePoDRatio = (x: number) => {
 
 export const calculatePoDRotation = (value: number) => {
   // if value zero set to default
-  if (value === 0) return 130;
+  if (value === 0) return -130;
 
   let ratio = calculatePoDRatio(value);
 
@@ -173,7 +173,7 @@ export const calculateLGDPercent = (x: number) => {
   } else if (val <= 90) {
     percent = Math.min(0.9, 0.5 + (0.4 * (val - 40)) / 50);
   } else {
-    percent = Math.min(1.0, (0.1 * (val - 90)) / 10);
+    percent = Math.min(1.0, 0.9 + (0.1 * (val - 90)) / 10);
   }
 
   return percent;
