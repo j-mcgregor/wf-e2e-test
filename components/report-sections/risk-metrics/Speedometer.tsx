@@ -81,38 +81,41 @@ const Speedometer = ({
             </span>
           </div>
 
-          {secondaryValues.map(
-            (benchmark, index) =>
-              benchmark.value && (
-                <BenchmarkArrow
-                  key={index}
-                  style={{
-                    transform: `rotate(${rotationCalculator(
-                      Number(benchmark.value)
-                    )}deg)`
-                  }}
-                  className={`absolute top-0 w-full h-full transition-transform duration-500 ${
-                    index % 2 === 1 ? 'text-green-500' : 'text-blue-500'
-                  }`}
-                />
-              )
-          )}
+          {secondaryValues.map((benchmark, index) => {
+            return benchmark.value ? (
+              <BenchmarkArrow
+                key={index}
+                style={{
+                  transform: `rotate(${rotationCalculator(
+                    Number(benchmark.value)
+                  )}deg)`
+                }}
+                className={`absolute top-0 w-full h-full transition-transform duration-500 ${
+                  index % 2 === 1 ? 'text-green-500' : 'text-blue-500'
+                }`}
+              />
+            ) : (
+              ''
+            );
+          })}
         </div>
 
         <div className="text-gray-400 w-full pb-4 px-1 text-xs xl:text-sm -mt-2 overflow-hidden">
           {secondaryValues.map((benchmark, index) => {
             const renderValue =
-              benchmark.value &&
-              new Intl.NumberFormat('en-GB', {
-                minimumFractionDigits: decimalPoints,
-                maximumFractionDigits: decimalPoints
-              }).format(benchmark.value);
-
+              (benchmark.value &&
+                new Intl.NumberFormat('en-GB', {
+                  minimumFractionDigits: decimalPoints,
+                  maximumFractionDigits: decimalPoints
+                }).format(benchmark.value)) ||
+              t('na');
             return (
               <SpeedoKey
                 key={index}
                 name={benchmark.name}
-                value={`${renderValue}${asMetric ?? ''}`}
+                value={`${renderValue}${
+                  benchmark?.value && asMetric ? asMetric : ''
+                }`}
                 colour={index % 2 === 1 ? 'bg-green-500' : 'bg-blue-500'}
               />
             );
@@ -132,6 +135,7 @@ const SpeedoKey = ({
   value: string;
   colour: string;
 }) => {
+  // console.log(name, value)
   return (
     <div
       className={`flex items-center ml-4 space-x-3 ${!value && 'opacity-30'}`}
