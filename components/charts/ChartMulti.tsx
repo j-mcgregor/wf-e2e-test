@@ -57,6 +57,7 @@ const ChartMulti = ({
   const [selectedGraphIndex, setSelectedGraphIndex] = useState<number | null>(
     0
   );
+  const t = useTranslations();
 
   useEffect(() => {
     data !== graphData && setData(graphData);
@@ -65,6 +66,8 @@ const ChartMulti = ({
 
   const companyGraph = graphData[0];
   const benchmarkGraph = graphData[1];
+
+  const companyName = getCompanyName(companyGraph);
 
   // get largest y value from all graphs
   const largestYDataPoint = useMemo(() => {
@@ -112,9 +115,22 @@ const ChartMulti = ({
   const maxRenderValue = getMaxRenderValue(disabled, chartType, maxYValue);
   const minRenderValue = getMinRenderValue(disabled, chartType, minYValue);
 
-  const t = useTranslations();
+  const graphRange = Math.abs(maxRenderValue - minRenderValue);
+  const graphPadding = graphRange * 0.1;
+  const chartMaxValue = maxRenderValue + graphPadding;
 
-  const companyName = getCompanyName(companyGraph);
+  // if min value is 0 then return min value
+  // if not check if greater than 0
+  // if min value > 0 but the min value - graph padding is less than 0 return 0
+  // otherwise return min value - graph padding
+  const chartMinValue =
+    minRenderValue === 0
+      ? minRenderValue
+      : minRenderValue > 0
+      ? minRenderValue - graphPadding < 0
+        ? 0
+        : minRenderValue - graphPadding
+      : minRenderValue - graphPadding;
 
   const chartTypeText =
     chartType === 'currency' && useMillions
@@ -150,8 +166,8 @@ const ChartMulti = ({
         tickCount={6}
         height={220}
         width={200}
-        max={maxRenderValue}
-        min={minRenderValue * 1.1}
+        max={chartMaxValue}
+        min={chartMinValue}
       >
         {/* Red annotation line through 0 values */}
         {!disabled && (

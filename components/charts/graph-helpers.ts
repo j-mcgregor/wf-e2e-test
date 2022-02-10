@@ -33,10 +33,10 @@ export const getMaxRenderValue = (
   chartType: FinancialTrendCategories,
   maxDataValue: number
 ): number => {
-  const percentageIncrease =
+  const percentageIncreased =
     maxDataValue * 0.1 > 5 ? maxDataValue * 1.1 : maxDataValue + 5;
   const maxPercentageValue =
-    percentageIncrease > 100 ? 100 : percentageIncrease;
+    percentageIncreased > 100 ? 100 : percentageIncreased;
 
   return disabled
     ? 1
@@ -46,15 +46,14 @@ export const getMaxRenderValue = (
     ? 1000
     : maxDataValue <= 0
     ? 0
-    : maxDataValue * 1.1;
+    : maxDataValue;
 };
 
 export const getMinRenderValue = (
   disabled: boolean | undefined,
   chartType: FinancialTrendCategories,
   minDataValue: number
-) =>
-  disabled ? 0 : chartType === 'percentage' ? minDataValue * 1.1 : minDataValue;
+) => (disabled ? 0 : minDataValue);
 
 export const isGraphData = (graph: any): boolean => {
   return graph?.data.some((value: GraphDataType) => value.y !== 0);
