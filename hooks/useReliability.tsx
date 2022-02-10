@@ -47,7 +47,7 @@ export const useReliability = ({
     hasVolatility ? t('concern_volatility') : ''
   } ${hasAssets ? t('concern_assets') : ''}`;
 
-  if (score >= 0.65) {
+  if (score > 0.65) {
     res.barLabel = Reliability.RELIABLE;
     res.barYaxis = '75%';
     res.infoBoxText = reliableText;
