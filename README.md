@@ -32,4 +32,3 @@ There are several scripts and pre-scripts:
 ```
 
 Husky is also implemented to run linting before committing and testing before pushing
-

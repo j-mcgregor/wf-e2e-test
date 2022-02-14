@@ -28,7 +28,7 @@ const SummaryFinancial = ({ years, currencyCode }: SummaryFinancialProps) => {
       <div className="flex flex-col print:border-2 print:px-4">
         <div className="overflow-x-auto">
           <div className="py-2 align-middle inline-block min-w-full ">
-            <div className="overflow-hidden text-xs">
+            <div className="text-xs overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="border-b border-black font-semibold">
                   <tr>

@@ -4,10 +4,12 @@ import usePrintClasses from '../../../hooks/usePrintClasses';
 import { ReactElement } from 'react';
 const bondRatingClasses = {
   chrome: {
-    container: 'flex justify-center items-center'
+    container: 'avoid-break',
+    ratings: 'flex justify-center items-center'
   },
   'microsoft edge': {
-    container: 'flex justify-center items-center'
+    container: 'avoid-break',
+    ratings: 'flex justify-center items-center'
   }
 };
 
@@ -56,14 +58,14 @@ const BondRating = ({ score, hint }: BondRatingProps) => {
 
   return (
     <div
-      className={`bg-white shadow rounded-sm px-4 sm:px-8 py-6 print:shadow-none print:border-2`}
+      className={`${printClasses.container} bg-white shadow rounded-sm px-4 sm:px-8 py-6 print:shadow-none print:border-2 avoid-break print:translate-y-[10px] `}
     >
       <div className="flex w-full justify-between">
         <p className="text-xl font-bold">{t('bond_rating_equivalent')}</p>
         {hint}
       </div>
-
-      <div className={`${printClasses.container}`}>
+      3
+      <div className={`${printClasses.ratings}`}>
         <div className={`flex items-center my-4 py-4 sm:w-full`}>
           {bondRatings.map((rating, i) => {
             return (
@@ -86,7 +88,6 @@ const BondRating = ({ score, hint }: BondRatingProps) => {
           })}
         </div>
       </div>
-
       <div className="flex items-center bg-bg p-2 rounded-sm">
         <p className="p-2 font-bold text-4xl">{score}</p>
         <p className="p-2 text-sm">{t(`bond_rating_descriptions.${score}`)}</p>

@@ -126,6 +126,9 @@ const Report = ({
     chrome: {
       highlights: {
         container: 'flex print:flex-row sm:print:flex-row md:print:flex-row'
+      },
+      summary: {
+        header: 'print:mt-16'
       }
     },
     'microsoft edge': {
@@ -163,7 +166,9 @@ const Report = ({
         />
       </div>
       <HashContainer name={'Summary'} id={`summary`}>
-        <ReportSectionHeader text={t('summary')} onNewPageForPrint={false} />
+        <div className={printClasses?.summary?.header}>
+          <ReportSectionHeader text={t('summary')} onNewPageForPrint={false} />
+        </div>
 
         <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm md:print:flex-col ">
           <div className="flex w-full md:w-1/2 flex-col py-2 md:print:w-full">
@@ -207,7 +212,6 @@ const Report = ({
         </div>
       </HashContainer>
       <HashContainer name={'Risk Metrics'} id={`risk_metrics`}>
-        <ReportSectionHeader text={t('risk_metrics')} />
         {/* <div
           className="flex w-full flex-wrap justify-evenly
         mb-4 print:border-2"
@@ -215,90 +219,95 @@ const Report = ({
 
         {/* NEW - Wrapped speedos and graphs in grid that matches financial trends */}
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 print:grid-cols-3 sm:print:grid-cols-3  mt-4 mb-8 md:print:grid-cols-3 avoid-break">
-          <Speedometer
-            title={t('sme_zscore')}
-            value={latestRiskMetrics?.sme_z_score}
-            rotationCalculator={calculateSMEZScoreRotation}
-            secondaryValues={[
-              {
-                name: INDUSTRY_BENCHMARK,
-                value: data?.benchmarks?.sector?.sme_z_score ?? null
-              },
-              {
-                name: REGION_BENCHMARK,
-                value: data?.benchmarks?.region?.sme_z_score ?? null
+        <div className="avoid-break">
+          <ReportSectionHeader text={t('risk_metrics')} />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2  mt-4 mb-8 print:grid-cols-3 sm:print:grid-cols-3 md:print-grid-cols-3">
+            <Speedometer
+              title={t('sme_zscore')}
+              value={latestRiskMetrics?.sme_z_score}
+              rotationCalculator={calculateSMEZScoreRotation}
+              secondaryValues={[
+                {
+                  name: INDUSTRY_BENCHMARK,
+                  value: data?.benchmarks?.sector?.sme_z_score ?? null
+                },
+                {
+                  name: REGION_BENCHMARK,
+                  value: data?.benchmarks?.region?.sme_z_score ?? null
+                }
+              ]}
+              hint={
+                <Hint
+                  title={t('report_hints.risk_metrics.sme_z-score.title')}
+                  body={t('report_hints.risk_metrics.sme_z-score.body')}
+                />
               }
-            ]}
-            hint={
-              <Hint
-                title={t('report_hints.risk_metrics.sme_z-score.title')}
-                body={t('report_hints.risk_metrics.sme_z-score.body')}
-              />
-            }
-          />
-          <Speedometer
-            title={t('probability_of_default')}
-            value={latestRiskMetrics?.probability_of_default_1_year * 100}
-            asMetric="%"
-            rotationCalculator={calculatePoDRotation}
-            secondaryValues={[
-              {
-                name: INDUSTRY_BENCHMARK,
-                value:
-                  data?.benchmarks?.sector?.probability_of_default_1_year *
-                    100 ?? null
-              },
-              {
-                name: REGION_BENCHMARK,
-                value:
-                  data?.benchmarks?.region?.probability_of_default_1_year *
-                    100 ?? null
+            />
+            <Speedometer
+              title={t('probability_of_default')}
+              value={latestRiskMetrics?.probability_of_default_1_year * 100}
+              asMetric="%"
+              rotationCalculator={calculatePoDRotation}
+              secondaryValues={[
+                {
+                  name: INDUSTRY_BENCHMARK,
+                  value:
+                    data?.benchmarks?.sector?.probability_of_default_1_year *
+                      100 ?? null
+                },
+                {
+                  name: REGION_BENCHMARK,
+                  value:
+                    data?.benchmarks?.region?.probability_of_default_1_year *
+                      100 ?? null
+                }
+              ]}
+              hint={
+                <Hint
+                  title={t(
+                    'report_hints.risk_metrics.probability_of_default.title'
+                  )}
+                  body={t(
+                    'report_hints.risk_metrics.probability_of_default.body'
+                  )}
+                />
               }
-            ]}
-            hint={
-              <Hint
-                title={t(
-                  'report_hints.risk_metrics.probability_of_default.title'
-                )}
-                body={t(
-                  'report_hints.risk_metrics.probability_of_default.body'
-                )}
-              />
-            }
-            decimalPoints={2}
-            reverseX
-          />
-          <Speedometer
-            title={t('loss_give_default')}
-            value={latestRiskMetrics?.loss_given_default * 100}
-            asMetric="%"
-            rotationCalculator={calculateLGDRotation}
-            secondaryValues={[
-              {
-                name: INDUSTRY_BENCHMARK,
-                value:
-                  data?.benchmarks?.sector?.loss_given_default * 100 ?? null
-              },
-              {
-                name: REGION_BENCHMARK,
-                value:
-                  data?.benchmarks?.region?.loss_given_default * 100 ?? null
+              decimalPoints={2}
+              reverseX
+            />
+            <Speedometer
+              title={t('loss_give_default')}
+              value={latestRiskMetrics?.loss_given_default * 100}
+              asMetric="%"
+              rotationCalculator={calculateLGDRotation}
+              secondaryValues={[
+                {
+                  name: INDUSTRY_BENCHMARK,
+                  value:
+                    data?.benchmarks?.sector?.loss_given_default * 100 ?? null
+                },
+                {
+                  name: REGION_BENCHMARK,
+                  value:
+                    data?.benchmarks?.region?.loss_given_default * 100 ?? null
+                }
+              ]}
+              hint={
+                <Hint
+                  title={t(
+                    'report_hints.risk_metrics.loss_given_default.title'
+                  )}
+                  body={t('report_hints.risk_metrics.loss_given_default.body')}
+                />
               }
-            ]}
-            hint={
-              <Hint
-                title={t('report_hints.risk_metrics.loss_given_default.title')}
-                body={t('report_hints.risk_metrics.loss_given_default.body')}
-              />
-            }
-            decimalPoints={1}
-            reverseX
-          />
-          <RiskMetricGraphs
-            data={lastFiveYearsRiskMetrics.reverse()}
-            companyName={companyName}
-          />
+              decimalPoints={1}
+              reverseX
+            />
+            <RiskMetricGraphs
+              data={lastFiveYearsRiskMetrics.reverse()}
+              companyName={companyName}
+            />
+          </div>
         </div>
 
         {/* </div> */}

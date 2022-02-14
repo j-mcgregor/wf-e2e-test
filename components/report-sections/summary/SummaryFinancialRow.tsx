@@ -27,7 +27,7 @@ const SummaryFinancialRow = ({
   const yearsWithBlank = addBlankObjects(data, 5);
 
   return (
-    <tr className="">
+    <tr>
       <td className="min-w-[160px] font-semibold">{rowHeader}</td>
       {yearsWithBlank &&
         yearsWithBlank.map((year, index) => (

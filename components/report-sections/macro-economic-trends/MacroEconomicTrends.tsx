@@ -5,6 +5,7 @@ import { macroEconomicTrendCharts } from '../../../lib/settings/report.settings'
 import { MacroTrend } from '../../../types/charts';
 import { MacroEconomic, MacroEconomics } from '../../../types/report';
 import Chart from '../../charts/Chart';
+import { renderArrayForPrint } from '../../../lib/utils/print-helpers';
 
 interface MacroEconomicTrendsProps {
   trends: MacroEconomics;
@@ -53,12 +54,7 @@ const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
     []
   );
 
-  const graphSections: ChartData[][] = chartsToRender.reduce(
-    (acc: any, curr: any, index) =>
-      (index % 8 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
-      acc,
-    []
-  );
+  const graphSections: ChartData[][] = renderArrayForPrint(chartsToRender, 8);
 
   const chartTicksXaxis: Record<string, number> = {
     daily: 12,

@@ -8,7 +8,7 @@ import Report from '../../../components/report-sections/Report';
 import getServerSidePropsWithAuth from '../../../lib/auth/getServerSidePropsWithAuth';
 import fetcher from '../../../lib/utils/fetcher';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ReportDataProps } from '.';
 import LoadingIcon from '../../../components/svgs/LoadingIcon';
 
@@ -18,6 +18,8 @@ const ReportTemplate = () => {
 
   const t = useTranslations();
 
+  const [loaded, setLoaded] = useState(false);
+
   const { data, error } = useSWR<ReportDataProps>(
     `/api/reports/report?id=${id}`,
     fetcher
@@ -25,12 +27,15 @@ const ReportTemplate = () => {
 
   useEffect(() => {
     if (data) {
-      // window.print();
+      setTimeout(() => {
+        setLoaded(true);
+        window.print();
+      }, 3000);
     }
   }, [data]);
 
   const Loader = () => (
-    <div className="w-screen h-screen flex flex-col items-center justify-center">
+    <div className="fixed bg-white top-0 left-0 z-20 w-screen h-screen flex flex-col items-center justify-center">
       <LoadingIcon className="h-12 w-12" stroke="#E58A2E" />
       <p className="py-8 text-sm font-semibold text-primary">
         {t('loading_printable_report')} ...
@@ -38,7 +43,12 @@ const ReportTemplate = () => {
     </div>
   );
 
-  return (data && <Report data={data} id={id} forPrint={true} />) || <Loader />;
+  return (
+    <>
+      {data && <Report data={data} id={id} forPrint={true} />}
+      {(!data || !loaded) && <Loader />}
+    </>
+  );
 };
 
 export default ReportTemplate;

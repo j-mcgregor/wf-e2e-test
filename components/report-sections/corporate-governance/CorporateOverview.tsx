@@ -74,20 +74,20 @@ const CorporateOverview = ({
 
         {/* ===== new row  */}
         <div
-          className={`${reverseTextPrint} p-4 print:border-b-2 border-r border-b md:border-b-0 print:border-t-2 print:border-r-2`}
+          className={`${reverseTextPrint} p-4 print:border-b-2 border-r border-b md:border-b-0 print:border-l-2 print:border-r-2`}
         >
           <p className="font-bold">{subsidiaries || t('na')}</p>
           <p>{t('subsidiaries')}</p>
         </div>
         <div
-          className={`${reverseTextPrint} p-4 border-r border-b print:border-b-2 print:border-t-2`}
+          className={`${reverseTextPrint} p-4 border-r border-b print:border-b-2 print:border-r-2`}
           data-testid="corp-shareholders-testid"
         >
           <p className="font-bold">{shareholders || t('na')}</p>
           <p>{t('shareholders')}</p>
         </div>
         <div
-          className={`${reverseTextPrint} p-4 print:border-b-2 print:border-t-2 print:border-r-2`}
+          className={`${reverseTextPrint} p-4 print:hidden bg-bg bg-opacity-70 border-none`}
         >
           {/* <p className="font-bold">{employees || t('na')}</p>
           <p>{t('placeholder')}</p> */}

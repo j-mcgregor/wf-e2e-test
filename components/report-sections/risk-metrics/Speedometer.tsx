@@ -60,7 +60,7 @@ const Speedometer = ({
         print:inline-block h-auto  avoid-break"
       >
         <div className="flex w-full items-center justify-between px-4 pt-4 pb-2">
-          <p>{title}</p>
+          <p className="md:text-sm">{title}</p>
           {hint}
         </div>
 

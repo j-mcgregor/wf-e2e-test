@@ -154,8 +154,8 @@ const ChartMulti = ({
     >
       <div className="flex justify-between items-start px-4 pt-4 text-base">
         <div className="">
-          <h5 className="pb-2 text-sm whitespace-nowrap pr-2">{header}</h5>
-          <p className="opacity-70 print:opacity-100 print:text-gray-400">
+          <h5 className="pb-2 whitespace-nowrap md:text-sm">{header}</h5>
+          <p className="opacity-70 print:opacity-100 print:text-gray-400 text-sm print:text-xs">
             {chartTypeText || subHeader}
           </p>
         </div>

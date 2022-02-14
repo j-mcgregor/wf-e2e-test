@@ -12,20 +12,23 @@ interface LegalEventsProps {
 }
 
 const FILTERS = {
-  ALL: 'all_events',
+  ALL: 'legal_events',
   NEGATIVE: 'negative_events',
   CHARGES: 'charges'
 };
 
 const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
-  const hasEvents = legalEvents.length > 0;
+  const allEvents = legalEvents;
 
-  const charges = legalEvents?.filter(
-    event => /Charge\/mortgage/.test(event.types.join(', ')) || []
+  const charges = legalEvents?.filter(event =>
+    /charge/.test(event.types.join(' ')?.toLowerCase())
   );
-  const negativeEvents = legalEvents?.filter(event => event.is_negative) || [];
 
-  const [events, setEvents] = useState(legalEvents);
+  const negativeEvents = allEvents?.filter(event => event.is_negative) || [];
+
+  const [events, setEvents] = useState(allEvents);
+
+  const hasEvents = events.length > 0;
 
   // was used to create sections to try and parse better for print
   // was removed because it was not working well
@@ -59,9 +62,9 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
         data-testid="legal-events-summary-testid"
       >
         <LegalFilter
-          events={events}
+          events={allEvents}
           filter={filter}
-          handleFilter={() => handleFilter(events, FILTERS.ALL)}
+          handleFilter={() => handleFilter(allEvents, FILTERS.ALL)}
           title={t('all_events')}
           activeFilter={FILTERS.ALL}
         />
@@ -84,9 +87,10 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
       </div>
       {hasEvents ? (
         <>
-          <p className="text-xl">{t(filter)}</p>
+          <p className="text-xl px-4 print:hidden">{t(filter)}</p>
 
-          <div className="bg-white shadow-sm p-2 my-6 rounded-sm print:shadow-none break-after-page ">
+          <div className="bg-white shadow-sm p-2 my-6 rounded-sm print:shadow-none avoid-break print:pt-8">
+            <p className="text-xl hidden print:block">{t(filter)}</p>
             <div
               className="w-full my-6 flex flex-col text-xs px-2"
               data-testid="legal-events-table-testid"
@@ -98,7 +102,6 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
                   <p>{t('date')}</p>
                 </div>
               </div>
-
               {events.map((event, index) => {
                 return <LegalRow forPrint={forPrint} key={index} {...event} />;
               })}
@@ -108,7 +111,9 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
       ) : (
         <PlaceholderBox
           icon={<CircleX className="mr-3 stroke-orange-400" />}
-          message={t('no_legal_events_found')}
+          message={t('has_no_legal_event', {
+            legal_event: t(filter)?.toLowerCase()
+          })}
         />
       )}
     </div>

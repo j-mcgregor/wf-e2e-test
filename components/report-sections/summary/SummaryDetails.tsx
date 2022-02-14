@@ -45,7 +45,7 @@ const SummaryDetails = ({
   };
 
   return (
-    <div className="flex flex-col bg-white border  shadow-sm rounded h-full print:shadow-none print:border-2 prose-h4:font-bold">
+    <div className="flex flex-col bg-white border shadow-sm rounded h-full print:shadow-none print:border-2 prose-h4:font-bold">
       {/* ===== Row 1 ===== */}
       <div className="flex justify-between h-1/4 border-b print:border-b-2">
         <div

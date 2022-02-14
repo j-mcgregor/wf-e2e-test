@@ -5,6 +5,7 @@ import ChartMulti from '../../charts/ChartMulti';
 import { financialTrendsCharts } from '../../../lib/settings/report.settings';
 import { MultiGraphDataType } from '../../../types/charts';
 import countryCodes from '../../../lib/data/countryCodes.json';
+import { renderArrayForPrint } from '../../../lib/utils/print-helpers';
 
 interface FinancialTrendsProps {
   financialData: any[];
@@ -40,12 +41,7 @@ const FinancialTrends = ({
   );
 
   // charts split into arrays of 6 for print layout
-  const filteredCharts = chartsToRender.reduce(
-    (acc: any, curr: any, index) =>
-      (index % 6 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
-      acc,
-    []
-  );
+  const filteredCharts = renderArrayForPrint(chartsToRender, 6);
 
   // find currency symbol from currency code
   const currencySymbol = countryCodes.find(
