@@ -23,5 +23,6 @@
   "never": "Never",
   "no_reports_generated": "No reports generated yet",
   "get_started_with_new_report": "Get started with your first report today",
-  "generate_report": "Generate report"
+  "generate_report": "Generate report",
+  "twitter_widget_error": "There was an error in the Twitter widget. Please refresh to reload."
 }

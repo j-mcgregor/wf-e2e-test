@@ -9,19 +9,27 @@ import BookmarkCard from '../components/cards/BookmarkCard';
 import Button from '../components/elements/Button';
 import ReportTable from '../components/elements/ReportTable';
 import Layout from '../components/layout/Layout';
-import { userReports } from '../lib/appState';
+import LoadingIcon from '../components/svgs/LoadingIcon';
+import useReportHistory from '../hooks/useReportHistory';
+import appState from '../lib/appState';
 import { ReportSnippetType } from '../types/global';
 
 const Reports = () => {
-  const [reportLimit, setReportLimit] = useState(10); // initial limit of 10 reports
+  const { user } = useRecoilValue(appState);
 
-  const { bookmarkedReports, allReports } = useRecoilValue(userReports);
+  const [reportLimit, setReportLimit] = useState(0); // initial limit of 10 reports
+
+  const { reports, loading } = useReportHistory(10, reportLimit);
+
+  const bookmarkedReports = user?.bookmarked_reports;
 
   const t = useTranslations();
 
+  const reportLength = reports?.length || 0;
+
   // load 5 more reports until max of 30
   const handleAddReports = (): void => {
-    reportLimit < 30 ? setReportLimit(reportLimit + 5) : null;
+    reportLimit + 10 <= reportLength ? setReportLimit(reportLimit + 10) : null;
   };
 
   return (
@@ -65,28 +73,36 @@ const Reports = () => {
             </div>
           ))}
 
-        <div className="flex flex-col">
+        <div className="flex flex-col pb-40">
           <p className="text-2xl pt-6 pb-2 sm:py-6 font-semibold">
             {t('recent_reports')}
           </p>
 
           <ReportTable
             headerSize="text-[10px] md:text-sm lg:text-base"
-            reports={allReports}
-            limit={reportLimit}
+            reports={
+              (loading && reports?.length === 0) ||
+              reports?.length === user?.reports?.length
+                ? user?.reports
+                : reports
+            }
+            limit={reportLimit + 10}
             shadow={true}
+            loading={loading}
             borders={true}
             fillerRows={false}
             linkRoute="/report"
           />
 
-          {reportLimit < 30 && allReports.length > reportLimit && (
+          {/* Handle loading cases and if there are enough reports to show more */}
+          {(reportLimit + 10 <= reportLength || loading) && (
             <Button
+              disabled={loading}
               variant="none"
               className="border-alt border max-w-[120px] my-2 mx-auto"
               onClick={handleAddReports}
             >
-              <p>{t('load_more')}</p>
+              {!loading ? <p>{t('show_more')}</p> : <LoadingIcon />}
             </Button>
           )}
         </div>

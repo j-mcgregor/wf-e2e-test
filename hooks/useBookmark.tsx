@@ -2,6 +2,7 @@
 import * as Sentry from '@sentry/nextjs';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
+import { mutate } from 'swr';
 import { UserReports, userReports } from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 import { ReportSnippetType } from '../types/global';
@@ -67,14 +68,14 @@ const useBookmark = (
         // this is in reports
         setIsBookmarked(!isBookMarked);
 
-        // optimistically update global state
-        if (action === 'REMOVE') {
-          optimisticallyRemoveBookMark();
-        }
-        // optimistically update global state
-        if (action === 'ADD') {
-          optimisticallyAddBookMark(reportSnippet);
-        }
+        // // optimistically update global state
+        // if (action === 'REMOVE') {
+        //   optimisticallyRemoveBookMark();
+        // }
+        // // optimistically update global state
+        // if (action === 'ADD') {
+        //   optimisticallyAddBookMark(reportSnippet);
+        // }
 
         // turn and action into an API method
         const method = action === 'REMOVE' ? 'DELETE' : 'POST';
@@ -90,19 +91,22 @@ const useBookmark = (
           // if fails to save, revert to previous state
           setIsBookmarked(!isBookMarked);
 
-          // if errors undo global state changes
-          if (action === 'ADD') {
-            optimisticallyRemoveBookMark();
-          } else if (action === 'REMOVE') {
-            optimisticallyAddBookMark(reportSnippet);
-          }
+          // // if errors undo global state changes
+          // if (action === 'ADD') {
+          //   optimisticallyRemoveBookMark();
+          // } else if (action === 'REMOVE') {
+          //   optimisticallyAddBookMark(reportSnippet);
+          // }
         }
 
         if (updater.ok && updater.bookmarks) {
+          // if successful revalidate the useUser hook to fetch updated user object
+          mutate('/api/user');
           // recoil requires that what comes out of state is the same as what goes in,
           // but that is in efficient and problematic
           // we're working around it for now
           // @ts-ignore
+
           setReportBookmarks(reports => ({
             ...reports,
             bookmarkedReports: updater.bookmarks

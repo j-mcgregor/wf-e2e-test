@@ -156,6 +156,7 @@ export type ErrorCodeKeys =
   | 'NO_REPORT_ID'
   | 'SIGNED_OUT'
   | 'USER_404'
+  | 'USER_403'
   | 'USER_422'
   | 'USER_500'
   | 'COMPANY_404'

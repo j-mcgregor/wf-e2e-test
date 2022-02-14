@@ -6,7 +6,6 @@ import { SettingsSectionHeader } from '../../elements/Headers';
 import PasswordManagement from './PasswordManagement';
 import GoogleIcon from '../../icons/GoogleIcon';
 import MicrosoftIcon from '../../icons/MicrosoftIcon';
-import Link from '../../elements/Link';
 
 interface PasswordFormProps {
   isSSO: false | 'microsoft' | 'google';

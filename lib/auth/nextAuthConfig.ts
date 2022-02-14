@@ -1,7 +1,6 @@
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import User from "../funcs/user";
-
+import { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import User from '../funcs/user';
 
 const nextAuthConfig: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -12,17 +11,23 @@ const nextAuthConfig: NextAuthOptions = {
       name: 'Microsoft Login',
       type: 'oauth',
       version: '2.0',
-      wellKnown: 'https://login.microsoftonline.com/common/.well-known/openid-configuration',
+      wellKnown:
+        'https://login.microsoftonline.com/common/.well-known/openid-configuration',
       userinfo: 'https://graph.microsoft.com/oidc/userinfo',
       profile: async (_profile, token) => {
         // use the SSO token to get the backend api auth token
         const wfToken = await User.getSSOToken(`${token.id_token}`);
         if (wfToken.ok) {
           // use the backend api auth token to get the user information
-          const user = await User.getUser(`${wfToken.access_token}`);
+          const req = await User.getUser(`${wfToken.access_token}`);
 
-          if (user.ok) {
-            return { ...user, is_sso: 'microsoft' };
+          if (req.ok) {
+            return {
+              ...req.user,
+              ok: req.ok,
+              is_sso: 'microsoft',
+              accessToken: wfToken.access_token
+            };
           }
         }
         return false;
@@ -54,10 +59,11 @@ const nextAuthConfig: NextAuthOptions = {
         );
         // // if no error and we have user data, return it
         if (authenticated && authenticated.token) {
-          const user = await User.getUser(authenticated.token);
+          const req = await User.getUser(authenticated.token);
           return {
-            ...user,
-            is_sso: false
+            ...req.user,
+            is_sso: false,
+            accessToken: authenticated.token
           };
         }
         // Return null if user data could not be retrieved
@@ -73,25 +79,24 @@ const nextAuthConfig: NextAuthOptions = {
     async jwt({ token, user }) {
       // Persist the backend access token to the token right after sign in
       if (user) {
-        token.accessToken = user?.token;
+        token.accessToken = user?.accessToken;
         token.is_sso = user?.is_sso;
       }
       return token;
     },
     async session({ session, token }) {
       if (token?.accessToken) {
-        const user = await User.getUser(`${token.accessToken}`);
-
+        const req = await User.getUser(`${token.accessToken}`);
         // if there is no user or the user cannot be authenticated
         // then revoke the session accessToken
         // this will trigger a logout through the Layout Component
-        if (!user.ok) {
+        if (!req.ok) {
           session.token = '';
           return session;
         }
         // add the mock user data in the use session hook
         session.user = {
-          ...user,
+          ...req.user,
           is_sso: token.is_sso
         };
         session.token = token.accessToken;
@@ -101,6 +106,6 @@ const nextAuthConfig: NextAuthOptions = {
       return session;
     }
   }
-}
+};
 
 export default nextAuthConfig;

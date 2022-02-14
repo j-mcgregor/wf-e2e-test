@@ -25,7 +25,7 @@ export const appUser = selector<UserType>({
 
 export type UserReports = {
   bookmarkedReports: ReportSnippetType[];
-  allReports: ReportSnippetType[];
+  allReports: ReportSnippetType[] | null;
   nonBookmarkedReports: ReportSnippetType[];
 };
 

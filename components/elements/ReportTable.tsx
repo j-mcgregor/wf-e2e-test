@@ -8,6 +8,7 @@ import SkeletonRow from '../skeletons/SkeletonRow';
 import Button from './Button';
 import { createReportTitle } from '../../lib/utils/text-helpers';
 import { getClientRelativeDate } from '../../lib/utils/date-helpers';
+import LoadingIcon from '../svgs/LoadingIcon';
 
 interface ReportProps {
   reports?: ReportSnippetType[] | null;
@@ -17,6 +18,7 @@ interface ReportProps {
   fillerRows: boolean;
   headerSize: string;
   linkRoute: string;
+  loading?: boolean;
 }
 
 const ReportTable = ({
@@ -26,7 +28,8 @@ const ReportTable = ({
   borders,
   fillerRows,
   headerSize,
-  linkRoute
+  linkRoute,
+  loading
 }: ReportProps) => {
   const isLoading = !reports;
 
@@ -50,7 +53,7 @@ const ReportTable = ({
   // text-[10px] px-2 lg:text-xs
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col relative">
       <div className="pb-4 pt-[6px] align-middle min-w-full min-h-full">
         <div className={`${shadowClasses} overflow-auto rounded`}>
           <table className="min-w-full divide-y-2 divide-gray-200">
@@ -82,7 +85,7 @@ const ReportTable = ({
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="relative">
               {sortedReports?.map(
                 (report: ReportSnippetType, index: number) => {
                   const reportTitle = createReportTitle(
@@ -138,12 +141,17 @@ const ReportTable = ({
               {isLoading && (
                 <SkeletonRow
                   cellQty={4}
-                  className="bg-white odd:bg-gray-100 h-[48px]"
+                  className="bg-gray-100 odd:bg-gray-200 h-[48px] animate-pulse"
                   rowQty={limit}
                 />
               )}
             </tbody>
           </table>
+          {isLoading && (
+            <div className="top-[53%] absolute flex items-center justify-center w-full h-ful">
+              <LoadingIcon className="block text-highlight" />
+            </div>
+          )}
 
           {/* display when reports array is empty */}
           {!isLoading && reports?.length === 0 && (

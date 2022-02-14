@@ -9,6 +9,8 @@ import appState from '../../lib/appState';
 import SkeletonLayout from '../skeletons/SkeletonLayout';
 import Nav from './Nav';
 import Seo from './Seo';
+import useUser from '../../hooks/useUser';
+import ErrorSkeleton from '../skeletons/ErrorSkeleton';
 
 interface LayoutProps {
   title?: string;
@@ -38,41 +40,25 @@ const Layout = ({
 
   const path: string = router.asPath;
 
-  // renamed for consistency
-  const { data: session, status } = useSession();
-
-  const loading = status === 'loading';
-
-  if (!loading && !session && !noAuthRequired) router.push('/login');
-
-  const setState = useSetRecoilState(appState);
-  const { user } = useRecoilValue(appState);
+  const { user, loading, error, message } = useUser(!noAuthRequired);
 
   React.useEffect(() => {
-    // if there is a session but no token
-    // sign the user out
-    // this is to handle the instances of a backend update
-    // the users access token will be invalidated
-    if (session && !session?.token) {
-      signOut();
-    }
-
-    if (session && session.user && !user) {
+    if (user) {
       // set sentry to identify user
-      Sentry.setUser({ email: session.user.email || '' });
-      // @ts-ignore
-      setState({ ...appState, user: { ...session?.user } });
+      Sentry.setUser({ email: user.email || '' });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, setState]);
+  }, [user]);
 
   if (!noAuthRequired && loading) return <SkeletonLayout noNav={noNav} />;
 
+  if (!noAuthRequired && error)
+    return <ErrorSkeleton header={error} message={message} />;
   return (
     <div>
       <Seo title={title} description={description} path={path} />
       <div className="h-screen bg-bg overflow-hidden flex ">
-        {!noNav && session && <Nav path={path} />}
+        {!noNav && user && <Nav path={path} />}
         <main
           className={`flex-1 relative overflow-y-auto focus:outline-none ${
             !noNav && !fullWidth && 'pt-12'
@@ -80,7 +66,7 @@ const Layout = ({
         >
           <div className={` ${!noNav && !fullWidth ? 'py-6' : ''} h-full`}>
             <div className="px-4 sm:px-6 md:px-0">
-              {pageTitle && session && (
+              {pageTitle && user && (
                 <h1 className="text-2xl font-semibold text-gray-900">
                   {pageTitle}
                 </h1>
@@ -92,7 +78,7 @@ const Layout = ({
                 !fullWidth ? 'px-4 sm:px-6 max-w-5xl mx-auto' : ''
               } ${containerClassName}`}
             >
-              {(session || noAuthRequired) && children}
+              {(user || noAuthRequired) && children}
             </div>
           </div>
         </main>

@@ -15,6 +15,7 @@ import Stats from '../components/elements/Stats';
 import TwitterFeed from '../components/elements/TwitterFeed';
 import Layout from '../components/layout/Layout';
 import useLocalStorage from '../hooks/useLocalStorage';
+import useTotalReports from '../hooks/useTotalReports';
 import appState from '../lib/appState';
 
 export default function Dashboard() {
@@ -22,6 +23,8 @@ export default function Dashboard() {
   const [userLoginTime] = useLocalStorage<number[]>('wf_last_login', []);
 
   const { user } = useRecoilValue(appState);
+
+  const { total } = useTotalReports();
 
   return (
     <Layout title="Dashboard">
@@ -43,7 +46,7 @@ export default function Dashboard() {
             stats={[
               {
                 header: t('total_reports'),
-                data: user?.reports?.length || 0,
+                data: total,
                 linkTo: '/reports'
               },
               {
@@ -51,7 +54,6 @@ export default function Dashboard() {
                 data: user?.bookmarked_reports?.length || 0,
                 linkTo: '/reports'
               },
-              //Takes the most recent login from the stored array, last login is still available
               {
                 header: t('last_login'),
                 data: userLoginTime[0] || undefined,
@@ -60,7 +62,7 @@ export default function Dashboard() {
             ]}
           />
           <ReportTable
-            reports={user?.reports || []}
+            reports={user?.reports}
             limit={5}
             shadow={true}
             borders={true}

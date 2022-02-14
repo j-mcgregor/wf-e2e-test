@@ -1,10 +1,11 @@
 import * as Sentry from '@sentry/nextjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
+import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
 
-import appState, { userReports } from '../../lib/appState';
+import appState from '../../lib/appState';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import {
   orbisAvailableSearchCountries,
@@ -130,8 +131,6 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     setSelectedCurrency(currencies[Number(currency)]);
   };
 
-  const setReports = useSetRecoilState(userReports);
-
   const handleGenerateReport = async (): Promise<void> => {
     setLoading(true);
 
@@ -159,17 +158,9 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         params
       );
 
-      // update state on creation of report with the new total list of reports from the API
-      const fetchReportsRes = await fetcher('/api/user/reports');
-
       if (createReportRes?.reportId) {
-        // set the global state to the new list of reports
-        if (fetchReportsRes.ok) {
-          setReports(reports => ({
-            ...reports,
-            allReports: fetchReportsRes.data
-          }));
-        }
+        // update the global user state to get the new report
+        mutate('/api/user');
         // redirect to the report page
         router.push(`/report/${createReportRes.reportId}`);
       }

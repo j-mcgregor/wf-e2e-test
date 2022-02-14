@@ -37,6 +37,8 @@ const SummaryMap = ({
   const fullAddress = `${addressLinesString ?? ''} ${city ?? ''} ${
     country ?? ''
   } ${postCode ?? ''}`;
+  const cleanFullAddress = fullAddress.replace(/[^\w\s\-,.]/gi, '');
+
   const emailAddress = emails?.length > 0 ? emails[0] : null;
   const website = websites?.length > 0 ? websites[0] : null;
 
@@ -53,7 +55,7 @@ const SummaryMap = ({
           height="100%"
           loading="lazy"
           url={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_MAPS_API_KEY}
-          &q=${fullAddress}&zoom=12`}
+          &q=${cleanFullAddress}&zoom=12`}
         />
       </div>
       <div className="flex flex-col p-4 print:px-8 print:w-1/2 justify-center min-h-1/2">

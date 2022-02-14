@@ -6,7 +6,7 @@ interface LoadingIconProps {
 }
 
 const LoadingIcon = ({
-  className = 'h-6 w-6',
+  className = 'h-6 w-6 text-highlight',
   stroke = 'black'
 }: LoadingIconProps) => {
   return (
@@ -20,7 +20,7 @@ const LoadingIcon = ({
     >
       <path
         d="M10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1"
-        stroke={stroke}
+        stroke={'currentColor'}
         strokeWidth="2"
       />
     </svg>

@@ -24,7 +24,7 @@
     "application_error": "Application error: ",
     "application_error_general_message": "Unfortunately, the application has suffered a critical error. This has been logged and the development team notified.",
     "header": {
-      "default": "Error: something went wrong"
+      "default": "Error: something went wrong."
     },
     "message": {
       "default": "Please refresh the page and try again. If this error persists, please contact Wiserfunding support."

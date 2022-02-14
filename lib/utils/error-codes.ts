@@ -5,6 +5,7 @@ export const UNPROCESSABLE_ENTITY: ErrorCodeKeys = 'UNPROCESSABLE_ENTITY';
 export const NO_REPORT_ID: ErrorCodeKeys = 'NO_REPORT_ID';
 export const SIGNED_OUT: ErrorCodeKeys = 'SIGNED_OUT';
 export const USER_404: ErrorCodeKeys = 'USER_404';
+export const USER_403: ErrorCodeKeys = 'USER_403';
 export const USER_422: ErrorCodeKeys = 'USER_422';
 export const USER_500: ErrorCodeKeys = 'USER_500';
 export const COMPANY_404: ErrorCodeKeys = 'COMPANY_404';

@@ -26,7 +26,7 @@ const authenticate = async (email: string, password: string) => {
   return null;
 };
 
-const getUser = async (token: string) => {
+const getFullUser = async (token: string) => {
   if (!token) {
     return { ok: false };
   }
@@ -59,7 +59,44 @@ const getUser = async (token: string) => {
       // to add later
       batched_report_jobs: []
     };
-    return { ok: true, ...userWithReports, token };
+    return { ok: true, user: userWithReports, status: res.status };
+  }
+
+  return { ok: false, status: res.status };
+};
+
+const getUser = async (token: string) => {
+  if (!token) {
+    return { ok: false };
+  }
+
+  // run all user requests in parallel
+  const [res] = await Promise.all([
+    fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
+      method: 'GET',
+      headers: {
+        ...XMLHeaders,
+        Authorization: `Bearer ${token}`
+      }
+    })
+  ]);
+
+  if (res.ok) {
+    const user = await res.json();
+
+    const structuredUser = {
+      // structure the user correctly if missing data (preferences etc)
+      ...user,
+      // check for preferences and add defaults if missing
+      ...giveDefaults(user)
+      // add in the reports history, handle failed request
+      // reports: userReports.ok ? userReports.reports : [],
+      // bookmarks
+      // bookmarked_reports: userBookmarks.bookmarks || [],
+      // to add later
+      // batched_report_jobs: []
+    };
+    return { ok: true, user: structuredUser, status: res.status };
   }
   return { ok: false, status: res.status };
 };
@@ -181,7 +218,9 @@ const updateUser = async (
 
 // get the history of the reports run by the user
 const getReportsHistory = async (
-  token: string
+  token: string,
+  limit: number = 10,
+  skip: number = 0
 ): Promise<{ reports?: ReportSnippetType[]; ok?: boolean; status: number }> => {
   const params = {
     method: 'GET',
@@ -191,8 +230,10 @@ const getReportsHistory = async (
     }
   };
 
+  const limitAndSkipString = limit ? `?limit=${limit}&skip=${skip}` : '';
+
   const res = await fetch(
-    `${process.env.WF_AP_ROUTE}/users/me/history/reports`,
+    `${process.env.WF_AP_ROUTE}/users/me/history/reports${limitAndSkipString}`,
     params
   );
 
@@ -268,6 +309,7 @@ const getUserBookmarks = async (
 const User = {
   authenticate,
   getUser,
+  getFullUser,
   getReportsHistory,
   updateUser,
   resetPassword,

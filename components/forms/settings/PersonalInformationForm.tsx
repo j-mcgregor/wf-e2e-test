@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { mutate } from 'swr';
 
 import config from '../../../config';
 import appState, { appUser } from '../../../lib/appState';
@@ -72,6 +73,7 @@ const PersonalInformationForm = ({
 
       if (json.ok) {
         setCurrentUser({ ...user, ...json.data });
+        mutate('/api/user');
         // this might be used to update the session user - might be needed for email updates
         return await getSession();
       }

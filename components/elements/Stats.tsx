@@ -2,6 +2,7 @@ import ReactTimeAgo from 'react-timeago';
 
 import { useTranslations } from 'next-intl';
 import Link from './Link';
+import LoadingIcon from '../svgs/LoadingIcon';
 
 type StatType = {
   header: React.ReactNode;
@@ -17,28 +18,41 @@ interface StatsProps {
 
 const Stats = ({ stats, className }: StatsProps) => {
   const t = useTranslations();
+
   return (
     <div className={className}>
       <dl className="grid grid-cols-1 sm:grid-cols-3">
-        {stats.map((item, i) => (
-          <Link key={i} linkTo={item.linkTo}>
-            <div
-              className={`px-4 py-2 sm:p-4 bg-white shadow overflow-hidden  first:rounded-t  sm:first:rounded-l sm:last:rounded-r sm:first:rounded-r-none last:rounded-b sm:last:rounded-l-none`}
-              data-testid="stat-card"
-            >
-              <dt className="text-2xl font-medium text-highlight truncate before">
-                {item.data && !item.timeAgo && (
-                  <p className="before:content-['l'] before:ml-[-5px] before:opacity-0">
-                    {item.data}
-                  </p>
-                )}
-                {item.timeAgo && item.data && <ReactTimeAgo date={item.data} />}
-                {item.timeAgo && !item.data && <p>{t('never')}</p>}
-              </dt>
-              <dd className="mt-1 text-base text-gray-900">{item.header}</dd>
-            </div>
-          </Link>
-        ))}
+        {stats.map((item, i) => {
+          const isLoading = !item.data && !item.timeAgo;
+          return (
+            <Link key={i} linkTo={item.linkTo}>
+              <div
+                className={`px-4 py-2 sm:p-4 bg-white shadow overflow-hidden  first:rounded-t  sm:first:rounded-l sm:last:rounded-r sm:first:rounded-r-none last:rounded-b sm:last:rounded-l-none ${
+                  isLoading && 'animate-pulse'
+                }`}
+                data-testid="stat-card"
+              >
+                <dt className="text-2xl font-medium text-highlight truncate before">
+                  {item.data && !item.timeAgo && (
+                    <p className="before:content-['l'] before:ml-[-5px] before:opacity-0">
+                      {item.data}
+                    </p>
+                  )}
+                  {isLoading && (
+                    <p className="before:content-['l'] before:ml-[-5px] before:opacity-0 flex">
+                      <LoadingIcon className="text-highlight" />
+                    </p>
+                  )}
+                  {item.timeAgo && item.data && (
+                    <ReactTimeAgo date={item.data} />
+                  )}
+                  {item.timeAgo && !item.data && <p>{t('never')}</p>}
+                </dt>
+                <dd className="mt-1 text-base text-gray-900">{item.header}</dd>
+              </div>
+            </Link>
+          );
+        })}
       </dl>
     </div>
   );

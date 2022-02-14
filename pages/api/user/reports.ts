@@ -18,8 +18,10 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getToken } from 'next-auth/jwt';
 
 const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-
-  const token = await getToken({ req, secret: `${process.env.NEXTAUTH_SECRET}` });
+  const token = await getToken({
+    req,
+    secret: `${process.env.NEXTAUTH_SECRET}`
+  });
 
   // unauthenticated requests
   if (!token) {
@@ -30,10 +32,25 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   const { method } = req;
 
+  const { limit, skip, total } = req.query;
+
+  const safeLimit = Number(limit);
+  const safeSkip = Number(skip);
+
   if (method === 'GET') {
     try {
-      const fetchRes = await User.getReportsHistory(`${token.accessToken}`);
+      const fetchRes = await User.getReportsHistory(
+        `${token.accessToken}`,
+        safeLimit,
+        safeSkip
+      );
 
+      if (total && fetchRes.ok) {
+        const total = fetchRes?.reports?.length;
+        return res.status(200).json({
+          total
+        });
+      }
       switch (fetchRes.status) {
         case 401:
           return res.status(401).json({

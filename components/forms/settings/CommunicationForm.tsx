@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { mutate } from 'swr';
 
 import config from '../../../config';
 import appState, { appUser } from '../../../lib/appState';
@@ -60,10 +61,11 @@ const CommunicationForm = () => {
       }
 
       if (json.ok) {
-        return setCurrentUser({
+        setCurrentUser({
           ...user,
           preferences: { ...user.preferences, ...json?.data.preferences }
         });
+        mutate('/api/user');
       }
     } catch (error) {
       Sentry.captureException(error);
