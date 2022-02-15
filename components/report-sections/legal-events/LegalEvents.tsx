@@ -20,9 +20,7 @@ const FILTERS = {
 const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
   const allEvents = legalEvents;
 
-  const charges = legalEvents?.filter(event =>
-    /charge/.test(event.types.join(' ')?.toLowerCase())
-  );
+  const charges = legalEvents?.filter(event => event.is_charge);
 
   const negativeEvents = allEvents?.filter(event => event.is_negative) || [];
 

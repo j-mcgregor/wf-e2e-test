@@ -51,7 +51,7 @@ export default function Dashboard() {
               },
               {
                 header: t('bookmarked_reports'),
-                data: user?.bookmarked_reports?.length || 0,
+                data: user?.bookmarked_reports?.length || '0',
                 linkTo: '/reports'
               },
               {

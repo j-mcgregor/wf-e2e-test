@@ -54,7 +54,9 @@ describe('LegalEvents', () => {
             }
           ],
           types: ['Default', 'Charge/mortgage', 'Satisfied'],
-          source: 'Companies House'
+          source: 'Companies House',
+          is_charge: true,
+          is_negative: false
         }
       ],
       forPrint: true

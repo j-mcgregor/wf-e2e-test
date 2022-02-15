@@ -91,6 +91,7 @@ export type LegalEvent = {
   types: string[];
   forPrint?: boolean;
   is_negative: boolean;
+  is_charge: boolean;
 };
 
 export type Association = {
