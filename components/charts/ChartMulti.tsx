@@ -111,9 +111,16 @@ const ChartMulti = ({
     largestYDataPoint,
     largestNumberLength
   );
+
   const minYValue = calculateMinDataPoint(smallestYDataPoint);
   const maxRenderValue = getMaxRenderValue(disabled, chartType, maxYValue);
-  const minRenderValue = getMinRenderValue(disabled, chartType, minYValue);
+  // So percentages through it out
+  // also if the values are 3 digits but the maximum are over 100,000,000 then you end up with descrepancies
+  const minRenderValue = getMinRenderValue(
+    disabled,
+    chartType,
+    chartType === 'percentage' ? smallestYDataPoint : minYValue
+  );
 
   const graphRange = Math.abs(maxRenderValue - minRenderValue);
   const graphPadding = graphRange * 0.1;

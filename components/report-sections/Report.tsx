@@ -77,15 +77,22 @@ const Report = ({
       })) ||
     [];
 
+  const safeLastFive = transformedFinancials.length;
+
   // used for report financials summary
   // and used for financial charts
   const lastFiveYearsFinancials =
-    (data?.financials && transformedFinancials.slice(0, 5)) || [];
+    (data?.financials &&
+      transformedFinancials.slice(-5, transformedFinancials.length)) ||
+    [];
 
   const financialRatios = [...(data?.financial_ratios || [])];
 
   // TEMPORARILY REVERSING FINANCIAL_RATIOS UNTIL BACK END FIXES
-  const lastFiveYearsFinancialRatios = financialRatios?.slice(0, 5);
+  const lastFiveYearsFinancialRatios = financialRatios?.slice(
+    -5,
+    transformedFinancials.length
+  );
 
   // remove benchmarks from financial trends
   // add to speedos later
@@ -96,7 +103,7 @@ const Report = ({
 
   // reversing array to get the latest 5 years of financials
   const lastFiveYearsRiskMetrics = React.useMemo(
-    () => riskMetrics.reverse().slice(0, 5) || [],
+    () => riskMetrics.reverse().slice(-5, transformedFinancials.length) || [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data.risk_metrics]
   );
