@@ -51,6 +51,7 @@ type ContactInformation = {
 export type UserType = {
   //TODO: do we want this as name?
   full_name?: string | null;
+  id: string | number;
   email?: string | null;
   is_SSO?: boolean;
   contact_information?: ContactInformation;
@@ -187,3 +188,11 @@ export type ErrorCodeKeys =
   | 'NO_COMPANY_ID'
   | 'NO_CURRENCY'
   | 'NO_ISO_CODE';
+
+export declare global {
+  interface Window {
+    HubSpotConversations: any;
+    hsConversationsOnReady: any;
+    hsConversationsSettings: any;
+  }
+}

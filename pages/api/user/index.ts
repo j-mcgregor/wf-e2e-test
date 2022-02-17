@@ -49,6 +49,9 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     };
 
     try {
+      // TODO: user passed here needs a type or it needs to be revised.
+      // It has no type and updateUser needs a UserType type.
+      //@ts-ignore
       const req = await User.updateUser(user, `${token?.accessToken}`);
       return userAPIHandler(req, res);
     } catch (err) {

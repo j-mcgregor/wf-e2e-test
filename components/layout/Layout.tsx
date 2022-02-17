@@ -2,16 +2,13 @@ import { useSession, signOut } from 'next-auth/react';
 
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
 import * as Sentry from '@sentry/react';
-
-import appState from '../../lib/appState';
 import SkeletonLayout from '../skeletons/SkeletonLayout';
 import Nav from './Nav';
 import Seo from './Seo';
 import useUser from '../../hooks/useUser';
 import ErrorSkeleton from '../skeletons/ErrorSkeleton';
-
+import useHubspotChat from '../../hooks/useHubspotChat';
 interface LayoutProps {
   title?: string;
   pageTitle?: string;
@@ -40,7 +37,12 @@ const Layout = ({
 
   const path: string = router.asPath;
 
+  // renamed for consistency
+  const { data: session } = useSession();
   const { user, loading, error, message } = useUser(!noAuthRequired);
+  const { HubspotScript } = useHubspotChat('4623266', true, user);
+
+  if (!loading && !session && !noAuthRequired) router.push('/login');
 
   React.useEffect(() => {
     if (user) {
@@ -51,11 +53,15 @@ const Layout = ({
   }, [user]);
 
   if (!noAuthRequired && loading) return <SkeletonLayout noNav={noNav} />;
+  //@ts-ignore
 
   if (!noAuthRequired && error)
     return <ErrorSkeleton header={error} message={message} />;
+
   return (
     <div>
+      <HubspotScript />
+
       <Seo title={title} description={description} path={path} />
       <div className="h-screen bg-bg overflow-hidden flex ">
         {!noNav && user && <Nav path={path} />}
