@@ -1,5 +1,4 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import { number } from 'prop-types';
 import { HintTypeProps } from '../../components/elements/Hint';
 import { MultiGraphDataType } from '../../types/charts';
 
@@ -9,7 +8,7 @@ const ratio = 'ratio';
 export const bondRatings = [
   {
     score: 'D',
-    bgColor: 'rgb(187, 37, 17), rgb(220,44,20)',
+    bgColor: 'rgb(153 27 27), rgb(220,44,20)',
     width: '9.09%'
   },
   {
