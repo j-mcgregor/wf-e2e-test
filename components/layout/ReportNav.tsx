@@ -47,7 +47,9 @@ const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
         >
           <ArrowLeftIcon className="h-5 w-5 mr-2" /> {t('back_to_saved')}
         </Button>
-        <p className="text-sm mt-8">{t('risk_assessment_report')}</p>
+        <p className="text-sm mt-8">
+          {t('wiserfunding_risk_assessment_report')}
+        </p>
         <h2 className="mt-4 text-xl">{companyName}</h2>
       </div>
 

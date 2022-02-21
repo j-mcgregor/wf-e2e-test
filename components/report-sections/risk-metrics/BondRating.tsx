@@ -64,9 +64,8 @@ const BondRating = ({ score, hint }: BondRatingProps) => {
         <p className="text-xl font-bold">{t('bond_rating_equivalent')}</p>
         {hint}
       </div>
-      3
       <div className={`${printClasses.ratings}`}>
-        <div className={`flex items-center my-4 py-4 sm:w-full`}>
+        <div className={`flex items-center my-4 py-4 sm:w-full print:w-full`}>
           {bondRatings.map((rating, i) => {
             return (
               <div

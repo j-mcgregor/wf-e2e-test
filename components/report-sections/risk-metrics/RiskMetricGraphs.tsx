@@ -38,7 +38,7 @@ const RiskMetricGraphs = ({ data, companyName }: RiskMetricGraphsProps) => {
     <>
       {/* === sme z-score === */}
 
-      <div className="print:inline-block  avoid-break">
+      <div className="print:inline-block  avoid-break ">
         <ChartMulti
           header={t('sme_zscore_trend')}
           subHeader={t('trend_yearly')}

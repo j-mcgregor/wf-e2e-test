@@ -249,7 +249,10 @@ const ChartMulti = ({
           // </VictoryGroup>
         )}
       </ChartContainer>
-      <div className="flex flex-col text-xxs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
+
+      {/* company names (were originally buttons) - removed 17-02-22  */}
+
+      {/* <div className="flex flex-col text-xxs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
         <ChartButton
           onClick={setSelectedGraphIndex}
           selectedGraphIndex={selectedGraphIndex}
@@ -268,7 +271,7 @@ const ChartMulti = ({
             border="border-2 border-[#278EC8]"
           />
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

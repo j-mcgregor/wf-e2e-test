@@ -1,11 +1,11 @@
 /* eslint-disable no-case-declarations */
 import { BookmarkIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
-
+import Image from 'next/image';
 import Button from '../elements/Button';
 import FaviconWithFallback from '../elements/FaviconWithFallback';
 import useBookmark from '../../hooks/useBookmark';
-import { ReportSnippetType } from '../../types/global';
+import WFLogoSmall from '../../public/images/logos/wf-logo.svg';
 
 interface ReportHeaderProps {
   company: string;
@@ -39,8 +39,25 @@ const ReportHeader = ({
   const t = useTranslations();
   return (
     <div className="flex sm:flex-row flex-col w-full only-of-type:justify-between">
-      <div className="flex flex-col order-2 sm:order-1">
-        <p className="text-xl pb-4">{t('risk_assessment_report')}</p>
+      {/* top right logo header for print only */}
+      <div className="print:absolute hidden print:flex items-center top-2 right-2 space-x-3 text-sm">
+        <p> {t('risk_assessment_report')}</p>
+        <div className="flex items-center font-semibold space-x-2">
+          <Image
+            alt={'Wiserfunding Logo'}
+            layout="fixed"
+            width={50}
+            height={50}
+            src={WFLogoSmall}
+          />
+          <p>WiserFunding</p>
+        </div>
+      </div>
+      <div className="flex flex-col order-2 sm:order-1 ">
+        <p className="text-xl pb-4 print:hidden">
+          {t('wiserfunding_risk_assessment_report')}
+        </p>
+
         <h1 className="text-3xl font-medium pb-4">{company}</h1>
         <p>
           {t('created')}: {created}
