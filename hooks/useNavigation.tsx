@@ -2,14 +2,13 @@ import {
   AdjustmentsIcon,
   ChipIcon,
   DocumentDuplicateIcon,
+  DocumentIcon,
   DocumentReportIcon,
   FingerPrintIcon,
   HomeIcon,
   KeyIcon,
-  LightningBoltIcon,
   LogoutIcon,
   MailIcon,
-  SearchCircleIcon,
   SupportIcon,
   UserCircleIcon
 } from '@heroicons/react/outline';
@@ -28,25 +27,25 @@ const useMainNavItems = () => {
         href: '/reports',
         icon: DocumentReportIcon
       },
-      { name: `${t('our_tools')}`, title: true },
+      { name: `${t('z_scores')}`, title: true },
       {
-        name: `${t('sme_calc')}`,
+        name: `${t('run_one_company')}`,
         href: '/sme-calculator',
-        icon: LightningBoltIcon
+        icon: DocumentIcon
+      },
+      {
+        name: `${t('run_many_companies')}`,
+        href: '/batched-reports',
+        icon: DocumentDuplicateIcon
       }
       // removed until being added back in
       // {
       //   name: `${t('sme_prospector')}`,
       //   href: '/sme-prospector',
-      //   icon: SearchCircleIcon
+      //   icon: Document
       // }
     ],
     secondaryNavigation: [
-      {
-        name: `${t('batched_reports')}`,
-        href: '/batched-reports',
-        icon: DocumentDuplicateIcon
-      },
       {
         name: `${t('api_documentation')}`,
         href: '/api-documentation',

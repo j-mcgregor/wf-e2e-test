@@ -213,16 +213,26 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       },
       data
     ),
-  credit_rating: (data: MultiGraphDataType[]) =>
+  bankruptcies: (data: MultiGraphDataType[]) =>
     createChart(
-      'credit_rating',
-      'monthly',
+      'bankruptcies',
+      'quarterly',
       {
-        title: 'credit_rating.title',
-        body: 'credit_rating.body'
+        title: 'bankruptcies.title',
+        body: 'backrupcies.body'
       },
       data
     )
+  // credit_rating: (data: MultiGraphDataType[]) =>
+  //   createChart(
+  //     'credit_rating',
+  //     'monthly',
+  //     {
+  //       title: 'credit_rating.title',
+  //       body: 'credit_rating.body'
+  //     },
+  //     data
+  //   )
 };
 
 type AllFinancialTrendsChartsType = {

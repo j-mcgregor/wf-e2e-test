@@ -66,6 +66,10 @@
       "credit_rating": {
         "title": "Credit Rating",
         "body": "Lorem ipsum."
+      },
+      "bankruptcies": {
+        "title": "Bankruptcies",
+        "body": "Lorem ipsum."
       }
     }
   }

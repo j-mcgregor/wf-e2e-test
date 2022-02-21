@@ -75,7 +75,7 @@ const ReportTable = ({
                   scope="col"
                   className={`${borderClasses} px-3 sm:px-4 py-3 text-center font-medium`}
                 >
-                  {t('bond_rating')}
+                  {t('bre')}
                 </th>
                 <th
                   scope="col"
