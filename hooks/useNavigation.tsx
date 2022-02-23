@@ -27,7 +27,7 @@ const useMainNavItems = () => {
         href: '/reports',
         icon: DocumentReportIcon
       },
-      { name: `${t('z_scores')}`, title: true },
+      { name: `${t('risk_reports')}`, title: true },
       {
         name: `${t('run_one_company')}`,
         href: '/sme-calculator',
