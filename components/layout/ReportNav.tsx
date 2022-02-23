@@ -1,12 +1,14 @@
 import { ArrowLeftIcon } from '@heroicons/react/outline';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Link } from 'react-scroll';
-import { useTranslations } from 'next-intl';
 
 import { useReportNavItems } from '../../hooks/useNavigation';
+import fetcher from '../../lib/utils/fetcher';
+import { downloadFile } from '../../lib/utils/file-helpers';
 import Button from '../elements/Button';
 import SkeletonMenu from '../skeletons/SkeletonMenu';
-import { useRouter } from 'next/router';
 
 interface ReportNavProps {
   companyName: string;
@@ -36,6 +38,32 @@ const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
       </>
     );
   }
+
+  const handleExportCsv = async () => {
+    if (!id) return null;
+
+    try {
+      const csv = await fetcher(
+        `/api/reports/report?id=${id}&export=csv`,
+        'GET',
+        null,
+        {},
+        'csv'
+      );
+
+      downloadFile({
+        data: csv,
+        // eg report-companyName.csv
+        fileName: `report-${companyName}.csv`,
+        fileType: 'text/csv'
+      });
+      // console.log(csv);
+    } catch (error) {
+      // TODO remove console.log
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
 
   return (
     <div className="px-6 pt-8 flex-col h-full hidden xl:flex">
@@ -116,7 +144,9 @@ const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
         >
           {t('export_pdf')}
         </Button>
-        <Button variant="secondary">{t('export_csv')}</Button>
+        <Button variant="secondary" onClick={() => handleExportCsv()}>
+          {t('export_csv')}
+        </Button>
       </div>
     </div>
   );

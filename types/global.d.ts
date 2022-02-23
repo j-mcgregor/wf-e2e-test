@@ -187,7 +187,8 @@ export type ErrorCodeKeys =
   | 'MISSING_DATA'
   | 'NO_COMPANY_ID'
   | 'NO_CURRENCY'
-  | 'NO_ISO_CODE';
+  | 'NO_ISO_CODE'
+  | 'VALIDATION_ERROR';
 
 export declare global {
   interface Window {

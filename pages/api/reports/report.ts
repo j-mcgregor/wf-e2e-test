@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
-import { getSession } from 'next-auth/react';
+import { getToken } from 'next-auth/jwt';
 
 import Report from '../../../lib/funcs/report';
 import mockReport from '../../../lib/mock-data/report';
@@ -14,13 +14,12 @@ import {
   NO_REPORT,
   NO_REPORT_ID,
   REPORT_FETCHING_ERROR,
-  UNAUTHORISED
+  UNAUTHORISED,
+  VALIDATION_ERROR
 } from '../../../lib/utils/error-codes';
 import { ApiError, ReportSnippetType } from '../../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getToken } from 'next-auth/jwt';
-
 // Declaring function for readability with Sentry wrapper
 const report = async (request: NextApiRequest, response: NextApiResponse) => {
   const token = await getToken({
@@ -107,42 +106,63 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
       } as ApiError);
     }
 
-    const email = token?.email;
+    /* ***** GET REPORT AS CSV ******* */
 
-    // to be replaced by backend call
-    // @ts-ignore
-    // eslint-disable-next-line security/detect-object-injection
-    const user = mockUsers[email];
+    if (request.query.export === 'csv') {
+      try {
+        const res = await Report.getReportCsv(
+          `${reportId}`,
+          `${token.accessToken}`
+        );
+        if (res.ok) {
+          return response.status(200).json(res.csv);
+        }
+      } catch (error) {
+        return response.status(422).json({
+          error: VALIDATION_ERROR,
+          message: 'Unable to process the request'
+        } as ApiError);
+      }
+    } else {
+      /* ***** GET REPORT FROM USER ******* */
 
-    const report = user?.reports?.find(
-      (report: ReportSnippetType) => report.id === reportId
-    );
+      const email = token?.email;
 
-    if (token.accessToken && !report) {
-      const report = await Report.getExistingReport(
-        `${reportId}`,
-        `${token.accessToken}`
+      // to be replaced by backend call
+      // @ts-ignore
+      // eslint-disable-next-line security/detect-object-injection
+      const user = mockUsers[email];
+
+      const report = user?.reports?.find(
+        (report: ReportSnippetType) => report.id === reportId
       );
 
-      // console.log(report)
-      if (report.ok) {
-        return response.status(200).json(report.report);
+      if (token.accessToken && !report) {
+        const report = await Report.getExistingReport(
+          `${reportId}`,
+          `${token.accessToken}`
+        );
+
+        // console.log(report)
+        if (report.ok) {
+          return response.status(200).json(report.report);
+        }
       }
+
+      if (!report) {
+        return response.status(404).json({
+          error: NO_REPORT,
+          message: 'No report found with that ID.'
+        } as ApiError);
+      }
+
+      const resReport = {
+        ...report,
+        ...mockReport
+      };
+
+      return response.status(200).json(resReport);
     }
-
-    if (!report) {
-      return response.status(404).json({
-        error: NO_REPORT,
-        message: 'No report found with that ID.'
-      } as ApiError);
-    }
-
-    const resReport = {
-      ...report,
-      ...mockReport
-    };
-
-    return response.status(200).json(resReport);
   }
 };
 

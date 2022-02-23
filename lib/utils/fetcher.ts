@@ -1,12 +1,14 @@
 /* eslint-disable no-console */
-import config from '../../config';
 import * as Sentry from '@sentry/nextjs';
+
+import config from '../../config';
 
 const fetcher = async (
   relativeUrl: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
   data?: object | null,
-  headers?: object
+  headers?: object,
+  returnType?: 'json' | 'csv'
 ) => {
   try {
     if (method === 'GET') {
@@ -16,7 +18,14 @@ const fetcher = async (
         }
       });
 
-      return res.json();
+      // Most cases return JSON, but one endpoint returns CSV
+      // eslint-disable-next-line sonarjs/no-small-switch
+      switch (returnType) {
+        case 'csv':
+          return res.text();
+        default:
+          return res.json();
+      }
     }
 
     const res = await fetch(`${config.URL}${relativeUrl}`, {

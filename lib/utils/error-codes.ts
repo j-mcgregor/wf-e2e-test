@@ -38,3 +38,4 @@ export const MISSING_DATA: ErrorCodeKeys = 'MISSING_DATA';
 export const NO_COMPANY_ID: ErrorCodeKeys = 'NO_COMPANY_ID';
 export const NO_CURRENCY: ErrorCodeKeys = 'NO_CURRENCY';
 export const NO_ISO_CODE: ErrorCodeKeys = 'NO_ISO_CODE';
+export const VALIDATION_ERROR: ErrorCodeKeys = 'VALIDATION_ERROR';

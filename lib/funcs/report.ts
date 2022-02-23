@@ -19,6 +19,32 @@ const getExistingReport = async (
   return { ok: false, status: res.status };
 };
 
+const getReportCsv = async (
+  reportId: string,
+  token: string
+): Promise<{ ok: boolean; csv?: string; status: number }> => {
+  try {
+    const res = await fetch(
+      `${process.env.WF_AP_ROUTE}/reports/${reportId}/export/csv`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    if (res.status === 200 && res.ok) {
+      const csv = await res.text();
+
+      return { ok: true, csv, status: res.status };
+    }
+    return { ok: false, status: res.status };
+  } catch (error) {
+    return { ok: false, status: 422 };
+  }
+};
+
 const createReport = async (
   report: {
     iso_code: string;
@@ -90,7 +116,8 @@ const uploadReport = async (
 const Report = {
   getExistingReport,
   createReport,
-  uploadReport
+  uploadReport,
+  getReportCsv
 };
 
 export default Report;
