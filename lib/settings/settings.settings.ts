@@ -4,7 +4,7 @@ import localisationJSON from '../../lib/data/localisation.json';
 import { createCurrencyString } from '../utils/text-helpers';
 
 const SettingsSettings = {
-  dashboardOptionValues: ['dashboard', 'reports', 'sme_calculator'],
+  dashboardOptionValues: ['dashboard', 'reports', 'single_report'],
   supportedLocales: localisationJSON.map(value => {
     return { optionValue: value.code, optionName: value.locale };
   }),
@@ -28,7 +28,7 @@ const SettingsSettings = {
   preferences: {
     defaults: {
       locale: 'en-GB',
-      currency: 'GBP',
+      currency: 'United Kingdom',
       home_page: 'dashboard',
       reporting_country: 'GB'
     }

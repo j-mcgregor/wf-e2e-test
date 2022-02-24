@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { mutate } from 'swr';
 
 import config from '../../../config';
 import appState, { appUser } from '../../../lib/appState';
@@ -37,8 +38,6 @@ const PreferenceForm = ({
   formLabelClassName
 }: FormWithClassProps) => {
   const { user } = useRecoilValue(appState);
-
-  const setCurrentUser = useSetRecoilState(appUser);
 
   const t = useTranslations();
 
@@ -94,8 +93,9 @@ const PreferenceForm = ({
       }
 
       if (json.ok) {
-        // api should return the full user object
-        return setCurrentUser({ ...user, ...json.data });
+        // mutate the user state to get the new preferences
+        // useUser hook is being called here
+        mutate('/api/user');
       }
     } catch (error) {
       Sentry.captureException(error);
@@ -163,7 +163,7 @@ const PreferenceForm = ({
                 </Select>
               </div>
               {/*#currency*/}
-              <div className="col-span-6 sm:col-span-3">
+              {/* <div className="col-span-6 sm:col-span-3">
                 <Select
                   {...register('currency')}
                   options={SettingsSettings.supportedCurrencies}
@@ -176,7 +176,7 @@ const PreferenceForm = ({
                     {t('forms.preference.change_the_default_reporting')}
                   </p>
                 </Select>
-              </div>
+              </div> */}
             </div>
             <div className="grid grid-cols-6 gap-6">
               <div className="col-span-6 sm:col-span-3">

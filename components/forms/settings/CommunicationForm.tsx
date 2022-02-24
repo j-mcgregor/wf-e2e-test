@@ -61,10 +61,6 @@ const CommunicationForm = () => {
       }
 
       if (json.ok) {
-        setCurrentUser({
-          ...user,
-          preferences: { ...user.preferences, ...json?.data.preferences }
-        });
         mutate('/api/user');
       }
     } catch (error) {

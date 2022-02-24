@@ -27,6 +27,7 @@ const AdvancedSearch = ({
   const currencies: SimpleValue[] = SettingsSettings.supportedCurrencies;
 
   const t = useTranslations();
+
   return (
     <form>
       <div className="my-4 flex sm:flex-row flex-col justify-between items-center">

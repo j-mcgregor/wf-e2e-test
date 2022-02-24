@@ -111,7 +111,7 @@ const giveDefaults = (user: any) => {
       },
       defaults: {
         locale: 'en-GB',
-        currency: 'GBP',
+        currency: 'United Kingdom',
         home_page: 'dashboard',
         reporting_country: 'GB'
       }

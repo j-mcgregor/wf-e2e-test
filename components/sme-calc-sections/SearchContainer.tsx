@@ -33,6 +33,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const countries: SimpleValue[] = SettingsSettings.supportedCountries;
 
   const { user } = useRecoilValue(appState);
+
   // default country taken from user profile (settings)
   const defaultCountry = user?.preferences?.defaults?.reporting_country;
 
@@ -82,7 +83,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
 
     // const currency = countries.find(x => x.currency_code === defaultCurrency);
     const currency = currencies.find(x => x.code === defaultCurrency);
-    setSelectedCurrency(currency);
+    currency && setSelectedCurrency(currency);
   }, [user]);
 
   // hides the advance search when disabled
