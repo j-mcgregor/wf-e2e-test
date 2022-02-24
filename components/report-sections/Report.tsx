@@ -77,8 +77,6 @@ const Report = ({
       })) ||
     [];
 
-  const safeLastFive = transformedFinancials.length;
-
   // used for report financials summary
   // and used for financial charts
   const lastFiveYearsFinancials =
@@ -503,7 +501,7 @@ const Report = ({
 
       <HashContainer name={'News'} id={`news`}>
         <ReportSectionHeader text={t('news')} />
-        <NewsFeed companyName={companyName} country={companyAddress?.country} />
+        <NewsFeed companyName={companyName} items={data?.news?.headlines} />
       </HashContainer>
     </div>
   );

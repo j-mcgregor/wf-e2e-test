@@ -163,6 +163,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         // update the global user state to get the new report
         mutate('/api/user');
         // redirect to the report page
+
         router.push(`/report/${createReportRes.reportId}`);
       }
 

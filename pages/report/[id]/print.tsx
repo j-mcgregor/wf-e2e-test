@@ -20,13 +20,13 @@ const ReportTemplate = () => {
 
   const [loaded, setLoaded] = useState(false);
 
-  const { data, error } = useSWR<ReportDataProps>(
+  const { data } = useSWR<ReportDataProps>(
     `/api/reports/report?id=${id}`,
     fetcher
   );
 
   useEffect(() => {
-    if (data) {
+    if (data && !data.error) {
       setTimeout(() => {
         setLoaded(true);
         window.print();
@@ -45,7 +45,7 @@ const ReportTemplate = () => {
 
   return (
     <>
-      {data && <Report data={data} id={id} forPrint={true} />}
+      {data && !data.error && <Report data={data} id={id} forPrint={true} />}
       {(!data || !loaded) && <Loader />}
     </>
   );

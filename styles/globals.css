@@ -46,6 +46,9 @@
   .breaks {
     @apply border-2 border-yellow-500 sm:border-pink-400 md:border-red-500 lg:border-green-500 xl:border-blue-500 2xl:border-purple-500;
   }
+  .break-after-always {
+    page-break-after: always;
+  }
 }
 
 .print-width {

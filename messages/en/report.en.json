@@ -18,7 +18,7 @@
   "macroeconomic_trends": "Macroeconomic Trends",
   "esg": "ESG",
   "news": "News",
-  "no_news_found": "No news found for ",
+  "no_news_found": "No recent news found for ",
   "export_pdf": "Export PDF",
   "export_csv": "Export CSV",
   "created": "Created",
@@ -205,112 +205,6 @@
   "concern_turnover": "There are not enough years of financial data available for this company.",
   "concern_volatility": "The company's financials have been too volatile.",
   "concern_assets": "The company is too small for a reliable report to be created.",
-  "charts": {
-    "days_payable": {
-      "title": "Days Payable",
-      "body": "Average number of days a company needs to pay its bills and obligations. A high number can delay making payments and use the available cash for short-term investments as well as to increase working capital and free cash flow. However, higher values may not always be a positive for the business as it may signal a cash shortfall and inability to pay."
-    },
-    "days_receivable": {
-      "title": "Days Receivable",
-      "body": "Average number of days it takes a company to receive payment for a sale. A high number suggests that a company is experiencing delays in receiving payments. That can cause a cash flow problem. A low number indicates that the company is getting its payments quickly. "
-    },
-    "turnover": {
-      "title": "Turnover",
-      "body": "Total earnings from daily operations from sale of goods and services to customers also to known as Revenue/Sales"
-    },
-    "total_assets": {
-      "title": "Total Assets",
-      "body": "All current and non-current assets owned by the firm based on the purchase price"
-    },
-    "ebit": {
-      "title": "EBIT",
-      "body": "Earnings Before Interests and Taxes, also recorded in the income statement as operating profit/loss. It is the firm’s profitability from its operations"
-    },
-    "ebitda": {
-      "title": "EBITDA",
-      "body": "EBITDA is essentially net income with interest, taxes, depreciation and amortization added back to it"
-    },
-    "total_debt": {
-      "title": "Total Debt",
-      "body": "Total debt is the sum of all short- and long-term liabilities"
-    },
-    "cash_and_cash_equivalent": {
-      "title": "Cash and Cash Equivalent",
-      "body": "This variable represents the cash available at a company at a certain time. It includes: currency, coins, checks received but not yet deposited, checking accounts, petty cash, savings accounts, etc."
-    },
-    "interest_expenses": {
-      "title": "Interest Expenses",
-      "body": "This variable represents interest payable on borrowings recorded on the income statement"
-    },
-    "net_income": {
-      "title": "Net Income",
-      "body": "These are the net profits of a company after taking into account all costs and taxes. Alternatively referred to as Profit After Tax"
-    },
-    "shareholders_equity": {
-      "title": "Shareholders Equity",
-      "body": "This variable includes all items under shareholder funds (e.g. Share capital, Share premiums and retained earnings)"
-    },
-    "retained_earnings": {
-      "title": "Retained Earnings",
-      "body": "This is the undistributed portion of net income cumulated over the years of operations"
-    },
-    "ebitda_margin": {
-      "title": "EBITDA Margin",
-      "body": "A performance metric that measures a company's profitability from operations. EBITDA is an earnings measure that focuses on the essentials of a business: its operating profitability and cash flows. The EBITDA margin is calculated by dividing EBITDA by turnover."
-    },
-    "total_debt_total_assets": {
-      "title": "Total Debt / Total Assets",
-      "body": "The total-debt-to-total-assets ratio is a leverage ratio that shows the degree to which a company has used debt to finance its assets.  If a company has a total-debt-to-total-assets ratio of 0.4, 40% of its assets are financed by creditors, and 60% are financed by owners' (shareholders') equity."
-    },
-    "debt_equity_ratio": {
-      "title": "Debt / Equity Ratio",
-      "body": "This ratio compares a company’s total liabilities to its shareholder equity and can be used to evaluate how much leverage a company is using. Higher-leverage ratios tend to indicate a company with higher risk to shareholders. "
-    },
-    "equity_total_assets": {
-      "title": "Equity / Total Assets",
-      "body": "Lorem eu aliquip enim irure."
-    },
-    "tangible_fixed_assets_total_assets": {
-      "title": "Tangible Fixed Assets / Total Assets",
-      "body": "Shows in percentage terms the portion of the company's total assets that is tied up with fixed assets. It shows the extent to which the company funds are frozen in the form of fixed assets, such as property, plant and equipment. It represents the portion of total assets that cannot be used as working capital."
-    },
-    "intangible_fixed_assets": {
-      "title": "Intangible Fixed Assets",
-      "body": "Measures the proportion of a company's goodwill, which is an intangible asset, to its total assets and is a factor in that company's valuation. The ratio quantifies a company's brand value and other intangible aspects of its valuation."
-    },
-    "interest_coverage_ratio": {
-      "title": "Interest Coverage Ratio",
-      "body": "The interest coverage ratio is a debt ratio and profitability ratio used to determine how easily a company can pay interest on its outstanding debt. The interest coverage ratio is calculated by dividing a company's earnings before interest and taxes and D&A (EBITDA) during a given period by the company's interest payments due within the same period."
-    },
-    "return_on_equity": {
-      "title": "Return on Equity",
-      "body": "Return on equity (ROE) is a measure of financial performance calculated by dividing net income by shareholders' equity. ROE is considered a measure of how effectively management is using a company’s assets to create profits. "
-    },
-    "return_on_assets": {
-      "title": "Return on Assets",
-      "body": "Return on assets (ROA) is an indicator of how profitable a company is relative to its total assets. ROA gives an idea as to how efficient a company's management is at using its assets to generate earnings"
-    },
-    "liquidity_ratio": {
-      "title": "Liquidity Ratio",
-      "body": "Return on assets (ROA) is an indicator of how profitable a company is relative to its total assets. ROA gives an idea as to how efficient a company's management is at using its assets to generate earnings"
-    },
-    "current_ratio": {
-      "title": "Current Ratio",
-      "body": "The current ratio compares all of a company’s current assets to its current liabilities. These are usually defined as assets that are cash or will be turned into cash in a year or less and liabilities that will be paid in a year or less. The current ratio helps investors understand more about a company’s ability to cover its short-term debt with its current assets."
-    },
-    "net_debt_ebitda": {
-      "title": "Net Debt / EBITDA",
-      "body": "The net debt-to-EBITDA ratio is a debt ratio that shows how many years it would take for a company to pay back its debt if net debt and EBITDA are held constant. It is similar to the debt/EBITDA ratio, but net debt subtracts cash and cash equivalents while the standard ratio does not. If a company has more cash than debt, the ratio can be negative."
-    },
-    "debt_service_coverage_ratio": {
-      "title": "Debt Service Coverage Ratio",
-      "body": "The debt-service coverage ratio (DSCR) is a measure of the cash flow available to pay current debt obligations. The DSCR shows investors whether a company has enough income to pay its debts."
-    },
-    "equity_ratio": {
-      "title": "Equity Ratio",
-      "body": "The Equity Ratio measures the proportion of the total assets that are financed by stockholders, as opposed to creditors. A low equity ratio will produce good results for stockholders as long as the company earns a rate of return on assets that is greater than the interest rate paid to creditors."
-    }
-  },
   "this_person_is_risk_relevant_name": "This person's name is similar to a risk relevant name.",
   "there_are_names_that_are_the_same_or_similar_to_a_risk_relevant_name": "There are names that are the same, or similar to, a risk relevant name.",
   "industries": {

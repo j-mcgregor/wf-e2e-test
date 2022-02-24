@@ -13,8 +13,14 @@ const NewsItem = ({
   link,
   date
 }: NewsItemProps) => {
-  const relativeDate = new Date(date).toLocaleDateString();
-  const charCleanDescription = description.replace(/\[\+.+\]/g, '');
+  const relativeDate = date && new Date(date).toLocaleDateString();
+  const charCleanDescription =
+    description && description.replace(/\[\+.+\]/g, '');
+
+  const renderString =
+    charCleanDescription && charCleanDescription.length > 500
+      ? charCleanDescription.substring(0, 400) + '...'
+      : charCleanDescription;
   return (
     <div
       className="bg-white shadow-sm rounded-sm w-full flex flex-col p-4 text-sm my-6 always-break print:shadow-none print:border-2"
@@ -26,7 +32,7 @@ const NewsItem = ({
       </div>
       <div className="flex flex-col w-full">
         <p className="font-bold">{title}</p>
-        <p className="py-3">{charCleanDescription}</p>
+        <p className="py-3">{renderString}</p>
         <a href={link} target="_blank no-opener no-referral" className="italic">
           {link}
         </a>

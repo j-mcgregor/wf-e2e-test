@@ -1,43 +1,28 @@
 import NewsItem from './NewsCard';
-import useSWR from 'swr';
-import fetcher from '../../../lib/utils/fetcher';
-import SkeletonNews from '../../skeletons/SkeletonNews';
-import { ApplicationError } from '../../errors/ApplicationError';
 import { useTranslations } from 'use-intl';
+import { PlaceholderBox } from '../../elements/PlaceholderBox';
+import { SearchIcon } from '@heroicons/react/outline';
 
 type NewsDataType = {
-  source: string;
+  source: {
+    domain: string;
+  };
   title: string;
   content: string;
   url: string;
   pubDate: string;
 };
 
-type NewsFeedApiResProps = {
-  ok: boolean;
-  data: NewsDataType[];
-};
-
 const NewsFeed = ({
-  companyName,
-  country
+  items,
+  companyName
 }: {
+  items: NewsDataType[];
   companyName: string;
-  country?: string;
 }) => {
-  // demo engaged for the moment, returns saved response
-  const { data } = useSWR<NewsFeedApiResProps>(
-    // shouldn't country be `&country=${country}` ? - Jack
-    // if so, change the unit test accoringly from country="country=EN" to country="EN"
-    `/api/reports/news?company_name=${companyName}&${country}`,
-    fetcher
-  );
-
-  const newsHits = data?.ok && data?.data ? data.data : [];
-
   const newsHitSections: NewsDataType[][] =
-    newsHits &&
-    newsHits.reduce(
+    items &&
+    items.reduce(
       (acc: any, curr: any, index) =>
         (index % 4 == 0 ? acc.push([curr]) : acc[acc.length - 1].push(curr)) &&
         acc,
@@ -48,46 +33,35 @@ const NewsFeed = ({
 
   return (
     <div className="">
-      {/* Loading data response */}
-      {!data && [1, 2, 3, 4, 5].map(x => <SkeletonNews key={x} />)}
-
-      {/* Error in response */}
-      {!data?.ok && (
-        <ApplicationError
-          error={{
-            name: 'Error fetching news',
-            message: `There was an error fetching the news for ${companyName}. Please contact support if this issue persists.`
-          }}
+      {/* No news in response */}
+      {(items?.length === 0 || !items) && (
+        <PlaceholderBox
+          icon={<SearchIcon className="mr-3 w-5 stroke-orange-400" />}
+          message={`${t('no_news_found')} for ${companyName}`}
         />
       )}
-
-      {/* No news in response */}
-      {newsHits.length === 0 && data?.ok && (
-        <div className="text-center">
-          {t('no_news_found')} {companyName}
-        </div>
-      )}
-
-      {/* Map over the successfully loaded news */}
       <div className="">
         {newsHitSections &&
           newsHitSections.map((news, i) => {
             return (
               <div
+                // style={{
+                // //   'page-break-after': "always"
+                // }}
                 key={i}
-                className={`print:avoid-break ${i !== 0 && 'print:pt-10'} ${
-                  i === 0 && 'print:-mt-10'
-                }`}
+                className={`print:h-[1000px] print:break-after-always  ${
+                  i !== 0 && 'print:pt-10'
+                } ${i === 0 && 'print:-mt-10'}`}
               >
                 {news.map((newsItem: NewsDataType, i: number) => {
                   return (
                     <NewsItem
                       key={i}
-                      publication={newsItem.source}
-                      title={newsItem.title}
-                      description={newsItem.content}
-                      link={newsItem.url}
-                      date={newsItem.pubDate}
+                      publication={newsItem?.source?.domain}
+                      title={newsItem?.title}
+                      description={newsItem?.content}
+                      link={newsItem?.url}
+                      date={newsItem?.pubDate}
                     />
                   );
                 })}

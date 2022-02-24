@@ -243,7 +243,10 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     createChart(
       'turnover',
       thousands,
-      { title: 'charts.turnover.title', body: 'charts.turnover.body' },
+      {
+        title: 'report_hints.charts.turnover.title',
+        body: 'report_hints.charts.turnover.body'
+      },
       data.map((chart: any) => ({
         name: chart.name,
         data: chart.data.map((year: any) => ({
@@ -258,7 +261,10 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     return createChart(
       'total_assets',
       thousands,
-      { title: 'charts.total_assets.title', body: 'charts.total_assets.body' },
+      {
+        title: 'report_hints.charts.total_assets.title',
+        body: 'report_hints.charts.total_assets.body'
+      },
       data.map((chart: any) => ({
         name: chart.name,
         data: chart.data.map((year: any) => ({
@@ -274,7 +280,10 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     createChart(
       'ebit',
       thousands,
-      { title: 'charts.ebit.title', body: 'charts.ebit.body' },
+      {
+        title: 'report_hints.charts.ebit.title',
+        body: 'report_hints.charts.ebit.body'
+      },
       data.map((chart: any) => ({
         name: chart.name,
         data: chart.data.map((year: any) => ({
@@ -288,7 +297,10 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     createChart(
       'ebitda',
       thousands,
-      { title: 'charts.ebitda.title', body: 'charts.ebitda.body' },
+      {
+        title: 'report_hints.charts.ebitda.title',
+        body: 'report_hints.charts.ebitda.body'
+      },
       data.map((chart: any) => ({
         name: chart.name,
         data: chart.data.map((year: any) => ({
@@ -302,7 +314,10 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     createChart(
       'total_debt',
       thousands,
-      { title: 'charts.total_debt.title', body: 'charts.total_debt.body' },
+      {
+        title: 'report_hints.charts.total_debt.title',
+        body: 'report_hints.charts.total_debt.body'
+      },
       data.map((chart: any, i) => ({
         name: chart.name,
         data: chart.data.map((year: any) => ({
@@ -317,8 +332,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'cash_and_cash_equivalent',
       thousands,
       {
-        title: 'charts.cash_and_cash_equivalent.title',
-        body: 'charts.cash_and_cash_equivalent.body'
+        title: 'report_hints.charts.cash_and_cash_equivalent.title',
+        body: 'report_hints.charts.cash_and_cash_equivalent.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -334,8 +349,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'interest_expenses',
       thousands,
       {
-        title: 'charts.interest_expenses.title',
-        body: 'charts.interest_expenses.body'
+        title: 'report_hints.charts.interest_expenses.title',
+        body: 'report_hints.charts.interest_expenses.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -350,7 +365,10 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     createChart(
       'net_income',
       thousands,
-      { title: 'charts.net_income.title', body: 'charts.net_income.body' },
+      {
+        title: 'report_hints.charts.net_income.title',
+        body: 'report_hints.charts.net_income.body'
+      },
       data.map((chart: any) => ({
         name: chart.name,
         data: chart.data.map((year: any) => ({
@@ -365,8 +383,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'shareholders_equity',
       thousands,
       {
-        title: 'charts.shareholders_equity.title',
-        body: 'charts.shareholders_equity.body'
+        title: 'report_hints.charts.shareholders_equity.title',
+        body: 'report_hints.charts.shareholders_equity.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -381,7 +399,10 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     createChart(
       'retained_earnings',
       thousands,
-      { title: 'charts.ebit.title', body: 'charts.ebit.body' },
+      {
+        title: 'report_hints.charts.ebit.title',
+        body: 'report_hints.charts.ebit.body'
+      },
       data.map((chart: any) => ({
         name: chart.name,
         data: chart.data.map((year: any) => ({
@@ -396,8 +417,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'days_receivable',
       thousands,
       {
-        title: 'charts.days_receivable.title',
-        body: 'charts.days_receivable.body'
+        title: 'report_hints.charts.days_receivable.title',
+        body: 'report_hints.charts.days_receivable.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -413,8 +434,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'days_payable',
       thousands,
       {
-        title: 'charts.days_payable.title',
-        body: 'charts.days_payable.body'
+        title: 'report_hints.charts.days_payable.title',
+        body: 'report_hints.charts.days_payable.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -430,8 +451,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'ebitda_margin',
       thousands,
       {
-        title: 'charts.ebitda_margin.title',
-        body: 'charts.ebitda_margin.body'
+        title: 'report_hints.charts.ebitda_margin.title',
+        body: 'report_hints.charts.ebitda_margin.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -447,8 +468,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'total_debt_total_assets',
       ratio,
       {
-        title: 'charts.total_debt_total_assets.title',
-        body: 'charts.total_debt_total_assets.body'
+        title: 'report_hints.charts.total_debt_total_assets.title',
+        body: 'report_hints.charts.total_debt_total_assets.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -464,8 +485,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'debt_equity_ratio',
       ratio,
       {
-        title: 'charts.debt_equity_ratio.title',
-        body: 'charts.debt_equity_ratio.body'
+        title: 'report_hints.charts.debt_equity_ratio.title',
+        body: 'report_hints.charts.debt_equity_ratio.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -481,8 +502,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'equity_ratio',
       thousands,
       {
-        title: 'charts.equity_ratio.title',
-        body: 'charts.equity_ratio.body'
+        title: 'report_hints.charts.equity_ratio.title',
+        body: 'report_hints.charts.equity_ratio.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -498,8 +519,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'tangible_fixed_assets_total_assets',
       ratio,
       {
-        title: 'charts.tangible_fixed_assets_total_assets.title',
-        body: 'charts.tangible_fixed_assets_total_assets.body'
+        title: 'report_hints.charts.tangible_fixed_assets_total_assets.title',
+        body: 'report_hints.charts.tangible_fixed_assets_total_assets.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -515,8 +536,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'intangible_fixed_assets',
       ratio,
       {
-        title: 'charts.intangible_fixed_assets.title',
-        body: 'charts.intangible_fixed_assets.body'
+        title: 'report_hints.charts.intangible_fixed_assets.title',
+        body: 'report_hints.charts.intangible_fixed_assets.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -532,8 +553,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'interest_coverage_ratio',
       ratio,
       {
-        title: 'charts.interest_coverage_ratio.title',
-        body: 'charts.interest_coverage_ratio.body'
+        title: 'report_hints.charts.interest_coverage_ratio.title',
+        body: 'report_hints.charts.interest_coverage_ratio.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -549,8 +570,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'return_on_equity',
       thousands,
       {
-        title: 'charts.return_on_equity.title',
-        body: 'charts.return_on_equity.body'
+        title: 'report_hints.charts.return_on_equity.title',
+        body: 'report_hints.charts.return_on_equity.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -566,8 +587,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'return_on_assets',
       thousands,
       {
-        title: 'charts.return_on_assets.title',
-        body: 'charts.return_on_assets.body'
+        title: 'report_hints.charts.return_on_assets.title',
+        body: 'report_hints.charts.return_on_assets.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -583,8 +604,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'liquidity_ratio',
       ratio,
       {
-        title: 'charts.liquidity_ratio.title',
-        body: 'charts.liquidity_ratio.body'
+        title: 'report_hints.charts.liquidity_ratio.title',
+        body: 'report_hints.charts.liquidity_ratio.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -600,8 +621,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'current_ratio',
       ratio,
       {
-        title: 'charts.current_ratio.title',
-        body: 'charts.current_ratio.body'
+        title: 'report_hints.charts.current_ratio.title',
+        body: 'report_hints.charts.current_ratio.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -617,8 +638,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'net_debt',
       thousands,
       {
-        title: 'charts.liquidity_ratio.title',
-        body: 'charts.liquidity_ratio.body'
+        title: 'report_hints.charts.liquidity_ratio.title',
+        body: 'report_hints.charts.liquidity_ratio.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -633,7 +654,10 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     createChart(
       'net_debt_ebitda',
       thousands,
-      { title: 'charts.ebit.title', body: 'charts.ebit.body' },
+      {
+        title: 'report_hints.charts.ebit.title',
+        body: 'report_hints.charts.ebit.body'
+      },
       data.map((chart: any) => ({
         name: chart.name,
         data: chart.data.map((year: any) => ({
@@ -648,8 +672,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'debt_service_coverage_ratio',
       ratio,
       {
-        title: 'charts.debt_service_coverage_ratio.title',
-        body: 'charts.debt_service_coverage_ratio.body'
+        title: 'report_hints.charts.debt_service_coverage_ratio.title',
+        body: 'report_hints.charts.debt_service_coverage_ratio.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
