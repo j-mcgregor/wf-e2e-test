@@ -363,8 +363,8 @@ const Report = ({
         {shouldRenderCommentary && (
           <div className="flex">
             <RiskOutlook
-              hintTitle="hint title"
-              hintBody="hint body"
+              hintTitle={t('report_hints.highlights.risk_outlook.title')}
+              hintBody={t('report_hints.highlights.risk_outlook.body')}
               riskOutlookData={data?.risk_outlook}
               country={companyAddress?.country}
             />

@@ -3,19 +3,31 @@
     "risk_metrics": {
       "sme_z-score": {
         "title": "SME Z-Score",
-        "body": "The Wiserfunding SME Z-Score is our proprietary algorithm that assess the credit risk of SME's."
+        "body": "The score is a number between 0 and 1000 that summarizes the risk profile of companies. The lower the number, the riskier the company. This represents a point-in-time, independent and objective assessment of the credit risk of a counter party and it is grouped into 5 areas (distressed 0-100, high risk 101-250, medium risk 251-450, low risk 451-700, outstanding>700)."
       },
       "probability_of_default": {
         "title": "Probability of Default",
-        "body": "The Wiserfunding SME Z-Score is our proprietary algorithm that assess the credit risk of SME's."
+        "body": "The SME Z-Score is transformed in Probability of Default (PD). This is the probability that the company would become insolvent or go bankrupt within the next 12 months."
       },
       "loss_given_default": {
         "title": "Lost Given Default",
-        "body": "The Wiserfunding SME Z-Score is our proprietary algorithm that assess the credit risk of SME's."
+        "body": "Loss given default or LGD represents the portion of the loan that is not expected to be recovered if a borrower defaults. Considering the strong correlation between PD and LGD, we have developed several functions to estimate the LGD given a certain SME Z-Score, the level and type of assets, the cash flow and the sector conditions."
       },
       "bond_rating_equivalent_default": {
         "title": "Bond Rating Equivalent",
-        "body": "This is the nearest S&P long-term bond credit rating giving the risk of default matching the SME Z-Score for this company."
+        "body": "Using a methodology invented by Prof. Altman in 1989, we derive the Bond Rating Equivalent (BRE) for each company by mapping our score to the S&P rating scale. The highest BRE is A+ and the lowest is D."
+      },
+      "sme_zscore_trend": {
+        "title": "SME Z-Score Trend",
+        "body": "The score is a number between 0 and 1000 that summarizes the risk profile of companies. The lower the number, the riskier the company. This represents a point-in-time, independent and objective assessment of the credit risk of a counter party and it is grouped into 5 areas (distressed 0-100, high risk 101-250, medium risk 251-450, low risk 451-700, outstanding>700)."
+      },
+      "probability_of_default_trend": {
+        "title": "Probability of Default Trend",
+        "body": "The SME Z-Score is transformed in Probability of Default (PD). This is the probability that the company would become insolvent or go bankrupt within the next 12 months. "
+      },
+      "loss_given_default_trend": {
+        "title": "Loss Given Default Trend",
+        "body": "Loss given default or LGD represents the portion of the loan that is not expected to be recovered if a borrower defaults. Considering the strong correlation between PD and LGD, we have developed several functions to estimate the LGD given a certain SME Z-Score, the level and type of assets, the cash flow and the sector conditions."
       }
     },
     "macro_economic_trends": {
@@ -69,6 +81,16 @@
       },
       "bankruptcies": {
         "title": "Bankruptcies",
+        "body": "Lorem ipsum."
+      }
+    },
+    "highlights": {
+      "reliability_index": {
+        "title": "Reliability Index",
+        "body": "Lorem ipsum."
+      },
+      "risk_outlook": {
+        "title": "Risk Outlook",
         "body": "Lorem ipsum."
       }
     }

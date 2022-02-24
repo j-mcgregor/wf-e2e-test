@@ -1,5 +1,6 @@
 import { useReliability } from '../../../hooks/useReliability';
 import Hint from '../../elements/Hint';
+import { useTranslations } from 'next-intl';
 
 interface ReliabilityIndexProps {
   reliability: number;
@@ -16,13 +17,14 @@ const ReliabilityIndex = ({ reliability }: ReliabilityIndexProps) => {
     score: reliability
   });
 
+  const t = useTranslations();
   return (
     <div className="flex flex-col">
       <div className="flex pb-4">
         <p className="font-bold pr-8 print:pt-2">{sectionTitle}</p>
         <Hint
-          title="Reliability Index"
-          body="Aute nisi ut eiusmod qui proident."
+          title={t('report_hints.highlights.reliability_index.title')}
+          body={t('report_hints.highlights.reliability_index.body')}
         />
       </div>
 

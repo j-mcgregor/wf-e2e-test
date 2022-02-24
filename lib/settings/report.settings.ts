@@ -218,7 +218,7 @@ export const macroEconomicTrendCharts: AllMultiGraphChartsType = {
       'quarterly',
       {
         title: 'bankruptcies.title',
-        body: 'backrupcies.body'
+        body: 'bankruptcies.body'
       },
       data
     )
@@ -302,7 +302,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     createChart(
       'total_debt',
       thousands,
-      { title: 'total_debt.title', body: 'total_debt.body' },
+      { title: 'charts.total_debt.title', body: 'charts.total_debt.body' },
       data.map((chart: any, i) => ({
         name: chart.name,
         data: chart.data.map((year: any) => ({
@@ -381,7 +381,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     createChart(
       'retained_earnings',
       thousands,
-      { title: 'ebit.title', body: 'ebit.body' },
+      { title: 'charts.ebit.title', body: 'charts.ebit.body' },
       data.map((chart: any) => ({
         name: chart.name,
         data: chart.data.map((year: any) => ({
@@ -633,7 +633,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
     createChart(
       'net_debt_ebitda',
       thousands,
-      { title: 'ebit.title', body: 'ebit.body' },
+      { title: 'charts.ebit.title', body: 'charts.ebit.body' },
       data.map((chart: any) => ({
         name: chart.name,
         data: chart.data.map((year: any) => ({

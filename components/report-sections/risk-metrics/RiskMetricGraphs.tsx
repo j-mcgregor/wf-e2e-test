@@ -42,8 +42,8 @@ const RiskMetricGraphs = ({ data, companyName }: RiskMetricGraphsProps) => {
         <ChartMulti
           header={t('sme_zscore_trend')}
           subHeader={t('trend_yearly')}
-          hintBody="Ea pariatur commodo anim proident sunt non eu ut."
-          hintTitle={t('sme_zscore')}
+          hintBody={t('report_hints.risk_metrics.sme_zscore_trend.body')}
+          hintTitle={t('report_hints.risk_metrics.sme_zscore_trend.title')}
           graphData={smeZScore}
           chartType="zscore"
           showLabels={true}
@@ -55,8 +55,10 @@ const RiskMetricGraphs = ({ data, companyName }: RiskMetricGraphsProps) => {
         <ChartMulti
           header={t('probability_of_default_trend')}
           subHeader={`${t('percentage')} %`}
-          hintBody="Reprehenderit nisi dolore non ea nisi officia laborum."
-          hintTitle={t('probability_of_default')}
+          hintBody={t('report_hints.risk_metrics.probability_of_default.body')}
+          hintTitle={t(
+            'report_hints.risk_metrics.probability_of_default.title'
+          )}
           graphData={probabilityOfDefault}
           chartType="percentage"
           showLabels={true}
@@ -68,8 +70,12 @@ const RiskMetricGraphs = ({ data, companyName }: RiskMetricGraphsProps) => {
         <ChartMulti
           header={t('loss_give_default_trend')}
           subHeader={`${t('percentage')} %`}
-          hintBody="Anim ea officia ut pariatur laborum est amet."
-          hintTitle={t('loss_give_default')}
+          hintBody={t(
+            'report_hints.risk_metrics.loss_given_default_trend.body'
+          )}
+          hintTitle={t(
+            'report_hints.risk_metrics.loss_given_default_trend.title'
+          )}
           graphData={lossGivenDefault}
           chartType="percentage"
           showLabels={true}

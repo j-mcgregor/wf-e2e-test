@@ -17,7 +17,7 @@ import {
 } from '../../types/charts';
 import { TranslateInput } from '../../types/global';
 import Hint from '../elements/Hint';
-import ChartButton from './ChartButton';
+// import ChartButton from './ChartButton';
 import {
   getMaxRenderValue,
   getMinRenderValue,
