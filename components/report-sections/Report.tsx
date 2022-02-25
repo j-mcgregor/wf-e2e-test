@@ -69,27 +69,16 @@ const Report = ({
   const created = `${date.getDate()}.${month}.${date.getFullYear()}`;
 
   // remove years that are dormant
-  const transformedFinancials =
-    (data?.financials &&
-      data?.financials?.filter(_year => {
-        // if (companyDetails?.status) {
-        //   return companyDetails?.status[Number(index)] === 'Active';
-        // }
-        // handle issues with status preventing showing any financials
-        return true;
-      })) ||
-    [];
+  const transformedFinancials = data?.financials || [];
 
   // used for report financials summary
   // and used for financial charts
-  const lastFiveYearsFinancials =
-    (data?.financials &&
-      transformedFinancials.slice(-5, transformedFinancials.length)) ||
-    [];
+  const lastFiveYearsFinancials = data?.financials
+    ? transformedFinancials.slice(-5, transformedFinancials.length)
+    : [];
 
   const financialRatios = [...(data?.financial_ratios || [])];
 
-  // TEMPORARILY REVERSING FINANCIAL_RATIOS UNTIL BACK END FIXES
   const lastFiveYearsFinancialRatios = financialRatios?.slice(
     -5,
     transformedFinancials.length
@@ -497,7 +486,7 @@ const Report = ({
           title={t('activities')}
           description={t('data_on_activities')}
           resultText={
-            companySectors?.length && companySectors.length > 0
+            companySectors?.length && companySectors?.length > 0
               ? t('top_3_industries')
               : t('no_esg_results_found')
           }
@@ -516,13 +505,9 @@ const Report = ({
         <ESGContainer
           companyName={data?.details.name || ''}
           sector={data.details?.industry_sector || ''}
-          physical={data?.esg.physical}
-          transition={data?.esg.transition}
+          physical={data?.esg?.physical}
+          transition={data?.esg?.transition}
           location={companyAddress?.city || companyAddress?.country}
-          governance={{
-            pepFlags: pepFlags
-          }}
-          sectors={companySectors}
         />
       </HashContainer>
 
