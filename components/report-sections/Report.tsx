@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslations } from 'use-intl';
 
 import usePrintClasses from '../../hooks/usePrintClasses';
+import ESG from '../../lib/funcs/esg';
 import {
   calculateLGDRotation,
   calculatePoDRotation,
@@ -499,7 +500,7 @@ const Report = ({
               ? t('top_3_industries')
               : t('no_esg_results_found')
           }
-          results={companySectors.splice(0, 3)}
+          results={ESG.topXMatches(companySectors, 3)}
         />
         <ESGCard
           title={t('governance')}
