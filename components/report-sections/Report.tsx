@@ -17,6 +17,7 @@ import CorporateOverview from './corporate-governance/CorporateOverview';
 import ExecutiveCardList from './corporate-governance/ExecutiveList';
 import Profiles from './corporate-governance/Profiles';
 import ShareHolderList from './corporate-governance/ShareHolderList';
+import ESGCard from './esg-assessment/ESGCard';
 import ESGContainer from './esg-assessment/ESGContainer';
 import FinancialTrends from './financial-trends/FinancialTrends';
 import CTACard from './highlights/CTACard';
@@ -54,6 +55,8 @@ const Report = ({
   const companyDetails = data?.details;
 
   const companyAddress = companyDetails?.address;
+
+  const companySectors = data?.esg?.sectors;
 
   const date = new Date(`${data?.created_at}`);
 
@@ -486,12 +489,38 @@ const Report = ({
       </HashContainer>
 
       <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>
+        <ReportSectionHeader text={t('environmental')} />
+
+        <ESGCard
+          title={t('activities')}
+          description={t('data_on_activities')}
+          resultText={
+            companySectors?.length && companySectors.length > 0
+              ? t('top_3_industries')
+              : t('no_esg_results_found')
+          }
+          results={companySectors.splice(0, 3)}
+        />
+        <ESGCard
+          title={t('governance')}
+          description={t('data_on_company_governance')}
+          asteriskText={t(
+            'there_are_names_that_are_the_same_or_similar_to_a_risk_relevant_name'
+          )}
+          resultText={t('pep_flags')}
+          rating={pepFlags}
+          result={pepFlags && pepFlags > 0 ? 'negative' : 'neutral'}
+        />
         <ESGContainer
           companyName={data?.details.name || ''}
           sector={data.details?.industry_sector || ''}
           physical={data?.esg.physical}
           transition={data?.esg.transition}
           location={companyAddress?.city || companyAddress?.country}
+          governance={{
+            pepFlags: pepFlags
+          }}
+          sectors={companySectors}
         />
       </HashContainer>
 

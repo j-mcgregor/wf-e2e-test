@@ -73,11 +73,10 @@ const ESGContainer = ({
     );
   };
   return (
-    <div className="bg-white p-10 mt-10">
+    <div className="bg-white p-10 ">
       {/* HEADER */}
       <div className="grid md:grid-cols-5 gap-4 pb-4">
         <div className="md:col-span-2">
-          <ReportSectionHeader text={t('environmental')} />
           <p className="text-xl">{t('environmental_risk')}</p>
         </div>
         {/* SECTOR */}

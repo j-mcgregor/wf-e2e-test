@@ -525,13 +525,12 @@ type PhysicalRiskType = {
   country: RiskLevels;
   sector: RiskLevels;
 };
-
 export interface EnvironmentalSocialGovernance {
   sector: string;
-  // sectors: Array<{
-  //   sector: ESG_SectorKeys;
-  //   match: string;
-  // }>;
+  sectors: Array<{
+    sector: ESG_SectorKeys;
+    match: string;
+  }>;
   transition: {
     transition_risk: number;
     carbon_intensity: number;
@@ -541,6 +540,9 @@ export interface EnvironmentalSocialGovernance {
     drought: PhysicalRiskType;
     flooding: PhysicalRiskType;
     overall: PhysicalRiskType;
+  };
+  governance: {
+    pepFlags?: number | string;
   };
 }
 

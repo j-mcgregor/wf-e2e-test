@@ -35,7 +35,6 @@ const ESGCard = ({
         {asteriskText && result === 'negative' && (
           <p className="text-xs mt-2 ">*{asteriskText}</p>
         )}
-        s
       </div>
       <div className="text-center relative top-2">
         {result && rating && (
