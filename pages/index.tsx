@@ -24,8 +24,6 @@ export default function Dashboard() {
 
   const { user } = useRecoilValue(appState);
 
-  const { total } = useTotalReports();
-
   return (
     <Layout title="Dashboard">
       <div className="grid grid-cols-7 gap-x-4 text-primary">
@@ -46,7 +44,7 @@ export default function Dashboard() {
             stats={[
               {
                 header: t('total_reports'),
-                data: total,
+                data: user?.total_reports,
                 linkTo: '/reports'
               },
               {
