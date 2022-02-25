@@ -11,9 +11,10 @@ interface LinkCardProps {
   iconColor?: string;
   header: React.ReactNode;
   description?: React.ReactNode;
-  linkTo: string;
+  linkTo?: string;
   className?: string;
   disabled?: boolean;
+  onClick?: () => any;
 }
 
 const LinkCard = ({
@@ -23,18 +24,23 @@ const LinkCard = ({
   description,
   linkTo,
   className,
-  disabled
+  disabled,
+  onClick
 }: LinkCardProps) => {
   return (
+    // eslint-disable-next-line jsx-a11y/anchor-is-valid
     <Link
       disabled={disabled}
       linkTo={linkTo}
-      className={`block text-primary ${className}`}
+      className={`block text-primary max-w-xxs  ${className}`}
+      onClick={onClick}
     >
       <div
         className={`${
-          !disabled && 'hover:shadow-xl duration-300 transition-shadow'
-        } shadow  h-full  max-w-xxs bg-white rounded p-3`}
+          !disabled
+            ? 'hover:shadow-xl duration-300 transition-shadow'
+            : 'opacity-50'
+        } shadow  h-full  bg-white rounded p-3`}
         data-testid="link-card"
       >
         <div className="w-full flex justify-between ">
@@ -43,7 +49,7 @@ const LinkCard = ({
           <ArrowNarrowUpIcon className="h-6 w-6 m-2 rotate-45 text-gray-400 cursor-pointer" />
         </div>
         <div className="text-sm pt-2 w-full flex flex-col">
-          <p className="font-bold w-full">{header}</p>
+          <p className="font-bold break-words w-full">{header}</p>
           <p className="pt-1 opacity-80">{description}</p>
         </div>
       </div>

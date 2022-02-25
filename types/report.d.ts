@@ -1,7 +1,6 @@
 import { SetStateAction } from 'react';
-import { ApiError } from './global';
 
-import { CompanyStatusType } from './global';
+import type { ApiError, CompanyStatusType, ValidateFunction } from './global';
 
 export type FinancialYear = {
   [index: string]: string;
@@ -125,14 +124,14 @@ export type ShareholderType = {
 
 export type FileContentType = string | ArrayBuffer | null | undefined;
 
-export interface CSVValueValidation {
+export interface CsvValueValidation {
   header: string;
-  validate?: ((value: string) => boolean | string)[];
+  validate?: ValidateFunction[];
   required?: boolean;
 }
 
 export type ValidCSVType = {
-  validator: CSVValueValidation[];
+  validator: CsvValueValidation[];
 };
 
 export type BoardMember = {
@@ -227,30 +226,44 @@ export interface RiskOutlookData {
  */
 
 export type CsvReportUploadHeaders =
-  // MAIN
+  // MAIN =============
   | 'currency'
   | 'iso_code'
-  | 'company_id' // TODO - remove when API updated
   | 'accounts_type'
-  // DETAILS
-  | 'details_industry_sector_code'
-  | 'details_nace_code'
-  | 'details_status'
+  | 'company_id'
+  // DETAILS =============
+  // -- in req body, not in csv --
+  | 'details_status_change_date'
+  // ------------------------------
   | 'details_name'
-  // FINANCIALS
-  | 'address_region'
+  | 'details_industry_sector_code'
+  | 'details_websites' // <-- becomes details.websites
+  | 'details_status'
+  | 'details_nace_code'
+  | 'details_number_of_directors' // <-- becomes details.number_of_directors
+  | 'details_number_of_employees' // <-- becomes details.number_of_employees
+  | 'details_number_of_subsidiaries' // <-- becomes details.number_of_subsidiaries
+  // FINANCIALS =============
+  | 'number_of_employees' // <-- becomes financials[x].number_of_employees
   | 'cash_and_equivalents'
-  | 'depreciation'
+  | 'creditors'
+  | 'current_assets'
+  | 'current_liabilities'
+  | 'debtors'
   | 'ebit'
   | 'ebitda'
+  | 'fixed_assets'
   | 'intangible_fixed_assets'
   | 'interest_expenses'
+  | 'inventory'
+  | 'loans'
   | 'long_term_debt'
+  | 'management_experience' // High, Medium (default) or Low only
+  | 'net_debt'
   | 'net_income'
-  | 'number_of_directors'
-  | 'number_of_employees'
+  | 'non_current_liabilities'
+  | 'other_non_current_liabilities'
   | 'period'
-  | 'production_costs'
   | 'retained_earnings'
   | 'short_term_debt'
   | 'tangible_fixed_assets'
@@ -259,18 +272,7 @@ export type CsvReportUploadHeaders =
   | 'total_liabilities'
   | 'total_shareholder_equity'
   | 'turnover'
-  | 'working_capital'
-  // OTHER - expected for the API but not necessarily provided by the CSV
-  | 'management_experience' // High, Medium (default) or Low only
-  | 'creditors'
-  | 'debtors'
-  | 'fixed_assets'
-  | 'inventory'
-  | 'loans'
-  | 'non_current_liabilities'
-  | 'number_of_subsidiaries'
-  | 'other_non_current_liabilities'
-  | 'net_debt';
+  | 'working_capital';
 
 // taken from swagger schema
 export enum AccountTypeEnum {
@@ -285,6 +287,8 @@ export enum AccountTypeEnum {
 }
 
 export interface ReportUploadFinancialRequestBody {
+  number_of_employees: number;
+  period: string;
   cash_and_equivalents: number;
   creditors: number;
   current_assets: number;
@@ -298,15 +302,11 @@ export interface ReportUploadFinancialRequestBody {
   inventory: number;
   loans: number;
   long_term_debt: number;
-  management_experience: string; // High, Medium (default) or Low only
+  management_experience: string;
   net_debt: number;
   net_income: number;
   non_current_liabilities: number;
-  number_of_directors: number;
-  number_of_employees: number;
-  number_of_subsidiaries: number;
   other_non_current_liabilities: number;
-  period: string;
   retained_earnings: number;
   short_term_debt: number;
   tangible_fixed_assets: number;
@@ -318,11 +318,16 @@ export interface ReportUploadFinancialRequestBody {
   working_capital: number;
 }
 
-export interface ReportUploadDetailsReuestBody {
+export interface ReportUploadDetailsRequestBody {
   nace_code: number;
-  industry_sector_code: number;
-  status: string;
+  industry_sector_code: IndustrySectorCodes;
   name: string;
+  status: string[];
+  status_change_date: string[];
+  number_of_directors: number;
+  number_of_employees: number;
+  number_of_subsidiaries: number;
+  websites: string[];
 }
 
 /**
@@ -334,15 +339,16 @@ export interface ReportUploadDetailsReuestBody {
  * **********************
  */
 export interface ReportUploadRequestBody {
-  // MAIN
+  // MAIN ========================
   iso_code: string;
   company_id?: string; // TODO - remove when API updated
   currency: string;
   accounts_type: AccountTypeEnum;
-  // DETAILS
-  details: ReportUploadDetailsReuestBody;
-  // DETAILS
+  // DETAILS =====================
+  details: ReportUploadDetailsRequestBody;
+  // FINANCIALS ==================
   financials: ReportUploadFinancialRequestBody[];
+  parent_id: string | null;
 }
 
 export type SubmitReportType = (
@@ -358,6 +364,40 @@ export interface UploadReport422ErrorResponse {
   }>;
 }
 
+// Server error came  back with this when I tested with 0
+// TODO: write validator, also
+export type IndustrySectorCodes =
+  | 10
+  | 11
+  | 12
+  | 13
+  | 14
+  | 15
+  | 16
+  | 17
+  | 18
+  | 19
+  | 20
+  | 21
+  | 22
+  | 23
+  | 24
+  | 25
+  | 26
+  | 27
+  | 28
+  | 29
+  | 30
+  | 31
+  | 32
+  | 33
+  | 34
+  | 35
+  | 36
+  | 37
+  | 38;
+
+export type CsvReport = Record<CsvReportUploadHeaders, string[]>;
 /**
  * *************************************
  * ENVIRONMENTAL-SOCIAL-GOVERNANCE (ESG)

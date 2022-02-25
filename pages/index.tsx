@@ -103,7 +103,7 @@ export default function Dashboard() {
           iconColor="bg-highlight-3"
           header={t('batch_reports_header')}
           description={t('batch_reports_description')}
-          linkTo="/batched-reports"
+          linkTo="/batch-reports"
         />
         <LinkCard
           className="mx-auto"

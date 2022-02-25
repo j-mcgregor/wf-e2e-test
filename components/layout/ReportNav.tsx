@@ -14,13 +14,19 @@ interface ReportNavProps {
   companyName: string;
   loading?: boolean;
   isTesting?: boolean;
+  backLink?: string;
 }
 
 const nonTestingProps = {
   containerId: 'secondary-layout-container'
 };
 
-const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
+const ReportNav = ({
+  companyName,
+  loading,
+  isTesting,
+  backLink
+}: ReportNavProps) => {
   const navItems = useReportNavItems();
   const t = useTranslations();
   const router = useRouter();
@@ -51,10 +57,12 @@ const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
         'csv'
       );
 
+      const fileName = `report-${id}.csv`;
+
       downloadFile({
         data: csv,
         // eg report-companyName.csv
-        fileName: `report-${companyName}.csv`,
+        fileName: fileName,
         fileType: 'text/csv'
       });
       // console.log(csv);
@@ -69,7 +77,7 @@ const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
     <div className="px-6 pt-8 flex-col h-full hidden xl:flex">
       <div>
         <Button
-          linkTo="/reports"
+          linkTo={!backLink ? '/reports' : backLink}
           variant="none"
           newClassName="text-sm flex items-center hover:text-alt "
         >

@@ -25,7 +25,7 @@ export const SubsidiaryList = ({ subsidiaries }: SubsidiaryListProps) => {
         {t('subsidiaries')}
       </p>
 
-      {subsidiaries.length ? (
+      {subsidiaries?.length ? (
         subsidiariesToRender.map((subArray, index) => {
           return (
             <div

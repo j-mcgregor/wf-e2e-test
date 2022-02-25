@@ -106,3 +106,6 @@ export const getDirectorsFromBoardMembers = (board_members?: BoardMember[]) => {
       .filter(b => (b.job_title.match(/director/gi) !== null ? b : null))
   );
 };
+
+export const getUniqueStringsFromArray = (arr?: string[]) =>
+  arr ? [...new Set(arr)] : [];

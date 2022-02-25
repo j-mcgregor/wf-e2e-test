@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable security/detect-non-literal-require */
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
@@ -25,6 +26,10 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     fetcher
   );
 
+  const backLink = Array.isArray(router?.query?.from)
+    ? router.query.from[0]
+    : router?.query?.from;
+
   const companyName = data?.id
     ? data?.details?.company_name || data?.details?.name || 'Unnamed Company'
     : '';
@@ -44,11 +49,13 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
                 isTesting={isTesting}
                 companyName={companyName}
                 loading={!data}
+                backLink={backLink}
               />
               <TabletReportNav
                 isTesting={isTesting}
                 companyName={companyName}
                 loading={!data}
+                backLink={backLink}
               />
             </>
           )

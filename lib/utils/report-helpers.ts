@@ -1,9 +1,18 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable sonarjs/prefer-immediate-return */
-
 import {
+  autoBatchUploadValidators,
+  convertStringArrayToArrayOfStrings,
+  manualUploadValidators
+} from '../settings/report-validators';
+
+import type { UploadReportType } from '../../types/global';
+import type {
+  CsvReport,
   CsvReportUploadHeaders,
   ESG_SectorKeys,
-  ReportUploadRequestBody
+  IndustrySectorCodes,
+  ReportUploadFinancialRequestBody
 } from '../../types/report';
 
 // adds blank objects to the array to make it the same length as the other arrays
@@ -19,11 +28,10 @@ export const addBlankObjects = (array: any[], lengthRequired: number) => {
 
 // clunky first attempt: it works but can do with some refactoring
 export const makeUploadReportReqBody = (
-  reportObject: {
-    [key in CsvReportUploadHeaders]: string[];
-  },
-  csvValues: string[][]
-): ReportUploadRequestBody => {
+  reportObject: CsvReport,
+  csvValues: string[][],
+  parent_id?: string
+) => {
   // setter functions
   const setNumberValue = (key: CsvReportUploadHeaders, i: number) =>
     Number(reportObject[key]?.[i] ?? 0);
@@ -31,59 +39,37 @@ export const makeUploadReportReqBody = (
   const setStringValue = (key: CsvReportUploadHeaders, i: number) =>
     reportObject[key]?.[i]?.toString() ?? '';
 
-  return {
-    // MAIN
-    iso_code: setStringValue('iso_code', 0),
-    company_id: setStringValue('company_id', 0),
-    currency: setStringValue('currency', 0),
-    accounts_type: setNumberValue('accounts_type', 0),
-    // DETAILS
-    details: {
-      name: setStringValue('details_name', 0),
-      nace_code: setNumberValue('details_nace_code', 0),
-      industry_sector_code: setNumberValue('details_industry_sector_code', 0),
-      status: setStringValue('details_status', 0)
-    },
-    // FINANCIALS
-    // multiple years per report are mapped here
-    financials: csvValues.map((_, i) => {
-      return {
-        /**
-         * *********************************************
-         * Following financials are expected in API body
-         * but aren't present in the user-uploaded CSV data.
-         * Will put as empty / 0 for the time being
-         * *********************************************
-         */
+  const { value: details_status, isValid: is_status_valid } =
+    convertStringArrayToArrayOfStrings(setStringValue('details_status', 0));
+  const { value: details_websites, isValid: is_websites_valid } =
+    convertStringArrayToArrayOfStrings(setStringValue('details_websites', 0));
 
+  const financials: ReportUploadFinancialRequestBody[] = csvValues.map(
+    (_, i) => {
+      return {
+        cash_and_equivalents: setNumberValue('cash_and_equivalents', i),
         creditors: setNumberValue('creditors', i),
+        current_assets: setNumberValue('total_assets', i),
+        current_liabilities: setNumberValue('total_liabilities', i),
         debtors: setNumberValue('debtors', i),
+        ebit: setNumberValue('ebit', i),
+        ebitda: setNumberValue('ebitda', i),
         fixed_assets: setNumberValue('fixed_assets', i),
+        intangible_fixed_assets: setNumberValue('intangible_fixed_assets', i),
+        interest_expenses: setNumberValue('interest_expenses', i),
         inventory: setNumberValue('inventory', i),
         loans: setNumberValue('loans', i),
+        long_term_debt: setNumberValue('long_term_debt', i),
+        management_experience:
+          setStringValue('management_experience', i) || 'Medium',
+        net_debt: setNumberValue('net_debt', i),
+        net_income: setNumberValue('net_income', i),
         non_current_liabilities: setNumberValue('non_current_liabilities', i),
-        number_of_subsidiaries: setNumberValue('number_of_subsidiaries', i),
+        number_of_employees: setNumberValue('number_of_employees', i),
         other_non_current_liabilities: setNumberValue(
           'other_non_current_liabilities',
           i
         ),
-        net_debt: setNumberValue('net_debt', i),
-        management_experience:
-          setStringValue('management_experience', i) || 'Medium',
-
-        /* ********************************************* */
-
-        cash_and_equivalents: setNumberValue('cash_and_equivalents', i),
-        current_assets: setNumberValue('total_assets', i),
-        current_liabilities: setNumberValue('total_liabilities', i),
-        ebit: setNumberValue('ebit', i),
-        ebitda: setNumberValue('ebitda', i),
-        intangible_fixed_assets: setNumberValue('intangible_fixed_assets', i),
-        interest_expenses: setNumberValue('interest_expenses', i),
-        long_term_debt: setNumberValue('long_term_debt', i),
-        net_income: setNumberValue('net_income', i),
-        number_of_directors: setNumberValue('number_of_directors', i),
-        number_of_employees: setNumberValue('number_of_employees', i),
         period: setStringValue('period', i),
         retained_earnings: setNumberValue('retained_earnings', i),
         short_term_debt: setNumberValue('short_term_debt', i),
@@ -95,7 +81,38 @@ export const makeUploadReportReqBody = (
         turnover: setNumberValue('turnover', i),
         working_capital: setNumberValue('working_capital', i)
       };
-    })
+    }
+  );
+  return {
+    // MAIN ========================
+    iso_code: setStringValue('iso_code', 0),
+    company_id: setStringValue('company_id', 0),
+    currency: setStringValue('currency', 0),
+    accounts_type: setNumberValue('accounts_type', 0),
+    // DETAILS =====================
+    details: {
+      name: setStringValue('details_name', 0),
+      nace_code: setNumberValue('details_nace_code', 0),
+      industry_sector_code: setNumberValue(
+        'details_industry_sector_code',
+        0
+      ) as IndustrySectorCodes,
+      number_of_directors: setNumberValue('details_number_of_directors', 0),
+      number_of_employees: setNumberValue('details_number_of_employees', 0),
+      number_of_subsidiaries: setNumberValue(
+        'details_number_of_subsidiaries',
+        0
+      ),
+      // NOTE: req.body expects string[] but below will only set single value string[]
+      // TODO setArrayValue
+      status: is_status_valid ? details_status : [],
+      status_change_date: [setStringValue('details_status_change_date', 0)],
+      websites: is_websites_valid ? details_websites : []
+    },
+    // FINANCIALS ==================
+    // multiple years per report are mapped here
+    financials,
+    parent_id: parent_id || null
   };
 };
 
@@ -188,6 +205,27 @@ export const calculateLGDRotation = (value: number) => {
   return angle;
 };
 
+export const isBatchAutoOrManual = (csvData: CsvReport): UploadReportType => {
+  if (
+    Object.keys(csvData).length === 2 &&
+    csvData.iso_code &&
+    csvData.company_id
+  ) {
+    return {
+      type: 'BATCH_AUTO',
+      apiUrl: '/api/batch-reports',
+      validator: autoBatchUploadValidators,
+      processMsPerCompany: 30000
+    };
+  } else {
+    return {
+      type: 'BATCH_MANUAL',
+      apiUrl: '/api/batch-reports/manual',
+      validator: manualUploadValidators,
+      processMsPerCompany: 10000
+    };
+  }
+};
 export const ESG_SECTORS: Record<ESG_SectorKeys, string> = {
   Accounting: 'Accounting',
   Airlines_Aviation: 'Airlines aviation',

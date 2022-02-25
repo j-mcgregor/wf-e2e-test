@@ -3,11 +3,15 @@ import { CheckIcon, XIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 
-import { ApiError, ErrorCodeKeys, TranslateInput } from '../../types/global';
+import {
+  ApiError,
+  ErrorCodeKeys,
+  ReportTypeEnum,
+  TranslateInput
+} from '../../types/global';
 import { SubmitReportType } from '../../types/report';
 import Button from '../elements/Button';
-import ErrorMessage from '../elements/ErrorMessage';
-import { ApplicationError } from '../errors/ApplicationError';
+import { ErrorBox } from '../errors/ErrorBox';
 import UploadFile from './UploadFile';
 
 interface UploadNewDataProps {
@@ -19,16 +23,20 @@ interface UploadNewDataProps {
   nameFileInput?: React.ReactNode;
   isCSV?: boolean;
   isValid?: boolean;
+  uploadType?: ReportTypeEnum;
   missingHeaders?: (string | null)[];
   errors?: (string | boolean | null)[];
   fileSelected: File | null;
+  handleRemoveFile?: () => void;
   setFileSelected: (selectedFile: File | null) => void;
   children?: React.ReactNode;
+  numberOfCompanies?: number;
 }
 
 const UploadNewData = ({
   isCSV,
   isValid,
+  uploadType,
   missingHeaders = [],
   errors = [],
   header,
@@ -39,7 +47,9 @@ const UploadNewData = ({
   onSubmit,
   fileSelected,
   setFileSelected,
-  children
+  handleRemoveFile = () => setFileSelected(null), // I dont like this. Will come back and fix it
+  children,
+  numberOfCompanies
 }: UploadNewDataProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ApiError>({
@@ -47,59 +57,15 @@ const UploadNewData = ({
     message: ''
   });
 
-  // removes selected file from state
-  const handleRemoveFile = () => {
-    return setFileSelected(null);
-  };
-
   const t = useTranslations();
 
   const tick = <CheckIcon className="h-6 w-6 text-green-500 mr-1" />;
   const cross = <XIcon className="h-6 w-6 text-red-500 mr-1" />;
 
-  const ErrorBox = () => {
-    console.error(error.message);
-    let message: string | React.ReactNode = '';
-    switch (typeof error.message) {
-      case 'string':
-        // TODO: check for JSON when other branch merged
-        message = error.message;
-        break;
-      case 'object':
-        if (Array.isArray(error.message)) {
-          const api422response = error.message.map(e => ({
-            msg: `${e.msg}.`,
-            location: `Location in request: ${e.loc.join(' > ')}`
-          }));
-          message = (
-            <>
-              {api422response.map(a => (
-                <>
-                  <p>{a.msg}</p>
-                  <p>{a.location}</p>
-                </>
-              ))}
-            </>
-          );
-        } else {
-          message = JSON.stringify(error.message);
-        }
-    }
-    return (
-      <ApplicationError
-        width="max-w-full mt-2"
-        error={{
-          name: error.error,
-          message
-        }}
-        showConsoleMessage
-      />
-    );
-  };
-
   return (
     <div className="bg-white rounded-sm shadow-sm sm:p-8 p-6">
       <div className="grid sm:grid-cols-2">
+        {/* FILE UPLOAD BOX */}
         <div className="space-y-3">
           <p className="text-3xl font-semibold py-2">{header}</p>
           {/* Allows optional naming of file */}
@@ -112,16 +78,18 @@ const UploadNewData = ({
             setFile={file => setFileSelected(file)}
             removeFile={handleRemoveFile}
             fileName={fileSelected && fileSelected.name}
+            disableRemoveButton={loading}
           />
         </div>
 
+        {/* ERROR BOX */}
         <div className="text-xs flex flex-col  sm:items-center sm:pt-16 pt-4">
           {fileSelected && (
-            <div className="sm:w-3/4 sm:px-6 ">
+            <div className="sm:w-3/4 sm:px-3">
               <p className="font-bold mb-2 text-lg">{t('valid_csv_check')}</p>
 
               <div className="overflow-y-auto max-h-48">
-                <div className="flex py-1">
+                <div className="flex py-1 items-center">
                   {isCSV ? (
                     <>
                       {tick}
@@ -135,17 +103,41 @@ const UploadNewData = ({
                   )}
                 </div>
                 <div>
-                  {missingHeaders.length === 0 ? (
-                    <div className="flex py-1">
-                      {tick}
-                      <p>{t('all_headers_are_valid')}</p>
+                  {numberOfCompanies &&
+                  uploadType === 'REPORT_MANUAL' &&
+                  numberOfCompanies !== 1 ? (
+                    <div className="flex py-1 items-center">
+                      {cross}
+                      <p>{t('multiple_companies_cannot_be_uploaded_here')}</p>
                     </div>
+                  ) : null}
+                </div>
+                <div>
+                  {missingHeaders.length === 0 ? (
+                    <>
+                      {uploadType === 'BATCH_AUTO' && (
+                        <div className="flex py-1 items-center">
+                          {tick}
+                          <p>{t('is_valid_batch_auto')}</p>
+                        </div>
+                      )}
+                      {uploadType === 'BATCH_MANUAL' && (
+                        <div className="flex py-1 items-center">
+                          {tick}
+                          <p>{t('is_valid_batch_manual')}</p>
+                        </div>
+                      )}
+                      <div className="flex py-1 items-center">
+                        {tick}
+                        <p>{t('all_headers_are_valid')}</p>
+                      </div>
+                    </>
                   ) : (
                     missingHeaders.map((e, i) => {
                       return (
-                        <div className="flex py-1" key={i}>
+                        <div className="flex py-1 items-center" key={i}>
                           {cross}
-                          <p>
+                          <p className="inline-block align-middle">
                             {`'${e}' `}
                             {t('is_a_required_header')}
                           </p>
@@ -164,7 +156,7 @@ const UploadNewData = ({
                   ) : (
                     errors?.map((e, i) => {
                       return (
-                        <div className="flex py-1" key={i}>
+                        <div className="flex py-1 items-center" key={i}>
                           {cross}
                           <p>{e}</p>
                         </div>
@@ -188,7 +180,7 @@ const UploadNewData = ({
           {buttonText}
         </Button>
       </div>
-      {error?.error && <ErrorBox />}
+      {error?.error && <ErrorBox error={error} />}
       {children}
     </div>
   );

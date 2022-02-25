@@ -26,7 +26,7 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
 
   const [events, setEvents] = useState(allEvents);
 
-  const hasEvents = events.length > 0;
+  const hasEvents = events?.length > 0;
 
   // was used to create sections to try and parse better for print
   // was removed because it was not working well

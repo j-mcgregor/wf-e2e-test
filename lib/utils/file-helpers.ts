@@ -22,3 +22,23 @@ export const downloadFile = ({
   a.dispatchEvent(clickEvt);
   a.remove();
 };
+
+export const readFile = (
+  file: File | null,
+  setFile: (file: string | ArrayBuffer | null | undefined) => void
+) => {
+  if (typeof FileReader !== 'undefined') {
+    const reader = new FileReader();
+    reader.onload = function (file) {
+      setFile(file.target?.result);
+    };
+
+    if (file) {
+      reader.readAsText(file);
+    } else {
+      return '';
+    }
+  } else {
+    return '';
+  }
+};

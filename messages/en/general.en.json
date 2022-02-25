@@ -35,5 +35,8 @@
       "default": "Please refresh the page and try again. If this error persists, please contact Wiserfunding support."
     },
     "see_console": "Please open the console and enable errors for more information."
-  }
+  },
+  "is_valid_batch_auto": "Is valid batch auto CSV",
+  "is_valid_batch_manual": "Is valid batch manual CSV",
+  "multiple_companies_cannot_be_uploaded_here": "Multiple companies cannot be uploaded here"
 }

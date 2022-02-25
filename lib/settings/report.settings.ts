@@ -687,5 +687,5 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
 };
 
 export const batchReport = {
-  averageTime: 100 // average report generation time in ms
+  averageTime: 1000 * 30 // average report generation time in ms
 };

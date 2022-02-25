@@ -25,13 +25,15 @@ const SummaryDetails = ({
   description,
   country,
   naceCode,
-  companyStatus
+  companyStatus,
+  currency
 }: SummaryDetailsProps) => {
   const t = useTranslations();
 
-  const currency = countryCodes.find(
-    (countryCode: any) => countryCode.code === country
-  )?.currency_code;
+  const foundCountry =
+    country ||
+    countryCodes.find(countryCode => countryCode.currency_code === currency)
+      ?.name;
 
   // new function made from previous one in jsx to reuse with last account date
   const formatDate = (date: string | number): string => {
@@ -90,7 +92,7 @@ const SummaryDetails = ({
           role="group"
         >
           <h4>{t('country')}</h4>
-          <p>{country || t('na')}</p>
+          <p>{foundCountry || t('na')}</p>
         </div>
 
         <div

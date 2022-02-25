@@ -11,6 +11,7 @@ interface UploadFileProps {
   fileName: string | null;
   removeFile: () => void;
   setFile: (file: File | null) => void;
+  disableRemoveButton?: boolean;
 }
 
 const UploadFile = ({
@@ -18,7 +19,8 @@ const UploadFile = ({
   linkText,
   removeFile,
   fileName,
-  setFile
+  setFile,
+  disableRemoveButton
 }: UploadFileProps) => {
   const t = useTranslations();
 
@@ -95,6 +97,7 @@ const UploadFile = ({
               variant="none"
               onClick={removeFile}
               className="inline-block max-w-xxs mx-auto shadow-none hover:text-red-400 border-2 border-primary hover:border-red-400 border-opacity-50 hover:border-opacity-100"
+              disabled={disableRemoveButton}
             >
               {t('remove_file')}
               <TrashIcon className="h-6 w-6  rounded ml-2" />

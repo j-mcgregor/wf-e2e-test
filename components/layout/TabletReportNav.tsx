@@ -11,6 +11,7 @@ interface ReportNavProps {
   companyName: string;
   loading?: boolean;
   isTesting?: boolean;
+  backLink?: string;
 }
 
 const nonTestingProps = {
@@ -20,12 +21,12 @@ const nonTestingProps = {
 const TabletReportNav = ({
   companyName,
   loading,
-  isTesting
+  isTesting,
+  backLink
 }: ReportNavProps) => {
   const navItems = useReportNavItems();
 
   const [activeItem, setActiveItem] = useState<string>('summary');
-
   // monitor the changes to the active state path and update the menu scroll position based on the id
   useEffect(() => {
     if (activeItem && !isTesting) {
@@ -50,7 +51,7 @@ const TabletReportNav = ({
   return (
     <div className="w-full fixed bottom-0 sm:absolute sm:top-0 sm:bottom-auto  items-center bg-gray-200 z-20 text-sm text-primary flex xl:hidden">
       <Button
-        linkTo="/reports"
+        linkTo={!backLink ? '/reports' : backLink}
         variant="highlight"
         newClassName=" bg-highlight items-center hover:text-alt relative h-[50px] top-0 flex items-center justify-center px-4"
       >

@@ -4,13 +4,21 @@ import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import * as Sentry from '@sentry/nextjs';
 
 import LinkCard from '../../../components/cards/LinkCard';
 import Button from '../../../components/elements/Button';
 import Layout from '../../../components/layout/Layout';
 import UploadNewData from '../../../components/uploads/UploadNewData';
-import useCSVValidator from '../../../hooks/useCSVValidator';
-import { manualUploadValidators } from '../../../lib/settings/sme-calc.settings';
+import { useCSV } from '../../../hooks/useCSV';
+import { useCsvValidators } from '../../../hooks/useCsvValidators';
+import { manualUploadValidators } from '../../../lib/settings/report-validators';
+import { NO_REPORT_ID } from '../../../lib/utils/error-codes';
+import fetcher from '../../../lib/utils/fetcher';
+import { downloadFile } from '../../../lib/utils/file-helpers';
+import { makeUploadReportReqBody } from '../../../lib/utils/report-helpers';
+import { SubmitReportType } from '../../../types/report';
+import { mutate } from 'swr';
 
 const UploadData = () => {
   const t = useTranslations();
@@ -23,16 +31,71 @@ const UploadData = () => {
     setFileSelected(file);
   };
 
-  const {
-    isCSV,
-    isValid,
-    errors,
-    missingHeaders
-    // csvData // to be used to send to the backend
-  } = useCSVValidator(fileSelected, manualUploadValidators);
+  const { csvData, csvValues, isCSV } = useCSV(fileSelected);
+
+  const { isValid, errors, missingHeaders, numberOfCompanies } =
+    useCsvValidators(csvData, manualUploadValidators, csvValues);
+
   const router = useRouter();
 
   const { id = [] } = router.query;
+
+  const handleExportCsv = async () => {
+    if (!id) return null;
+
+    try {
+      const csv = await fetcher(
+        `/api/reports/report?id=${id}&export=csv`,
+        'GET',
+        null,
+        {},
+        'csv'
+      );
+
+      downloadFile({
+        data: csv,
+        // eg report-id.csv
+        fileName: `report-${id}.csv`,
+        fileType: 'text/csv'
+      });
+    } catch (error) {
+      // TODO remove console.log
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
+
+  const handleSubmit: SubmitReportType = async (setError, setLoading) => {
+    setLoading(true);
+    const params = makeUploadReportReqBody(csvData, csvValues, `${id}`);
+    try {
+      const res = await fetcher('/api/reports/upload', 'POST', params);
+
+      if (res?.error) {
+        Sentry.captureException({
+          error: res.error,
+          message: res.message
+        });
+        setError({ error: res.error, message: res.message });
+      }
+
+      if (!res?.reportId) {
+        Sentry.captureException({
+          error: NO_REPORT_ID,
+          message: res.message
+        });
+        setError({ error: res.error, message: res.message });
+      }
+
+      if (res?.reportId) {
+        // update user to get report data
+        mutate('/api/user');
+        return router.push(`/report/${res.reportId}`);
+      }
+    } catch (err) {
+      Sentry.captureException(err);
+    }
+  };
 
   return (
     <Layout noNav={false}>
@@ -54,10 +117,11 @@ const UploadData = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 justify-between py-4 space-x-3">
           <LinkCard
             icon={<CloudDownloadIcon className="h-6 w-6" />}
-            linkTo="#"
             iconColor={downloadIconColor}
             header={t('report_csv')}
             description={t('make_changes_to_any_report')}
+            onClick={() => handleExportCsv()}
+            className="text-left"
           />
           {/* <LinkCard
             icon={<CloudDownloadIcon className="h-6 w-6" />}
@@ -73,14 +137,13 @@ const UploadData = () => {
           buttonText={t('generate_new_report')}
           setFileSelected={handleSetSelectedFile}
           fileSelected={fileSelected}
-          // TODO: add submit to fix type
-          // @ts-ignore
-          onSubmit={async () => {}}
+          onSubmit={handleSubmit}
           isCSV={isCSV}
           isValid={isValid}
           errors={errors}
           missingHeaders={missingHeaders}
-          disableButton={!isValid}
+          numberOfCompanies={numberOfCompanies}
+          uploadType="REPORT_MANUAL"
         />
       </div>
     </Layout>

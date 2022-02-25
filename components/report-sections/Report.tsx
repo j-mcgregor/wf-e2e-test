@@ -61,7 +61,7 @@ const Report = ({
 
   const date = new Date(`${data?.created_at}`);
 
-  const reliabilityIndex = data.reliability_index;
+  const reliabilityIndex = data?.reliability_index;
 
   const month =
     date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
@@ -98,7 +98,7 @@ const Report = ({
   // remove benchmarks from financial trends
   // add to speedos later
   // const lastFiveYearsBenchmarks =
-  //   (data?.benchmarks && data.benchmarks?.slice(0, 5)) || [];
+  //   (data?.benchmarks && data?.benchmarks?.slice(0, 5)) || [];
 
   const riskMetrics = [...(data?.risk_metrics || [])];
 
@@ -106,11 +106,11 @@ const Report = ({
   const lastFiveYearsRiskMetrics = React.useMemo(
     () => riskMetrics.reverse().slice(-5, transformedFinancials.length) || [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data.risk_metrics]
+    [data?.risk_metrics]
   );
 
   // take the latest year of financial risk metrics
-  const latestRiskMetrics = data.risk_metrics?.[data.risk_metrics.length - 1];
+  const latestRiskMetrics = data?.risk_metrics?.[data?.risk_metrics.length - 1];
 
   const mergedLastFiveYearFinancials = lastFiveYearsFinancials
     .map((year, index) => {
@@ -151,18 +151,18 @@ const Report = ({
 
   //* replaced this with new `directors` array from backend
   // const directors = getDirectorsFromBoardMembers(data?.board_members) || [];
-  const latestFinancialYear = data?.financials[data.financials?.length - 1];
+  const latestFinancialYear = data?.financials[data?.financials?.length - 1];
 
   // check whether to render commentary
   const shouldRenderCommentary =
-    data.risk_metrics && data.risk_metrics.length > 0;
+    data?.risk_metrics && data?.risk_metrics.length > 0;
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0 pb-24">
       <div className="sm:py-8 print:border print:pb-0 print:border-none print:-mb-16">
         <ReportHeader
           company={companyName}
-          website={data.details?.websites?.[0]}
+          website={data?.details?.websites?.[0]}
           created={created}
           reportId={id.toString()} // id == string || string[]
           snippet={{
@@ -181,15 +181,16 @@ const Report = ({
         <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm md:print:flex-col ">
           <div className="flex w-full md:w-1/2 flex-col py-2 md:print:w-full">
             <SummaryDetails
-              regNumber={data.company_id}
-              sector={data.details?.industry_sector}
-              description={data?.details?.overview_full}
+              regNumber={data?.company_id}
+              sector={data?.details?.industry_sector}
+              description={data?.details?.description}
               incorporationDate={data?.details?.date_of_incorporation}
               lastAccountDate={data?.details?.last_annual_accounts_date}
               country={companyDetails?.address?.country}
               naceCode={companyDetails?.nace_code}
               naceName={companyDetails?.nace_name}
               companyStatus={companyDetails?.status}
+              currency={data?.currency}
             />
           </div>
 
@@ -214,7 +215,7 @@ const Report = ({
         </div>
         <div className="py-4 avoid-break">
           <SummaryFinancial
-            currencyCode={data.currency}
+            currencyCode={data?.currency}
             years={lastFiveYearsFinancials}
           />
         </div>
@@ -404,7 +405,7 @@ const Report = ({
       <HashContainer name={'Financial Trends'} id={`financial_trends`}>
         <ReportSectionHeader text={t('financial_trends')} />
         <FinancialTrends
-          currency={data.currency}
+          currency={data?.currency}
           financialData={mergedLastFiveYearFinancials.reverse()}
           // been removed
           benchmarkData={[]}
@@ -428,7 +429,7 @@ const Report = ({
         {data?.directors?.length > 0 && (
           <ExecutiveCardList
             title={t('directors')}
-            executives={data.directors}
+            executives={data?.directors}
             showAppointmentDate
           />
         )}
@@ -437,7 +438,7 @@ const Report = ({
         {data?.executives?.length > 0 && (
           <ExecutiveCardList
             title={t('senior_management')}
-            executives={data.executives}
+            executives={data?.executives}
           />
         )}
 
@@ -446,7 +447,7 @@ const Report = ({
           seniorManagement={data?.personal?.senior_management}
         />
 
-        {data.shareholders.length > 0 && (
+        {data?.shareholders?.length > 0 && (
           <ShareHolderList shareholders={data?.shareholders} />
         )}
 
