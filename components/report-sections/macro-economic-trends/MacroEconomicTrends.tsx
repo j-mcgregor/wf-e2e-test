@@ -33,7 +33,7 @@ const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
       Object.entries(trends)
         .map(([key, value]: [string, MacroEconomic]) => {
           if (macroEconomicTrendCharts[key.toString()]) {
-            const data = value.history.map(h => ({
+            const data = value?.history?.map(h => ({
               // DD/MM/YY eg 29/06/21
               x: new Date(h.date).toLocaleString('en-GB', {
                 year: '2-digit',

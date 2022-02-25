@@ -31,13 +31,15 @@ const Chart = ({
   const getYValue = (d: GraphDataType | MultiGraphDataType) =>
     'y' in d ? d.y : 0;
 
-  const maxDomain = Math.floor(Math.max(...data.map(getYValue)) * 1.5) || 1000;
+  const maxDomain =
+    (data && Math.floor(Math.max(...data.map(getYValue)) * 1.5)) || 1000;
 
   // only calculate and show minDomain if negative values present,
   let minDomain = 0;
-  const hasNegativeValues = data.some(d => ('y' in d ? d.y < 0 : false));
+  const hasNegativeValues = data?.some(d => ('y' in d ? d.y < 0 : false));
   if (hasNegativeValues) {
-    minDomain = Math.floor(Math.min(...data.map(getYValue)) * 1.5) || -1000;
+    minDomain =
+      (data && Math.floor(Math.min(...data.map(getYValue)) * 1.5)) || -1000;
   }
 
   const InnerChart = () => (
