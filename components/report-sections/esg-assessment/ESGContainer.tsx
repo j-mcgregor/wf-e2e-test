@@ -94,6 +94,8 @@ const ESGContainer = ({
             value={transition?.carbon_intensity * 100 || null}
             rotationCalculator={calculateCarbonIntensityRotation}
             asMetric="%"
+            title={t('carbon_intensity')}
+            titleMiddle={true}
             reverseX
             hint={
               <Hint

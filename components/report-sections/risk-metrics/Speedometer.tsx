@@ -25,6 +25,7 @@ interface SpeedometerProps {
   rotationCalculator: (value: number) => number;
   classes?: string;
   innerClasses?: string;
+  titleMiddle?: boolean;
 }
 
 const Speedometer = ({
@@ -37,7 +38,8 @@ const Speedometer = ({
   reverseX,
   rotationCalculator,
   classes = '',
-  innerClasses = ''
+  innerClasses = '',
+  titleMiddle = false
 }: SpeedometerProps) => {
   const isFloat = value && Number(value) === value && value % 1 !== 0;
 
@@ -68,7 +70,7 @@ const Speedometer = ({
         )}
       >
         <div className="flex w-full items-center justify-between px-4 pt-4 pb-2">
-          <p className="md:text-sm">{title}</p>
+          {title && !titleMiddle && <p className="md:text-sm">{title}</p>}
           {hint}
         </div>
 
@@ -88,6 +90,9 @@ const Speedometer = ({
               {isValidValue ? renderValue : t('na')}
               {isValidValue && asMetric ? asMetric : null}
             </span>
+            {title && titleMiddle && (
+              <span className="block text-xxs font-normal">{title}</span>
+            )}
           </div>
 
           {secondaryValues?.map((benchmark, index) => {
