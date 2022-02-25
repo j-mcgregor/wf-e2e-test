@@ -1,4 +1,4 @@
-import { ReportDataProps } from '../../pages/report/[id]';
+import { ReportDataProps } from '../../types/report';
 
 const getExistingReport = async (
   reportId: string,

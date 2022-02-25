@@ -1,5 +1,9 @@
 {
   "report_hints": {
+    "esg": {
+      "title": "Environmental Risk",
+      "body": "Nulla ipsum elit anim sint cupidatat ad est ex dolor."
+    },
     "charts": {
       "days_payable": {
         "title": "Days Payable",

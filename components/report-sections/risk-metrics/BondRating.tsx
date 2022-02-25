@@ -1,7 +1,10 @@
 import { useTranslations } from 'next-intl';
-import { bondRatings } from '../../../lib/settings/report.settings';
-import usePrintClasses from '../../../hooks/usePrintClasses';
 import { ReactElement } from 'react';
+
+import usePrintClasses from '../../../hooks/usePrintClasses';
+import { bondRatings } from '../../../lib/settings/report.settings';
+import { RatingType } from '../../../types/report';
+
 const bondRatingClasses = {
   chrome: {
     container: 'avoid-break',
@@ -17,24 +20,6 @@ interface BondRatingProps {
   score: RatingType;
   hint: ReactElement;
 }
-export type RatingType =
-  | 'A'
-  | 'BBB+'
-  | 'BBB'
-  | 'BB+'
-  | 'BBB-'
-  | 'BB-'
-  | 'BB'
-  | 'B+'
-  | 'B'
-  | 'B-'
-  | 'CCC+'
-  | 'CCC'
-  | 'CCC-'
-  | 'CC'
-  | 'CC-'
-  | 'CC+'
-  | 'D';
 
 const BondRating = ({ score, hint }: BondRatingProps) => {
   const t = useTranslations();

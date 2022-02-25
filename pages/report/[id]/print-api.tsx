@@ -3,12 +3,11 @@ import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
+import Cross from '../../../components/icons/Cross';
 import ReportTemplate from '../../../components/report-sections/Report';
 import Report from '../../../lib/funcs/report';
-
-import { ReportDataProps } from '.';
 import { UNAUTHORISED } from '../../../lib/utils/error-codes';
-import Cross from '../../../components/icons/Cross';
+import { ReportDataProps } from '../../../types/report';
 
 const PrintApi = ({
   authorised,

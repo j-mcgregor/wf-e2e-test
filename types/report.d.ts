@@ -357,3 +357,269 @@ export interface UploadReport422ErrorResponse {
     type: string;
   }>;
 }
+
+/**
+ * *************************************
+ * ENVIRONMENTAL-SOCIAL-GOVERNANCE (ESG)
+ * *************************************
+ */
+
+export type ESG_SectorKeys =
+  | 'Accounting'
+  | 'Airlines_Aviation'
+  | 'Alternative_Dispute_Resolution'
+  | 'Alternative_Medicine'
+  | 'Animation'
+  | 'Apparel_and_Fashion'
+  | 'Architecture_and_Planning'
+  | 'Arts_and_Crafts'
+  | 'Automotive'
+  | 'Aviation_and_Aerospace'
+  | 'Banking'
+  | 'Biotechnology'
+  | 'Broadcast_Media'
+  | 'Building_Materials'
+  | 'Business_Supplies_and_Equipment'
+  | 'Capital_Markets'
+  | 'Chemicals'
+  | 'Civic_and_Social_Organization'
+  | 'Civil_Engineering'
+  | 'Commercial_Real_Estate'
+  | 'Computer_Games'
+  | 'Computer_Hardware'
+  | 'Computer_Networking'
+  | 'Computer_Software'
+  | 'Computer_and_Network_Security'
+  | 'Construction'
+  | 'Consumer_Electronics'
+  | 'Consumer_Goods'
+  | 'Consumer_Services'
+  | 'Cosmetics'
+  | 'Dairy'
+  | 'Defense_and_Space'
+  | 'Design'
+  | 'E-Learning'
+  | 'Education_Management'
+  | 'Electrical_Electronic_Manufacturing'
+  | 'Entertainment'
+  | 'Environmental_Services'
+  | 'Events_Services'
+  | 'Executive_Office'
+  | 'Facilities_Services'
+  | 'Farming'
+  | 'Financial_Services'
+  | 'Fine_Art'
+  | 'Fishery'
+  | 'Food_Production'
+  | 'Food_and_Beverages'
+  | 'Fund-Raising'
+  | 'Furniture'
+  | 'Gambling_and_Casinos'
+  | 'Glass_Ceramics_and_Concrete'
+  | 'Government_Administration'
+  | 'Government_Relations'
+  | 'Graphic_Design'
+  | 'Health_Wellness_and_Fitness'
+  | 'Higher_Education'
+  | 'Hospital_and_Health_Care'
+  | 'Hospitality'
+  | 'Human_Resources'
+  | 'Import_and_Export'
+  | 'Individual_and_Family_Services'
+  | 'Industrial_Automation'
+  | 'Information_Services'
+  | 'Information_Technology_and_Services'
+  | 'Insurance'
+  | 'International_Affairs'
+  | 'International_Trade_and_Development'
+  | 'Internet'
+  | 'Investment_Banking'
+  | 'Investment_Management'
+  | 'Judiciary'
+  | 'Law_Enforcement'
+  | 'Law_Practice'
+  | 'Legal_Services'
+  | 'Legislative_Office'
+  | 'Leisure_Travel_and_Tourism'
+  | 'Libraries'
+  | 'Logistics_and_Supply_Chain'
+  | 'Luxury_Goods_and_Jewelry'
+  | 'Machinery'
+  | 'Management_Consulting'
+  | 'Maritime'
+  | 'Market_Research'
+  | 'Marketing_and_Advertising'
+  | 'Mechanical_or_Industrial_Engineering'
+  | 'Media_Production'
+  | 'Medical_Devices'
+  | 'Medical_Practice'
+  | 'Mental_Health_Care'
+  | 'Military'
+  | 'Mining_and_Metals'
+  | 'Motion_Pictures_and_Film'
+  | 'Museums_and_Institutions'
+  | 'Music'
+  | 'Nanotechnology'
+  | 'Newspapers'
+  | 'Nonprofit_Organization_Management'
+  | 'Oil_and_Energy'
+  | 'Online_Media'
+  | 'Outsourcing_Offshoring'
+  | 'Package_Freight_Delivery'
+  | 'Packaging_and_Containers'
+  | 'Paper_and_Forest_Products'
+  | 'Performing_Arts'
+  | 'Pharmaceuticals'
+  | 'Philanthropy'
+  | 'Photography'
+  | 'Plastics'
+  | 'Political_Organization'
+  | 'Primary_Secondary_Education'
+  | 'Printing'
+  | 'Professional_Training_and_Coaching'
+  | 'Program_Development'
+  | 'Public_Policy'
+  | 'Public_Relations_and_Communications'
+  | 'Public_Safety'
+  | 'Publishing'
+  | 'Railroad_Manufacture'
+  | 'Ranching'
+  | 'Real_Estate'
+  | 'Recreational_Facilities_and_Services'
+  | 'Religious_Institutions'
+  | 'Renewables_and_Environment'
+  | 'Research'
+  | 'Restaurants'
+  | 'Retail'
+  | 'Security_and_Investigations'
+  | 'Semiconductors'
+  | 'Shipbuilding'
+  | 'Sporting_Goods'
+  | 'Sports'
+  | 'Staffing_and_Recruiting'
+  | 'Supermarkets'
+  | 'Telecommunications'
+  | 'Textiles'
+  | 'Think_Tanks'
+  | 'Tobacco'
+  | 'Translation_and_Localization'
+  | 'Transportation_Trucking_Railroad'
+  | 'Utilities'
+  | 'Venture_Capital_and_Private_Equity'
+  | 'Veterinary'
+  | 'Warehousing'
+  | 'Wholesale'
+  | 'Wine_and_Spirits'
+  | 'Wireless'
+  | 'Writing_and_Editing';
+
+export type RiskLevels = 'low' | 'medium' | 'high';
+
+export interface Risk {
+  country_risk: RiskLevels;
+  sector_risk: RiskLevels;
+}
+
+type PhysicalRiskType = {
+  overall: RiskLevels;
+  country: RiskLevels;
+  sector: RiskLevels;
+};
+
+export interface EnvironmentalSocialGovernance {
+  sector: string;
+  // sectors: Array<{
+  //   sector: ESG_SectorKeys;
+  //   match: string;
+  // }>;
+  transition: {
+    transition_risk: number;
+    carbon_intensity: number;
+    overall: RiskLevels;
+  };
+  physical: {
+    drought: PhysicalRiskType;
+    flooding: PhysicalRiskType;
+    overall: PhysicalRiskType;
+  };
+}
+
+/**
+ * *************************************
+ * RISK METRIC
+ * *************************************
+ */
+export type RatingType =
+  | 'A'
+  | 'BBB+'
+  | 'BBB'
+  | 'BB+'
+  | 'BBB-'
+  | 'BB-'
+  | 'BB'
+  | 'B+'
+  | 'B'
+  | 'B-'
+  | 'CCC+'
+  | 'CCC'
+  | 'CCC-'
+  | 'CC'
+  | 'CC-'
+  | 'CC+'
+  | 'D';
+
+/**
+ * *************************************
+ * REPORT DATA
+ * @description This is the master object and should reflect what the API sends in Swagger
+ * *************************************
+ */
+
+export interface ReportDataProps {
+  [x: string]: any;
+  id: string | number;
+  benchmarks: Benchmarks;
+  board_members?: BoardMember[];
+  company_id: string;
+  company_name: string;
+  created_at?: string;
+  currency: string;
+  details: SummaryContact & SummaryInfo;
+  directors: BoardMember[];
+  error?: string;
+  esg: EnvironmentalSocialGovernance;
+  executives: BoardMember[];
+  financial_ratios: {
+    [key: string]: number;
+  }[];
+  financials: FinancialYear[];
+  highlights: {
+    data_reliability: Reliability;
+    risk_outlook: string[];
+  };
+  legal_events: LegalEvent[];
+  macroeconomics: MacroEconomics;
+  message?: string;
+  reliability_index: DataReliabilityType;
+  risk_metrics: {
+    bond_rating_equivalent: RatingType;
+    sme_z_score: number;
+    period: string;
+    probability_of_default_1_year: number;
+    loss_given_default: number;
+  }[];
+  risk_outlook: RiskOutlookData;
+  shareholders: ShareholderType[];
+  subsidiaries: Subsidiary[];
+  /**
+   * @deprecated
+   * use ReportDataProps.details & ReportDataProps.board_members
+   */
+  personal: {
+    directors: Profile[];
+    senior_management: Profile[];
+    ceo: string;
+    cfo: string;
+    chairman: string;
+  };
+}

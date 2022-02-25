@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import React from 'react';
 import { useTranslations } from 'use-intl';
-//
+
 import usePrintClasses from '../../hooks/usePrintClasses';
 import {
   calculateLGDRotation,
@@ -9,7 +9,7 @@ import {
   calculateSMEZScoreRotation
 } from '../../lib/utils/report-helpers';
 import { getBoardMember } from '../../lib/utils/text-helpers';
-import { ReportDataProps } from '../../pages/report/[id]';
+import { ReportDataProps } from '../../types/report';
 import HashContainer from '../elements/HashContainer';
 import { ReportSectionHeader } from '../elements/Headers';
 import Hint from '../elements/Hint';
@@ -27,6 +27,7 @@ import RiskOutlook from './highlights/RiskOutlook';
 import LegalEvents from './legal-events/LegalEvents';
 import MacroEconomicTrends from './macro-economic-trends/MacroEconomicTrends';
 import NewsFeed from './news/NewsFeed';
+import { ParentsList } from './parents/ParentsList';
 import ReportHeader from './ReportHeader';
 import BondRating from './risk-metrics/BondRating';
 import RiskMetricGraphs from './risk-metrics/RiskMetricGraphs';
@@ -35,8 +36,8 @@ import { SubsidiaryList } from './subsidiaries/SubsidiaryList';
 import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
-import { ParentsList } from './parents/ParentsList';
 
+//
 const Report = ({
   data,
   id,
@@ -51,8 +52,6 @@ const Report = ({
   const companyName = data?.details?.company_name || data?.details?.name || '';
 
   const companyDetails = data?.details;
-
-  const companySectors = data?.esg?.sectors;
 
   const companyAddress = companyDetails?.address;
 
@@ -488,14 +487,11 @@ const Report = ({
 
       <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>
         <ESGContainer
-          governance={{
-            pepFlags: pepFlags
-          }}
-          sectors={companySectors}
-          // website={data?.details?.websites?.find((x: string) => x) || ''}
-          environmental_details={{
-            industry_sector: data?.details?.industry_sector
-          }}
+          companyName={data?.details.name || ''}
+          sector={data.details?.industry_sector || ''}
+          physical={data?.esg.physical}
+          transition={data?.esg.transition}
+          location={companyAddress?.city || companyAddress?.country}
         />
       </HashContainer>
 

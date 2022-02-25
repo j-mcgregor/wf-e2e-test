@@ -1,9 +1,11 @@
+import classNames from 'classnames';
+import { useTranslations } from 'next-intl';
+import { ReactElement } from 'react';
+
+import { TranslateInput } from '../../../types/global';
+import BenchmarkArrow from '../../svgs/BenchmarkArrow';
 import Dial from '../../svgs/Dial';
 import SpeedoArrow from '../../svgs/SpeedoArrow';
-import BenchmarkArrow from '../../svgs/BenchmarkArrow';
-import { TranslateInput } from '../../../types/global';
-import { ReactElement } from 'react';
-import { useTranslations } from 'next-intl';
 
 type SecondaryValue = {
   name: TranslateInput;
@@ -12,15 +14,17 @@ type SecondaryValue = {
 };
 
 interface SpeedometerProps {
-  title: string;
-  secondaryValues: SecondaryValue[];
-  value?: number;
+  title?: string;
+  secondaryValues?: SecondaryValue[];
+  value?: number | null;
   weighting?: number;
   hint: ReactElement;
   asMetric?: string;
   decimalPoints?: number;
   reverseX?: boolean;
   rotationCalculator: (value: number) => number;
+  classes?: string;
+  innerClasses?: string;
 }
 
 const Speedometer = ({
@@ -31,7 +35,9 @@ const Speedometer = ({
   secondaryValues,
   decimalPoints,
   reverseX,
-  rotationCalculator
+  rotationCalculator,
+  classes = '',
+  innerClasses = ''
 }: SpeedometerProps) => {
   const isFloat = value && Number(value) === value && value % 1 !== 0;
 
@@ -56,15 +62,17 @@ const Speedometer = ({
       > */}
 
       <div
-        className="bg-white flex flex-col items-center  overflow-hidden
-        print:inline-block h-auto avoid-break "
+        className={classNames(
+          'bg-white flex flex-col items-center overflow-hidden print:inline-block h-auto avoid-break',
+          classes
+        )}
       >
         <div className="flex w-full items-center justify-between px-4 pt-4 pb-2">
           <p className="md:text-sm">{title}</p>
           {hint}
         </div>
 
-        <div className="relative ">
+        <div className={`relative ${innerClasses}`}>
           <Dial className="w-full h-full" reverseX={reverseX} />
           <SpeedoArrow
             style={{ transform: `rotate(${arrowRotation}deg)` }}
@@ -82,7 +90,7 @@ const Speedometer = ({
             </span>
           </div>
 
-          {secondaryValues.map((benchmark, index) => {
+          {secondaryValues?.map((benchmark, index) => {
             const isValidBenchmark = benchmark.value || benchmark.value === 0;
             return isValidBenchmark ? (
               <BenchmarkArrow
@@ -103,7 +111,7 @@ const Speedometer = ({
         </div>
 
         <div className="text-gray-400 w-full pb-4 px-1 text-xs xl:text-sm -mt-2 overflow-hidden">
-          {secondaryValues.map((benchmark, index) => {
+          {secondaryValues?.map((benchmark, index) => {
             const isValidBenchmark = benchmark?.value || benchmark?.value === 0;
 
             const value = benchmark.value as number | bigint;

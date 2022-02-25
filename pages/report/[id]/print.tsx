@@ -2,15 +2,14 @@
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import Report from '../../../components/report-sections/Report';
+import LoadingIcon from '../../../components/svgs/LoadingIcon';
 import getServerSidePropsWithAuth from '../../../lib/auth/getServerSidePropsWithAuth';
 import fetcher from '../../../lib/utils/fetcher';
-
-import { useEffect, useState } from 'react';
-import { ReportDataProps } from '.';
-import LoadingIcon from '../../../components/svgs/LoadingIcon';
+import { ReportDataProps } from '../../../types/report';
 
 const ReportTemplate = () => {
   const router = useRouter();
