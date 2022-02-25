@@ -1,13 +1,22 @@
-const isOnVercel =
-  !!process.env.NEXT_PUBLIC_VERCEL_URL || !!process.env.VERCEL_URL;
-const isProduction = process.env.NODE_ENV === 'production';
+// eslint-disable-next-line no-console
+// console.log({ env: process.env });
+
+let URL = '';
+
+// NODE_ENV === 'production' on live AND preview
+if (process.env.NODE_ENV === 'production') {
+  if (process.env.VERCEL_ENV === 'preview') {
+    URL = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  }
+  if (process.env.VERCEL_ENV === 'production') {
+    URL = 'https://risk.wiserfunding.com';
+  }
+} else {
+  URL = 'http://localhost:3000';
+}
 
 const config = {
-  URL: isOnVercel
-    ? isProduction
-      ? `https://beta.wiserfunding.com`
-      : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : 'http://localhost:3000'
+  URL
 };
 
 export default config;
