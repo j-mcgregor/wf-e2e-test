@@ -93,7 +93,7 @@ const Report = ({
 
   // reversing array to get the latest 5 years of financials
   const lastFiveYearsRiskMetrics = React.useMemo(
-    () => riskMetrics.reverse().slice(-5, transformedFinancials.length) || [],
+    () => riskMetrics.slice(-5, transformedFinancials.length).reverse() || [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data?.risk_metrics]
   );

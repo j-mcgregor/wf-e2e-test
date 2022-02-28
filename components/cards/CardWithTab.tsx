@@ -46,7 +46,9 @@ export const CardWithTab = ({
         </h5>
       </div>
       {/* body */}
-      <p className={classNames('border-2 p-2 ', riskMap[riskLevel].body)}>
+      <p
+        className={classNames('border-2 p-2 text-sm', riskMap[riskLevel].body)}
+      >
         {text}
       </p>
     </div>

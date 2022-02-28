@@ -400,8 +400,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'retained_earnings',
       thousands,
       {
-        title: 'report_hints.charts.ebit.title',
-        body: 'report_hints.charts.ebit.body'
+        title: 'report_hints.charts.retained_earnings.title',
+        body: 'report_hints.charts.retained_earnings.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -638,8 +638,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'net_debt',
       thousands,
       {
-        title: 'report_hints.charts.liquidity_ratio.title',
-        body: 'report_hints.charts.liquidity_ratio.body'
+        title: 'report_hints.charts.net_debt.title',
+        body: 'report_hints.charts.net_debt.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
@@ -655,8 +655,8 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
       'net_debt_ebitda',
       thousands,
       {
-        title: 'report_hints.charts.ebit.title',
-        body: 'report_hints.charts.ebit.body'
+        title: 'report_hints.charts.net_debt_ebitda.title',
+        body: 'report_hints.charts.net_debt_ebitda.body'
       },
       data.map((chart: any) => ({
         name: chart.name,
