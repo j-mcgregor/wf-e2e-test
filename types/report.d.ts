@@ -237,7 +237,7 @@ export type CsvReportUploadHeaders =
   // ------------------------------
   | 'details_name'
   | 'details_industry_sector_code'
-  | 'details_websites' // <-- becomes details.websites
+  | 'details_website' // <-- becomes details.websites
   | 'details_status'
   | 'details_nace_code'
   | 'details_number_of_directors' // <-- becomes details.number_of_directors
