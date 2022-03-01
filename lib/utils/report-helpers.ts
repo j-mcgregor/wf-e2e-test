@@ -41,6 +41,8 @@ export const makeUploadReportReqBody = (
 
   const { value: details_status, isValid: is_status_valid } =
     convertStringArrayToArrayOfStrings(setStringValue('details_status', 0));
+  const { value: details_websites, isValid: is_websites_valid } =
+    convertStringArrayToArrayOfStrings(setStringValue('details_websites', 0));
 
   const financials: ReportUploadFinancialRequestBody[] = csvValues.map(
     (_, i) => {
@@ -105,7 +107,7 @@ export const makeUploadReportReqBody = (
       // TODO setArrayValue
       status: is_status_valid ? details_status : [],
       status_change_date: [setStringValue('details_status_change_date', 0)],
-      websites: setStringValue('details_website', 0)
+      websites: is_websites_valid ? details_websites : []
     },
     // FINANCIALS ==================
     // multiple years per report are mapped here

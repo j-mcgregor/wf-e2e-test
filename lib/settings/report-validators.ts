@@ -156,12 +156,25 @@ export const uploadReportCSVHeaders: {
     required: false,
     formatted: 'Details Status change date'
   },
-  details_website: {
+  details_websites: {
     required: false,
     formatted: 'Details websites',
     validator: (x: string) => {
+      // CSV dowwnload gives "['example.com']" (string with brackets)
+      // CSV upload requires ['example.com'] (string[])
       if (!x)
-        return `A value for "details_websites" is required (eg 'example.com'`;
+        return `A value for "details_websites" is required (eg "['example.com']")`;
+
+      const { value, isValid } = convertStringArrayToArrayOfStrings(x);
+
+      if (!isValid) {
+        return `Value is not convertable to array (eg "['example.com']")`;
+      }
+
+      if (value.length === 0) {
+        return `A value for "details_websites" is required (eg "['example.com']")`;
+      }
+
       return false;
     }
   },

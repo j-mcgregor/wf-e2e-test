@@ -216,7 +216,7 @@ const CreateBatchReport = () => {
             iconColor="bg-highlight bg-opacity-50"
             header={t('batch_ads_template')}
             description={t('batch_ads_template_desc')}
-            linkTo="/download-templates/wf-ads-template.csv"
+            linkTo="/download-templates/wf-csv-template.csv"
           />
           <LinkCard
             className="max-w-xs"
