@@ -44,7 +44,7 @@ export default function Dashboard() {
             stats={[
               {
                 header: t('total_reports'),
-                data: user?.total_reports,
+                data: user?.total_reports || '0',
                 linkTo: '/reports'
               },
               {
