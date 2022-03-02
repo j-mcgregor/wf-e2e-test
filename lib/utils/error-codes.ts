@@ -1,4 +1,4 @@
-import { ErrorCodeKeys } from '../../types/global';
+import { ErrorCodeKeys } from '../../types/errors';
 
 export const UNAUTHORISED: ErrorCodeKeys = 'UNAUTHORISED';
 export const UNPROCESSABLE_ENTITY: ErrorCodeKeys = 'UNPROCESSABLE_ENTITY';

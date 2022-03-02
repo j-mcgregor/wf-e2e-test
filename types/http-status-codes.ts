@@ -1,5 +1,7 @@
 'use strict';
 
+import { HttpStatusKeys } from './errors';
+
 /**
  * Hypertext Transfer Protocol (HTTP) response status codes.
  * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}
@@ -371,12 +373,257 @@ enum HttpStatusCode {
    */
   NOT_EXTENDED = 510,
 
-  /**
-   * The client needs to authenticate to gain network access.
-   * Intended for use by intercepting proxies used to control access to the network (e.g., "captive portals" used
-   * to require agreement to Terms of Service before granting full Internet access via a Wi-Fi hotspot).
-   */
   NETWORK_AUTHENTICATION_REQUIRED = 511
 }
+
+export const HttpStatusCodes: Record<
+  HttpStatusKeys,
+  { statusCode: HttpStatusCode; key: string }
+> = {
+  CONTINUE: {
+    statusCode: 100,
+    key: 'CONTINUE'
+  },
+  SWITCHING_PROTOCOLS: {
+    statusCode: 101,
+    key: 'SWITCHING PROTOCOLS'
+  },
+  PROCESSING: {
+    statusCode: 102,
+    key: 'PROCESSING'
+  },
+  OK: {
+    statusCode: 200,
+    key: 'OK'
+  },
+  CREATED: {
+    statusCode: 201,
+    key: 'CREATED'
+  },
+  ACCEPTED: {
+    statusCode: 202,
+    key: 'ACCEPTED'
+  },
+  NON_AUTHORITATIVE_INFORMATION: {
+    statusCode: 203,
+    key: 'NON AUTHORITATIVE INFORMATION'
+  },
+  NO_CONTENT: {
+    statusCode: 204,
+    key: 'NO CONTENT'
+  },
+  RESET_CONTENT: {
+    statusCode: 205,
+    key: 'RESET CONTENT'
+  },
+  PARTIAL_CONTENT: {
+    statusCode: 206,
+    key: 'PARTIAL CONTENT'
+  },
+  MULTI_STATUS: {
+    statusCode: 207,
+    key: 'MULTI STATUS'
+  },
+  ALREADY_REPORTED: {
+    statusCode: 208,
+    key: 'ALREADY REPORTED'
+  },
+  IM_USED: {
+    statusCode: 226,
+    key: 'IM USED'
+  },
+  MULTIPLE_CHOICES: {
+    statusCode: 300,
+    key: 'MULTIPLE CHOICES'
+  },
+  MOVED_PERMANENTLY: {
+    statusCode: 301,
+    key: 'MOVED PERMANENTLY'
+  },
+  FOUND: {
+    statusCode: 302,
+    key: 'FOUND'
+  },
+  SEE_OTHER: {
+    statusCode: 303,
+    key: 'SEE OTHER'
+  },
+  NOT_MODIFIED: {
+    statusCode: 304,
+    key: 'NOT MODIFIED'
+  },
+  USE_PROXY: {
+    statusCode: 305,
+    key: 'USE PROXY'
+  },
+  SWITCH_PROXY: {
+    statusCode: 306,
+    key: 'SWITCH PROXY'
+  },
+  TEMPORARY_REDIRECT: {
+    statusCode: 307,
+    key: 'TEMPORARY REDIRECT'
+  },
+  PERMANENT_REDIRECT: {
+    statusCode: 308,
+    key: 'PERMANENT REDIRECT'
+  },
+  BAD_REQUEST: {
+    statusCode: 400,
+    key: 'BAD REQUEST'
+  },
+  UNAUTHORIZED: {
+    statusCode: 401,
+    key: 'UNAUTHORIZED'
+  },
+  PAYMENT_REQUIRED: {
+    statusCode: 402,
+    key: 'PAYMENT REQUIRED'
+  },
+  FORBIDDEN: {
+    statusCode: 403,
+    key: 'FORBIDDEN'
+  },
+  NOT_FOUND: {
+    statusCode: 404,
+    key: 'NOT FOUND'
+  },
+  METHOD_NOT_ALLOWED: {
+    statusCode: 405,
+    key: 'METHOD NOT ALLOWED'
+  },
+  NOT_ACCEPTABLE: {
+    statusCode: 406,
+    key: 'NOT ACCEPTABLE'
+  },
+  PROXY_AUTHENTICATION_REQUIRED: {
+    statusCode: 407,
+    key: 'PROXY AUTHENTICATION REQUIRED'
+  },
+  REQUEST_TIMEOUT: {
+    statusCode: 408,
+    key: 'REQUEST TIMEOUT'
+  },
+  CONFLICT: {
+    statusCode: 409,
+    key: 'CONFLICT'
+  },
+  GONE: {
+    statusCode: 410,
+    key: 'GONE'
+  },
+  LENGTH_REQUIRED: {
+    statusCode: 411,
+    key: 'LENGTH REQUIRED'
+  },
+  PRECONDITION_FAILED: {
+    statusCode: 412,
+    key: 'PRECONDITION FAILED'
+  },
+  PAYLOAD_TOO_LARGE: {
+    statusCode: 413,
+    key: 'PAYLOAD TOO LARGE'
+  },
+  URI_TOO_LONG: {
+    statusCode: 414,
+    key: 'URI TOO LONG'
+  },
+  UNSUPPORTED_MEDIA_TYPE: {
+    statusCode: 415,
+    key: 'UNSUPPORTED MEDIA TYPE'
+  },
+  RANGE_NOT_SATISFIABLE: {
+    statusCode: 416,
+    key: 'RANGE NOT SATISFIABLE'
+  },
+  EXPECTATION_FAILED: {
+    statusCode: 417,
+    key: 'EXPECTATION FAILED'
+  },
+  I_AM_A_TEAPOT: {
+    statusCode: 418,
+    key: 'I AM A TEAPOT'
+  },
+  MISDIRECTED_REQUEST: {
+    statusCode: 421,
+    key: 'MISDIRECTED REQUEST'
+  },
+  UNPROCESSABLE_ENTITY: {
+    statusCode: 422,
+    key: 'UNPROCESSABLE ENTITY'
+  },
+  LOCKED: {
+    statusCode: 423,
+    key: 'LOCKED'
+  },
+  FAILED_DEPENDENCY: {
+    statusCode: 424,
+    key: 'FAILED DEPENDENCY'
+  },
+  UPGRADE_REQUIRED: {
+    statusCode: 426,
+    key: 'UPGRADE REQUIRED'
+  },
+  PRECONDITION_REQUIRED: {
+    statusCode: 428,
+    key: 'PRECONDITION REQUIRED'
+  },
+  TOO_MANY_REQUESTS: {
+    statusCode: 429,
+    key: 'TOO MANY REQUESTS'
+  },
+  REQUEST_HEADER_FIELDS_TOO_LARGE: {
+    statusCode: 431,
+    key: 'REQUEST HEADER FIELDS TOO LARGE'
+  },
+  UNAVAILABLE_FOR_LEGAL_REASONS: {
+    statusCode: 451,
+    key: 'UNAVAILABLE FOR LEGAL REASONS'
+  },
+  INTERNAL_SERVER_ERROR: {
+    statusCode: 500,
+    key: 'INTERNAL SERVER ERROR'
+  },
+  NOT_IMPLEMENTED: {
+    statusCode: 501,
+    key: 'NOT IMPLEMENTED'
+  },
+  BAD_GATEWAY: {
+    statusCode: 502,
+    key: 'BAD GATEWAY'
+  },
+  SERVICE_UNAVAILABLE: {
+    statusCode: 503,
+    key: 'SERVICE UNAVAILABLE'
+  },
+  GATEWAY_TIMEOUT: {
+    statusCode: 504,
+    key: 'GATEWAY TIMEOUT'
+  },
+  HTTP_VERSION_NOT_SUPPORTED: {
+    statusCode: 505,
+    key: 'HTTP VERSION NOT SUPPORTED'
+  },
+  VARIANT_ALSO_NEGOTIATES: {
+    statusCode: 506,
+    key: 'VARIANT ALSO NEGOTIATES'
+  },
+  INSUFFICIENT_STORAGE: {
+    statusCode: 507,
+    key: 'INSUFFICIENT STORAGE'
+  },
+  LOOP_DETECTED: {
+    statusCode: 508,
+    key: 'LOOP DETECTED'
+  },
+  NOT_EXTENDED: {
+    statusCode: 510,
+    key: 'NOT EXTENDED'
+  },
+  NETWORK_AUTHENTICATION_REQUIRED: {
+    statusCode: 511,
+    key: 'NETWORK AUTHENTICATION REQUIRED'
+  }
+};
 
 export default HttpStatusCode;
