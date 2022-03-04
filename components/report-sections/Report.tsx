@@ -436,7 +436,7 @@ const Report = ({
           seniorManagement={data?.personal?.senior_management}
         />
 
-        {data.shareholders.length > 0 && (
+        {data?.shareholders?.length > 0 && (
           <ShareHolderList
             isPrint={forPrint}
             shareholders={data?.shareholders}
