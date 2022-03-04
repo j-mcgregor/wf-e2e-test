@@ -152,6 +152,8 @@ const ChartMulti = ({
       ? t('days')
       : null;
 
+  // header === "Total Assets" && console.log(maxRenderValue)
+
   return (
     <div
       className={`${
@@ -249,78 +251,8 @@ const ChartMulti = ({
           // </VictoryGroup>
         )}
       </ChartContainer>
-
-      {/* company names (were originally buttons) - removed 17-02-22  */}
-
-      {/* <div className="flex flex-col text-xxs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
-        <ChartButton
-          onClick={setSelectedGraphIndex}
-          selectedGraphIndex={selectedGraphIndex}
-          title={companyName}
-          graphIndex={0}
-          bg="bg-[#022D45]"
-          border="border-2 border-[#022D45]"
-        />
-        {isBenchmarkData && (
-          <ChartButton
-            onClick={setSelectedGraphIndex}
-            selectedGraphIndex={selectedGraphIndex}
-            title={benchmarkGraph.name}
-            graphIndex={1}
-            bg="bg-[#278EC8]"
-            border="border-2 border-[#278EC8]"
-          />
-        )}
-      </div> */}
     </div>
   );
 };
 
 export default ChartMulti;
-
-// Benchmark graphs have been removed - might come back - 25.01.22
-// Benchmark graph area
-/* {isBenchmarkData && (
-          <VictoryArea
-            key={`victory-area-${benchmarkGraph.name}`}
-            animate={{
-              duration: 500,
-              onLoad: { duration: 500 }
-            }}
-            data={convertedBenchmarkGraph.data}
-            interpolation="monotoneX"
-            style={{
-              data: {
-                fill: benchmarkColour,
-                fillOpacity:
-                  benchmarkIndex === selectedGraphIndex ? '0.8' : '0.2',
-                stroke: benchmarkColour,
-                strokeOpacity: 1
-              }
-            }}
-          />
-        )} */
-
-// Benchmark Scatter Points
-/* {isBenchmarkData && (
-              <VictoryScatter
-                key={`victory-scatter-${benchmarkGraph.name}`}
-                data={convertedBenchmarkGraph.data}
-                size={2}
-                y0={() => minValue * 0.8}
-                style={{
-                  data: {
-                    strokeWidth: 1,
-                    stroke: graphColors(benchmarkIndex),
-                    strokeOpacity:
-                      benchmarkIndex === selectedGraphIndex ? '1' : '0.7',
-                    fill:
-                      benchmarkIndex !== selectedGraphIndex
-                        ? 'white'
-                        : graphColors(benchmarkIndex),
-                    fillOpacity:
-                      benchmarkIndex === selectedGraphIndex ? '1' : '0'
-                  }
-                }}
-              />
-            )} */

@@ -20,10 +20,10 @@ export const calculateMaxDataPoint = (
 
 export const calculateMinDataPoint = (smallestValue: number) =>
   Math.min(
-    getNumberLength(smallestValue) > 8
+    getNumberLength(smallestValue) >= 8 // had to change to >= 8 because of companies that have millions one year then billions the next
       ? smallestValue / 1000000
       : getNumberLength(smallestValue) >= 4 &&
-        getNumberLength(smallestValue) <= 8
+        getNumberLength(smallestValue) < 8 // had to change to lower than to match the above change
       ? smallestValue / 1000
       : smallestValue
   );
