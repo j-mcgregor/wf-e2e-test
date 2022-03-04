@@ -1,6 +1,5 @@
 import { useTranslations } from 'next-intl';
-import React from 'react';
-
+import { useWindowWidth } from '../../../hooks/useWindowSize';
 import { Subsidiary } from '../../../types/report';
 import { PlaceholderBox } from '../../elements/PlaceholderBox';
 import { CircleX } from '../../svgs/CircleX';
@@ -9,14 +8,23 @@ import { renderArrayForPrint } from '../../../lib/utils/print-helpers';
 
 interface SubsidiaryListProps {
   subsidiaries: Subsidiary[];
+  isPrint: boolean | undefined;
 }
 
-export const SubsidiaryList = ({ subsidiaries }: SubsidiaryListProps) => {
+export const SubsidiaryList = ({
+  subsidiaries,
+  isPrint
+}: SubsidiaryListProps) => {
   const t = useTranslations();
 
+  const windowWidth = useWindowWidth() || 0;
+
+  // if window width is above 640px (eg 2 col grid) = max cards per split section needs to be divisible by 2 so set to 40
+  // if window width is above  1024px (eg 3 col grid) = max cards per split section needs to divisible by 3, so set to 39
+  const maxCardsPerPage = isPrint || windowWidth < 1024 ? 64 : 63;
   const subsidiariesToRender: Subsidiary[][] = renderArrayForPrint(
     subsidiaries,
-    64
+    maxCardsPerPage
   );
 
   return (

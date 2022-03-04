@@ -11,6 +11,7 @@ import {
 } from '../../types/global';
 import { SubmitReportType } from '../../types/report';
 import Button from '../elements/Button';
+import ErrorBoundary from '../elements/ErrorBoundary';
 import { ErrorBox } from '../errors/ErrorBox';
 import UploadFile from './UploadFile';
 
@@ -180,7 +181,9 @@ const UploadNewData = ({
           {buttonText}
         </Button>
       </div>
-      {error?.error && <ErrorBox error={error} />}
+      <ErrorBoundary>
+        {error?.error && <ErrorBox error={error} />}
+      </ErrorBoundary>
       {children}
     </div>
   );

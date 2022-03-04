@@ -233,15 +233,15 @@ export type CsvReportUploadHeaders =
   | 'company_id'
   // DETAILS =============
   // -- in req body, not in csv --
-  | 'details_status_change_date'
+  // | 'details_status_change_date'
   // ------------------------------
   | 'details_name'
   | 'details_industry_sector_code'
-  | 'details_websites' // <-- becomes details.websites
-  | 'details_status'
+  | 'details_website' // <-- becomes details.websites
+  // | 'details_status'
   | 'details_nace_code'
   | 'details_number_of_directors' // <-- becomes details.number_of_directors
-  | 'details_number_of_employees' // <-- becomes details.number_of_employees
+  // | 'details_number_of_employees' // <-- becomes details.number_of_employees
   | 'details_number_of_subsidiaries' // <-- becomes details.number_of_subsidiaries
   // FINANCIALS =============
   | 'number_of_employees' // <-- becomes financials[x].number_of_employees
@@ -322,12 +322,9 @@ export interface ReportUploadDetailsRequestBody {
   nace_code: number;
   industry_sector_code: IndustrySectorCodes;
   name: string;
-  status: string[];
-  status_change_date: string[];
   number_of_directors: number;
-  number_of_employees: number;
   number_of_subsidiaries: number;
-  websites: string[];
+  website: string;
 }
 
 /**

@@ -108,9 +108,24 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
 
     /* ***** GET REPORT AS CSV ******* */
 
-    if (request.query.export === 'csv') {
+    if (request?.query?.export === 'csv') {
       try {
-        const res = await Report.getReportCsv(
+        const res = await Report.getReportShortCsv(
+          `${reportId}`,
+          `${token.accessToken}`
+        );
+        if (res.ok) {
+          return response.status(200).json(res.csv);
+        }
+      } catch (error) {
+        return response.status(422).json({
+          error: VALIDATION_ERROR,
+          message: 'Unable to process the request'
+        } as ApiError);
+      }
+    } else if (request?.query?.export === 'csv-full') {
+      try {
+        const res = await Report.getReportFullCsv(
           `${reportId}`,
           `${token.accessToken}`
         );

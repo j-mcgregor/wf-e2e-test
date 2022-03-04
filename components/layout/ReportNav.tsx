@@ -33,6 +33,8 @@ const ReportNav = ({
   const id = router?.query?.id;
   const [activeItem, setActiveItem] = useState<string>('summary');
 
+  const [downloadingCsv, setDownloadingCsv] = useState(false);
+
   if (loading) {
     return (
       <>
@@ -47,18 +49,19 @@ const ReportNav = ({
 
   const handleExportCsv = async () => {
     if (!id) return null;
+    setDownloadingCsv(true);
 
     try {
       const csv = await fetcher(
-        `/api/reports/report?id=${id}&export=csv`,
+        `/api/reports/report?id=${id}&export=csv-full`,
         'GET',
         null,
         {},
         'csv'
       );
+      setDownloadingCsv(false);
 
       const fileName = `report-${id}.csv`;
-
       downloadFile({
         data: csv,
         // eg report-companyName.csv
@@ -152,7 +155,12 @@ const ReportNav = ({
         >
           {t('export_pdf')}
         </Button>
-        <Button variant="secondary" onClick={() => handleExportCsv()}>
+        <Button
+          loading={downloadingCsv}
+          disabled={downloadingCsv}
+          variant="secondary"
+          onClick={() => handleExportCsv()}
+        >
           {t('export_csv')}
         </Button>
       </div>

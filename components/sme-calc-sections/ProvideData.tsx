@@ -37,7 +37,6 @@ const ProvideData = () => {
 
     try {
       const res = await fetcher('/api/reports/upload', 'POST', params);
-
       if (res?.error) {
         Sentry.captureException({
           error: res.error,

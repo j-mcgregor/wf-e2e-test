@@ -20,8 +20,8 @@ export const ErrorBox = (error: any) => {
           <>
             {api422response.map(a => (
               <>
-                <p>{a.msg}</p>
-                <p>{a.location}</p>
+                <p>{`${a.msg}`}</p>
+                <p>{`${a.location}`}</p>
               </>
             ))}
           </>

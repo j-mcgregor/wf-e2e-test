@@ -2,7 +2,6 @@
 /* eslint-disable sonarjs/prefer-immediate-return */
 import {
   autoBatchUploadValidators,
-  convertStringArrayToArrayOfStrings,
   manualUploadValidators
 } from '../settings/report-validators';
 
@@ -38,11 +37,6 @@ export const makeUploadReportReqBody = (
 
   const setStringValue = (key: CsvReportUploadHeaders, i: number) =>
     reportObject[key]?.[i]?.toString() ?? '';
-
-  const { value: details_status, isValid: is_status_valid } =
-    convertStringArrayToArrayOfStrings(setStringValue('details_status', 0));
-  const { value: details_websites, isValid: is_websites_valid } =
-    convertStringArrayToArrayOfStrings(setStringValue('details_websites', 0));
 
   const financials: ReportUploadFinancialRequestBody[] = csvValues.map(
     (_, i) => {
@@ -98,16 +92,13 @@ export const makeUploadReportReqBody = (
         0
       ) as IndustrySectorCodes,
       number_of_directors: setNumberValue('details_number_of_directors', 0),
-      number_of_employees: setNumberValue('details_number_of_employees', 0),
       number_of_subsidiaries: setNumberValue(
         'details_number_of_subsidiaries',
         0
       ),
       // NOTE: req.body expects string[] but below will only set single value string[]
       // TODO setArrayValue
-      status: is_status_valid ? details_status : [],
-      status_change_date: [setStringValue('details_status_change_date', 0)],
-      websites: is_websites_valid ? details_websites : []
+      website: setStringValue('details_website', 0)
     },
     // FINANCIALS ==================
     // multiple years per report are mapped here

@@ -110,55 +110,55 @@ export const uploadReportCSVHeaders: {
       !x && `A value for "details_nace_code" is required`,
     formatted: 'NACE Code'
   },
-  details_status: {
-    required: (x: string) =>
-      !x && `A value for "details_status" is required (eg "['Active']")`,
-    formatted: 'Status',
-    validator: (x: string) => {
-      // CSV dowwnload gives "['Active']" (string with brackets)
-      // CSV upload requires ['Active'] (string[])
-      if (!x) return `A value for "details_status" is required`;
+  // details_status: {
+  //   required: (x: string) =>
+  //     !x && `A value for "details_status" is required (eg "['Active']")`,
+  //   formatted: 'Status',
+  //   validator: (x: string) => {
+  //     // CSV dowwnload gives "['Active']" (string with brackets)
+  //     // CSV upload requires ['Active'] (string[])
+  //     if (!x) return `A value for "details_status" is required`;
 
-      const { value, isValid } = convertStringArrayToArrayOfStrings(x);
+  //     const { value, isValid } = convertStringArrayToArrayOfStrings(x);
 
-      if (!isValid) {
-        return `Value is not convertable to array (eg "['Active']")`;
-      }
+  //     if (!isValid) {
+  //       return `Value is not convertable to array (eg "['Active']")`;
+  //     }
 
-      if (value.length === 0) {
-        return `A value for "details_status" is required (eg "['Active']")`;
-      }
+  //     if (value.length === 0) {
+  //       return `A value for "details_status" is required (eg "['Active']")`;
+  //     }
 
-      // if value contains values that aren't 'active' or 'inactive' (including empty strings)
+  //     // if value contains values that aren't 'active' or 'inactive' (including empty strings)
 
-      for (let i = 0; i < value.length; i++) {
-        const isPermitted = validStatusList.some(
-          permitted => permitted.toLowerCase() === value[i].toLowerCase()
-        );
-        if (!isPermitted) {
-          return `Value ${value[i]} not permitted`;
-        }
-      }
+  //     for (let i = 0; i < value.length; i++) {
+  //       const isPermitted = validStatusList.some(
+  //         permitted => permitted.toLowerCase() === value[i].toLowerCase()
+  //       );
+  //       if (!isPermitted) {
+  //         return `Value ${value[i]} not permitted`;
+  //       }
+  //     }
 
-      if (
-        !value.every(
-          val =>
-            val.toLowerCase() === 'active' || val.toLowerCase() === 'inactive'
-        )
-      ) {
-        return 'Values must be either "Active" or "Inactive"';
-      }
+  //     if (
+  //       !value.every(
+  //         val =>
+  //           val.toLowerCase() === 'active' || val.toLowerCase() === 'inactive'
+  //       )
+  //     ) {
+  //       return 'Values must be either "Active" or "Inactive"';
+  //     }
 
-      return false;
-    }
-  },
-  details_status_change_date: {
+  //     return false;
+  //   }
+  // },
+  // details_status_change_date: {
+  //   required: false,
+  //   formatted: 'Details Status change date'
+  // },
+  details_website: {
     required: false,
-    formatted: 'Details Status change date'
-  },
-  details_websites: {
-    required: false,
-    formatted: 'Details websites',
+    formatted: 'Details website',
     validator: (x: string) => {
       // CSV dowwnload gives "['example.com']" (string with brackets)
       // CSV upload requires ['example.com'] (string[])
@@ -183,11 +183,11 @@ export const uploadReportCSVHeaders: {
       !x && `A value for "details_number_of_directors" is required`,
     formatted: 'Details number of directors'
   },
-  details_number_of_employees: {
-    required: (x: string) =>
-      !x && `A value for "details_number_of_employees" is required`,
-    formatted: 'Details number of employees'
-  },
+  // details_number_of_employees: {
+  //   required: (x: string) =>
+  //     !x && `A value for "details_number_of_employees" is required`,
+  //   formatted: 'Details number of employees'
+  // },
   details_number_of_subsidiaries: {
     required: (x: string) =>
       !x && `A value for "details_number_of_subsidiaries" is required`,

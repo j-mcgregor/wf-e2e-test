@@ -436,8 +436,11 @@ const Report = ({
           seniorManagement={data?.personal?.senior_management}
         />
 
-        {data?.shareholders?.length > 0 && (
-          <ShareHolderList shareholders={data?.shareholders} />
+        {data.shareholders.length > 0 && (
+          <ShareHolderList
+            isPrint={forPrint}
+            shareholders={data?.shareholders}
+          />
         )}
 
         {/* Removed till we know more about whether it is going to be included */}
@@ -458,7 +461,7 @@ const Report = ({
       >
         <ReportSectionHeader text={t('structure')} />
         <ParentsList parents={data?.parents} />
-        <SubsidiaryList subsidiaries={data?.subsidiaries} />
+        <SubsidiaryList isPrint={forPrint} subsidiaries={data?.subsidiaries} />
       </HashContainer>
 
       <HashContainer
