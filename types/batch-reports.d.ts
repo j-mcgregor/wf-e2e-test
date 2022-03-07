@@ -45,6 +45,10 @@ export interface BatchReport<T> {
   entities: T[];
 }
 
+/**
+ * @todo check to see if still relevant since the refactor
+ */
+
 // GET /api/v1/jobs/batch response
 
 export type BatchJobsGetAllResponse = BatchReportResponse[];

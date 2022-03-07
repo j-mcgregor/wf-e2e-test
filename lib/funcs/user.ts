@@ -8,6 +8,12 @@ const JSONHeaders = {
   'Content-Type': 'application/json'
 };
 
+/**
+ * ***************************************************
+ * AUTHENTICATE
+ * ***************************************************
+ */
+
 const authenticate = async (email: string, password: string) => {
   const res = await fetch(`${process.env.WF_AP_ROUTE}/login/access-token`, {
     method: 'POST',
@@ -25,6 +31,12 @@ const authenticate = async (email: string, password: string) => {
   }
   return null;
 };
+
+/**
+ * ***************************************************
+ * GET FULL USER
+ * ***************************************************
+ */
 
 const getFullUser = async (token: string) => {
   if (!token) {
@@ -64,6 +76,12 @@ const getFullUser = async (token: string) => {
 
   return { ok: false, status: res.status };
 };
+
+/**
+ * ***************************************************
+ * GET USER
+ * ***************************************************
+ */
 
 const getUser = async (token: string) => {
   if (!token) {
@@ -125,6 +143,12 @@ const giveDefaults = (user: any) => {
   return user;
 };
 
+/**
+ * ***************************************************
+ * FORGOT PASSWORD
+ * ***************************************************
+ */
+
 const forgotPassword = async (email: string) => {
   if (!email) {
     return { ok: false };
@@ -146,6 +170,12 @@ const forgotPassword = async (email: string) => {
 
   return { ok: false };
 };
+
+/**
+ * ***************************************************
+ * GET SSO TOKEN
+ * ***************************************************
+ */
 
 const getSSOToken = async (
   token: string
@@ -171,6 +201,12 @@ const getSSOToken = async (
   return { ok: false };
 };
 
+/**
+ * ***************************************************
+ * RESET PASSWORD
+ * ***************************************************
+ */
+
 const resetPassword = async (
   token: string,
   newPassword: string
@@ -194,6 +230,12 @@ const resetPassword = async (
   return { ok: false };
 };
 
+/**
+ * ***************************************************
+ * UPDATE USER
+ * ***************************************************
+ */
+
 const updateUser = async (
   user: UserType,
   token: string
@@ -215,6 +257,12 @@ const updateUser = async (
   }
   return { ok: false, status: res.status };
 };
+
+/**
+ * ***************************************************
+ * GET REPORTS HISTORY
+ * ***************************************************
+ */
 
 // get the history of the reports run by the user
 const getReportsHistory = async (
@@ -243,6 +291,12 @@ const getReportsHistory = async (
   }
   return { ok: false, status: res.status };
 };
+
+/**
+ * ***************************************************
+ * BOOKMARK REPORT
+ * ***************************************************
+ */
 
 const bookmarkReport = async (
   reportId: string,
@@ -275,6 +329,12 @@ const bookmarkReport = async (
     return { ok: false, status: res.status, details: e.message };
   }
 };
+
+/**
+ * ***************************************************
+ * GET USER BOOKMARKS
+ * ***************************************************
+ */
 
 const getUserBookmarks = async (
   token: string

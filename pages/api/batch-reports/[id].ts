@@ -48,8 +48,8 @@ const batchReports = async (
 
     try {
       const fetchRes = await BatchReport.getBatchReportsById(
-        batchReportId.toString(),
-        `${token.accessToken}`
+        `${token.accessToken}`,
+        batchReportId.toString()
       );
 
       if (fetchRes.ok) {

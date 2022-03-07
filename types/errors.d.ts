@@ -124,3 +124,18 @@ export interface ValidationError {
     }
   ];
 }
+
+export type CustomApiCodes = 500 | 404 | 422 | 429 | 503;
+
+export interface CustomApiErrorDescription {
+  // Data not found
+  404: string;
+  // Invalid details
+  422: string;
+  // Rate limit (soft) i.e. try again in 30s
+  429: string;
+  // Full unrecoverable error generating report
+  500: string;
+  // Full Rate limit
+  503: string;
+}

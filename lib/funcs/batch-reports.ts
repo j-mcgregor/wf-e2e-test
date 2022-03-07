@@ -1,3 +1,11 @@
+import { ValidationError } from '../../types/errors';
+import { ApiHandler, HandlerReturn } from '../../types/http';
+import {
+  makeApiHandlerResponseFailure,
+  makeApiHandlerResponseSuccess,
+  makeJsonError
+} from '../utils/http-helpers';
+
 import type {
   BatchJobGetByIdResponse,
   BatchJobsGetAllResponse,
@@ -6,41 +14,6 @@ import type {
   BatchAutoRequest,
   CreateBatchJobResponse
 } from '../../types/batch-reports';
-import { ValidationError } from '../../types/errors';
-import { HttpStatusCodes } from '../../types/http-status-codes';
-import { GENERIC_API_ERROR } from '../utils/error-codes';
-
-/**
- * ***************************************************
- * @description
- * Used for every API handler call that uses fetch().
- * T should always extend the HandlerReturn
- * @returns a Promise<T> where T is the expected response
- * @example const getAllBatchReports: ApiHandler<GetAllBatchReports> = () => {}
- * @param token string
- * @param ...args any[]
- * ***************************************************
- */
-
-type ApiHandler<T> = (token: string, ...args: any[]) => Promise<T>;
-
-/**
- * ***************************************************
- * @name HandlerReturn
- * @description the core interface for every handler in the project.
- * Every handler's own interface should extend this one.
- * Could also be used in other places
- * ***************************************************
- */
-
-interface HandlerReturn {
-  ok: boolean; // <-- Response.ok is passed to this
-  status: number;
-  error?: boolean; // <-- not sure if we need error AND ok
-  message: string | object; // <-- message could be an object, eg a 422 returns ValidationError
-  // suggestion
-  source?: 'internal' | 'external';
-}
 
 /**
  * ***************************************************
@@ -48,11 +21,10 @@ interface HandlerReturn {
  * ***************************************************
  */
 
-interface GetAllBatchReports extends HandlerReturn {
+export interface GetAllBatchReports extends HandlerReturn {
   batchReports: BatchJobsGetAllResponse | null; // <- null indicates a failure since typing makes this value required
 }
 
-// implementation
 const getAllBatchReports: ApiHandler<GetAllBatchReports> = async (
   token: string
 ) => {
@@ -68,35 +40,34 @@ const getAllBatchReports: ApiHandler<GetAllBatchReports> = async (
       const batchReports: BatchJobsGetAllResponse = await res.json();
 
       return {
-        ok: res.ok,
-        batchReports: batchReports,
-        status: res.status,
-        message: HttpStatusCodes.OK.key // <- 'OK' - more human-readable format
+        ...makeApiHandlerResponseSuccess(),
+        batchReports
       };
     }
 
-    // invalid request body
-    if (res.status === 422) {
-      const error: ValidationError = await res.json();
+    try {
+      const error: ValidationError = await res?.json();
+
+      const data = makeJsonError(res.status, error);
 
       return {
-        ok: false,
-        error: true,
-        message: JSON.stringify(error), // <- ValidationError is passed to NextAPI handleras JSON
-        status: 500,
+        ...makeApiHandlerResponseFailure({
+          message: { isJSON: true, data },
+          status: res.status
+        }),
+        batchReports: null
+      };
+    } catch (err: any) {
+      return {
+        ...makeApiHandlerResponseFailure({
+          message: err.message,
+          status: res.status
+        }),
         batchReports: null
       };
     }
-
-    throw new Error('Fetch all batch reports failed');
   } catch (error) {
-    return {
-      ok: false,
-      error: true,
-      message: GENERIC_API_ERROR,
-      status: 500,
-      batchReports: null
-    };
+    return { ...makeApiHandlerResponseFailure(), batchReports: null };
   }
 };
 
@@ -105,26 +76,55 @@ const getAllBatchReports: ApiHandler<GetAllBatchReports> = async (
  * GET BATCH REPORT BY ID
  * ***************************************************
  */
-interface GetBatchReportById extends HandlerReturn {
-  batchReport?: BatchJobGetByIdResponse;
+export interface GetBatchReportById extends HandlerReturn {
+  batchReport: BatchJobGetByIdResponse | null;
 }
 
-const getBatchReportsById = async (
-  id: string,
-  token: string
-): Promise<GetBatchReportById> => {
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch/${id}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+const getBatchReportsById: ApiHandler<GetBatchReportById> = async (
+  token: string,
+  id: string
+) => {
+  try {
+    const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
-  if (res.status === 200 && res.ok) {
-    const batchReport: BatchJobGetByIdResponse = await res.json();
-    return { ok: true, batchReport, status: res.status };
+    if (res.status === 200 && res.ok) {
+      const batchReport: BatchJobGetByIdResponse = await res.json();
+
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        batchReport
+      };
+    }
+
+    try {
+      const error: ValidationError = await res?.json();
+
+      const data = makeJsonError(res.status, error);
+
+      return {
+        ...makeApiHandlerResponseFailure({
+          message: { isJSON: true, data },
+          status: res.status
+        }),
+        batchReport: null
+      };
+    } catch (err: any) {
+      return {
+        ...makeApiHandlerResponseFailure({
+          message: err.message,
+          status: res.status
+        }),
+        batchReport: null
+      };
+    }
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), batchReport: null };
   }
-  return { ok: false, status: res.status };
 };
 
 /**
@@ -133,15 +133,14 @@ const getBatchReportsById = async (
  * ***************************************************
  */
 
-const createBatchReport = async (
-  report: BatchAutoRequest,
-  token: string
-): Promise<{
-  ok: boolean;
-  status: number;
-  report?: CreateBatchJobResponse;
-  details?: string | {};
-}> => {
+export interface CreateBatchReport extends HandlerReturn {
+  report: CreateBatchJobResponse | null;
+}
+
+const createBatchReport: ApiHandler<CreateBatchReport> = async (
+  token: string,
+  report: BatchAutoRequest
+) => {
   try {
     const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch`, {
       method: 'POST',
@@ -152,15 +151,41 @@ const createBatchReport = async (
       body: JSON.stringify(report)
     });
 
-    res.formData;
     if (res.ok) {
       const report: CreateBatchJobResponse = await res.json();
-      return { ok: true, report, status: res.status };
+
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        report: report
+      };
     }
-    const error = await res?.json();
-    return { ok: false, status: res.status, details: error?.detail };
-  } catch (e: any) {
-    return { ok: false, status: 500, details: e.message };
+
+    try {
+      const error: ValidationError = await res?.json();
+
+      const data = makeJsonError(res.status, error);
+
+      return {
+        ...makeApiHandlerResponseFailure({
+          message: { isJSON: true, data },
+          status: res.status
+        }),
+        report: null
+      };
+    } catch (err: any) {
+      return {
+        ...makeApiHandlerResponseFailure({
+          message: err.message,
+          status: res.status
+        }),
+        report: null
+      };
+    }
+  } catch (err: any) {
+    return {
+      ...makeApiHandlerResponseFailure({ message: err.message }),
+      report: null
+    };
   }
 };
 
@@ -170,34 +195,59 @@ const createBatchReport = async (
  * ***************************************************
  */
 
-const batchJobReportUpload = async (
-  report: BatchManualRequest,
-  token: string
-): Promise<{
-  ok: boolean;
-  status: number;
-  report?: BatchJobUploadResponse;
-  details?: string | {};
-}> => {
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch/upload`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(report)
-  });
+export interface BatchJobReportUpload extends HandlerReturn {
+  report: BatchJobUploadResponse | null;
+}
 
-  if (res.ok) {
-    const report: BatchJobUploadResponse = await res.json();
-    return { ok: true, report, status: res.status };
-  }
-
+const batchJobReportUpload: ApiHandler<BatchJobReportUpload> = async (
+  token: string,
+  report: BatchManualRequest
+) => {
   try {
-    const error = await res?.json();
-    return { ok: false, status: res.status, details: error?.detail };
-  } catch (e: any) {
-    return { ok: false, status: res.status, details: e.message };
+    const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch/upload`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(report)
+    });
+
+    if (res.ok) {
+      const report: BatchJobUploadResponse = await res.json();
+
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        report: report
+      };
+    }
+
+    try {
+      const error: ValidationError = await res?.json();
+
+      const data = makeJsonError(res.status, error);
+
+      return {
+        ...makeApiHandlerResponseFailure({
+          message: { isJSON: true, data },
+          status: res.status
+        }),
+        report: null
+      };
+    } catch (err: any) {
+      return {
+        ...makeApiHandlerResponseFailure({
+          message: err.message,
+          status: res.status
+        }),
+        report: null
+      };
+    }
+  } catch (err: any) {
+    return {
+      ...makeApiHandlerResponseFailure({ message: err.message }),
+      report: null
+    };
   }
 };
 

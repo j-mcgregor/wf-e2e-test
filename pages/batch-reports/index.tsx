@@ -4,7 +4,7 @@ import {
   DocumentReportIcon,
   RefreshIcon
 } from '@heroicons/react/outline';
-import { GetStaticPropsContext } from 'next';
+import { GetStaticPropsContext, NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
@@ -16,23 +16,18 @@ import LinkCard from '../../components/cards/LinkCard';
 import Layout from '../../components/layout/Layout';
 import { appUser } from '../../lib/appState';
 import fetcher from '../../lib/utils/fetcher';
+import { BatchReportsIndexApi } from '../api/batch-reports';
 
-import type {
-  BatchJobsGetAllResponse,
-  BatchReportResponse
-} from '../../types/batch-reports';
+import type { BatchReportResponse } from '../../types/batch-reports';
 
-const BatchReports = () => {
+const BatchReports: NextPage = () => {
   const t = useTranslations();
   const [pendingJobs, setPendingJobs] = useState<BatchReportResponse[]>([]);
   const [completedJobs, setCompletedJobs] = useState<BatchReportResponse[]>([]);
 
   const user = useRecoilValue(appUser);
 
-  const { data: allJobs, error: allJobErrors } = useSWR<{
-    batchReports: BatchJobsGetAllResponse;
-    error: boolean;
-  }>(
+  const { data: allJobs } = useSWR<BatchReportsIndexApi>(
     `/api/batch-reports`,
     fetcher,
     pendingJobs?.length > 0 ? { refreshInterval: 1000 } : {}
@@ -41,10 +36,10 @@ const BatchReports = () => {
   // run on allJobs
   useEffect(() => {
     if (allJobs?.batchReports) {
-      const complete = allJobs.batchReports.filter(
+      const complete = allJobs.batchReports?.filter(
         job => job.total_reports !== job.failed_reports
       );
-      const pending = allJobs.batchReports.filter(
+      const pending = allJobs.batchReports?.filter(
         job => job.total_reports == job.failed_reports
       );
 

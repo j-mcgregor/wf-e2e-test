@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
-import { GetStaticPropsContext } from 'next';
+import { GetStaticPropsContext, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createRef, useEffect, useState } from 'react';
 import { mutate } from 'swr';
@@ -17,25 +17,20 @@ import { useCsvValidators } from '../../hooks/useCsvValidators';
 import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
+import { BatchReportsIndexApi } from '../api/batch-reports';
+import { BatchReportsManualApi } from '../api/batch-reports/manual';
 
 import type { SubmitReportType } from '../../types/report';
 
-const CreateBatchReport = () => {
+const CreateBatchReport: NextPage = () => {
   const t = useTranslations();
   const router = useRouter();
 
   const [fileSelected, setFileSelected] = useState<File | null>(null);
   const [fileSelectedName, setFileSelectedName] = useState<string>('');
 
-  const {
-    csvData,
-    csvValues,
-    fileName,
-    isCSV,
-    isAutoOrManual,
-    totalRows,
-    totalCompanies
-  } = useCSV(fileSelected);
+  const { csvData, csvValues, fileName, isCSV, isAutoOrManual } =
+    useCSV(fileSelected);
 
   const { isValid, errors, missingHeaders } = useCsvValidators(
     csvData,
@@ -79,13 +74,20 @@ const CreateBatchReport = () => {
     );
 
     try {
-      const res = await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
+      // POST '/api/batch-reports' => BatchReportsIndexApi (auto)
+      // POST '/api/batch-reports/upload' => BatchReportsManualApi (manual)
+      const res: BatchReportsIndexApi | BatchReportsManualApi = await fetcher(
+        isAutoOrManual.apiUrl,
+        'POST',
+        reqData
+      );
+
       if (res.ok) {
-        setResults(res.data);
+        setResults({ id: res.batchReportId ?? '' });
       }
       if (res.batchReportId) {
         // fetch the new batchreports
-        mutate('/api/batch-reports');
+        mutate<BatchReportsIndexApi>('/api/batch-reports');
         // push to batch-reports where in progress reports will show
         return router.push(`/batch-reports`);
       }
@@ -265,13 +267,3 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
     }
   };
 }
-
-// disable input when submitting - done
-// disable file upload when submitting - done
-// progress bar runs after successful request - done
-// page redirects to ID after
-
-// auto-batch (30s max per company) and manual-batch (10s per company) have different averageTime to complete - done
-// if time to complete is > 5 mins, kick back to index - done
-// else wait for response, then trigger progress bar and take to ID page - done
-// handle api errors
