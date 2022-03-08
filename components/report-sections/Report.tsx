@@ -57,8 +57,6 @@ const Report = ({
 
   const companyAddress = companyDetails?.address;
 
-  const companySectors = data?.esg?.sectors;
-
   const date = new Date(`${data?.created_at}`);
 
   const reliabilityIndex = data?.reliability_index;
