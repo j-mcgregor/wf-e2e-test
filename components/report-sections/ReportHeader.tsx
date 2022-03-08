@@ -39,11 +39,13 @@ const ReportHeader = ({
   const t = useTranslations();
 
   const splitDate = created.replaceAll('.', '/');
-  const formattedDate = new Date(splitDate).toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  });
+  const formattedDate = new Date(splitDate)
+    .toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    })
+    .replaceAll('/', '.');
 
   return (
     <div className="flex sm:flex-row flex-col w-full only-of-type:justify-between">
