@@ -108,7 +108,11 @@ const ChartMulti = ({
 
   // const isBenchmarkData = isGraphData(benchmarkGraph);
 
-  const maxYValue = calculateMaxDataPoint(largestYDataPoint);
+  // handle the fact that ratios can be over 1000 and thus would be divided by 1000
+  const maxYValue =
+    chartType === 'ratio'
+      ? largestYDataPoint
+      : calculateMaxDataPoint(largestYDataPoint);
 
   const minYValue = calculateMinDataPoint(
     smallestYDataPoint,
@@ -154,7 +158,8 @@ const ChartMulti = ({
       ? t('days')
       : null;
 
-  // header === "Total Assets" && console.log(maxRenderValue)
+  // how to log only one graph
+  // header === "Interest Coverage Ratio" && console.log(maxYValue)
 
   return (
     <div
