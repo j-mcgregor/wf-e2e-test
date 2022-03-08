@@ -9,7 +9,7 @@ interface SummaryMapProps {
   region?: string | null;
   country?: string | null;
   emails: string[];
-  websites: string[];
+  websites: string;
   phoneNumbers: string[];
 }
 
@@ -40,7 +40,7 @@ const SummaryMap = ({
   const cleanFullAddress = fullAddress.replace(/[^\w\s\-,.]/gi, '');
 
   const emailAddress = emails?.length > 0 ? emails[0] : null;
-  const website = websites?.length > 0 ? websites[0] : null;
+  const website = websites ? websites : null;
 
   const isValidWebsite = website && website.replace(/^https?:\/\//, '');
   const validWebsiteAddress = isValidWebsite

@@ -54,9 +54,9 @@ const ChartMulti = ({
   showLabels
 }: ChartMultiProps) => {
   const [data, setData] = useState<FinancialGraphType[] | null>(null);
-  const [selectedGraphIndex, setSelectedGraphIndex] = useState<number | null>(
-    0
-  );
+  // const [selectedGraphIndex, setSelectedGraphIndex] = useState<number | null>(
+  //   0
+  // );
   const t = useTranslations();
 
   useEffect(() => {
@@ -106,13 +106,15 @@ const ChartMulti = ({
     data: convertData(companyGraph.data, useMillions, useThousands)
   };
 
-  const isBenchmarkData = isGraphData(benchmarkGraph);
-  const maxYValue = calculateMaxDataPoint(
-    largestYDataPoint,
-    largestNumberLength
+  // const isBenchmarkData = isGraphData(benchmarkGraph);
+
+  const maxYValue = calculateMaxDataPoint(largestYDataPoint);
+
+  const minYValue = calculateMinDataPoint(
+    smallestYDataPoint,
+    largestYDataPoint
   );
 
-  const minYValue = calculateMinDataPoint(smallestYDataPoint);
   const maxRenderValue = getMaxRenderValue(disabled, chartType, maxYValue);
   // So percentages through it out
   // also if the values are 3 digits but the maximum are over 100,000,000 then you end up with descrepancies
@@ -163,7 +165,9 @@ const ChartMulti = ({
     >
       <div className="flex justify-between items-start px-4 pt-4 text-base">
         <div className="">
-          <h5 className="pb-2 whitespace-nowrap md:text-sm">{header}</h5>
+          <h5 className="pb-2 md:whitespace-nowrap lg:whitespace-normal md:text-sm">
+            {header}
+          </h5>
           <p className="opacity-70 print:opacity-100 print:text-gray-400 text-sm print:text-xs">
             {chartTypeText || subHeader}
           </p>

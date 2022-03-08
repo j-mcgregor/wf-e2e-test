@@ -151,7 +151,7 @@ const Report = ({
       <div className="sm:py-8 print:border print:pb-0 print:border-none print:-mb-16">
         <ReportHeader
           company={companyName}
-          website={data?.details?.websites?.[0]}
+          website={data?.details?.website}
           created={created}
           reportId={id.toString()} // id == string || string[]
           snippet={{
@@ -198,7 +198,7 @@ const Report = ({
               country={companyAddress?.country}
               emails={companyDetails?.emails}
               phoneNumbers={companyDetails?.phone_numbers}
-              websites={companyDetails?.websites}
+              websites={companyDetails?.website}
             />
           </div>
         </div>
@@ -489,11 +489,11 @@ const Report = ({
           title={t('activities')}
           description={t('data_on_activities')}
           resultText={
-            companySectors?.length && companySectors?.length > 0
+            data?.esg?.sectors && data?.esg?.sectors.length > 0
               ? t('top_3_industries')
               : t('no_esg_results_found')
           }
-          results={ESG.topXMatches(companySectors, 3)}
+          results={ESG.topXMatches(data?.esg?.sectors, 3)}
         />
         <ESGCard
           title={t('governance')}

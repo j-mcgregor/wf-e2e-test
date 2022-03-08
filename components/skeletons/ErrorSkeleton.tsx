@@ -32,7 +32,6 @@ const ErrorSkeleton = ({ header, message }: ErrorSkeletonProps) => {
             Sign out{' '}
           </Button>
         </div>
-        a
       </article>
     </div>
   );

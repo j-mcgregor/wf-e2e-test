@@ -59,7 +59,7 @@ export type SummaryContact = {
   status: string[];
   company_name: string | null;
   phone_numbers: string[];
-  websites: string[];
+  website: string;
   emails: string[];
   name: string | null;
   company_description: string | null;
