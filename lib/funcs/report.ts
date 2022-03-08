@@ -1,4 +1,4 @@
-import { ReportDataProps } from '../../pages/report/[id]';
+import { ReportDataProps } from '../../types/report';
 
 const getExistingReport = async (
   reportId: string,
@@ -19,7 +19,7 @@ const getExistingReport = async (
   return { ok: false, status: res.status };
 };
 
-const getReportCsv = async (
+const getReportShortCsv = async (
   reportId: string,
   token: string
 ): Promise<{ ok: boolean; csv?: string; status: number }> => {
@@ -45,11 +45,38 @@ const getReportCsv = async (
   }
 };
 
+const getReportFullCsv = async (
+  reportId: string,
+  token: string
+): Promise<{ ok: boolean; csv?: string; status: number }> => {
+  try {
+    const res = await fetch(
+      `${process.env.WF_AP_ROUTE}/reports/${reportId}/export/full`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    if (res.status === 200 && res.ok) {
+      const csv = await res.text();
+
+      return { ok: true, csv, status: res.status };
+    }
+    return { ok: false, status: res.status };
+  } catch (error) {
+    return { ok: false, status: 422 };
+  }
+};
+
 const createReport = async (
   report: {
     iso_code: string;
     company_id: string;
     currency: string;
+    /** @deprecated */
     accounts_type: number;
   },
   token: string
@@ -85,7 +112,8 @@ const uploadReport = async (
     iso_code: string;
     company_id: string;
     currency: string;
-    accounts_type: number;
+    /** @deprecated */
+    accounts_type?: number;
   },
   token: string
 ): Promise<{
@@ -117,7 +145,8 @@ const Report = {
   getExistingReport,
   createReport,
   uploadReport,
-  getReportCsv
+  getReportShortCsv,
+  getReportFullCsv
 };
 
 export default Report;

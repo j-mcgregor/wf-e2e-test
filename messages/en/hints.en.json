@@ -1,5 +1,9 @@
 {
   "report_hints": {
+    "esg": {
+      "title": "Environmental Risk",
+      "body": "Nulla ipsum elit anim sint cupidatat ad est ex dolor."
+    },
     "charts": {
       "days_payable": {
         "title": "Days Payable",
@@ -96,6 +100,10 @@
       "net_debt_ebitda": {
         "title": "Net Debt / EBITDA",
         "body": "The net debt-to-EBITDA ratio is a debt ratio that shows how many years it would take for a company to pay back its debt if net debt and EBITDA are held constant. It is similar to the debt/EBITDA ratio, but net debt subtracts cash and cash equivalents while the standard ratio does not. If a company has more cash than debt, the ratio can be negative."
+      },
+      "net_debt": {
+        "title": "Net Debt",
+        "body": "Net debt is a liquidity metric used to determine how well a company can pay all of its debts if they were due immediately. Net debt shows much debt a company has on its balance sheet compared to its liquid assets. Net debt shows how much cash would remain if all debts were paid off and if a company has enough liquidity to meet its debt obligations."
       },
       "debt_service_coverage_ratio": {
         "title": "Debt Service Coverage Ratio",

@@ -33,7 +33,7 @@ export const SubsidiaryList = ({
         {t('subsidiaries')}
       </p>
 
-      {subsidiaries.length ? (
+      {subsidiaries?.length ? (
         subsidiariesToRender.map((subArray, index) => {
           return (
             <div

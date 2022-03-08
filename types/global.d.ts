@@ -2,6 +2,9 @@ import { JSXElementConstructor, ReactElement, ReactNodeArray } from 'react';
 import { DefaultValue, RecoilValue } from 'recoil';
 import { StringMap } from 'ts-jest/dist/types';
 
+import type { BatchReportResponse } from './batch-reports';
+import type { CsvValueValidation } from './report';
+
 export type TranslateInput =
   | string
   | ReactNodeArray
@@ -34,6 +37,8 @@ export type BatchedReportType = {
   total_reports: number;
   company_list: ReportSnippetType[];
 };
+
+type BatchReportJob = BatchReportResponse & BatchedReportType;
 
 type ContactInformation = {
   first_name: string;
@@ -70,7 +75,7 @@ export type UserType = {
   };
   reports?: ReportSnippetType[];
   bookmarked_reports?: ReportSnippetType[];
-  batched_report_jobs?: BatchedReportType[];
+  batchReportJobs?: BatchReportResponse[];
 };
 
 export interface RecoilUserType {
@@ -132,9 +137,14 @@ export type BatchReportsType = {
   created: string;
 };
 
+export type ValidateFunction = (
+  value: string,
+  rowNumber?: number
+) => boolean | string;
+
 export interface CSVValidationHeaderProps {
-  required?: ((value: string) => boolean | string) | false;
-  validator?: (value: string) => boolean | string;
+  required?: ((value: string, rowNumber?: number) => boolean | string) | false;
+  validator?: ValidateFunction;
   formatted: string;
 }
 
@@ -189,6 +199,15 @@ export type ErrorCodeKeys =
   | 'NO_CURRENCY'
   | 'NO_ISO_CODE'
   | 'VALIDATION_ERROR';
+
+export type ReportTypeEnum = 'BATCH_AUTO' | 'BATCH_MANUAL' | 'REPORT_MANUAL';
+
+export interface UploadReportType {
+  apiUrl: string;
+  type: ReportTypeEnum;
+  validator: CsvValueValidation[];
+  processMsPerCompany: number;
+}
 
 export declare global {
   interface Window {

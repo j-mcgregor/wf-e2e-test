@@ -1,10 +1,10 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
-import { getSession } from 'next-auth/react';
+import { getToken } from 'next-auth/jwt';
 
 import mockBatchReport from '../../lib/mock-data/mockBatchReport';
 import mockUsers, { MockCompanyNames } from '../../lib/mock-data/users';
-import { batchReport } from '../../lib/settings/batch-reports.settings';
+import { batchReport } from '../../lib/settings/report.settings';
 import {
   GENERIC_API_ERROR,
   METHOD_NOT_ALLOWED,
@@ -13,21 +13,18 @@ import {
   NO_REPORT_ID,
   UNAUTHORISED
 } from '../../lib/utils/error-codes';
-import { ApiError, BatchedReportType } from '../../types/global';
+
+import type { ApiError, BatchedReportType } from '../../types/global';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getToken } from 'next-auth/jwt';
 
 const randomValue = (amount: number) => {
   return Math.floor(Math.random() * amount);
 };
 
-
-
 type CompanyReqType = {
   iso: string;
   company_id: string;
 };
-
 
 // DEMO FUNCTION
 
@@ -36,8 +33,10 @@ const batchedReport = async (
   request: NextApiRequest,
   response: NextApiResponse
 ): Promise<any> => {
-  const token = await getToken({ req: request, secret: `${process.env.NEXTAUTH_SECRET}` });
-
+  const token = await getToken({
+    req: request,
+    secret: `${process.env.NEXTAUTH_SECRET}`
+  });
 
   // unauthenticated requests
   if (!token) {
@@ -122,7 +121,7 @@ const batchedReport = async (
     // @ts-ignore
     const user = mockUsers[`${email}`];
 
-    const batchReportJob = user?.batched_report_jobs?.find(
+    const batchReportJob = user?.batchReportJobs?.find(
       (report: BatchedReportType) => report.id === Number(batchReportId)
     );
 

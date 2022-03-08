@@ -14,18 +14,26 @@ interface ReportNavProps {
   companyName: string;
   loading?: boolean;
   isTesting?: boolean;
+  backLink?: string;
 }
 
 const nonTestingProps = {
   containerId: 'secondary-layout-container'
 };
 
-const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
+const ReportNav = ({
+  companyName,
+  loading,
+  isTesting,
+  backLink
+}: ReportNavProps) => {
   const navItems = useReportNavItems();
   const t = useTranslations();
   const router = useRouter();
   const id = router?.query?.id;
   const [activeItem, setActiveItem] = useState<string>('summary');
+
+  const [downloadingCsv, setDownloadingCsv] = useState(false);
 
   if (loading) {
     return (
@@ -41,20 +49,23 @@ const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
 
   const handleExportCsv = async () => {
     if (!id) return null;
+    setDownloadingCsv(true);
 
     try {
       const csv = await fetcher(
-        `/api/reports/report?id=${id}&export=csv`,
+        `/api/reports/report?id=${id}&export=csv-full`,
         'GET',
         null,
         {},
         'csv'
       );
+      setDownloadingCsv(false);
 
+      const fileName = `report-${id}.csv`;
       downloadFile({
         data: csv,
         // eg report-companyName.csv
-        fileName: `report-${companyName}.csv`,
+        fileName: fileName,
         fileType: 'text/csv'
       });
       // console.log(csv);
@@ -69,7 +80,7 @@ const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
     <div className="px-6 pt-8 flex-col h-full hidden xl:flex">
       <div>
         <Button
-          linkTo="/reports"
+          linkTo={!backLink ? '/reports' : backLink}
           variant="none"
           newClassName="text-sm flex items-center hover:text-alt "
         >
@@ -144,7 +155,12 @@ const ReportNav = ({ companyName, loading, isTesting }: ReportNavProps) => {
         >
           {t('export_pdf')}
         </Button>
-        <Button variant="secondary" onClick={() => handleExportCsv()}>
+        <Button
+          loading={downloadingCsv}
+          disabled={downloadingCsv}
+          variant="secondary"
+          onClick={() => handleExportCsv()}
+        >
           {t('export_csv')}
         </Button>
       </div>

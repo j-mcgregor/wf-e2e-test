@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable security/detect-non-literal-require */
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
@@ -9,85 +10,10 @@ import ReportNav from '../../../components/layout/ReportNav';
 import SecondaryLayout from '../../../components/layout/SecondaryLayout';
 import TabletReportNav from '../../../components/layout/TabletReportNav';
 import Report from '../../../components/report-sections/Report';
-import { RatingType } from '../../../components/report-sections/risk-metrics/BondRating';
 import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
 import SkeletonReport from '../../../components/skeletons/SkeletonReport';
 import fetcher from '../../../lib/utils/fetcher';
-import {
-  Benchmarks,
-  BoardMember,
-  DataReliabilityType,
-  FinancialYear,
-  LegalEvent,
-  MacroEconomics,
-  Profile,
-  Reliability,
-  RiskOutlookData,
-  ShareholderType,
-  Subsidiary,
-  SummaryContact,
-  SummaryInfo
-} from '../../../types/report';
-
-export interface ReportDataProps {
-  [x: string]: any;
-  id: string | number;
-  company_id: string;
-  created_at?: string;
-  company_name: string;
-  details: SummaryContact & SummaryInfo;
-  financials: FinancialYear[];
-  benchmarks: Benchmarks;
-  board_members?: BoardMember[];
-  directors: BoardMember[];
-  executives: BoardMember[];
-  financial_ratios: {
-    [key: string]: number;
-  }[];
-  risk_outlook: RiskOutlookData;
-  risk_metrics: {
-    bond_rating_equivalent: RatingType;
-    sme_z_score: number;
-    period: string;
-    // value: string;
-    // regional_benchmark: string | null;
-    // industry_benchmark: string | null;
-    // };
-    probability_of_default_1_year: number;
-    // value: string;
-    // regional_benchmark: string | null;
-    // industry_benchmark: string | null;
-    // };
-    loss_given_default: number;
-    // value: string;
-    // regional_benchmark: string | null;
-    // industry_benchmark: string | null;
-    // };
-  }[];
-  reliability_index: DataReliabilityType;
-  highlights: {
-    data_reliability: Reliability;
-    risk_outlook: string[];
-  };
-  legal_events: LegalEvent[];
-  shareholders: ShareholderType[];
-  subsidiaries: Subsidiary[];
-  /**
-   * @deprecated
-   * use ReportDataProps.details & ReportDataProps.board_members
-   */
-  personal: {
-    directors: Profile[];
-    senior_management: Profile[];
-    ceo: string;
-    cfo: string;
-    chairman: string;
-  };
-  error?: string;
-  message?: string;
-  currency: string;
-  macroeconomics: MacroEconomics;
-}
+import { ReportDataProps } from '../../../types/report';
 
 const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const t = useTranslations();
@@ -99,6 +25,10 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     id && `/api/reports/report?id=${id}`,
     fetcher
   );
+
+  const backLink = Array.isArray(router?.query?.from)
+    ? router.query.from[0]
+    : router?.query?.from;
 
   const companyName = data?.id
     ? data?.details?.company_name || data?.details?.name || 'Unnamed Company'
@@ -119,11 +49,13 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
                 isTesting={isTesting}
                 companyName={companyName}
                 loading={!data}
+                backLink={backLink}
               />
               <TabletReportNav
                 isTesting={isTesting}
                 companyName={companyName}
                 loading={!data}
+                backLink={backLink}
               />
             </>
           )

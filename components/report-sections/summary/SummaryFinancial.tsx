@@ -67,7 +67,6 @@ const SummaryFinancial = ({ years, currencyCode }: SummaryFinancialProps) => {
                     rowKey="total_assets"
                   />
 
-                  {/* ===== ADD NON CURRENT LIABILITIES HERE */}
                   <SummaryFinancialRow
                     rowHeader={t('current_liabilities')}
                     data={years}
@@ -79,7 +78,6 @@ const SummaryFinancial = ({ years, currencyCode }: SummaryFinancialProps) => {
                     rowKey="non_current_liabilities"
                   />
 
-                  {/* ==== ADD TOTAL LIABILITIES HERE */}
                   <SummaryFinancialRow
                     rowHeader={t('total_liabilities')}
                     data={years}
@@ -94,7 +92,7 @@ const SummaryFinancial = ({ years, currencyCode }: SummaryFinancialProps) => {
                   <SummaryFinancialRow
                     rowHeader={t('sales')}
                     data={years}
-                    rowKey="operating_revenue"
+                    rowKey="turnover"
                   />
                   <SummaryFinancialRow
                     rowHeader={t('profit_before_taxes')}
@@ -107,18 +105,6 @@ const SummaryFinancial = ({ years, currencyCode }: SummaryFinancialProps) => {
                     data={years}
                     rowKey="number_of_employees"
                   />
-
-                  {/* <SummaryFinancialRow
-                    rowHeader={t('tangible_worth')}
-                    data={years}
-                    rowKey="capital"
-                  />
-
-                  <SummaryFinancialRow
-                    rowHeader={t('net_current_assets')}
-                    data={years}
-                    rowKey="net_current_assets"
-                  /> */}
                 </tbody>
               </table>
             </div>

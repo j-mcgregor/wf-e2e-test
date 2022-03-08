@@ -8,25 +8,32 @@ export const getNumberLength = (num: number) => {
   return num.toFixed().replace('.', '').length;
 };
 
-export const calculateMaxDataPoint = (
-  largestValue: number,
-  largestValueLength: number
-) =>
-  largestValueLength > 8
+export const calculateMaxDataPoint = (largestValue: number) => {
+  const largestValueLength = getNumberLength(largestValue);
+
+  return largestValueLength > 8
     ? largestValue / 1000000
     : largestValueLength >= 4 && largestValueLength <= 8
     ? largestValue / 1000
     : largestValue;
+};
 
-export const calculateMinDataPoint = (smallestValue: number) =>
-  Math.min(
-    getNumberLength(smallestValue) > 8
-      ? smallestValue / 1000000
-      : getNumberLength(smallestValue) >= 4 &&
-        getNumberLength(smallestValue) <= 8
-      ? smallestValue / 1000
-      : smallestValue
-  );
+export const calculateMinDataPoint = (
+  smallestValue: number,
+  maxDataPoint: number
+) => {
+  // passed in the max data point, so we can calculate the min data point relative to that
+  const maxValueLength = getNumberLength(maxDataPoint);
+  
+  if (maxValueLength >= 8) {
+    return smallestValue / 1000000;
+  } else if (maxValueLength >= 4 && maxValueLength < 8) {
+    return smallestValue / 1000;
+  } else {
+    return smallestValue;
+  }
+};
+
 
 export const getMaxRenderValue = (
   disabled: boolean | undefined,

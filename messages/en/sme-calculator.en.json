@@ -39,6 +39,10 @@
     "title": "Full Template (.csv)",
     "body": "A full report template in CSV format. Import anywhere and add your own data."
   },
+  "full_template_example": {
+    "title": "Example Template (.csv)",
+    "body": "A full report template in CSV format with an example row of company data showing the required formats."
+  },
   "financials_template": {
     "title": "Financials Template (.csv)",
     "body": "Just the financials template in CSV format. Import anywhere and add your own data."

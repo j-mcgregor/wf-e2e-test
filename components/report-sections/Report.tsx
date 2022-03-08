@@ -1,15 +1,16 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import React from 'react';
 import { useTranslations } from 'use-intl';
-//
+
 import usePrintClasses from '../../hooks/usePrintClasses';
+import ESG from '../../lib/funcs/esg';
 import {
   calculateLGDRotation,
   calculatePoDRotation,
   calculateSMEZScoreRotation
 } from '../../lib/utils/report-helpers';
 import { getBoardMember } from '../../lib/utils/text-helpers';
-import { ReportDataProps } from '../../pages/report/[id]';
+import { ReportDataProps } from '../../types/report';
 import HashContainer from '../elements/HashContainer';
 import { ReportSectionHeader } from '../elements/Headers';
 import Hint from '../elements/Hint';
@@ -17,6 +18,7 @@ import CorporateOverview from './corporate-governance/CorporateOverview';
 import ExecutiveCardList from './corporate-governance/ExecutiveList';
 import Profiles from './corporate-governance/Profiles';
 import ShareHolderList from './corporate-governance/ShareHolderList';
+import ESGCard from './esg-assessment/ESGCard';
 import ESGContainer from './esg-assessment/ESGContainer';
 import FinancialTrends from './financial-trends/FinancialTrends';
 import CTACard from './highlights/CTACard';
@@ -27,6 +29,7 @@ import RiskOutlook from './highlights/RiskOutlook';
 import LegalEvents from './legal-events/LegalEvents';
 import MacroEconomicTrends from './macro-economic-trends/MacroEconomicTrends';
 import NewsFeed from './news/NewsFeed';
+import { ParentsList } from './parents/ParentsList';
 import ReportHeader from './ReportHeader';
 import BondRating from './risk-metrics/BondRating';
 import RiskMetricGraphs from './risk-metrics/RiskMetricGraphs';
@@ -35,8 +38,8 @@ import { SubsidiaryList } from './subsidiaries/SubsidiaryList';
 import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
-import { ParentsList } from './parents/ParentsList';
 
+//
 const Report = ({
   data,
   id,
@@ -52,13 +55,13 @@ const Report = ({
 
   const companyDetails = data?.details;
 
-  const companySectors = data?.esg?.sectors;
-
   const companyAddress = companyDetails?.address;
+
+  const companySectors = data?.esg?.sectors;
 
   const date = new Date(`${data?.created_at}`);
 
-  const reliabilityIndex = data.reliability_index;
+  const reliabilityIndex = data?.reliability_index;
 
   const month =
     date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
@@ -66,27 +69,16 @@ const Report = ({
   const created = `${date.getDate()}.${month}.${date.getFullYear()}`;
 
   // remove years that are dormant
-  const transformedFinancials =
-    (data?.financials &&
-      data?.financials?.filter(_year => {
-        // if (companyDetails?.status) {
-        //   return companyDetails?.status[Number(index)] === 'Active';
-        // }
-        // handle issues with status preventing showing any financials
-        return true;
-      })) ||
-    [];
+  const transformedFinancials = data?.financials || [];
 
   // used for report financials summary
   // and used for financial charts
-  const lastFiveYearsFinancials =
-    (data?.financials &&
-      transformedFinancials.slice(-5, transformedFinancials.length)) ||
-    [];
+  const lastFiveYearsFinancials = data?.financials
+    ? transformedFinancials.slice(-5, transformedFinancials.length)
+    : [];
 
   const financialRatios = [...(data?.financial_ratios || [])];
 
-  // TEMPORARILY REVERSING FINANCIAL_RATIOS UNTIL BACK END FIXES
   const lastFiveYearsFinancialRatios = financialRatios?.slice(
     -5,
     transformedFinancials.length
@@ -95,19 +87,19 @@ const Report = ({
   // remove benchmarks from financial trends
   // add to speedos later
   // const lastFiveYearsBenchmarks =
-  //   (data?.benchmarks && data.benchmarks?.slice(0, 5)) || [];
+  //   (data?.benchmarks && data?.benchmarks?.slice(0, 5)) || [];
 
   const riskMetrics = [...(data?.risk_metrics || [])];
 
   // reversing array to get the latest 5 years of financials
   const lastFiveYearsRiskMetrics = React.useMemo(
-    () => riskMetrics.reverse().slice(-5, transformedFinancials.length) || [],
+    () => riskMetrics.slice(-5, transformedFinancials.length).reverse() || [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data.risk_metrics]
+    [data?.risk_metrics]
   );
 
   // take the latest year of financial risk metrics
-  const latestRiskMetrics = data.risk_metrics?.[data.risk_metrics.length - 1];
+  const latestRiskMetrics = data?.risk_metrics?.[data?.risk_metrics.length - 1];
 
   const mergedLastFiveYearFinancials = lastFiveYearsFinancials
     .map((year, index) => {
@@ -148,18 +140,18 @@ const Report = ({
 
   //* replaced this with new `directors` array from backend
   // const directors = getDirectorsFromBoardMembers(data?.board_members) || [];
-  const latestFinancialYear = data?.financials[data.financials?.length - 1];
+  const latestFinancialYear = data?.financials[data?.financials?.length - 1];
 
   // check whether to render commentary
   const shouldRenderCommentary =
-    data.risk_metrics && data.risk_metrics.length > 0;
+    data?.risk_metrics && data?.risk_metrics.length > 0;
 
   return (
     <div id="full-report" className="text-primary mt-10 lg:mt-0 pb-24">
       <div className="sm:py-8 print:border print:pb-0 print:border-none print:-mb-16">
         <ReportHeader
           company={companyName}
-          website={data.details?.websites?.[0]}
+          website={data?.details?.website}
           created={created}
           reportId={id.toString()} // id == string || string[]
           snippet={{
@@ -178,15 +170,16 @@ const Report = ({
         <div className="flex flex-col md:flex-row justify-between text-sm md:text-xs lg:text-sm md:print:flex-col ">
           <div className="flex w-full md:w-1/2 flex-col py-2 md:print:w-full">
             <SummaryDetails
-              regNumber={data.company_id}
-              sector={data.details?.industry_sector}
-              description={data?.details?.overview_full}
+              regNumber={data?.company_id}
+              sector={data?.details?.industry_sector}
+              description={data?.details?.description}
               incorporationDate={data?.details?.date_of_incorporation}
               lastAccountDate={data?.details?.last_annual_accounts_date}
               country={companyDetails?.address?.country}
               naceCode={companyDetails?.nace_code}
               naceName={companyDetails?.nace_name}
               companyStatus={companyDetails?.status}
+              currency={data?.currency}
             />
           </div>
 
@@ -205,13 +198,13 @@ const Report = ({
               country={companyAddress?.country}
               emails={companyDetails?.emails}
               phoneNumbers={companyDetails?.phone_numbers}
-              websites={companyDetails?.websites}
+              websites={companyDetails?.website}
             />
           </div>
         </div>
         <div className="py-4 avoid-break">
           <SummaryFinancial
-            currencyCode={data.currency}
+            currencyCode={data?.currency}
             years={lastFiveYearsFinancials}
           />
         </div>
@@ -401,7 +394,7 @@ const Report = ({
       <HashContainer name={'Financial Trends'} id={`financial_trends`}>
         <ReportSectionHeader text={t('financial_trends')} />
         <FinancialTrends
-          currency={data.currency}
+          currency={data?.currency}
           financialData={mergedLastFiveYearFinancials.reverse()}
           // been removed
           benchmarkData={[]}
@@ -425,7 +418,7 @@ const Report = ({
         {data?.directors?.length > 0 && (
           <ExecutiveCardList
             title={t('directors')}
-            executives={data.directors}
+            executives={data?.directors}
             showAppointmentDate
           />
         )}
@@ -434,7 +427,7 @@ const Report = ({
         {data?.executives?.length > 0 && (
           <ExecutiveCardList
             title={t('senior_management')}
-            executives={data.executives}
+            executives={data?.executives}
           />
         )}
 
@@ -443,7 +436,7 @@ const Report = ({
           seniorManagement={data?.personal?.senior_management}
         />
 
-        {data.shareholders.length > 0 && (
+        {data?.shareholders?.length > 0 && (
           <ShareHolderList
             isPrint={forPrint}
             shareholders={data?.shareholders}
@@ -490,15 +483,34 @@ const Report = ({
       </HashContainer>
 
       <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>
+        <ReportSectionHeader text={t('environmental')} />
+
+        <ESGCard
+          title={t('activities')}
+          description={t('data_on_activities')}
+          resultText={
+            data?.esg?.sectors && data?.esg?.sectors.length > 0
+              ? t('top_3_industries')
+              : t('no_esg_results_found')
+          }
+          results={ESG.topXMatches(data?.esg?.sectors, 3)}
+        />
+        <ESGCard
+          title={t('governance')}
+          description={t('data_on_company_governance')}
+          asteriskText={t(
+            'there_are_names_that_are_the_same_or_similar_to_a_risk_relevant_name'
+          )}
+          resultText={t('pep_flags')}
+          rating={pepFlags}
+          result={pepFlags && pepFlags > 0 ? 'negative' : 'neutral'}
+        />
         <ESGContainer
-          governance={{
-            pepFlags: pepFlags
-          }}
-          sectors={companySectors}
-          // website={data?.details?.websites?.find((x: string) => x) || ''}
-          environmental_details={{
-            industry_sector: data?.details?.industry_sector
-          }}
+          companyName={data?.details.name || ''}
+          sector={data.details?.industry_sector || ''}
+          physical={data?.esg?.physical}
+          transition={data?.esg?.transition}
+          location={companyAddress?.city || companyAddress?.country}
         />
       </HashContainer>
 

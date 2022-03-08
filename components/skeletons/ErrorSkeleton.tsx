@@ -16,7 +16,7 @@ const ErrorSkeleton = ({ header, message }: ErrorSkeletonProps) => {
   const defaultMessage = t('errors.message.default');
 
   // If the error is authentication error, encourage the user to sign out and show that option
-  const showLogoutOption = header === USER_403;
+  // const showLogoutOption = header === USER_403;
 
   return (
     <div className="w-full h-screen flex items-center px-2 md:px-0">
@@ -26,18 +26,12 @@ const ErrorSkeleton = ({ header, message }: ErrorSkeletonProps) => {
           {header ? `${header}` : defaultHeader}
         </h3>
         <p>{message ? `${message}` : `${defaultMessage}`}</p>
-
-        {showLogoutOption && (
-          <p className="mt-4 font-bold">{t('please_sign_out_and_in')}</p>
-        )}
-
-        {showLogoutOption && (
-          <div className="max-w-[10rem] mx-auto mt-4">
-            <Button variant="primary" onClick={() => signOut()}>
-              Sign out{' '}
-            </Button>
-          </div>
-        )}
+        <p className="mt-4 font-bold">{t('please_sign_out_and_in')}</p>
+        <div className="max-w-[10rem] mx-auto mt-4">
+          <Button variant="primary" onClick={() => signOut()}>
+            Sign out{' '}
+          </Button>
+        </div>
       </article>
     </div>
   );

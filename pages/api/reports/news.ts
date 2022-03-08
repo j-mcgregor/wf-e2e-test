@@ -1,5 +1,5 @@
 import { withSentry } from '@sentry/nextjs';
-import { getSession } from 'next-auth/react';
+import { getToken } from 'next-auth/jwt';
 
 import News from '../../../lib/funcs/news';
 import newsHits from '../../../lib/mock-data/newsResponse';
@@ -12,7 +12,6 @@ import {
 import { ApiError, ApiResType } from '../../../types/global';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getToken } from 'next-auth/jwt';
 // Declaring function for readability with Sentry wrapper
 const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
   const token = await getToken({

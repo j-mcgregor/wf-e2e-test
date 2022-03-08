@@ -6024,6 +6024,5 @@ export const mockReport = {
       working_capital_total_assets: null
     }
   ],
-  accounts_type: 0,
   bookmarked: false
 };

@@ -35,7 +35,7 @@ const useMainNavItems = () => {
       },
       {
         name: `${t('run_many_companies')}`,
-        href: '/batched-reports',
+        href: '/batch-reports',
         icon: DocumentDuplicateIcon
       }
       // removed until being added back in

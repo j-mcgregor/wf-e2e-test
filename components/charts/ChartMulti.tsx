@@ -54,9 +54,9 @@ const ChartMulti = ({
   showLabels
 }: ChartMultiProps) => {
   const [data, setData] = useState<FinancialGraphType[] | null>(null);
-  const [selectedGraphIndex, setSelectedGraphIndex] = useState<number | null>(
-    0
-  );
+  // const [selectedGraphIndex, setSelectedGraphIndex] = useState<number | null>(
+  //   0
+  // );
   const t = useTranslations();
 
   useEffect(() => {
@@ -106,13 +106,15 @@ const ChartMulti = ({
     data: convertData(companyGraph.data, useMillions, useThousands)
   };
 
-  const isBenchmarkData = isGraphData(benchmarkGraph);
-  const maxYValue = calculateMaxDataPoint(
-    largestYDataPoint,
-    largestNumberLength
+  // const isBenchmarkData = isGraphData(benchmarkGraph);
+
+  const maxYValue = calculateMaxDataPoint(largestYDataPoint);
+
+  const minYValue = calculateMinDataPoint(
+    smallestYDataPoint,
+    largestYDataPoint
   );
 
-  const minYValue = calculateMinDataPoint(smallestYDataPoint);
   const maxRenderValue = getMaxRenderValue(disabled, chartType, maxYValue);
   // So percentages through it out
   // also if the values are 3 digits but the maximum are over 100,000,000 then you end up with descrepancies
@@ -152,6 +154,8 @@ const ChartMulti = ({
       ? t('days')
       : null;
 
+  // header === "Total Assets" && console.log(maxRenderValue)
+
   return (
     <div
       className={`${
@@ -161,7 +165,9 @@ const ChartMulti = ({
     >
       <div className="flex justify-between items-start px-4 pt-4 text-base">
         <div className="">
-          <h5 className="pb-2 whitespace-nowrap md:text-sm">{header}</h5>
+          <h5 className="pb-2 md:whitespace-nowrap lg:whitespace-normal md:text-sm">
+            {header}
+          </h5>
           <p className="opacity-70 print:opacity-100 print:text-gray-400 text-sm print:text-xs">
             {chartTypeText || subHeader}
           </p>
@@ -249,78 +255,8 @@ const ChartMulti = ({
           // </VictoryGroup>
         )}
       </ChartContainer>
-
-      {/* company names (were originally buttons) - removed 17-02-22  */}
-
-      {/* <div className="flex flex-col text-xxs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
-        <ChartButton
-          onClick={setSelectedGraphIndex}
-          selectedGraphIndex={selectedGraphIndex}
-          title={companyName}
-          graphIndex={0}
-          bg="bg-[#022D45]"
-          border="border-2 border-[#022D45]"
-        />
-        {isBenchmarkData && (
-          <ChartButton
-            onClick={setSelectedGraphIndex}
-            selectedGraphIndex={selectedGraphIndex}
-            title={benchmarkGraph.name}
-            graphIndex={1}
-            bg="bg-[#278EC8]"
-            border="border-2 border-[#278EC8]"
-          />
-        )}
-      </div> */}
     </div>
   );
 };
 
 export default ChartMulti;
-
-// Benchmark graphs have been removed - might come back - 25.01.22
-// Benchmark graph area
-/* {isBenchmarkData && (
-          <VictoryArea
-            key={`victory-area-${benchmarkGraph.name}`}
-            animate={{
-              duration: 500,
-              onLoad: { duration: 500 }
-            }}
-            data={convertedBenchmarkGraph.data}
-            interpolation="monotoneX"
-            style={{
-              data: {
-                fill: benchmarkColour,
-                fillOpacity:
-                  benchmarkIndex === selectedGraphIndex ? '0.8' : '0.2',
-                stroke: benchmarkColour,
-                strokeOpacity: 1
-              }
-            }}
-          />
-        )} */
-
-// Benchmark Scatter Points
-/* {isBenchmarkData && (
-              <VictoryScatter
-                key={`victory-scatter-${benchmarkGraph.name}`}
-                data={convertedBenchmarkGraph.data}
-                size={2}
-                y0={() => minValue * 0.8}
-                style={{
-                  data: {
-                    strokeWidth: 1,
-                    stroke: graphColors(benchmarkIndex),
-                    strokeOpacity:
-                      benchmarkIndex === selectedGraphIndex ? '1' : '0.7',
-                    fill:
-                      benchmarkIndex !== selectedGraphIndex
-                        ? 'white'
-                        : graphColors(benchmarkIndex),
-                    fillOpacity:
-                      benchmarkIndex === selectedGraphIndex ? '1' : '0'
-                  }
-                }}
-              />
-            )} */

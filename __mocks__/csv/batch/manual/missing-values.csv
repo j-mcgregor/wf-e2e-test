@@ -1,0 +1,9 @@
+currency,iso_code,company_id,details_name,details_industry_sector_code,details_website,details_nace_code,details_number_of_directors,details_number_of_subsidiaries,number_of_employees,cash_and_equivalents,creditors,current_assets,current_liabilities,debtors,ebit,ebitda,fixed_assets,intangible_fixed_assets,interest_expenses,inventory,loans,long_term_debt,management_experience,net_income,non_current_liabilities,other_non_current_liabilities,period,retained_earnings,short_term_debt,tangible_fixed_assets,total_assets,total_liabilities,total_shareholder_equity,turnover,working_capital
+GBP,GB,,company 1,10,,,1,1,10,1000,1,1000,,1000,1000,,1000,1000,1000,,1000,1000,High,,1000,1000,2020,1000,1000,1000,1000,1000,1000,1000,1000
+,GB,,,10,"['www.example.com']",11,1,1,10,1000,1,1000,1000,1000,1000,1000,1000,1000,1000,,1000,1000,,1000,1000,1000,2019,1000,1000,1000,1000,1000,1000,1000,
+GBP,GB,,company 2,10,"['www.example.com']",11,1,1,10,1000,1,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,High,1000,1000,1000,2020,1000,1000,1000,1000,1000,,1000,1000
+GBP,,,,10,"['www.example.com']",11,1,1,10,1000,1,,1000,1000,,1000,,1000,1000,1000,1000,1000,High,,1000,1000,2019,1000,1000,1000,1000,1000,1000,,1000
+GBP,GB,,company 3,10,,11,1,1,10,,1,1000,1000,1000,1000,,1000,1000,1000,1000,1000,1000,,,1000,1000,2020,,1000,1000,1000,1000,,1000,1000
+,GB,,company 3,10,"['www.example.com']",11,1,1,10,1000,1,1000,1000,1000,1000,,1000,1000,1000,1000,,1000,High,1000,1000,1000,2019,1000,1000,1000,,1000,1000,1000,1000
+GBP,GB,,,10,,11,1,1,10,1000,1,1000,1000,1000,1000,1000,1000,1000,1000,,1000,1000,,1000,1000,1000,2020,1000,1000,1000,1000,1000,1000,1000,1000
+GBP,GB,,company 4,10,"['www.example.com']",11,1,1,10,1000,1,1000,1000,1000,,1000,1000,1000,1000,1000,1000,1000,High,1000,1000,1000,2019,1000,1000,1000,1000,1000,1000,1000,1000

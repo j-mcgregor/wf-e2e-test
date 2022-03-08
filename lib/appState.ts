@@ -1,4 +1,5 @@
 import { atom, selector } from 'recoil';
+import { BatchReportResponse } from '../types/batch-reports';
 
 import { ReportSnippetType, UserType } from '../types/global';
 
@@ -27,6 +28,7 @@ export type UserReports = {
   bookmarkedReports: ReportSnippetType[];
   allReports: ReportSnippetType[] | null;
   nonBookmarkedReports: ReportSnippetType[];
+  batchReportJobs: BatchReportResponse[];
 };
 
 export const userReports = selector<UserReports>({
@@ -40,9 +42,10 @@ export const userReports = selector<UserReports>({
     );
 
     return {
-      bookmarkedReports: user?.bookmarked_reports || [],
       allReports: allReports || [],
-      nonBookmarkedReports: nonBookmarkedReports || []
+      bookmarkedReports: user?.bookmarked_reports || [],
+      nonBookmarkedReports: nonBookmarkedReports || [],
+      batchReportJobs: user?.batchReportJobs || []
     };
   },
   set: ({ set, get }, newReports) => {
@@ -54,6 +57,11 @@ export const userReports = selector<UserReports>({
       ...user,
       // @ts-ignore
       ...(newReports?.allReports?.length && { reports: newReports.allReports }),
+      // @ts-ignore
+      ...(newReports?.batchReportJobs?.length && {
+        // @ts-ignore
+        batchReportJobs: newReports.batchReportJobs
+      }),
       // @ts-ignore
       bookmarked_reports: newReports.bookmarkedReports
     };

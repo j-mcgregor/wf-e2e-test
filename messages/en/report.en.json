@@ -355,5 +355,13 @@
     "wine_and_spirits": "Wine and Spirits",
     "wireless": "Wireless",
     "writing_and_editing": "Writing and Editing"
-  }
+  },
+  "transition_risk": "Transition Risk",
+  "carbon_intensity": "Carbon Intensity",
+  "flooding_risk": "Flooding Risk",
+  "heatwave_risk": "Heatwave Risk",
+  "environmental_risk": "Environmental risk",
+  "transition_text": "<b> {company_name} </b> operates in {industry}, which has a carbon intensity of <b>{score}%</b>. This is <b>{risk_level}</b> when compared to other industries.",
+  "flooding_risk_text": "<b>{company_name}</b> has a <b>{risk_level}</b> flooding risk as it is located in {location} which has a <b>{risk_level}</b> risk for location and a <b> {industry_risk}</b> risk for its industry, {industry}.",
+  "draught_risk_text": "<b>{company_name}</b> has a <b>{risk_level}</b> flooding risk as it is located in {location} which has a <b>{risk_level}</b> risk for location and a <b>{industry_risk}</b> risk for its industry, {industry}."
 }

@@ -17,6 +17,9 @@ const LegalFilter = ({
   activeFilter,
   title
 }: LegalFilterProps) => {
+  if (!events) {
+    return null;
+  }
   const reverseTextStyle = 'print:flex print:flex-col-reverse';
 
   return (

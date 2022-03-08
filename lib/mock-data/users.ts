@@ -395,7 +395,7 @@ const mockUsers = {
       }
     },
     reports: mockReports,
-    batched_report_jobs: [
+    batchReportJobs: [
       {
         id: 12,
         name: 'Car Niche',
@@ -448,7 +448,7 @@ const mockUsers = {
       }
     },
     reports: [],
-    batched_report_jobs: []
+    batchReportJobs: []
   }
 };
 

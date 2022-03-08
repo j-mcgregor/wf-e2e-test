@@ -1,5 +1,5 @@
 import apiDocumentation from './api-documentation.en.json';
-import batchedReports from './batched-reports.en.json';
+import batchedReports from './batch-reports.en.json';
 import errors from './errors.en.json';
 import forgottenPassword from './forgotten-password.en.json';
 import general from './general.en.json';
