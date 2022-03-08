@@ -12,7 +12,6 @@ interface ReliabilityHook {
   sectionTitle: string;
   inBoxTitle: string;
   infoBoxText: string;
-  inBoxExtra: string;
   styles: string;
 }
 
@@ -25,8 +24,7 @@ export const useReliability = ({
 
   let res = {
     sectionTitle: t('reliability_index'),
-    inBoxTitle: t('data_reliability'),
-    inBoxExtra: t('for_a_more_reliable_report_supplement_the_data')
+    inBoxTitle: t('data_reliability')
   } as ReliabilityHook;
 
   if (score > 0.65) {

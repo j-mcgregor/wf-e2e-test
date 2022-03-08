@@ -195,7 +195,6 @@
   "profitability_negative": "Assets are not being used as profitably as they could.",
   "governance_template": "In the last 12 months there were {judgements} judgements and {paymentRemarks} payment remarks for this company.",
   "benchmark_template": "The credit score is {sector} the average for this sector and {region} the average for {country}",
-  "for_a_more_reliable_report_supplement_the_data": "For a more reliable report you can supplement the data in this report with recent management accounts using the button below.",
   "this_person_is_risk_relevant_name": "This person's name is similar to a risk relevant name.",
   "there_are_names_that_are_the_same_or_similar_to_a_risk_relevant_name": "There are names that are the same, or similar to, a risk relevant name.",
   "industries": {

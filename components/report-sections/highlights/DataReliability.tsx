@@ -9,7 +9,7 @@ const DataReliability = ({
 }: {
   reliability: DataReliabilityType;
 }) => {
-  const { styles, inBoxTitle, infoBoxText, inBoxExtra } = useReliability({
+  const { styles, inBoxTitle, infoBoxText } = useReliability({
     score: reliability?.value
   });
 
@@ -22,7 +22,6 @@ const DataReliability = ({
       <div className={`${styles} border-2 rounded h-1/2 text-sm py-4 px-3`}>
         <p className="font-bold pb-2">{inBoxTitle}</p>
         <p className="mb-2">{infoBoxText}</p>
-        <p>{inBoxExtra}</p>
       </div>
     </div>
   );
