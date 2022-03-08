@@ -37,6 +37,16 @@ const ReportHeader = ({
   });
 
   const t = useTranslations();
+
+  const splitDate = created.replaceAll('.', '/');
+  const formattedDate = new Date(splitDate)
+    .toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    })
+    .replaceAll('/', '.');
+
   return (
     <div className="flex sm:flex-row flex-col w-full only-of-type:justify-between">
       {/* top right logo header for print only */}
@@ -60,7 +70,7 @@ const ReportHeader = ({
 
         <h1 className="text-3xl font-medium pb-4">{company}</h1>
         <p>
-          {t('created')}: {created}
+          {t('created')}: {formattedDate}
         </p>
       </div>
 
