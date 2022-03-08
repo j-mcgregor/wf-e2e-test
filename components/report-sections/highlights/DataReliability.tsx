@@ -9,15 +9,8 @@ const DataReliability = ({
 }: {
   reliability: DataReliabilityType;
 }) => {
-  const hasTurnover = reliability.details.includes('Turnover');
-  const hasVolatility = reliability.details.includes('Volatility');
-  const hasAssets = reliability.details.includes('Assets');
-
   const { styles, inBoxTitle, infoBoxText, inBoxExtra } = useReliability({
-    score: reliability?.value,
-    hasTurnover,
-    hasVolatility,
-    hasAssets
+    score: reliability?.value
   });
 
   // need to be in components for tailwind to find them
