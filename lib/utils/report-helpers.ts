@@ -43,8 +43,8 @@ export const makeUploadReportReqBody = (
       return {
         cash_and_equivalents: setNumberValue('cash_and_equivalents', i),
         creditors: setNumberValue('creditors', i),
-        current_assets: setNumberValue('total_assets', i),
-        current_liabilities: setNumberValue('total_liabilities', i),
+        current_assets: setNumberValue('current_assets', i),
+        current_liabilities: setNumberValue('current_liabilities', i),
         debtors: setNumberValue('debtors', i),
         ebit: setNumberValue('ebit', i),
         ebitda: setNumberValue('ebitda', i),
