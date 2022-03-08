@@ -139,6 +139,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
       iso_code: selectedCountry?.optionValue,
       company_id: selectedCompany?.company_number || regSearchValue,
       currency: selectedCurrency?.code,
+      /** @deprecated */
       accounts_type: 0
     };
 

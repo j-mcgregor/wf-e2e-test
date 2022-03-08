@@ -9,18 +9,6 @@ import type {
   CsvValueValidation
 } from '../../types/report';
 
-const validStatusList = [
-  'Active',
-  'Distressed',
-  'Active (protection)',
-  'Active (dormant)',
-  'Bankrupt',
-  'In liquidation',
-  'Dissolved',
-  'Inactive',
-  'N.A.'
-];
-
 /**
  * @param strArr "['Active','Inactive']"
  * @returns string[] ['Active', 'Inactive']
@@ -79,20 +67,9 @@ export const uploadReportCSVHeaders: {
     required: false,
     formatted: 'Company ID'
   },
-
-  // default to 0, rather than require
-  accounts_type: {
-    required: (x: string) => !x && `A value for "accounts_type" is required`,
-    formatted: 'Accounts type',
-    validator: (x: string) =>
-      x === '0' || x === '1'
-        ? false
-        : `"${x}" is not a valid value for "accounts_type"`
-  },
   /**
    * *********************************
    * DETAILS
-   * "name": "Small Business Ltd",
    * *********************************
    */
   details_industry_sector_code: {
@@ -110,87 +87,29 @@ export const uploadReportCSVHeaders: {
       !x && `A value for "details_nace_code" is required`,
     formatted: 'NACE Code'
   },
-  // details_status: {
-  //   required: (x: string) =>
-  //     !x && `A value for "details_status" is required (eg "['Active']")`,
-  //   formatted: 'Status',
-  //   validator: (x: string) => {
-  //     // CSV dowwnload gives "['Active']" (string with brackets)
-  //     // CSV upload requires ['Active'] (string[])
-  //     if (!x) return `A value for "details_status" is required`;
-
-  //     const { value, isValid } = convertStringArrayToArrayOfStrings(x);
-
-  //     if (!isValid) {
-  //       return `Value is not convertable to array (eg "['Active']")`;
-  //     }
-
-  //     if (value.length === 0) {
-  //       return `A value for "details_status" is required (eg "['Active']")`;
-  //     }
-
-  //     // if value contains values that aren't 'active' or 'inactive' (including empty strings)
-
-  //     for (let i = 0; i < value.length; i++) {
-  //       const isPermitted = validStatusList.some(
-  //         permitted => permitted.toLowerCase() === value[i].toLowerCase()
-  //       );
-  //       if (!isPermitted) {
-  //         return `Value ${value[i]} not permitted`;
-  //       }
-  //     }
-
-  //     if (
-  //       !value.every(
-  //         val =>
-  //           val.toLowerCase() === 'active' || val.toLowerCase() === 'inactive'
-  //       )
-  //     ) {
-  //       return 'Values must be either "Active" or "Inactive"';
-  //     }
-
-  //     return false;
-  //   }
-  // },
-  // details_status_change_date: {
-  //   required: false,
-  //   formatted: 'Details Status change date'
-  // },
+  // not required but if there, validated as a website
   details_website: {
     required: false,
     formatted: 'Details website',
     validator: (x: string) => {
-      // CSV dowwnload gives "['example.com']" (string with brackets)
-      // CSV upload requires ['example.com'] (string[])
-      if (!x)
-        return `A value for "details_websites" is required (eg "['example.com']")`;
-
-      const { value, isValid } = convertStringArrayToArrayOfStrings(x);
-
-      if (!isValid) {
-        return `Value is not convertable to array (eg "['example.com']")`;
+      const website = x?.trim();
+      if (website) {
+        // need to improve the website error validation here
+        // should be a regex to test full url formation
+        // provide details on what is wrong with it to the user
+        return website.startsWith('http') || website.startsWith('www')
+          ? false
+          : `"${website}" is not a valid website address.`;
       }
-
-      if (value.length === 0) {
-        return `A value for "details_websites" is required (eg "['example.com']")`;
-      }
-
       return false;
     }
   },
   details_number_of_directors: {
-    required: (x: string) =>
-      !x && `A value for "details_number_of_directors" is required`,
+    required: false,
     formatted: 'Details number of directors'
   },
-  // details_number_of_employees: {
-  //   required: (x: string) =>
-  //     !x && `A value for "details_number_of_employees" is required`,
-  //   formatted: 'Details number of employees'
-  // },
   details_number_of_subsidiaries: {
-    required: (x: string) =>
-      !x && `A value for "details_number_of_subsidiaries" is required`,
+    required: false,
     formatted: 'Details number of subsidiaries'
   },
   /**
@@ -199,13 +118,11 @@ export const uploadReportCSVHeaders: {
    * *********************************
    */
   net_income: {
-    required: (x: string) => !x && `A value for "net_income" is required`,
+    required: false,
     formatted: 'Net Income'
   },
   number_of_employees: {
     required: false,
-    // required: (x: string) =>
-    //   !x && `A value for "number_of_employees" is required`,
     formatted: 'Number of Employees'
   },
   cash_and_equivalents: {
@@ -218,11 +135,11 @@ export const uploadReportCSVHeaders: {
     formatted: 'Total Assets'
   },
   ebit: {
-    required: (x: string) => !x && `A value for "ebit" is required`,
+    required: false,
     formatted: 'EBIT'
   },
   ebitda: {
-    required: (x: string) => !x && `A value for "ebitda" is required`,
+    required: false,
     formatted: 'EBITDA'
   },
   tangible_fixed_assets: {
@@ -260,10 +177,6 @@ export const uploadReportCSVHeaders: {
     required: (x: string) => !x && `A value for "short_term_debt" is required`,
     formatted: 'Short Term Debt'
   },
-  total_debt: {
-    required: (x: string) => !x && `A value for "total_debt" is required`,
-    formatted: 'Total Debt'
-  },
   total_liabilities: {
     required: (x: string) =>
       !x && `A value for "total_liabilities" is required`,
@@ -282,12 +195,6 @@ export const uploadReportCSVHeaders: {
     required: (x: string) => !x && `A value for "working_capital" is required`,
     formatted: 'Working Capital'
   },
-  /**
-   * *********************************
-   * FINANCIALS OTHER - in API request but not CSV
-   * Default values are set in in useCsvValidators > makeReqBody > financials
-   * *********************************
-   */
   management_experience: {
     required: false,
     formatted: 'Management Experience'
@@ -313,16 +220,14 @@ export const uploadReportCSVHeaders: {
     formatted: 'Loans'
   },
   non_current_liabilities: {
-    required: false,
+    required: (x: string) =>
+      !x && `A value for "non_current_liabilities" is required`,
     formatted: 'Non Current Liabilities'
   },
   other_non_current_liabilities: {
-    required: false,
+    required: (x: string) =>
+      !x && `A value for "other_non_current_liabilities" is required`,
     formatted: 'Other Non Current Liabilities'
-  },
-  net_debt: {
-    required: false,
-    formatted: 'Net Debt'
   },
   current_assets: {
     required: (x: string) => !x && `A value for "current_assets" is required`,
@@ -347,11 +252,14 @@ export const mapValidators = ([header, { required, validator }]: [
   string,
   CSVValidationHeaderProps
 ]): CsvValueValidation => {
-  const validators = required
-    ? validator
-      ? [required, validator]
-      : [required]
-    : [];
+  let validators = [];
+
+  if (required) {
+    validators.push(required);
+  }
+  if (validator) {
+    validators.push(validator);
+  }
 
   return {
     header,

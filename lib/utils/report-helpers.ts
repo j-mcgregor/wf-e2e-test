@@ -56,7 +56,6 @@ export const makeUploadReportReqBody = (
         long_term_debt: setNumberValue('long_term_debt', i),
         management_experience:
           setStringValue('management_experience', i) || 'Medium',
-        net_debt: setNumberValue('net_debt', i),
         net_income: setNumberValue('net_income', i),
         non_current_liabilities: setNumberValue('non_current_liabilities', i),
         number_of_employees: setNumberValue('number_of_employees', i),
@@ -69,7 +68,6 @@ export const makeUploadReportReqBody = (
         short_term_debt: setNumberValue('short_term_debt', i),
         tangible_fixed_assets: setNumberValue('tangible_fixed_assets', i),
         total_assets: setNumberValue('total_assets', i),
-        total_debt: setNumberValue('total_debt', i),
         total_liabilities: setNumberValue('total_liabilities', i),
         total_shareholder_equity: setNumberValue('total_shareholder_equity', i),
         turnover: setNumberValue('turnover', i),
@@ -82,7 +80,6 @@ export const makeUploadReportReqBody = (
     iso_code: setStringValue('iso_code', 0),
     company_id: setStringValue('company_id', 0),
     currency: setStringValue('currency', 0),
-    accounts_type: setNumberValue('accounts_type', 0),
     // DETAILS =====================
     details: {
       name: setStringValue('details_name', 0),

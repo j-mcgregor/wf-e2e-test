@@ -41,8 +41,9 @@ const batchReports = async (
           // they removed the .report_in requirement
           entities: request?.body?.entities || [],
           name: request?.body?.name || '',
-          accounts_type: request?.body?.accounts_type,
-          currency: request?.body?.currency || ''
+          currency: request?.body?.currency || '',
+          /** @deprecated */
+          accounts_type: request?.body?.accounts_type
         };
 
         const fetchRes = await BatchReport.batchJobReportUpload(

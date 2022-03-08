@@ -229,19 +229,13 @@ export type CsvReportUploadHeaders =
   // MAIN =============
   | 'currency'
   | 'iso_code'
-  | 'accounts_type'
   | 'company_id'
   // DETAILS =============
-  // -- in req body, not in csv --
-  // | 'details_status_change_date'
-  // ------------------------------
   | 'details_name'
   | 'details_industry_sector_code'
   | 'details_website' // <-- becomes details.websites
-  // | 'details_status'
   | 'details_nace_code'
   | 'details_number_of_directors' // <-- becomes details.number_of_directors
-  // | 'details_number_of_employees' // <-- becomes details.number_of_employees
   | 'details_number_of_subsidiaries' // <-- becomes details.number_of_subsidiaries
   // FINANCIALS =============
   | 'number_of_employees' // <-- becomes financials[x].number_of_employees
@@ -259,7 +253,6 @@ export type CsvReportUploadHeaders =
   | 'loans'
   | 'long_term_debt'
   | 'management_experience' // High, Medium (default) or Low only
-  | 'net_debt'
   | 'net_income'
   | 'non_current_liabilities'
   | 'other_non_current_liabilities'
@@ -268,23 +261,10 @@ export type CsvReportUploadHeaders =
   | 'short_term_debt'
   | 'tangible_fixed_assets'
   | 'total_assets'
-  | 'total_debt'
   | 'total_liabilities'
   | 'total_shareholder_equity'
   | 'turnover'
   | 'working_capital';
-
-// taken from swagger schema
-export enum AccountTypeEnum {
-  0 = 0,
-  1 = 1,
-  2 = 2,
-  3 = 3,
-  4 = 4,
-  5 = 5,
-  6 = 6,
-  7 = 7
-}
 
 export interface ReportUploadFinancialRequestBody {
   number_of_employees: number;
@@ -303,7 +283,6 @@ export interface ReportUploadFinancialRequestBody {
   loans: number;
   long_term_debt: number;
   management_experience: string;
-  net_debt: number;
   net_income: number;
   non_current_liabilities: number;
   other_non_current_liabilities: number;
@@ -311,7 +290,6 @@ export interface ReportUploadFinancialRequestBody {
   short_term_debt: number;
   tangible_fixed_assets: number;
   total_assets: number;
-  total_debt: number;
   total_liabilities: number;
   total_shareholder_equity: number;
   turnover: number;
@@ -340,7 +318,6 @@ export interface ReportUploadRequestBody {
   iso_code: string;
   company_id?: string; // TODO - remove when API updated
   currency: string;
-  accounts_type: AccountTypeEnum;
   // DETAILS =====================
   details: ReportUploadDetailsRequestBody;
   // FINANCIALS ==================

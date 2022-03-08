@@ -80,8 +80,8 @@ export const convertCSVToRequestBody = (
   // BASIC INFO
   let response = {
     name: name,
-    // TODO: find & parse accounts_type
-    accounts_type: 0 // <- TODO: use dynamic info from somewhere
+    /** @deprecated */
+    accounts_type: 0
   } as BatchRequest;
 
   if (uploadType === 'BATCH_AUTO') {

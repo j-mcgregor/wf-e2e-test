@@ -76,6 +76,7 @@ const createReport = async (
     iso_code: string;
     company_id: string;
     currency: string;
+    /** @deprecated */
     accounts_type: number;
   },
   token: string
@@ -111,7 +112,8 @@ const uploadReport = async (
     iso_code: string;
     company_id: string;
     currency: string;
-    accounts_type: number;
+    /** @deprecated */
+    accounts_type?: number;
   },
   token: string
 ): Promise<{
