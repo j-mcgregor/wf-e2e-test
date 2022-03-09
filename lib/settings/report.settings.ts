@@ -509,7 +509,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number(year?.equity_book_value_total_assets?.toFixed(2)) || 0
+          y: Number(year?.equity_ratio?.toFixed(2)) || 0
         }))
       })),
       'ratio'
@@ -611,7 +611,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number(year?.liquidity?.toFixed(2)) || 0
+          y: Number(year?.liquidity_ratio?.toFixed(2)) || 0
         }))
       })),
       'ratio'
