@@ -6,7 +6,7 @@ import Layout from '../components/layout/Layout';
 import Iframe from '../components/elements/Iframe';
 
 const iframeProps = {
-  src: 'https://api.saggio-credito.co.uk/redoc',
+  src: 'https://api.wiserfunding.com/redoc',
   title: 'API Documentation'
 };
 
