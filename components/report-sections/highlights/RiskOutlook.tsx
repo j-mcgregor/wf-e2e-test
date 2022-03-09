@@ -18,6 +18,11 @@ const RiskOutlook = ({
 }: RiskOutlookProps) => {
   const t = useTranslations();
 
+  const judgements = riskOutlookData?.governance?.judgements_12_months;
+  const paymentRemarks = riskOutlookData?.governance?.payment_remarks_12_months;
+  const region = riskOutlookData?.benchmark?.region;
+  const sector = riskOutlookData?.benchmark?.sector;
+
   return (
     <div className="flex flex-col w-full">
       <div className="flex pb-4">
@@ -44,20 +49,23 @@ const RiskOutlook = ({
               ? t('profitability_positive')
               : t('profitability_negative')}
           </li>
-          <li className="py-2 text-sm lg:text-sm">
-            {t('governance_template', {
-              judgements: riskOutlookData?.governance?.judgements_12_months,
-              paymentRemarks:
-                riskOutlookData?.governance?.payment_remarks_12_months
-            })}
-          </li>
-          <li className="py-2 text-sm lg:text-sm">
-            {t('benchmark_template', {
-              region: riskOutlookData?.benchmark?.region,
-              sector: riskOutlookData?.benchmark?.sector,
-              country: country
-            })}
-          </li>
+          {judgements && paymentRemarks && (
+            <li className="py-2 text-sm lg:text-sm">
+              {t('governance_template', {
+                judgements,
+                paymentRemarks
+              })}
+            </li>
+          )}
+          {region && sector && country && (
+            <li className="py-2 text-sm lg:text-sm">
+              {t('benchmark_template', {
+                region,
+                sector,
+                country
+              })}
+            </li>
+          )}
         </ul>
       </div>
     </div>
