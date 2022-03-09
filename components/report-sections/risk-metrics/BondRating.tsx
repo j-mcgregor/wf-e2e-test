@@ -40,7 +40,6 @@ const BondRating = ({ score, hint }: BondRatingProps) => {
     : bondRatings.findIndex(rating => rating.score === score);
 
   const printClasses = usePrintClasses(bondRatingClasses);
-  console.log('score', score);
 
   return (
     <div
