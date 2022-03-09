@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { createRef, useEffect, useState } from 'react';
 import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
+import * as Sentry from '@sentry/nextjs';
 
 import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
@@ -94,6 +95,7 @@ const CreateBatchReport = () => {
           error: BATCH_REPORT_FETCHING_ERROR,
           message: 'Could not make post request to batch endpoint.'
         });
+        Sentry.captureException({ error: res.error });
         setComplete(false);
         setLoading(false);
         setProcessing(false);
@@ -103,6 +105,7 @@ const CreateBatchReport = () => {
         error: BATCH_REPORT_FETCHING_ERROR,
         message: 'Could not make post request to batch endpoint.'
       });
+      Sentry.captureException(err);
       setComplete(false);
       setLoading(false);
       setProcessing(false);
