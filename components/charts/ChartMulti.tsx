@@ -170,7 +170,7 @@ const ChartMulti = ({
     >
       <div className="flex justify-between items-start px-4 pt-4 text-base">
         <div className="">
-          <h5 className="pb-2 md:whitespace-nowrap lg:whitespace-normal md:text-sm">
+          <h5 className="pb-2 md:whitespace-nowrap lg:whitespace-normal md:text-sm print:text-xs">
             {header}
           </h5>
           <p className="opacity-70 print:opacity-100 print:text-gray-400 text-sm print:text-xs">
