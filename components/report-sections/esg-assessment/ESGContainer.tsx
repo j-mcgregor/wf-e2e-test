@@ -42,7 +42,7 @@ const ESGContainer = ({
     location: titleCasedLocation,
     industry: sector
   });
-  const droughtRiskText = t.rich('draught_risk_text', {
+  const droughtRiskText = t.rich('drought_risk_text', {
     b: company_name => <b>{company_name}</b>,
     company_name: companyName,
     risk_level: physical?.drought.overall,
