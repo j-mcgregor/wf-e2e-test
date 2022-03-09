@@ -176,6 +176,7 @@ const Report = ({
               incorporationDate={data?.details?.date_of_incorporation}
               lastAccountDate={data?.details?.last_annual_accounts_date}
               country={companyDetails?.address?.country}
+              isoCode={data.iso_code}
               naceCode={companyDetails?.nace_code}
               naceName={companyDetails?.nace_name}
               companyStatus={companyDetails?.status}

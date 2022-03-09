@@ -74,21 +74,24 @@ const MacroEconomicTrends = ({ trends }: MacroEconomicTrendsProps) => {
             }`}
           >
             {graphSection.map((chart, i) => {
+              const chartData = chart?.data[0]?.data;
               return (
-                <Chart
-                  key={i}
-                  title={`${t(chart.header)}`}
-                  subtitle={`${t(chart.subHeader)}`}
-                  data={chart.data[0].data}
-                  hintBody={t(
-                    `report_hints.macro_economic_trends.${chart.hint.body}`
-                  )}
-                  hintTitle={t(
-                    `report_hints.macro_economic_trends.${chart.hint.title}`
-                  )}
-                  showLabels={true}
-                  tickCount={chartTicksXaxis[chart.subHeader]}
-                />
+                chartData && (
+                  <Chart
+                    key={i}
+                    title={`${t(chart.header)}`}
+                    subtitle={`${t(chart.subHeader)}`}
+                    data={chart.data[0].data}
+                    hintBody={t(
+                      `report_hints.macro_economic_trends.${chart.hint.body}`
+                    )}
+                    hintTitle={t(
+                      `report_hints.macro_economic_trends.${chart.hint.title}`
+                    )}
+                    showLabels={true}
+                    tickCount={chartTicksXaxis[chart.subHeader]}
+                  />
+                )
               );
             })}
           </div>

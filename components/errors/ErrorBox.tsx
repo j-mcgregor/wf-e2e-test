@@ -1,8 +1,12 @@
 import { ApplicationError } from './ApplicationError';
 
-export const ErrorBox = (error: any) => {
+export const ErrorBox = ({
+  error
+}: {
+  error: { error: string; message: string | string[] | object };
+}) => {
   // eslint-disable-next-line no-console
-  console.error(error.message);
+  console.log('Error Box', error);
   let message: string | React.ReactNode = '';
   switch (typeof error.message) {
     case 'string':
