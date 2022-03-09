@@ -67,8 +67,6 @@ const ChartMulti = ({
   const companyGraph = graphData[0];
   const benchmarkGraph = graphData[1];
 
-  const companyName = getCompanyName(companyGraph);
-
   // get largest y value from all graphs
   const largestYDataPoint = useMemo(() => {
     const largestCompanyValue =

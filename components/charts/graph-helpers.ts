@@ -13,7 +13,7 @@ export const calculateMaxDataPoint = (largestValue: number) => {
 
   return largestValueLength > 8
     ? largestValue / 1000000
-    : largestValueLength >= 4 && largestValueLength <= 8
+    : largestValueLength > 4 && largestValueLength <= 8
     ? largestValue / 1000
     : largestValue;
 };
@@ -24,16 +24,15 @@ export const calculateMinDataPoint = (
 ) => {
   // passed in the max data point, so we can calculate the min data point relative to that
   const maxValueLength = getNumberLength(maxDataPoint);
-  
+
   if (maxValueLength >= 8) {
     return smallestValue / 1000000;
-  } else if (maxValueLength >= 4 && maxValueLength < 8) {
+  } else if (maxValueLength > 4 && maxValueLength < 8) {
     return smallestValue / 1000;
   } else {
     return smallestValue;
   }
 };
-
 
 export const getMaxRenderValue = (
   disabled: boolean | undefined,
