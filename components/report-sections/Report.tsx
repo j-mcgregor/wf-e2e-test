@@ -39,7 +39,6 @@ import SummaryDetails from './summary/SummaryDetails';
 import SummaryFinancial from './summary/SummaryFinancial';
 import SummaryMap from './summary/SummaryMap';
 
-//
 const Report = ({
   data,
   id,
