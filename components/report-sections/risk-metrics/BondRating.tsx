@@ -40,6 +40,7 @@ const BondRating = ({ score, hint }: BondRatingProps) => {
     : bondRatings.findIndex(rating => rating.score === score);
 
   const printClasses = usePrintClasses(bondRatingClasses);
+  console.log('score', score);
 
   return (
     <div
@@ -55,7 +56,9 @@ const BondRating = ({ score, hint }: BondRatingProps) => {
             return (
               <div
                 style={{
-                  background: `linear-gradient(to right, ${rating.bgColor})`,
+                  background: score
+                    ? `linear-gradient(to right, ${rating.bgColor})`
+                    : '#dddddd',
                   width: rating.width
                 }}
                 key={i}
@@ -72,10 +75,14 @@ const BondRating = ({ score, hint }: BondRatingProps) => {
           })}
         </div>
       </div>
-      <div className="flex items-center bg-bg p-2 rounded-sm">
-        <p className="p-2 font-bold text-4xl">{score}</p>
-        <p className="p-2 text-sm">{t(`bond_rating_descriptions.${score}`)}</p>
-      </div>
+      {score && (
+        <div className="flex items-center bg-bg p-2 rounded-sm">
+          <p className="p-2 font-bold text-4xl">{score}</p>
+          <p className="p-2 text-sm">
+            {t(`bond_rating_descriptions.${score}`)}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
