@@ -62,12 +62,11 @@ export const useCSV = (file: File | null) => {
       };
     }, {} as CsvReport);
 
-  const isCSV = file?.type === 'text/csv' ? true : false;
-
-  console.log('isCSV', isCSV);
-  console.log('file?.type', file?.type);
-  console.log('file', file);
-  console.log('fileContent', fileContent);
+  // handle excels bullshit
+  const isCSV =
+    file?.type === 'text/csv' || file?.type === 'application/vnd.ms-excel'
+      ? true
+      : false;
 
   const isAutoOrManual = isBatchAutoOrManual(csvData);
 
