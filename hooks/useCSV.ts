@@ -5,6 +5,19 @@ import { readFile } from '../lib/utils/file-helpers';
 import { isBatchAutoOrManual } from '../lib/utils/report-helpers';
 import { getUniqueStringsFromArray } from '../lib/utils/text-helpers';
 
+// have to handle all possible mime types
+// see this issue https://christianwood.net/posts/csv-file-upload-validation/
+// and this SO https://stackoverflow.com/questions/7076042/what-mime-type-should-i-use-for-csv#answer-42140178
+const csvFileTypes = [
+  'text/x-csv',
+  'application/vnd.ms-excel',
+  'application/csv',
+  'application/x-csv',
+  'text/csv',
+  'text/comma-separated-values',
+  'text/x-comma-separated-values'
+];
+
 import type { CsvReport, FileContentType } from '../types/report';
 
 export const useCSV = (file: File | null) => {
@@ -63,11 +76,7 @@ export const useCSV = (file: File | null) => {
     }, {} as CsvReport);
 
   // handle excels bullshit
-  const isCSV =
-    file?.type === 'text/csv' || file?.type === 'application/vnd.ms-excel'
-      ? true
-      : false;
-
+  const isCSV = csvFileTypes.includes(`${file?.type}`) || false;
   const isAutoOrManual = isBatchAutoOrManual(csvData);
 
   let totalCompanies: string[] = [];
