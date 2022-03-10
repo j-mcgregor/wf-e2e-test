@@ -40,7 +40,7 @@ const RiskOutlook = ({
               : t('leverage_negative')}
           </li>
           <li className="py-2 text-sm lg:text-sm">
-            {riskOutlookData?.liquidity === 'positive'
+            {riskOutlookData?.liquidity === "'positive"
               ? t('liquidity_positive')
               : t('liquidity_negative')}
           </li>

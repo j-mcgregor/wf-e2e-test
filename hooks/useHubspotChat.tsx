@@ -37,12 +37,30 @@ const useHubspotChat = (portalId: string, load = true, user?: UserType) => {
   const awaitWindow = typeof window !== 'undefined' ? window : {};
 
   useEffect(() => {
+    const hubspotPoll = setInterval(() => {
+      if (!hasLoaded && window?.HubSpotConversations) {
+        window?.HubSpotConversations?.widget?.load();
+        setHasLoaded(true);
+      }
+
+      if (hasLoaded) {
+        clearInterval();
+      }
+    }, 500);
+
     if (hasLoaded) {
-      window?.HubSpotConversations?.widget?.load();
+      clearInterval(hubspotPoll);
     }
 
+    if (window?.HubSpotConversations && !hasLoaded) {
+      window?.HubSpotConversations?.widget?.load();
+      setHasLoaded(true);
+    }
+
+    return () => clearInterval(hubspotPoll);
+
     //@ts-ignore
-  }, [awaitWindow?.HubSpotConversations]);
+  }, [awaitWindow?.HubSpotConversations, hasLoaded, awaitWindow, hubspotChat]);
 
   const HubspotScript = () =>
     load && canLoadScript ? (
@@ -54,7 +72,6 @@ const useHubspotChat = (portalId: string, load = true, user?: UserType) => {
         id={'hs-script-loader'}
         src={`//js.hs-scripts.com/${portalId}.js`}
         onLoad={e => {
-          setHasLoaded(true);
           // @ts-ignore
           setHubspotChat(window?.HubSpotConversations);
         }}
