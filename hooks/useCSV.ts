@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState } from 'react';
 
 import { readFile } from '../lib/utils/file-helpers';
@@ -62,6 +63,11 @@ export const useCSV = (file: File | null) => {
     }, {} as CsvReport);
 
   const isCSV = file?.type === 'text/csv' ? true : false;
+
+  console.log('isCSV', isCSV);
+  console.log('file?.type', file?.type);
+  console.log('file', file);
+  console.log('fileContent', fileContent);
 
   const isAutoOrManual = isBatchAutoOrManual(csvData);
 
