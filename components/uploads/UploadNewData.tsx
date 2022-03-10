@@ -162,7 +162,7 @@ const UploadNewData = ({
       <div className="w-full sm:max-w-[200px] mt-2">
         <Button
           variant="highlight"
-          disabled={!isValid || disableButton || loading || hasErrors}
+          disabled={!isValid || disableButton || loading || hasErrors || !isCSV}
           loading={loading}
           className="text-primary rounded-none"
           onClick={() => onSubmit(setError, setLoading)}
