@@ -66,6 +66,7 @@ const ShareHolderList = ({ shareholders, isPrint }: ShareHolderListProps) => {
                     linkedin={shareholder.linkedin}
                     percentage={shareholder.percentage}
                     type={shareholder.type}
+                    isPep={shareholder.peps_sanctions_enforcements}
                   />
                 );
               })}

@@ -6,13 +6,15 @@ import ShareholderCardSvg from '../../svgs/backgrounds/ShareholderCardBG';
 import { ShareHolderCardProps } from '../../../types/report';
 import { OfficeBuildingIcon, UserIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
+import PepFlag from '../../elements/PepFlag';
 
 const ShareHolderCard = ({
   firstName,
   lastName,
   name,
   type,
-  percentage
+  percentage,
+  isPep
 }: ShareHolderCardProps) => {
   const isShareholderIndividual =
     type === 'One or more named individuals or families';
@@ -52,6 +54,12 @@ const ShareHolderCard = ({
           </p>
         ) : (
           <p className="flex-1 text-left ml-1">{name}</p>
+        )}
+        {isPep && (
+          <PepFlag
+            hint={t('this_person_is_risk_relevant_name')}
+            className="mx-2"
+          />
         )}
         {isShareholderIndividual && (
           <Link className="print:hidden" linkTo={linkedInLink}>

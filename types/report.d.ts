@@ -200,6 +200,7 @@ export interface ShareHolderCardProps {
   percentage?: number;
   name: string | null;
   type?: string;
+  isPep?: boolean;
 }
 
 export interface RiskOutlookData {
