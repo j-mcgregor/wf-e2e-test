@@ -35,7 +35,6 @@ export default function Dashboard() {
               <h1 className="text-2xl font-semibold">
                 {user && user.full_name}
               </h1>
-              <p className="font-semibold">{t('all_time')}</p>
             </div>
           </div>
 
@@ -71,7 +70,7 @@ export default function Dashboard() {
         </div>
 
         <div className="md:col-span-2 md:block hidden">
-          <h3 className="font-semibold">{t('updates')}</h3>
+          {/* <h3 className="font-semibold">{t('updates')}</h3> */}
           <TwitterFeed className="mt-6 h-[398px]" />
         </div>
       </div>

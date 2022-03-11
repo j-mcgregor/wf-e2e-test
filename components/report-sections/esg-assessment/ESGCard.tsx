@@ -38,15 +38,13 @@ const ESGCard = ({
       </div>
       <div className="text-center relative top-2">
         {result && rating && (
-          <div
-            className={`${
-              result === 'positive' ? 'bg-green-300' : 'bg-bg'
-            } w-40 px-10 py-6 rounded-lg uppercase font-bold`}
-          >
-            {result !== 'neutral' ? <p>{rating}</p> : <p>{t('neutral')}</p>}
-          </div>
+          <></>
+          // <div
+          //   className={`${result === 'positive' ? 'bg-green-300' : 'bg-bg'
+          //     } w-40 px-10 py-6 rounded-lg uppercase font-bold`}>
+          //   {result !== 'neutral' ? <p>{rating}</p> : <p>{t('neutral')}</p>}
+          // </div>
         )}
-
         {results?.length && (
           <ul className="space-y-3">
             {results.map((result, index) => {

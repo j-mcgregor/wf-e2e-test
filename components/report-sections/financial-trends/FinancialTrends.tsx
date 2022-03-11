@@ -41,7 +41,7 @@ const FinancialTrends = ({
   );
 
   // charts split into arrays of 6 for print layout
-  const filteredCharts = renderArrayForPrint(chartsToRender, 6);
+  const filteredCharts = renderArrayForPrint(chartsToRender, 9);
 
   // find currency symbol from currency code
   const currencySymbol = countryCodes.find(
