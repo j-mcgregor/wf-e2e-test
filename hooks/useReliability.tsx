@@ -32,7 +32,7 @@ export const useReliability = ({
     res.barYaxis = '75%';
     res.infoBoxText = t('reliableText');
     res.styles = 'bg-[#2BAD0133] border-[#2BAD01]';
-  } else if (score > 0.35) {
+  } else if (score > 0.3) {
     res.barLabel = Reliability.CAUTION;
     res.barYaxis = '40%';
     res.infoBoxText = t('cautionText');
