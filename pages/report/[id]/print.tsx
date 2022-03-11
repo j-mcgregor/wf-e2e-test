@@ -28,15 +28,7 @@ const ReportTemplate = () => {
     if (data && !data.error) {
       setTimeout(() => {
         setLoaded(true);
-        // popup dialog to advise A4 printing
-        // when confirmed/dismissed, printing dialog opens
-        if (
-          window.confirm(
-            'For optimum printing of the report, please make sure you have selected A4 size.'
-          )
-        ) {
-          window.print();
-        }
+        window.print();
       }, 3000);
     }
   }, [data]);
