@@ -47,7 +47,7 @@ const ESGCard = ({
           </div>
         )}
 
-        {results && (
+        {results?.length && (
           <ul className="space-y-3">
             {results.map((result, index) => {
               const industry = `industries.${result.sector.toLowerCase()}`;
@@ -70,12 +70,6 @@ const ESGCard = ({
               );
             })}
           </ul>
-        )}
-
-        {!results && !result && !rating && (
-          <div className="bg-gray-200 animate-pulse h-12 rounded-md flex justify-center items-center">
-            <LoadingIcon />
-          </div>
         )}
         <p className="text-sm italic mt-2">{resultText}</p>
       </div>

@@ -83,9 +83,7 @@ const ESGContainer = ({
         <div className="flex justify-between  w-full md:col-span-3">
           <h4 className="w-20 text-xl">{t('industry')}</h4>
 
-          {sector && (
-            <h4 className="bg-slate-200 px-6 py-2 -mt-2 ">{sector}</h4>
-          )}
+          <h4 className="bg-slate-200 px-6 py-2 -mt-2 ">{sector || t('na')}</h4>
         </div>
       </div>
 
