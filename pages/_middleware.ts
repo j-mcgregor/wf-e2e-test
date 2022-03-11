@@ -26,7 +26,9 @@ export async function middleware(req: NextRequest, _res: NextResponse) {
   });
 
   // If no token then redirect back to login
-  if (!token) return NextResponse.redirect(url);
+  // if (!token) return NextResponse.redirect(url);
+  // change to rewrite for now to catch all routes
+  if (!token) return NextResponse.rewrite(url);
 
   // If token i.e. user authenticated, continue.
   return NextResponse.next();
