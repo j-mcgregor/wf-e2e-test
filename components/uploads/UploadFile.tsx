@@ -1,5 +1,5 @@
 import { TrashIcon, UploadIcon } from '@heroicons/react/outline';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslations } from 'use-intl';
 
 import { TranslateInput } from '../../types/global';
@@ -22,6 +22,7 @@ const UploadFile = ({
   setFile,
   disableRemoveButton
 }: UploadFileProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const t = useTranslations();
 
   const [draggedOver, setIsDraggedOver] = useState(false);
@@ -42,76 +43,92 @@ const UploadFile = ({
     return setIsDraggedOver(false);
   };
 
+  // handle the click on the drop area
+  const handleClick = () => {
+    return inputRef?.current?.click();
+  };
+
   return (
-    <div
-      onDragOver={e => handleDragOver(e)}
-      onDrop={e => handleDrop(e)}
-      onDragLeave={handleDragLeave}
-      className={`${
-        draggedOver ? 'bg-highlight bg-opacity-60' : 'bg-bg'
-      }  h-52 flex flex-col items-center justify-center rounded`}
-    >
+    <div className="relative group">
+      {!fileName && (
+        <button
+          onDragOver={e => handleDragOver(e)}
+          onDrop={e => handleDrop(e)}
+          onDragLeave={handleDragLeave}
+          onClick={handleClick}
+          className={`${
+            draggedOver ? 'bg-highlight bg-opacity-60' : 'bg-transparent'
+          }   h-52 flex flex-col items-center justify-center rounded absolute w-full  hover:cursor-pointer`}
+        />
+      )}
       <div
-        className={`${
-          draggedOver ? 'hidden' : 'block'
-        } flex flex-col w-full items-center `}
+        className={`h-52 bg-bg   flex flex-col items-center justify-center rounded  `}
       >
-        <form className="py-4 mt-2 text-sm w-full px-4">
-          {!fileName && (
-            <label htmlFor="file-upload">
-              <UploadIcon className="h-20 w-20 border-2 border-highlight text-highlight hover:opacity-50  cursor-pointer  p-4 rounded mb-5 mx-auto" />
-            </label>
-          )}
+        <div
+          className={`${
+            draggedOver ? 'hidden' : 'block'
+          } flex flex-col w-full items-center`}
+        >
+          <form className={`py-4 mt-2 text-sm  px-4 `}>
+            {!fileName && (
+              <label htmlFor="file-upload">
+                <UploadIcon className="h-20 w-20 border-2 border-highlight text-highlight group-hover:opacity-50  cursor-pointer  p-4 rounded mb-5 mx-auto" />
+              </label>
+            )}
+            {/* Handles the issue with no file change on chrome (i.e. same file upload ) */}
+            {!fileName && (
+              <input
+                className="hidden"
+                type="file"
+                ref={inputRef}
+                id="file-upload"
+                accept=".csv"
+                onChange={e =>
+                  setFile(e?.target?.files?.[0] ? e?.target?.files[0] : null)
+                }
+              />
+            )}
 
-          <input
-            className="hidden"
-            type="file"
-            id="file-upload"
-            accept=".csv"
-            onChange={e =>
-              setFile(e?.target?.files?.[0] ? e?.target?.files[0] : null)
-            }
-          />
-
-          {!fileName ? (
-            <div className="flex w-full">
-              <div className="mx-auto">
-                <label
-                  className="text-highlight cursor-pointer hover:opacity-60"
-                  htmlFor="file-upload"
-                >
-                  {linkText}
-                </label>
-                <span className="ml-1">{text}</span>
+            {!fileName ? (
+              <div className="flex w-full">
+                <div className="mx-auto">
+                  <label
+                    className="text-highlight cursor-pointer group-hover:opacity-60"
+                    htmlFor="file-upload"
+                  >
+                    {linkText}
+                  </label>
+                  <span className="ml-1">{text}</span>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className={`w-full  `}>
-              <p className="text-sm font-semibold  text-center max-w-sm mx-auto mb-5  ">
-                {fileName}
-              </p>
-            </div>
-          )}
-          {fileName && (
-            <Button
-              variant="none"
-              onClick={removeFile}
-              className="inline-block max-w-xxs mx-auto shadow-none hover:text-red-400 border-2 border-primary hover:border-red-400 border-opacity-50 hover:border-opacity-100"
-              disabled={disableRemoveButton}
-            >
-              {t('remove_file')}
-              <TrashIcon className="h-6 w-6  rounded ml-2" />
-            </Button>
-          )}
-        </form>
-      </div>
+            ) : (
+              <div className={`w-full `}>
+                <p className="text-sm font-semibold  text-center max-w-sm mx-auto mb-5  ">
+                  {fileName}
+                </p>
+              </div>
+            )}
+            {fileName && (
+              <Button
+                variant="none"
+                onClick={removeFile}
+                className="inline-block max-w-xxs mx-auto shadow-none hover:text-red-400 border-2 border-primary hover:border-red-400 border-opacity-50 hover:border-opacity-100"
+                disabled={disableRemoveButton}
+              >
+                {t('remove_file')}
+                <TrashIcon className="h-6 w-6  rounded ml-2" />
+              </Button>
+            )}
+          </form>
+        </div>
 
-      <p
-        className={`${draggedOver ? 'block' : 'hidden'}
+        <p
+          className={`${draggedOver ? 'block' : 'hidden'}
         text-lg font-semibold`}
-      >
-        {t('drop_file_to_upload')}
-      </p>
+        >
+          {t('drop_file_to_upload')}
+        </p>
+      </div>
     </div>
   );
 };
