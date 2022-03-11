@@ -55,34 +55,42 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
       data-testid="legal-events-testid"
     >
       <p className="text-xl">{t('summary')}</p>
+      {console.log('FILTERS.ALL', allEvents.length)}
       <div
         className="flex flex-col md:flex-row my-6  print:flex-row print:justify-evenly print:border-2 "
         data-testid="legal-events-summary-testid"
       >
-        <LegalFilter
-          events={allEvents}
-          filter={filter}
-          handleFilter={() => handleFilter(allEvents, FILTERS.ALL)}
-          title={t('all_events')}
-          activeFilter={FILTERS.ALL}
-        />
-        <div className="print:border-l-2" />
-        <LegalFilter
-          events={charges}
-          filter={filter}
-          handleFilter={() => handleFilter(charges, FILTERS.CHARGES)}
-          title={t('charges')}
-          activeFilter={FILTERS.CHARGES}
-        />
-        <div className=" print:border-l-2 " />
-        <LegalFilter
-          events={negativeEvents}
-          filter={filter}
-          handleFilter={() => handleFilter(negativeEvents, FILTERS.NEGATIVE)}
-          title={t('negative_events')}
-          activeFilter={FILTERS.NEGATIVE}
-        />
+        {allEvents.length && (
+          <>
+            <LegalFilter
+              events={allEvents}
+              filter={filter}
+              handleFilter={() => handleFilter(allEvents, FILTERS.ALL)}
+              title={t('all_events')}
+              activeFilter={FILTERS.ALL}
+            />
+            <div className="print:border-l-2" />
+            <LegalFilter
+              events={charges}
+              filter={filter}
+              handleFilter={() => handleFilter(charges, FILTERS.CHARGES)}
+              title={t('charges')}
+              activeFilter={FILTERS.CHARGES}
+            />
+            <div className=" print:border-l-2 " />
+            <LegalFilter
+              events={negativeEvents}
+              filter={filter}
+              handleFilter={() =>
+                handleFilter(negativeEvents, FILTERS.NEGATIVE)
+              }
+              title={t('negative_events')}
+              activeFilter={FILTERS.NEGATIVE}
+            />
+          </>
+        )}
       </div>
+
       {hasEvents ? (
         <>
           <p className="text-xl px-4 print:hidden">{t(filter)}</p>
