@@ -68,9 +68,11 @@ const LoginForm = ({ routeRedirect }: LogingFormProps) => {
 
     if (authenticated?.ok) {
       data.remember && setActiveUser(data.email);
-      routeRedirect().then(route => {
-        router.push(`${route}`);
-      });
+      // TODO: Removed function as there was type error, it needs review.
+      //   return routeRedirect().then(route => {
+      //     return router.push(`${route}`);
+      //   });
+      return router.push(`/`);
     }
     return setAuthError(true);
   };

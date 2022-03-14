@@ -30,6 +30,10 @@ const Login = () => {
     []
   );
 
+  useEffect(() => {
+    setUserLoginTime([currentTimeAndDate, userLoginTime[0]]);
+  }, []);
+
   const defaultLoginRedirect = new Promise<string>((resolve, reject) => {
     let cookie: CookieValueTypes = checkCookies('home_page');
     if (cookie) {
@@ -55,15 +59,12 @@ const Login = () => {
   };
 
   if (!loading && session) {
-    routeRedirect().then(route => {
-     return router.push(`${route}`);
+    return routeRedirect().then(route => {
+      return router.push(`${route}`);
     });
   }
 
   const currentTimeAndDate = Date.now();
-  useEffect(() => {
-    setUserLoginTime([currentTimeAndDate, userLoginTime[0]]);
-  }, []);
 
   return (
     <Layout noNav={true} title="Login" noAuthRequired={true}>
