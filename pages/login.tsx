@@ -56,7 +56,7 @@ const Login = () => {
 
   if (!loading && session) {
     routeRedirect().then(route => {
-      router.push(`${route}`);
+     return router.push(`${route}`);
     });
   }
 
