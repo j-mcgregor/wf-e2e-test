@@ -55,7 +55,6 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
       data-testid="legal-events-testid"
     >
       <p className="text-xl">{t('summary')}</p>
-      {console.log('FILTERS.ALL', allEvents.length)}
       <div
         className="flex flex-col md:flex-row my-6  print:flex-row print:justify-evenly print:border-2 "
         data-testid="legal-events-summary-testid"
