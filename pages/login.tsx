@@ -10,11 +10,13 @@ import LoginSSO from '../components/forms/login/LoginSSO';
 import Layout from '../components/layout/Layout';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { checkCookies, getCookie } from 'cookies-next';
 
 import React, { useEffect } from 'react';
 
 import LoadingIcon from '../components/svgs/LoadingIcon';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { CookieValueTypes } from 'cookies-next/lib/types';
 
 const Login = () => {
   const t = useTranslations();
@@ -28,12 +30,37 @@ const Login = () => {
     []
   );
 
+  const defaultLoginRedirect = new Promise<string>((resolve, reject) => {
+    let cookie: CookieValueTypes = checkCookies('home_page');
+    if (cookie) {
+      const homePage = getCookie('home_page');
+      switch (homePage) {
+        case 'reports':
+          cookie = '/reports';
+          break;
+        case 'single_report':
+          cookie = '/sme_calculator';
+          break;
+        default:
+          cookie = '/';
+      }
+      resolve(cookie);
+    } else {
+      reject('/');
+    }
+  });
+
+  const routeRedirect = async () => {
+    return await defaultLoginRedirect;
+  };
+
   if (!loading && session) {
-    router.push('/');
+    routeRedirect().then(route => {
+      router.push(`${route}`);
+    });
   }
 
   const currentTimeAndDate = Date.now();
-
   useEffect(() => {
     setUserLoginTime([currentTimeAndDate, userLoginTime[0]]);
   }, []);
@@ -66,7 +93,7 @@ const Login = () => {
               </div>
             </div>
             <LoginSSO />
-            <LoginForm />
+            <LoginForm routeRedirect={routeRedirect} />
           </div>
         ) : (
           <div>

@@ -3,7 +3,6 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import SettingsSettings from '../../../lib/settings/settings.settings';
 
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import {
@@ -24,8 +23,11 @@ type FormValues = {
   password: string;
   remember: boolean;
 };
+interface LogingFormProps {
+  routeRedirect: () => Promise<string>;
+}
 
-const LoginForm = () => {
+const LoginForm = ({ routeRedirect }: LogingFormProps) => {
   const t = useTranslations();
   const router = useRouter();
   const {
@@ -38,7 +40,6 @@ const LoginForm = () => {
   const [, setActiveUser] = useLocalStorage<string | null>('user', null);
   const [authError, setAuthError] = useState(false);
   const [userEmail, setUserEmail] = useLocalStorage('wf_user_email', '');
-
 
   // handle the remember functions
   React.useEffect(() => {
@@ -67,7 +68,9 @@ const LoginForm = () => {
 
     if (authenticated?.ok) {
       data.remember && setActiveUser(data.email);
-      return router.push('/');
+      routeRedirect().then(route => {
+        router.push(`${route}`);
+      });
     }
     return setAuthError(true);
   };
