@@ -71,6 +71,8 @@ const nextAuthConfig: NextAuthOptions = {
       }
     })
   ],
+
+  //HINT: is this showing login screen unexpectedly due to error?
   pages: {
     signIn: '/login',
     error: '/login'

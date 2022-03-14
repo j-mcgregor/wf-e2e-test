@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import SettingsSettings from '../../../lib/settings/settings.settings';
 
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import {
@@ -37,6 +38,7 @@ const LoginForm = () => {
   const [, setActiveUser] = useLocalStorage<string | null>('user', null);
   const [authError, setAuthError] = useState(false);
   const [userEmail, setUserEmail] = useLocalStorage('wf_user_email', '');
+
 
   // handle the remember functions
   React.useEffect(() => {
