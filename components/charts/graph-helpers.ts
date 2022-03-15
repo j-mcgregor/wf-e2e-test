@@ -40,14 +40,14 @@ export const getMaxRenderValue = (
   maxDataValue: number
 ): number => {
   const percentageIncreased =
-    maxDataValue * 0.1 > 5 ? maxDataValue * 1.1 : maxDataValue + 5;
-  const maxPercentageValue =
-    percentageIncreased > 100 ? 100 : percentageIncreased;
+    maxDataValue * 0.1 > 5 && maxDataValue < 100
+      ? maxDataValue * 1.1
+      : maxDataValue + 5;
 
   return disabled
     ? 1
     : chartType === 'percentage'
-    ? maxPercentageValue
+    ? percentageIncreased
     : chartType === 'zscore'
     ? 1000
     : maxDataValue <= 0

@@ -157,7 +157,7 @@ const ChartMulti = ({
       : null;
 
   // how to log only one graph
-  // header === "Interest Coverage Ratio" && console.log(maxYValue)
+  // header === "Return on Assets (ROA)" && console.log(graphData)
 
   return (
     <div
