@@ -110,11 +110,12 @@ const ChartMulti = ({
   const maxYValue =
     chartType === 'ratio'
       ? largestYDataPoint
-      : calculateMaxDataPoint(largestYDataPoint);
+      : calculateMaxDataPoint(largestYDataPoint, largestNumberLength);
 
   const minYValue = calculateMinDataPoint(
     smallestYDataPoint,
-    largestYDataPoint
+    largestNumberLength
+    // header === "Net Income"
   );
 
   const maxRenderValue = getMaxRenderValue(disabled, chartType, maxYValue);
@@ -157,7 +158,7 @@ const ChartMulti = ({
       : null;
 
   // how to log only one graph
-  // header === "Return on Assets (ROA)" && console.log(graphData)
+  // header === "Net Income" && console.log('minYValue', minYValue);
 
   return (
     <div
