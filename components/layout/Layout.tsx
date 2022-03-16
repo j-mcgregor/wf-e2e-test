@@ -1,7 +1,7 @@
 import { useSession, signOut } from 'next-auth/react';
 
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as Sentry from '@sentry/react';
 import SkeletonLayout from '../skeletons/SkeletonLayout';
 import Nav from './Nav';
@@ -42,9 +42,22 @@ const Layout = ({
   const { data: session } = useSession();
   const { user, loading, error, message } = useUser(!noAuthRequired);
   const { HubspotScript } = useHubspotChat('4623266', true, user);
-  const [homePage, setHomePage] = useLocalStorage<string>('wf_home_page', '');
+  const [, setHomePage] = useLocalStorage<string>('wf_home_page', '');
+  const [, setLastPageVisited] = useLocalStorage<string>(
+    'wf_last_page_visited',
+    ''
+  );
 
   if (!loading && !session && !noAuthRequired) router.push('/login');
+
+  useEffect(() => {
+    // Listen for page changes after a navigation or when the query changes and set last page. Dont set if login
+    router.events.on('routeChangeComplete', url => {
+      if (url !== '/login') {
+        setLastPageVisited(url);
+      }
+    });
+  }, [router.events]);
 
   React.useEffect(() => {
     if (user) {
@@ -64,7 +77,6 @@ const Layout = ({
   return (
     <div>
       <HubspotScript />
-
       <Seo title={title} description={description} path={path} />
       <div className="h-screen bg-bg overflow-hidden flex ">
         {!noNav && user && <Nav path={path} />}

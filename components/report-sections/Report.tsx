@@ -505,6 +505,7 @@ const Report = ({
           rating={pepFlags}
           result={pepFlags && pepFlags > 0 ? 'negative' : 'neutral'}
         />
+
         <ESGContainer
           companyName={data?.details.name || ''}
           sector={data.details?.industry_sector || ''}

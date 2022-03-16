@@ -23,6 +23,37 @@ const ESGCard = ({
   asteriskText
 }: ESGCardProps) => {
   const t = useTranslations();
+
+  const pepFlagDisplay = () => {
+    if (!!rating && rating !== 0 && resultText !== 'PEP Flags') {
+      return (
+        <div
+          className={`${
+            result === 'positive' ? 'bg-green-300' : 'bg-bg'
+          } w-40 px-10 py-6 rounded-lg uppercase font-bold`}
+        >
+          {result !== 'neutral' ? <p>{rating}</p> : <p>{t('neutral')}</p>}
+        </div>
+      );
+    } else if (rating !== 0) {
+      return (
+        <div
+          className={
+            'bg-red-200 w-40 px-10 py-6 rounded-lg uppercase font-bold'
+          }
+        >
+          <p>{rating}</p>
+        </div>
+      );
+    } else {
+      return (
+        <div className={'bg-bg w-40 px-10 py-6 rounded-lg uppercase font-bold'}>
+          <p>{rating}</p>
+        </div>
+      );
+    }
+  };
+
   return (
     <div
       className="flex bg-white rounded-sm shadow-sm my-4 px-8 py-8 items-center justify-between
@@ -37,14 +68,9 @@ const ESGCard = ({
         )}
       </div>
       <div className="text-center relative top-2">
-        {result && rating && (
-          <></>
-          // <div
-          //   className={`${result === 'positive' ? 'bg-green-300' : 'bg-bg'
-          //     } w-40 px-10 py-6 rounded-lg uppercase font-bold`}>
-          //   {result !== 'neutral' ? <p>{rating}</p> : <p>{t('neutral')}</p>}
-          // </div>
-        )}
+        {console.log('result, rating', result, rating)}
+        {result && pepFlagDisplay()}
+
         {results?.length && (
           <ul className="space-y-3">
             {results.map((result, index) => {

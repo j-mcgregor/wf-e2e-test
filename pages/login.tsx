@@ -29,7 +29,7 @@ const Login = () => {
     []
   );
   const [homePage] = useLocalStorage<string>('wf_home_page', '');
-  const [last_page] = useLocalStorage<string>('wf_last_page_visited', '');
+  const [lastPageVisited] = useLocalStorage<string>('wf_last_page_visited', '');
 
   useEffect(() => {
     setUserLoginTime([currentTimeAndDate, userLoginTime[0]]);
@@ -53,19 +53,22 @@ const Login = () => {
         }
         return resolve(local);
       } else {
-        console.log('elsddde');
         return reject('/');
       }
     });
   };
 
   if (!loading && session) {
-    defaultHomepageRedirect(homePage)
-      .then(route => {
-        console.log('hi');
-        router.push(`${route}`);
-      })
-      .catch(e => console.log('e', e));
+    //check localstorage for last page component visited, if present and not empty string, push that page
+    if (lastPageVisited && lastPageVisited === '') {
+      defaultHomepageRedirect(homePage)
+        .then(route => {
+          router.push(`${route}`);
+        })
+        .catch(e => console.log('e', e));
+    } else {
+      router.push(lastPageVisited);
+    }
   }
 
   const currentTimeAndDate = Date.now();
