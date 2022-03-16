@@ -35,9 +35,9 @@ const Login = () => {
   }, []);
 
   //checks local for home_page default redirect
-  const defaultHomepageRedirect = (homePage: string) => {
-    let local = homePage;
-    switch (homePage) {
+  const defaultHomepageRedirect = (hp: string) => {
+    let local = hp;
+    switch (local) {
       case 'reports':
         local = '/reports';
         break;
