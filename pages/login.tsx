@@ -58,8 +58,8 @@ const Login = () => {
     if (lastPageVisited && lastPageVisited !== '') {
       router.push(`${lastPageVisited}`);
     } else {
-      const redirectPath = defaultHomepageRedirect(homePage);
-      router.push(`${redirectPath}`);
+      const homepageRedirect = defaultHomepageRedirect(homePage);
+      router.push(`${homepageRedirect}`);
     }
   }
 

@@ -24,7 +24,7 @@ type FormValues = {
   remember: boolean;
 };
 interface LogingFormProps {
-  defaultHomepageRedirect: (homePage: string) => string;
+  defaultHomepageRedirect: (hp: string) => void;
 }
 
 const LoginForm = ({ defaultHomepageRedirect }: LogingFormProps) => {
@@ -68,11 +68,10 @@ const LoginForm = ({ defaultHomepageRedirect }: LogingFormProps) => {
     });
 
     if (authenticated?.ok) {
+      console.log('authenticated');
       data.remember && setActiveUser(data.email);
-      () => {
-        const redirectPath = defaultHomepageRedirect(homePage);
-        router.push(`${redirectPath}`);
-      };
+      const homepageRedirect = defaultHomepageRedirect(homePage);
+      router.push(`${homepageRedirect}`);
     }
     return setAuthError(true);
   };
