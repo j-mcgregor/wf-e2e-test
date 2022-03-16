@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/nextjs';
-import { setCookies } from 'cookies-next';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -96,7 +95,6 @@ const PreferenceForm = ({
       if (json.ok) {
         // mutate the user state to get the new preferences
         // useUser hook is being called here
-        setCookies('home_page', data.homePage);
         mutate('/api/user');
       }
     } catch (error) {

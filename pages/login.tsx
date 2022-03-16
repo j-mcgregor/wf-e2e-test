@@ -10,7 +10,6 @@ import LoginSSO from '../components/forms/login/LoginSSO';
 import Layout from '../components/layout/Layout';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { checkCookies, getCookie } from 'cookies-next';
 
 import React, { useEffect } from 'react';
 
@@ -36,41 +35,31 @@ const Login = () => {
   }, []);
 
   //checks local for home_page default redirect
-  const defaultHomepageRedirect = async (homePage: string) => {
-    return new Promise<string>((resolve, reject) => {
-      let local = homePage;
-      if (local !== '') {
-        let local = homePage;
-        switch (homePage) {
-          case 'reports':
-            local = '/reports';
-            break;
-          case 'single_report':
-            local = '/sme_calculator';
-            break;
-          default:
-            local = '/';
-        }
-        return resolve(local);
-      } else {
-        return reject('/');
-      }
-    });
+  const defaultHomepageRedirect = (homePage: string) => {
+    let local = homePage;
+    switch (homePage) {
+      case 'reports':
+        local = '/reports';
+        break;
+      case 'single_report':
+        local = '/sme-calculator';
+        break;
+      case 'multiple_reports':
+        local = '/batch-reports';
+        break;
+      default:
+        local = '/';
+    }
+    return local;
   };
 
   if (!loading && session) {
-    //check localstorage for last page component visited, if present and not empty string, push that page
-    if (lastPageVisited && lastPageVisited === '') {
-      defaultHomepageRedirect(homePage)
-        .then(route => {
-          router.push(`${route}`);
-        })
-        .catch(
-          e => e
-          // console.log('e', e)
-        );
+    // check localstorage for last page component visited, if present and not empty string, push that page
+    if (lastPageVisited && lastPageVisited !== '') {
+      router.push(`${lastPageVisited}`);
     } else {
-      router.push(lastPageVisited);
+      const redirectPath = defaultHomepageRedirect(homePage);
+      router.push(`${redirectPath}`);
     }
   }
 
