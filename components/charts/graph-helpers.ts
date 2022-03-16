@@ -5,29 +5,28 @@ import {
 } from '../../types/charts';
 
 export const getNumberLength = (num: number) => {
-  return num.toFixed().replace('.', '').length;
+  return Math.abs(num).toFixed().replace('.', '').length;
 };
 
-export const calculateMaxDataPoint = (largestValue: number) => {
-  const largestValueLength = getNumberLength(largestValue);
-
-  return largestValueLength > 8
+export const calculateMaxDataPoint = (
+  largestValue: number,
+  largestNumberLength: number
+) => {
+  return largestNumberLength > 8
     ? largestValue / 1000000
-    : largestValueLength > 4 && largestValueLength <= 8
+    : largestNumberLength > 4 && largestNumberLength <= 8
     ? largestValue / 1000
     : largestValue;
 };
 
 export const calculateMinDataPoint = (
   smallestValue: number,
-  maxDataPoint: number
+  largestNumberLength: number,
+  log = false
 ) => {
-  // passed in the max data point, so we can calculate the min data point relative to that
-  const maxValueLength = getNumberLength(maxDataPoint);
-
-  if (maxValueLength >= 8) {
+  if (largestNumberLength > 8) {
     return smallestValue / 1000000;
-  } else if (maxValueLength > 4 && maxValueLength < 8) {
+  } else if (largestNumberLength > 4 && largestNumberLength <= 8) {
     return smallestValue / 1000;
   } else {
     return smallestValue;
@@ -40,14 +39,14 @@ export const getMaxRenderValue = (
   maxDataValue: number
 ): number => {
   const percentageIncreased =
-    maxDataValue * 0.1 > 5 ? maxDataValue * 1.1 : maxDataValue + 5;
-  const maxPercentageValue =
-    percentageIncreased > 100 ? 100 : percentageIncreased;
+    maxDataValue * 0.1 > 5 && maxDataValue < 100
+      ? maxDataValue * 1.1
+      : maxDataValue + 5;
 
   return disabled
     ? 1
     : chartType === 'percentage'
-    ? maxPercentageValue
+    ? percentageIncreased
     : chartType === 'zscore'
     ? 1000
     : maxDataValue <= 0
