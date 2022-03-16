@@ -16,7 +16,6 @@ import React, { useEffect } from 'react';
 
 import LoadingIcon from '../components/svgs/LoadingIcon';
 import useLocalStorage from '../hooks/useLocalStorage';
-import { CookieValueTypes } from 'cookies-next/lib/types';
 
 const Login = () => {
   const t = useTranslations();
@@ -29,39 +28,44 @@ const Login = () => {
     'wf_last_login',
     []
   );
+  const [homePage] = useLocalStorage<string>('wf_home_page', '');
+  const [last_page] = useLocalStorage<string>('wf_last_page_visited', '');
 
   useEffect(() => {
     setUserLoginTime([currentTimeAndDate, userLoginTime[0]]);
   }, []);
 
-  const defaultLoginRedirect = new Promise<string>((resolve, reject) => {
-    let cookie: CookieValueTypes = checkCookies('home_page');
-    if (cookie) {
-      const homePage = getCookie('home_page');
-      switch (homePage) {
-        case 'reports':
-          cookie = '/reports';
-          break;
-        case 'single_report':
-          cookie = '/sme_calculator';
-          break;
-        default:
-          cookie = '/';
+  //checks local for home_page default redirect
+  const defaultHomepageRedirect = async (homePage: string) => {
+    return new Promise<string>((resolve, reject) => {
+      let local = homePage;
+      if (local !== '') {
+        let local = homePage;
+        switch (homePage) {
+          case 'reports':
+            local = '/reports';
+            break;
+          case 'single_report':
+            local = '/sme_calculator';
+            break;
+          default:
+            local = '/';
+        }
+        return resolve(local);
+      } else {
+        console.log('elsddde');
+        return reject('/');
       }
-      resolve(cookie);
-    } else {
-      reject('/');
-    }
-  });
-
-  const routeRedirect = async () => {
-    return await defaultLoginRedirect;
+    });
   };
 
   if (!loading && session) {
-    return routeRedirect().then(route => {
-      return router.push(`${route}`);
-    });
+    defaultHomepageRedirect(homePage)
+      .then(route => {
+        console.log('hi');
+        router.push(`${route}`);
+      })
+      .catch(e => console.log('e', e));
   }
 
   const currentTimeAndDate = Date.now();
@@ -94,7 +98,7 @@ const Login = () => {
               </div>
             </div>
             <LoginSSO />
-            <LoginForm routeRedirect={routeRedirect} />
+            <LoginForm defaultHomepageRedirect={defaultHomepageRedirect} />
           </div>
         ) : (
           <div>

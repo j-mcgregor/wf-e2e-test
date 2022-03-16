@@ -9,6 +9,7 @@ import Seo from './Seo';
 import useUser from '../../hooks/useUser';
 import ErrorSkeleton from '../skeletons/ErrorSkeleton';
 import useHubspotChat from '../../hooks/useHubspotChat';
+import useLocalStorage from '../../hooks/useLocalStorage';
 interface LayoutProps {
   title?: string;
   pageTitle?: string;
@@ -41,6 +42,7 @@ const Layout = ({
   const { data: session } = useSession();
   const { user, loading, error, message } = useUser(!noAuthRequired);
   const { HubspotScript } = useHubspotChat('4623266', true, user);
+  const [homePage, setHomePage] = useLocalStorage<string>('wf_home_page', '');
 
   if (!loading && !session && !noAuthRequired) router.push('/login');
 
@@ -48,6 +50,7 @@ const Layout = ({
     if (user) {
       // set sentry to identify user
       Sentry.setUser({ email: user.email || '' });
+      setHomePage(user?.preferences?.defaults?.home_page);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);

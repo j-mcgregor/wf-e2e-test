@@ -24,10 +24,10 @@ type FormValues = {
   remember: boolean;
 };
 interface LogingFormProps {
-  routeRedirect: () => Promise<string>;
+  defaultHomepageRedirect: (homePage: string) => Promise<string>;
 }
 
-const LoginForm = ({ routeRedirect }: LogingFormProps) => {
+const LoginForm = ({ defaultHomepageRedirect }: LogingFormProps) => {
   const t = useTranslations();
   const router = useRouter();
   const {
@@ -40,6 +40,7 @@ const LoginForm = ({ routeRedirect }: LogingFormProps) => {
   const [, setActiveUser] = useLocalStorage<string | null>('user', null);
   const [authError, setAuthError] = useState(false);
   const [userEmail, setUserEmail] = useLocalStorage('wf_user_email', '');
+  const [homePage] = useLocalStorage<string>('wf_home_page', '');
 
   // handle the remember functions
   React.useEffect(() => {
@@ -68,11 +69,9 @@ const LoginForm = ({ routeRedirect }: LogingFormProps) => {
 
     if (authenticated?.ok) {
       data.remember && setActiveUser(data.email);
-      // TODO: Removed function as there was type error, it needs review.
-      //   return routeRedirect().then(route => {
-      //     return router.push(`${route}`);
-      //   });
-      return router.push(`/`);
+      defaultHomepageRedirect(homePage).then(route => {
+        router.push(`${route}`);
+      });
     }
     return setAuthError(true);
   };

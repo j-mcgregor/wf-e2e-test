@@ -77,6 +77,7 @@ const nextAuthConfig: NextAuthOptions = {
     signIn: '/login',
     error: '/login'
   },
+
   callbacks: {
     async jwt({ token, user }) {
       // Persist the backend access token to the token right after sign in
