@@ -65,7 +65,10 @@ const Login = () => {
         .then(route => {
           router.push(`${route}`);
         })
-        .catch(e => console.log('e', e));
+        .catch(
+          e => e
+          // console.log('e', e)
+        );
     } else {
       router.push(lastPageVisited);
     }

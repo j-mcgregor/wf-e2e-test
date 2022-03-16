@@ -484,12 +484,11 @@ const Report = ({
 
       <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>
         <ReportSectionHeader text={t('environmental')} />
-
         <ESGCard
           title={t('activities')}
           description={t('data_on_activities')}
           resultText={
-            data?.esg?.sectors && data?.esg?.sectors.length === 0
+            data && data?.esg?.sectors && data?.esg?.sectors.length !== 0
               ? t('top_3_industries')
               : t('no_esg_results_found')
           }
