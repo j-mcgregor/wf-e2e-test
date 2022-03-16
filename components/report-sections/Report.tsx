@@ -307,12 +307,6 @@ const Report = ({
             />
           </div>
         </div>
-
-        {/* </div> */}
-        {/* <RiskMetricGraphs
-          data={lastFiveYearsRiskMetrics.reverse()}
-          companyName={companyName}
-        /> */}
         <BondRating
           score={latestRiskMetrics?.bond_rating_equivalent}
           hint={
@@ -502,7 +496,7 @@ const Report = ({
           )}
           resultText={t('pep_flags')}
           rating={pepFlags}
-          result={pepFlags && pepFlags > 0 ? 'negative' : 'neutral'}
+          result={pepFlags > 0 ? 'negative' : 'neutral'}
         />
 
         <ESGContainer
