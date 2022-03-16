@@ -68,7 +68,6 @@ const LoginForm = ({ defaultHomepageRedirect }: LogingFormProps) => {
     });
 
     if (authenticated?.ok) {
-      console.log('authenticated');
       data.remember && setActiveUser(data.email);
       const homepageRedirect = defaultHomepageRedirect(homePage);
       router.push(`${homepageRedirect}`);
