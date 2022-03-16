@@ -52,7 +52,7 @@ const Layout = ({
 
   useEffect(() => {
     // Listen for page changes after a navigation or when the query changes and set last page. Dont set if login
-    router.events.on('routeChangeComplete', url => {
+    router?.events?.on('routeChangeComplete', url => {
       if (url !== '/login') {
         setLastPageVisited(url);
       }
