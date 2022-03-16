@@ -167,12 +167,13 @@ const ChartMulti = ({
       } shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break px-2`}
       data-testid="chart-multi-testid "
     >
-      <div className="flex justify-between items-start px-4 pt-4 text-base">
+      <div className="flex justify-between items-start px-4 pt-4 text-base print:h-12 print:mb-2">
         <div className="">
-          <h5 className="pb-2 md:whitespace-nowrap lg:whitespace-normal md:text-sm print:text-xs">
+          <h5 className="print:h-8 pb-2 md:whitespace-nowrap lg:whitespace-normal md:text-sm print:text-xs">
             {header}
           </h5>
-          <p className="opacity-70 print:opacity-100 print:text-gray-400 text-sm print:text-xs">
+
+          <p className="print:h-4 opacity-70 print:opacity-100 print:text-gray-400 text-sm print:text-xs">
             {chartTypeText || subHeader}
           </p>
         </div>

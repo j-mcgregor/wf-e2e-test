@@ -54,7 +54,9 @@ const BatchReport = () => {
             <ArrowLeftIcon className="h-5 w-5 mr-2" />
             {t('back_to_all_batch_reports')}
           </Button>
-          <h1 className="text-3xl font-semibold my-4">{t('batch_reports')}</h1>
+          <h1 className="text-3xl font-semibold my-4">
+            {t('multiple_companies')}
+          </h1>
           <p className="text-sm my-4">
             {t(
               'download_the_results_of_the_batch_reports_in_csv_or_excel_format'

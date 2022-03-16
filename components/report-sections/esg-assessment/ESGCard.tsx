@@ -23,6 +23,61 @@ const ESGCard = ({
   asteriskText
 }: ESGCardProps) => {
   const t = useTranslations();
+
+  const ratingRender = () => {
+    if (!!rating && rating !== 0) {
+      return (
+        <div
+          className={`${result === 'positive' ? 'bg-green-300' : 'bg-bg'}
+           w-40 px-10 py-6 rounded-lg uppercase font-bold`}
+        >
+          {result !== 'neutral' ? <p>{rating}</p> : <p>{t('neutral')}</p>}
+        </div>
+      );
+    } else if (rating !== 0) {
+      return (
+        <div
+          className={
+            'bg-red-200 w-40 px-10 py-6 rounded-lg uppercase font-bold'
+          }
+        >
+          <p>{rating}</p>
+        </div>
+      );
+    } else {
+      return (
+        <div className={'bg-bg w-40 px-10 py-6 rounded-lg uppercase font-bold'}>
+          <p>{rating}</p>
+        </div>
+      );
+    }
+  };
+
+  const resultsRender = (
+    <ul className="space-y-3">
+      {results?.map((result, index) => {
+        const industry = `industries.${result.sector.toLowerCase()}`;
+        return (
+          <li
+            className={`text-sm text-left flex justify-between space-x-3 bg-primary ${
+              index === 0
+                ? 'bg-opacity-20'
+                : index === 1
+                ? 'bg-opacity-10'
+                : 'bg-opacity-5'
+            } px-2 py-1 rounded-md `}
+            key={result.sector}
+          >
+            <span className="">{t(industry)}</span>
+            <span className="font-bold">
+              {convertNumberToPercentage(Number(result.match))}
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+
   return (
     <div
       className="flex bg-white rounded-sm shadow-sm my-4 px-8 py-8 items-center justify-between
@@ -37,41 +92,15 @@ const ESGCard = ({
         )}
       </div>
       <div className="text-center relative top-2">
-        {result && rating && (
-          <div
-            className={`${
-              result === 'positive' ? 'bg-green-300' : 'bg-bg'
-            } w-40 px-10 py-6 rounded-lg uppercase font-bold`}
-          >
-            {result !== 'neutral' ? <p>{rating}</p> : <p>{t('neutral')}</p>}
-          </div>
-        )}
-
-        {results?.length && (
-          <ul className="space-y-3">
-            {results.map((result, index) => {
-              const industry = `industries.${result.sector.toLowerCase()}`;
-              return (
-                <li
-                  className={`text-sm text-left flex justify-between space-x-3 bg-primary ${
-                    index === 0
-                      ? 'bg-opacity-20'
-                      : index === 1
-                      ? 'bg-opacity-10'
-                      : 'bg-opacity-5'
-                  } px-2 py-1 rounded-md `}
-                  key={result.sector}
-                >
-                  <span className="">{t(industry)}</span>
-                  <span className="font-bold">
-                    {convertNumberToPercentage(Number(result.match))}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-        <p className="text-sm italic mt-2">{resultText}</p>
+        {title !== 'Activities' && ratingRender()}
+        {results?.length !== 0 && resultsRender}
+        <p
+          className={`text-sm italic mt-2 ${
+            results?.length === 0 && 'bg-bg px-10 py-6 rounded-lg'
+          }`}
+        >
+          {resultText}
+        </p>
       </div>
     </div>
   );

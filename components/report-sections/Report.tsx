@@ -307,12 +307,6 @@ const Report = ({
             />
           </div>
         </div>
-
-        {/* </div> */}
-        {/* <RiskMetricGraphs
-          data={lastFiveYearsRiskMetrics.reverse()}
-          companyName={companyName}
-        /> */}
         <BondRating
           score={latestRiskMetrics?.bond_rating_equivalent}
           hint={
@@ -484,12 +478,11 @@ const Report = ({
 
       <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>
         <ReportSectionHeader text={t('environmental')} />
-
         <ESGCard
           title={t('activities')}
           description={t('data_on_activities')}
           resultText={
-            data?.esg?.sectors && data?.esg?.sectors.length > 0
+            data && data?.esg?.sectors && data?.esg?.sectors.length !== 0
               ? t('top_3_industries')
               : t('no_esg_results_found')
           }
@@ -503,8 +496,9 @@ const Report = ({
           )}
           resultText={t('pep_flags')}
           rating={pepFlags}
-          result={pepFlags && pepFlags > 0 ? 'negative' : 'neutral'}
+          result={pepFlags > 0 ? 'negative' : 'neutral'}
         />
+
         <ESGContainer
           companyName={data?.details.name || ''}
           sector={data.details?.industry_sector || ''}
