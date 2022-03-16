@@ -59,7 +59,7 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
         className="flex flex-col md:flex-row my-6  print:flex-row print:justify-evenly print:border-2 "
         data-testid="legal-events-summary-testid"
       >
-        {allEvents.length && (
+        {allEvents.length ? (
           <>
             <LegalFilter
               events={allEvents}
@@ -87,7 +87,7 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
               activeFilter={FILTERS.NEGATIVE}
             />
           </>
-        )}
+        ) : null}
       </div>
 
       {hasEvents ? (
