@@ -110,11 +110,12 @@ const ESGContainer = ({
         {/* CARDS */}
         <div className="md:col-span-3 md:col-start-3 space-y-4 my-auto pt-4">
           {/* transition */}
-          {transition?.overall ? (
+          {transition?.overall || sector ? (
             <CardWithTab
               riskTitle={t('transition_risk')}
               riskLevel={transition?.overall}
               text={transitionText}
+              disabled={!sector}
             />
           ) : (
             <NoData risk={t('transition_risk')} />
@@ -122,11 +123,12 @@ const ESGContainer = ({
 
           {/* flooding */}
 
-          {physical?.flooding.overall ? (
+          {physical?.flooding.overall || sector ? (
             <CardWithTab
               riskTitle={t('flooding_risk')}
               riskLevel={physical?.flooding.overall}
               text={floodingText}
+              disabled={!sector}
             />
           ) : (
             <NoData risk={t('flooding_risk')} />
@@ -134,11 +136,12 @@ const ESGContainer = ({
 
           {/* heatwave */}
 
-          {physical?.drought.overall ? (
+          {physical?.drought.overall || sector ? (
             <CardWithTab
               riskTitle={t('heatwave_risk')}
               riskLevel={physical?.drought.overall}
               text={droughtRiskText}
+              disabled={!sector}
             />
           ) : (
             <NoData risk={t('heatwave_risk')} />
