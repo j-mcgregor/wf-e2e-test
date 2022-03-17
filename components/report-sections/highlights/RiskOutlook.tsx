@@ -18,8 +18,8 @@ const RiskOutlook = ({
 }: RiskOutlookProps) => {
   const t = useTranslations();
 
-  const judgements = riskOutlookData?.governance?.judgements_12_months;
-  const paymentRemarks = riskOutlookData?.governance?.payment_remarks_12_months;
+  const judgements = `${riskOutlookData?.governance?.judgements_12_months}`;
+  const paymentRemarks = `${riskOutlookData?.governance?.payment_remarks_12_months}`;
   const region = riskOutlookData?.benchmark?.region;
   const sector = riskOutlookData?.benchmark?.sector;
 
