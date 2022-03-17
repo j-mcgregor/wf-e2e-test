@@ -169,7 +169,7 @@ const ChartMulti = ({
     >
       <div className="flex justify-between items-start px-4 pt-4 text-base print:h-12 print:mb-2">
         <div className="">
-          <h5 className="print:h-8 pb-2 md:whitespace-nowrap lg:whitespace-normal md:text-sm print:text-xs">
+          <h5 className="print:h-8 pb-2 md:whitespace-nowrap lg:whitespace-normal font-semibold md:text-sm print:text-xs">
             {header}
           </h5>
 

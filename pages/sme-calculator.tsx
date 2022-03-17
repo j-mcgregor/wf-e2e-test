@@ -18,8 +18,14 @@ const SMECalculator = () => {
   const t = useTranslations();
 
   return (
-    <Layout title="SME Calculator" className="overflow-y-scroll">
+    <Layout title={t('single_company')} className="overflow-y-scroll">
       <div className={`text-primary`}>
+        <div className="py-4">
+          <p className="text-3xl font-semibold py-2">{t('single_company')}</p>
+          <p className="max-w-2xl leading-loose">
+            {t('access_our_powerful_credit_risk_assessment')}
+          </p>
+        </div>
         <SearchContainer disabled={showProvideData} />
 
         <div className="flex flex-col sm:w-1/3 text-sm sm:mt-4 text-center sm:text-left">

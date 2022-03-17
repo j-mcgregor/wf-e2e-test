@@ -148,7 +148,7 @@ const CreateBatchReport = () => {
 
         <h1 className="text-3xl font-semibold my-4">{t('batch_reports')}</h1>
 
-        <p className="text-sm my-4">
+        <p className="text-sm my-4 max-w-2xl">
           {t('utilise_our_powerful_automated_reports_at_scale')}
         </p>
 

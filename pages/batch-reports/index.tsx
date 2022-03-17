@@ -54,10 +54,12 @@ const BatchReports = () => {
   }, [allJobs]);
 
   return (
-    <Layout title="Batched Reports">
+    <Layout title={t('multiple_companies')}>
       <div className="text-primary">
         <h1 className="text-3xl font-semibold">{t('multiple_companies')}</h1>
-        <p className="font-sm my-4">{t('view_and_create_batch_report_jobs')}</p>
+        <p className="font-sm my-4 max-w-2xl">
+          {t('view_and_create_batch_report_jobs')}
+        </p>
 
         {/* create a new report */}
         <div className="my-6">
