@@ -1,9 +1,9 @@
 {
-  "batch_reports": "Batch Reports",
+  "multiple_companies": "Multiple Companies",
   "batched_report": "Batched Report",
   "view_and_create_batch_report_jobs": "View and create Batch Report jobs. Analyse 100s or 1000s of companies at once by simply uploading a .csv with the company number and country code.",
   "create_a_new_batch_report": "Create a new Batch Report",
-  "create_a_batch_report": "Create a Batch Report",
+  "create_a_batch_report": "Run multiple companies",
   "completed_batch_reports": "Completed Batch Reports",
   "in_progress_batch_reports": "In Progress Batch Reports",
   "upload_company_numbers_and_country_codes": "Upload company numbers and country codes to start.",

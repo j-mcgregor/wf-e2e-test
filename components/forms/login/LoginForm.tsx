@@ -23,8 +23,11 @@ type FormValues = {
   password: string;
   remember: boolean;
 };
+interface LogingFormProps {
+  defaultHomepageRedirect: (hp: string) => void;
+}
 
-const LoginForm = () => {
+const LoginForm = ({ defaultHomepageRedirect }: LogingFormProps) => {
   const t = useTranslations();
   const router = useRouter();
   const {
@@ -37,6 +40,7 @@ const LoginForm = () => {
   const [, setActiveUser] = useLocalStorage<string | null>('user', null);
   const [authError, setAuthError] = useState(false);
   const [userEmail, setUserEmail] = useLocalStorage('wf_user_email', '');
+  const [homePage] = useLocalStorage<string>('wf_home_page', '');
 
   // handle the remember functions
   React.useEffect(() => {
@@ -65,7 +69,8 @@ const LoginForm = () => {
 
     if (authenticated?.ok) {
       data.remember && setActiveUser(data.email);
-      return router.push('/');
+      const homepageRedirect = defaultHomepageRedirect(homePage);
+      router.push(`${homepageRedirect}`);
     }
     return setAuthError(true);
   };

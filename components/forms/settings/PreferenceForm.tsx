@@ -43,10 +43,12 @@ const PreferenceForm = ({
 
   const dashboardOptions = React.useMemo(
     () =>
-      dashboardOptionValues.map(value => ({
+      dashboardOptionValues.map(value =>
+      ({
         optionValue: value,
         optionName: t(`forms.specialist-props.${value}`)
-      })),
+      })
+      ),
     [t]
   );
 

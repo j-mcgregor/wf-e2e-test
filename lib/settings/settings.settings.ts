@@ -4,7 +4,12 @@ import localisationJSON from '../../lib/data/localisation.json';
 import { createCurrencyString } from '../utils/text-helpers';
 
 const SettingsSettings = {
-  dashboardOptionValues: ['dashboard', 'reports', 'single_report'],
+  dashboardOptionValues: [
+    'dashboard',
+    'reports',
+    'single_report',
+    'multiple_reports'
+  ],
   supportedLocales: localisationJSON.map(value => {
     return { optionValue: value.code, optionName: value.locale };
   }),

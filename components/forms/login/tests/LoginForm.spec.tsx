@@ -44,13 +44,23 @@ describe('LoginForm', () => {
   });
 
   it('render the form without issue', () => {
-    expect(() => render(<LoginForm />, undefined, allMessages)).not.toThrow();
+    expect(() =>
+      render(
+        <LoginForm defaultHomepageRedirect={jest.fn()} />,
+        undefined,
+        allMessages
+      )
+    ).not.toThrow();
   });
 
   it('submits the form without issue', async () => {
     signInSpy.mockReturnValue({ ok: true });
 
-    render(<LoginForm />, undefined, allMessages);
+    render(
+      <LoginForm defaultHomepageRedirect={() => jest.fn()} />,
+      undefined,
+      allMessages
+    );
 
     fireEvent.input(
       screen.getByRole('textbox', {
@@ -86,7 +96,11 @@ describe('LoginForm', () => {
   });
 
   it('displays an invalid email pattern message if form submitted with invalid email', async () => {
-    render(<LoginForm />, undefined, allMessages);
+    render(
+      <LoginForm defaultHomepageRedirect={jest.fn()} />,
+      undefined,
+      allMessages
+    );
 
     fireEvent.input(
       screen.getByRole('textbox', {
@@ -119,7 +133,11 @@ describe('LoginForm', () => {
   });
 
   it('displays an email required message if form submitted with no email', async () => {
-    render(<LoginForm />, undefined, allMessages);
+    render(
+      <LoginForm defaultHomepageRedirect={jest.fn()} />,
+      undefined,
+      allMessages
+    );
 
     fireEvent.input(screen.getByLabelText(/password/i), {
       target: {
@@ -139,7 +157,11 @@ describe('LoginForm', () => {
   });
 
   it('displays a password required message if form submitted with no password', async () => {
-    render(<LoginForm />, undefined, allMessages);
+    render(
+      <LoginForm defaultHomepageRedirect={jest.fn()} />,
+      undefined,
+      allMessages
+    );
 
     fireEvent.input(
       screen.getByRole('textbox', {
@@ -164,7 +186,11 @@ describe('LoginForm', () => {
   });
 
   it('displays an error message when details are incorrect after submitting', async () => {
-    render(<LoginForm />, undefined, allMessages);
+    render(
+      <LoginForm defaultHomepageRedirect={jest.fn()} />,
+      undefined,
+      allMessages
+    );
     fireEvent.input(
       screen.getByRole('textbox', {
         name: /email/i
