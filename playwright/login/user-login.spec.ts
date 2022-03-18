@@ -2,11 +2,13 @@
 import { test, expect } from '@playwright/test';
 import { chromium } from 'playwright';
 
-// User Sign In:
-//* Scenario: Login with valid credentials
-// Given: I am on the login page
-// When: I enter my valid credentials
-// Then: I should be directed to the dashboard (main url)
+// FEATURE: USER SIGN IN
+// SCENARIO: USER CAN SIGN IN & REDIRECT TO DASHBOARD
+// GIVEN: I AM SIGNED OUT
+// AND: I AM ON THE LOGIN PAGE
+// WHEN: I ENTER MY VALID CREDENTIALS
+// AND: I CLICK THE SIGN IN BUTTON
+// THEN: I SHOULD BE REDIRECTED TO THE DASHBOARD
 
 test('User can log-in', async ({ page }) => {
   const browser = await chromium.launch();
@@ -35,9 +37,6 @@ test('User can log-in', async ({ page }) => {
   await expect(page.locator('text=Welcome back,')).toBeVisible();
 
   // --------------------
-  // Save storage state into the file.
-  // await context.storageState({ path: './playwright/auth.json' });
-
   await context.close();
   await browser.close();
 });

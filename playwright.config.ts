@@ -1,7 +1,7 @@
 import { PlaywrightTestConfig } from '@playwright/test';
 const config: PlaywrightTestConfig = {
   testDir: './playwright', // location of tests
-  globalSetup: require.resolve('./playwright/global-setup'),
+  // globalSetup: require.resolve('./playwright/global-setup'),
   outputDir: './playwright/test-results',
   use: {
     headless: true,
