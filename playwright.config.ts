@@ -10,7 +10,7 @@ const config: PlaywrightTestConfig = {
     browserName: 'chromium',
     screenshot: 'only-on-failure',
     // Tell all tests to load signed-in state from 'storageState.json'.
-    storageState: 'storageState.json'
+    storageState: './playwright/storageState.json'
   }
 };
 export default config;
