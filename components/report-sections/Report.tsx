@@ -56,8 +56,6 @@ const Report = ({
 
   const companyAddress = companyDetails?.address;
 
-  const date = new Date(`${data?.created_at}`);
-
   const reliabilityIndex = data?.reliability_index;
 
   // remove years that are dormant
@@ -85,7 +83,7 @@ const Report = ({
 
   // reversing array to get the latest 5 years of financials
   const lastFiveYearsRiskMetrics = React.useMemo(
-    () => riskMetrics.slice(-5, transformedFinancials.length).reverse() || [],
+    () => riskMetrics.slice(-5, transformedFinancials.length) || [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data?.risk_metrics]
   );
@@ -295,7 +293,7 @@ const Report = ({
               reverseX
             />
             <RiskMetricGraphs
-              data={lastFiveYearsRiskMetrics.reverse()}
+              data={lastFiveYearsRiskMetrics}
               companyName={companyName}
             />
           </div>
@@ -429,15 +427,6 @@ const Report = ({
             shareholders={data?.shareholders}
           />
         )}
-
-        {/* Removed till we know more about whether it is going to be included */}
-        {/* <ShareHoldingCard
-                total={391}
-                above10={2}
-                fiveToTen={18}
-                oneToFive={47}
-                belowOne={324}
-              /> */}
       </HashContainer>
 
       {/*  Subsidiaries */}
@@ -479,7 +468,7 @@ const Report = ({
               ? t('top_3_industries')
               : t('no_esg_results_found')
           }
-          results={ESG.topXMatches(data?.esg?.sectors, 3)}
+          results={ESG.topXMatches(data?.esg?.sectors, 3) || []}
         />
         <ESGCard
           title={t('governance')}
