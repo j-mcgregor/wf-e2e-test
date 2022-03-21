@@ -36,6 +36,8 @@ export const CardWithTab = ({
     }
   };
 
+  const isDisabled = disabled && !riskLevel;
+
   return (
     <div className={`flex flex-col w-full ${disabled ? 'opacity-30' : ''}`}>
       {/* header */}
@@ -44,17 +46,17 @@ export const CardWithTab = ({
         <h5
           className={classNames(
             'font-bold uppercase w-28 py-1 text-center',
-            !disabled ? riskMap[riskLevel].tab : 'bg-gray-200'
+            !isDisabled ? riskMap?.[riskLevel]?.tab : 'bg-gray-200'
           )}
         >
-          {!disabled ? riskLevel : t('na')}
+          {!isDisabled ? riskLevel : t('na')}
         </h5>
       </div>
       {/* body */}
       <p
         className={classNames(
           'border-2 text-sm',
-          !disabled ? riskMap[riskLevel].body : 'bg-gray-200',
+          !isDisabled ? riskMap?.[riskLevel]?.body : 'bg-gray-200',
           disabled ? 'p-6' : 'p-2'
         )}
       >
