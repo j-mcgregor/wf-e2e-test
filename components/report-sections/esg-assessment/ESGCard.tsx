@@ -32,7 +32,7 @@ const ESGCard = ({
           className={`${result === 'negative' ? 'bg-red-200' : 'bg-gray-200'}
            w-40 px-10 py-6 rounded-lg uppercase font-bold`}
         >
-          {result !== 'neutral' ? <p>{rating}</p> : <p>{t('neutral')}</p>}
+          <p>{rating}</p>
         </div>
       );
     } else {
