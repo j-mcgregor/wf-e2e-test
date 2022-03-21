@@ -64,7 +64,7 @@ const ESGContainer = ({
 
   const NoData = ({ risk }: { risk: string }) => {
     return (
-      <div className="border bg-bg p-4">
+      <div className="rounded-md bg-bg p-4">
         <p>
           Not enough data for <span className="font-semibold">{risk} </span>
           analysis
@@ -84,7 +84,9 @@ const ESGContainer = ({
         <div className="flex justify-between  w-full md:col-span-3">
           <h4 className="w-20 text-xl">{t('industry')}</h4>
 
-          <h4 className="bg-slate-200 px-6 py-2 -mt-2 ">{sector || t('na')}</h4>
+          <h4 className="bg-bg px-6 py-2 -mt-2 rounded-md ">
+            {sector || t('na')}
+          </h4>
         </div>
       </div>
 
