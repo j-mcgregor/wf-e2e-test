@@ -37,16 +37,16 @@ const ESGContainer = ({
   const floodingText = t.rich('flooding_risk_text', {
     b: company_name => <b>{company_name}</b>,
     company_name: companyName,
-    risk_level: physical?.flooding.overall,
-    industry_risk: physical?.flooding.sector,
+    risk_level: physical?.flooding?.overall,
+    industry_risk: physical?.flooding?.sector,
     location: titleCasedLocation,
     industry: sector
   });
   const droughtRiskText = t.rich('drought_risk_text', {
     b: company_name => <b>{company_name}</b>,
     company_name: companyName,
-    risk_level: physical?.drought.overall,
-    industry_risk: physical?.drought.country,
+    risk_level: physical?.drought?.overall,
+    industry_risk: physical?.drought?.country,
     location: titleCasedLocation,
     industry: sector
   });
@@ -72,6 +72,7 @@ const ESGContainer = ({
       </div>
     );
   };
+
   return (
     <div className="bg-white p-10 avoid-break ">
       {/* HEADER */}
@@ -115,7 +116,7 @@ const ESGContainer = ({
               riskTitle={t('transition_risk')}
               riskLevel={transition?.overall}
               text={transitionText}
-              disabled={!sector}
+              disabled={!sector || !transition?.overall}
             />
           ) : (
             <NoData risk={t('transition_risk')} />
@@ -128,7 +129,12 @@ const ESGContainer = ({
               riskTitle={t('flooding_risk')}
               riskLevel={physical?.flooding.overall}
               text={floodingText}
-              disabled={!sector}
+              disabled={
+                !sector ||
+                !transition?.overall ||
+                !physical?.flooding?.overall ||
+                !physical?.flooding?.country
+              }
             />
           ) : (
             <NoData risk={t('flooding_risk')} />
@@ -141,7 +147,12 @@ const ESGContainer = ({
               riskTitle={t('heatwave_risk')}
               riskLevel={physical?.drought.overall}
               text={droughtRiskText}
-              disabled={!sector}
+              disabled={
+                !sector ||
+                !transition?.overall ||
+                !physical?.drought?.overall ||
+                !physical?.drought?.country
+              }
             />
           ) : (
             <NoData risk={t('heatwave_risk')} />

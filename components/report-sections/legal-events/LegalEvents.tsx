@@ -18,7 +18,7 @@ const FILTERS = {
 };
 
 const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
-  const allEvents = legalEvents;
+  const allEvents = legalEvents || [];
 
   const charges = legalEvents?.filter(event => event.is_charge);
 
@@ -107,7 +107,7 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
                   <p>{t('date')}</p>
                 </div>
               </div>
-              {events.map((event, index) => {
+              {events?.map((event, index) => {
                 return <LegalRow forPrint={forPrint} key={index} {...event} />;
               })}
             </div>
