@@ -208,7 +208,7 @@ const Report = ({
 
         {/* NEW - Wrapped speedos and graphs in grid that matches financial trends */}
 
-        <div className="avoid-break">
+        <div className="">
           <ReportSectionHeader text={t('risk_metrics')} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2  mt-4 mb-8 print:grid-cols-3 sm:print:grid-cols-3 md:print-grid-cols-3 print:max-w-[630px] print:mx-auto">
             <Speedometer
@@ -492,7 +492,11 @@ const Report = ({
 
       <HashContainer name={'News'} id={`news`}>
         <ReportSectionHeader text={t('news')} />
-        <NewsFeed companyName={companyName} items={data?.news?.headlines} />
+        <NewsFeed
+          companyName={companyName}
+          items={data?.news?.headlines}
+          forPrint={forPrint}
+        />
       </HashContainer>
     </div>
   );
