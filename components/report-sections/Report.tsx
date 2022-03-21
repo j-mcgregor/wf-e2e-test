@@ -56,16 +56,9 @@ const Report = ({
 
   const companyAddress = companyDetails?.address;
 
-  const companySectors = data?.esg?.sectors;
-
   const date = new Date(`${data?.created_at}`);
 
   const reliabilityIndex = data?.reliability_index;
-
-  const month =
-    date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-
-  const created = `${date.getDate()}.${month}.${date.getFullYear()}`;
 
   // remove years that are dormant
   const transformedFinancials = data?.financials || [];
@@ -151,7 +144,7 @@ const Report = ({
         <ReportHeader
           company={companyName}
           website={data?.details?.website}
-          created={created}
+          created={data.created_at}
           reportId={id.toString()} // id == string || string[]
           snippet={{
             bond_rating_equivalent: latestRiskMetrics?.bond_rating_equivalent,
