@@ -9,7 +9,7 @@ import WFLogoSmall from '../../public/images/logos/wf-logo.svg';
 
 interface ReportHeaderProps {
   company: string;
-  created?: string;
+  created: string;
   reportId: string;
   website: string;
   snippet: {
@@ -39,7 +39,7 @@ const ReportHeader = ({
   const t = useTranslations();
 
   // format to UK format
-  const formattedDate = new Date(created || '').toLocaleDateString('en-GB', {
+  const formattedDate = new Date(created).toLocaleDateString('en-GB', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric'
