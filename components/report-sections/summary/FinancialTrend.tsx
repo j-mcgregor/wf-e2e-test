@@ -11,7 +11,7 @@ const FinancialTrend = ({ data }: FinancialTrendProps) => {
           return (
             <span
               key={index}
-              style={{ height: `${year}%` }}
+              style={{ height: year === 0 ? '1px' : `${year}%` }}
               className={`${
                 year > 0
                   ? 'bg-green-500 print:z-100'
@@ -23,13 +23,13 @@ const FinancialTrend = ({ data }: FinancialTrendProps) => {
           );
         })}
       </div>
-      <div className="h-1/2 w-full flex items-start">
+      <div className="h-1/2 w-full flex items-start justify-center">
         {reverseOrderDate?.map((year, index) => {
           return (
             <span
               key={index}
               // temp fix halving negative values as they are overflowing
-              style={{ height: `${Math.abs(year / 2)}%` }}
+              style={{ height: year === 0 ? '1px' : `${year}%` }}
               className={`${
                 year < 0 && 'bg-red-500'
               } w-full mx-[2px] max-w-[10px]`}
