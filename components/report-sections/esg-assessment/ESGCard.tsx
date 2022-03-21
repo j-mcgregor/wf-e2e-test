@@ -25,29 +25,20 @@ const ESGCard = ({
   const t = useTranslations();
 
   const ratingRender = () => {
-    if (!!rating && rating !== 0) {
+    // ie. rating === 1
+    if (rating || rating === 0) {
       return (
         <div
-          className={`${result === 'positive' ? 'bg-green-300' : 'bg-bg'}
+          className={`${result === 'negative' ? 'bg-red-200' : 'bg-gray-200'}
            w-40 px-10 py-6 rounded-lg uppercase font-bold`}
         >
           {result !== 'neutral' ? <p>{rating}</p> : <p>{t('neutral')}</p>}
         </div>
       );
-    } else if (rating !== 0) {
-      return (
-        <div
-          className={
-            'bg-red-200 w-40 px-10 py-6 rounded-lg uppercase font-bold'
-          }
-        >
-          <p>{rating}</p>
-        </div>
-      );
     } else {
       return (
         <div className={'bg-bg w-40 px-10 py-6 rounded-lg uppercase font-bold'}>
-          <p>{rating}</p>
+          <p>{t('na')}</p>
         </div>
       );
     }
