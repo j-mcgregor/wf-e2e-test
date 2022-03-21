@@ -39,6 +39,7 @@ const ESGContainer = ({
     company_name: companyName,
     risk_level: physical?.flooding?.overall,
     industry_risk: physical?.flooding?.sector,
+    location_risk: physical?.flooding?.country,
     location: titleCasedLocation,
     industry: sector
   });
@@ -46,7 +47,8 @@ const ESGContainer = ({
     b: company_name => <b>{company_name}</b>,
     company_name: companyName,
     risk_level: physical?.drought?.overall,
-    industry_risk: physical?.drought?.country,
+    industry_risk: physical?.drought?.sector,
+    location_risk: physical?.drought?.country,
     location: titleCasedLocation,
     industry: sector
   });
