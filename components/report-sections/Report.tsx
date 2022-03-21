@@ -56,16 +56,7 @@ const Report = ({
 
   const companyAddress = companyDetails?.address;
 
-  const companySectors = data?.esg?.sectors;
-
-  const date = new Date(`${data?.created_at}`);
-
   const reliabilityIndex = data?.reliability_index;
-
-  const month =
-    date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-
-  const created = `${date.getDate()}.${month}.${date.getFullYear()}`;
 
   // remove years that are dormant
   const transformedFinancials = data?.financials || [];
@@ -92,7 +83,7 @@ const Report = ({
 
   // reversing array to get the latest 5 years of financials
   const lastFiveYearsRiskMetrics = React.useMemo(
-    () => riskMetrics.slice(-5, transformedFinancials.length).reverse() || [],
+    () => riskMetrics.slice(-5, transformedFinancials.length) || [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data?.risk_metrics]
   );
@@ -151,7 +142,7 @@ const Report = ({
         <ReportHeader
           company={companyName}
           website={data?.details?.website}
-          created={created}
+          created={data.created_at}
           reportId={id.toString()} // id == string || string[]
           snippet={{
             bond_rating_equivalent: latestRiskMetrics?.bond_rating_equivalent,
@@ -217,7 +208,7 @@ const Report = ({
 
         {/* NEW - Wrapped speedos and graphs in grid that matches financial trends */}
 
-        <div className="avoid-break">
+        <div className="">
           <ReportSectionHeader text={t('risk_metrics')} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2  mt-4 mb-8 print:grid-cols-3 sm:print:grid-cols-3 md:print-grid-cols-3 print:max-w-[630px] print:mx-auto">
             <Speedometer
@@ -302,7 +293,7 @@ const Report = ({
               reverseX
             />
             <RiskMetricGraphs
-              data={lastFiveYearsRiskMetrics.reverse()}
+              data={lastFiveYearsRiskMetrics}
               companyName={companyName}
             />
           </div>
@@ -436,15 +427,6 @@ const Report = ({
             shareholders={data?.shareholders}
           />
         )}
-
-        {/* Removed till we know more about whether it is going to be included */}
-        {/* <ShareHoldingCard
-                total={391}
-                above10={2}
-                fiveToTen={18}
-                oneToFive={47}
-                belowOne={324}
-              /> */}
       </HashContainer>
 
       {/*  Subsidiaries */}
@@ -486,7 +468,7 @@ const Report = ({
               ? t('top_3_industries')
               : t('no_esg_results_found')
           }
-          results={ESG.topXMatches(data?.esg?.sectors, 3)}
+          results={ESG.topXMatches(data?.esg?.sectors, 3) || []}
         />
         <ESGCard
           title={t('governance')}
@@ -510,7 +492,11 @@ const Report = ({
 
       <HashContainer name={'News'} id={`news`}>
         <ReportSectionHeader text={t('news')} />
-        <NewsFeed companyName={companyName} items={data?.news?.headlines} />
+        <NewsFeed
+          companyName={companyName}
+          items={data?.news?.headlines}
+          forPrint={forPrint}
+        />
       </HashContainer>
     </div>
   );

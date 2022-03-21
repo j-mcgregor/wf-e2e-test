@@ -4,7 +4,6 @@ import { useTranslations } from 'use-intl';
 import { toTitleCase } from '../../../lib/utils/text-helpers';
 import { EnvironmentalSocialGovernance } from '../../../types/report';
 import { CardWithTab } from '../../cards/CardWithTab';
-import { ReportSectionHeader } from '../../elements/Headers';
 import Hint from '../../elements/Hint';
 import Speedometer from '../risk-metrics/Speedometer';
 
@@ -19,6 +18,7 @@ const ESGContainer = ({
   location?: string;
 }) => {
   const t = useTranslations();
+
   const titleCasedLocation = location && toTitleCase(location);
 
   const renderCarbonIntensity = new Intl.NumberFormat('en-GB', {
@@ -37,16 +37,18 @@ const ESGContainer = ({
   const floodingText = t.rich('flooding_risk_text', {
     b: company_name => <b>{company_name}</b>,
     company_name: companyName,
-    risk_level: physical?.flooding.overall,
-    industry_risk: physical?.flooding.sector,
+    risk_level: physical?.flooding?.overall,
+    industry_risk: physical?.flooding?.sector,
+    location_risk: physical?.flooding?.country,
     location: titleCasedLocation,
     industry: sector
   });
   const droughtRiskText = t.rich('drought_risk_text', {
     b: company_name => <b>{company_name}</b>,
     company_name: companyName,
-    risk_level: physical?.drought.overall,
-    industry_risk: physical?.drought.country,
+    risk_level: physical?.drought?.overall,
+    industry_risk: physical?.drought?.sector,
+    location_risk: physical?.drought?.country,
     location: titleCasedLocation,
     industry: sector
   });
@@ -64,7 +66,7 @@ const ESGContainer = ({
 
   const NoData = ({ risk }: { risk: string }) => {
     return (
-      <div className="border bg-bg p-4">
+      <div className="rounded-md bg-bg p-4">
         <p>
           Not enough data for <span className="font-semibold">{risk} </span>
           analysis
@@ -72,6 +74,7 @@ const ESGContainer = ({
       </div>
     );
   };
+
   return (
     <div className="bg-white p-10 avoid-break ">
       {/* HEADER */}
@@ -83,7 +86,9 @@ const ESGContainer = ({
         <div className="flex justify-between  w-full md:col-span-3">
           <h4 className="w-20 text-xl">{t('industry')}</h4>
 
-          <h4 className="bg-slate-200 px-6 py-2 -mt-2 ">{sector || t('na')}</h4>
+          <h4 className="bg-bg px-6 py-2 -mt-2 rounded-md ">
+            {sector || t('na')}
+          </h4>
         </div>
       </div>
 
@@ -110,41 +115,57 @@ const ESGContainer = ({
         {/* CARDS */}
         <div className="md:col-span-3 md:col-start-3 space-y-4 my-auto pt-4">
           {/* transition */}
-          {transition?.overall || sector ? (
+          {!sector || !transition?.overall ? (
+            <NoData risk={t('transition_risk')} />
+          ) : (
             <CardWithTab
               riskTitle={t('transition_risk')}
               riskLevel={transition?.overall}
               text={transitionText}
-              disabled={!sector}
+              disabled={!sector || !transition?.overall}
             />
-          ) : (
-            <NoData risk={t('transition_risk')} />
           )}
 
           {/* flooding */}
 
-          {physical?.flooding.overall || sector ? (
+          {!sector ||
+          !transition?.overall ||
+          !physical?.flooding?.overall ||
+          !physical?.flooding?.country ? (
+            <NoData risk={t('flooding_risk')} />
+          ) : (
             <CardWithTab
               riskTitle={t('flooding_risk')}
-              riskLevel={physical?.flooding.overall}
+              riskLevel={physical?.flooding?.overall}
               text={floodingText}
-              disabled={!sector}
+              disabled={
+                !sector ||
+                !transition?.overall ||
+                !physical?.flooding?.overall ||
+                !physical?.flooding?.country
+              }
             />
-          ) : (
-            <NoData risk={t('flooding_risk')} />
           )}
 
           {/* heatwave */}
 
-          {physical?.drought.overall || sector ? (
+          {!sector ||
+          !transition?.overall ||
+          !physical?.drought?.overall ||
+          !physical?.drought?.country ? (
+            <NoData risk={t('heatwave_risk')} />
+          ) : (
             <CardWithTab
               riskTitle={t('heatwave_risk')}
-              riskLevel={physical?.drought.overall}
+              riskLevel={physical?.drought?.overall}
               text={droughtRiskText}
-              disabled={!sector}
+              disabled={
+                !sector ||
+                !transition?.overall ||
+                !physical?.drought?.overall ||
+                !physical?.drought?.country
+              }
             />
-          ) : (
-            <NoData risk={t('heatwave_risk')} />
           )}
         </div>
       </div>

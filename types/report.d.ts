@@ -596,7 +596,7 @@ export interface ReportDataProps {
   board_members?: BoardMember[];
   company_id: string;
   company_name: string;
-  created_at?: string;
+  created_at: string;
   currency: string;
   details: SummaryContact & SummaryInfo;
   directors: BoardMember[];
