@@ -22,10 +22,8 @@ import {
   getMaxRenderValue,
   getMinRenderValue,
   getNumberLength,
-  isGraphData,
   calculateMaxDataPoint,
   calculateMinDataPoint,
-  getCompanyName,
   convertData,
   formatToolTip
 } from './graph-helpers';
