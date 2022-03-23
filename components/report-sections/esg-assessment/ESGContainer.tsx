@@ -75,6 +75,10 @@ const ESGContainer = ({
     );
   };
 
+  const speedometerValue =
+    (transition?.carbon_intensity && transition?.carbon_intensity * 100) ||
+    null;
+
   return (
     <div className="bg-white p-10 avoid-break ">
       {/* HEADER */}
@@ -96,7 +100,7 @@ const ESGContainer = ({
         {/* SPEEDO */}
         <div className="md:col-span-2 flex items-center justify-center w-full print:max-w-[200px] print:mx-auto">
           <Speedometer
-            value={transition?.carbon_intensity * 100 || null}
+            value={speedometerValue}
             rotationCalculator={calculateCarbonIntensityRotation}
             asMetric="%"
             title={t('carbon_intensity')}
