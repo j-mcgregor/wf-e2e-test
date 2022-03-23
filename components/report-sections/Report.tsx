@@ -321,6 +321,7 @@ const Report = ({
           {shouldRenderCommentary && (
             <ReliabilityIndex reliability={data?.reliability_index?.value} />
           )}
+
           {forPrint && (
             <div>
               <FinancialAccounts
@@ -329,13 +330,16 @@ const Report = ({
               />
             </div>
           )}
+
           {!forPrint && shouldRenderCommentary && (
             <DataReliability reliability={reliabilityIndex} />
           )}
         </div>
+
         {forPrint && shouldRenderCommentary && (
           <DataReliability reliability={reliabilityIndex} />
         )}
+
         {shouldRenderCommentary && (
           <div className="flex">
             <RiskOutlook
@@ -488,6 +492,7 @@ const Report = ({
           physical={data?.esg?.physical}
           transition={data?.esg?.transition}
           location={companyAddress?.city || companyAddress?.country}
+          isoCode={data?.iso_code}
         />
       </HashContainer>
 

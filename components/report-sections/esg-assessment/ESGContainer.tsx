@@ -6,20 +6,30 @@ import { EnvironmentalSocialGovernance } from '../../../types/report';
 import { CardWithTab } from '../../cards/CardWithTab';
 import Hint from '../../elements/Hint';
 import Speedometer from '../risk-metrics/Speedometer';
+import countryCodes from '../../../lib/data/countryCodes.json';
 
 const ESGContainer = ({
   companyName,
   sector,
   physical,
   transition,
-  location: location
+  location: location,
+  isoCode
 }: EnvironmentalSocialGovernance & {
   companyName: string;
   location?: string;
+  isoCode: string;
 }) => {
   const t = useTranslations();
 
+  // make the company address details into title case rather than the uppercase we get back from API
   const titleCasedLocation = location && toTitleCase(location);
+
+  // use the Iso Code to find the country (all reports will have this)
+  // this is used for MDI reports that have no company address details
+  const foundCountry = countryCodes.find(
+    countryCode => countryCode.code === isoCode
+  )?.name;
 
   const renderCarbonIntensity = new Intl.NumberFormat('en-GB', {
     minimumFractionDigits: 1,
@@ -40,16 +50,17 @@ const ESGContainer = ({
     risk_level: physical?.flooding?.overall,
     industry_risk: physical?.flooding?.sector,
     location_risk: physical?.flooding?.country,
-    location: titleCasedLocation,
+    location: titleCasedLocation || foundCountry,
     industry: sector
   });
+
   const droughtRiskText = t.rich('drought_risk_text', {
     b: company_name => <b>{company_name}</b>,
     company_name: companyName,
     risk_level: physical?.drought?.overall,
     industry_risk: physical?.drought?.sector,
     location_risk: physical?.drought?.country,
-    location: titleCasedLocation,
+    location: titleCasedLocation || foundCountry,
     industry: sector
   });
 
@@ -116,6 +127,7 @@ const ESGContainer = ({
             innerClasses="scale-110 lg:scale-125 xl:scale-150"
           />
         </div>
+
         {/* CARDS */}
         <div className="md:col-span-3 md:col-start-3 space-y-4 my-auto pt-4">
           {/* transition */}
