@@ -175,14 +175,8 @@ const ChartMulti = ({
       : null;
 
   // how to log only one graph
-  header === 'Net Income' &&
-    console.log('largestNumberLength', largestNumberLength);
-  header === 'Net Income' &&
-    console.log('largestYDataPoint', largestYDataPoint);
-  header === 'Net Income' &&
-    console.log('largestNumberByDigits', largestNumberByDigits);
-  header === 'Net Income' && console.log('isMillions', useMillions);
-  header === 'Net Income' && console.log('useThousands', useThousands);
+  // header === 'Net Income' &&
+  //   console.log('largestNumberLength', largestNumberLength);
 
   return (
     <div
