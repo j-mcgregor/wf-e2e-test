@@ -343,6 +343,7 @@ const Report = ({
               hintBody={t('report_hints.highlights.risk_outlook.body')}
               riskOutlookData={data?.risk_outlook}
               country={companyAddress?.country}
+              hasLegalEvents={data?.legal_events?.length > 0}
             />
           </div>
         )}

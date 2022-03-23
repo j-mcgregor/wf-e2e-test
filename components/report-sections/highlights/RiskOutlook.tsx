@@ -8,13 +8,15 @@ interface RiskOutlookProps {
   hintBody: string;
   country?: string;
   riskOutlookData?: RiskOutlookData;
+  hasLegalEvents: boolean;
 }
 
 const RiskOutlook = ({
   hintTitle,
   hintBody,
   country,
-  riskOutlookData
+  riskOutlookData,
+  hasLegalEvents
 }: RiskOutlookProps) => {
   const t = useTranslations();
 
@@ -51,7 +53,7 @@ const RiskOutlook = ({
               ? t('profitability_positive')
               : t('profitability_negative')}
           </li>
-          {judgements && paymentRemarks && (
+          {hasLegalEvents && judgements && paymentRemarks && (
             <li className="py-2 text-sm lg:text-sm">
               {t('governance_template', {
                 judgements,
