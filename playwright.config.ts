@@ -1,10 +1,11 @@
 import { PlaywrightTestConfig } from '@playwright/test';
+
 const config: PlaywrightTestConfig = {
   testDir: './playwright', // location of tests
   // globalSetup: require.resolve('./playwright/global-setup'),
   outputDir: './playwright/test-results',
   use: {
-    headless: true,
+    headless: false,
     baseURL: 'http://localhost:3000',
     viewport: { width: 1280, height: 720 },
     browserName: 'chromium',

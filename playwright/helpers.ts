@@ -1,4 +1,5 @@
 import { test } from '@playwright/test';
+import { chromium } from 'playwright';
 
 const USERNAME = 'dan@dan.com';
 const PASSWORD = 'password1234';
@@ -7,11 +8,18 @@ const PASSWORD = 'password1234';
 // from there we can add the test cases
 export const login = () =>
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:3000/');
+    // go to base URL
+    await page.goto('/');
+    // fill in email input
     await page.fill('input[placeholder="you\\@example\\.com"]', USERNAME);
+    // fill in password input
     await page.fill('input[placeholder="Password"]', PASSWORD);
+
+    // click sign in button
     await Promise.all([
-      page.waitForNavigation(/*{ url: 'http://localhost:3000/' }*/),
+      page.waitForNavigation(),
       page.locator('[placeholder="Password"]').press('Enter')
     ]);
+    // accept cookies banner
+    await page.locator('text=Accept').click();
   });

@@ -10,6 +10,7 @@ async function globalSetup(config: FullConfig) {
   await page.click('button:has-text("Sign in")');
   // Save signed-in state to 'storageState.json'.
   await page.context().storageState({ path: 'storageState.json' });
+  await page.locator('text=Accept').click();
   await browser.close();
 }
 

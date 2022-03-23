@@ -1,81 +1,70 @@
 import { test, expect } from '@playwright/test';
-import { chromium } from 'playwright';
-
 import { login } from '../helpers';
 
 login();
 
-/**
- * Nice work on the GIVEN-WHEN-THEN
- *
- * I made some changes to split them up and removed a couple of statements
- * Makes it easier to follow imho
- *
- * FYI to run a single test, replace test(...) with test.only(...)
- */
+test.describe('Report Tests', async () => {
+  // SCENARIO: USER NAVIGATES TO THE SINGLE SME-CALC PAGE, INPUTS A COMPANY SEARCH AND GENERATES A REPORT
 
-// SCENARIO: USER NAVIGATES TO THE SINGLE SME-CALC PAGE, INPUTS A COMPANY SEARCH AND         GENERATES A REPORT
+  // FEATURE: USER GENERATES A SINGLE REPORT
+  test('User can generate a single report', async ({ page }) => {
+    // GIVEN I CLICK THE 'SINGLE COMPANY' NAV LINK
+    // AND I AM DIRECTED TO THE SME-CALC PAGE
+    await page.locator('text=Single Company').first().click();
 
-// FEATURE: USER GENERATES A SINGLE REPORT
-test('User can generate a single report', async ({ page }) => {
-  const browser = await chromium.launch();
-  const context = await browser.newContext();
+    // AND I TYPE A COMPANY NAME INTO THE SEARCH BAR
+    await page.locator('[placeholder="Enter company name\\.\\.\\."]').click();
 
-  // GIVEN I CLICK THE 'SINGLE COMPANY' NAV LINK
-  // AND I AM DIRECTED TO THE SME-CALC PAGE
-  await page.locator('text=Single Company').first().click();
+    // enter company name into the input box (eg: wiserfunding)
+    await page
+      .locator('[placeholder="Enter company name\\.\\.\\."]')
+      .fill('a', { timeout: 5000 });
 
-  // AND I TYPE A COMPANY NAME INTO THE SEARCH BAR
-  // click 'enter company name' input box
-  await page.locator('[placeholder="Enter company name\\.\\.\\."]').click();
+    // AND I SELECT A COMPANY FROM THE SEARCH RESULTS LIST
+    await page
+      .locator(
+        'button:has-text("A LIMITED117902152019-01-2838 Springfield Road, Gillingham, Kent, England, ME7 1")'
+      )
+      .click();
 
-  // enter company name into the input box (eg: wiserfunding)
-  await page
-    .locator('[placeholder="Enter company name\\.\\.\\."]')
-    .fill('a', { timeout: 5000 });
+    // WHEN I CLICK THE 'GENERATE REPORT' BUTTON
+    await page.locator('text=Generate Report').click();
 
-  // AND I SELECT A COMPANY FROM THE SEARCH RESULTS LIST
-  // click result of the company search (eg: wiserfunding)
-  await page
-    .locator(
-      'button:has-text("A LIMITED117902152019-01-2838 Springfield Road, Gillingham, Kent, England, ME7 1")'
-    )
-    .click();
+    // THEN A REPORT SHOULD GENERATE AND I SHOULD BE DIRECTED TO THE CORRECT COMPANY REPORT PAGE
+    await page.waitForSelector('h1:has-text("A LIMITED")', {
+      timeout: 30000
+    }); // <-- trick is to use waitForSelector()
+  });
 
-  // click 'generate report' button
-  await page.locator('text=Accept').click(); // <-- accept the cookie; could be in a helper or find a way to disable
+  // SCENARIO: USER NAVIGATES TO NEW REPORT, BOOKMARKS AND CHECKS IT HAS BEEN SAVED
+  // FEATURE: USER BOOKMARKS A REPORT
+  test('User can bookmark the report', async ({ page, context }) => {
+    // WHEN I NAVIGATE TO THE MOST RECENT REPORT
+    await Promise.all([
+      page.waitForNavigation(),
+      page.locator('td >> nth=0').click()
+    ]);
 
-  // WHEN I CLICK THE 'GENERATE REPORT' BUTTON
-  await page.locator('text=Generate Report').click();
+    // store report id from url
+    const reportID = page.url().split('/')[4];
 
-  // THEN A REPORT SHOULD GENERATE AND I SHOULD BE DIRECTED TO THE CORRECT COMPANY REPORT PAGE
-  // get directed to generated report page
-  await page.waitForSelector('h1:has-text("A LIMITED")', { timeout: 30000 }); // <-- trick is to use waitForSelector()
+    // AND I CLICK THE 'BOOKMARK' ICON
+    await page.locator('#bookmark-button').click();
 
-  // ---------------------
-  await context.close();
-  await browser.close();
+    // AND I NAVIGATE TO RECENT REPORTS
+    await Promise.all([
+      page.waitForNavigation(),
+      page.locator('text=Back to saved reports').click()
+    ]);
+
+    // WHEN I AM REDIRECTED TO RECENT REPORTS
+    // THEN I SHOULD SEE A BOOKMARK CARD FOR THE REPORT I JUST BOOKMARKED
+
+    const bookmark = page.locator(`#bookmark-card-${reportID}`);
+    await expect(bookmark).toBeVisible();
+
+    await page.close();
+    await context.close();
+    // ------------------
+  });
 });
-
-// FOR A FUTURE TEST WHEN CHECKING FOR A BOOKMARK
-// BOOKMARK THE REPORT
-
-//   // click the 'bookmark' button
-//   await page.locator('#bookmark-button').click();
-
-//   // click 'back to saved reports' button
-//   await Promise.all([
-//     page.waitForNavigation(/*{ url: 'http://localhost:3000/reports' }*/),
-//     page.locator('text=Back to saved reports').click()
-//   ]);
-
-//   // should be directed back to the reports page
-//   await expect(page).toHaveURL('/reports');
-
-//   // bookmark for the new report should be visible (bookmark text has a p tag, recent reports are td, so this differentiates it)
-//   await expect(page.locator('text=WISERFUNDING')).toBeVisible();
-
-//   // ---------------------
-//   await context.close();
-//   await browser.close();
-// });
