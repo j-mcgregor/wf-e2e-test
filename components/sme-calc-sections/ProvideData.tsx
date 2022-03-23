@@ -98,7 +98,6 @@ const ProvideData = () => {
                 icon={<CloudDownloadIcon className="h-8 w-8" />}
                 iconColor={template.backgroundColor}
                 header={t(`${template.title}.title`)}
-                disabled={template.disabled}
                 description={t(`${template.title}.body`)}
                 linkTo={template.templateLink}
                 key={i}

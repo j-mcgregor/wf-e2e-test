@@ -20,7 +20,7 @@
   "batch_mdi_template_desc": "A CSV template for uploading manual data for multiple companies and processing them in a batch.",
   "batch_mdi_example_template": "Example MDI Template (.csv)",
   "batch_mdi_example_template_desc": "A CSV template with an example row to show the required data formats for uploading multiple manual companies.",
-  "batch_mdi_excel_template": "Excel MDI Template (.csv)",
+  "batch_mdi_excel_template": "Excel Batch MDI Template",
   "batch_mdi_excel_template_desc": "An Excel template allowing you to create csv's available to upload.",
   "batch_reports_template": "Batch Reports Template",
   "in_order_to_use_our_batch_reporting_feature_you_need_to_upload": "In order to use our Batch Reporting feature you need to upload the company IDs in the correct format. Please download and use this template.",

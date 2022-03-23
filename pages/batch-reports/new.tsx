@@ -229,22 +229,21 @@ const CreateBatchReport = () => {
             description={t('batch_mdi_template_desc')}
             linkTo="/download-templates/wf-mdi-template.csv"
           />
-          <LinkCard
+          {/* <LinkCard
             className="max-w-xs"
             icon={<CloudDownloadIcon className="h-8 w-8" />}
             iconColor="bg-highlight bg-opacity-50"
             header={t('batch_mdi_example_template')}
             description={t('batch_mdi_example_template_desc')}
             linkTo="/download-templates/wf-mdi-example-template.csv"
-          />
+          /> */}
           <LinkCard
             className="max-w-xs"
             icon={<CloudDownloadIcon className="h-8 w-8" />}
-            iconColor="bg-highlight bg-opacity-50"
-            disabled={true}
+            iconColor="bg-highlight-3 bg-opacity-50"
             header={t('batch_mdi_excel_template')}
             description={t('batch_mdi_excel_template_desc')}
-            linkTo="/download-templates/wf-csv-example-template.csv"
+            linkTo="/download-templates/Sunrise_Client_Input_Sheet_v1.00.xlsm"
           />
         </div>
       </div>
