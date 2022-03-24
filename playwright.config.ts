@@ -1,4 +1,9 @@
 import { PlaywrightTestConfig } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+
+// NECESSARY FOR TO LOAD ENV'S WITHIN THE PLAYWRIGHT TESTS
+dotenv.config({ path: path.resolve(__dirname, '.env.development') });
 
 const config: PlaywrightTestConfig = {
   testDir: './playwright', // location of tests
