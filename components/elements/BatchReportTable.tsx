@@ -63,13 +63,16 @@ const BatchReportTable = ({ data, reportId }: ReportProps) => {
                           {company.company_name}
                         </td>
                         <td className="px-3 sm:px-6 py-1  whitespace-nowrap text-center">
-                          {company.sme_z_score}
+                          {company.sme_z_score ? company.sme_z_score : t('na')}
                         </td>
                         <td className="px-3 sm:px-6 py-1 whitespace-nowrap  text-center">
-                          {company.bond_rating_equivalent}
+                          {company.bond_rating_equivalent
+                            ? company.bond_rating_equivalent
+                            : t('na')}
                         </td>
                         <td className="px-3 sm:px-6 py-1 whitespace-nowrap  text-center">
-                          {renderpdRatio}%
+                          {renderpdRatio ? renderpdRatio : t('na')}
+                          {renderpdRatio && '%'}
                         </td>
                       </tr>
                     </Link>

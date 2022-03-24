@@ -42,9 +42,12 @@ const SummaryFinancialRow = ({
             >
               {!year[rowKeyStr]
                 ? year.period
-                  ? 0
+                  ? '-'
                   : t('na')
-                : Number(year[rowKeyStr]).toLocaleString()}
+                : Number(year[rowKeyStr])?.toLocaleString('en-GB', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                  })}
             </p>
           </td>
         ))}

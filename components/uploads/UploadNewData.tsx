@@ -49,20 +49,19 @@ const UploadNewData = ({
   fileSelected,
   setFileSelected,
   handleRemoveFile = () => setFileSelected(null), // I dont like this. Will come back and fix it
-  children,
-  numberOfCompanies
+  children
 }: UploadNewDataProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ApiError>({
     error: '' as ErrorCodeKeys,
     message: ''
   });
-
   const t = useTranslations();
+
+  const hasErrors = errors.length > 0;
 
   const tick = <CheckIcon className="h-6 w-6 text-green-500 mr-1" />;
   const cross = <XIcon className="h-6 w-6 text-red-500 mr-1" />;
-
   return (
     <div className="bg-white rounded-sm shadow-sm sm:p-8 p-6">
       <div className="grid sm:grid-cols-2">
@@ -102,16 +101,6 @@ const UploadNewData = ({
                       <p>{t('file_is_invalid_format')}</p>
                     </>
                   )}
-                </div>
-                <div>
-                  {numberOfCompanies &&
-                  uploadType === 'REPORT_MANUAL' &&
-                  numberOfCompanies !== 1 ? (
-                    <div className="flex py-1 items-center">
-                      {cross}
-                      <p>{t('multiple_companies_cannot_be_uploaded_here')}</p>
-                    </div>
-                  ) : null}
                 </div>
                 <div>
                   {missingHeaders.length === 0 ? (
@@ -173,7 +162,7 @@ const UploadNewData = ({
       <div className="w-full sm:max-w-[200px] mt-2">
         <Button
           variant="highlight"
-          disabled={!isValid || disableButton || loading}
+          disabled={!isValid || disableButton || loading || hasErrors || !isCSV}
           loading={loading}
           className="text-primary rounded-none"
           onClick={() => onSubmit(setError, setLoading)}

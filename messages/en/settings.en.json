@@ -38,6 +38,7 @@
       "dashboard": "Dashboard",
       "reports": "Reports",
       "single_report": "Single Report",
+      "multiple_reports": "Multiple Reports",
       "sme_prospector": "SME Prospector",
       "default_login_screen": "Default login screen"
     },

@@ -61,6 +61,12 @@ const ProvideData = () => {
     }
   };
 
+  const moreThanOneCompany = numberOfCompanies > 1;
+
+  const allErrors = moreThanOneCompany
+    ? [...errors, t('multiple_companies_cannot_be_uploaded_here')]
+    : errors;
+
   return (
     <>
       <div className="bg-white rounded-sm shadow-sm my-8">
@@ -75,7 +81,7 @@ const ProvideData = () => {
           onSubmit={handleSubmit}
           isCSV={isCSV}
           isValid={isValid}
-          errors={errors}
+          errors={allErrors}
           missingHeaders={missingHeaders}
           disableButton={!isValid}
           numberOfCompanies={numberOfCompanies}
@@ -92,7 +98,6 @@ const ProvideData = () => {
                 icon={<CloudDownloadIcon className="h-8 w-8" />}
                 iconColor={template.backgroundColor}
                 header={t(`${template.title}.title`)}
-                disabled={template.disabled}
                 description={t(`${template.title}.body`)}
                 linkTo={template.templateLink}
                 key={i}

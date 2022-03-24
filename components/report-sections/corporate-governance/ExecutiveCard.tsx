@@ -59,6 +59,8 @@ const ExecutiveCard = ({
           </div>
         </div>
       )}
+
+      {/* can add new component here - if hint would be required as per shareholders? */}
       {isLiability && (
         <div className="text-xs mt-2 flex space-x-4 items-center w-full pt-3">
           <div className="rounded-full bg-pink-100 w-8 h-8 flex items-center justify-center p-2 font-bold text-primary ">

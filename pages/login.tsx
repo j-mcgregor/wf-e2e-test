@@ -27,16 +27,43 @@ const Login = () => {
     'wf_last_login',
     []
   );
-
-  if (!loading && session) {
-    router.push('/');
-  }
-
-  const currentTimeAndDate = Date.now();
+  const [homePage] = useLocalStorage<string>('wf_home_page', '');
+  const [lastPageVisited] = useLocalStorage<string>('wf_last_page_visited', '');
 
   useEffect(() => {
     setUserLoginTime([currentTimeAndDate, userLoginTime[0]]);
   }, []);
+
+  //checks local for home_page default redirect
+  const defaultHomepageRedirect = (hp: string) => {
+    let local = hp;
+    switch (local) {
+      case 'reports':
+        local = '/reports';
+        break;
+      case 'single_report':
+        local = '/sme-calculator';
+        break;
+      case 'multiple_reports':
+        local = '/batch-reports';
+        break;
+      default:
+        local = '/';
+    }
+    return local;
+  };
+
+  if (!loading && session) {
+    // check localstorage for last page component visited, if present and not empty string, push that page
+    if (lastPageVisited && lastPageVisited !== '') {
+      router.push(`${lastPageVisited}`);
+    } else {
+      const homepageRedirect = defaultHomepageRedirect(homePage);
+      router.push(`${homepageRedirect}`);
+    }
+  }
+
+  const currentTimeAndDate = Date.now();
 
   return (
     <Layout noNav={true} title="Login" noAuthRequired={true}>
@@ -66,7 +93,7 @@ const Login = () => {
               </div>
             </div>
             <LoginSSO />
-            <LoginForm />
+            <LoginForm defaultHomepageRedirect={defaultHomepageRedirect} />
           </div>
         ) : (
           <div>

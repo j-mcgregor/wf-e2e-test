@@ -13,6 +13,7 @@ export type SummaryDetailsProps = {
   country?: string;
   currency?: string;
   naceCode?: string;
+  isoCode?: string;
   companyStatus: CompanyStatusType[];
 };
 
@@ -24,6 +25,7 @@ const SummaryDetails = ({
   lastAccountDate,
   description,
   country,
+  isoCode,
   naceCode,
   companyStatus,
   currency
@@ -32,8 +34,7 @@ const SummaryDetails = ({
 
   const foundCountry =
     country ||
-    countryCodes.find(countryCode => countryCode.currency_code === currency)
-      ?.name;
+    countryCodes.find(countryCode => countryCode.code === isoCode)?.name;
 
   // new function made from previous one in jsx to reuse with last account date
   const formatDate = (date: string | number): string => {

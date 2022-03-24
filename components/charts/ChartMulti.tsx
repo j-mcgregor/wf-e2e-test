@@ -22,10 +22,8 @@ import {
   getMaxRenderValue,
   getMinRenderValue,
   getNumberLength,
-  isGraphData,
   calculateMaxDataPoint,
   calculateMinDataPoint,
-  getCompanyName,
   convertData,
   formatToolTip
 } from './graph-helpers';
@@ -67,7 +65,20 @@ const ChartMulti = ({
   const companyGraph = graphData[0];
   const benchmarkGraph = graphData[1];
 
-  const companyName = getCompanyName(companyGraph);
+  // find the largest number by digits not only largest positive number
+  const largestNumberByDigits = useMemo(() => {
+    const largestCompanyValue =
+      companyGraph &&
+      Math.max(
+        ...companyGraph.data.map((data: GraphDataType) => Math.abs(data.y))
+      );
+    const largestBenchmarkValue =
+      benchmarkGraph &&
+      Math.max(
+        ...benchmarkGraph.data?.map((data: GraphDataType) => Math.abs(data.y))
+      );
+    return Math.max(largestCompanyValue || 0, largestBenchmarkValue || 0);
+  }, [companyGraph, benchmarkGraph]);
 
   // get largest y value from all graphs
   const largestYDataPoint = useMemo(() => {
@@ -91,7 +102,9 @@ const ChartMulti = ({
     return Math.min(smallestCompanyValue || 0, smallestBenchmarkValue || 0);
   }, [companyGraph, benchmarkGraph]);
 
-  const largestNumberLength = getNumberLength(largestYDataPoint);
+  // needs to use largest number by digits because of negative values and the Math.max function
+  const largestNumberLength = getNumberLength(largestNumberByDigits);
+
   // is largest value over 99,000,000 ? should use as millions
   const useMillions = chartType === 'currency' && largestNumberLength > 8;
   //  is largest value over 1000 and less than 100,000,000 ? should use as thousands
@@ -112,11 +125,12 @@ const ChartMulti = ({
   const maxYValue =
     chartType === 'ratio'
       ? largestYDataPoint
-      : calculateMaxDataPoint(largestYDataPoint);
+      : calculateMaxDataPoint(largestYDataPoint, largestNumberLength);
 
   const minYValue = calculateMinDataPoint(
     smallestYDataPoint,
-    largestYDataPoint
+    largestNumberLength
+    // header === "Net Income"
   );
 
   const maxRenderValue = getMaxRenderValue(disabled, chartType, maxYValue);
@@ -159,7 +173,8 @@ const ChartMulti = ({
       : null;
 
   // how to log only one graph
-  // header === "Interest Coverage Ratio" && console.log(maxYValue)
+  // header === 'Net Income' &&
+  //   console.log('largestNumberLength', largestNumberLength);
 
   return (
     <div
@@ -168,12 +183,13 @@ const ChartMulti = ({
       } shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break px-2`}
       data-testid="chart-multi-testid "
     >
-      <div className="flex justify-between items-start px-4 pt-4 text-base">
+      <div className="flex justify-between items-start px-4 pt-4 text-base print:h-12 print:mb-2">
         <div className="">
-          <h5 className="pb-2 md:whitespace-nowrap lg:whitespace-normal md:text-sm">
+          <h5 className="print:h-8 pb-2 md:whitespace-nowrap lg:whitespace-normal font-semibold md:text-sm print:text-xs">
             {header}
           </h5>
-          <p className="opacity-70 print:opacity-100 print:text-gray-400 text-sm print:text-xs">
+
+          <p className="print:h-4 opacity-70 print:opacity-100 print:text-gray-400 text-sm print:text-xs">
             {chartTypeText || subHeader}
           </p>
         </div>

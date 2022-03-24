@@ -29,14 +29,14 @@ export const useCsvValidators = (
   const tooManyCompanies = numberOfCompanies.length > MAX_COMPANIES;
 
   // if too many companies, add error
-  if (tooManyCompanies) {
-    errors.push(
-      t('max_companies', {
-        max_companies: MAX_COMPANIES,
-        total_companies: numberOfCompanies.length
-      })
-    );
-  }
+  // if (tooManyCompanies) {
+  //   errors.push(
+  //     t('max_companies', {
+  //       max_companies: MAX_COMPANIES,
+  //       total_companies: numberOfCompanies.length
+  //     })
+  //   );
+  // }
 
   // checks the reportObject for the headers that are required
   // returns an array of missing header names
@@ -93,8 +93,7 @@ export const useCsvValidators = (
               if (errors.length >= MAX_ERRORS) {
                 break;
               }
-
-              errors.push(res);
+              res && errors.push(res);
             }
           }
           // check for error length here too
