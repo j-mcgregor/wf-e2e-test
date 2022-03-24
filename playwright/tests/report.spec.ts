@@ -39,7 +39,7 @@ test.describe('Report Tests', async () => {
 
   // SCENARIO: USER NAVIGATES TO NEWLY CREATED REPORT, BOOKMARKS IT, AND NAVIGATES TO 'REPORTS' TO CHECK IT WAS SUCCESSFULLY BOOKMARKED
   // FEATURE: USER BOOKMARKS A REPORT
-  test('User can bookmark a report', async ({ page, context }) => {
+  test('User can bookmark a report', async ({ page }) => {
     // WHEN I NAVIGATE TO THE MOST RECENT REPORT
     await Promise.all([
       page.waitForNavigation(),
@@ -64,4 +64,27 @@ test.describe('Report Tests', async () => {
     // THEN I SHOULD SEE A BOOKMARK CARD FOR THE REPORT I JUST BOOKMARKED
     await expect(bookmark).toBeVisible();
   });
+
+  // SCENARIO: USER NAVIGATES TO A REPORT AND PRINTS IT
+  // FEATURE: USER CAN PRINT A REPORT
+  // test('User can print a report', async ({ page }) => {
+  //   // await Promise.all([
+  //   //   page.waitForNavigation(),
+  //   //   page.locator('td >> nth=0').click()
+  //   // ]);
+  //  // await page.locator('text=Export PDF').click();
+  //   await expect(page.url()).toContain('/print');
+  //   // Click text=A LIMITED-24-03-22-15:11
+  //   await Promise.all([
+  //     page.waitForNavigation(/*{ url: 'http://localhost:3000/report/8c2d1c76-fa23-4a88-add5-238aa305b924' }*/),
+  //     page.locator('text=A LIMITED-24-03-22-15:11').click()
+  //   ]);
+  //   // Click text=Export PDF
+  //   await Promise.all([
+  //     page.waitForEvent('popup'),
+  //     page.waitForNavigation(/*{ url: 'http://localhost:3000/report/8c2d1c76-fa23-4a88-add5-238aa305b924/print' }*/),
+  //     page.locator('text=Export PDF').click()
+  //   ]);
+  //   await expect(page.url()).toContain('/print');
+  // });
 });
