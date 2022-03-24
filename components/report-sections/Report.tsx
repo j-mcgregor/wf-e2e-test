@@ -56,8 +56,6 @@ const Report = ({
 
   const companyAddress = companyDetails?.address;
 
-  console.log(companyAddress);
-
   const reliabilityIndex = data?.reliability_index;
 
   // remove years that are dormant
