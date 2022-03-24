@@ -28,15 +28,8 @@ const CreateBatchReport = () => {
   const [fileSelected, setFileSelected] = useState<File | null>(null);
   const [fileSelectedName, setFileSelectedName] = useState<string>('');
 
-  const {
-    csvData,
-    csvValues,
-    fileName,
-    isCSV,
-    isAutoOrManual,
-    totalRows,
-    totalCompanies
-  } = useCSV(fileSelected);
+  const { csvData, csvValues, fileName, isCSV, isAutoOrManual } =
+    useCSV(fileSelected);
 
   const { isValid, errors, missingHeaders } = useCsvValidators(
     csvData,
