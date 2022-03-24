@@ -352,8 +352,8 @@
   "heatwave_risk": "Heatwave Risk",
   "environmental_risk": "Environmental risk",
   "transition_text": "<b> {company_name} </b> operates in {industry}, which has a carbon intensity of <b>{score}%</b>. This is <b>{risk_level}</b> when compared to other industries.",
-  "flooding_risk_text": "<b>{company_name}</b> has a <b>{risk_level}</b> flooding risk as it is located in {location} which has a <b>{location_risk}</b> risk for location and a <b> {industry_risk}</b> risk for its industry, {industry}.",
-  "drought_risk_text": "<b>{company_name}</b> has a <b>{risk_level}</b> drought risk as it is located in {location} which has a <b>{location_risk}</b> risk for location and a <b>{industry_risk}</b> risk for its industry, {industry}.",
+  "flooding_risk_text": "<b>{company_name}</b> has a <b>{risk_level}</b> flooding risk as it is located in <b>{location}</b> which has a <b>{location_risk}</b> risk for location and a <b> {industry_risk}</b> risk for its industry, {industry}.",
+  "drought_risk_text": "<b>{company_name}</b> has a <b>{risk_level}</b> drought risk as it is located in <b>{location}</b> which has a <b>{location_risk}</b> risk for location and a <b>{industry_risk}</b> risk for its industry, {industry}.",
   "reliableText": "We have found sufficient reliable financial and non-financial data to derive our risk assessment for this company.",
   "cautionText": "We have found some volatility in the financial and non-financial data sourced for this company and we recommend you investigate the source of this volatility. We are confident that the quality of our risk assessment is fit for purpose, but the trends of our risk metrics may have been affected. When possible, we would recommend you provide additional data using the option below.",
   "concernText": "We have not been able to find enough financial and non-financial data to provide a reliable risk assessment. The company could be too young or too small to be processed confidently by our models. We advise you seek alternative sources of financial data such as management accounts and upload using the Manual Data Input option."

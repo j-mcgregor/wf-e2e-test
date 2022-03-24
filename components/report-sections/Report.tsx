@@ -56,6 +56,8 @@ const Report = ({
 
   const companyAddress = companyDetails?.address;
 
+  console.log(companyAddress);
+
   const reliabilityIndex = data?.reliability_index;
 
   // remove years that are dormant
@@ -491,7 +493,7 @@ const Report = ({
           sector={data.details?.industry_sector || ''}
           physical={data?.esg?.physical}
           transition={data?.esg?.transition}
-          location={companyAddress?.city || companyAddress?.country}
+          location={companyAddress?.city}
           isoCode={data?.iso_code}
         />
       </HashContainer>
