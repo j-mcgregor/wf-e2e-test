@@ -53,7 +53,8 @@ const Speedometer = ({
 
   const t = useTranslations();
 
-  const arrowRotation = isValidValue && rotationCalculator(value);
+  // if not valid value set to default of 0 rotation
+  const arrowRotation = (isValidValue && rotationCalculator(value)) || '0';
 
   return (
     <>

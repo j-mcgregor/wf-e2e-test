@@ -22,10 +22,8 @@ import {
   getMaxRenderValue,
   getMinRenderValue,
   getNumberLength,
-  isGraphData,
   calculateMaxDataPoint,
   calculateMinDataPoint,
-  getCompanyName,
   convertData,
   formatToolTip
 } from './graph-helpers';
@@ -67,6 +65,21 @@ const ChartMulti = ({
   const companyGraph = graphData[0];
   const benchmarkGraph = graphData[1];
 
+  // find the largest number by digits not only largest positive number
+  const largestNumberByDigits = useMemo(() => {
+    const largestCompanyValue =
+      companyGraph &&
+      Math.max(
+        ...companyGraph.data.map((data: GraphDataType) => Math.abs(data.y))
+      );
+    const largestBenchmarkValue =
+      benchmarkGraph &&
+      Math.max(
+        ...benchmarkGraph.data?.map((data: GraphDataType) => Math.abs(data.y))
+      );
+    return Math.max(largestCompanyValue || 0, largestBenchmarkValue || 0);
+  }, [companyGraph, benchmarkGraph]);
+
   // get largest y value from all graphs
   const largestYDataPoint = useMemo(() => {
     const largestCompanyValue =
@@ -89,7 +102,9 @@ const ChartMulti = ({
     return Math.min(smallestCompanyValue || 0, smallestBenchmarkValue || 0);
   }, [companyGraph, benchmarkGraph]);
 
-  const largestNumberLength = getNumberLength(largestYDataPoint);
+  // needs to use largest number by digits because of negative values and the Math.max function
+  const largestNumberLength = getNumberLength(largestNumberByDigits);
+
   // is largest value over 99,000,000 ? should use as millions
   const useMillions = chartType === 'currency' && largestNumberLength > 8;
   //  is largest value over 1000 and less than 100,000,000 ? should use as thousands
@@ -158,7 +173,8 @@ const ChartMulti = ({
       : null;
 
   // how to log only one graph
-  // header === "Net Income" && console.log('minYValue', minYValue);
+  // header === 'Net Income' &&
+  //   console.log('largestNumberLength', largestNumberLength);
 
   return (
     <div

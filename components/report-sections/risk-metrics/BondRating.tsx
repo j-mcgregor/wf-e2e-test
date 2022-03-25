@@ -77,7 +77,7 @@ const BondRating = ({ score, hint }: BondRatingProps) => {
       {score && (
         <div className="flex items-center bg-bg p-2 rounded-sm">
           <p className="p-2 font-bold text-4xl">{score}</p>
-          <p className="p-2 text-sm">
+          <p className="p-2 text-sm print:text-xs">
             {t(`bond_rating_descriptions.${score}`)}
           </p>
         </div>
