@@ -14,15 +14,15 @@ test.describe('User Settings Tests', async () => {
     // THEN I AM DIRECTED TO THE SETTINGS PAGE
     await expect(page).toHaveURL('settings');
 
-    // WHEN I SELECT THE EXISTING TEXT IN THE NAME INPUT FIELD
-    await page.locator('input[name="fullName"]').click({
-      clickCount: 3
-    });
-
-    const nameInput = page.locator('input[name="fullName"]'); // locate name input
+    const nameInput = page.locator('input[name="fullName"]');
     const currentUserName = await nameInput.inputValue(); // current name
     const newUserName =
       currentUserName === 'Joe Smith' ? 'Smith Joe' : 'Joe Smith'; // always set new name to enable button
+
+    // WHEN I SELECT THE EXISTING TEXT IN THE NAME INPUT FIELD
+    await nameInput.click({
+      clickCount: 3
+    });
 
     // AND I TYPE A NEW NAME INTO THE NAME INPUT FIELD
     await nameInput.fill(newUserName);
