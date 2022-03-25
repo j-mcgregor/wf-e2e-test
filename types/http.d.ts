@@ -13,11 +13,10 @@
 
 import { ValidationError } from './errors';
 
-export type ApiHandler<T extends HandlerReturn> = (
+export type ApiHandler<T extends HandlerReturn, P = {}> = (
   token: string,
-  ...args: any[]
+  args: P
 ) => Promise<T>;
-
 /**
  * ***************************************************
  * @name HandlerReturn

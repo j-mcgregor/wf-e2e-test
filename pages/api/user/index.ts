@@ -14,31 +14,36 @@ import {
 } from '../../../lib/utils/error-codes';
 import { ApiError, UserType } from '../../../types/global';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler, NextApiResponse } from 'next';
 import { getToken } from 'next-auth/jwt';
 
-const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+export interface UserIndexApi {}
+
+const userIndexApi: NextApiHandler<UserIndexApi> = async (
+  request,
+  response
+) => {
   const token = await getToken({
-    req,
+    req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
   });
 
   // unauthenticated requests
   if (!token) {
-    return res.status(403).json({
+    return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
     });
   }
-  const { method } = req;
+  const { method } = request;
 
   if (method === 'GET') {
-    const req = await User.getFullUser(`${token?.accessToken}`);
-    return userAPIHandler(req, res);
+    const request = await User.getFullUser(`${token?.accessToken}`);
+    return userAPIHandler(request, response);
   }
 
   if (method === 'PUT') {
-    const json = await JSON.parse(req.body);
+    const json = await JSON.parse(request.body);
 
     // update user object
     const user = {
@@ -52,10 +57,10 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       // TODO: user passed here needs a type or it needs to be revised.
       // It has no type and updateUser needs a UserType type.
       //@ts-ignore
-      const req = await User.updateUser(user, `${token?.accessToken}`);
-      return userAPIHandler(req, res);
+      const request = await User.updateUser(user, `${token?.accessToken}`);
+      return userAPIHandler(request, response);
     } catch (err) {
-      return res.status(500).json({
+      return response.status(500).json({
         ok: false,
         error: GENERIC_API_ERROR,
         message: err
@@ -63,7 +68,7 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  return res.status(500).json({
+  return response.status(500).json({
     ok: false,
     error: METHOD_NOT_ALLOWED,
     message: 'Method not allowed.'
@@ -71,17 +76,17 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const userAPIHandler = (
-  req: {
+  request: {
     user?: UserType | undefined;
     ok?: boolean | undefined;
     status?: number | undefined;
   },
-  res: NextApiResponse
+  response: NextApiResponse
 ) => {
-  switch (req.status) {
+  switch (request.status) {
     case 401:
-      return res.status(401).json({
-        ok: req.ok,
+      return response.status(401).json({
+        ok: request.ok,
         //user facing message
         error: SIGNED_OUT,
         //dev message
@@ -89,24 +94,24 @@ const userAPIHandler = (
           'Access to the source is forbidden, user needs to sign in possibly.'
       } as ApiError);
     case 404:
-      return res.status(404).json({
-        ok: req.ok,
+      return response.status(404).json({
+        ok: request.ok,
         //user facing message
         error: USER_404,
         //dev message
         message: "User not found: Can't find the user. Probably wrong id."
       } as ApiError);
     case 403:
-      return res.status(403).json({
-        ok: req.ok,
+      return response.status(403).json({
+        ok: request.ok,
         //user facing message
         error: USER_403,
         //dev message
         message: "Forbidden: User doesn't have access to the source."
       } as ApiError);
     case 422:
-      res.status(422).json({
-        ok: req.ok,
+      response.status(422).json({
+        ok: request.ok,
         //user facing message
         error: USER_422,
         //dev message
@@ -115,8 +120,8 @@ const userAPIHandler = (
       } as ApiError);
       break;
     case 500:
-      return res.status(500).json({
-        ok: req.ok,
+      return response.status(500).json({
+        ok: request.ok,
         //user facing message
         error: USER_500,
         //dev message
@@ -124,9 +129,9 @@ const userAPIHandler = (
           "Internal Server Error: Didn't get anything usable from the server, chances are the server didn't respond."
       } as ApiError);
     case 200:
-      return res.status(200).json({ ok: req.ok, data: req.user });
+      return response.status(200).json({ ok: request.ok, data: request.user });
     default:
-      return res.status(500).json({
+      return response.status(500).json({
         ok: false,
         error: GENERIC_API_ERROR,
         message: 'Something went wrong.'
@@ -134,4 +139,4 @@ const userAPIHandler = (
   }
 };
 
-export default withSentry(UserHandler);
+export default withSentry(userIndexApi);

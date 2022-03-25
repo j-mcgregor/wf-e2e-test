@@ -15,7 +15,7 @@ import {
 } from '../../lib/utils/error-codes';
 
 import type { ApiError, BatchedReportType } from '../../types/global';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler } from 'next';
 
 const randomValue = (amount: number) => {
   return Math.floor(Math.random() * amount);
@@ -28,10 +28,11 @@ type CompanyReqType = {
 
 // DEMO FUNCTION
 
+export interface BatchedReportsApi {}
 // Declaring function for readability with Sentry wrapper
-const batchedReport = async (
-  request: NextApiRequest,
-  response: NextApiResponse
+const batchedReport: NextApiHandler<BatchedReportsApi> = async (
+  request,
+  response
 ): Promise<any> => {
   const token = await getToken({
     req: request,

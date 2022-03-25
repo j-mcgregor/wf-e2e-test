@@ -11,9 +11,12 @@ import {
 } from '../../../lib/utils/error-codes';
 import { ApiError, ApiResType } from '../../../types/global';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler, NextApiResponse } from 'next';
+
+export interface ReportsNewsApi {}
+
 // Declaring function for readability with Sentry wrapper
-const NewsApi = async (request: NextApiRequest, response: NextApiResponse) => {
+const NewsApi: NextApiHandler<ReportsNewsApi> = async (request, response) => {
   const token = await getToken({
     req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`

@@ -71,7 +71,7 @@ const batchReports: NextApiHandler<BatchReportsIndexApi> = async (
       try {
         const res = await BatchReport.createBatchReport(
           `${token.accessToken}`,
-          batchReport
+          { report: batchReport }
         );
 
         return response.status(res.status).json({
@@ -98,7 +98,10 @@ const batchReports: NextApiHandler<BatchReportsIndexApi> = async (
 
   if (isGet) {
     try {
-      const res = await BatchReport.getAllBatchReports(`${token.accessToken}`);
+      const res = await BatchReport.getAllBatchReports(
+        `${token.accessToken}`,
+        {}
+      );
 
       if (res.ok) {
         return response.status(res.status).json({

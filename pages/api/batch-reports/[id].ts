@@ -11,12 +11,13 @@ import {
 } from '../../../lib/utils/error-codes';
 
 import type { ApiError } from '../../../types/global';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler } from 'next';
 
+export interface BatchReportsIdApi {}
 // Declaring function for readability with Sentry wrapper
-const batchReports = async (
-  request: NextApiRequest,
-  response: NextApiResponse
+const batchReports: NextApiHandler<BatchReportsIdApi> = async (
+  request,
+  response
 ): Promise<any> => {
   const token = await getToken({
     req: request,
@@ -49,7 +50,7 @@ const batchReports = async (
     try {
       const fetchRes = await BatchReport.getBatchReportsById(
         `${token.accessToken}`,
-        batchReportId.toString()
+        { id: batchReportId.toString() }
       );
 
       if (fetchRes.ok) {

@@ -7,11 +7,14 @@ import {
 } from '../../lib/utils/error-codes';
 import { ApiError } from '../../types/global';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler } from 'next';
+
+export interface PasswordResetApi {}
+
 // Declaring function for readability with Sentry wrapper
-const passwordReset = async (
-  request: NextApiRequest,
-  response: NextApiResponse
+const passwordReset: NextApiHandler<PasswordResetApi> = async (
+  request,
+  response
 ) => {
   const { email } = request.query;
   const { token, newPassword } = request.body;

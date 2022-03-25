@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
-import { getSession } from 'next-auth/react';
+import { getToken } from 'next-auth/jwt';
 
 import Report from '../../../lib/funcs/report';
 import {
@@ -12,12 +12,15 @@ import {
 } from '../../../lib/utils/error-codes';
 import { ApiError } from '../../../types/global';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getToken } from 'next-auth/jwt';
+import type { NextApiHandler } from 'next';
+export interface ReportsUploadApi {}
 
 // Declaring function for readability with Sentry wrapper
-const report = async (request: NextApiRequest, response: NextApiResponse) => {
-  const token = await getToken({ req: request, secret: `${process.env.NEXTAUTH_SECRET}` });
+const report: NextApiHandler<ReportsUploadApi> = async (request, response) => {
+  const token = await getToken({
+    req: request,
+    secret: `${process.env.NEXTAUTH_SECRET}`
+  });
 
   // unauthenticated requests
   if (!token) {

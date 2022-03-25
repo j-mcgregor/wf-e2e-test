@@ -14,25 +14,30 @@ import {
 } from '../../../lib/utils/error-codes';
 import { ApiError } from '../../../types/global';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler } from 'next';
 import { getToken } from 'next-auth/jwt';
 
-const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+export interface UserReportsApi {}
+
+const userReportsApi: NextApiHandler<UserReportsApi> = async (
+  request,
+  response
+) => {
   const token = await getToken({
-    req,
+    req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
   });
 
   // unauthenticated requests
   if (!token) {
-    return res.status(403).json({
+    return response.status(403).json({
       error: UNAUTHORISED,
       message: 'Unauthorised api request, please login to continue.'
     } as ApiError);
   }
-  const { method } = req;
+  const { method } = request;
 
-  const { limit, skip, total } = req.query;
+  const { limit, skip, total } = request.query;
 
   const safeLimit = Number(limit);
   const safeSkip = Number(skip);
@@ -47,13 +52,13 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       if (total && fetchRes.ok) {
         const total = fetchRes?.reports?.length;
-        return res.status(200).json({
+        return response.status(200).json({
           total
         });
       }
       switch (fetchRes.status) {
         case 401:
-          return res.status(401).json({
+          return response.status(401).json({
             ok: fetchRes.ok,
             //user facing message
             error: SIGNED_OUT,
@@ -62,7 +67,7 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               'Access to the source is forbidden, user needs to sign in possibly.'
           } as ApiError);
         case 404:
-          return res.status(404).json({
+          return response.status(404).json({
             ok: fetchRes.ok,
             //user facing message
             error: USER_404,
@@ -70,7 +75,7 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             message: "User not found: Can't find the user. Probably wrong id."
           } as ApiError);
         case 422:
-          res.status(422).json({
+          response.status(422).json({
             ok: fetchRes.ok,
             //user facing message
             error: USER_422,
@@ -80,7 +85,7 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           } as ApiError);
           break;
         case 500:
-          return res.status(500).json({
+          return response.status(500).json({
             ok: fetchRes.ok,
             //user facing message
             error: USER_500,
@@ -89,12 +94,12 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               "Internal Server Error: Didn't get anything usable from the server, chances are the server didn't respond."
           } as ApiError);
         case 200:
-          return res
+          return response
             .status(200)
             .json({ ok: fetchRes.ok, data: fetchRes.reports });
       }
     } catch (err) {
-      return res.status(500).json({
+      return response.status(500).json({
         ok: false,
         error: GENERIC_API_ERROR,
         message: err
@@ -102,11 +107,11 @@ const UserHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  return res.status(500).json({
+  return response.status(500).json({
     ok: false,
     error: METHOD_NOT_ALLOWED,
     message: 'Method not allowed.'
   });
 };
 
-export default withSentry(UserHandler);
+export default withSentry(userReportsApi);

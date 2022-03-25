@@ -80,10 +80,14 @@ export interface GetBatchReportById extends HandlerReturn {
   batchReport: BatchJobGetByIdResponse | null;
 }
 
-const getBatchReportsById: ApiHandler<GetBatchReportById> = async (
-  token: string,
-  id: string
-) => {
+interface GetBatchReportByIdProps {
+  id: string;
+}
+
+const getBatchReportsById: ApiHandler<
+  GetBatchReportById,
+  GetBatchReportByIdProps
+> = async (token, { id }) => {
   try {
     const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch/${id}`, {
       method: 'GET',
@@ -137,10 +141,14 @@ export interface CreateBatchReport extends HandlerReturn {
   report: CreateBatchJobResponse | null;
 }
 
-const createBatchReport: ApiHandler<CreateBatchReport> = async (
-  token: string,
-  report: BatchAutoRequest
-) => {
+interface CreateBatchReportProps {
+  report: BatchAutoRequest;
+}
+
+const createBatchReport: ApiHandler<
+  CreateBatchReport,
+  CreateBatchReportProps
+> = async (token: string, { report }) => {
   try {
     const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch`, {
       method: 'POST',
