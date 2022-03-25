@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { test, expect } from '@playwright/test';
-import { login } from '../test-helpers';
+import { login } from '../playwright-helpers';
 
 login();
 
@@ -190,5 +190,4 @@ test.describe('User Settings Tests', async () => {
       ? expect(reportCheckbox).not.toBeChecked()
       : expect(reportCheckbox).toBeChecked();
   });
-  [];
 });

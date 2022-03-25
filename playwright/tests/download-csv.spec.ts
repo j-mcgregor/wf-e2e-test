@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../test-helpers';
+import { login } from '../playwright-helpers';
 
 login();
 
@@ -22,5 +22,5 @@ test('User can download CSV of a report', async ({ page }) => {
   ]);
 
   // THEN A CSV FILE OF THE REPORT SHOULD BE DOWNLOADED
-  await expect(download.path()).toBeTruthy(); // download has filepath = true = success - no other obvious alternative in playwright
+  await expect(download.path()).toBeTruthy(); // download has filepath === true = success -> no obvious alternative?
 });
