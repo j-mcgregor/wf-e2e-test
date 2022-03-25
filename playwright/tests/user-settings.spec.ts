@@ -20,7 +20,7 @@ test.describe('User Settings Tests', async () => {
     });
 
     const nameInput = page.locator('input[name="fullName"]'); // locate name input
-    const currentUserName = await nameInput.inputValue(); // get current name
+    const currentUserName = await nameInput.inputValue(); // current name
     const newUserName =
       currentUserName === 'Joe Smith' ? 'Smith Joe' : 'Joe Smith'; // always set new name to enable button
 
@@ -43,6 +43,8 @@ test.describe('User Settings Tests', async () => {
     // AND MY NEW NAME SHOULD BE DISPLAYED AT THE TOP OF THE PAGE
     await expect(page.locator(`h1:has-text("${newUserName}")`)).toBeVisible();
   });
+
+  // --------------------------------------------------
 
   // SCENARIO: USER NAVIGATES TO SETTINGS AND CHANGES THEIR PASSWORD
   // FEATURE: USER CAN CHANGE THEIR PASSWORD
@@ -70,6 +72,8 @@ test.describe('User Settings Tests', async () => {
       page.locator('text=New PasswordConfirm PasswordSave >> button')
     ).toBeEnabled();
   });
+
+  // --------------------------------------------------
 
   // SCENARIO: USER NAVIGATES TO SETTINGS AND CHANGES THEIR EMAIL
   // FEATURE: USER CAN CHANGE THEIR EMAIL
@@ -99,6 +103,8 @@ test.describe('User Settings Tests', async () => {
     ).toBeEnabled();
   });
 
+  // --------------------------------------------------
+
   // SCENARIO: USER NAVIGATES TO THE SETTINGS PAGE AND CHANGES THEIR PREFERENCES
   // FEATURE: USER CAN CHANGE THEIR PREFERENCES
   test('User can change their preferences', async ({ page }) => {
@@ -109,15 +115,15 @@ test.describe('User Settings Tests', async () => {
     await expect(page).toHaveURL('settings');
 
     // selectors
-    const saveButton = page.locator('text=Save').nth(1);
-    const resetButton = page.locator('text=Reset to defaults');
+    const saveButton = page.locator('text=Save').nth(1); // save button
+    const resetButton = page.locator('text=Reset to defaults'); // reset button
     const countrySelect = page.locator('select[name="reporting"]'); // locate country select
 
     // values
-    const defaultCountry = 'GB';
-    const currentCountry = await countrySelect.inputValue(); // get current country
+    const defaultCountry = 'GB'; // default country
+    const currentCountry = await countrySelect.inputValue(); // current country
     const newCountry =
-      currentCountry === defaultCountry ? 'US' : defaultCountry; // always set new country
+      currentCountry === defaultCountry ? 'US' : defaultCountry; // always set new country to enable button
 
     // WHEN I CLICK THE 'CHANGE REPORTING COUNTRY' SELECT
     // AND I SELECT A NEW COUNTRY
@@ -145,6 +151,8 @@ test.describe('User Settings Tests', async () => {
     await expect(saveButton).toBeDisabled();
     await expect(resetButton).toBeDisabled();
   });
+
+  // --------------------------------------------------
 
   // SCENARIO: USER NAVIGATES TO SETTINGS AND UPDATES THEIR NOTIFICATIONS
   // FEATURE: USER CAN CHANGE THEIR NOTIFICATIONS

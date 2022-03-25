@@ -12,7 +12,7 @@ const config: PlaywrightTestConfig = {
   use: {
     headless: true,
     baseURL: 'http://localhost:3000',
-    viewport: { width: 1280, height: 720 },
+    viewport: { width: 1920, height: 1280 },
     browserName: 'chromium',
     screenshot: 'only-on-failure',
     // Tell all tests to load signed-in state from 'storageState.json'.

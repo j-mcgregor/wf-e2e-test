@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { test, expect } from '@playwright/test';
 import { login } from '../test-helpers';
 
@@ -5,9 +6,8 @@ login();
 
 test.describe('Report Tests', async () => {
   // SCENARIO: USER NAVIGATES TO THE SINGLE SME-CALC PAGE, INPUTS A COMPANY SEARCH AND GENERATES A REPORT
-
   // FEATURE: USER GENERATES A SINGLE REPORT
-  test('User can generate a single report', async ({ page }) => {
+  test('User can auto generate a report', async ({ page }) => {
     // GIVEN I CLICK THE 'SINGLE COMPANY' NAV LINK
     await page.locator('text=Single Company').first().click();
 
@@ -35,7 +35,46 @@ test.describe('Report Tests', async () => {
     await page.waitForSelector('h1:has-text("A LIMITED")', {
       timeout: 30000
     }); // <-- trick is to use waitForSelector()
+
+    await expect(page.locator('h1:has-text("A LIMITED")')).toBeVisible();
   });
+
+  // --------------------------------------------------
+
+  // SCENARIO: USER NAVIGATES TO THE SINGLE SME-CALC PAGE, MAKES AN ADVANCED SEARCH WITH A COMPANY ID AND CHANGES CURRENCY
+  // FEATURE: USER CREATES A MANUAL REPORT
+  test('User can manually generate a report', async ({ page }) => {
+    // GIVEN I CLICK THE 'SINGLE COMPANY' NAV LINK
+    await page.locator('text=Single Company').first().click();
+
+    // WHEN I CLICK THE 'ADVANCED SEARCH' BUTTON
+    await page.locator('text=Advanced Search').click();
+
+    // THEN I CLICK THE COMPANY REGISTRATION NUMBER INPUT
+    await page.locator('[placeholder="\\31 23456789"]').click();
+
+    // AND I ENTER A VALID COMPANY REGISTRATION NUMBER
+    await page.locator('[placeholder="\\31 23456789"]').fill('10754754');
+    // THEN I CHANGE THE DEFAULT CURRENCY FROM GBP TO USD
+    await page.locator('button:has-text("United Kingdom - GBP (£)")').click();
+    await page.locator('text=United States - USD ($)').click();
+
+    // WHEN I CLICK THE 'GENERATE REPORT' BUTTON
+    await page.locator('text=Generate Report').click();
+    await page.waitForSelector('h1:has-text("CHOPOVA LOWENA LIMITED")', {
+      timeout: 30000
+    });
+
+    // THEN THE REPORT SHOULD GENERATE AND I SHOULD BE DIRECTED TO THE CORRECT COMPANY REPORT PAGE
+    await expect(
+      page.locator('h1:has-text("CHOPOVA LOWENA LIMITED")')
+    ).toBeVisible();
+
+    // AND THE REPORT SHOULD BE GENERATED IN USD
+    await expect(page.locator('p:has-text("USD")')).toBeVisible();
+  });
+
+  // --------------------------------------------------
 
   // SCENARIO: USER NAVIGATES TO NEWLY CREATED REPORT, BOOKMARKS IT, AND NAVIGATES TO 'REPORTS' TO CHECK IT WAS SUCCESSFULLY BOOKMARKED
   // FEATURE: USER BOOKMARKS A REPORT
@@ -65,6 +104,9 @@ test.describe('Report Tests', async () => {
     await expect(bookmark).toBeVisible();
   });
 
+  // --------------------------------------------------
+
+  // ! BLOCKED ON PRINT REPORT TEST
   // SCENARIO: USER NAVIGATES TO A REPORT AND PRINTS IT
   // FEATURE: USER CAN PRINT A REPORT
   // test('User can print a report', async ({ page }) => {
