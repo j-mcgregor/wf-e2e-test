@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
@@ -131,6 +132,38 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
         );
         if (res.ok) {
           return response.status(200).json(res.csv);
+        }
+      } catch (error) {
+        return response.status(422).json({
+          error: VALIDATION_ERROR,
+          message: 'Unable to process the request'
+        } as ApiError);
+      }
+    } else if (request?.query?.export === 'pdf') {
+      try {
+        const fetchRes = await fetch(
+          `${process.env.WF_AP_ROUTE}/reports/${reportId}/export/pdf`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token.accessToken}`
+            }
+          }
+        );
+
+        const blob = await fetchRes.blob();
+        const arrayBuffer = await blob.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        if (fetchRes.status === 200 && fetchRes.ok) {
+          const filename: any = fetchRes.headers.get('content-disposition');
+          const contentType: any = fetchRes.headers.get('content-type');
+          response.setHeader('content-disposition', filename);
+          response.setHeader('content-type', contentType);
+          response.write(buffer, 'binary');
+          response.end();
+        } else {
+          throw new Error();
         }
       } catch (error) {
         return response.status(422).json({
