@@ -33,11 +33,3 @@ jobs:
         run: yarn build
       - name: Running unit tests...
         run: yarn test
-      - name: Running E2E tests...
-        run: yarn playwright
-      - name: Upload test results...
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: playwright-results
-          path: test-results
