@@ -34,6 +34,8 @@ test.describe('Report Creation & Bookmark Tests', async () => {
     // WHEN I CLICK THE 'GENERATE REPORT' BUTTON
     await page.locator('text=Generate Report').click();
 
+    // hacky but was fastest way to get it working
+    await page.waitForTimeout(10000);
     // THEN A REPORT SHOULD GENERATE AND I SHOULD BE DIRECTED TO THE CORRECT COMPANY REPORT PAGE
     await page.waitForSelector('h1:has-text("A LIMITED")', {
       timeout: 40000

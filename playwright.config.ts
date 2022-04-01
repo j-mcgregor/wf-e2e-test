@@ -17,6 +17,12 @@ const config: PlaywrightTestConfig = {
     screenshot: 'only-on-failure',
     // Tell all tests to load signed-in state from 'storageState.json'.
     storageState: './playwright/storageState.json'
+  },
+  webServer: {
+    port: 3000,
+    command: 'yarn dev',
+    timeout: 120 * 1000,
+    reuseExistingServer: !process.env.CI
   }
 };
 export default config;

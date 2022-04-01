@@ -27,6 +27,17 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: yarn
-      - run: yarn build
-      - run: yarn lint
-      - run: yarn test
+      - name: Linting...
+        run: yarn lint
+      - name: Building...
+        run: yarn build
+      - name: Running unit tests...
+        run: yarn test
+      - name: Running E2E tests...
+        run: yarn playwright
+      - name: Upload test results...
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-results
+          path: test-results
