@@ -149,7 +149,7 @@ const ReportNav = ({
         <Button
           variant="alt"
           className="w-full"
-          linkTo={`/report/${id}/print`}
+          linkTo={`/api/reports/report?id=${id}&export=pdf`}
           target="_blank"
           rel="noreferrer"
         >
