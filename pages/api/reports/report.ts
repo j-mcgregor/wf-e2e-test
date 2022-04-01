@@ -163,12 +163,15 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
           response.write(buffer, 'binary');
           response.end();
         } else {
-          throw new Error();
+          return response.status(422).json({
+            error: VALIDATION_ERROR,
+            message: `Unable to process the request. API returned status: ${fetchRes?.status} & '${fetchRes?.statusText}'`
+          } as ApiError);
         }
       } catch (error) {
         return response.status(422).json({
           error: VALIDATION_ERROR,
-          message: 'Unable to process the request'
+          message: `Unable to process the request. API Returned  ${error} `
         } as ApiError);
       }
     } else {
