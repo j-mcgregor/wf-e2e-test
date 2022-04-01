@@ -30,14 +30,24 @@ export interface HandlerReturn {
   ok: boolean;
   is_error: boolean;
   status: number;
-  message: string | HandleMessageObject;
+  message: string;
   error: string;
+  /**
+   * @deprecated
+   * use validationError if possible
+   */
   details?: string | {};
+  /**
+   * @desscription ValidationError type from the backend
+   * @status sent with status 422
+   */
+  validationError?: ValidationError;
 }
 
 /**
  * ***************************************************
  * @name HandleMessageObject
+ * @deprecated
  * @returns data recommended to be the stringified JSON object or array.
  * This was its easily passed through the call chain
  * ***************************************************
