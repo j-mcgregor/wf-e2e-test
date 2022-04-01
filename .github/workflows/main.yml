@@ -58,7 +58,7 @@ jobs:
           node-version: 14.x
       - uses: microsoft/playwright-github-action@v1
       - run: npm install --include=dev
-      - run: npm test
+      - run: npm playwright
         env:
           VERCEL_URL: ${{ needs.wait_for_vercel.outputs.preview_url }}
           VERCEL_ENV: preview
