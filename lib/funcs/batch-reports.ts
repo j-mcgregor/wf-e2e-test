@@ -207,10 +207,14 @@ export interface BatchJobReportUpload extends HandlerReturn {
   report: BatchJobUploadResponse | null;
 }
 
-const batchJobReportUpload: ApiHandler<BatchJobReportUpload> = async (
-  token: string,
-  report: BatchManualRequest
-) => {
+export interface BatchJobReportUploadProps {
+  report: BatchManualRequest;
+}
+
+const batchJobReportUpload: ApiHandler<
+  BatchJobReportUpload,
+  BatchJobReportUploadProps
+> = async (token: string, { report }) => {
   try {
     const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch/upload`, {
       method: 'POST',

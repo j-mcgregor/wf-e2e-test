@@ -13,7 +13,7 @@ import Report from '../../../components/report-sections/Report';
 import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
 import SkeletonReport from '../../../components/skeletons/SkeletonReport';
 import fetcher from '../../../lib/utils/fetcher';
-import { ReportDataProps } from '../../../types/report';
+import { ReportsReportApi } from '../../api/reports/report';
 
 const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const t = useTranslations();
@@ -21,10 +21,12 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data, error } = useSWR<ReportDataProps>(
+  const { data: result, error } = useSWR<ReportsReportApi>(
     id && `/api/reports/report?id=${id}`,
     fetcher
   );
+
+  const data = result?.report;
 
   const backLink = Array.isArray(router?.query?.from)
     ? router.query.from[0]

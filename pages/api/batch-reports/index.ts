@@ -81,7 +81,9 @@ const batchReports: NextApiHandler<BatchReportsIndexApi> = async (
         });
       } catch (error: any) {
         return response.status(INTERNAL_SERVER_ERROR.statusCode).json({
-          ...makeApiHandlerResponseFailure({ message: error.message }),
+          ...makeApiHandlerResponseFailure({
+            message: error?.message || error
+          }),
           ...defaultNullProps
         });
       }

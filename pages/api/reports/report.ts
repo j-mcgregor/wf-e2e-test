@@ -2,8 +2,11 @@
 import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
 
-import Report from '../../../lib/funcs/report';
-import mockReport from '../../../lib/mock-data/report';
+import Report, {
+  CreateReport,
+  GetExistingReport,
+  GetReportCsv
+} from '../../../lib/funcs/report';
 import mockUsers from '../../../lib/mock-data/users';
 import {
   COMPANY_404,
@@ -14,87 +17,130 @@ import {
   NO_REPORT,
   NO_REPORT_ID,
   REPORT_FETCHING_ERROR,
-  UNAUTHORISED,
   VALIDATION_ERROR
 } from '../../../lib/utils/error-codes';
-import { ApiError, ReportSnippetType } from '../../../types/global';
+import {
+  makeApiHandlerResponseFailure,
+  makeMissingArgsResponse
+} from '../../../lib/utils/http-helpers';
+import { ReportSnippetType } from '../../../types/global';
+import { HttpStatusCodes } from '../../../types/http-status-codes';
 
 import type { NextApiHandler } from 'next';
 
-export interface ReportsReportApi {}
+const {
+  FORBIDDEN,
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+  METHOD_NOT_ALLOWED,
+  UNPROCESSABLE_ENTITY
+} = HttpStatusCodes;
+
+export interface ReportsReportApi
+  extends CreateReport,
+    GetReportCsv,
+    GetExistingReport {}
 
 // Declaring function for readability with Sentry wrapper
 const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
+  const defaultNullProps = {
+    reportId: null,
+    report: null,
+    csv: null
+  };
+
   const token = await getToken({
     req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
   });
+
   // unauthenticated requests
   if (!token) {
-    return response.status(403).json({
-      error: UNAUTHORISED,
-      message: 'Unauthorised api request, please login to continue.'
-    } as ApiError);
+    return response.status(FORBIDDEN.statusCode).json({
+      ...makeApiHandlerResponseFailure({
+        message: 'Unauthorised api request, please login to continue.',
+        error: FORBIDDEN.key
+      }),
+      ...defaultNullProps
+    });
   }
 
   const isGet = request.method === 'GET';
-
   const isPost = request.method === 'POST';
 
   if (isPost) {
     const body = await request?.body;
 
+    if (!body.company_id) {
+      return makeMissingArgsResponse(
+        response,
+        NO_COMPANY_ID,
+        `No company ID provided.`,
+        defaultNullProps
+      );
+    }
+
+    if (!body.currency) {
+      return makeMissingArgsResponse(
+        response,
+        NO_CURRENCY,
+        `No currency code provided.`,
+        defaultNullProps
+      );
+    }
+
+    if (!body.iso_code) {
+      return makeMissingArgsResponse(
+        response,
+        NO_ISO_CODE,
+        `No ISO code provided.`,
+        defaultNullProps
+      );
+    }
+
     try {
-      if (!body.company_id) {
-        return response.status(500).json({
-          error: NO_COMPANY_ID,
-          message: `No company ID provided.`
-        } as ApiError);
+      const result = await Report.createReport(`${token?.accessToken}`, {
+        report: body
+      });
+
+      if (result.ok) {
+        return response.status(result.status).json({
+          ...defaultNullProps,
+          ...result,
+          reportId: result?.reportId
+        });
       }
 
-      if (!body.currency) {
-        return response.status(500).json({
-          error: NO_CURRENCY,
-          message: `No currency code provided.`
-        } as ApiError);
-      }
-
-      if (!body.iso_code) {
-        return response.status(500).json({
-          error: NO_ISO_CODE,
-          message: `No ISO code provided.`
-        } as ApiError);
-      }
-      const report = await Report.createReport(body, `${token?.accessToken}`);
-      // const tempReport = await Report.getExistingReport('fafd5ee8-8bd1-4c11-aea8-457e862bc06a', `${session?.token}`)
-
-      if (report.ok) {
-        return response
-          .status(200)
-          .json({ ok: true, reportId: report.report?.id });
-      }
-
-      // handle the 500 error when API Fails
-      if (!report.ok) {
-        if (report.status === 404) {
-          return response.status(404).json({
+      // NOT OK
+      if (result.status === 404) {
+        return response.status(NOT_FOUND.statusCode).json({
+          ...makeApiHandlerResponseFailure({
             error: COMPANY_404,
-            message: report?.details
-          } as ApiError);
-        }
-
-        if (report.status === 500) {
-          return response.status(500).json({
-            error: COMPANY_500,
-            message: report?.details
-          } as ApiError);
-        }
+            message: result?.message
+          }),
+          ...defaultNullProps
+        });
       }
+
+      if (result.status === 500) {
+        return response.status(INTERNAL_SERVER_ERROR.statusCode).json({
+          ...makeApiHandlerResponseFailure({
+            error: COMPANY_500,
+            message: result.message
+          }),
+          ...defaultNullProps
+        });
+      }
+
+      return response.status(404).json({ ...result, ...defaultNullProps });
     } catch (error) {
-      return response.status(500).json({
-        error: REPORT_FETCHING_ERROR,
-        message: `Report couldn't be generated for ${body?.company_id}`
-      } as ApiError);
+      return response.status(INTERNAL_SERVER_ERROR.statusCode).json({
+        ...makeApiHandlerResponseFailure({
+          error: REPORT_FETCHING_ERROR,
+          message: `Report couldn't be generated for ${body?.company_id}`
+        }),
+        ...defaultNullProps
+      });
     }
   }
 
@@ -103,28 +149,39 @@ const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
     const reportId = request.query.id;
 
     if (!reportId) {
-      return response.status(500).json({
-        error: NO_REPORT_ID,
-        message: 'No report ID provided, please add report id.'
-      } as ApiError);
+      return makeMissingArgsResponse(
+        response,
+        NO_REPORT_ID,
+        'No report ID provided, please add report id.',
+        defaultNullProps
+      );
     }
 
     /* ***** GET REPORT AS CSV ******* */
 
     if (request.query.export === 'csv') {
       try {
-        const res = await Report.getReportCsv(
-          `${reportId}`,
-          `${token.accessToken}`
-        );
-        if (res.ok) {
-          return response.status(200).json(res.csv);
+        const result = await Report.getReportCsv(`${token.accessToken}`, {
+          reportId: `${reportId}`
+        });
+
+        if (result.ok) {
+          return response.status(200).json({
+            ...defaultNullProps,
+            ...result,
+            csv: result.csv
+          });
         }
+
+        return response.status(404).json({ ...result, ...defaultNullProps });
       } catch (error) {
-        return response.status(422).json({
-          error: VALIDATION_ERROR,
-          message: 'Unable to process the request'
-        } as ApiError);
+        return response.status(UNPROCESSABLE_ENTITY.statusCode).json({
+          ...makeApiHandlerResponseFailure({
+            error: VALIDATION_ERROR,
+            message: 'Unable to process the request'
+          }),
+          ...defaultNullProps
+        });
       }
     } else {
       /* ***** GET REPORT FROM USER ******* */
@@ -140,33 +197,47 @@ const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
         (report: ReportSnippetType) => report.id === reportId
       );
 
-      if (token.accessToken && !report) {
-        const report = await Report.getExistingReport(
-          `${reportId}`,
-          `${token.accessToken}`
-        );
+      try {
+        if (token.accessToken && !report) {
+          const result = await Report.getExistingReport(
+            `${token.accessToken}`,
+            {
+              reportId: `${reportId}`
+            }
+          );
 
-        // console.log(report)
-        if (report.ok) {
-          return response.status(200).json(report.report);
+          if (result.ok) {
+            return response.status(200).json({
+              ...defaultNullProps,
+              ...result,
+              report: result.report
+            });
+          }
         }
+        if (!report) {
+          return response.status(NOT_FOUND.statusCode).json({
+            ...makeApiHandlerResponseFailure({
+              error: NO_REPORT,
+              message: 'No report found with that ID.'
+            }),
+            ...defaultNullProps
+          });
+        }
+      } catch (error: any) {
+        return response.status(INTERNAL_SERVER_ERROR.statusCode).json({
+          ...makeApiHandlerResponseFailure({
+            message: error?.message || error
+          }),
+          ...defaultNullProps
+        });
       }
-
-      if (!report) {
-        return response.status(404).json({
-          error: NO_REPORT,
-          message: 'No report found with that ID.'
-        } as ApiError);
-      }
-
-      const resReport = {
-        ...report,
-        ...mockReport
-      };
-
-      return response.status(200).json(resReport);
     }
   }
+
+  return response.status(METHOD_NOT_ALLOWED.statusCode).json({
+    ...makeApiHandlerResponseFailure({ message: METHOD_NOT_ALLOWED.key }),
+    ...defaultNullProps
+  });
 };
 
 export default withSentry(report);

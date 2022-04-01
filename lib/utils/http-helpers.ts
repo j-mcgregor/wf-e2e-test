@@ -1,3 +1,4 @@
+import { NextApiResponse } from 'next';
 import { HandlerReturn } from '../../types/http';
 import { HttpStatusCodes } from '../../types/http-status-codes';
 import { GENERIC_API_ERROR } from './error-codes';
@@ -21,11 +22,27 @@ export const makeApiHandlerResponseFailure = (
   status: args?.status || 500,
   message: args?.message || GENERIC_API_ERROR,
   is_error: true,
-  error: ''
+  error: '',
+  details: ''
 });
 
 export const makeJsonError = (status: number, error: any) => {
   return status === UNPROCESSABLE_ENTITY.statusCode
     ? JSON.stringify(error.detail)
     : JSON.stringify(error);
+};
+
+export const makeMissingArgsResponse = (
+  response: NextApiResponse,
+  message: string,
+  error: string,
+  defaultProps: any
+) => {
+  return response.status(500).json({
+    ...makeApiHandlerResponseFailure({
+      message,
+      error
+    }),
+    ...defaultProps
+  });
 };

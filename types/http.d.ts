@@ -32,6 +32,7 @@ export interface HandlerReturn {
   status: number;
   message: string | HandleMessageObject;
   error: string;
+  details?: string | {};
 }
 
 /**
