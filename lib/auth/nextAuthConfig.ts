@@ -87,6 +87,7 @@ const nextAuthConfig: NextAuthOptions = {
     async session({ session, token }) {
       if (token?.accessToken) {
         const req = await User.getUser(`${token.accessToken}`);
+
         // if there is no user or the user cannot be authenticated
         // then revoke the session accessToken
         // this will trigger a logout through the Layout Component

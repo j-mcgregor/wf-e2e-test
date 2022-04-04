@@ -32,16 +32,6 @@ export interface HandlerReturn {
   status: number;
   message: string;
   error: string;
-  /**
-   * @deprecated
-   * use validationError if possible
-   */
-  details?: string | {};
-  /**
-   * @desscription ValidationError type from the backend
-   * @status sent with status 422
-   */
-  validationError?: ValidationError;
 }
 
 /**

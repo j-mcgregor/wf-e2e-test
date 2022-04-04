@@ -1,5 +1,6 @@
 import { ApiHandler, HandlerReturn } from '../../types/http';
 import { ReportDataProps } from '../../types/report';
+import { makeErrorResponse } from '../utils/error-handling';
 import {
   makeApiHandlerResponseFailure,
   makeApiHandlerResponseSuccess
@@ -24,25 +25,26 @@ const getExistingReport: ApiHandler<
   GetExistingReportProps
 > = async (token: string, { reportId }) => {
   try {
-    const res = await fetch(`${process.env.WF_AP_ROUTE}/reports/${reportId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/reports/${reportId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
 
-    if (res.status === 200 && res.ok) {
-      const report = await res.json();
-
+    if (response.ok) {
+      const report = await response.json();
       return {
-        ...makeApiHandlerResponseSuccess({ status: res.status }),
+        ...makeApiHandlerResponseSuccess({ status: response.status }),
         report
       };
     }
+
     return {
-      ...makeApiHandlerResponseFailure({
-        status: res.status
-      }),
+      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
       report: null
     };
   } catch (error) {
@@ -69,7 +71,7 @@ const getReportCsv: ApiHandler<GetReportCsv, GetReportCsvProps> = async (
   { reportId }
 ) => {
   try {
-    const res = await fetch(
+    const response = await fetch(
       `${process.env.WF_AP_ROUTE}/reports/${reportId}/export/csv`,
       {
         method: 'GET',
@@ -79,18 +81,15 @@ const getReportCsv: ApiHandler<GetReportCsv, GetReportCsvProps> = async (
       }
     );
 
-    if (res.status === 200 && res.ok) {
-      const csv = await res.text();
-
+    if (response.ok) {
+      const csv = await response.text();
       return {
         ...makeApiHandlerResponseSuccess(),
         csv
       };
     }
     return {
-      ...makeApiHandlerResponseFailure({
-        status: res.status
-      }),
+      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
       csv: null
     };
   } catch (error) {
@@ -122,7 +121,7 @@ const createReport: ApiHandler<CreateReport, CreateReportProps> = async (
   { report }
 ) => {
   try {
-    const res = await fetch(`${process.env.WF_AP_ROUTE}/reports`, {
+    const response = await fetch(`${process.env.WF_AP_ROUTE}/reports`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -131,33 +130,18 @@ const createReport: ApiHandler<CreateReport, CreateReportProps> = async (
       body: JSON.stringify(report)
     });
 
-    if (res.ok) {
-      const reportId = await res.json();
+    if (response.ok) {
+      const reportId = await response.json();
       return {
         ...makeApiHandlerResponseSuccess(),
         reportId
       };
     }
 
-    try {
-      const error = await res?.json();
-
-      return {
-        ...makeApiHandlerResponseFailure({
-          details: error?.detail,
-          status: res.status
-        }),
-        reportId: null
-      };
-    } catch (error: any) {
-      return {
-        ...makeApiHandlerResponseFailure({
-          message: error.message,
-          status: res.status
-        }),
-        reportId: null
-      };
-    }
+    return {
+      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+      reportId: null
+    };
   } catch (error) {
     return { ...makeApiHandlerResponseFailure(), reportId: null };
   }
@@ -187,7 +171,7 @@ const uploadReport: ApiHandler<UploadReport, UploadReportProps> = async (
   { report }
 ) => {
   try {
-    const res = await fetch(`${process.env.WF_AP_ROUTE}/reports/upload`, {
+    const response = await fetch(`${process.env.WF_AP_ROUTE}/reports/upload`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -196,34 +180,18 @@ const uploadReport: ApiHandler<UploadReport, UploadReportProps> = async (
       body: JSON.stringify(report)
     });
 
-    if (res.ok) {
-      const report = await res.json();
-
+    if (response.ok) {
+      const reportData = await response.json();
       return {
-        ...makeApiHandlerResponseSuccess({ status: res.status }),
-        report
+        ...makeApiHandlerResponseSuccess({ status: response.status }),
+        report: reportData
       };
     }
 
-    try {
-      const error = await res?.json();
-
-      return {
-        ...makeApiHandlerResponseFailure({
-          details: error?.detail,
-          status: res.status
-        }),
-        report: null
-      };
-    } catch (error: any) {
-      return {
-        ...makeApiHandlerResponseFailure({
-          message: error.message,
-          status: res.status
-        }),
-        report: null
-      };
-    }
+    return {
+      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+      report: null
+    };
   } catch (error) {
     return { ...makeApiHandlerResponseFailure(), report: null };
   }

@@ -2,17 +2,19 @@ import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
 
 import News from '../../../lib/funcs/news';
-import newsHits from '../../../lib/mock-data/newsResponse';
 import {
   COMPANY_NAME_REQUIRED,
   INVALID_REQUEST_TYPE,
-  SEARCH_ERROR,
-  UNAUTHORISED
+  SEARCH_ERROR
 } from '../../../lib/utils/error-codes';
+import { returnUnauthorised } from '../../../lib/utils/error-handling';
 import { ApiError, ApiResType } from '../../../types/global';
 
 import type { NextApiHandler, NextApiResponse } from 'next';
 
+/**
+ * IS THIS API PAGE NEEDED?
+ */
 export interface ReportsNewsApi {}
 
 // Declaring function for readability with Sentry wrapper
@@ -24,10 +26,7 @@ const NewsApi: NextApiHandler<ReportsNewsApi> = async (request, response) => {
 
   // unauthenticated requests
   if (!token) {
-    return response.status(403).json({
-      error: UNAUTHORISED,
-      message: 'Unauthorised api request, please login to continue.'
-    } as ApiError);
+    return returnUnauthorised(response, {});
   }
   const isGet = request.method === 'GET';
 
@@ -44,14 +43,6 @@ const NewsApi: NextApiHandler<ReportsNewsApi> = async (request, response) => {
         message:
           'Please provide a company name in order to make a valid request.'
       } as ApiError);
-    }
-
-    // handle demo mode
-    if (type === 'demo') {
-      return response.status(200).json({
-        ok: true,
-        data: newsHits
-      });
     }
 
     // removed for now as it's not helping results
@@ -86,21 +77,3 @@ const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
 };
 
 export default withSentry(NewsApi);
-
-// example website ESG response
-/*
-[
-  {
-    "name": "Capital_Markets",
-    "score": 0.5
-  },
-  {
-    "name": "Information_Services",
-    "score": 0.22
-  },
-  {
-    "name": "Financial_Services",
-    "score": 0.07
-  }
-]
-*/

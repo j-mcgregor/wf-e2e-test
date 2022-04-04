@@ -1,5 +1,11 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { UserType, ReportSnippetType } from '../../types/global';
+import { ApiHandler, HandlerReturn } from '../../types/http';
+import { makeErrorResponse } from '../utils/error-handling';
+import {
+  makeApiHandlerResponseFailure,
+  makeApiHandlerResponseSuccess
+} from '../utils/http-helpers';
 
 export const XMLHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -37,44 +43,62 @@ const authenticate = async (email: string, password: string) => {
  * GET FULL USER
  * ***************************************************
  */
+export interface GetFullUser extends HandlerReturn {
+  user:
+    | (UserType & {
+        reports: GetReportsHistory[];
+        bookmarked_reports: GetUserBookmarks[];
+        batched_report_jobs: any[];
+      })
+    | null;
+}
 
-const getFullUser = async (token: string) => {
-  if (!token) {
-    return { ok: false };
-  }
+const getFullUser: ApiHandler<GetFullUser> = async token => {
+  try {
+    // run all user requests in parallel
+    const [response, userReports, userBookmarks] = await Promise.all([
+      fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
+        method: 'GET',
+        headers: {
+          ...XMLHeaders,
+          Authorization: `Bearer ${token}`
+        }
+      }),
+      getReportsHistory(token, {}),
+      User.getUserBookmarks(token, {})
+    ]);
 
-  // run all user requests in parallel
-  const [res, userReports, userBookmarks] = await Promise.all([
-    fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
-      method: 'GET',
-      headers: {
-        ...XMLHeaders,
-        Authorization: `Bearer ${token}`
-      }
-    }),
-    getReportsHistory(token),
-    User.getUserBookmarks(token)
-  ]);
+    if (response.ok) {
+      const user: UserType = await response.json();
 
-  if (res.ok) {
-    const user = await res.json();
+      const userWithReports = {
+        // structure the user correctly if missing data (preferences etc)
+        ...user,
+        // check for preferences and add defaults if missing
+        ...giveDefaults(user),
+        // add in the reports history, handle failed request
+        reports: userReports.ok ? userReports.reports : [],
+        // bookmarks
+        bookmarked_reports: userBookmarks.bookmarks || [],
+        // to add later
+        batched_report_jobs: []
+      };
 
-    const userWithReports = {
-      // structure the user correctly if missing data (preferences etc)
-      ...user,
-      // check for preferences and add defaults if missing
-      ...giveDefaults(user),
-      // add in the reports history, handle failed request
-      reports: userReports.ok ? userReports.reports : [],
-      // bookmarks
-      bookmarked_reports: userBookmarks.bookmarks || [],
-      // to add later
-      batched_report_jobs: []
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        user: userWithReports
+      };
+    }
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'USER'
+      }),
+      user: null
     };
-    return { ok: true, user: userWithReports, status: res.status };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), user: null };
   }
-
-  return { ok: false, status: res.status };
 };
 
 /**
@@ -119,7 +143,7 @@ const getUser = async (token: string) => {
   return { ok: false, status: res.status };
 };
 
-const giveDefaults = (user: any) => {
+const giveDefaults = (user: UserType) => {
   const structuredUser: any = {
     preferences: {
       communication: {
@@ -236,26 +260,47 @@ const resetPassword = async (
  * ***************************************************
  */
 
-const updateUser = async (
-  user: UserType,
-  token: string
-): Promise<{ user?: UserType; ok?: boolean; status?: number }> => {
-  const params = {
-    method: 'PUT',
-    headers: {
-      ...JSONHeaders,
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(user)
-  };
+export interface UpdateUser extends HandlerReturn {
+  user: UserType | null;
+}
 
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/users/me`, params);
+interface UpdateUserProps {
+  user: UserType;
+}
 
-  if (res.ok) {
-    const user = await res.json();
-    return { ok: true, user, status: res.status };
+const updateUser: ApiHandler<UpdateUser, UpdateUserProps> = async (
+  token: string,
+  { user }
+) => {
+  try {
+    const params = {
+      method: 'PUT',
+      headers: {
+        ...JSONHeaders,
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(user)
+    };
+
+    const response = await fetch(`${process.env.WF_AP_ROUTE}/users/me`, params);
+
+    if (response.ok) {
+      const user: UserType = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        user
+      };
+    }
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'USER'
+      }),
+      user: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), user: null };
   }
-  return { ok: false, status: res.status };
 };
 
 /**
@@ -263,13 +308,19 @@ const updateUser = async (
  * GET REPORTS HISTORY
  * ***************************************************
  */
+export interface GetReportsHistory extends HandlerReturn {
+  reports?: ReportSnippetType[] | null;
+}
 
+interface GetReportsHistoryProps {
+  limit?: number;
+  skip?: number;
+}
 // get the history of the reports run by the user
-const getReportsHistory = async (
-  token: string,
-  limit: number = 10,
-  skip: number = 0
-): Promise<{ reports?: ReportSnippetType[]; ok?: boolean; status: number }> => {
+const getReportsHistory: ApiHandler<
+  GetReportsHistory,
+  GetReportsHistoryProps
+> = async (token: string, { limit = 10, skip = 0 }) => {
   const params = {
     method: 'GET',
     headers: {
@@ -277,19 +328,32 @@ const getReportsHistory = async (
       Authorization: `Bearer ${token}`
     }
   };
-
   const limitAndSkipString = limit ? `?limit=${limit}&skip=${skip}` : '';
 
-  const res = await fetch(
-    `${process.env.WF_AP_ROUTE}/users/me/history/reports${limitAndSkipString}`,
-    params
-  );
+  try {
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/users/me/history/reports${limitAndSkipString}`,
+      params
+    );
 
-  if (res.ok) {
-    const reports = await res.json();
-    return { ok: true, reports, status: res.status };
+    if (response.ok) {
+      const reports = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        reports
+      };
+    }
+
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'USER'
+      }),
+      reports: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), reports: null };
   }
-  return { ok: false, status: res.status };
 };
 
 /**
@@ -298,35 +362,42 @@ const getReportsHistory = async (
  * ***************************************************
  */
 
-const bookmarkReport = async (
-  reportId: string,
+export interface BookmarkReport extends HandlerReturn {}
+
+interface BookmarkReportProps {
+  reportId: string;
+  method?: 'POST' | 'DELETE';
+}
+
+const bookmarkReport: ApiHandler<BookmarkReport, BookmarkReportProps> = async (
   token: string,
-  method: 'POST' | 'DELETE' = 'POST'
-): Promise<{
-  ok: boolean;
-  status: number;
-  details?: string | {};
-}> => {
-  const res = await fetch(
-    `${process.env.WF_AP_ROUTE}/users/me/bookmarks/${reportId}`,
-    {
-      method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    }
-  );
-
-  if (res.ok) {
-    return { ok: true, status: res.status };
-  }
-
+  { reportId, method = 'POST' }
+) => {
   try {
-    const error = await res?.json();
-    return { ok: false, status: res.status, details: error?.detail };
-  } catch (e: any) {
-    return { ok: false, status: res.status, details: e.message };
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/users/me/bookmarks/${reportId}`,
+      {
+        method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    if (response.ok) {
+      return {
+        ...makeApiHandlerResponseSuccess()
+      };
+    }
+
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'USER'
+      })
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure() };
   }
 };
 
@@ -336,33 +407,43 @@ const bookmarkReport = async (
  * ***************************************************
  */
 
-const getUserBookmarks = async (
+export interface GetUserBookmarks extends HandlerReturn {
+  bookmarks: ReportSnippetType[] | null;
+}
+
+const getUserBookmarks: ApiHandler<GetUserBookmarks> = async (
   token: string
-): Promise<{
-  ok: boolean;
-  status: number;
-  bookmarks?: ReportSnippetType[];
-  details?: string | {};
-}> => {
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/users/me/bookmarks`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    }
-  });
-
-  if (res.ok) {
-    const bookmarks = await res.json();
-
-    return { ok: true, bookmarks, status: res.status };
-  }
-
+) => {
   try {
-    const error = await res?.json();
-    return { ok: false, status: res.status, details: error?.detail };
-  } catch (e: any) {
-    return { ok: false, status: res.status, details: e.message };
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/users/me/bookmarks`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (response.ok) {
+      const bookmarks = await response.json();
+
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        bookmarks
+      };
+    }
+
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'USER'
+      }),
+      bookmarks: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), bookmarks: null };
   }
 };
 
