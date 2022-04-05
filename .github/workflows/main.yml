@@ -1,5 +1,9 @@
 name: Node.js CI
 
+# NOTE FOR MONDAY
+# I think the reason it may be failing is because localhost:3000
+# is hard coded, whereas it should be substituted for the preview link
+
 on:
   push:
     branches: [main]
@@ -58,6 +62,7 @@ jobs:
           node-version: 14.x
       - uses: microsoft/playwright-github-action@v1
       - run: npm install --include=dev
+      - run: echo Preview URL - ${{ needs.wait_for_vercel.outputs.preview_url }}
       - run: npm run playwright
         env:
           VERCEL_URL: ${{ needs.wait_for_vercel.outputs.preview_url }}
