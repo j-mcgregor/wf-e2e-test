@@ -15,7 +15,7 @@ const config: PlaywrightTestConfig = {
   outputDir: './playwright/test-results',
   use: {
     headless: true,
-    baseURL: 'http://localhost:3000',
+    baseURL: env.URL,
     viewport: { width: 1920, height: 1280 },
     browserName: 'chromium',
     screenshot: 'only-on-failure',
