@@ -80,16 +80,15 @@ export const convertCSVToRequestBody = (
   // BASIC INFO
   let response = {
     name: name,
-    // TODO: find & parse accounts_type
-    accounts_type: 0 // <- TODO: use dynamic info from somewhere
+    /** @deprecated */
+    accounts_type: 0
   } as BatchRequest;
-
   if (uploadType === 'BATCH_AUTO') {
     const entities = csvData?.company_id?.map(
       (id, i) =>
         ({
-          company_id: id,
-          iso_code: csvData.iso_code[Number(i)]
+          company_id: id?.trim(),
+          iso_code: csvData.iso_code[Number(i)]?.trim()
         } as Entity)
     );
 

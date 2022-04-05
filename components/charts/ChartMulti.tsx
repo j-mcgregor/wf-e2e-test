@@ -22,10 +22,8 @@ import {
   getMaxRenderValue,
   getMinRenderValue,
   getNumberLength,
-  isGraphData,
   calculateMaxDataPoint,
   calculateMinDataPoint,
-  getCompanyName,
   convertData,
   formatToolTip
 } from './graph-helpers';
@@ -54,9 +52,9 @@ const ChartMulti = ({
   showLabels
 }: ChartMultiProps) => {
   const [data, setData] = useState<FinancialGraphType[] | null>(null);
-  const [selectedGraphIndex, setSelectedGraphIndex] = useState<number | null>(
-    0
-  );
+  // const [selectedGraphIndex, setSelectedGraphIndex] = useState<number | null>(
+  //   0
+  // );
   const t = useTranslations();
 
   useEffect(() => {
@@ -67,7 +65,20 @@ const ChartMulti = ({
   const companyGraph = graphData[0];
   const benchmarkGraph = graphData[1];
 
-  const companyName = getCompanyName(companyGraph);
+  // find the largest number by digits not only largest positive number
+  const largestNumberByDigits = useMemo(() => {
+    const largestCompanyValue =
+      companyGraph &&
+      Math.max(
+        ...companyGraph.data.map((data: GraphDataType) => Math.abs(data.y))
+      );
+    const largestBenchmarkValue =
+      benchmarkGraph &&
+      Math.max(
+        ...benchmarkGraph.data?.map((data: GraphDataType) => Math.abs(data.y))
+      );
+    return Math.max(largestCompanyValue || 0, largestBenchmarkValue || 0);
+  }, [companyGraph, benchmarkGraph]);
 
   // get largest y value from all graphs
   const largestYDataPoint = useMemo(() => {
@@ -91,7 +102,9 @@ const ChartMulti = ({
     return Math.min(smallestCompanyValue || 0, smallestBenchmarkValue || 0);
   }, [companyGraph, benchmarkGraph]);
 
-  const largestNumberLength = getNumberLength(largestYDataPoint);
+  // needs to use largest number by digits because of negative values and the Math.max function
+  const largestNumberLength = getNumberLength(largestNumberByDigits);
+
   // is largest value over 99,000,000 ? should use as millions
   const useMillions = chartType === 'currency' && largestNumberLength > 8;
   //  is largest value over 1000 and less than 100,000,000 ? should use as thousands
@@ -106,13 +119,20 @@ const ChartMulti = ({
     data: convertData(companyGraph.data, useMillions, useThousands)
   };
 
-  const isBenchmarkData = isGraphData(benchmarkGraph);
-  const maxYValue = calculateMaxDataPoint(
-    largestYDataPoint,
+  // const isBenchmarkData = isGraphData(benchmarkGraph);
+
+  // handle the fact that ratios can be over 1000 and thus would be divided by 1000
+  const maxYValue =
+    chartType === 'ratio'
+      ? largestYDataPoint
+      : calculateMaxDataPoint(largestYDataPoint, largestNumberLength);
+
+  const minYValue = calculateMinDataPoint(
+    smallestYDataPoint,
     largestNumberLength
+    // header === "Net Income"
   );
 
-  const minYValue = calculateMinDataPoint(smallestYDataPoint);
   const maxRenderValue = getMaxRenderValue(disabled, chartType, maxYValue);
   // So percentages through it out
   // also if the values are 3 digits but the maximum are over 100,000,000 then you end up with descrepancies
@@ -152,6 +172,10 @@ const ChartMulti = ({
       ? t('days')
       : null;
 
+  // how to log only one graph
+  // header === 'Net Income' &&
+  //   console.log('largestNumberLength', largestNumberLength);
+
   return (
     <div
       className={`${
@@ -159,10 +183,13 @@ const ChartMulti = ({
       } shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break px-2`}
       data-testid="chart-multi-testid "
     >
-      <div className="flex justify-between items-start px-4 pt-4 text-base">
+      <div className="flex justify-between items-start px-4 pt-4 text-base print:h-12 print:mb-2">
         <div className="">
-          <h5 className="pb-2 whitespace-nowrap md:text-sm">{header}</h5>
-          <p className="opacity-70 print:opacity-100 print:text-gray-400 text-sm print:text-xs">
+          <h5 className="print:h-8 pb-2 md:whitespace-nowrap lg:whitespace-normal font-semibold md:text-sm print:text-xs">
+            {header}
+          </h5>
+
+          <p className="print:h-4 opacity-70 print:opacity-100 print:text-gray-400 text-sm print:text-xs">
             {chartTypeText || subHeader}
           </p>
         </div>
@@ -249,78 +276,8 @@ const ChartMulti = ({
           // </VictoryGroup>
         )}
       </ChartContainer>
-
-      {/* company names (were originally buttons) - removed 17-02-22  */}
-
-      {/* <div className="flex flex-col text-xxs px-1 lg:px-4 pb-4 w-full items-evenly justify-evenly text-primary">
-        <ChartButton
-          onClick={setSelectedGraphIndex}
-          selectedGraphIndex={selectedGraphIndex}
-          title={companyName}
-          graphIndex={0}
-          bg="bg-[#022D45]"
-          border="border-2 border-[#022D45]"
-        />
-        {isBenchmarkData && (
-          <ChartButton
-            onClick={setSelectedGraphIndex}
-            selectedGraphIndex={selectedGraphIndex}
-            title={benchmarkGraph.name}
-            graphIndex={1}
-            bg="bg-[#278EC8]"
-            border="border-2 border-[#278EC8]"
-          />
-        )}
-      </div> */}
     </div>
   );
 };
 
 export default ChartMulti;
-
-// Benchmark graphs have been removed - might come back - 25.01.22
-// Benchmark graph area
-/* {isBenchmarkData && (
-          <VictoryArea
-            key={`victory-area-${benchmarkGraph.name}`}
-            animate={{
-              duration: 500,
-              onLoad: { duration: 500 }
-            }}
-            data={convertedBenchmarkGraph.data}
-            interpolation="monotoneX"
-            style={{
-              data: {
-                fill: benchmarkColour,
-                fillOpacity:
-                  benchmarkIndex === selectedGraphIndex ? '0.8' : '0.2',
-                stroke: benchmarkColour,
-                strokeOpacity: 1
-              }
-            }}
-          />
-        )} */
-
-// Benchmark Scatter Points
-/* {isBenchmarkData && (
-              <VictoryScatter
-                key={`victory-scatter-${benchmarkGraph.name}`}
-                data={convertedBenchmarkGraph.data}
-                size={2}
-                y0={() => minValue * 0.8}
-                style={{
-                  data: {
-                    strokeWidth: 1,
-                    stroke: graphColors(benchmarkIndex),
-                    strokeOpacity:
-                      benchmarkIndex === selectedGraphIndex ? '1' : '0.7',
-                    fill:
-                      benchmarkIndex !== selectedGraphIndex
-                        ? 'white'
-                        : graphColors(benchmarkIndex),
-                    fillOpacity:
-                      benchmarkIndex === selectedGraphIndex ? '1' : '0'
-                  }
-                }}
-              />
-            )} */

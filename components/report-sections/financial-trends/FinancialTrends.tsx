@@ -41,7 +41,7 @@ const FinancialTrends = ({
   );
 
   // charts split into arrays of 6 for print layout
-  const filteredCharts = renderArrayForPrint(chartsToRender, 6);
+  const filteredCharts = renderArrayForPrint(chartsToRender, 9);
 
   // find currency symbol from currency code
   const currencySymbol = countryCodes.find(
@@ -65,7 +65,7 @@ const FinancialTrends = ({
                     currencySymbol={currencySymbol}
                     // render graph as disabled when no data
                     disabled={chart.data[0].data.every(
-                      (data: any) => data.y === 0
+                      (data: any) => !data.y && data.y !== 0
                     )}
                     key={chart.header}
                     header={`${t(chart.header)}`}

@@ -16,8 +16,14 @@ import * as Sentry from '@sentry/react';
 import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import useLocalStorage from './useLocalStorage';
 
 const useMainNavItems = () => {
+  const [, setLastPageVisited] = useLocalStorage<string>(
+    'wf_last_page_visited',
+    ''
+  );
+
   const t = useTranslations();
   return {
     primaryNavigation: [
@@ -57,6 +63,7 @@ const useMainNavItems = () => {
         name: `${t('logout')}`,
         onClick: () => {
           // clear sentry user before logout
+          setLastPageVisited('');
           Sentry.configureScope(scope => scope.setUser(null));
           return signOut({ callbackUrl: `${window.location.origin}/login` });
         },

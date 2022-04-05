@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+/* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
@@ -6,7 +7,7 @@ import { getToken } from 'next-auth/jwt';
 import Report, {
   CreateReport,
   GetExistingReport,
-  GetReportCsv
+  GetReportCsvShort
 } from '../../../lib/funcs/report';
 import {
   NO_COMPANY_ID,
@@ -34,7 +35,7 @@ const { INTERNAL_SERVER_ERROR, UNPROCESSABLE_ENTITY, METHOD_NOT_ALLOWED } =
 
 export interface ReportsReportApi
   extends CreateReport,
-    GetReportCsv,
+    GetReportCsvShort,
     GetExistingReport {}
 
 // Declaring function for readability with Sentry wrapper
@@ -123,9 +124,9 @@ const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
 
     /* ***** GET REPORT AS CSV ******* */
 
-    if (request.query.export === 'csv') {
+    if (request?.query?.export === 'csv') {
       try {
-        const result = await Report.getReportCsv(`${token.accessToken}`, {
+        const result = await Report.getReportShortCsv(`${token.accessToken}`, {
           reportId: `${reportId}`
         });
 
@@ -133,6 +134,64 @@ const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
           ...defaultNullProps,
           ...result
         });
+      } catch (error) {
+        return response.status(UNPROCESSABLE_ENTITY).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.REPORT[422]
+          }),
+          ...defaultNullProps
+        });
+      }
+    } else if (request?.query?.export === 'csv-full') {
+      try {
+        const result = await Report.getReportFullCsv(`${token.accessToken}`, {
+          reportId: `${reportId}`
+        });
+        if (result.ok) {
+          return response.status(200).json({
+            ...defaultNullProps,
+            ...result
+          });
+        }
+      } catch (error) {
+        return response.status(UNPROCESSABLE_ENTITY).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.REPORT[422]
+          }),
+          ...defaultNullProps
+        });
+      }
+    } else if (request?.query?.export === 'pdf') {
+      try {
+        const fetchRes = await fetch(
+          `${process.env.WF_AP_ROUTE}/reports/${reportId}/export/pdf`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token.accessToken}`
+            }
+          }
+        );
+
+        const blob = await fetchRes.blob();
+        const arrayBuffer = await blob.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        if (fetchRes.status === 200 && fetchRes.ok) {
+          const filename: any = fetchRes.headers.get('content-disposition');
+          const contentType: any = fetchRes.headers.get('content-type');
+          response.setHeader('content-disposition', filename);
+          response.setHeader('content-type', contentType);
+          response.write(buffer, 'binary');
+          response.end();
+        } else {
+          return response.status(UNPROCESSABLE_ENTITY).json({
+            ...makeApiHandlerResponseFailure({
+              message: errorsBySourceType.REPORT[422]
+            }),
+            ...defaultNullProps
+          });
+        }
       } catch (error) {
         return response.status(UNPROCESSABLE_ENTITY).json({
           ...makeApiHandlerResponseFailure({

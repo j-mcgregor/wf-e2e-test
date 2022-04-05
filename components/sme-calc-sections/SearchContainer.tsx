@@ -140,6 +140,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
       iso_code: selectedCountry?.optionValue,
       company_id: selectedCompany?.company_number || regSearchValue,
       currency: selectedCurrency?.code,
+      /** @deprecated */
       accounts_type: 0
     };
 
@@ -193,12 +194,6 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
 
   return (
     <div className=" text-sm my">
-      <div className="py-4">
-        <p className="text-3xl font-semibold py-2">{t('sme_calculator')}</p>
-        <p className="max-w-xl leading-loose">
-          {t('access_our_powerful_credit_risk_assessment')}
-        </p>
-      </div>
       <div
         className={`${
           disabled && 'opacity-20 pointer-events-none'

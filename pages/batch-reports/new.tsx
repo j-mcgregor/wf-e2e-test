@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { createRef, useEffect, useState } from 'react';
 import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
+import * as Sentry from '@sentry/nextjs';
 
 import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
@@ -96,6 +97,7 @@ const CreateBatchReport: NextPage = () => {
           error: BATCH_REPORT_FETCHING_ERROR,
           message: 'Could not make post request to batch endpoint.'
         });
+        Sentry.captureException({ error: res.error });
         setComplete(false);
         setLoading(false);
         setProcessing(false);
@@ -105,6 +107,7 @@ const CreateBatchReport: NextPage = () => {
         error: BATCH_REPORT_FETCHING_ERROR,
         message: 'Could not make post request to batch endpoint.'
       });
+      Sentry.captureException(err);
       setComplete(false);
       setLoading(false);
       setProcessing(false);
@@ -147,7 +150,7 @@ const CreateBatchReport: NextPage = () => {
 
         <h1 className="text-3xl font-semibold my-4">{t('batch_reports')}</h1>
 
-        <p className="text-sm my-4">
+        <p className="text-sm my-4 max-w-2xl">
           {t('utilise_our_powerful_automated_reports_at_scale')}
         </p>
 
@@ -218,7 +221,7 @@ const CreateBatchReport: NextPage = () => {
             iconColor="bg-highlight bg-opacity-50"
             header={t('batch_ads_template')}
             description={t('batch_ads_template_desc')}
-            linkTo="/download-templates/wf-csv-template.csv"
+            linkTo="/download-templates/wf-ads-template.csv"
           />
           <LinkCard
             className="max-w-xs"
@@ -228,22 +231,21 @@ const CreateBatchReport: NextPage = () => {
             description={t('batch_mdi_template_desc')}
             linkTo="/download-templates/wf-mdi-template.csv"
           />
-          <LinkCard
+          {/* <LinkCard
             className="max-w-xs"
             icon={<CloudDownloadIcon className="h-8 w-8" />}
             iconColor="bg-highlight bg-opacity-50"
             header={t('batch_mdi_example_template')}
             description={t('batch_mdi_example_template_desc')}
             linkTo="/download-templates/wf-mdi-example-template.csv"
-          />
+          /> */}
           <LinkCard
             className="max-w-xs"
             icon={<CloudDownloadIcon className="h-8 w-8" />}
-            iconColor="bg-highlight bg-opacity-50"
-            disabled={true}
+            iconColor="bg-highlight-3 bg-opacity-50"
             header={t('batch_mdi_excel_template')}
             description={t('batch_mdi_excel_template_desc')}
-            linkTo="/download-templates/wf-csv-example-template.csv"
+            linkTo="/download-templates/Sunrise_Client_Input_Sheet_v1.00.xlsm"
           />
         </div>
       </div>

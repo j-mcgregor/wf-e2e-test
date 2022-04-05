@@ -39,7 +39,7 @@ describe('SummaryMap', () => {
           country={'GB'}
           emails={['example@example.com']}
           phoneNumbers={['+4476512349']}
-          websites={['www.example.com']}
+          websites={'www.example.com'}
         />,
         {},
         allMessages

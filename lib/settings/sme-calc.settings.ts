@@ -18,16 +18,15 @@ export const templateText = [
     templateLink: '/download-templates/wf-mdi-template.csv',
     backgroundColor: 'bg-highlight bg-opacity-50'
   },
-  {
-    title: 'full_template_example',
-    templateLink: '/download-templates/wf-mdi-example-template.csv',
-    backgroundColor: 'bg-highlight bg-opacity-50'
-  },
+  // {
+  //   title: 'full_template_example',
+  //   templateLink: '/download-templates/wf-mdi-example-template.csv',
+  //   backgroundColor: 'bg-highlight bg-opacity-50'
+  // },
   {
     title: 'excel_full_template',
-    templateLink: '/download-templates/WF-Manual-Upload-Template.xlsx',
-    backgroundColor: 'bg-highlight-3 bg-opacity-50',
-    disabled: true
+    templateLink: '/download-templates/Sunrise_Client_Input_Sheet_v1.00.xlsm',
+    backgroundColor: 'bg-highlight-3 bg-opacity-50'
   }
 ];
 

@@ -15,10 +15,12 @@ type NewsDataType = {
 
 const NewsFeed = ({
   items,
-  companyName
+  companyName,
+  forPrint
 }: {
   items: NewsDataType[];
   companyName: string;
+  forPrint?: boolean;
 }) => {
   const newsHitSections: NewsDataType[][] =
     items &&
@@ -56,6 +58,7 @@ const NewsFeed = ({
                 {news.map((newsItem: NewsDataType, i: number) => {
                   return (
                     <NewsItem
+                      forPrint={forPrint}
                       key={i}
                       publication={newsItem?.source?.domain}
                       title={newsItem?.title}

@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import classNames from 'classnames';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 import { RiskLevels } from '../../types/report';
@@ -9,13 +10,17 @@ interface CardWithTabProps {
   riskLevel: RiskLevels;
   // may need to be React.ReactNode due to some boldwords
   text: any;
+  disabled?: boolean;
 }
 
 export const CardWithTab = ({
   riskTitle,
   riskLevel,
-  text
+  text,
+  disabled = true
 }: CardWithTabProps) => {
+  const t = useTranslations();
+
   const riskMap: Record<RiskLevels, Record<string, string>> = {
     high: {
       tab: 'bg-red-300 border-2 border-b-0 border-red-400',
@@ -31,25 +36,31 @@ export const CardWithTab = ({
     }
   };
 
+  const isDisabled = disabled && !riskLevel;
+
   return (
-    <div className="flex flex-col w-full">
+    <div className={`flex flex-col w-full ${disabled ? 'opacity-30' : ''}`}>
       {/* header */}
       <div className="flex flex-row justify-between items-center">
         <div className="font-bold text-lg">{riskTitle}</div>
         <h5
           className={classNames(
             'font-bold uppercase w-28 py-1 text-center',
-            riskMap[riskLevel].tab
+            !isDisabled ? riskMap?.[riskLevel]?.tab : 'bg-gray-200'
           )}
         >
-          {riskLevel}
+          {!isDisabled ? riskLevel : t('na')}
         </h5>
       </div>
       {/* body */}
       <p
-        className={classNames('border-2 p-2 text-sm', riskMap[riskLevel].body)}
+        className={classNames(
+          'border-2 text-sm',
+          !isDisabled ? riskMap?.[riskLevel]?.body : 'bg-gray-200',
+          disabled ? 'p-6' : 'p-2'
+        )}
       >
-        {text}
+        {!disabled && text}
       </p>
     </div>
   );

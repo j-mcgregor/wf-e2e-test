@@ -26,7 +26,12 @@ export async function middleware(req: NextRequest, _res: NextResponse) {
   });
 
   // If no token then redirect back to login
-  if (!token) return NextResponse.redirect(url);
+  if (!token && req?.page?.name) return NextResponse.redirect(url);
+
+  // change to rewrite for now to catch all routes
+  // issues with the rewrite on vercel
+  // see this issue https://github.com/vercel/next.js/issues/33044
+  // if (!token) return NextResponse.rewrite(url);
 
   // If token i.e. user authenticated, continue.
   return NextResponse.next();

@@ -54,7 +54,7 @@ const getExistingReport: ApiHandler<
 
 /**
  * ***************************************************
- * GET REPORT CSV
+ * GET CSV REPORT SHORT
  * ***************************************************
  */
 
@@ -66,7 +66,7 @@ export interface GetReportCsvProps {
   reportId: string;
 }
 
-const getReportCsv: ApiHandler<GetReportCsv, GetReportCsvProps> = async (
+const getReportShortCsv: ApiHandler<GetReportCsv, GetReportCsvProps> = async (
   token: string,
   { reportId }
 ) => {
@@ -99,6 +99,38 @@ const getReportCsv: ApiHandler<GetReportCsv, GetReportCsvProps> = async (
 
 /**
  * ***************************************************
+ * GET REPORT FULL
+ * ***************************************************
+ */
+
+const getReportFullCsv = async (
+  reportId: string,
+  token: string
+): Promise<{ ok: boolean; csv?: string; status: number }> => {
+  try {
+    const res = await fetch(
+      `${process.env.WF_AP_ROUTE}/reports/${reportId}/export/full`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    if (res.status === 200 && res.ok) {
+      const csv = await res.text();
+
+      return { ok: true, csv, status: res.status };
+    }
+    return { ok: false, status: res.status };
+  } catch (error) {
+    return { ok: false, status: 422 };
+  }
+};
+
+/**
+ * ***************************************************
  * CREATE REPORT
  * ***************************************************
  */
@@ -112,6 +144,7 @@ export interface CreateReportProps {
     iso_code: string;
     company_id: string;
     currency: string;
+    /** @deprecated */
     accounts_type: number;
   };
 }
@@ -201,7 +234,8 @@ const Report = {
   getExistingReport,
   createReport,
   uploadReport,
-  getReportCsv
+  getReportShortCsv,
+  getReportFullCsv
 };
 
 export default Report;

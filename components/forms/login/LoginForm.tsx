@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import useLocalStorage from '../../../hooks/useLocalStorage';
+import useUserHomePageRedirect from '../../../hooks/useUserHomePageRedirect';
 import {
   EMAIL_REQUIRED,
   INCORRECT_DETAILS,
@@ -37,6 +38,7 @@ const LoginForm = () => {
   const [, setActiveUser] = useLocalStorage<string | null>('user', null);
   const [authError, setAuthError] = useState(false);
   const [userEmail, setUserEmail] = useLocalStorage('wf_user_email', '');
+  const [homePage] = useLocalStorage<string>('wf_home_page', '');
 
   // handle the remember functions
   React.useEffect(() => {
@@ -44,6 +46,9 @@ const LoginForm = () => {
     userEmail && setValue('remember', true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userEmail]);
+
+  // set the user redirect preferences
+  const homepageRedirect = useUserHomePageRedirect(homePage);
 
   // only runs if form is valid
   const onSubmit = async (data: FormValues) => {
@@ -65,7 +70,7 @@ const LoginForm = () => {
 
     if (authenticated?.ok) {
       data.remember && setActiveUser(data.email);
-      return router.push('/');
+      router.push(`${homepageRedirect}`);
     }
     return setAuthError(true);
   };

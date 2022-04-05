@@ -8,15 +8,24 @@ interface RiskOutlookProps {
   hintBody: string;
   country?: string;
   riskOutlookData?: RiskOutlookData;
+  hasLegalEvents: boolean;
 }
 
 const RiskOutlook = ({
   hintTitle,
   hintBody,
   country,
-  riskOutlookData
+  riskOutlookData,
+  hasLegalEvents
 }: RiskOutlookProps) => {
   const t = useTranslations();
+
+  const judgements =
+    `${riskOutlookData?.governance?.judgements_12_months}` || t('na');
+  const paymentRemarks =
+    `${riskOutlookData?.governance?.payment_remarks_12_months}` || t('na');
+  const region = riskOutlookData?.benchmark?.region;
+  const sector = riskOutlookData?.benchmark?.sector;
 
   return (
     <div className="flex flex-col w-full">
@@ -35,7 +44,7 @@ const RiskOutlook = ({
               : t('leverage_negative')}
           </li>
           <li className="py-2 text-sm lg:text-sm">
-            {riskOutlookData?.liquidity === 'positive'
+            {riskOutlookData?.liquidity === "'positive"
               ? t('liquidity_positive')
               : t('liquidity_negative')}
           </li>
@@ -44,20 +53,23 @@ const RiskOutlook = ({
               ? t('profitability_positive')
               : t('profitability_negative')}
           </li>
-          <li className="py-2 text-sm lg:text-sm">
-            {t('governance_template', {
-              judgements: riskOutlookData?.governance?.judgements_12_months,
-              paymentRemarks:
-                riskOutlookData?.governance?.payment_remarks_12_months
-            })}
-          </li>
-          <li className="py-2 text-sm lg:text-sm">
-            {t('benchmark_template', {
-              region: riskOutlookData?.benchmark?.region,
-              sector: riskOutlookData?.benchmark?.sector,
-              country: country
-            })}
-          </li>
+          {hasLegalEvents && judgements && paymentRemarks && (
+            <li className="py-2 text-sm lg:text-sm">
+              {t('governance_template', {
+                judgements,
+                paymentRemarks
+              })}
+            </li>
+          )}
+          {region && sector && country && (
+            <li className="py-2 text-sm lg:text-sm">
+              {t('benchmark_template', {
+                region,
+                sector,
+                country
+              })}
+            </li>
+          )}
         </ul>
       </div>
     </div>

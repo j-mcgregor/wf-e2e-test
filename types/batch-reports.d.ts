@@ -38,11 +38,15 @@ export interface GetBatchSummary extends BatchReportResponse {
   summaries: BatchSummary[];
 }
 
+/**
+ * Request body shape
+ */
 export interface BatchReport<T> {
   name: string;
   currency: string;
-  accounts_type: number;
   entities: T[];
+  /** @deprecated */
+  accounts_type: number;
 }
 
 /**
