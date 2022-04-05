@@ -5,6 +5,16 @@ import path from 'path';
 // NECESSARY FOR TO LOAD ENV'S WITHIN THE PLAYWRIGHT TESTS
 dotenv.config({ path: path.resolve(__dirname, '.env.development') });
 
+// eslint-disable-next-line no-console
+console.log('config', {
+  NODE_ENV: process.env.NODE_ENV,
+  VERCEL_ENV: process.env.VERCEL_ENV,
+  VERCEL_URL: process.env.VERCEL_URL,
+  NEXT_PUBLIC_VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV,
+  NEXT_PUBLIC_VERCEL_URL: process.env.NEXT_PUBLIC_VERCEL_URL,
+  URL
+});
+
 const config: PlaywrightTestConfig = {
   testDir: './playwright', // location of tests
   // globalSetup: require.resolve('./playwright/global-setup'),
