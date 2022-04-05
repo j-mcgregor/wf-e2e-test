@@ -58,18 +58,18 @@ const getExistingReport: ApiHandler<
  * ***************************************************
  */
 
-export interface GetReportCsv extends HandlerReturn {
+export interface GetReportCsvShort extends HandlerReturn {
   csv: string | null;
 }
 
-export interface GetReportCsvProps {
+export interface GetReportCsvShortProps {
   reportId: string;
 }
 
-const getReportShortCsv: ApiHandler<GetReportCsv, GetReportCsvProps> = async (
-  token: string,
-  { reportId }
-) => {
+const getReportShortCsv: ApiHandler<
+  GetReportCsvShort,
+  GetReportCsvShortProps
+> = async (token: string, { reportId }) => {
   try {
     const response = await fetch(
       `${process.env.WF_AP_ROUTE}/reports/${reportId}/export/csv`,
@@ -99,16 +99,23 @@ const getReportShortCsv: ApiHandler<GetReportCsv, GetReportCsvProps> = async (
 
 /**
  * ***************************************************
- * GET REPORT FULL
+ * GET CSV REPORT FULL
  * ***************************************************
  */
 
-const getReportFullCsv = async (
-  reportId: string,
-  token: string
-): Promise<{ ok: boolean; csv?: string; status: number }> => {
+export interface GetReportCsvFull extends HandlerReturn {
+  csv: string | null;
+}
+
+export interface GetReportCsvFullProps {
+  reportId: string;
+}
+const getReportFullCsv: ApiHandler<
+  GetReportCsvFull,
+  GetReportCsvFullProps
+> = async (token: string, { reportId }) => {
   try {
-    const res = await fetch(
+    const response = await fetch(
       `${process.env.WF_AP_ROUTE}/reports/${reportId}/export/full`,
       {
         method: 'GET',
@@ -118,14 +125,19 @@ const getReportFullCsv = async (
       }
     );
 
-    if (res.status === 200 && res.ok) {
-      const csv = await res.text();
-
-      return { ok: true, csv, status: res.status };
+    if (response.ok) {
+      const csv = await response.text();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        csv
+      };
     }
-    return { ok: false, status: res.status };
+    return {
+      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+      csv: null
+    };
   } catch (error) {
-    return { ok: false, status: 422 };
+    return { ...makeApiHandlerResponseFailure(), csv: null };
   }
 };
 
@@ -182,12 +194,12 @@ const createReport: ApiHandler<CreateReport, CreateReportProps> = async (
 
 /**
  * ***************************************************
- * CREATE REPORT
+ * UPLOAD REPORT
  * ***************************************************
  */
 
 export interface UploadReport extends HandlerReturn {
-  report: ReportDataProps | null;
+  reportId: string | null;
 }
 
 export interface UploadReportProps {
@@ -214,19 +226,19 @@ const uploadReport: ApiHandler<UploadReport, UploadReportProps> = async (
     });
 
     if (response.ok) {
-      const reportData = await response.json();
+      const report = await response.json();
       return {
         ...makeApiHandlerResponseSuccess({ status: response.status }),
-        report: reportData
+        reportId: report.id
       };
     }
 
     return {
       ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
-      report: null
+      reportId: null
     };
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), report: null };
+    return { ...makeApiHandlerResponseFailure(), reportId: null };
   }
 };
 

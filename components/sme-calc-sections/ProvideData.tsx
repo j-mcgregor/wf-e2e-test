@@ -9,13 +9,14 @@ import { useCSV } from '../../hooks/useCSV';
 import { useCsvValidators } from '../../hooks/useCsvValidators';
 import { manualUploadValidators } from '../../lib/settings/report-validators';
 import { templateText } from '../../lib/settings/sme-calc.settings';
-import { NO_REPORT_ID } from '../../lib/utils/error-codes';
+import { NO_REPORT_ID, REPORT_500 } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
 import { makeUploadReportReqBody } from '../../lib/utils/report-helpers';
 import LinkCard from '../cards/LinkCard';
 import UploadNewData from '../uploads/UploadNewData';
 
 import type { SubmitReportType } from '../../types/report';
+import { ReportsUploadApi } from '../../pages/api/reports/upload';
 
 const ProvideData = () => {
   const [fileSelected, setFileSelected] = useState<File | null>(null);
@@ -36,25 +37,30 @@ const ProvideData = () => {
     const params = makeUploadReportReqBody(csvData, csvValues);
 
     try {
-      const res = await fetcher('/api/reports/upload', 'POST', params);
-      if (res?.error) {
+      const result: ReportsUploadApi = await fetcher(
+        '/api/reports/upload',
+        'POST',
+        params
+      );
+
+      if (result?.error) {
         Sentry.captureException({
-          error: res.error,
-          message: res.message
+          error: result.error,
+          message: result.message
         });
-        setError({ error: res.error, message: res.message });
+        setError({ error: REPORT_500, message: result.message });
       }
 
-      if (!res?.reportId) {
+      if (!result?.reportId) {
         Sentry.captureException({
           error: NO_REPORT_ID,
-          message: res.message
+          message: result.message
         });
-        setError({ error: res.error, message: res.message });
+        setError({ error: NO_REPORT_ID, message: result.message });
       }
 
-      if (res?.reportId) {
-        return router.push(`/report/${res.reportId}`);
+      if (result?.reportId) {
+        return router.push(`/report/${result.reportId}`);
       }
     } catch (err) {
       Sentry.captureException(err);

@@ -48,7 +48,7 @@ const report: NextApiHandler<ReportsUploadApi> = async (request, response) => {
           ...makeApiHandlerResponseFailure({
             message: errorsBySourceType.REPORT[INTERNAL_SERVER_ERROR]
           }),
-          report: null
+          reportId: null
         });
       }
     default:
@@ -56,7 +56,7 @@ const report: NextApiHandler<ReportsUploadApi> = async (request, response) => {
         ...makeApiHandlerResponseFailure({
           message: errorsBySourceType.GENERAL[METHOD_NOT_ALLOWED]
         }),
-        report: null
+        reportId: null
       });
   }
 };

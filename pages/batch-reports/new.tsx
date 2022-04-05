@@ -77,27 +77,24 @@ const CreateBatchReport: NextPage = () => {
     try {
       // POST '/api/batch-reports' => BatchReportsIndexApi (auto)
       // POST '/api/batch-reports/upload' => BatchReportsManualApi (manual)
-      const res: BatchReportsIndexApi | BatchReportsManualApi = await fetcher(
-        isAutoOrManual.apiUrl,
-        'POST',
-        reqData
-      );
+      const result: BatchReportsIndexApi | BatchReportsManualApi =
+        await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
 
-      if (res.ok) {
-        setResults({ id: res.batchReportId ?? '' });
+      if (result.ok) {
+        setResults({ id: result.batchReportId ?? '' });
       }
-      if (res.batchReportId) {
+      if (result.batchReportId) {
         // fetch the new batchreports
         mutate<BatchReportsIndexApi>('/api/batch-reports');
         // push to batch-reports where in progress reports will show
         return router.push(`/batch-reports`);
       }
-      if (!res.ok) {
+      if (!result.ok) {
         setError({
           error: BATCH_REPORT_FETCHING_ERROR,
           message: 'Could not make post request to batch endpoint.'
         });
-        Sentry.captureException({ error: res.error });
+        Sentry.captureException({ error: result.error });
         setComplete(false);
         setLoading(false);
         setProcessing(false);

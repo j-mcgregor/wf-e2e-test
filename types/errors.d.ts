@@ -3,7 +3,6 @@ export type ErrorArray = ErrorType[];
 
 export type ErrorCodeKeys =
   // REPORT
-  | 'BATCH_REPORT_FETCHING_ERROR'
   | 'NO_COMPANY_ID'
   | 'NO_CURRENCY'
   | 'NO_ISO_CODE'
@@ -17,6 +16,7 @@ export type ErrorCodeKeys =
   | 'REPORT_500'
   | 'REPORT_503'
   // BTCH_REPORT
+  | 'BATCH_REPORT_FETCHING_ERROR'
   | 'NO_BATCH_REPORT_FOUND'
   | 'NO_BATCH_REPORT_ID'
   | 'NO_BATCH_REPORT'
