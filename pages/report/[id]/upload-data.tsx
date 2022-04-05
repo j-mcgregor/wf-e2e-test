@@ -44,16 +44,15 @@ const UploadData = () => {
     if (!id) return null;
 
     try {
-      const csv = await fetcher(
+      const response = await fetcher(
         `/api/reports/report?id=${id}&export=csv`,
         'GET',
         null,
-        {},
-        'csv'
+        {}
       );
 
       downloadFile({
-        data: csv,
+        data: response.csv,
         // eg report-id.csv
         fileName: `report-${id}.csv`,
         fileType: 'text/csv'

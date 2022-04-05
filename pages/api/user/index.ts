@@ -2,28 +2,18 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 import { withSentry } from '@sentry/nextjs';
+import { getToken } from 'next-auth/jwt';
 
 import User, { GetFullUser, UpdateUser } from '../../../lib/funcs/user';
-import {
-  GENERIC_API_ERROR,
-  SIGNED_OUT,
-  UNAUTHORISED,
-  USER_404,
-  USER_422,
-  USER_500,
-  USER_NOT_AUTHORISED
-} from '../../../lib/utils/error-codes';
-import { ApiError, UserType } from '../../../types/global';
-
-import type { NextApiHandler, NextApiResponse } from 'next';
-import { getToken } from 'next-auth/jwt';
 import {
   errorsBySourceType,
   returnUnauthorised
 } from '../../../lib/utils/error-handling';
 import { makeApiHandlerResponseFailure } from '../../../lib/utils/http-helpers';
+import { UserType } from '../../../types/global';
 import { StatusCodeConstants } from '../../../types/http-status-codes';
 
+import type { NextApiHandler, NextApiResponse } from 'next';
 const { INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
 // @ts-ignore - both handlers return type User but are slightly different
@@ -48,8 +38,6 @@ const userIndexApi: NextApiHandler<UserIndexApi> = async (
     case 'GET':
       try {
         const result = await User.getFullUser(`${token?.accessToken}`, {});
-
-        console.log('result', result);
 
         return response.status(result.status).json(result);
       } catch (error) {

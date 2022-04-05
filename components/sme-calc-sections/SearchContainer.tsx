@@ -12,6 +12,7 @@ import {
   validCountryCodes
 } from '../../lib/settings/sme-calc.settings';
 import fetcher from '../../lib/utils/fetcher';
+import { ReportsReportApi } from '../../pages/api/reports/report';
 import { CompanyType } from '../../types/global';
 import Button from '../elements/Button';
 import ErrorMessage from '../elements/ErrorMessage';
@@ -153,7 +154,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     };
 
     try {
-      const createReportRes = await fetcher(
+      const createReportRes: ReportsReportApi = await fetcher(
         '/api/reports/report',
         'POST',
         params
@@ -178,7 +179,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         });
 
         setError({
-          error: createReportRes.error,
+          error: createReportRes.is_error,
           message: createReportRes.message
         });
         setLoading(false);

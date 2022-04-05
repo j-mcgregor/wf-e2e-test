@@ -1,4 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
+import { User as AuthUser } from 'next-auth';
 import { UserType, ReportSnippetType } from '../../types/global';
 import { ApiHandler, HandlerReturn } from '../../types/http';
 import { makeErrorResponse } from '../utils/error-handling';
@@ -21,21 +22,27 @@ const JSONHeaders = {
  */
 
 const authenticate = async (email: string, password: string) => {
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/login/access-token`, {
-    method: 'POST',
-    headers: {
-      ...XMLHeaders
-    },
-    body: new URLSearchParams({
-      username: email,
-      password: password
-    })
-  });
-  if (res.ok) {
-    const json = await res.json();
-    return { token: json.access_token };
+  try {
+    const res = await fetch(`${process.env.WF_AP_ROUTE}/login/access-token`, {
+      method: 'POST',
+      headers: {
+        ...XMLHeaders
+      },
+      body: new URLSearchParams({
+        username: email,
+        password: password
+      })
+    });
+    if (res.ok) {
+      const json = await res.json();
+      return { token: json.access_token };
+    }
+    return null;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('Authentication Error =>', error);
+    return null;
   }
-  return null;
 };
 
 /**
@@ -107,40 +114,53 @@ const getFullUser: ApiHandler<GetFullUser> = async token => {
  * ***************************************************
  */
 
-const getUser = async (token: string) => {
+export interface GetUser extends HandlerReturn {
+  user: AuthUser | null;
+}
+
+const getUser: ApiHandler<GetUser> = async (token: string) => {
   if (!token) {
-    return { ok: false };
-  }
-
-  // run all user requests in parallel
-  const [res] = await Promise.all([
-    fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
-      method: 'GET',
-      headers: {
-        ...XMLHeaders,
-        Authorization: `Bearer ${token}`
-      }
-    })
-  ]);
-
-  if (res.ok) {
-    const user = await res.json();
-
-    const structuredUser = {
-      // structure the user correctly if missing data (preferences etc)
-      ...user,
-      // check for preferences and add defaults if missing
-      ...giveDefaults(user)
-      // add in the reports history, handle failed request
-      // reports: userReports.ok ? userReports.reports : [],
-      // bookmarks
-      // bookmarked_reports: userBookmarks.bookmarks || [],
-      // to add later
-      // batched_report_jobs: []
+    return {
+      ...makeApiHandlerResponseFailure({ message: 'Missing token' }),
+      user: null
     };
-    return { ok: true, user: structuredUser, status: res.status };
   }
-  return { ok: false, status: res.status };
+
+  try {
+    // run all user requests in parallel
+    const [response] = await Promise.all([
+      fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
+        method: 'GET',
+        headers: {
+          ...XMLHeaders,
+          Authorization: `Bearer ${token}`
+        }
+      })
+    ]);
+
+    if (response.ok) {
+      const user: UserType = await response.json();
+      const structuredUser = {
+        // structure the user correctly if missing data (preferences etc)
+        ...user,
+        // check for preferences and add defaults if missing
+        ...giveDefaults(user)
+      };
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        user: structuredUser
+      };
+    }
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'USER'
+      }),
+      user: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), user: null };
+  }
 };
 
 const giveDefaults = (user: UserType) => {

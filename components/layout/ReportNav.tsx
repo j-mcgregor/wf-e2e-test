@@ -49,23 +49,21 @@ const ReportNav = ({
     if (!id) return null;
 
     try {
-      const csv = await fetcher(
+      const response = await fetcher(
         `/api/reports/report?id=${id}&export=csv`,
         'GET',
         null,
-        {},
-        'csv'
+        {}
       );
 
       const fileName = `report-${id}.csv`;
 
       downloadFile({
-        data: csv,
+        data: response.csv,
         // eg report-companyName.csv
         fileName: fileName,
         fileType: 'text/csv'
       });
-      // console.log(csv);
     } catch (error) {
       // TODO remove console.log
       // eslint-disable-next-line no-console

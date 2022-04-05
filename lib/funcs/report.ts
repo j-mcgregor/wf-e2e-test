@@ -131,10 +131,10 @@ const createReport: ApiHandler<CreateReport, CreateReportProps> = async (
     });
 
     if (response.ok) {
-      const reportId = await response.json();
+      const report = await response.json();
       return {
         ...makeApiHandlerResponseSuccess(),
-        reportId
+        reportId: report.id
       };
     }
 
