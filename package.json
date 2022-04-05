@@ -15,7 +15,7 @@
     "clean": "rm -rf node_modules coverage .next yarn.lock",
     "commit": "git-cz",
     "prepare": "husky install && next telemetry disable",
-    "playwright": "playwright test",
+    "playwright": "NODE_ENV=test playwright test",
     "playwright:debug": "PWDEBUG=1 playwright test"
   },
   "dependencies": {
