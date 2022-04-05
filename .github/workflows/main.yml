@@ -1,9 +1,5 @@
 name: Node.js CI
 
-# NOTE FOR MONDAY
-# I think the reason it may be failing is because localhost:3000
-# is hard coded, whereas it should be substituted for the preview link
-
 on:
   push:
     branches: [main]
