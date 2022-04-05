@@ -7,6 +7,8 @@ import env from './config';
 dotenv.config({ path: path.resolve(__dirname, '.env.development') });
 
 // eslint-disable-next-line no-console
+console.log(process.env.NODE_ENV);
+// eslint-disable-next-line no-console
 console.log(env);
 
 const config: PlaywrightTestConfig = {
