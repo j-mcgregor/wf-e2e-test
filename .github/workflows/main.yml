@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, staging]
+    branches: [main]
 
 jobs:
   build_and_test:
@@ -33,35 +33,3 @@ jobs:
         run: yarn build
       - name: Running unit tests...
         run: yarn test
-
-  wait_for_vercel:
-    name: Wait for vercel
-    runs-on: ubuntu-latest
-    outputs:
-      preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
-    steps:
-      - name: Wait for Vercel preview deployment to be ready
-        uses: patrickedqvist/wait-for-vercel-preview@v1.2.0
-        id: waitForVercelPreviewDeployment
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 120
-
-  end_to_end_tests:
-    name: End-to-end tests
-    needs: wait_for_vercel
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-      - uses: microsoft/playwright-github-action@v1
-      - run: npm install --include=dev
-      - run: echo Preview URL - ${{ needs.wait_for_vercel.outputs.preview_url }}
-      - run: npm run playwright
-        env:
-          VERCEL_URL: ${{ needs.wait_for_vercel.outputs.preview_url }}
-          VERCEL_ENV: preview
-          PLAYWRIGHT_LOGIN_USERNAME: dan@dan.com
-          PLAYWRIGHT_LOGIN_PASSWORD: password
