@@ -4,7 +4,7 @@ import path from 'path';
 import env from './config';
 
 // NECESSARY FOR TO LOAD ENV'S WITHIN THE PLAYWRIGHT TESTS
-dotenv.config({ path: path.resolve(__dirname, '.env.development') });
+dotenv.config({ path: path.resolve(__dirname, '.env.test') });
 
 const config: PlaywrightTestConfig = {
   testDir: './playwright', // location of tests

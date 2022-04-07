@@ -3,9 +3,6 @@
 
 let URL = '';
 
-// eslint-disable-next-line no-console
-console.log(process.env.NODE_ENV);
-
 // NODE_ENV === 'production' on live AND preview
 if (process.env.NODE_ENV === 'production') {
   if (process.env.VERCEL_ENV === 'preview') {
