@@ -203,21 +203,6 @@ const ChartMulti = ({
         max={chartMaxValue}
         min={chartMinValue}
       >
-        {/* Red annotation line through 0 values */}
-        {!disabled && (
-          <VictoryLine
-            data={[{ y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }]}
-            style={{
-              data: {
-                stroke: '#E58A2E',
-                strokeWidth: 2
-              }
-            }}
-            standalone={true}
-          />
-        )}
-
-        {/* Company Graph */}
         <VictoryArea
           key={`victory-area-${companyGraph.name}`}
           animate={{
@@ -231,11 +216,25 @@ const ChartMulti = ({
               fill: orangeFill,
               fillOpacity: 0.6,
               stroke: orangeLine,
-
               strokeOpacity: 1
             }
           }}
         />
+        {/* Red annotation line through 0 values */}
+        {!disabled && (
+          <VictoryLine
+            data={[{ y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }]}
+            style={{
+              data: {
+                stroke: '#E58A2E',
+                strokeWidth: 1
+              }
+            }}
+            standalone={true}
+          />
+        )}
+
+        {/* Company Graph */}
 
         {!disabled && (
           // <VictoryGroup>
