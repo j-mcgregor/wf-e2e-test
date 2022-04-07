@@ -63,5 +63,5 @@ jobs:
         env:
           VERCEL_URL: ${{ needs.wait_for_vercel.outputs.preview_url }}
           VERCEL_ENV: preview
-          PLAYWRIGHT_LOGIN_USERNAME: dan@dan.com
+          PLAYWRIGHT_LOGIN_USERNAME: end2end@testing.com
           PLAYWRIGHT_LOGIN_PASSWORD: password
