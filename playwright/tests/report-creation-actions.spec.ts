@@ -237,6 +237,7 @@ test.describe('Report Creation & Bookmark Tests', async () => {
       page.locator('text=Upload').nth(3).click()
     ]);
 
+    page.waitForTimeout(10000);
     // THEN I SHOULD BE NAVIGATED TO THE UPLOAD DATA PAGE
     await expect(page.url()).toContain('upload-data');
 
