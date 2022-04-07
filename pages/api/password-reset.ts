@@ -1,15 +1,16 @@
+/* eslint-disable security/detect-object-injection */
 import { withSentry } from '@sentry/nextjs';
 
-import User from '../../lib/funcs/user';
-import {
-  GENERIC_API_ERROR,
-  VALID_EMAIL_REQUIRED
-} from '../../lib/utils/error-codes';
-import { ApiError } from '../../types/global';
+import User, { ForgotPassword, ResetPassword } from '../../lib/funcs/user';
+import { errorsBySourceType } from '../../lib/utils/error-handling';
+import { makeApiHandlerResponseFailure } from '../../lib/utils/http-helpers';
+import { StatusCodeConstants } from '../../types/http-status-codes';
 
 import type { NextApiHandler } from 'next';
 
-export interface PasswordResetApi {}
+const { BAD_REQUEST, METHOD_NOT_ALLOWED } = StatusCodeConstants;
+
+export interface PasswordResetApi extends ForgotPassword, ResetPassword {}
 
 // Declaring function for readability with Sentry wrapper
 const passwordReset: NextApiHandler<PasswordResetApi> = async (
@@ -18,31 +19,38 @@ const passwordReset: NextApiHandler<PasswordResetApi> = async (
 ) => {
   const { email } = request.query;
   const { token, newPassword } = request.body;
-  if (email && typeof email === 'string') {
-    const status = await User.forgotPassword(email);
-    if (status.ok) {
-      return response.status(200).json(status);
-    }
-    if (!status.ok) {
-      return response
-        .status(404)
-        .json({ error: GENERIC_API_ERROR } as ApiError);
-    }
-  }
 
-  if (token && newPassword) {
-    const status = await User.resetPassword(token, newPassword);
-    if (status.ok && status.msg) {
-      return response.status(200).json(status);
+  if (request.method === 'GET') {
+    /** @action REQUEST EMAIL TO CHANGE EMAIL ADDRESS  */
+    if (email && typeof email === 'string') {
+      const result = await User.forgotPassword(email, {});
+
+      return response.status(result.status).json(result);
     }
 
-    if (!status.ok) {
-      return response
-        .status(404)
-        .json({ error: GENERIC_API_ERROR } as ApiError);
+    /** @action CHANGE PASSWORD THROUGH THE SETTINGS */
+    if (token && newPassword) {
+      const result: ResetPassword = await User.resetPassword(
+        token,
+        newPassword
+      );
+
+      return response.status(200).json(result);
     }
+
+    return response.status(BAD_REQUEST).json({
+      ...makeApiHandlerResponseFailure({
+        message: errorsBySourceType.GENERAL[BAD_REQUEST]
+      }),
+      msg: null
+    });
   }
-  return response.status(404).json({ error: VALID_EMAIL_REQUIRED } as ApiError);
+  return response.status(METHOD_NOT_ALLOWED).json({
+    ...makeApiHandlerResponseFailure({
+      message: errorsBySourceType.GENERAL[METHOD_NOT_ALLOWED]
+    }),
+    msg: null
+  });
 };
 
 export default withSentry(passwordReset);

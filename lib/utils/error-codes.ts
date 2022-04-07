@@ -81,6 +81,7 @@ export const SEARCH_ERROR: ErrorCodeKeys = 'SEARCH_ERROR';
  * GENERAL
  * *****************************************
  */
+export const BAD_REQUEST: ErrorCodeKeys = 'BAD_REQUEST';
 export const GENERIC_API_ERROR_FORM: ErrorCodeKeys = 'GENERIC_API_ERROR_FORM';
 export const GENERIC_API_ERROR: ErrorCodeKeys = 'GENERIC_API_ERROR';
 export const MISSING_DATA: ErrorCodeKeys = 'MISSING_DATA';

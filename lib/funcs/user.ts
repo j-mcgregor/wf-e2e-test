@@ -2,6 +2,7 @@
 import { User as AuthUser } from 'next-auth';
 import { UserType, ReportSnippetType } from '../../types/global';
 import { ApiHandler, HandlerReturn } from '../../types/http';
+import { GENERIC_API_ERROR, INTERNAL_SERVER_ERROR } from '../utils/error-codes';
 import { makeErrorResponse } from '../utils/error-handling';
 import {
   makeApiHandlerResponseFailure,
@@ -193,26 +194,46 @@ const giveDefaults = (user: UserType) => {
  * ***************************************************
  */
 
-const forgotPassword = async (email: string) => {
+export interface ForgotPassword extends HandlerReturn {
+  msg: string | null;
+}
+
+const forgotPassword: ApiHandler<ForgotPassword> = async (email: string) => {
   if (!email) {
-    return { ok: false };
+    return {
+      ...makeApiHandlerResponseFailure({ message: 'Missing email' }),
+      msg: null
+    };
   }
-  const res = await fetch(
-    `${process.env.WF_AP_ROUTE}/password-recovery/${email}`,
-    {
-      method: 'POST',
-      headers: {
-        ...XMLHeaders
+
+  try {
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/password-recovery/${email}`,
+      {
+        method: 'POST',
+        headers: {
+          ...XMLHeaders
+        }
       }
+    );
+
+    if (response.ok) {
+      const result = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess({ status: response.status }),
+        msg: result.msg
+      };
     }
-  );
-
-  if (res.ok) {
-    const { msg } = await res.json();
-    return { msg, ok: true };
+    return {
+      ...makeApiHandlerResponseFailure({ status: response.status }),
+      msg: null
+    };
+  } catch (error) {
+    return {
+      ...makeApiHandlerResponseFailure({ message: GENERIC_API_ERROR }),
+      msg: null
+    };
   }
-
-  return { ok: false };
 };
 
 /**
@@ -251,27 +272,54 @@ const getSSOToken = async (
  * ***************************************************
  */
 
-const resetPassword = async (
+export interface ResetPassword extends HandlerReturn {
+  msg: string | null;
+}
+
+export interface ResetPasswordProps {
+  newPassword: string;
+}
+
+const resetPassword: ApiHandler<ResetPassword, ResetPasswordProps> = async (
   token: string,
-  newPassword: string
-): Promise<{ msg?: string; ok?: boolean }> => {
-  if (!token || !newPassword) {
-    return { ok: false };
+  { newPassword }
+) => {
+  if (!token) {
+    return {
+      ...makeApiHandlerResponseFailure({ message: 'Missing token' }),
+      msg: null
+    };
+  }
+  if (!newPassword) {
+    return {
+      ...makeApiHandlerResponseFailure({ message: 'Missing new Password' }),
+      msg: null
+    };
   }
 
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/reset-password/`, {
-    method: 'POST',
-    headers: {
-      ...JSONHeaders
-    },
-    body: JSON.stringify({ token, new_password: newPassword })
-  });
+  try {
+    const response = await fetch(`${process.env.WF_AP_ROUTE}/reset-password/`, {
+      method: 'POST',
+      headers: {
+        ...JSONHeaders
+      },
+      body: JSON.stringify({ token, new_password: newPassword })
+    });
 
-  if (res.ok) {
-    const { msg } = await res.json();
-    return { msg, ok: true };
+    if (response.ok) {
+      const result = await response.json();
+      return { ...makeApiHandlerResponseSuccess(), msg: result.msg };
+    }
+    return {
+      ...makeApiHandlerResponseFailure({ message: INTERNAL_SERVER_ERROR }),
+      msg: null
+    };
+  } catch (error) {
+    return {
+      ...makeApiHandlerResponseFailure({ message: GENERIC_API_ERROR }),
+      msg: null
+    };
   }
-  return { ok: false };
 };
 
 /**

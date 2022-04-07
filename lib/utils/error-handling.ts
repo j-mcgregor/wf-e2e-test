@@ -53,6 +53,7 @@ export const errorsBySourceType: Record<SourceType, Record<number, string>> = {
     503: ErrorConstants.BATCH_REPORT_503
   },
   GENERAL: {
+    400: ErrorConstants.BAD_REQUEST,
     403: ErrorConstants.UNAUTHORISED,
     404: ErrorConstants.NOT_FOUND,
     405: ErrorConstants.METHOD_NOT_ALLOWED,

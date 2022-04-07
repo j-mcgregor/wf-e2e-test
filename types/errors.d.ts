@@ -57,6 +57,7 @@ export type ErrorCodeKeys =
   | 'INVALID_REQUEST_TYPE'
   | 'SEARCH_ERROR'
   // GENERAL
+  | 'BAD_REQUEST'
   | 'GENERIC_API_ERROR_FORM'
   | 'GENERIC_API_ERROR'
   | 'MISSING_DATA'
