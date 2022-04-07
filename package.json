@@ -109,5 +109,10 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ]
   }
 }
