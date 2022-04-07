@@ -2,10 +2,7 @@
 import { useSession } from 'next-auth/react';
 import * as nextRouter from 'next/router';
 
-import {
-  mockServerGet,
-  mockServerPost
-} from '../../../../__mocks__/service-worker/server';
+import { mockServerGet } from '../../../../__mocks__/service-worker/server';
 import allMessages from '../../../../messages/en';
 import {
   fireEvent,
@@ -46,7 +43,7 @@ describe('ForgotPasswordForm', () => {
     mockServerGet(
       'http://localhost:3000/api/password-reset?email=batman@wayneindustries.net',
       200,
-      JSON.stringify({ ok: true })
+      { ok: true, msg: 'ok' }
     );
 
     render(<ForgotPasswordForm />, undefined, allMessages);
@@ -74,11 +71,7 @@ describe('ForgotPasswordForm', () => {
       }
     );
 
-    screen.logTestingPlaygroundURL();
-
     await waitFor(() => {
-      screen.logTestingPlaygroundURL();
-
       fireEvent.submit(
         screen.getByRole('button', {
           name: /reset password/i
@@ -87,7 +80,6 @@ describe('ForgotPasswordForm', () => {
     });
 
     await waitFor(() => {
-      screen.logTestingPlaygroundURL();
       expect(
         screen.queryByRole('textbox', {
           name: /email address/i
@@ -102,11 +94,10 @@ describe('ForgotPasswordForm', () => {
   });
 
   it('contains the correct error if submission failed', async () => {
-    mockServerGet(
-      'http://localhost:3000/api/password-reset',
-      400,
-      JSON.stringify({ ok: false, error: GENERIC_API_ERROR })
-    );
+    mockServerGet('http://localhost:3000/api/password-reset', 400, {
+      ok: false,
+      error: GENERIC_API_ERROR
+    });
 
     render(<ForgotPasswordForm />, undefined, allMessages);
 
