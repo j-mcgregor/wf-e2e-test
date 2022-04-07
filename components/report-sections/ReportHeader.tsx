@@ -85,6 +85,7 @@ const ReportHeader = ({
         <Button
           variant="none"
           newClassName="border-none self-start ml-auto mr-2 sm:mr-0 sm:ml-4 print:hidden"
+          id="bookmark-button"
           onClick={() => handleBookmark(isBookMarked ? 'REMOVE' : 'ADD')}
         >
           <BookmarkIcon
