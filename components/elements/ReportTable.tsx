@@ -115,9 +115,7 @@ const ReportTable = ({
                           </td>
 
                           <td className="px-3 sm:px-6 py-1 whitespace-nowrap text-center  ">
-                            <ReactTimeAgo
-                              date={getClientRelativeDate(report.created_at)}
-                            />
+                            <ReactTimeAgo date={report.created_at} />
                           </td>
                         </tr>
                       </Link>
