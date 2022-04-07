@@ -5,13 +5,11 @@ import allMessages from '../../../messages/en';
 
 describe('Bookmark Dropdown', () => {
   it('renders without issue', () => {
-    expect(() =>
-      render(<BookmarkDropdown />, undefined, allMessages)
-    ).not.toThrow();
+    expect(() => render(<BookmarkDropdown />, {}, allMessages)).not.toThrow();
   });
 
   it('renders the menu', () => {
-    render(<BookmarkDropdown />);
+    render(<BookmarkDropdown />, {}, allMessages);
     const menu = screen.getByTestId('bookmark-menu');
     expect(menu).toBeInTheDocument();
   });
