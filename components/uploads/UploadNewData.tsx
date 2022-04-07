@@ -56,8 +56,12 @@ const UploadNewData = ({
 
   const hasErrors = errors.length > 0;
 
-  const tick = <CheckIcon className="h-6 w-6 text-green-500 mr-1" />;
-  const cross = <XIcon className="h-6 w-6 text-red-500 mr-1" />;
+  const tick = (
+    <CheckIcon id="validation-tick" className="h-6 w-6 text-green-500 mr-1" />
+  );
+  const cross = (
+    <XIcon id="validation-cross" className="h-6 w-6 text-red-500 mr-1" />
+  );
   return (
     <div className="bg-white rounded-sm shadow-sm sm:p-8 p-6">
       <div className="grid sm:grid-cols-2">
