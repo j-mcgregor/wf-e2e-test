@@ -14,6 +14,7 @@ import ReportTable from '../components/elements/ReportTable';
 import Stats from '../components/elements/Stats';
 import TwitterFeed from '../components/elements/TwitterFeed';
 import Layout from '../components/layout/Layout';
+import WFLogo from '../components/svgs/WFLogo';
 import useLocalStorage from '../hooks/useLocalStorage';
 import useTotalReports from '../hooks/useTotalReports';
 import appState from '../lib/appState';
@@ -78,21 +79,12 @@ export default function Dashboard() {
       <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-auto md:mr-auto ">
         <LinkCard
           className="mx-auto"
-          icon={<LightningBoltIcon className='className="h-6 w-6 text-white' />}
+          icon={<WFLogo className="w-6 h-6 text-white" />}
           iconColor="bg-highlight"
           header={t('automated_report_header')}
           description={t('automated_report_description')}
           linkTo="/sme-calculator"
         />
-        {/* Removed until feature is added */}
-        {/* <LinkCard
-          className="mx-auto"
-          icon={<SearchCircleIcon className='className="h-6 w-6 text-white' />}
-          iconColor="bg-highlight-2"
-          header={t('sme_prospector_header')}
-          description={t('sme_prospector_description')}
-          linkTo="/sme-prospector"
-        /> */}
         <LinkCard
           className="mx-auto"
           icon={
