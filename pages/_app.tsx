@@ -30,7 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <SessionProvider session={pageProps.session}>
-        <NextIntlProvider messages={pageProps.messages}>
+        <NextIntlProvider messages={pageProps.messages || {}}>
           <Component {...pageProps} />
         </NextIntlProvider>
       </SessionProvider>
