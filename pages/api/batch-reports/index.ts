@@ -57,12 +57,17 @@ const batchReports: NextApiHandler<BatchReportsIndexApi> = async (
 
   const { method } = request;
 
+  const { limit, skip } = request.query;
+
+  const safeLimit = Number(limit);
+  const safeSkip = Number(skip);
+
   switch (method) {
     case 'GET':
       try {
         const result = await BatchReport.getAllBatchReports(
           `${token.accessToken}`,
-          {}
+          { limit: safeLimit, skip: safeSkip }
         );
 
         return response.status(result.status).json({

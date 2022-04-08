@@ -23,12 +23,20 @@ export interface GetAllBatchReports extends HandlerReturn {
   batchReports: BatchJobsGetAllResponse | null; // <- null indicates a failure since typing makes this value required
 }
 
-const getAllBatchReports: ApiHandler<GetAllBatchReports> = async (
-  token: string
-) => {
+interface GetAllBatchReportsProps {
+  limit?: number;
+  skip?: number;
+}
+
+const getAllBatchReports: ApiHandler<
+  GetAllBatchReports,
+  GetAllBatchReportsProps
+> = async (token: string, { limit = 10, skip = 0 }) => {
+  const limitAndSkipString = limit ? `?limit=${limit}&skip=${skip}` : '';
+
   try {
     const response = await fetch(
-      `${process.env.WF_AP_ROUTE}/jobs/batch?limit=8`,
+      `${process.env.WF_AP_ROUTE}/jobs/batch${limitAndSkipString}`,
       {
         method: 'GET',
         headers: {
