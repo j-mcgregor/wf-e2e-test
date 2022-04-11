@@ -16,14 +16,13 @@ import { ReportSnippetType } from '../types/global';
 
 const Reports = () => {
   const { user } = useRecoilValue(appState);
+  const t = useTranslations();
+  const bookmarkedReports = user?.bookmarked_reports;
 
+  // ADD TO HOOK START
   const [reportLimit, setReportLimit] = useState(0); // initial limit of 10 reports
 
   const { reports, loading } = useReportHistory(10, reportLimit);
-
-  const bookmarkedReports = user?.bookmarked_reports;
-
-  const t = useTranslations();
 
   const reportLength = reports?.length || 0;
 
@@ -31,6 +30,7 @@ const Reports = () => {
   const handleAddReports = (): void => {
     reportLimit + 10 <= reportLength ? setReportLimit(reportLimit + 10) : null;
   };
+  // ADD TO HOOK END
 
   return (
     <Layout noNav={false} title="Reports">

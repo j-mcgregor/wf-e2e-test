@@ -49,5 +49,6 @@
   "max_companies": "Your CSV has {total_companies} companies which is more than the max of {max_companies}",
   "pending": "Pending",
   "processing": "Processing",
-  "report_name_required": "A batch report name is required"
+  "report_name_required": "A batch report name is required",
+  "show_more": "Show more"
 }

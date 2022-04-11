@@ -7,16 +7,16 @@ import {
 import { GetStaticPropsContext, NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import useSWR from 'swr';
 import { useTranslations } from 'use-intl';
 
 import BatchReportCard from '../../components/cards/BatchReportCard';
 import EmptyCard from '../../components/cards/EmptyCard';
 import LinkCard from '../../components/cards/LinkCard';
+import Button from '../../components/elements/Button';
 import Layout from '../../components/layout/Layout';
+import LoadingIcon from '../../components/svgs/LoadingIcon';
+import useBatchReportsHistory from '../../hooks/useBatchReportsHistory';
 import { appUser } from '../../lib/appState';
-import fetcher from '../../lib/utils/fetcher';
-import { BatchReportsIndexApi } from '../api/batch-reports';
 
 import type { BatchReportResponse } from '../../types/batch-reports';
 
@@ -25,32 +25,42 @@ const BatchReports: NextPage = () => {
   const [pendingJobs, setPendingJobs] = useState<BatchReportResponse[]>([]);
   const [completedJobs, setCompletedJobs] = useState<BatchReportResponse[]>([]);
 
-  const user = useRecoilValue(appUser);
-
-  const { data: allJobs } = useSWR<BatchReportsIndexApi>(
-    `/api/batch-reports`,
-    fetcher,
-    pendingJobs?.length > 0 ? { refreshInterval: 1000 } : {}
+  // ADD TO HOOK START
+  const [reportLimit, setReportLimit] = useState(0); // initial limit of 8 reports
+  const { batchReports, loading } = useBatchReportsHistory(
+    8,
+    reportLimit,
+    pendingJobs
   );
+
+  const reportLength = batchReports?.length || 0;
+
+  // load 5 more reports until max of 30
+  const handleAddReports = (): void => {
+    reportLimit + 8 <= reportLength ? setReportLimit(reportLimit + 8) : null;
+  };
+  // ADD TO HOOK END
+
+  const user = useRecoilValue(appUser);
 
   // run on allJobs
   useEffect(() => {
-    if (allJobs?.batchReports) {
-      const complete = allJobs.batchReports?.filter(
+    if (batchReports) {
+      const complete = batchReports?.filter(
         job => job.total_reports !== job.failed_reports
       );
-      const pending = allJobs.batchReports?.filter(
+      const pending = batchReports?.filter(
         job => job.total_reports == job.failed_reports
       );
 
       setCompletedJobs(complete);
       setPendingJobs(pending);
     }
-  }, [allJobs]);
+  }, [batchReports]);
 
   return (
     <Layout title={t('multiple_companies')}>
-      <div className="text-primary">
+      <div className="text-primary mb-64">
         <h1 className="text-3xl font-semibold">{t('multiple_companies')}</h1>
         <p className="font-sm my-4 max-w-2xl">
           {t('view_and_create_batch_report_jobs')}
@@ -91,13 +101,13 @@ const BatchReports: NextPage = () => {
                   />
                 );
               })}
-            {user && !allJobs?.batchReports && (
+            {user && !batchReports && (
               <>
                 <EmptyCard loading />
                 <EmptyCard loading />
               </>
             )}
-            {user && allJobs?.batchReports && pendingJobs?.length === 0 && (
+            {user && batchReports && pendingJobs?.length === 0 && (
               <EmptyCard
                 text={t('no_batch_reports_in_progress')}
                 icon={<RefreshIcon className="h-10 w-10" />}
@@ -128,7 +138,7 @@ const BatchReports: NextPage = () => {
                 );
               })}
 
-            {user && !allJobs?.batchReports && (
+            {user && !batchReports && (
               <>
                 <EmptyCard loading />
                 <EmptyCard loading />
@@ -136,7 +146,7 @@ const BatchReports: NextPage = () => {
                 <EmptyCard loading />
               </>
             )}
-            {user && allJobs?.batchReports && completedJobs?.length === 0 && (
+            {user && batchReports && completedJobs?.length === 0 && (
               <EmptyCard
                 text={t('no_completed_batch_reports')}
                 icon={<DocumentDuplicateIcon className="h-10 w-10" />}
@@ -144,6 +154,17 @@ const BatchReports: NextPage = () => {
             )}
           </div>
         </div>
+        {/* Handle loading cases and if there are enough reports to show more */}
+        {(reportLimit + 8 <= reportLength || loading) && (
+          <Button
+            disabled={loading}
+            variant="none"
+            className="border-alt border max-w-[120px] my-2 mx-auto"
+            onClick={handleAddReports}
+          >
+            {!loading ? <p>{t('show_more')}</p> : <LoadingIcon />}
+          </Button>
+        )}
       </div>
     </Layout>
   );
