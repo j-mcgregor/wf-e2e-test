@@ -22,6 +22,7 @@ import {
 } from '../../../lib/utils/error-handling';
 import {
   makeApiHandlerResponseFailure,
+  makeApiHandlerResponseSuccess,
   makeMissingArgsResponse
 } from '../../../lib/utils/http-helpers';
 import { StatusCodeConstants } from '../../../types/http-status-codes';
@@ -39,6 +40,7 @@ export interface ReportsReportApi
     GetExistingReport {}
 
 // Declaring function for readability with Sentry wrapper
+// @ts-ignore
 const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
   const defaultNullProps = {
     reportId: null,
@@ -180,10 +182,14 @@ const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
         if (fetchRes.status === 200 && fetchRes.ok) {
           const filename: any = fetchRes.headers.get('content-disposition');
           const contentType: any = fetchRes.headers.get('content-type');
-          response.setHeader('content-disposition', filename);
-          response.setHeader('content-type', contentType);
+          // response.setHeader('content-disposition', filename);
+          // response.setHeader('content-type', contentType);
+          response.writeHead(fetchRes.status, 'OK', {
+            'content-disposition': filename,
+            'content-type': contentType
+          });
           response.write(buffer, 'binary');
-          response.end();
+          return response.end();
         } else {
           return response.status(UNPROCESSABLE_ENTITY).json({
             ...makeApiHandlerResponseFailure({
