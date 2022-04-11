@@ -183,7 +183,7 @@ const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
           response.setHeader('content-disposition', filename);
           response.setHeader('content-type', contentType);
           response.write(buffer, 'binary');
-          response.end();
+          return response.end();
         } else {
           return response.status(UNPROCESSABLE_ENTITY).json({
             ...makeApiHandlerResponseFailure({
