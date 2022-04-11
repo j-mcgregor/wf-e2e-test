@@ -10,6 +10,7 @@ import useUser from '../../hooks/useUser';
 import ErrorSkeleton from '../skeletons/ErrorSkeleton';
 import useHubspotChat from '../../hooks/useHubspotChat';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import useSessionStorage from '../../hooks/useSessionStorage';
 interface LayoutProps {
   title?: string;
   pageTitle?: string;
@@ -43,10 +44,7 @@ const Layout = ({
   const { user, loading, error, message } = useUser(!noAuthRequired);
   const { HubspotScript } = useHubspotChat('4623266', true, user);
   const [, setHomePage] = useLocalStorage<string>('wf_home_page', '');
-  const [, setLastPageVisited] = useLocalStorage<string>(
-    'wf_last_page_visited',
-    ''
-  );
+  const [, setLastPageVisited] = useSessionStorage('wf_last_page_visited', '');
 
   if (!loading && !session && !noAuthRequired) router.push('/login');
 

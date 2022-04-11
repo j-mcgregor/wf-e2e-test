@@ -11,6 +11,9 @@ export type TranslateInput =
   | ReactNodeArray
   | ReactElement<any, string | JSXElementConstructor<any>>;
 
+type Messages = typeof import('../messages/en/general.en.json');
+declare interface IntlMessages extends Messages {}
+
 export type StatDataType = string | number | Date;
 
 export type ReportSnippetType = {
