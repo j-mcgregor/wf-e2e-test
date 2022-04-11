@@ -180,12 +180,12 @@ const ChartMulti = ({
     <div
       className={`${
         disabled && 'opacity-50 -z-10'
-      } shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break px-2`}
+      } shadow rounded-sm bg-white flex flex-col print:inline-block print:w-full print:shadow-none avoid-break px-2 h-full justify-between`}
       data-testid="chart-multi-testid "
     >
       <div className="flex justify-between items-start px-4 pt-4 text-base print:h-12 print:mb-2">
         <div className="">
-          <h5 className="print:h-8 pb-2 md:whitespace-nowrap lg:whitespace-normal font-semibold md:text-sm print:text-xs">
+          <h5 className="print:h-8  pb-2 md:whitespace-nowrap lg:whitespace-normal font-semibold md:text-sm print:text-xs">
             {header}
           </h5>
 
@@ -203,21 +203,6 @@ const ChartMulti = ({
         max={chartMaxValue}
         min={chartMinValue}
       >
-        {/* Red annotation line through 0 values */}
-        {!disabled && (
-          <VictoryLine
-            data={[{ y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }]}
-            style={{
-              data: {
-                stroke: '#E58A2E',
-                strokeWidth: 2
-              }
-            }}
-            standalone={true}
-          />
-        )}
-
-        {/* Company Graph */}
         <VictoryArea
           key={`victory-area-${companyGraph.name}`}
           animate={{
@@ -231,11 +216,25 @@ const ChartMulti = ({
               fill: orangeFill,
               fillOpacity: 0.6,
               stroke: orangeLine,
-
               strokeOpacity: 1
             }
           }}
         />
+        {/* Red annotation line through 0 values */}
+        {!disabled && (
+          <VictoryLine
+            data={[{ y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }]}
+            style={{
+              data: {
+                stroke: '#E58A2E',
+                strokeWidth: 1
+              }
+            }}
+            standalone={true}
+          />
+        )}
+
+        {/* Company Graph */}
 
         {!disabled && (
           // <VictoryGroup>
