@@ -28,7 +28,6 @@ const { NOT_FOUND, INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED } =
 
 export const defaultNullProps = {
   batchReports: null,
-  report: null,
   batchReportId: null
 };
 export interface BatchReportsIndexApi
@@ -40,11 +39,6 @@ const batchReports: NextApiHandler<BatchReportsIndexApi> = async (
   request,
   response
 ) => {
-  const defaultNullProps = {
-    batchReports: null,
-    report: null,
-    batchReportId: null
-  };
   const token = await getToken({
     req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
@@ -99,8 +93,8 @@ const batchReports: NextApiHandler<BatchReportsIndexApi> = async (
           );
 
           return response.status(result.status).json({
-            ...result,
-            ...defaultNullProps
+            ...defaultNullProps,
+            ...result
           });
         } catch (error: any) {
           return response.status(INTERNAL_SERVER_ERROR).json({
