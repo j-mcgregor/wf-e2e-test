@@ -94,8 +94,8 @@ const batchReports: NextApiHandler<BatchReportsIndexApi> = async (
           );
 
           return response.status(result.status).json({
-            ...result,
-            ...defaultNullProps
+            ...defaultNullProps,
+            ...result
           });
         } catch (error: any) {
           return response.status(INTERNAL_SERVER_ERROR).json({
