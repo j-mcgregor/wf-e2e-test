@@ -6,6 +6,8 @@ import Button from '../elements/Button';
 import SkeletonMenu from '../skeletons/SkeletonMenu';
 import DownloadDoc from '../icons/DownloadDoc';
 import DownloadFolder from '../icons/DownloadFolder';
+import { useRouter } from 'next/router';
+import { handleExportCsv } from './ReportNav';
 
 interface ReportNavProps {
   companyName: string;
@@ -25,6 +27,10 @@ const TabletReportNav = ({
   backLink
 }: ReportNavProps) => {
   const navItems = useReportNavItems();
+  const router = useRouter();
+  const id = router?.query?.id;
+
+  const [downloadingCsv, setDownloadingCsv] = useState(false);
 
   const [activeItem, setActiveItem] = useState<string>('summary');
   // monitor the changes to the active state path and update the menu scroll position based on the id
@@ -65,7 +71,6 @@ const TabletReportNav = ({
       >
         <ul className="flex items-center justify-between pr-20 sm:pr-40 md:pr-80">
           <li>
-            {' '}
             <p className="font-bold whitespace-nowrap px-4">{companyName}</p>
           </li>
 
@@ -103,10 +108,22 @@ const TabletReportNav = ({
       </div>
 
       <div className="flex h-[50px]">
-        <Button variant="alt" className="rounded-none flex items-center">
+        <Button
+          variant="alt"
+          className="rounded-none flex items-center"
+          linkTo={`/api/reports/report?id=${id}&export=pdf`}
+          target="_blank"
+          rel="noreferrer"
+        >
           <DownloadDoc />
         </Button>
-        <Button variant="secondary" className="rounded-none flex items-center">
+        <Button
+          loading={downloadingCsv}
+          disabled={downloadingCsv}
+          onClick={() => handleExportCsv(`${id}`, setDownloadingCsv)}
+          variant="secondary"
+          className="rounded-none flex items-center"
+        >
           <DownloadFolder />
         </Button>
       </div>
