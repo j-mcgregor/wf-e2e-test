@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import useSWR from 'swr';
 import fetcher from '../lib/utils/fetcher';
+import { UserReportsApi } from '../pages/api/user/reports';
 import { ReportSnippetType } from '../types/global';
 
 const useReportHistory = (limit: number, skip: number = 0) => {
   const [reports, setReports] = useState<ReportSnippetType[]>([]);
 
   // if no user then revalidate onMount to prevent blank page
-  const { data, isValidating } = useSWR<
-    { data: ReportSnippetType[] } & { error?: boolean; message?: string }
-  >(`/api/user/reports?limit=${limit}&skip=${skip}`, fetcher, {
-    revalidateOnFocus: false
-  });
+  const { data, isValidating } = useSWR<UserReportsApi>(
+    `/api/user/reports?limit=${limit}&skip=${skip}`,
+    fetcher,
+    {
+      revalidateOnFocus: false
+    }
+  );
 
   const isLoading = isValidating || !data;
   React.useEffect(() => {
-    if (data?.data && !isValidating) {
-      const newReports = data?.data;
+    if (data?.reports && !isValidating) {
+      const newReports = data?.reports;
       const oldReports = reports;
       if (skip === 0) {
         setReports(newReports);

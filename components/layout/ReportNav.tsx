@@ -77,7 +77,7 @@ const ReportNav = ({
       </>
     );
   }
-
+  
   return (
     <div className="px-6 pt-8 flex-col h-full hidden xl:flex">
       <div>

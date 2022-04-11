@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
-import { GetStaticPropsContext } from 'next';
+import { GetStaticPropsContext, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createRef, useEffect, useState } from 'react';
 import { mutate } from 'swr';
@@ -18,10 +18,12 @@ import { useCsvValidators } from '../../hooks/useCsvValidators';
 import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
+import { BatchReportsIndexApi } from '../api/batch-reports';
+import { BatchReportsManualApi } from '../api/batch-reports/manual';
 
 import type { SubmitReportType } from '../../types/report';
 
-const CreateBatchReport = () => {
+const CreateBatchReport: NextPage = () => {
   const t = useTranslations();
   const router = useRouter();
 
@@ -73,22 +75,26 @@ const CreateBatchReport = () => {
     );
 
     try {
-      const res = await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
-      if (res.ok) {
-        setResults(res.data);
+      // POST '/api/batch-reports' => BatchReportsIndexApi (auto)
+      // POST '/api/batch-reports/upload' => BatchReportsManualApi (manual)
+      const result: BatchReportsIndexApi | BatchReportsManualApi =
+        await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
+
+      if (result.ok) {
+        setResults({ id: result.batchReportId ?? '' });
       }
-      if (res.batchReportId) {
+      if (result.batchReportId) {
         // fetch the new batchreports
-        mutate('/api/batch-reports');
+        mutate<BatchReportsIndexApi>('/api/batch-reports');
         // push to batch-reports where in progress reports will show
         return router.push(`/batch-reports`);
       }
-      if (!res.ok) {
+      if (!result.ok) {
         setError({
           error: BATCH_REPORT_FETCHING_ERROR,
           message: 'Could not make post request to batch endpoint.'
         });
-        Sentry.captureException({ error: res.error });
+        Sentry.captureException({ error: result.error });
         setComplete(false);
         setLoading(false);
         setProcessing(false);
@@ -260,13 +266,3 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
     }
   };
 }
-
-// disable input when submitting - done
-// disable file upload when submitting - done
-// progress bar runs after successful request - done
-// page redirects to ID after
-
-// auto-batch (30s max per company) and manual-batch (10s per company) have different averageTime to complete - done
-// if time to complete is > 5 mins, kick back to index - done
-// else wait for response, then trigger progress bar and take to ID page - done
-// handle api errors

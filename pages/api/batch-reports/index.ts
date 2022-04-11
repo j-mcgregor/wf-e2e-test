@@ -1,26 +1,50 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
 
-import BatchReport from '../../../lib/funcs/batch-reports';
+import BatchReport, {
+  CreateBatchReport,
+  GetAllBatchReports
+} from '../../../lib/funcs/batch-reports';
+import { MISSING_DATA } from '../../../lib/utils/error-codes';
 import {
-  GENERIC_API_ERROR,
-  METHOD_NOT_ALLOWED,
-  MISSING_DATA,
-  NO_REPORT,
-  NO_REPORT_ID,
-  UNAUTHORISED
-} from '../../../lib/utils/error-codes';
+  errorsBySourceType,
+  returnUnauthorised
+} from '../../../lib/utils/error-handling';
+import {
+  makeApiHandlerResponseFailure,
+  makeMissingArgsResponse
+} from '../../../lib/utils/http-helpers';
+import { StatusCodeConstants } from '../../../types/http-status-codes';
 
-import type { ApiError } from '../../../types/global';
 import type { BatchAutoRequest } from '../../../types/batch-reports';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler } from 'next';
+
+/** @COMPLETE */
+
+const { NOT_FOUND, INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED } =
+  StatusCodeConstants;
+
+export const defaultNullProps = {
+  batchReports: null,
+  report: null,
+  batchReportId: null
+};
+export interface BatchReportsIndexApi
+  extends GetAllBatchReports,
+    CreateBatchReport {}
 
 // Declaring function for readability with Sentry wrapper
-const batchReports = async (
-  request: NextApiRequest,
-  response: NextApiResponse
-): Promise<any> => {
+const batchReports: NextApiHandler<BatchReportsIndexApi> = async (
+  request,
+  response
+) => {
+  const defaultNullProps = {
+    batchReports: null,
+    report: null,
+    batchReportId: null
+  };
   const token = await getToken({
     req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
@@ -28,18 +52,32 @@ const batchReports = async (
 
   // unauthenticated requests
   if (!token) {
-    return response.status(403).json({
-      error: UNAUTHORISED,
-      message: 'Unauthorised api request, please login to continue.'
-    } as ApiError);
+    return returnUnauthorised(response, defaultNullProps);
   }
 
   const { method } = request;
-  const isGet = method === 'GET';
-  const isPost = method === 'POST';
 
-  if (isPost) {
-    try {
+  switch (method) {
+    case 'GET':
+      try {
+        const result = await BatchReport.getAllBatchReports(
+          `${token.accessToken}`,
+          {}
+        );
+
+        return response.status(result.status).json({
+          ...defaultNullProps,
+          ...result
+        });
+      } catch (error) {
+        return response.status(NOT_FOUND).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.BATCH_REPORT[NOT_FOUND]
+          }),
+          ...defaultNullProps
+        });
+      }
+    case 'POST':
       if (request?.body?.entities?.length > 0) {
         const batchReport: BatchAutoRequest = {
           entities: request?.body?.entities || [],
@@ -49,57 +87,40 @@ const batchReports = async (
           accounts_type: request?.body?.accounts_type || 0
         };
 
-        const fetchRes = await BatchReport.createBatchReport(
-          batchReport,
-          `${token.accessToken}`
-        );
+        try {
+          const result = await BatchReport.createBatchReport(
+            `${token.accessToken}`,
+            { report: batchReport }
+          );
 
-        if (fetchRes.ok && fetchRes.report?.id) {
-          return response.status(fetchRes.status).json({
-            ok: true,
-            batchReportId: fetchRes.report?.id
+          return response.status(result.status).json({
+            ...defaultNullProps,
+            ...result
+          });
+        } catch (error: any) {
+          return response.status(INTERNAL_SERVER_ERROR).json({
+            ...makeApiHandlerResponseFailure({
+              message: errorsBySourceType.BATCH_REPORT[INTERNAL_SERVER_ERROR]
+            }),
+            ...defaultNullProps
           });
         }
       } else {
-        return response.status(404).json({
-          error: MISSING_DATA,
-          message: 'No company list provided',
-          ok: false
-        } as ApiError);
+        return makeMissingArgsResponse(
+          response,
+          MISSING_DATA,
+          'No company list provided',
+          defaultNullProps
+        );
       }
-    } catch (error) {
-      return response.status(500).json({
-        ok: false,
-        error: GENERIC_API_ERROR,
-        message: error
-      } as ApiError);
-    }
+    default:
+      return response.status(METHOD_NOT_ALLOWED).json({
+        ...makeApiHandlerResponseFailure({
+          message: errorsBySourceType.GENERAL[METHOD_NOT_ALLOWED]
+        }),
+        ...defaultNullProps
+      });
   }
-
-  if (isGet) {
-    try {
-      const fetchRes = await BatchReport.getAllBatchReports(
-        `${token.accessToken}`
-      );
-
-      if (fetchRes.ok) {
-        return response.status(fetchRes.status).json({
-          ok: true,
-          batchReports: fetchRes.batchReports
-        });
-      }
-    } catch (error) {
-      return response.status(404).json({
-        error: NO_REPORT,
-        message: "Can't find any batch reports"
-      } as ApiError);
-    }
-  }
-
-  return response.status(500).json({
-    error: METHOD_NOT_ALLOWED,
-    message: 'Method not allowed, please use allowed method.'
-  } as ApiError);
 };
 
 export default withSentry(batchReports);

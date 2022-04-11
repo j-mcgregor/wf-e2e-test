@@ -47,10 +47,9 @@ export const getServerSideProps = async ({
   const id = params?.id;
   const userToken = query?.user_token;
 
-  const { report, ok } = await Report.getExistingReport(
-    `${id}`,
-    `${userToken}`
-  );
+  const { report, ok } = await Report.getExistingReport(`${userToken}`, {
+    reportId: `${id}`
+  });
 
   return {
     props: {

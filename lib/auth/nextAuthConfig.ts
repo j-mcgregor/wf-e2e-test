@@ -14,12 +14,13 @@ const nextAuthConfig: NextAuthOptions = {
       wellKnown:
         'https://login.microsoftonline.com/common/.well-known/openid-configuration',
       userinfo: 'https://graph.microsoft.com/oidc/userinfo',
+      // @ts-ignore
       profile: async (_profile, token) => {
         // use the SSO token to get the backend api auth token
         const wfToken = await User.getSSOToken(`${token.id_token}`);
         if (wfToken.ok) {
           // use the backend api auth token to get the user information
-          const req = await User.getUser(`${wfToken.access_token}`);
+          const req = await User.getUser(`${wfToken.access_token}`, {});
 
           if (req.ok) {
             return {
@@ -59,9 +60,9 @@ const nextAuthConfig: NextAuthOptions = {
         );
         // // if no error and we have user data, return it
         if (authenticated && authenticated.token) {
-          const req = await User.getUser(authenticated.token);
+          const result = await User.getUser(authenticated.token, {});
           return {
-            ...req.user,
+            ...result.user,
             is_sso: false,
             accessToken: authenticated.token
           };
@@ -89,7 +90,8 @@ const nextAuthConfig: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (token?.accessToken) {
-        const req = await User.getUser(`${token.accessToken}`);
+        const req = await User.getUser(`${token.accessToken}`, {});
+
         // if there is no user or the user cannot be authenticated
         // then revoke the session accessToken
         // this will trigger a logout through the Layout Component
@@ -100,6 +102,7 @@ const nextAuthConfig: NextAuthOptions = {
         // add the mock user data in the use session hook
         session.user = {
           ...req.user,
+          // @ts-ignore
           is_sso: token.is_sso
         };
         session.token = token.accessToken;

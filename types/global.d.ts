@@ -4,6 +4,7 @@ import { StringMap } from 'ts-jest/dist/types';
 
 import type { BatchReportResponse } from './batch-reports';
 import type { CsvValueValidation } from './report';
+import type { ErrorCodeKeys } from './errors';
 
 export type TranslateInput =
   | string
@@ -164,44 +165,44 @@ type CompanyStatusOptions =
 
 export type CompanyStatusType = CompanyStatusOptions[];
 
-export type ErrorCodeKeys =
-  | 'UNAUTHORISED'
-  | 'UNPROCESSABLE_ENTITY'
-  | 'NO_REPORT_ID'
-  | 'SIGNED_OUT'
-  | 'USER_404'
-  | 'USER_403'
-  | 'USER_422'
-  | 'USER_500'
-  | 'COMPANY_404'
-  | 'COMPANY_422'
-  | 'COMPANY_500'
-  | 'NO_REPORT'
-  | 'NO_REPORT_FOUND'
-  | 'REPORT_FETCHING_ERROR'
-  | 'BATCH_REPORT_FETCHING_ERROR'
-  | 'GENERIC_API_ERROR'
-  | 'GENERIC_API_ERROR_FORM'
-  | 'VALID_EMAIL_REQUIRED'
-  | 'EMAIL_REQUIRED'
-  | 'INVALID_SSO_LOGIN'
-  | 'PASSWORD_REQUIRED'
-  | 'INCORRECT_DETAILS'
-  | 'FULL_NAME_REQUIRED'
-  | 'NEW_PASSWORD_REQUIRED'
-  | 'CONFIRM_PASSWORD_MATCH'
-  | 'SEARCH_ERROR'
-  | 'INVALID_COUNTRY_CODE'
-  | 'COUNTRY_CODE_REQUIRED'
-  | 'COMPANY_NAME_REQUIRED'
-  | 'COMPANY_WEBSITE_REQUIRED'
-  | 'INVALID_REQUEST_TYPE'
-  | 'METHOD_NOT_ALLOWED'
-  | 'MISSING_DATA'
-  | 'NO_COMPANY_ID'
-  | 'NO_CURRENCY'
-  | 'NO_ISO_CODE'
-  | 'VALIDATION_ERROR';
+// export type ErrorCodeKeys =
+//   | 'UNAUTHORISED'
+//   | 'UNPROCESSABLE_ENTITY'
+//   | 'NO_REPORT_ID'
+//   | 'SIGNED_OUT'
+//   | 'USER_404'
+//   | 'USER_403'
+//   | 'USER_422'
+//   | 'USER_500'
+//   | 'COMPANY_404'
+//   | 'COMPANY_422'
+//   | 'COMPANY_500'
+//   | 'NO_REPORT'
+//   | 'NO_REPORT_FOUND'
+//   | 'REPORT_FETCHING_ERROR'
+//   | 'BATCH_REPORT_FETCHING_ERROR'
+//   | 'GENERIC_API_ERROR'
+//   | 'GENERIC_API_ERROR_FORM'
+//   | 'VALID_EMAIL_REQUIRED'
+//   | 'EMAIL_REQUIRED'
+//   | 'INVALID_SSO_LOGIN'
+//   | 'PASSWORD_REQUIRED'
+//   | 'INCORRECT_DETAILS'
+//   | 'FULL_NAME_REQUIRED'
+//   | 'NEW_PASSWORD_REQUIRED'
+//   | 'CONFIRM_PASSWORD_MATCH'
+//   | 'SEARCH_ERROR'
+//   | 'INVALID_COUNTRY_CODE'
+//   | 'COUNTRY_CODE_REQUIRED'
+//   | 'COMPANY_NAME_REQUIRED'
+//   | 'COMPANY_WEBSITE_REQUIRED'
+//   | 'INVALID_REQUEST_TYPE'
+//   | 'METHOD_NOT_ALLOWED'
+//   | 'MISSING_DATA'
+//   | 'NO_COMPANY_ID'
+//   | 'NO_CURRENCY'
+//   | 'NO_ISO_CODE'
+//   | 'VALIDATION_ERROR';
 
 export type ReportTypeEnum = 'BATCH_AUTO' | 'BATCH_MANUAL' | 'REPORT_MANUAL';
 

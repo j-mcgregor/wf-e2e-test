@@ -1,98 +1,113 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
 
-import Report from '../../../lib/funcs/report';
-import mockReport from '../../../lib/mock-data/report';
-import mockUsers from '../../../lib/mock-data/users';
+import Report, {
+  CreateReport,
+  GetExistingReport,
+  GetReportCsvShort
+} from '../../../lib/funcs/report';
 import {
-  COMPANY_404,
-  COMPANY_500,
   NO_COMPANY_ID,
   NO_CURRENCY,
   NO_ISO_CODE,
-  NO_REPORT,
   NO_REPORT_ID,
-  REPORT_FETCHING_ERROR,
-  UNAUTHORISED,
-  VALIDATION_ERROR
+  REPORT_FETCHING_ERROR
 } from '../../../lib/utils/error-codes';
-import { ApiError, ReportSnippetType } from '../../../types/global';
+import {
+  errorsBySourceType,
+  returnUnauthorised
+} from '../../../lib/utils/error-handling';
+import {
+  makeApiHandlerResponseFailure,
+  makeApiHandlerResponseSuccess,
+  makeMissingArgsResponse
+} from '../../../lib/utils/http-helpers';
+import { StatusCodeConstants } from '../../../types/http-status-codes';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler } from 'next';
+
+/** @COMPLETE */
+
+const { INTERNAL_SERVER_ERROR, UNPROCESSABLE_ENTITY, METHOD_NOT_ALLOWED } =
+  StatusCodeConstants;
+
+export interface ReportsReportApi
+  extends CreateReport,
+    GetReportCsvShort,
+    GetExistingReport {}
+
 // Declaring function for readability with Sentry wrapper
-const report = async (request: NextApiRequest, response: NextApiResponse) => {
+// @ts-ignore
+const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
+  const defaultNullProps = {
+    reportId: null,
+    report: null,
+    csv: null
+  };
+
   const token = await getToken({
     req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
   });
+
   // unauthenticated requests
   if (!token) {
-    return response.status(403).json({
-      error: UNAUTHORISED,
-      message: 'Unauthorised api request, please login to continue.'
-    } as ApiError);
+    return returnUnauthorised(response, defaultNullProps);
   }
 
   const isGet = request.method === 'GET';
-
   const isPost = request.method === 'POST';
 
   if (isPost) {
     const body = await request?.body;
 
+    if (!body.company_id) {
+      return makeMissingArgsResponse(
+        response,
+        NO_COMPANY_ID,
+        `No company ID provided.`,
+        defaultNullProps
+      );
+    }
+
+    if (!body.currency) {
+      return makeMissingArgsResponse(
+        response,
+        NO_CURRENCY,
+        `No currency code provided.`,
+        defaultNullProps
+      );
+    }
+
+    if (!body.iso_code) {
+      return makeMissingArgsResponse(
+        response,
+        NO_ISO_CODE,
+        `No ISO code provided.`,
+        defaultNullProps
+      );
+    }
+
     try {
-      if (!body.company_id) {
-        return response.status(500).json({
-          error: NO_COMPANY_ID,
-          message: `No company ID provided.`
-        } as ApiError);
-      }
+      const result = await Report.createReport(`${token?.accessToken}`, {
+        report: body
+      });
 
-      if (!body.currency) {
-        return response.status(500).json({
-          error: NO_CURRENCY,
-          message: `No currency code provided.`
-        } as ApiError);
-      }
-
-      if (!body.iso_code) {
-        return response.status(500).json({
-          error: NO_ISO_CODE,
-          message: `No ISO code provided.`
-        } as ApiError);
-      }
-      const report = await Report.createReport(body, `${token?.accessToken}`);
-      // const tempReport = await Report.getExistingReport('fafd5ee8-8bd1-4c11-aea8-457e862bc06a', `${session?.token}`)
-
-      if (report.ok) {
-        return response
-          .status(200)
-          .json({ ok: true, reportId: report.report?.id });
-      }
-
-      // handle the 500 error when API Fails
-      if (!report.ok) {
-        if (report.status === 404) {
-          return response.status(404).json({
-            error: COMPANY_404,
-            message: report?.details
-          } as ApiError);
-        }
-
-        if (report.status === 500) {
-          return response.status(500).json({
-            error: COMPANY_500,
-            message: report?.details
-          } as ApiError);
-        }
-      }
+      return response.status(result.status).json({
+        ...defaultNullProps,
+        ...result
+      });
     } catch (error) {
-      return response.status(500).json({
-        error: REPORT_FETCHING_ERROR,
-        message: `Report couldn't be generated for ${body?.company_id}`
-      } as ApiError);
+      return response.status(INTERNAL_SERVER_ERROR).json({
+        ...makeApiHandlerResponseFailure({
+          error: REPORT_FETCHING_ERROR,
+          message: `Report couldn't be generated for ${body?.company_id}`
+        }),
+        ...defaultNullProps
+      });
     }
   }
 
@@ -101,43 +116,52 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
     const reportId = request.query.id;
 
     if (!reportId) {
-      return response.status(500).json({
-        error: NO_REPORT_ID,
-        message: 'No report ID provided, please add report id.'
-      } as ApiError);
+      return makeMissingArgsResponse(
+        response,
+        NO_REPORT_ID,
+        'No report ID provided, please add report id.',
+        defaultNullProps
+      );
     }
 
     /* ***** GET REPORT AS CSV ******* */
 
     if (request?.query?.export === 'csv') {
       try {
-        const res = await Report.getReportShortCsv(
-          `${reportId}`,
-          `${token.accessToken}`
-        );
-        if (res.ok) {
-          return response.status(200).json(res.csv);
-        }
+        const result = await Report.getReportShortCsv(`${token.accessToken}`, {
+          reportId: `${reportId}`
+        });
+
+        return response.status(result.status).json({
+          ...defaultNullProps,
+          ...result
+        });
       } catch (error) {
-        return response.status(422).json({
-          error: VALIDATION_ERROR,
-          message: 'Unable to process the request'
-        } as ApiError);
+        return response.status(UNPROCESSABLE_ENTITY).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.REPORT[422]
+          }),
+          ...defaultNullProps
+        });
       }
     } else if (request?.query?.export === 'csv-full') {
       try {
-        const res = await Report.getReportFullCsv(
-          `${reportId}`,
-          `${token.accessToken}`
-        );
-        if (res.ok) {
-          return response.status(200).json(res.csv);
+        const result = await Report.getReportFullCsv(`${token.accessToken}`, {
+          reportId: `${reportId}`
+        });
+        if (result.ok) {
+          return response.status(200).json({
+            ...defaultNullProps,
+            ...result
+          });
         }
       } catch (error) {
-        return response.status(422).json({
-          error: VALIDATION_ERROR,
-          message: 'Unable to process the request'
-        } as ApiError);
+        return response.status(UNPROCESSABLE_ENTITY).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.REPORT[422]
+          }),
+          ...defaultNullProps
+        });
       }
     } else if (request?.query?.export === 'pdf') {
       try {
@@ -158,63 +182,64 @@ const report = async (request: NextApiRequest, response: NextApiResponse) => {
         if (fetchRes.status === 200 && fetchRes.ok) {
           const filename: any = fetchRes.headers.get('content-disposition');
           const contentType: any = fetchRes.headers.get('content-type');
-          response.setHeader('content-disposition', filename);
-          response.setHeader('content-type', contentType);
+          // response.setHeader('content-disposition', filename);
+          // response.setHeader('content-type', contentType);
+          response.writeHead(fetchRes.status, 'OK', {
+            'content-disposition': filename,
+            'content-type': contentType
+          });
           response.write(buffer, 'binary');
-          response.end();
+          return response.end();
         } else {
-          return response.status(422).json({
-            error: VALIDATION_ERROR,
-            message: `Unable to process the request. API returned status: ${fetchRes?.status} & '${fetchRes?.statusText}'`
-          } as ApiError);
+          return response.status(UNPROCESSABLE_ENTITY).json({
+            ...makeApiHandlerResponseFailure({
+              message: errorsBySourceType.REPORT[422]
+            }),
+            ...defaultNullProps
+          });
         }
       } catch (error) {
-        return response.status(422).json({
-          error: VALIDATION_ERROR,
-          message: `Unable to process the request. API Returned  ${error} `
-        } as ApiError);
+        return response.status(UNPROCESSABLE_ENTITY).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.REPORT[422]
+          }),
+          ...defaultNullProps
+        });
       }
     } else {
       /* ***** GET REPORT FROM USER ******* */
+      // test this bit in particular
+      try {
+        if (token.accessToken) {
+          const result: GetExistingReport = await Report.getExistingReport(
+            `${token.accessToken}`,
+            {
+              reportId: `${reportId}`
+            }
+          );
 
-      const email = token?.email;
-
-      // to be replaced by backend call
-      // @ts-ignore
-      // eslint-disable-next-line security/detect-object-injection
-      const user = mockUsers[email];
-
-      const report = user?.reports?.find(
-        (report: ReportSnippetType) => report.id === reportId
-      );
-
-      if (token.accessToken && !report) {
-        const report = await Report.getExistingReport(
-          `${reportId}`,
-          `${token.accessToken}`
-        );
-
-        // console.log(report)
-        if (report.ok) {
-          return response.status(200).json(report.report);
+          return response.status(result.status).json({
+            ...defaultNullProps,
+            ...result
+          });
         }
+      } catch (error: any) {
+        return response.status(INTERNAL_SERVER_ERROR).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.REPORT[INTERNAL_SERVER_ERROR]
+          }),
+          ...defaultNullProps
+        });
       }
-
-      if (!report) {
-        return response.status(404).json({
-          error: NO_REPORT,
-          message: 'No report found with that ID.'
-        } as ApiError);
-      }
-
-      const resReport = {
-        ...report,
-        ...mockReport
-      };
-
-      return response.status(200).json(resReport);
     }
   }
+
+  return response.status(METHOD_NOT_ALLOWED).json({
+    ...makeApiHandlerResponseFailure({
+      message: errorsBySourceType.GENERAL[METHOD_NOT_ALLOWED]
+    }),
+    ...defaultNullProps
+  });
 };
 
 export default withSentry(report);

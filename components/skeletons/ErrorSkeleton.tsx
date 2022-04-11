@@ -1,7 +1,6 @@
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import { USER_403 } from '../../lib/utils/error-codes';
 import Button from '../elements/Button';
 import { signOut } from 'next-auth/react';
 
@@ -14,9 +13,6 @@ const ErrorSkeleton = ({ header, message }: ErrorSkeletonProps) => {
   const t = useTranslations();
   const defaultHeader = t('errors.header.default');
   const defaultMessage = t('errors.message.default');
-
-  // If the error is authentication error, encourage the user to sign out and show that option
-  // const showLogoutOption = header === USER_403;
 
   return (
     <div className="w-full h-screen flex items-center px-2 md:px-0">

@@ -2,13 +2,9 @@
 import { CheckIcon, XIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
+import { ErrorCodeKeys } from '../../types/errors';
 
-import {
-  ApiError,
-  ErrorCodeKeys,
-  ReportTypeEnum,
-  TranslateInput
-} from '../../types/global';
+import { ApiError, ReportTypeEnum, TranslateInput } from '../../types/global';
 import { SubmitReportType } from '../../types/report';
 import Button from '../elements/Button';
 import ErrorBoundary from '../elements/ErrorBoundary';
