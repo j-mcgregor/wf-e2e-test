@@ -1,12 +1,13 @@
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useSession } from 'next-auth/react';
-import { IntlMessages, NextIntlProvider } from 'next-intl';
+import { NextIntlProvider } from 'next-intl';
 import React, { ReactElement } from 'react';
 import { RecoilRoot } from 'recoil';
 import { SWRConfig } from 'swr';
 
 import { mockReports } from './lib/mock-data/users';
+import { IntlMessages } from './types/global';
 
 const makeProviders =
   (messages?: IntlMessages) =>
