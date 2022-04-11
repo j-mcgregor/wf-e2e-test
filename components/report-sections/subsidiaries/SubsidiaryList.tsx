@@ -16,7 +16,6 @@ export const SubsidiaryList = ({
   isPrint
 }: SubsidiaryListProps) => {
   const t = useTranslations();
-
   const windowWidth = useWindowWidth() || 0;
 
   // if window width is above 640px (eg 2 col grid) = max cards per split section needs to be divisible by 2 so set to 40
@@ -39,7 +38,7 @@ export const SubsidiaryList = ({
             <div
               key={index}
               className={`${
-                index !== 0 && 'print:translate-y-[80px]'
+                index !== 0 ? 'print:translate-y-[80px]' : ''
               } grid sm:grid-cols-2 lg:grid-cols-3 gap-4 print:gap-0 print:grid-cols-4 sm:print:grid-cols-4 lg:print:grid-cols-4 print:border-2 print:px-4 print:py-2 avoid-break`}
             >
               {subArray.map((subsidiary, i) => {
@@ -48,6 +47,8 @@ export const SubsidiaryList = ({
                   <EntityCard
                     key={`subsidiary-${i}`}
                     name={subsidiary.name}
+                    iso_code={subsidiary.iso_code}
+                    company_id={subsidiary.id} // <-- incorrect; not company_id so causes 404
                     type={type}
                   />
                 );
