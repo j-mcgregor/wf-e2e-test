@@ -1,3 +1,4 @@
+import { StringUtils } from '@azure/msal-browser';
 import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -19,6 +20,36 @@ interface ReportNavProps {
 
 const nonTestingProps = {
   containerId: 'secondary-layout-container'
+};
+
+export const handleExportCsv = async (
+  id: string,
+  setDownloadingCsv: (value: boolean) => void
+) => {
+  if (!id) return null;
+  setDownloadingCsv(true);
+
+  try {
+    const response = await fetcher(
+      `/api/reports/report?id=${id}&export=csv-full`,
+      'GET',
+      null,
+      {}
+    );
+    setDownloadingCsv(false);
+
+    const fileName = `report-${id}.csv`;
+    downloadFile({
+      data: response.csv,
+      // eg report-companyName.csv
+      fileName: fileName,
+      fileType: 'text/csv'
+    });
+  } catch (error) {
+    // TODO remove console.log
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
 };
 
 const ReportNav = ({
@@ -46,33 +77,6 @@ const ReportNav = ({
       </>
     );
   }
-
-  const handleExportCsv = async () => {
-    if (!id) return null;
-    setDownloadingCsv(true);
-
-    try {
-      const response = await fetcher(
-        `/api/reports/report?id=${id}&export=csv-full`,
-        'GET',
-        null,
-        {}
-      );
-      setDownloadingCsv(false);
-
-      const fileName = `report-${id}.csv`;
-      downloadFile({
-        data: response.csv,
-        // eg report-companyName.csv
-        fileName: fileName,
-        fileType: 'text/csv'
-      });
-    } catch (error) {
-      // TODO remove console.log
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-  };
 
   return (
     <div className="px-6 pt-8 flex-col h-full hidden xl:flex">
@@ -157,7 +161,7 @@ const ReportNav = ({
           loading={downloadingCsv}
           disabled={downloadingCsv}
           variant="secondary"
-          onClick={() => handleExportCsv()}
+          onClick={() => handleExportCsv(`${id}`, setDownloadingCsv)}
         >
           {t('export_csv')}
         </Button>

@@ -104,7 +104,10 @@ const ReportTable = ({
                           key={report.id}
                           className="bg-white odd:bg-gray-50 hover:bg-gray-300 text-xs lg:text-sm cursor-pointer"
                         >
-                          <td className="h-12 px-3 max-w-[260px] truncate sm:px-6 py-1 whitespace-nowrap font-medium text-gray-900">
+                          <td
+                            title={reportTitle}
+                            className="h-12 px-3 max-w-[260px] truncate sm:px-6 py-1 whitespace-nowrap font-medium text-gray-900"
+                          >
                             {reportTitle}
                           </td>
                           <td className="px-3 sm:px-6 py-1  whitespace-nowrap text-center  ">
@@ -115,9 +118,7 @@ const ReportTable = ({
                           </td>
 
                           <td className="px-3 sm:px-6 py-1 whitespace-nowrap text-center  ">
-                            <ReactTimeAgo
-                              date={getClientRelativeDate(report.created_at)}
-                            />
+                            <ReactTimeAgo date={report.created_at} />
                           </td>
                         </tr>
                       </Link>

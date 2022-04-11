@@ -4,7 +4,7 @@ import { TrashIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 
 interface BookmarkDropdownProps {
-  deleteBookmark: () => void;
+  deleteBookmark?: () => void;
 }
 const BookmarkDropdown = ({ deleteBookmark }: BookmarkDropdownProps) => {
   const t = useTranslations();
