@@ -6,7 +6,8 @@ import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
 
 import BatchReport, {
-  GetBatchReportById
+  GetBatchReportById,
+  GetBatchReportCsvFull
 } from '../../../lib/funcs/batch-reports';
 import { NO_REPORT_ID } from '../../../lib/utils/error-codes';
 import {
@@ -25,7 +26,9 @@ import type { NextApiHandler } from 'next';
 
 const { METHOD_NOT_ALLOWED, NOT_FOUND } = StatusCodeConstants;
 
-export interface BatchReportsIdApi extends GetBatchReportById {}
+export interface BatchReportsIdApi
+  extends GetBatchReportById,
+    GetBatchReportCsvFull {}
 
 // Declaring function for readability with Sentry wrapper
 const batchReports: NextApiHandler<BatchReportsIdApi> = async (
@@ -34,7 +37,8 @@ const batchReports: NextApiHandler<BatchReportsIdApi> = async (
 ) => {
   const defaultNullProps = {
     batchReport: null,
-    report: null
+    report: null,
+    csv: null
   };
   const token = await getToken({
     req: request,
@@ -52,6 +56,7 @@ const batchReports: NextApiHandler<BatchReportsIdApi> = async (
     case 'GET':
       // extract report id
       const batchReportId = request.query.id;
+      const exportQuery = request.query.export;
 
       if (!batchReportId) {
         return makeMissingArgsResponse(
@@ -63,6 +68,18 @@ const batchReports: NextApiHandler<BatchReportsIdApi> = async (
       }
 
       try {
+        // GET CSV
+        if (exportQuery === 'csv') {
+          const fetchRes = await BatchReport.getBatchReportsCsv(
+            `${token.accessToken}`,
+            { batchReportId: batchReportId.toString() }
+          );
+
+          return response.status(fetchRes.status).json({
+            ...defaultNullProps,
+            ...fetchRes
+          });
+        }
         const fetchRes = await BatchReport.getBatchReportsById(
           `${token.accessToken}`,
           { id: batchReportId.toString() }

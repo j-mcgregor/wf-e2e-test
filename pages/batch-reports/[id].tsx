@@ -1,10 +1,11 @@
 /* eslint-disable security/detect-non-literal-require */
-import { ArrowLeftIcon } from '@heroicons/react/outline';
+import { ArrowLeftIcon, DownloadIcon } from '@heroicons/react/outline';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
+import LinkCard from '../../components/cards/LinkCard';
 
 import BatchReportTable from '../../components/elements/BatchReportTable';
 import Button from '../../components/elements/Button';
@@ -13,11 +14,13 @@ import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import { REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
+import { downloadFile } from '../../lib/utils/file-helpers';
 
 import type {
   BatchJobGetByIdResponse,
   GetBatchSummary
 } from '../../types/batch-reports';
+import { BatchReportsIdApi } from '../api/batch-reports/[id]';
 
 const BatchReport = () => {
   const t = useTranslations();
@@ -37,6 +40,30 @@ const BatchReport = () => {
       setBatchReport(data.batchReport);
     }
   }, [data]);
+
+  const handleExportCsv = async () => {
+    if (!id) return null;
+
+    try {
+      const response: BatchReportsIdApi = await fetcher(
+        `/api/batch-reports/${id}?export=csv`,
+        'GET',
+        null,
+        {}
+      );
+
+      downloadFile({
+        data: response.csv,
+        // eg report-id.csv
+        fileName: `batch-report-${id}.csv`,
+        fileType: 'text/csv'
+      });
+    } catch (error) {
+      // TODO remove console.log
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
 
   return (
     <Layout title="Batched Report">
@@ -62,7 +89,23 @@ const BatchReport = () => {
               'download_the_results_of_the_batch_reports_in_csv_or_excel_format'
             )}
           </p>
-          {/* <DownloadReports /> */}
+          <>
+            <p className="text-2xl font-semibold my-8">
+              {t('download_reports')}
+            </p>
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {batchReport && (
+                <LinkCard
+                  icon={<DownloadIcon className="w-8 h-8" />}
+                  iconColor="bg-highlight bg-opacity-50"
+                  header={`${batchReport.name}.csv`}
+                  description={t('all_results_in_a_single_csv')}
+                  onClick={() => handleExportCsv()}
+                  className="text-left"
+                />
+              )}
+            </div>
+          </>
           <div className="mt-8">
             <p className="text-xl font-semibold pb-4">
               {t('batch_report_results')}
@@ -96,38 +139,3 @@ export const getServerSideProps = ({ locale }: GetServerSidePropsContext) => {
     }
   };
 };
-
-/**
- * TODO Reimplement this section when the backend has added the endpoints.
- * Removed from main return for readability purposes
- */
-
-// const DownloadReports = () => {
-//   return (
-//     <>
-//       <p className="text-2xl font-semibold my-8">{t('download_reports')}</p>
-//       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-//         {batchReport && (
-//           <LinkCard
-//             icon={<DownloadIcon className="w-8 h-8" />}
-//             iconColor="bg-highlight bg-opacity-50"
-//             header={`${batchReport.name}.csv`}
-//             description={t('all_results_in_a_single_csv')}
-//             disabled
-//             linkTo="#"
-//           />
-//         )}
-//         {batchReport && (
-//           <LinkCard
-//             icon={<DownloadIcon className="w-8 h-8" />}
-//             iconColor="bg-highlight-3 bg-opacity-50"
-//             header={`${batchReport.name}.xlsx`}
-//             description={t('open_excel_immediately')}
-//             disabled
-//             linkTo="#"
-//           />
-//         )}
-//       </div>
-//     </>
-//   );
-// };

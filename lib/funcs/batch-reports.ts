@@ -210,11 +210,57 @@ const batchJobReportUpload: ApiHandler<
   }
 };
 
+/**
+ * ***************************************************
+ * GET CSV REPORT
+ * ***************************************************
+ */
+
+export interface GetBatchReportCsvFull extends HandlerReturn {
+  csv: string | null;
+}
+
+export interface GetBatchReportCsvFullProps {
+  batchReportId: string;
+}
+
+const getBatchReportsCsv: ApiHandler<
+  GetBatchReportCsvFull,
+  GetBatchReportCsvFullProps
+> = async (token: string, { batchReportId }) => {
+  try {
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/jobs/batch/${batchReportId}/export/full`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    if (response.ok) {
+      const csv = await response.text();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        csv
+      };
+    }
+    return {
+      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+      csv: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), csv: null };
+  }
+};
+
 const BatchReport = {
   getAllBatchReports,
   getBatchReportsById,
   createBatchReport,
-  batchJobReportUpload
+  batchJobReportUpload,
+  getBatchReportsCsv
 };
 
 export default BatchReport;
