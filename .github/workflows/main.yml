@@ -45,7 +45,7 @@ jobs:
         id: waitForVercelPreviewDeployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 180
+          max_timeout: 600
 
   end_to_end_tests:
     name: End-to-end tests
