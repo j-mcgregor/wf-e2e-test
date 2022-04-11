@@ -28,7 +28,7 @@ export interface BatchSummary {
   bond_rating_equivalent: string;
   loss_given_default: number;
   probability_of_default_1_year: number;
-  created_at: Date;
+  created_at: string;
   bookmarked: boolean;
 }
 
