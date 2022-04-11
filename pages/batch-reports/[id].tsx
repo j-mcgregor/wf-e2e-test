@@ -101,16 +101,7 @@ const BatchReport = () => {
                   header={`${batchReport.name}.csv`}
                   description={t('all_results_in_a_single_csv')}
                   onClick={() => handleExportCsv()}
-                />
-              )}
-              {batchReport && (
-                <LinkCard
-                  icon={<DownloadIcon className="w-8 h-8" />}
-                  iconColor="bg-highlight-3 bg-opacity-50"
-                  header={`${batchReport.name}.xlsx`}
-                  description={t('open_excel_immediately')}
-                  disabled
-                  linkTo="#"
+                  className="text-left"
                 />
               )}
             </div>
