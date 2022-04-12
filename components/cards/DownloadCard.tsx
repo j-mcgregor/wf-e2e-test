@@ -33,6 +33,7 @@ const DownloadCard = ({
       target="_blank"
       className={`block text-primary max-w-xxs  ${className}`}
       onClick={onClick}
+      rel="noreferrer"
     >
       <div
         className={`hover:shadow-xl duration-300 transition-shadow shadow h-full bg-white rounded p-3`}
