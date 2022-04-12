@@ -7,7 +7,7 @@ import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import config from '../../config';
 
-const RedocView: React.FC = () => {
+const SwaggerView = () => {
   const t = useTranslations();
 
   return (
@@ -27,7 +27,7 @@ const RedocView: React.FC = () => {
   );
 };
 
-export default RedocView;
+export default SwaggerView;
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {

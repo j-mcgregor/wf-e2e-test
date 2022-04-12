@@ -1,8 +1,6 @@
 import { ArrowNarrowUpIcon } from '@heroicons/react/solid';
 import React from 'react';
 
-import Link from '../elements/Link';
-
 // eslint-disable-next-line no-unused-vars
 export type HeroIcon = (props: React.ComponentProps<'svg'>) => JSX.Element;
 

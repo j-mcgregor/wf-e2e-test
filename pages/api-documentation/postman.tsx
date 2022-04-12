@@ -6,7 +6,7 @@ import Button from '../../components/elements/Button';
 import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 
-const RedocView = () => {
+const PostmanView = () => {
   const t = useTranslations();
 
   return (
@@ -29,7 +29,7 @@ const RedocView = () => {
   );
 };
 
-export default RedocView;
+export default PostmanView;
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {

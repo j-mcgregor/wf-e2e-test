@@ -7,7 +7,7 @@ import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import config from '../../config';
 
-const RedocView: React.FC = () => {
+const RedocView = () => {
   const t = useTranslations();
 
   return (
