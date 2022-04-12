@@ -22,11 +22,11 @@ export const documentCards: linkCardType[] = [
   {
     header: 'environment_document_header',
     description: 'environment_document_description',
-    href: '/api-documentation/environment-document'
+    href: '/api-documentation/api-v1.postman_environment.json'
   },
   {
     header: 'collection_document_header',
     description: 'collection_document_description',
-    href: '/api-documentation/collection-document'
+    href: '/api-documentation/api-v1.postman_collection.json'
   }
 ];
