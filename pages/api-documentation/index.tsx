@@ -5,7 +5,6 @@ import {
 } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 // Settings
@@ -21,7 +20,6 @@ import DownloadCard from '../../components/cards/DownloadCard';
 
 const APIDocumentation = () => {
   const t = useTranslations();
-  const router = useRouter();
 
   return (
     <Layout title="API Documentation">
