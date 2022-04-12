@@ -8,40 +8,15 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+// Settings
+import {
+  apiCards,
+  documentCards
+} from '../../lib/settings/api-documentation.settings';
+
 // Components
 import LinkCard from '../../components/cards/LinkCard';
 import Layout from '../../components/layout/Layout';
-
-const apiCards = [
-  {
-    header: 'postman_header',
-    description: 'postman_description',
-    href: '/api-documentation/postman'
-  },
-  {
-    header: 'redoc_header',
-    description: 'redoc_description',
-    href: '/api-documentation/redoc'
-  },
-  {
-    header: 'swagger_header',
-    description: 'swagger_description',
-    href: '/api-documentation/swagger'
-  }
-];
-
-const documentCards = [
-  {
-    header: 'environment_document_header',
-    description: 'environment_document_description',
-    href: '/api-documentation/environment-document'
-  },
-  {
-    header: 'collection_document_header',
-    description: 'collection_document_description',
-    href: '/api-documentation/collection-document'
-  }
-];
 
 const APIDocumentation = () => {
   const t = useTranslations();
