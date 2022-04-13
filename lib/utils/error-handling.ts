@@ -11,7 +11,8 @@ type SourceType =
   | 'AUTH'
   | 'REPORT'
   | 'BATCH_REPORT'
-  | 'GENERAL';
+  | 'GENERAL'
+  | 'ORGANISATION';
 
 interface MakeErrorProps {
   status: number;
@@ -61,6 +62,9 @@ export const errorsBySourceType: Record<SourceType, Record<number, string>> = {
     429: ErrorConstants.TOO_MANY_REQUESTS,
     500: ErrorConstants.INTERNAL_SERVER_ERROR,
     503: ErrorConstants.SERVICE_UNAVAILABLE
+  },
+  ORGANISATION: {
+    404: ErrorConstants.ORG_404
   }
 };
 

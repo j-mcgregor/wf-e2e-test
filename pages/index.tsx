@@ -8,6 +8,7 @@ import {
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRecoilValue } from 'recoil';
+import useSWR from 'swr';
 
 import LinkCard from '../components/cards/LinkCard';
 import ReportTable from '../components/elements/ReportTable';
@@ -18,12 +19,21 @@ import WFLogo from '../components/svgs/WFLogo';
 import useLocalStorage from '../hooks/useLocalStorage';
 import useTotalReports from '../hooks/useTotalReports';
 import appState from '../lib/appState';
+import fetcher from '../lib/utils/fetcher';
+import { OrganisationApi } from './api/organisation';
 
 export default function Dashboard() {
   const t = useTranslations();
   const [userLoginTime] = useLocalStorage<number[]>('wf_last_login', []);
 
   const { user } = useRecoilValue(appState);
+
+  const { data, error } = useSWR<OrganisationApi>(
+    '/api/organisation?id=87ae251d-b63e-4adf-888e-2ef656c86afb',
+    fetcher
+  );
+
+  console.log(data);
 
   return (
     <Layout title="Dashboard">
