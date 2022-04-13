@@ -29,7 +29,6 @@ const Login = () => {
     []
   );
   const [homePage] = useLocalStorage<string>('wf_home_page', '');
-  const [lastPageVisited] = useLocalStorage<string>('wf_last_page_visited', '');
 
   // assign the user home page redirect if they have one
   const userHomePagePref = useUserHomePageRedirect(homePage);
@@ -40,11 +39,7 @@ const Login = () => {
 
   useEffect(() => {
     if (session && session.user) {
-      if (lastPageVisited && lastPageVisited !== '') {
-        router.push(`${lastPageVisited}`);
-      } else {
-        router.push(`${userHomePagePref}`);
-      }
+      router.push(`${userHomePagePref}`);
     }
   }, [session]);
 
