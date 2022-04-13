@@ -1,4 +1,3 @@
-import { StringUtils } from '@azure/msal-browser';
 import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
