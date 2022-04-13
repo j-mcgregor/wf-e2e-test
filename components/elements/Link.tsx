@@ -45,7 +45,7 @@ const Link = ({
     return (
       <a
         href={linkTo}
-        download
+        download={download}
         target="_blank"
         rel="noopener noreferrer"
         className={className}
