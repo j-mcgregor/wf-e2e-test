@@ -17,7 +17,7 @@ const Link = ({
   style,
   onClick,
   disabled,
-  download,
+  download=false,
   ...rest
 }: LinkProps) => {
   // who added this?
