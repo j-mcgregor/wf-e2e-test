@@ -16,7 +16,6 @@ import {
 // Components
 import LinkCard from '../../components/cards/LinkCard';
 import Layout from '../../components/layout/Layout';
-import DownloadCard from '../../components/cards/DownloadCard';
 
 const APIDocumentation = () => {
   const t = useTranslations();
@@ -52,7 +51,7 @@ const APIDocumentation = () => {
           </p>
           <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-auto md:mr-auto ">
             {documentCards.map(({ header, description, href }) => (
-              <DownloadCard
+              <LinkCard
                 key={header}
                 className="mx-auto"
                 icon={
@@ -62,6 +61,7 @@ const APIDocumentation = () => {
                 header={t(header)}
                 description={t(description)}
                 linkTo={href}
+                download
               />
             ))}
           </div>
