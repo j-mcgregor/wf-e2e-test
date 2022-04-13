@@ -1,7 +1,7 @@
 import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
 
-import Organisation from '../../../lib/funcs/organisation';
+import Organisation, { GetOrganisation } from '../../../lib/funcs/organisation';
 import { NO_COMPANY_ID } from '../../../lib/utils/error-codes';
 import {
   errorsBySourceType,
@@ -36,10 +36,10 @@ const OrganisationAPI: NextApiHandler<OrganisationApi> = async (
   const { method } = request;
 
   // get the company id from the query
-  const companyId: string = request?.query?.id?.toString();
+  const orgId: string = request?.query?.orgId?.toString();
 
   // return an error if no company id is provided
-  if (!companyId) {
+  if (!orgId) {
     return makeMissingArgsResponse(
       response,
       NO_COMPANY_ID,
@@ -52,8 +52,8 @@ const OrganisationAPI: NextApiHandler<OrganisationApi> = async (
     case 'GET':
       try {
         const result = await Organisation.getOrganisation(
-          `${token.accessToken}`,
-          { companyId }
+          `${token?.accessToken}`,
+          { orgId }
         );
         return response.status(result.status).json(result);
       } catch (error) {

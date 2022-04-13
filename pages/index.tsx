@@ -28,12 +28,12 @@ export default function Dashboard() {
 
   const { user } = useRecoilValue(appState);
 
-  const { data, error } = useSWR<OrganisationApi>(
-    '/api/organisation?id=87ae251d-b63e-4adf-888e-2ef656c86afb',
+  const { data, isValidating } = useSWR<OrganisationApi>(
+    `/api/organisation?orgId=${user?.organisation_id}`,
     fetcher
   );
 
-  console.log(data);
+  typeof window !== 'undefined' && console.log(data);
 
   return (
     <Layout title="Dashboard">

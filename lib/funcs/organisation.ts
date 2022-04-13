@@ -17,23 +17,26 @@ export interface GetOrganisation extends HandlerReturn {
 }
 
 interface GetOrganisationProps {
-  companyId: string;
+  orgId: string;
 }
 
 const getOrganisation: ApiHandler<
   GetOrganisation,
   GetOrganisationProps
-> = async (token, { companyId }) => {
+> = async (token: string, { orgId }) => {
   try {
     const response = await fetch(
-      `${process.env.WF_AP_ROUTE}/organisations/${companyId}`,
+      `${process.env.WF_AP_ROUTE}/organisations/${orgId}`,
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       }
     );
+
+    console.log(response);
 
     if (response.ok) {
       const organisation: Organisation = await response.json();
