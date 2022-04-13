@@ -7,7 +7,7 @@ import SkeletonMenu from '../skeletons/SkeletonMenu';
 import DownloadDoc from '../icons/DownloadDoc';
 import DownloadFolder from '../icons/DownloadFolder';
 import { useRouter } from 'next/router';
-import { handleExportCsv } from './ReportNav';
+import { handleExport } from './ReportNav';
 
 interface ReportNavProps {
   companyName: string;
@@ -31,6 +31,7 @@ const TabletReportNav = ({
   const id = router?.query?.id;
 
   const [downloadingCsv, setDownloadingCsv] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   const [activeItem, setActiveItem] = useState<string>('summary');
   // monitor the changes to the active state path and update the menu scroll position based on the id
@@ -109,18 +110,18 @@ const TabletReportNav = ({
 
       <div className="flex h-[50px]">
         <Button
+          loading={downloadingPdf}
+          disabled={downloadingPdf}
           variant="alt"
-          className="rounded-none flex items-center"
-          linkTo={`/api/reports/report?id=${id}&export=pdf`}
-          target="_blank"
-          rel="noreferrer"
+          className="w-full"
+          onClick={() => handleExport('pdf', `${id}`, setDownloadingPdf)}
         >
           <DownloadDoc />
         </Button>
         <Button
           loading={downloadingCsv}
           disabled={downloadingCsv}
-          onClick={() => handleExportCsv(`${id}`, setDownloadingCsv)}
+          onClick={() => handleExport('csv', `${id}`, setDownloadingCsv)}
           variant="secondary"
           className="rounded-none flex items-center"
         >
