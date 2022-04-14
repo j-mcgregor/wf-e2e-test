@@ -19,9 +19,9 @@ import type { NextApiHandler } from 'next';
 
 const { NOT_FOUND, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
-export interface OrganisationApi extends GetOrganisation {}
+export interface OrganisationIndexApi extends GetOrganisation {}
 
-const OrganisationAPI: NextApiHandler<OrganisationApi> = async (
+const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
   request,
   response
 ) => {

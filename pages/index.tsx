@@ -15,7 +15,6 @@ import TwitterFeed from '../components/elements/TwitterFeed';
 import Layout from '../components/layout/Layout';
 import WFLogo from '../components/svgs/WFLogo';
 import useLocalStorage from '../hooks/useLocalStorage';
-import useOrganisation from '../hooks/useOrganisation';
 import appState from '../lib/appState';
 
 export default function Dashboard() {

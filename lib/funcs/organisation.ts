@@ -1,7 +1,7 @@
 import { UserType } from '../../types/global';
 import { ApiHandler, HandlerReturn } from '../../types/http';
 import {
-  Organisation,
+  OrganisationType,
   OrganisationUser,
   OrganisationUserSchema
 } from '../../types/organisations';
@@ -17,8 +17,10 @@ import {
  * ***************************************************
  */
 
+const contentType = 'application/json';
+
 export interface GetOrganisation extends HandlerReturn {
-  organisation: Organisation | null; // <- null indicates a failure since typing makes this value required
+  organisation: OrganisationType | null; // <- null indicates a failure since typing makes this value required
 }
 
 interface GetOrganisationProps {
@@ -36,13 +38,13 @@ const getOrganisation: ApiHandler<
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': contentType
         }
       }
     );
 
     if (response.ok) {
-      const organisation: Organisation = await response.json();
+      const organisation: OrganisationType = await response.json();
       return {
         ...makeApiHandlerResponseSuccess(),
         organisation
@@ -84,7 +86,7 @@ const getOrganisationUsers: ApiHandler<
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': contentType
         }
       }
     );
@@ -142,7 +144,7 @@ const getOrganisationUser: ApiHandler<
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': contentType
         }
       }
     );
@@ -168,7 +170,7 @@ const getOrganisationUser: ApiHandler<
 };
 
 interface UpdateOrganisationProps extends GetOrganisationProps {
-  body: Organisation;
+  body: OrganisationType;
 }
 
 const updateOrganisation: ApiHandler<
@@ -182,13 +184,13 @@ const updateOrganisation: ApiHandler<
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': contentType
         },
         body: JSON.stringify(body)
       }
     );
     if (response.ok) {
-      const organisation: Organisation = await response.json();
+      const organisation: OrganisationType = await response.json();
       return {
         ...makeApiHandlerResponseSuccess(),
         organisation
@@ -219,7 +221,7 @@ const updateOrganisationUser: ApiHandler<
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        'Content-Type': contentType
       },
       body: JSON.stringify(body)
     });

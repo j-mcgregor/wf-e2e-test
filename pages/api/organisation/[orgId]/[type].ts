@@ -14,11 +14,11 @@ import { StatusCodeConstants } from '../../../../types/http-status-codes';
 
 const { NOT_FOUND, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
-export interface OrganisationUsersApi
+export interface OrganisationTypeApi
   extends GetOrganisationUsers,
     GetOrganisationUser {}
 
-const OrganisationUsersApi: NextApiHandler<OrganisationUsersApi> = async (
+const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
   request,
   response
 ) => {
@@ -72,6 +72,7 @@ const OrganisationUsersApi: NextApiHandler<OrganisationUsersApi> = async (
           ...defaultNullProps
         });
       }
+      break;
     case 'PUT':
       try {
         //   Route for updating a single user of an organisation
@@ -93,6 +94,7 @@ const OrganisationUsersApi: NextApiHandler<OrganisationUsersApi> = async (
           ...defaultNullProps
         });
       }
+      break;
     default:
       return response.status(METHOD_NOT_ALLOWED).json({
         ...makeApiHandlerResponseFailure({

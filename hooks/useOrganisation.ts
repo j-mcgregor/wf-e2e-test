@@ -4,7 +4,7 @@ import useSWR from 'swr';
 
 import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
-import { OrganisationApi } from '../pages/api/organisation/[orgId]';
+import { OrganisationIndexApi } from '../pages/api/organisation/[orgId]';
 
 const useOrganisation = (fetch: boolean = true) => {
   const { user } = useRecoilValue(appState);
@@ -12,7 +12,7 @@ const useOrganisation = (fetch: boolean = true) => {
 
   const orgId = user?.organisation_id || null;
 
-  const { data, isValidating } = useSWR<OrganisationApi>(
+  const { data, isValidating } = useSWR<OrganisationIndexApi>(
     fetch && `/api/organisation/${orgId}`,
     fetcher,
     {

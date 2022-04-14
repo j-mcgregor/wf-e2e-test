@@ -1,4 +1,4 @@
-export interface Organisation {
+export interface OrganisationType {
   name?: string;
   max_users?: number;
   send_user_limit_email?: boolean;
