@@ -167,6 +167,45 @@ const getOrganisationUser: ApiHandler<
   }
 };
 
+interface UpdateOrganisationProps extends GetOrganisationProps {
+  body: Organisation;
+}
+
+const updateOrganisation: ApiHandler<
+  GetOrganisation,
+  UpdateOrganisationProps
+> = async (token: string, { orgId, body }) => {
+  try {
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/organisations/${orgId}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      }
+    );
+    if (response.ok) {
+      const organisation: Organisation = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        organisation
+      };
+    }
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'ORGANISATION'
+      }),
+      organisation: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), organisation: null };
+  }
+};
+
 interface UpdateOrganisationUserProps extends GetOrganisationUserProps {
   body: OrganisationUserSchema;
 }
@@ -210,6 +249,7 @@ const Organisation = {
   getOrganisation,
   getOrganisationUsers,
   getOrganisationUser,
+  updateOrganisation,
   updateOrganisationUser
 };
 

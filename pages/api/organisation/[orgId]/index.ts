@@ -66,6 +66,12 @@ const OrganisationAPI: NextApiHandler<OrganisationApi> = async (
           ...defaultNullProps
         });
       }
+    case 'PUT':
+      const result = await Organisation.updateOrganisation(
+        `${token?.accessToken}`,
+        { orgId, body: request.body }
+      );
+      return response.status(result.status).json(result);
     default:
       return response.status(METHOD_NOT_ALLOWED).json({
         ...makeApiHandlerResponseFailure({
