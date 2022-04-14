@@ -1,5 +1,6 @@
+import { UserType } from '../../types/global';
 import { ApiHandler, HandlerReturn } from '../../types/http';
-import { Organisation } from '../../types/organisations';
+import { Organisation, OrganisationUser } from '../../types/organisations';
 import { makeErrorResponse } from '../utils/error-handling';
 import {
   makeApiHandlerResponseFailure,
@@ -36,8 +37,6 @@ const getOrganisation: ApiHandler<
       }
     );
 
-    console.log(response);
-
     if (response.ok) {
       const organisation: Organisation = await response.json();
       return {
@@ -49,7 +48,7 @@ const getOrganisation: ApiHandler<
     return {
       ...makeErrorResponse({
         status: response.status,
-        sourceType: 'BATCH_REPORT'
+        sourceType: 'ORGANISATION'
       }),
       organisation: null
     };
@@ -58,8 +57,103 @@ const getOrganisation: ApiHandler<
   }
 };
 
+export interface GetOrganisationUsers extends HandlerReturn {
+  users: UserType[] | null; // <- null indicates a failure since typing makes this value required
+  total: number | null;
+}
+
+interface GetOrganisationUsersProps extends GetOrganisationProps {
+  limit: number;
+  skip: number;
+}
+
+const getOrganisationUsers: ApiHandler<
+  GetOrganisationUsers,
+  GetOrganisationUsersProps
+> = async (token: string, { orgId, limit, skip }) => {
+  try {
+    const response = await fetch(
+      `${
+        process.env.WF_AP_ROUTE
+      }/users?ogranisation_id=${orgId}?_start=${skip}&_end=${skip + limit}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (response.ok) {
+      const users: OrganisationUser[] = await response.json();
+      const total: number =
+        parseInt(response?.headers?.get('X-Total-Count') as string) || 0;
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        users,
+        total
+      };
+    }
+
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'ORGANISATION'
+      }),
+      users: null,
+      total: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), users: null, total: null };
+  }
+};
+
+export interface GetOrganisationUser extends HandlerReturn {
+  user: OrganisationUser | null; // <- null indicates a failure since typing makes this value required
+}
+
+interface GetOrganisationUserProps extends GetOrganisationProps {
+  userId: string;
+}
+
+const getOrganisationUser: ApiHandler<
+  GetOrganisationUser,
+  GetOrganisationUserProps
+> = async (token: string, { orgId, userId }) => {
+  try {
+    const response = await fetch(`${process.env.WF_AP_ROUTE}/users/${userId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      const user: OrganisationUser = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        user
+      };
+    }
+
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'ORGANISATION'
+      }),
+      user: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), user: null };
+  }
+};
+
 const Organisation = {
-  getOrganisation
+  getOrganisation,
+  getOrganisationUsers,
+  getOrganisationUser
 };
 
 export default Organisation;

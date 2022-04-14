@@ -15,3 +15,25 @@ export interface Organisation {
     assigned_customer_email: string;
   };
 }
+
+export interface OrganisationUser {
+  email: string;
+  is_active: boolean;
+  is_superuser: boolean;
+  full_name: string;
+  organisation_id: string;
+  preferences: {
+    defaults: {
+      locale: string;
+      currency: string;
+      home_page: string;
+      reporting_country: string;
+    };
+    communication: {
+      batch_report_email: boolean;
+      service_updates: boolean;
+      company_updates: boolean;
+    };
+  };
+  id: string;
+}

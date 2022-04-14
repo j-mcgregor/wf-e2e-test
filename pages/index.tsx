@@ -20,7 +20,7 @@ import useLocalStorage from '../hooks/useLocalStorage';
 import useTotalReports from '../hooks/useTotalReports';
 import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
-import { OrganisationApi } from './api/organisation';
+import { OrganisationApi } from './api/organisation/[orgId]';
 
 export default function Dashboard() {
   const t = useTranslations();
@@ -29,7 +29,7 @@ export default function Dashboard() {
   const { user } = useRecoilValue(appState);
 
   const { data, isValidating } = useSWR<OrganisationApi>(
-    `/api/organisation?orgId=${user?.organisation_id}`,
+    `/api/organisation/${user?.organisation_id}/users`,
     fetcher
   );
 
