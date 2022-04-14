@@ -64,7 +64,7 @@ const getOrganisation: ApiHandler<
 };
 
 export interface GetOrganisationUsers extends HandlerReturn {
-  users: UserType[] | null; // <- null indicates a failure since typing makes this value required
+  users: OrganisationUser[] | null; // <- null indicates a failure since typing makes this value required
   total: number | null;
 }
 
