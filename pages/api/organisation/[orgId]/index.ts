@@ -67,11 +67,20 @@ const OrganisationAPI: NextApiHandler<OrganisationApi> = async (
         });
       }
     case 'PUT':
-      const result = await Organisation.updateOrganisation(
-        `${token?.accessToken}`,
-        { orgId, body: request.body }
-      );
-      return response.status(result.status).json(result);
+      try {
+        const result = await Organisation.updateOrganisation(
+          `${token?.accessToken}`,
+          { orgId, body: request.body }
+        );
+        return response.status(result.status).json(result);
+      } catch (error) {
+        return response.status(NOT_FOUND).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.ORGANISATION[NOT_FOUND]
+          }),
+          ...defaultNullProps
+        });
+      }
     default:
       return response.status(METHOD_NOT_ALLOWED).json({
         ...makeApiHandlerResponseFailure({
