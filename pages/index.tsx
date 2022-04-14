@@ -29,7 +29,7 @@ export default function Dashboard() {
   const { user } = useRecoilValue(appState);
 
   const { data, isValidating } = useSWR<OrganisationApi>(
-    `/api/organisation/${user?.organisation_id}/users`,
+    `/api/organisation/${user?.organisation_id}/user?userId=fdb6df83-66fe-4423-ba60-9ba8f95b3981`,
     fetcher
   );
 

@@ -2,7 +2,7 @@ import { NextApiHandler } from 'next';
 import { getToken } from 'next-auth/jwt';
 
 import Organisation, {
-  //   GetOrganisationUser,
+  GetOrganisationUser,
   GetOrganisationUsers
 } from '../../../../lib/funcs/organisation';
 import {
@@ -14,13 +14,15 @@ import { StatusCodeConstants } from '../../../../types/http-status-codes';
 
 const { NOT_FOUND, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
-export interface OrganisationUsersApi extends GetOrganisationUsers {}
+export interface OrganisationUsersApi
+  extends GetOrganisationUsers,
+    GetOrganisationUser {}
 
 const OrganisationUsersApi: NextApiHandler<OrganisationUsersApi> = async (
   request,
   response
 ) => {
-  const defaultNullProps = { users: null, total: null };
+  const defaultNullProps = { users: null, user: null, total: null };
   const token = await getToken({
     req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
@@ -46,7 +48,19 @@ const OrganisationUsersApi: NextApiHandler<OrganisationUsersApi> = async (
             `${token?.accessToken}`,
             { orgId, limit, skip }
           );
-          return response.status(result.status).json(result);
+          return response.status(result.status).json({
+            ...defaultNullProps,
+            ...result
+          });
+        } else if (type === 'user') {
+          const result = await Organisation.getOrganisationUser(
+            `${token?.accessToken}`,
+            { orgId, userId }
+          );
+          return response.status(result.status).json({
+            ...defaultNullProps,
+            ...result
+          });
         }
       } catch (error) {
         return response.status(NOT_FOUND).json({

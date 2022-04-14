@@ -87,13 +87,23 @@ const getOrganisationUsers: ApiHandler<
 
     if (response.ok) {
       const users: OrganisationUser[] = await response.json();
-      const total: number =
-        parseInt(response?.headers?.get('X-Total-Count') as string) || 0;
-      return {
-        ...makeApiHandlerResponseSuccess(),
-        users,
-        total
-      };
+      const totalCountHeader: string | null =
+        response?.headers?.get('X-Total-Count');
+      // Check if header is present
+      if (totalCountHeader) {
+        const total: number = parseInt(totalCountHeader);
+        return {
+          ...makeApiHandlerResponseSuccess(),
+          users,
+          total
+        };
+      } else {
+        return {
+          ...makeApiHandlerResponseSuccess(),
+          users,
+          total: 0
+        };
+      }
     }
 
     return {
@@ -122,13 +132,16 @@ const getOrganisationUser: ApiHandler<
   GetOrganisationUserProps
 > = async (token: string, { orgId, userId }) => {
   try {
-    const response = await fetch(`${process.env.WF_AP_ROUTE}/users/${userId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/users?id=${userId}&organisation_id=${orgId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       }
-    });
+    );
 
     if (response.ok) {
       const user: OrganisationUser = await response.json();
