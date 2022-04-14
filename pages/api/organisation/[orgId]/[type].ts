@@ -72,7 +72,12 @@ const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
           ...defaultNullProps
         });
       }
-      break;
+      return response.status(NOT_FOUND).json({
+        ...makeApiHandlerResponseFailure({
+          message: errorsBySourceType.ORGANISATION[NOT_FOUND]
+        }),
+        ...defaultNullProps
+      });
     case 'PUT':
       try {
         //   Route for updating a single user of an organisation
@@ -94,7 +99,12 @@ const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
           ...defaultNullProps
         });
       }
-      break;
+      return response.status(NOT_FOUND).json({
+        ...makeApiHandlerResponseFailure({
+          message: errorsBySourceType.ORGANISATION[NOT_FOUND]
+        }),
+        ...defaultNullProps
+      });
     default:
       return response.status(METHOD_NOT_ALLOWED).json({
         ...makeApiHandlerResponseFailure({
