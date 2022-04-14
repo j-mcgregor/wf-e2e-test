@@ -1,6 +1,10 @@
 import { UserType } from '../../types/global';
 import { ApiHandler, HandlerReturn } from '../../types/http';
-import { Organisation, OrganisationUser } from '../../types/organisations';
+import {
+  Organisation,
+  OrganisationUser,
+  OrganisationUserSchema
+} from '../../types/organisations';
 import { makeErrorResponse } from '../utils/error-handling';
 import {
   makeApiHandlerResponseFailure,
@@ -163,10 +167,50 @@ const getOrganisationUser: ApiHandler<
   }
 };
 
+interface UpdateOrganisationUserProps extends GetOrganisationUserProps {
+  body: OrganisationUserSchema;
+}
+
+const updateOrganisationUser: ApiHandler<
+  GetOrganisationUser,
+  UpdateOrganisationUserProps
+> = async (token: string, { orgId, userId, body }) => {
+  try {
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/users?id=${userId}&organisation_id=${orgId}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      }
+    );
+
+    if (response.ok) {
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        user: await response.json()
+      };
+    }
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'ORGANISATION'
+      }),
+      user: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), user: null };
+  }
+};
+
 const Organisation = {
   getOrganisation,
   getOrganisationUsers,
-  getOrganisationUser
+  getOrganisationUser,
+  updateOrganisationUser
 };
 
 export default Organisation;

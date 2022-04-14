@@ -43,6 +43,7 @@ const OrganisationUsersApi: NextApiHandler<OrganisationUsersApi> = async (
   switch (method) {
     case 'GET':
       try {
+        //   Route for getting all users in an organisation
         if (type === 'users') {
           const result = await Organisation.getOrganisationUsers(
             `${token?.accessToken}`,
@@ -52,10 +53,32 @@ const OrganisationUsersApi: NextApiHandler<OrganisationUsersApi> = async (
             ...defaultNullProps,
             ...result
           });
+          //   Route for returning a single user of an organisation
         } else if (type === 'user') {
           const result = await Organisation.getOrganisationUser(
             `${token?.accessToken}`,
             { orgId, userId }
+          );
+          return response.status(result.status).json({
+            ...defaultNullProps,
+            ...result
+          });
+        }
+      } catch (error) {
+        return response.status(NOT_FOUND).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.ORGANISATION[NOT_FOUND]
+          }),
+          ...defaultNullProps
+        });
+      }
+    case 'PUT':
+      try {
+        //   Route for updating a single user of an organisation
+        if (type === 'user') {
+          const result = await Organisation.updateOrganisationUser(
+            `${token?.accessToken}`,
+            { orgId, userId, body: request.body }
           );
           return response.status(result.status).json({
             ...defaultNullProps,
