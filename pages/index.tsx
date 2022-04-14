@@ -2,13 +2,11 @@
 import {
   ChipIcon,
   DocumentDuplicateIcon,
-  LightningBoltIcon,
   HandIcon
 } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRecoilValue } from 'recoil';
-import useSWR from 'swr';
 
 import LinkCard from '../components/cards/LinkCard';
 import ReportTable from '../components/elements/ReportTable';
@@ -17,23 +15,13 @@ import TwitterFeed from '../components/elements/TwitterFeed';
 import Layout from '../components/layout/Layout';
 import WFLogo from '../components/svgs/WFLogo';
 import useLocalStorage from '../hooks/useLocalStorage';
-import useTotalReports from '../hooks/useTotalReports';
 import appState from '../lib/appState';
-import fetcher from '../lib/utils/fetcher';
-import { OrganisationApi } from './api/organisation/[orgId]';
 
 export default function Dashboard() {
   const t = useTranslations();
   const [userLoginTime] = useLocalStorage<number[]>('wf_last_login', []);
 
   const { user } = useRecoilValue(appState);
-
-  const { data, isValidating } = useSWR<OrganisationApi>(
-    `/api/organisation/${user?.organisation_id}/user?userId=fdb6df83-66fe-4423-ba60-9ba8f95b3981`,
-    fetcher
-  );
-
-  typeof window !== 'undefined' && console.log(data);
 
   return (
     <Layout title="Dashboard">

@@ -213,19 +213,16 @@ interface UpdateOrganisationUserProps extends GetOrganisationUserProps {
 const updateOrganisationUser: ApiHandler<
   GetOrganisationUser,
   UpdateOrganisationUserProps
-> = async (token: string, { orgId, userId, body }) => {
+> = async (token: string, { userId, body }) => {
   try {
-    const response = await fetch(
-      `${process.env.WF_AP_ROUTE}/users?id=${userId}&organisation_id=${orgId}`,
-      {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      }
-    );
+    const response = await fetch(`${process.env.WF_AP_ROUTE}/users/${userId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
 
     if (response.ok) {
       return {
