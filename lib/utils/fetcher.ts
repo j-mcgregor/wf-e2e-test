@@ -7,14 +7,20 @@ const fetcher = async (
   relativeUrl: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
   data?: object | null,
-  headers?: object
+  headers?: {
+    [key: string]: string;
+  }
   // returnType?: 'json' | 'csv'
 ) => {
   try {
     if (method === 'GET') {
+      const contentType =
+        headers && headers['Content-Type']
+          ? headers['Content-Type']
+          : 'application/json';
       const res = await fetch(`${config.URL}${relativeUrl}`, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': contentType
         }
       });
 
@@ -25,6 +31,7 @@ const fetcher = async (
       //     return res.text();
       //   default:
       //   }
+      if (contentType === 'application/pdf') return res.blob();
       return res.json();
     }
 
