@@ -21,16 +21,6 @@ const nonTestingProps = {
   containerId: 'secondary-layout-container'
 };
 
-export const addAndRemoveAnchorTag = async (filename: string, blob: Blob) => {
-  const url = window.URL.createObjectURL(new Blob([blob]));
-  const link = document.createElement('a');
-  link.href = url;
-  link.setAttribute('download', filename);
-  document.body.appendChild(link);
-  link.click();
-  link.parentNode?.removeChild(link);
-};
-
 export const handleExport = async (
   format: 'csv' | 'pdf',
   id: string,
@@ -40,23 +30,28 @@ export const handleExport = async (
   setDownloading(true);
 
   try {
+    const isPDF = format === 'pdf';
+
     const response = await fetcher(
-      `/api/reports/report?id=${id}&export=${
-        format === 'pdf' ? 'pdf' : 'csv-full'
-      }`,
+      `/api/reports/report?id=${id}&export=${isPDF ? 'pdf' : 'csv-full'}`,
       'GET',
       null,
       {
-        'Content-Type':
-          format === 'pdf' ? 'application/pdf' : 'application/json'
+        'Content-Type': isPDF ? 'application/pdf' : 'application/json'
       }
     );
 
-    const fileName = `report-${id}.${format === 'pdf' ? 'pdf' : 'csv'}`;
+    const fileName = `report-${id}.${format}`;
 
-    if (format === 'pdf') return addAndRemoveAnchorTag(fileName, response);
+    if (isPDF)
+      return downloadFile({
+        data: response,
+        // eg report-companyName.csv
+        fileName: fileName,
+        fileType: 'application/pdf'
+      });
 
-    downloadFile({
+    return downloadFile({
       data: response.csv,
       // eg report-companyName.csv
       fileName: fileName,
