@@ -113,7 +113,7 @@ const TabletReportNav = ({
           loading={downloadingPdf}
           disabled={downloadingPdf}
           variant="alt"
-          className="w-full"
+          className="w-full rounded-none flex items-center"
           onClick={() => handleExport('pdf', `${id}`, setDownloadingPdf)}
         >
           <DownloadDoc />
