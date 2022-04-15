@@ -24,6 +24,10 @@ const config = {
   NODE_ENV: process.env.NODE_ENV,
   VERCEL_ENV: process.env.VERCEL_ENV,
   NEXT_PUBLIC_VERCEL_URL: process.env.NEXT_PUBLIC_VERCEL_URL,
+  API_URL:
+    process.env.NODE_ENV === 'production'
+      ? 'https://api.wiserfunding.com'
+      : 'https://api.saggio-credito.co.uk',
   URL
 };
 
