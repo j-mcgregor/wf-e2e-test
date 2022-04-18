@@ -1,1 +1,17 @@
-{}
+{
+  "title": "API Documentation",
+  "card_description": "Find our Postman collection and two versions of our Open API docs below making it easy to get started using the Wiserfunding API.",
+  "postman_header": "Postman",
+  "postman_description": "See the full postman collection.",
+  "redoc_header": "Redoc",
+  "redoc_description": "View the docs in the popular redoc view.",
+  "swagger_header": "Docs (with Swagger)",
+  "swagger_description": "View the docs and connect with Swagger to make calls.",
+  "documents_title": "Environment & Collection Files",
+  "documents_description": "Download the environment and collection files for easier use of the Wisferfunding API.",
+  "environment_document_header": "Environment",
+  "environment_document_description": "Download the environment.json file.",
+  "collection_document_header": "Collection",
+  "collection_document_description": "Download the collection.json file.",
+  "back_to_api_docs": "Back to API Documentation"
+}

@@ -175,15 +175,14 @@ const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
           }
         );
 
-        const blob = await fetchRes.blob();
-        const arrayBuffer = await blob.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
-
         if (fetchRes.status === 200 && fetchRes.ok) {
+          const blob = await fetchRes.blob();
+          const arrayBuffer = await blob.arrayBuffer();
+
+          const buffer = Buffer.from(arrayBuffer);
           const filename: any = fetchRes.headers.get('content-disposition');
+
           const contentType: any = fetchRes.headers.get('content-type');
-          // response.setHeader('content-disposition', filename);
-          // response.setHeader('content-type', contentType);
           response.writeHead(fetchRes.status, 'OK', {
             'content-disposition': filename,
             'content-type': contentType
