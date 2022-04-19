@@ -20,6 +20,16 @@ const usersHeaders: TableHeadersType[] = [
   { name: 'Name', selector: 'full_name' },
   { name: 'Email', selector: 'email' },
   {
+    name: 'Role',
+    selector: (row: { is_superuser: boolean }) =>
+      row.is_superuser ? 'Admin' : 'User',
+    align: 'center',
+    contentClassName: (row: { is_superuser: boolean }) =>
+      `${
+        row.is_superuser ? 'bg-highlight' : ''
+      } rounded-full w-14 h-5 bg-opacity-20 flex justify-center items-center`
+  },
+  {
     name: 'Reports',
     selector: 'reports',
     align: 'center'
@@ -29,8 +39,8 @@ const usersHeaders: TableHeadersType[] = [
     selector: (row: { is_active: boolean }) => (row.is_active ? 'Yes' : 'No'),
     contentClassName: (row: { is_active: boolean }) =>
       `${
-        row.is_active ? 'bg-green-500' : 'bg-red-500'
-      } rounded-full w-9 bg-opacity-50 text-black`,
+        row.is_active ? 'bg-green-300' : 'bg-red-500'
+      } rounded-full w-10 h-5 bg-opacity-50 text-black flex justify-center items-center`,
     align: 'center'
   }
 ];
@@ -85,6 +95,7 @@ const Organisation = () => {
           pagination
           fillEmptyRows
           isLoading={!result || isValidating}
+          rowLink={row => `/organisation/user/${row.id}`}
         />
       </div>
       <div className="mt-12 flex flex-col gap-5">

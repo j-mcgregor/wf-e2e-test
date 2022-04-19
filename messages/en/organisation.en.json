@@ -9,5 +9,11 @@
   "intergrations_title": "Integrations",
   "intergrations_description": "Integrate with other data sources to improve the accuracy of your reports and get the latest data on the companies you're analysing.",
   "codat_card_title": "Codat Integration",
-  "codat_card_description": "Add your headers for your Codata integration."
+  "codat_card_description": "Add your headers for your Codata integration.",
+  "back_to_organisation": "Back to Organisation Dashboard",
+  "organisation_user_overview": "User Overview",
+  "organisation_user_role_title": "User Role",
+  "organisation_user_role_description": "Toggle the role of the user from \"Admin\" to just a normal user.",
+  "organisation_deactivate_user_title": "Deactivate User",
+  "organisation_deactivate_user_description": "Deactivate this user to prevent them from being able to access their account or reports."
 }
