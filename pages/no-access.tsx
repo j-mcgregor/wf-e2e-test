@@ -15,8 +15,8 @@ const NoAccess = () => {
   const t = useTranslations();
   return (
     <Layout>
-      <div className="space-y-12">
-        <div className="min-w-full py-12 bg-white shadow flex flex-col justify-center items-center font-semibold">
+      <div className="py-2">
+        <div className="min-w-full py-12 bg-white shadow flex flex-col justify-center items-center font-semibold mb-12">
           <ShieldExclamationIcon className="h-8 w-8" />
           <h1 className="text-highlight text-2xl">{t('no_access_title')}</h1>
           <p>{t('no_access_message')}</p>
