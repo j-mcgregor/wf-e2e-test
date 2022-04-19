@@ -1,4 +1,4 @@
-import { CheckIcon } from '@heroicons/react/outline';
+import { CheckIcon, LightningBoltIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { GetStaticPropsContext } from 'next/types';
 import React from 'react';
@@ -91,8 +91,16 @@ const Organisation = () => {
         <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-auto md:mr-auto">
           <LinkCard
             className="mx-auto"
-            icon={<CheckIcon className='className="h-6 w-6 text-black' />}
-            iconColor="bg-highlight-2 bg-opacity-20"
+            icon={
+              false ? (
+                <CheckIcon className='className="h-6 w-6 text-black' />
+              ) : (
+                <LightningBoltIcon className='className="h-6 w-6 text-black' />
+              )
+            }
+            iconColor={
+              false ? 'bg-highlight-2 bg-opacity-20' : 'bg-alt bg-opacity-40'
+            }
             header={t('codat_card_title')}
             description={t('codat_card_description')}
           />
