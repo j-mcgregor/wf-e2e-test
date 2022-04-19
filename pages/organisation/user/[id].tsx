@@ -54,13 +54,13 @@ const OrganisationUserPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 justify-between items-center bg-white p-5 text-gray-500 text-sm">
             <div className="flex flex-col justify-between gap-y-2">
-              <div>
+              <div className="flex flex-col items-center sm:items-start">
                 <span className="text-xl font-semibold text-highlight">
                   {full_name}
                 </span>
                 <h2>Name</h2>
               </div>
-              <div>
+              <div className="flex flex-col items-center sm:items-start">
                 <span className="text-xl font-semibold text-highlight">
                   {email}
                 </span>
