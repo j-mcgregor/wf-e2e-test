@@ -1,7 +1,7 @@
 import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import { GetStaticPropsContext } from 'next/types';
+import { GetServerSidePropsContext } from 'next/types';
 import React from 'react';
 import useSWR from 'swr';
 
@@ -50,8 +50,7 @@ const OrganisationUserPage = () => {
             {t('organisation_user_overview')}
           </h1>
           <p className="text-sm leading-relaxed">
-            See details and full list of reports run by this user from your
-            organisation and access admin functionality.
+            {t('organisation_user_overview_description')}
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 justify-between items-center bg-white p-5 text-gray-500 text-sm">
             <div className="flex flex-col justify-between gap-y-2">
@@ -76,7 +75,7 @@ const OrganisationUserPage = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col sm:flex-row space-y-6 min-w-full">
+        <div className="flex flex-col sm:flex-row space-y-6 sm:space-y-0 min-w-full">
           <ToggleUserAccess
             title={t('organisation_user_role_title')}
             description={t('organisation_user_role_description')}
@@ -93,9 +92,11 @@ const OrganisationUserPage = () => {
         </div>
         <div className="space-y-4">
           <div className="space-y-4">
-            <h2 className="text-2xl font-semibold">User Reports</h2>
+            <h2 className="text-2xl font-semibold">
+              {t('organisation_user_reports_title')}
+            </h2>
             <p className="text-sm leading-relaxed">
-              A list of all recent reports this user has run.
+              {t('organisation_user_reports_description')}
             </p>
           </div>
           <Table
@@ -143,7 +144,9 @@ const ToggleUserAccess = ({
   );
 };
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
+export async function getServerSideProps({
+  locale
+}: GetServerSidePropsContext) {
   return {
     props: {
       messages: {
@@ -154,12 +157,5 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         ...require(`../../../messages/${locale}/general.${locale}.json`)
       }
     }
-  };
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: true
   };
 }

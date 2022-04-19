@@ -12,8 +12,11 @@
   "codat_card_description": "Add your headers for your Codata integration.",
   "back_to_organisation": "Back to Organisation Dashboard",
   "organisation_user_overview": "User Overview",
+  "organisation_user_overview_description": "See details and full list of reports run by this user from your organisation and access admin functionality.",
   "organisation_user_role_title": "User Role",
   "organisation_user_role_description": "Toggle the role of the user from \"Admin\" to just a normal user.",
   "organisation_deactivate_user_title": "Deactivate User",
-  "organisation_deactivate_user_description": "Deactivate this user to prevent them from being able to access their account or reports."
+  "organisation_deactivate_user_description": "Deactivate this user to prevent them from being able to access their account or reports.",
+  "organisation_user_reports_title": "User Reports",
+  "organisation_user_reports_description": "A list of all recent reports this user has run."
 }
