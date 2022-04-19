@@ -1,0 +1,13 @@
+{
+  "title": "Organisation Dashboard",
+  "dashboard_description": "As an owner of your organisation, you have access to seeing a  full overview of your company's usage of Wiserfunding's platform.",
+  "stats_organisation_title": "Organisation",
+  "stats_total_reports_title": "Total Reports Organisation",
+  "stats_users_title": "Users",
+  "users_title": "Users",
+  "users_description": "See all the members of your organisation that have accounts with Wiserfunding and the details of the reports they have run.",
+  "intergrations_title": "Integrations",
+  "intergrations_description": "Integrate with other data sources to improve the accuracy of your reports and get the latest data on the companies you're analysing.",
+  "codat_card_title": "Codat Integration",
+  "codat_card_description": "Add your headers for your Codata integration."
+}
