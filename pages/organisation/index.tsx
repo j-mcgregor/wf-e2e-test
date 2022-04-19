@@ -40,6 +40,8 @@ const Organisation = () => {
   const { organisation, message } = useOrganisation();
   const [skip, setSkip] = React.useState(0);
 
+  const isIntergrated = false;
+
   const {
     data: result,
     error,
@@ -92,14 +94,16 @@ const Organisation = () => {
           <LinkCard
             className="mx-auto"
             icon={
-              false ? (
+              isIntergrated ? (
                 <CheckIcon className='className="h-6 w-6 text-black' />
               ) : (
                 <LightningBoltIcon className='className="h-6 w-6 text-black' />
               )
             }
             iconColor={
-              false ? 'bg-highlight-2 bg-opacity-20' : 'bg-alt bg-opacity-40'
+              isIntergrated
+                ? 'bg-highlight-2 bg-opacity-20'
+                : 'bg-alt bg-opacity-40'
             }
             header={t('codat_card_title')}
             description={t('codat_card_description')}
