@@ -38,5 +38,7 @@
   },
   "is_valid_batch_auto": "Is valid batch auto CSV",
   "is_valid_batch_manual": "Is valid batch manual CSV",
-  "multiple_companies_cannot_be_uploaded_here": "Multiple companies cannot be uploaded here"
+  "multiple_companies_cannot_be_uploaded_here": "Multiple companies cannot be uploaded here",
+  "no_access_title": "Access not allowed",
+  "no_access_message": "You are not authorised to view this page."
 }
