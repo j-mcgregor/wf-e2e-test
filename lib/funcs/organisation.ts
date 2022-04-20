@@ -236,20 +236,18 @@ const getOrganisationUserAndReports: ApiHandler<
   { orgId, userId, limit = 7, skip = 0, reports = false }
 ) => {
   try {
-    const response = await fetch(
-      `${process.env.WF_AP_ROUTE}/users?id=${userId}&organisation_id=${orgId}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': contentType
-        }
+    const response = await fetch(`${process.env.WF_AP_ROUTE}/users/${userId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': contentType
       }
-    );
+    });
+
+    console.log(`${process.env.WF_AP_ROUTE}/users/${userId}`);
 
     if (response.ok) {
-      const userArray: OrganisationUser[] = await response.json();
-      const user: OrganisationUser = userArray[0];
+      const user: OrganisationUser = await response.json();
       if (reports) {
         const reportsResponse = await fetch(
           `${

@@ -3,6 +3,8 @@ import React from 'react';
 
 import SkeletonRow from '../skeletons/SkeletonRow';
 import PaginationBar from './PaginationBar';
+import TableCell from './TableCell';
+import TableRow from './TableRow';
 
 export interface TableHeadersType {
   name: string;
@@ -163,66 +165,3 @@ const Table = ({
 };
 
 export default Table;
-
-interface ITableRowProps {
-  className?: string;
-  newClassName?: string;
-  children?: React.ReactNode;
-}
-
-const TableRow = ({ className, newClassName, children }: ITableRowProps) => {
-  return (
-    <tr
-      className={
-        newClassName
-          ? newClassName
-          : `${className} min-w-full bg-white font-semibold hover:bg-gray-50 group h-[48px]`
-      }
-    >
-      {children}
-    </tr>
-  );
-};
-
-interface ITableCellProps extends ITableRowProps {
-  contentClassName?: string;
-  cellLink?: string;
-  rowLink?: string;
-  align?:
-    | 'text-left justify-start'
-    | 'text-right justify-end'
-    | 'text-center justify-center'
-    | null;
-}
-
-const TableCell = ({
-  className,
-  contentClassName,
-  rowLink,
-  align = 'text-center justify-center',
-  children
-}: ITableCellProps) => {
-  const ContentComponent = ({ children }: { children: React.ReactNode }) =>
-    rowLink ? (
-      <Link href={`${rowLink}`}>{children}</Link>
-    ) : (
-      <div>{children}</div>
-    );
-  return (
-    <td className={`${className}`}>
-      <ContentComponent>
-        <div
-          className={`${
-            rowLink
-              ? 'group-hover:cursor-pointer group-hover:text-highlight'
-              : ''
-          } w-full h-full`}
-        >
-          <div className={`md:px-7 px-3 flex ${align}`}>
-            <div className={`${contentClassName}`}>{children}</div>
-          </div>
-        </div>
-      </ContentComponent>
-    </td>
-  );
-};
