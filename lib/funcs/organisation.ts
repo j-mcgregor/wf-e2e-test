@@ -20,6 +20,7 @@ import {
 
 const contentType = 'application/json';
 
+// GET /api/organisation/:orgId
 export interface GetOrganisation extends HandlerReturn {
   organisation: OrganisationType | null; // <- null indicates a failure since typing makes this value required
 }
@@ -64,6 +65,47 @@ const getOrganisation: ApiHandler<
   }
 };
 
+// PUT /api/organisation/:orgId
+interface UpdateOrganisationProps extends GetOrganisationProps {
+  body: OrganisationType;
+}
+
+const updateOrganisation: ApiHandler<
+  GetOrganisation,
+  UpdateOrganisationProps
+> = async (token: string, { orgId, body }) => {
+  try {
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/organisations/${orgId}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': contentType
+        },
+        body: JSON.stringify(body)
+      }
+    );
+    if (response.ok) {
+      const organisation: OrganisationType = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        organisation
+      };
+    }
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'ORGANISATION'
+      }),
+      organisation: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), organisation: null };
+  }
+};
+
+// GET /api/organisation/:orgId/users
 export interface GetOrganisationUsers extends HandlerReturn {
   users: OrganisationUser[] | null; // <- null indicates a failure since typing makes this value required
   total: number | null;
@@ -126,6 +168,54 @@ const getOrganisationUsers: ApiHandler<
   }
 };
 
+// POST /api/organisation/:orgId/users
+export interface PostOrganisationUser extends HandlerReturn {
+  user: OrganisationUser | null; // <- null indicates a failure since typing makes this value required
+}
+
+interface PostOrganisationUserProps extends GetOrganisationProps {
+  body: string;
+}
+
+const postOrganisationUser: ApiHandler<
+  PostOrganisationUser,
+  PostOrganisationUserProps
+> = async (token: string, { orgId, body }) => {
+  try {
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/organisations/${orgId}/users`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': contentType
+        },
+        body
+      }
+    );
+
+    if (response.ok) {
+      const user: OrganisationUser = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        user
+      };
+    }
+
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'ORGANISATION'
+      }),
+      user: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), user: null };
+  }
+};
+
+// GET /api/organisation/:orgId/users/:userId
+// GET /api/organisation/:orgId/users/:userId?report=true
 export interface GetOrganisationUserAndReports extends HandlerReturn {
   user: OrganisationUser | null; // <- null indicates a failure since typing makes this value required
   userReports: OrganisationUserReport[] | null; // <- null indicates a failure since typing makes this value required
@@ -146,7 +236,6 @@ const getOrganisationUserAndReports: ApiHandler<
   { orgId, userId, limit = 7, skip = 0, reports = false }
 ) => {
   try {
-    console.log(orgId, userId);
     const response = await fetch(
       `${process.env.WF_AP_ROUTE}/users?id=${userId}&organisation_id=${orgId}`,
       {
@@ -210,68 +299,31 @@ const getOrganisationUserAndReports: ApiHandler<
   }
 };
 
-interface UpdateOrganisationProps extends GetOrganisationProps {
-  body: OrganisationType;
+// PATCH /api/organisation/:orgId/users?userId=:userId
+export interface PatchOgranisationUser extends PostOrganisationUser {}
+
+interface PatchOrganisationUserProps {
+  orgId: string;
+  userId: string;
+  body: string;
 }
 
-const updateOrganisation: ApiHandler<
-  GetOrganisation,
-  UpdateOrganisationProps
-> = async (token: string, { orgId, body }) => {
+const patchOrganisationUser: ApiHandler<
+  PatchOgranisationUser,
+  PatchOrganisationUserProps
+> = async (token: string, { orgId, userId, body }) => {
   try {
     const response = await fetch(
-      `${process.env.WF_AP_ROUTE}/organisations/${orgId}`,
+      `${process.env.WF_AP_ROUTE}/organisations/${orgId}/users/${userId}`,
       {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': contentType
         },
-        body: JSON.stringify(body)
+        body
       }
     );
-    if (response.ok) {
-      const organisation: OrganisationType = await response.json();
-      return {
-        ...makeApiHandlerResponseSuccess(),
-        organisation
-      };
-    }
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      organisation: null
-    };
-  } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), organisation: null };
-  }
-};
-
-export interface UpdateOgranisationUser extends HandlerReturn {
-  user: OrganisationUser | null; // <- null indicates a failure since typing makes this value required
-}
-
-interface UpdateOrganisationUserProps {
-  orgId: string;
-  userId: string;
-  body: OrganisationUserSchema;
-}
-
-const updateOrganisationUser: ApiHandler<
-  UpdateOgranisationUser,
-  UpdateOrganisationUserProps
-> = async (token: string, { userId, body }) => {
-  try {
-    const response = await fetch(`${process.env.WF_AP_ROUTE}/users/${userId}`, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': contentType
-      },
-      body: JSON.stringify(body)
-    });
 
     if (response.ok) {
       return {
@@ -295,8 +347,9 @@ const Organisation = {
   getOrganisation,
   getOrganisationUsers,
   getOrganisationUserAndReports,
+  postOrganisationUser,
   updateOrganisation,
-  updateOrganisationUser
+  patchOrganisationUser
 };
 
 export default Organisation;

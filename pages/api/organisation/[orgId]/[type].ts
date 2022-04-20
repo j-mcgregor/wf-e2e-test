@@ -3,8 +3,10 @@ import { getToken } from 'next-auth/jwt';
 
 import Organisation, {
   GetOrganisationUserAndReports,
-  GetOrganisationUsers
+  GetOrganisationUsers,
+  PostOrganisationUser
 } from '../../../../lib/funcs/organisation';
+
 import {
   errorsBySourceType,
   returnUnauthorised
@@ -16,7 +18,8 @@ const { NOT_FOUND, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
 export interface OrganisationTypeApi
   extends GetOrganisationUsers,
-    GetOrganisationUserAndReports {}
+    GetOrganisationUserAndReports,
+    PostOrganisationUser {}
 
 const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
   request,
@@ -92,11 +95,39 @@ const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
         }),
         ...defaultNullProps
       });
-    case 'PUT':
+
+    case 'POST':
+      try {
+        if (type === 'user') {
+          const result = await Organisation.postOrganisationUser(
+            `${token?.accessToken}`,
+            { orgId, body: request.body }
+          );
+          return response.status(result.status).json({
+            ...defaultNullProps,
+            ...result
+          });
+        }
+      } catch (error) {
+        return response.status(NOT_FOUND).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.ORGANISATION[NOT_FOUND]
+          }),
+          ...defaultNullProps
+        });
+      }
+      return response.status(NOT_FOUND).json({
+        ...makeApiHandlerResponseFailure({
+          message: errorsBySourceType.ORGANISATION[NOT_FOUND]
+        }),
+        ...defaultNullProps
+      });
+
+    case 'PATCH':
       try {
         //   Route for updating a single user of an organisation
         if (type === 'user') {
-          const result = await Organisation.updateOrganisationUser(
+          const result = await Organisation.patchOrganisationUser(
             `${token?.accessToken}`,
             { orgId, userId, body: request.body }
           );
