@@ -1,16 +1,15 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../playwright-helpers';
+import { login, testCSVFile } from '../../playwright-helpers';
 
-const testCSVFile = 'master.csv'; // name of test file for the manual uploads
 const batchName = new Date().toISOString(); // weird I know, but it makes a unique batch name for checking, so 🤷
 
 // ----------------------------------
 // BATCH CSV UPLOAD REPORTS
 // ----------------------------------
 
-login();
-
 test.describe('Batch report', () => {
+  login();
+
   test('User can create a manual BATCH report by CSV', async ({ page }) => {
     test.setTimeout(120000);
     // GIVEN I CLICK THE MULTIPLE COMPANIES NAV BUTTON

@@ -15,11 +15,11 @@ const config: PlaywrightTestConfig = {
   use: {
     headless: true,
     baseURL: env.URL,
-    viewport: { width: 1920, height: 1280 },
+    viewport: { width: 1400, height: 980 },
     browserName: 'chromium',
-    screenshot: 'only-on-failure',
+    screenshot: 'only-on-failure'
     // Tell all tests to load signed-in state from 'storageState.json'.
-    storageState: './playwright/storageState.json'
+    // storageState: './playwright/storageState.json'
   },
   ...(!env.VERCEL_ENV && {
     webServer: {

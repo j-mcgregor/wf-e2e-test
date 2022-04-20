@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { test, expect } from '@playwright/test';
-import { login } from '../playwright-helpers';
+import { login } from '../../playwright-helpers';
 
 login();
 

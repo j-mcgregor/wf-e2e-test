@@ -56,7 +56,10 @@ const ReportTable = ({
     <div className="flex flex-col relative">
       <div className="pb-4 pt-[6px] align-middle min-w-full min-h-full">
         <div className={`${shadowClasses} overflow-auto rounded`}>
-          <table className="min-w-full divide-y-2 divide-gray-200">
+          <table
+            className="min-w-full divide-y-2 divide-gray-200"
+            id="reports-table"
+          >
             <thead className="bg-gray-50">
               <tr className={`${headerSize} text-left  tracking-wider`}>
                 <th
