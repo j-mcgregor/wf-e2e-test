@@ -1,3 +1,4 @@
+import { withSentry } from '@sentry/nextjs';
 import { NextApiHandler } from 'next';
 import { getToken } from 'next-auth/jwt';
 
@@ -6,14 +7,16 @@ import Organisation, {
   GetOrganisationUsers,
   PostOrganisationUser
 } from '../../../../lib/funcs/organisation';
-
+import { ORG_404 } from '../../../../lib/utils/error-codes';
 import {
   errorsBySourceType,
   returnUnauthorised
 } from '../../../../lib/utils/error-handling';
-import { makeApiHandlerResponseFailure } from '../../../../lib/utils/http-helpers';
+import {
+  makeApiHandlerResponseFailure,
+  makeMissingArgsResponse
+} from '../../../../lib/utils/http-helpers';
 import { StatusCodeConstants } from '../../../../types/http-status-codes';
-import { defaultNullProps } from '../../batch-reports';
 
 const { NOT_FOUND, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
@@ -49,6 +52,15 @@ const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
   const userId: string = request?.query?.userId?.toString();
   const limit: number = parseInt(request?.query?.limit?.toString()) || 10;
   const skip: number = parseInt(request?.query?.skip?.toString()) || 0;
+
+  if (!['users', 'user', 'user-reports'].includes(type)) {
+    return makeMissingArgsResponse(
+      response,
+      ORG_404,
+      'Endpoint not found. The route should be either /users, /user or /user-reports',
+      defaultNullProps
+    );
+  }
 
   try {
     if (method === 'GET' && type === 'users') {
@@ -122,4 +134,4 @@ const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
   });
 };
 
-export default OrganisationUsersApi;
+export default withSentry(OrganisationUsersApi);
