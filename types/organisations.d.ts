@@ -61,3 +61,15 @@ export interface OrganisationUserSchema {
   };
   password?: string;
 }
+
+export interface OrganisationUserReport {
+  id: string;
+  company_name: string;
+  iso_code: string;
+  company_id: string;
+  sme_z_score: number;
+  bond_rating_equivalent: string;
+  loss_given_default: number;
+  probability_of_default_1_year: number;
+  created_at: string;
+}

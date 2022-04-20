@@ -3,6 +3,7 @@ import { ApiHandler, HandlerReturn } from '../../types/http';
 import {
   OrganisationType,
   OrganisationUser,
+  OrganisationUserReport,
   OrganisationUserSchema
 } from '../../types/organisations';
 import { makeErrorResponse } from '../utils/error-handling';
@@ -125,19 +126,27 @@ const getOrganisationUsers: ApiHandler<
   }
 };
 
-export interface GetOrganisationUser extends HandlerReturn {
+export interface GetOrganisationUserAndReports extends HandlerReturn {
   user: OrganisationUser | null; // <- null indicates a failure since typing makes this value required
+  userReports: OrganisationUserReport[] | null; // <- null indicates a failure since typing makes this value required
 }
 
-interface GetOrganisationUserProps extends GetOrganisationProps {
+interface GetOrganisationUserAndReportsProps extends GetOrganisationProps {
   userId: string;
+  reports?: boolean;
+  limit?: number;
+  skip?: number;
 }
 
-const getOrganisationUser: ApiHandler<
-  GetOrganisationUser,
-  GetOrganisationUserProps
-> = async (token: string, { orgId, userId }) => {
+const getOrganisationUserAndReports: ApiHandler<
+  GetOrganisationUserAndReports,
+  GetOrganisationUserAndReportsProps
+> = async (
+  token: string,
+  { orgId, userId, limit = 7, skip = 0, reports = false }
+) => {
   try {
+    console.log(orgId, userId);
     const response = await fetch(
       `${process.env.WF_AP_ROUTE}/users?id=${userId}&organisation_id=${orgId}`,
       {
@@ -151,9 +160,36 @@ const getOrganisationUser: ApiHandler<
 
     if (response.ok) {
       const user: OrganisationUser = await response.json();
+      if (reports) {
+        const reportsResponse = await fetch(
+          `${
+            process.env.WF_AP_ROUTE
+          }/organisations/${orgId}/users/${userId}/reports?_start=${skip}&_end=${
+            skip + limit
+          }`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': contentType
+            }
+          }
+        );
+
+        if (reportsResponse.ok) {
+          const userReports: OrganisationUserReport[] =
+            await reportsResponse.json();
+          return {
+            ...makeApiHandlerResponseSuccess(),
+            user,
+            userReports
+          };
+        }
+      }
       return {
         ...makeApiHandlerResponseSuccess(),
-        user
+        user,
+        userReports: null
       };
     }
 
@@ -162,10 +198,15 @@ const getOrganisationUser: ApiHandler<
         status: response.status,
         sourceType: 'ORGANISATION'
       }),
-      user: null
+      user: null,
+      userReports: null
     };
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), user: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      user: null,
+      userReports: null
+    };
   }
 };
 
@@ -208,12 +249,18 @@ const updateOrganisation: ApiHandler<
   }
 };
 
-interface UpdateOrganisationUserProps extends GetOrganisationUserProps {
+export interface UpdateOgranisationUser extends HandlerReturn {
+  user: OrganisationUser | null; // <- null indicates a failure since typing makes this value required
+}
+
+interface UpdateOrganisationUserProps {
+  orgId: string;
+  userId: string;
   body: OrganisationUserSchema;
 }
 
 const updateOrganisationUser: ApiHandler<
-  GetOrganisationUser,
+  UpdateOgranisationUser,
   UpdateOrganisationUserProps
 > = async (token: string, { userId, body }) => {
   try {
@@ -247,7 +294,7 @@ const updateOrganisationUser: ApiHandler<
 const Organisation = {
   getOrganisation,
   getOrganisationUsers,
-  getOrganisationUser,
+  getOrganisationUserAndReports,
   updateOrganisation,
   updateOrganisationUser
 };

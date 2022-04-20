@@ -2,7 +2,7 @@ import { NextApiHandler } from 'next';
 import { getToken } from 'next-auth/jwt';
 
 import Organisation, {
-  GetOrganisationUser,
+  GetOrganisationUserAndReports,
   GetOrganisationUsers
 } from '../../../../lib/funcs/organisation';
 import {
@@ -16,13 +16,18 @@ const { NOT_FOUND, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
 export interface OrganisationTypeApi
   extends GetOrganisationUsers,
-    GetOrganisationUser {}
+    GetOrganisationUserAndReports {}
 
 const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
   request,
   response
 ) => {
-  const defaultNullProps = { users: null, user: null, total: null };
+  const defaultNullProps = {
+    users: null,
+    user: null,
+    total: null,
+    userReports: null
+  };
   const token = await getToken({
     req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
@@ -55,9 +60,18 @@ const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
           });
           //   Route for returning a single user of an organisation
         } else if (type === 'user') {
-          const result = await Organisation.getOrganisationUser(
+          const result = await Organisation.getOrganisationUserAndReports(
             `${token?.accessToken}`,
             { orgId, userId }
+          );
+          return response.status(result.status).json({
+            ...defaultNullProps,
+            ...result
+          });
+        } else if (type === 'user-reports') {
+          const result = await Organisation.getOrganisationUserAndReports(
+            `${token?.accessToken}`,
+            { orgId, userId, limit, skip, reports: true }
           );
           return response.status(result.status).json({
             ...defaultNullProps,
