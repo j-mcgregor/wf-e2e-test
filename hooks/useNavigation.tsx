@@ -55,7 +55,7 @@ const useMainNavItems = () => {
     secondaryNavigation: [
       {
         name: `${t('organisation')}`,
-        href: '/ogranisation',
+        href: '/organisation',
         icon: OfficeBuildingIcon,
         adminOnly: true
       },

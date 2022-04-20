@@ -31,15 +31,15 @@ interface NavListProps {
   navigation: NavItemProps[];
   navStyle?: NavStyleProps;
   noText?: boolean;
-  role?: string;
+  userRole?: string;
 }
 
 type NavProps = {
   path: string;
-  role: string;
+  userRole: string;
 };
 
-const Nav = ({ path, role }: NavProps) => {
+const Nav = ({ path, userRole }: NavProps) => {
   const { primaryNavigation, secondaryNavigation } = useMainNavItems();
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
@@ -141,7 +141,7 @@ const Nav = ({ path, role }: NavProps) => {
               <NavItems
                 path={path}
                 navigation={secondaryNavigation}
-                role={role}
+                userRole={userRole}
               />
             </div>
           </div>
@@ -179,7 +179,7 @@ const Nav = ({ path, role }: NavProps) => {
                 path={path}
                 navigation={secondaryNavigation}
                 noText={true}
-                role={role}
+                userRole={userRole}
               />
             </div>
           </div>
@@ -208,11 +208,11 @@ const Nav = ({ path, role }: NavProps) => {
 
 export default Nav;
 
-const NavItems = ({ path, navigation, noText, role }: NavListProps) => {
+const NavItems = ({ path, navigation, noText, userRole }: NavListProps) => {
   return (
     <nav className={'flex-1 bg-primary px-2 space-y-1'}>
       {navigation.map(({ title, name, href, onClick, adminOnly, ...item }) => {
-        if (role === 'User' && adminOnly) return null;
+        if (userRole === 'User' && adminOnly) return null;
         if (title && !noText) {
           return (
             <div

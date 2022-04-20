@@ -12,13 +12,9 @@ export interface TableHeadersType {
   contentClassName?: string | ((row: any) => string);
 }
 
-export interface TableDataType {
-  [key: string]: any;
-}
-
 interface TableProps {
   headers: TableHeadersType[];
-  data: TableDataType[];
+  data: any[];
   total: number;
   limit: number;
   skip: (x: number) => void;
@@ -42,7 +38,7 @@ const Table = ({
   const maxPages = Math.ceil(total / limit);
   const [page, setPage] = React.useState(1);
 
-  const blankRows = limit - data.length;
+  const blankRows = limit - data?.length || limit;
 
   const handlePageChange = (page: number) => setPage(page);
   const handlePageDown = () => {
@@ -98,7 +94,7 @@ const Table = ({
             )}
 
             {!isLoading &&
-              data.map((row, rowIndex) => (
+              data?.map((row, rowIndex) => (
                 <TableRow key={`table-row-${rowIndex}`}>
                   {headers.map((header, index) => {
                     const { align, selector, contentClassName } = header;
