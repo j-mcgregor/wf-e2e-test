@@ -67,7 +67,7 @@ const getOrganisation: ApiHandler<
 
 // PUT /api/organisation/:orgId
 interface UpdateOrganisationProps extends GetOrganisationProps {
-  body: OrganisationType;
+  body: string;
 }
 
 const updateOrganisation: ApiHandler<
@@ -83,7 +83,7 @@ const updateOrganisation: ApiHandler<
           Authorization: `Bearer ${token}`,
           'Content-Type': contentType
         },
-        body: JSON.stringify(body)
+        body
       }
     );
     if (response.ok) {

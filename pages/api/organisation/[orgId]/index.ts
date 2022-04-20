@@ -66,6 +66,7 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
           ...defaultNullProps
         });
       }
+
     case 'PUT':
       try {
         const result = await Organisation.updateOrganisation(
@@ -81,6 +82,7 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
           ...defaultNullProps
         });
       }
+
     default:
       return response.status(METHOD_NOT_ALLOWED).json({
         ...makeApiHandlerResponseFailure({

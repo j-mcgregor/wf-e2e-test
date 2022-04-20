@@ -89,12 +89,6 @@ const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
           ...defaultNullProps
         });
       }
-      return response.status(NOT_FOUND).json({
-        ...makeApiHandlerResponseFailure({
-          message: errorsBySourceType.ORGANISATION[NOT_FOUND]
-        }),
-        ...defaultNullProps
-      });
 
     case 'POST':
       try {
@@ -116,12 +110,6 @@ const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
           ...defaultNullProps
         });
       }
-      return response.status(NOT_FOUND).json({
-        ...makeApiHandlerResponseFailure({
-          message: errorsBySourceType.ORGANISATION[NOT_FOUND]
-        }),
-        ...defaultNullProps
-      });
 
     case 'PATCH':
       try {
@@ -144,12 +132,7 @@ const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
           ...defaultNullProps
         });
       }
-      return response.status(NOT_FOUND).json({
-        ...makeApiHandlerResponseFailure({
-          message: errorsBySourceType.ORGANISATION[NOT_FOUND]
-        }),
-        ...defaultNullProps
-      });
+
     default:
       return response.status(METHOD_NOT_ALLOWED).json({
         ...makeApiHandlerResponseFailure({
