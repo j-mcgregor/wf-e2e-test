@@ -50,5 +50,9 @@
   "pending": "Pending",
   "processing": "Processing",
   "report_name_required": "A batch report name is required",
-  "show_more": "Show more"
+  "show_more": "Show more",
+  "account_type_title": "Account Type",
+  "account_type_description": "Choose the Account Type to run all batched reports with.",
+  "currency_title": "Currency",
+  "currency_description": "Run all batched reports in a specific currency"
 }
