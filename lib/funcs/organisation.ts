@@ -248,7 +248,8 @@ const getOrganisationUserAndReports: ApiHandler<
     );
 
     if (response.ok) {
-      const user: OrganisationUser = await response.json();
+      const userArray: OrganisationUser[] = await response.json();
+      const user: OrganisationUser = userArray[0];
       if (reports) {
         const reportsResponse = await fetch(
           `${
