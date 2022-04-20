@@ -244,8 +244,6 @@ const getOrganisationUserAndReports: ApiHandler<
       }
     });
 
-    console.log(`${process.env.WF_AP_ROUTE}/users/${userId}`);
-
     if (response.ok) {
       const user: OrganisationUser = await response.json();
       if (reports) {
