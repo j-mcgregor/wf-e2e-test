@@ -1,20 +1,25 @@
 /* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
+import * as Sentry from '@sentry/nextjs';
 import { GetStaticPropsContext, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createRef, useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
-import * as Sentry from '@sentry/nextjs';
 
 import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
 import ErrorMessage from '../../components/elements/ErrorMessage';
 import Input from '../../components/elements/Input';
+import SelectMenu from '../../components/elements/SelectMenu';
 import Layout from '../../components/layout/Layout';
+import { SimpleValue } from '../../components/sme-calc-sections/AdvancedSearch';
 import UploadNewData from '../../components/uploads/UploadNewData';
 import { useCSV } from '../../hooks/useCSV';
 import { useCsvValidators } from '../../hooks/useCsvValidators';
+import { appUser } from '../../lib/appState';
+import Settings from '../../lib/settings/settings.settings';
 import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
@@ -22,10 +27,14 @@ import { BatchReportsIndexApi } from '../api/batch-reports';
 import { BatchReportsManualApi } from '../api/batch-reports/manual';
 
 import type { SubmitReportType } from '../../types/report';
+import { accountTypes } from '../../lib/settings/report.settings';
+import { OptionRow } from '../../components/elements/OptionRow';
 
 const CreateBatchReport: NextPage = () => {
   const t = useTranslations();
   const router = useRouter();
+
+  const user = useRecoilValue(appUser);
 
   const [fileSelected, setFileSelected] = useState<File | null>(null);
   const [fileSelectedName, setFileSelectedName] = useState<string>('');
@@ -51,6 +60,34 @@ const CreateBatchReport: NextPage = () => {
   const [reportNameError, setReportNameError] = useState<boolean>();
   const [results, setResults] = useState<{ id?: string }>({});
   const [error, setError] = useState('');
+  const [accountType, setAccountType] = useState<SimpleValue>(accountTypes[0]);
+  const [currency, setCurrency] = useState<SimpleValue>(
+    Settings.supportedCurrencies[0]
+  );
+
+  useEffect(() => {
+    if (isAutoOrManual.iso_code) {
+      const autoBatchCurrency = Settings.getCurrencyOptionByIsoCode(
+        isAutoOrManual.iso_code
+      );
+
+      if (autoBatchCurrency) {
+        setCurrency(autoBatchCurrency);
+      }
+    }
+  }, [isAutoOrManual.iso_code]);
+
+  useEffect(() => {
+    if (user?.preferences?.defaults?.reporting_country) {
+      const defaultCurrency = Settings.supportedCurrencies.find(
+        curr => curr.optionValue === user.preferences?.defaults?.currency
+      );
+
+      if (defaultCurrency) {
+        setCurrency(defaultCurrency);
+      }
+    }
+  }, [user?.preferences]);
 
   const filenameRef = createRef<HTMLInputElement>();
 
@@ -67,12 +104,14 @@ const CreateBatchReport: NextPage = () => {
     // req body is different for /jobs/batch and /jobs/batch/upload
     // if /jobs/batch           BatchAutoRequest
     // if /jobs/batch/upload    BatchManualRequest
-    const reqData = convertCSVToRequestBody(
+    const reqData = convertCSVToRequestBody({
       csvData,
       csvValues,
-      reportName,
-      isAutoOrManual.type
-    );
+      name: reportName,
+      uploadType: isAutoOrManual.type,
+      accounts_type: Number(accountType.optionValue),
+      currency: currency.code
+    });
 
     try {
       // POST '/api/batch-reports' => BatchReportsIndexApi (auto)
@@ -185,6 +224,32 @@ const CreateBatchReport: NextPage = () => {
                 </small>
               )}
             </>
+          }
+          extraOptions={
+            <div className="my-4">
+              <OptionRow
+                title={t('account_type_title')}
+                description={t('account_type_description')}
+              >
+                <SelectMenu
+                  values={accountTypes}
+                  defaultValue={accountTypes[0]}
+                  selectedValue={accountType}
+                  setSelectedValue={setAccountType}
+                />
+              </OptionRow>
+              <OptionRow
+                title={t('currency_title')}
+                description={t('currency_description')}
+              >
+                <SelectMenu
+                  values={Settings.supportedCurrencies}
+                  defaultValue={Settings.supportedCurrencies[0]}
+                  selectedValue={currency}
+                  setSelectedValue={setCurrency}
+                />
+              </OptionRow>
+            </div>
           }
         >
           <div className="w-3/12 my-4">
