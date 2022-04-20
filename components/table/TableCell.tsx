@@ -10,15 +10,14 @@ interface ITableCellProps {
   align?:
     | 'text-left justify-start'
     | 'text-right justify-end'
-    | 'text-center justify-center'
-    | null;
+    | 'text-center justify-center';
 }
 
 const TableCell = ({
   className,
   contentClassName,
   rowLink,
-  align = 'text-center justify-center',
+  align = 'text-left justify-start',
   children
 }: ITableCellProps) => {
   const ContentComponent = ({ children }: { children: React.ReactNode }) =>

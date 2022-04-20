@@ -7,13 +7,11 @@ import useSWR from 'swr';
 import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
 import Stats from '../../components/elements/Stats';
-import Table, {
-  TableDataType,
-  TableHeadersType
-} from '../../components/elements/Table';
+import Table, { TableHeadersType } from '../../components/table/Table';
 import Layout from '../../components/layout/Layout';
 import useOrganisation from '../../hooks/useOrganisation';
 import fetcher from '../../lib/utils/fetcher';
+import { OrganisationUser } from '../../types/organisations';
 import { OrganisationTypeApi } from '../api/organisation/[orgId]/[type]';
 
 const usersHeaders: TableHeadersType[] = [
@@ -61,7 +59,7 @@ const Organisation = () => {
     fetcher
   );
 
-  const users: TableDataType[] = result?.users || [];
+  const users: OrganisationUser[] = result?.users || [];
 
   return (
     <Layout>
@@ -73,9 +71,9 @@ const Organisation = () => {
             { header: t('stats_organisation_title'), data: organisation?.name },
             {
               header: t('stats_total_reports_title'),
-              data: organisation?.quota?.quota_used
+              data: organisation?.quota?.quota_used || '0'
             },
-            { header: t('stats_users_title'), data: organisation?.max_users }
+            { header: t('stats_users_title'), data: result?.total || '0' }
           ]}
         />
       </div>

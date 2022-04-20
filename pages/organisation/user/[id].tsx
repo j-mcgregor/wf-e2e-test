@@ -4,18 +4,31 @@ import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
 import React from 'react';
 import useSWR from 'swr';
+import ReactTimeAgo from 'react-timeago';
 
 import Button from '../../../components/elements/Button';
-import Table, { TableHeadersType } from '../../../components/elements/Table';
+import Table, { TableHeadersType } from '../../../components/table/Table';
 import Layout from '../../../components/layout/Layout';
 import useOrganisation from '../../../hooks/useOrganisation';
 import fetcher from '../../../lib/utils/fetcher';
+import { OrganisationIndexApi } from '../../api/organisation/[orgId]';
+import { OrganisationTypeApi } from '../../api/organisation/[orgId]/[type]';
 
 const tableHeaders: TableHeadersType[] = [
-  { name: 'Report Name', selector: 'full_name' },
-  { name: 'SME Z-Score', selector: 'full_name', align: 'center' },
+  {
+    name: 'Report Name',
+    selector: (row: { company_name: string; created_at: string }) =>
+      `${row.company_name} - ${row.created_at}`
+  },
+  { name: 'SME Z-Score', selector: 'sme_z_score', align: 'center' },
   { name: 'BRE', selector: 'full_name', align: 'center' },
-  { name: 'Created At', selector: 'full_name', align: 'center' }
+  {
+    name: 'Created At',
+    selector: (row: { created_at: string }) => (
+      <ReactTimeAgo date={row.created_at} />
+    ),
+    align: 'center'
+  }
 ];
 
 const OrganisationUserPage = () => {
@@ -23,14 +36,37 @@ const OrganisationUserPage = () => {
   const router = useRouter();
   const { organisation, message } = useOrganisation();
   const { id } = router.query;
+  const [skip, setSkip] = React.useState(0);
 
-  const { data: result, isValidating } = useSWR<any>(
-    `/api/organisation/${organisation?.id}/user?userId=${id}`,
+  const { data: result, isValidating } = useSWR<OrganisationTypeApi>(
+    `/api/organisation/${organisation?.id}/user-reports?userId=${id}&skip=${skip}&limit=7`,
     fetcher
   );
 
   const { full_name, email, organisation_role, is_active, total_reports } =
-    (result?.user?.length > 0 && result?.user[0]) || {};
+    result?.user || {};
+
+  const userReports = result?.userReports || [];
+
+  const handleUpdateUser = (update: 'active' | 'admin') => {
+    const updateActiveUser = { is_active: is_active ? false : true };
+    const updateAdminUser = {
+      organisation_role: organisation_role === 'Admin' ? 'User' : 'Admin'
+    };
+
+    return async () => {
+      const res = await fetch(
+        `/api/organisation/${organisation?.id}/user?userId=${id}`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({
+            ...(update === 'active' && updateActiveUser),
+            ...(update === 'admin' && updateAdminUser)
+          })
+        }
+      );
+    };
+  };
 
   return (
     <Layout>
@@ -83,6 +119,7 @@ const OrganisationUserPage = () => {
               organisation_role === 'Admin' ? 'Return to user' : 'Make admin'
             }
             buttonVariant={organisation_role === 'Admin' ? 'highlight' : 'alt'}
+            onClick={handleUpdateUser('admin')}
           />
 
           <ToggleUserAccess
@@ -90,6 +127,7 @@ const OrganisationUserPage = () => {
             description={t('organisation_deactivate_user_description')}
             buttonText={is_active ? 'Deactivate user' : 'Activate User'}
             buttonVariant={is_active ? 'highlight' : 'alt'}
+            onClick={handleUpdateUser('active')}
           />
         </div>
         <div className="space-y-4">
@@ -103,11 +141,13 @@ const OrganisationUserPage = () => {
           </div>
           <Table
             headers={tableHeaders}
-            data={[]}
+            data={userReports}
             limit={7}
-            skip={x => null}
-            total={121}
-            isLoading={false}
+            skip={setSkip}
+            total={total_reports || 0}
+            isLoading={isValidating}
+            fillEmptyRows
+            pagination
           />
         </div>
       </div>
@@ -122,13 +162,15 @@ interface ToggleUserAccessProps {
   description: string;
   buttonText: string;
   buttonVariant: 'highlight' | 'alt';
+  onClick?: () => void;
 }
 
 const ToggleUserAccess = ({
   title,
   description,
   buttonText,
-  buttonVariant
+  buttonVariant,
+  onClick
 }: ToggleUserAccessProps) => {
   return (
     <div className="flex flex-col justify-between gap-y-4 max-w-sm min-h-full pr-12">
@@ -139,6 +181,7 @@ const ToggleUserAccess = ({
       <Button
         variant={buttonVariant}
         newClassName={`w-52 md:w-60 h-10 bg-${buttonVariant} text-white font-semibold`}
+        onClick={onClick}
       >
         {buttonText}
       </Button>

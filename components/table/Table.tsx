@@ -119,7 +119,7 @@ const Table = ({
                         ? 'text-right justify-end'
                         : align === 'center'
                         ? 'text-center justify-center'
-                        : null;
+                        : 'text-left justify-start';
 
                     return (
                       <TableCell
