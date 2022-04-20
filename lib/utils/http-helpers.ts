@@ -36,7 +36,7 @@ export const makeApiHandlerResponseFailure = (
   status: args?.status || 500,
   message: args?.message || GENERIC_API_ERROR,
   is_error: true,
-  error: ''
+  error: args?.error || ''
 });
 
 export const makeMissingArgsResponse = (
