@@ -81,7 +81,7 @@ const getOrganisationUsers: ApiHandler<
     const response = await fetch(
       `${
         process.env.WF_AP_ROUTE
-      }/users?ogranisation_id=${orgId}?_start=${skip}&_end=${skip + limit}`,
+      }/organisations/${orgId}/users?_start=${skip}&_end=${skip + limit}`,
       {
         method: 'GET',
         headers: {

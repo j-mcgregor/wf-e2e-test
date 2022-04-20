@@ -35,7 +35,9 @@ export interface OrganisationUser {
       company_updates: boolean;
     };
   };
+  organisation_role: string;
   id: string;
+  total_reports: number;
 }
 
 export interface OrganisationUserSchema {

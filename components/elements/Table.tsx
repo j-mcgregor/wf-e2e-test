@@ -42,8 +42,7 @@ const Table = ({
   const maxPages = Math.ceil(total / limit);
   const [page, setPage] = React.useState(1);
 
-  const filteredData = data.slice((page - 1) * limit, page * limit);
-  const blankRows = limit - filteredData.length;
+  const blankRows = limit - data.length;
 
   const handlePageChange = (page: number) => setPage(page);
   const handlePageDown = () => {
@@ -99,7 +98,7 @@ const Table = ({
             )}
 
             {!isLoading &&
-              filteredData.map((row, rowIndex) => (
+              data.map((row, rowIndex) => (
                 <TableRow key={`table-row-${rowIndex}`}>
                   {headers.map((header, index) => {
                     const { align, selector, contentClassName } = header;

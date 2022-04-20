@@ -29,7 +29,7 @@ const OrganisationUserPage = () => {
     fetcher
   );
 
-  const { full_name, email, is_superuser, is_active } =
+  const { full_name, email, organisation_role, is_active, total_reports } =
     (result?.user?.length > 0 && result?.user[0]) || {};
 
   return (
@@ -69,7 +69,7 @@ const OrganisationUserPage = () => {
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="flex items-center justify-center bg-primary rounded-full w-16 h-16 text-white text-xl">
-                44
+                {total_reports}
               </div>
               <span>Reports</span>
             </div>
@@ -79,8 +79,10 @@ const OrganisationUserPage = () => {
           <ToggleUserAccess
             title={t('organisation_user_role_title')}
             description={t('organisation_user_role_description')}
-            buttonText={is_superuser ? 'Return to user' : 'Make admin'}
-            buttonVariant={is_superuser ? 'highlight' : 'alt'}
+            buttonText={
+              organisation_role === 'Admin' ? 'Return to user' : 'Make admin'
+            }
+            buttonVariant={organisation_role === 'Admin' ? 'highlight' : 'alt'}
           />
 
           <ToggleUserAccess

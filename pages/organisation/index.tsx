@@ -21,17 +21,16 @@ const usersHeaders: TableHeadersType[] = [
   { name: 'Email', selector: 'email' },
   {
     name: 'Role',
-    selector: (row: { is_superuser: boolean }) =>
-      row.is_superuser ? 'Admin' : 'User',
+    selector: 'organisation_role',
     align: 'center',
-    contentClassName: (row: { is_superuser: boolean }) =>
+    contentClassName: (row: { organisation_role: string }) =>
       `${
-        row.is_superuser ? 'bg-highlight' : ''
+        row.organisation_role === 'Admin' ? 'bg-highlight' : ''
       } rounded-full w-14 h-5 bg-opacity-20 flex justify-center items-center`
   },
   {
     name: 'Reports',
-    selector: 'reports',
+    selector: 'total_reports',
     align: 'center'
   },
   {
@@ -72,8 +71,11 @@ const Organisation = () => {
         <Stats
           stats={[
             { header: t('stats_organisation_title'), data: organisation?.name },
-            { header: t('stats_total_reports_title'), data: 3385 },
-            { header: t('stats_users_title'), data: result?.total || '0' }
+            {
+              header: t('stats_total_reports_title'),
+              data: organisation?.quota?.quota_used
+            },
+            { header: t('stats_users_title'), data: organisation?.max_users }
           ]}
         />
       </div>
