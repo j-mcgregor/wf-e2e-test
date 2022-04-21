@@ -31,7 +31,8 @@ const authenticate = async (email: string, password: string) => {
       },
       body: new URLSearchParams({
         username: email,
-        password: password
+        password: password,
+        grant_type: 'password'
       })
     });
     if (res.ok) {
