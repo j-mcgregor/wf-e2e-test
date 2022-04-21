@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 import { OrganisationIndexApi } from '../pages/api/organisation/[orgId]';
+import { OrganisationTypeApi } from '../pages/api/organisation/[orgId]/[type]';
 
 const useOrganisation = (fetch: boolean = true) => {
   const { user } = useRecoilValue(appState);
@@ -20,10 +21,20 @@ const useOrganisation = (fetch: boolean = true) => {
     }
   );
 
+  const { data: result } = useSWR<OrganisationTypeApi>(
+    fetch && `/api/organisation/${orgId}/users?limit=1`,
+    fetcher
+  );
+
+  const organisation = {
+    ...(data && data?.organisation),
+    totalUsers: result && result?.total
+  };
+
   const isLoading = !data;
 
   return {
-    organisation: data && data?.organisation ? data.organisation : null,
+    organisation,
     loading: isLoading,
     error: data?.error,
     message: data?.message
