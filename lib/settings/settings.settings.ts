@@ -34,6 +34,10 @@ const getCurrencyByIsoCode = (iso_code: string, defaultCode = 'GBP') => {
   return defaultCode;
 };
 
+/**
+ * used to set the currency as an option when provided with an iso_code
+ * see implementation below
+ */
 const getCurrencyOptionByIsoCode = (iso_code: string) => {
   // get country by iso_code from countryCodeJSON
   const country = countryCodeJSON.find(country => country.code === iso_code);
@@ -75,3 +79,19 @@ const SettingsSettings = {
 };
 
 export default SettingsSettings;
+
+/**
+ * implementation of getCurrencyOptionByIsoCode
+ */
+
+// useEffect(() => {
+//   if (isAutoOrManual.iso_code) {
+//     const autoBatchCurrency = Settings.getCurrencyOptionByIsoCode(
+//       isAutoOrManual.iso_code
+//     );
+
+//     if (autoBatchCurrency) {
+//       setCurrency(autoBatchCurrency);
+//     }
+//   }
+// }, [isAutoOrManual.iso_code]);

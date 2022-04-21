@@ -66,18 +66,6 @@ const CreateBatchReport: NextPage = () => {
   );
 
   useEffect(() => {
-    if (isAutoOrManual.iso_code) {
-      const autoBatchCurrency = Settings.getCurrencyOptionByIsoCode(
-        isAutoOrManual.iso_code
-      );
-
-      if (autoBatchCurrency) {
-        setCurrency(autoBatchCurrency);
-      }
-    }
-  }, [isAutoOrManual.iso_code]);
-
-  useEffect(() => {
     if (user?.preferences?.defaults?.reporting_country) {
       const defaultCurrency = Settings.supportedCurrencies.find(
         curr => curr.optionValue === user.preferences?.defaults?.currency
@@ -225,7 +213,7 @@ const CreateBatchReport: NextPage = () => {
               )}
             </>
           }
-          extraOptions={
+          batchAutoOptions={
             <div className="my-4">
               <OptionRow
                 title={t('account_type_title')}

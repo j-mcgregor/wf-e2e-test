@@ -20,10 +20,20 @@ import { appUser } from '../../lib/appState';
 
 import type { BatchReportResponse } from '../../types/batch-reports';
 
+const LIMIT = 4; // eg 4 hours ago
+
+const lessThanFourHoursAgo = (date: number) => {
+  const HOURS = 60 * 60 * 1000 * LIMIT;
+  const hoursAgo = Date.now() - HOURS;
+
+  return date > hoursAgo;
+};
+
 const BatchReports: NextPage = () => {
   const t = useTranslations();
   const [pendingJobs, setPendingJobs] = useState<BatchReportResponse[]>([]);
   const [completedJobs, setCompletedJobs] = useState<BatchReportResponse[]>([]);
+  const [failedJobs, setFailedJobs] = useState<BatchReportResponse[]>([]);
 
   // ADD TO HOOK START
   const [reportLimit, setReportLimit] = useState(0); // initial limit of 8 reports
@@ -49,12 +59,27 @@ const BatchReports: NextPage = () => {
       const complete = batchReports?.filter(
         job => job.total_reports !== job.failed_reports
       );
-      const pending = batchReports?.filter(
-        job => job.total_reports == job.failed_reports
-      );
+      const pending = batchReports?.filter(job => {
+        if (
+          lessThanFourHoursAgo(new Date(job.created_at).getTime()) &&
+          job.total_reports === job.failed_reports
+        ) {
+          return job;
+        }
+      });
+
+      const failed = batchReports?.filter(job => {
+        if (
+          !lessThanFourHoursAgo(new Date(job.created_at).getTime()) &&
+          job.total_reports === job.failed_reports
+        ) {
+          return job;
+        }
+      });
 
       setCompletedJobs(complete);
       setPendingJobs(pending);
+      setFailedJobs(failed);
     }
   }, [batchReports]);
 
@@ -81,6 +106,32 @@ const BatchReports: NextPage = () => {
           />
         </div>
 
+        {failedJobs.length > 0 ? (
+          <div className="my-6">
+            <p className="text-xl font-semibold mb-4">
+              {t('failed_batch_reports')}
+            </p>
+
+            <div className="grid md:grid-cols-4 grid-cols-2 gap-3">
+              {user &&
+                failedJobs?.map(report => {
+                  return (
+                    <BatchReportCard
+                      key={report.id}
+                      header={report.name}
+                      quantity={report.total_reports || 0}
+                      quantityText={`${t('batch_failed')}`}
+                      icon={
+                        <DocumentReportIcon className="w-6 h-6 text-white" />
+                      }
+                      iconColor="bg-red-500"
+                      disabled
+                    />
+                  );
+                })}
+            </div>
+          </div>
+        ) : null}
         <div className="my-6">
           <p className="text-xl font-semibold mb-4">
             {t('in_progress_batch_reports')}
@@ -94,9 +145,13 @@ const BatchReports: NextPage = () => {
                     key={report.id}
                     header={report.name}
                     quantity={report.total_reports || 0}
-                    quantityText={`${t('processing')}...`}
+                    quantityText={
+                      report.has_failed ? 'Failed' : `${t('processing')}...`
+                    }
                     icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
-                    iconColor="bg-highlight"
+                    iconColor={
+                      report.has_failed ? 'bg-red-300' : 'bg-highlight'
+                    }
                     disabled
                   />
                 );
