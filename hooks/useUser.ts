@@ -29,7 +29,7 @@ const useUser = (fetch: boolean = true) => {
   return {
     user: user ? user : null,
     loading: isLoading,
-    error: data?.error,
+    error: data?.is_error ? data.error : false,
     message: data?.message
   };
 };
