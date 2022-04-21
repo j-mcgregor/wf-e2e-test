@@ -3,6 +3,9 @@ import { useTranslations } from 'next-intl';
 import { GetStaticPropsContext } from 'next/types';
 import React from 'react';
 import Button from '../../components/elements/Button';
+import Input from '../../components/elements/Input';
+import Stats from '../../components/elements/Stats';
+import AddNewUserForm from '../../components/forms/add-user/AddUserForm';
 import Layout from '../../components/layout/Layout';
 
 const AddNewUserPage = () => {
@@ -18,6 +21,19 @@ const AddNewUserPage = () => {
           <ArrowLeftIcon className="h-5 w-5 mr-2" />
           {t('back_to_organisation')}
         </Button>
+      </div>
+      <div className="text-primary space-y-10">
+        <div className="space-y-4 leading-relaxed">
+          <h1 className="text-3xl font-semibold">{t('add_user_title')}</h1>
+          <p>{t('add_user_description')}</p>
+          <Stats
+            stats={[
+              { header: t('add_user_total_stats'), data: '1' },
+              { header: t('add_user_max_stats'), data: '150' }
+            ]}
+          />
+        </div>
+        <AddNewUserForm />
       </div>
     </Layout>
   );

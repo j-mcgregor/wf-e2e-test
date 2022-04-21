@@ -119,6 +119,7 @@ const Organisation = () => {
             }
             header={t('codat_card_title')}
             description={t('codat_card_description')}
+            linkTo="/organisation/integrations/codat"
           />
         </div>
       </div>
