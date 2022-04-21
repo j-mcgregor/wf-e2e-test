@@ -28,7 +28,7 @@ const useOrganisation = (fetch: boolean = true) => {
 
   const organisation = {
     ...(data && data?.organisation),
-    totalUsers: result && result?.total
+    totalUsers: (result && result?.total) || 0
   };
 
   const isLoading = !data;

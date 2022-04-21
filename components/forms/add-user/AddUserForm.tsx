@@ -21,7 +21,9 @@ const AddNewUserForm = () => {
                 <Input label="Full name *" type="text" />
               </div>
               <div>
-                <label className="block text-sm font-medium">Role</label>
+                <label className="block text-sm font-medium">
+                  {t('add_user_form_role_label')}
+                </label>
                 <div className="flex w-52 my-2 h-9">
                   <Button
                     variant="alt"
@@ -31,7 +33,7 @@ const AddNewUserForm = () => {
                     onClick={() => setRole('User')}
                     type="button"
                   >
-                    User
+                    {t('user_role')}
                   </Button>
                   <Button
                     variant="highlight"
@@ -41,7 +43,7 @@ const AddNewUserForm = () => {
                     onClick={() => setRole('Admin')}
                     type="button"
                   >
-                    Admin
+                    {t('admin_role')}
                   </Button>
                 </div>
               </div>
@@ -55,7 +57,7 @@ const AddNewUserForm = () => {
               variant="alt"
               newClassName="w-max bg-alt text-white py-2 px-8"
             >
-              Add new user
+              {t('add_user_button')}
             </Button>
           </div>
         </form>

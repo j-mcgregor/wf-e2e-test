@@ -73,7 +73,7 @@ const Organisation = () => {
               header: t('stats_total_reports_title'),
               data: organisation?.quota?.quota_used || '0'
             },
-            { header: t('stats_users_title'), data: result?.total || '0' }
+            { header: t('stats_users_title'), data: organisation?.totalUsers }
           ]}
         />
       </div>

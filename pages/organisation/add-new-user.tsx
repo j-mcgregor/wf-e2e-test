@@ -7,9 +7,12 @@ import Input from '../../components/elements/Input';
 import Stats from '../../components/elements/Stats';
 import AddNewUserForm from '../../components/forms/add-user/AddUserForm';
 import Layout from '../../components/layout/Layout';
+import useOrganisation from '../../hooks/useOrganisation';
 
 const AddNewUserPage = () => {
   const t = useTranslations();
+  const { organisation } = useOrganisation();
+
   return (
     <Layout>
       <div className="h-10 flex items-center text-primary mb-3">
@@ -28,8 +31,14 @@ const AddNewUserPage = () => {
           <p>{t('add_user_description')}</p>
           <Stats
             stats={[
-              { header: t('add_user_total_stats'), data: '1' },
-              { header: t('add_user_max_stats'), data: '150' }
+              {
+                header: t('add_user_total_stats'),
+                data: `${organisation.totalUsers}`
+              },
+              {
+                header: t('add_user_max_stats'),
+                data: `${organisation?.max_users}`
+              }
             ]}
           />
         </div>

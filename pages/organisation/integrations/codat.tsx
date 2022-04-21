@@ -26,38 +26,35 @@ const AddNewUserPage = () => {
           <h1 className="text-3xl font-semibold">{t('codat_page_title')}</h1>
           <p>{t('codat_page_description')}</p>
           <ol start={1} style={{ listStyleType: 'decimal' }} className="pl-12">
-            <li>Log into Codat</li>
+            <li>{t('codat_integration_step_1')}</li>
             <li>
-              Navigate to <span className="font-bold">Account</span> on the side
-              bar
+              {t.rich('codat_integration_step_2', { b: bold => <b>{bold}</b> })}
             </li>
             <li>
-              Then click into <span className="font-bold">Profile</span>
+              {t.rich('codat_integration_step_3', { b: bold => <b>{bold}</b> })}
             </li>
             <li>
-              Scroll down to <span className="font-bold">API Access</span>
+              {t.rich('codat_integration_step_4', { b: bold => <b>{bold}</b> })}
             </li>
             <li>
-              Copy the Authorisation header, which looks similar to{' '}
-              <span className="font-bold">
-                Basic XXXXXXXansdklandklasndansdadnadad21e12==
-              </span>
+              {t.rich('codat_integration_step_5', { b: bold => <b>{bold}</b> })}
             </li>
             <li>
-              Paste what you copied below and click{' '}
-              <span className="font-bold">Add integration</span>
+              {t.rich('codat_integration_step_6', { b: bold => <b>{bold}</b> })}
             </li>
           </ol>
         </div>
         <div className="shadow">
           <div className="bg-white py-7 px-5 space-y-4">
-            <h2 className="text-xl font-semibold">Add Authorisation Header</h2>
+            <h2 className="text-xl font-semibold">
+              {t('codat_add_auth_header_title')}
+            </h2>
             <p className="text-gray-500">
-              Add the authorisation header from Codat below.
+              {t('codat_add_auth_header_description')}
             </p>
             <textarea
               className="w-full bg-gray-50 border-none h-52"
-              placeholder="Copy and paste your authorisation here."
+              placeholder={t('codat_auth_header_placeholder')}
             ></textarea>
           </div>
           <div className="bg-gray-50 px-5 py-3">
@@ -65,7 +62,7 @@ const AddNewUserPage = () => {
               variant="alt"
               newClassName="bg-alt text-white w-max py-2 px-8"
             >
-              Add integration
+              {t('add_integration_button')}
             </Button>
           </div>
         </div>
