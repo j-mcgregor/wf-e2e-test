@@ -40,22 +40,13 @@ const Layout = ({
   const path: string = router.asPath;
 
   // renamed for consistency
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { user, loading, error, message } = useUser(!noAuthRequired);
   const { HubspotScript } = useHubspotChat('4623266', true, user);
   const [, setHomePage] = useLocalStorage<string>('wf_home_page', '');
-  const [, setLastPageVisited] = useSessionStorage('wf_last_page_visited', '');
 
-  if (!loading && !session && !noAuthRequired) router.push('/login');
-
-  useEffect(() => {
-    // Listen for page changes after a navigation or when the query changes and set last page. Dont set if login
-    router?.events?.on('routeChangeComplete', url => {
-      if (!url.includes('/login')) {
-        setLastPageVisited(url);
-      }
-    });
-  }, [router.events]);
+  if (!loading && !session && !noAuthRequired && status !== 'loading')
+    router.push('/login');
 
   React.useEffect(() => {
     if (user) {
@@ -70,7 +61,7 @@ const Layout = ({
   //@ts-ignore
 
   if (!noAuthRequired && error)
-    return <ErrorSkeleton header={error} message={message} />;
+    return <ErrorSkeleton header={`${error}`} message={message} />;
 
   return (
     <div>

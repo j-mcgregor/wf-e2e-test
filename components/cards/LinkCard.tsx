@@ -14,6 +14,7 @@ interface LinkCardProps {
   linkTo?: string;
   className?: string;
   disabled?: boolean;
+  download?: boolean;
   onClick?: () => any;
 }
 
@@ -25,6 +26,7 @@ const LinkCard = ({
   linkTo,
   className,
   disabled,
+  download,
   onClick
 }: LinkCardProps) => {
   return (
@@ -34,6 +36,7 @@ const LinkCard = ({
       linkTo={linkTo}
       className={`block text-primary max-w-xxs  ${className}`}
       onClick={onClick}
+      download={download}
     >
       <div
         className={`${
