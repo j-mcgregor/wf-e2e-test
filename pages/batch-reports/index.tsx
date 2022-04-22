@@ -13,6 +13,7 @@ import BatchReportCard from '../../components/cards/BatchReportCard';
 import EmptyCard from '../../components/cards/EmptyCard';
 import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
+import { Collapsible } from '../../components/elements/Collapsible';
 import Layout from '../../components/layout/Layout';
 import LoadingIcon from '../../components/svgs/LoadingIcon';
 import useBatchReportsHistory from '../../hooks/useBatchReportsHistory';
@@ -107,108 +108,85 @@ const BatchReports: NextPage = () => {
         </div>
 
         {failedJobs.length > 0 ? (
-          <div className="my-6">
-            <h3 className="text-xl font-semibold mb-4">
-              {t('failed_batch_reports')}
-            </h3>
-
-            <div className="grid md:grid-cols-4 grid-cols-2 gap-3">
-              {user &&
-                failedJobs?.map(report => {
-                  return (
-                    <BatchReportCard
-                      key={report.id}
-                      header={report.name}
-                      quantity={report.total_reports || 0}
-                      quantityText={`${t('batch_failed')}`}
-                      icon={
-                        <DocumentReportIcon className="w-6 h-6 text-white" />
-                      }
-                      iconColor="bg-red-500"
-                      disabled
-                    />
-                  );
-                })}
-            </div>
-          </div>
-        ) : null}
-        <div className="my-6">
-          <h3 className="text-xl font-semibold mb-4">
-            {t('in_progress_batch_reports')}
-          </h3>
-
-          <div className="grid md:grid-cols-4 grid-cols-2 gap-3">
+          <Collapsible title={t('failed_batch_reports')}>
             {user &&
-              pendingJobs?.map(report => {
+              failedJobs?.map(report => {
                 return (
                   <BatchReportCard
                     key={report.id}
                     header={report.name}
                     quantity={report.total_reports || 0}
-                    quantityText={
-                      report.has_failed ? 'Failed' : `${t('processing')}...`
-                    }
+                    quantityText={`${t('batch_failed')}`}
                     icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
-                    iconColor={
-                      report.has_failed ? 'bg-red-300' : 'bg-highlight'
-                    }
+                    iconColor="bg-red-500"
                     disabled
                   />
                 );
               })}
-            {user && !batchReports && (
-              <>
-                <EmptyCard loading />
-                <EmptyCard loading />
-              </>
-            )}
-            {user && batchReports && pendingJobs?.length === 0 && (
-              <EmptyCard
-                text={t('no_batch_reports_in_progress')}
-                icon={<RefreshIcon className="h-10 w-10" />}
-              />
-            )}
-          </div>
-        </div>
+          </Collapsible>
+        ) : null}
+        <Collapsible title={t('in_progress_batch_reports')}>
+          {user &&
+            pendingJobs?.map(report => {
+              return (
+                <BatchReportCard
+                  key={report.id}
+                  header={report.name}
+                  quantity={report.total_reports || 0}
+                  quantityText={
+                    report.has_failed ? 'Failed' : `${t('processing')}...`
+                  }
+                  icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
+                  iconColor={report.has_failed ? 'bg-red-300' : 'bg-highlight'}
+                  disabled
+                />
+              );
+            })}
+          {user && !batchReports && (
+            <>
+              <EmptyCard loading />
+              <EmptyCard loading />
+            </>
+          )}
+          {user && batchReports && pendingJobs?.length === 0 && (
+            <EmptyCard
+              text={t('no_batch_reports_in_progress')}
+              icon={<RefreshIcon className="h-10 w-10" />}
+            />
+          )}
+        </Collapsible>
 
-        {/* completed batch reports */}
-        <div className="my-6">
-          <h2 className="text-xl font-semibold mb-4">
-            {t('completed_batch_reports')}
-          </h2>
+        <Collapsible title={t('completed_batch_reports')}>
+          {user &&
+            completedJobs?.map((report, index) => {
+              return (
+                <BatchReportCard
+                  key={report.id + index}
+                  header={`${report.name}`}
+                  linkTo={`/batch-reports/${report.id}`}
+                  quantity={report.total_reports || 0}
+                  quantityText={t('total_companies_analysed')}
+                  icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
+                  iconColor="bg-highlight"
+                />
+              );
+            })}
 
-          <div className="grid md:grid-cols-4 grid-cols-2 gap-3">
-            {user &&
-              completedJobs?.map((report, index) => {
-                return (
-                  <BatchReportCard
-                    key={report.id + index}
-                    header={`${report.name}`}
-                    linkTo={`/batch-reports/${report.id}`}
-                    quantity={report.total_reports || 0}
-                    quantityText={t('total_companies_analysed')}
-                    icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
-                    iconColor="bg-highlight"
-                  />
-                );
-              })}
-
-            {user && !batchReports && (
-              <>
-                <EmptyCard loading />
-                <EmptyCard loading />
-                <EmptyCard loading />
-                <EmptyCard loading />
-              </>
-            )}
-            {user && batchReports && completedJobs?.length === 0 && (
-              <EmptyCard
-                text={t('no_completed_batch_reports')}
-                icon={<DocumentDuplicateIcon className="h-10 w-10" />}
-              />
-            )}
-          </div>
-        </div>
+          {user && !batchReports && (
+            <>
+              <EmptyCard loading />
+              <EmptyCard loading />
+              <EmptyCard loading />
+              <EmptyCard loading />
+            </>
+          )}
+          {user && batchReports && completedJobs?.length === 0 && (
+            <EmptyCard
+              text={t('no_completed_batch_reports')}
+              icon={<DocumentDuplicateIcon className="h-10 w-10" />}
+            />
+          )}
+        </Collapsible>
         {/* Handle loading cases and if there are enough reports to show more */}
         {(reportLimit + 8 <= reportLength || loading) && (
           <Button
