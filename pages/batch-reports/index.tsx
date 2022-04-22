@@ -108,9 +108,9 @@ const BatchReports: NextPage = () => {
 
         {failedJobs.length > 0 ? (
           <div className="my-6">
-            <p className="text-xl font-semibold mb-4">
+            <h3 className="text-xl font-semibold mb-4">
               {t('failed_batch_reports')}
-            </p>
+            </h3>
 
             <div className="grid md:grid-cols-4 grid-cols-2 gap-3">
               {user &&
@@ -133,9 +133,9 @@ const BatchReports: NextPage = () => {
           </div>
         ) : null}
         <div className="my-6">
-          <p className="text-xl font-semibold mb-4">
+          <h3 className="text-xl font-semibold mb-4">
             {t('in_progress_batch_reports')}
-          </p>
+          </h3>
 
           <div className="grid md:grid-cols-4 grid-cols-2 gap-3">
             {user &&
@@ -173,9 +173,9 @@ const BatchReports: NextPage = () => {
 
         {/* completed batch reports */}
         <div className="my-6">
-          <p className="text-xl font-semibold mb-4">
+          <h2 className="text-xl font-semibold mb-4">
             {t('completed_batch_reports')}
-          </p>
+          </h2>
 
           <div className="grid md:grid-cols-4 grid-cols-2 gap-3">
             {user &&
