@@ -22,19 +22,14 @@ const OrganisationUserPage = () => {
   const { id } = router.query;
   const [skip, setSkip] = React.useState(0);
 
+  const getReportName = (row: { company_name: string; created_at: string }) =>
+    createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
+
   const tableHeaders: TableHeadersType[] = [
     {
       name: 'Report Name',
-      selector: (row: { company_name: string; created_at: string }) =>
-        createReportTitle(
-          row.company_name || t('unnamed_company'),
-          row.created_at
-        ),
-      rowTitle: (row: { company_name: string; created_at: string }) =>
-        createReportTitle(
-          row.company_name || t('unnamed_company'),
-          row.created_at
-        ),
+      selector: getReportName,
+      rowTitle: getReportName,
       contentClassName: 'truncate max-w-[240px] lg:max-w-sm'
     },
     { name: 'SME Z-Score', selector: 'sme_z_score', align: 'center' },
