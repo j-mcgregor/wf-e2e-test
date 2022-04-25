@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const WFTwoToneLogo: React.FC<{ onClick: () => void }> = ({
+export const WFTwoToneLogo: React.FC<{ onClick?: () => void }> = ({
   onClick
 }) => {
   return (

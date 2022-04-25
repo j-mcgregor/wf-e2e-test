@@ -48,7 +48,7 @@ export const SubsidiaryList = ({
                     key={`subsidiary-${i}`}
                     name={subsidiary.name}
                     iso_code={subsidiary.iso_code}
-                    company_id={subsidiary.id} // <-- incorrect; not company_id so causes 404
+                    company_id={subsidiary.company_id}
                     type={type}
                   />
                 );

@@ -1,12 +1,13 @@
 import { OfficeBuildingIcon, UserIcon } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { mutate } from 'swr';
 
 import countryCodes from '../../lib/data/countryCodes.json';
 import fetcher from '../../lib/utils/fetcher';
 import { ReportsReportApi } from '../../pages/api/reports/report';
+import LoadingIcon from '../svgs/LoadingIcon';
 import { WFTwoToneLogo } from '../svgs/WFTwoToneLogo';
 
 interface EntityCardProps {
@@ -18,8 +19,10 @@ interface EntityCardProps {
 
 const EntityCard = ({ name, type, iso_code, company_id }: EntityCardProps) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleGenerateReport = async () => {
+    setLoading(true);
     const currencySymbol =
       countryCodes.find(country => country.code === iso_code)?.currency_code ||
       '';
@@ -62,6 +65,8 @@ const EntityCard = ({ name, type, iso_code, company_id }: EntityCardProps) => {
       Sentry.captureException(err, {
         extra: sentryExtraInfo
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,6 +77,7 @@ const EntityCard = ({ name, type, iso_code, company_id }: EntityCardProps) => {
 	avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs"
       data-testid="subsidiary-card-testid"
       role="listbox"
+      aria-disabled={loading}
     >
       <div className="flex items-center space-x-2 px-3 w-full">
         <div className="min-w-6">
@@ -84,7 +90,13 @@ const EntityCard = ({ name, type, iso_code, company_id }: EntityCardProps) => {
         <p className="break-all">{name}</p>
       </div>
       <div className="min-w-32">
-        <WFTwoToneLogo onClick={handleGenerateReport} />
+        {loading ? (
+          <div className="flex items-center justify-center h-[65px] w-[65px]">
+            <LoadingIcon />
+          </div>
+        ) : (
+          <WFTwoToneLogo onClick={handleGenerateReport} />
+        )}
       </div>
     </div>
   );
