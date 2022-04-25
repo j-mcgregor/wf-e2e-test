@@ -21,7 +21,7 @@ const tableHeaders: TableHeadersType[] = [
       `${row.company_name} - ${row.created_at}`
   },
   { name: 'SME Z-Score', selector: 'sme_z_score', align: 'center' },
-  { name: 'BRE', selector: 'full_name', align: 'center' },
+  { name: 'BRE', selector: 'bond_rating_equivalent', align: 'center' },
   {
     name: 'Created At',
     selector: (row: { created_at: string }) => (
@@ -42,6 +42,8 @@ const OrganisationUserPage = () => {
     `/api/organisation/${organisation?.id}/user-reports?userId=${id}&skip=${skip}&limit=7`,
     fetcher
   );
+
+  console.log(result);
 
   const { full_name, email, organisation_role, is_active, total_reports } =
     result?.user || {};

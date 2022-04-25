@@ -58,10 +58,7 @@ const AddNewUserPage = () => {
             ></textarea>
           </div>
           <div className="bg-gray-50 px-5 py-3">
-            <Button
-              variant="alt"
-              newClassName="bg-alt text-white w-max py-2 px-8"
-            >
+            <Button variant="alt" className="max-w-max rounded-none">
               {t('add_integration_button')}
             </Button>
           </div>
