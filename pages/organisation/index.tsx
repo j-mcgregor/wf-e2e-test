@@ -99,7 +99,7 @@ const Organisation = () => {
           rowLink={row => `/organisation/user/${row.id}`}
         />
       </div>
-      <div className="mt-12 flex flex-col gap-5">
+      {/* <div className="mt-12 flex flex-col gap-5">
         <h2 className="text-2xl font-semibold">{t('intergrations_title')}</h2>
         <p className="pr-14">{t('intergrations_description')}</p>
         <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-auto md:mr-auto">
@@ -122,7 +122,7 @@ const Organisation = () => {
             linkTo="/organisation/integrations/codat"
           />
         </div>
-      </div>
+      </div> */}
     </Layout>
   );
 };

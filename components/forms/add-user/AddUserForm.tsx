@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import useOrganisation from '../../../hooks/useOrganisation';
 
 import Button from '../../elements/Button';
 import Input from '../../elements/Input';
@@ -8,19 +9,50 @@ import Input from '../../elements/Input';
 interface FormDataType {
   email: string;
   full_name: string;
-  role: 'Admin' | 'User';
+  organisation_role: 'Admin' | 'User';
 }
 
 const AddNewUserForm = () => {
   const t = useTranslations();
-  const [role, setRole] = React.useState('User');
+  const { organisation, message } = useOrganisation();
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty, isSubmitting }
+    reset,
+    formState: { errors, isValid, isSubmitting }
   } = useForm<FormDataType>();
 
-  const onSubmit: SubmitHandler<FormDataType> = data => console.log(data);
+  const onSubmit: SubmitHandler<FormDataType> = async data => {
+    const res = await fetch(`/api/organisation/${organisation?.id}/user`, {
+      method: 'POST',
+      body: JSON.stringify({
+        ...{
+          email: 'user@example.com',
+          is_active: true,
+          is_superuser: false,
+          full_name: 'string',
+          organisation_id: organisation?.id,
+          preferences: {
+            defaults: {
+              locale: 'en-GB',
+              currency: 'GBP',
+              home_page: 'dashboard',
+              reporting_country: 'GB'
+            },
+            communication: {
+              batch_report_email: true,
+              service_updates: true,
+              company_updates: true
+            }
+          },
+          organisation_role: 'User',
+          password: 'string'
+        },
+        ...data
+      })
+    });
+    reset({ full_name: '', email: '', organisation_role: 'User' });
+  };
 
   return (
     <>
@@ -47,10 +79,10 @@ const AddNewUserForm = () => {
                   {t('add_user_form_role_label')}
                 </label>
                 <div className="flex w-52 my-2 h-9">
-                  <ul className="grid grid-cols-2">
+                  <ul className="grid grid-cols-2 w-full">
                     <li className="relative">
                       <input
-                        {...register('role', { required: true })}
+                        {...register('organisation_role', { required: true })}
                         type="radio"
                         name="role"
                         id="user_role"
@@ -60,14 +92,14 @@ const AddNewUserForm = () => {
                       />
                       <label
                         htmlFor="user_role"
-                        className="flex h-10 items-center justify-center rounded-l-lg border-[1px] border-primary bg-white text-primary peer-checked:text-white peer-checked:bg-alt"
+                        className="flex h-10 px-2 items-center justify-center rounded-l-lg border-[1px] border-primary bg-white text-primary peer-checked:text-white peer-checked:bg-alt cursor-pointer"
                       >
                         User
                       </label>
                     </li>
                     <li className="relative">
                       <input
-                        {...register('role', { required: true })}
+                        {...register('organisation_role', { required: true })}
                         type="radio"
                         name="role"
                         id="admin_role"
@@ -76,7 +108,7 @@ const AddNewUserForm = () => {
                       />
                       <label
                         htmlFor="admin_role"
-                        className="flex h-10 px-2 items-center justify-center rounded-r-lg border-[1px] border-primary  bg-white text-primary peer-checked:text-white peer-checked:bg-highlight"
+                        className="flex h-10 px-2 items-center justify-center rounded-r-lg border-[1px] border-primary  bg-white text-primary peer-checked:text-white peer-checked:bg-highlight cursor-pointer"
                       >
                         Admin
                       </label>
@@ -85,7 +117,7 @@ const AddNewUserForm = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-5">
+            <div className="mt-5 w-96">
               <Input
                 label="Email *"
                 type="email"
@@ -100,7 +132,7 @@ const AddNewUserForm = () => {
             <Button
               type="submit"
               variant="alt"
-              disabled={!isDirty || isSubmitting}
+              disabled={!isValid || isSubmitting}
               className="max-w-max"
             >
               {t('add_user_button')}
