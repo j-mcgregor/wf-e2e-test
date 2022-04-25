@@ -13,23 +13,7 @@ import useOrganisation from '../../../hooks/useOrganisation';
 import fetcher from '../../../lib/utils/fetcher';
 import { OrganisationIndexApi } from '../../api/organisation/[orgId]';
 import { OrganisationTypeApi } from '../../api/organisation/[orgId]/[type]';
-
-const tableHeaders: TableHeadersType[] = [
-  {
-    name: 'Report Name',
-    selector: (row: { company_name: string; created_at: string }) =>
-      `${row.company_name} - ${row.created_at}`
-  },
-  { name: 'SME Z-Score', selector: 'sme_z_score', align: 'center' },
-  { name: 'BRE', selector: 'bond_rating_equivalent', align: 'center' },
-  {
-    name: 'Created At',
-    selector: (row: { created_at: string }) => (
-      <ReactTimeAgo date={row.created_at} />
-    ),
-    align: 'center'
-  }
-];
+import { createReportTitle } from '../../../lib/utils/text-helpers';
 
 const OrganisationUserPage = () => {
   const t = useTranslations();
@@ -38,12 +22,36 @@ const OrganisationUserPage = () => {
   const { id } = router.query;
   const [skip, setSkip] = React.useState(0);
 
+  const tableHeaders: TableHeadersType[] = [
+    {
+      name: 'Report Name',
+      selector: (row: { company_name: string; created_at: string }) =>
+        createReportTitle(
+          row.company_name || t('unnamed_company'),
+          row.created_at
+        ),
+      rowTitle: (row: { company_name: string; created_at: string }) =>
+        createReportTitle(
+          row.company_name || t('unnamed_company'),
+          row.created_at
+        ),
+      contentClassName: 'truncate max-w-[240px] lg:max-w-sm'
+    },
+    { name: 'SME Z-Score', selector: 'sme_z_score', align: 'center' },
+    { name: 'BRE', selector: 'bond_rating_equivalent', align: 'center' },
+    {
+      name: 'Created At',
+      selector: (row: { created_at: string }) => (
+        <ReactTimeAgo date={row.created_at} />
+      ),
+      align: 'center'
+    }
+  ];
+
   const { data: result, isValidating } = useSWR<OrganisationTypeApi>(
     `/api/organisation/${organisation?.id}/user-reports?userId=${id}&skip=${skip}&limit=7`,
     fetcher
   );
-
-  console.log(result);
 
   const { full_name, email, organisation_role, is_active, total_reports } =
     result?.user || {};
@@ -148,6 +156,9 @@ const OrganisationUserPage = () => {
             skip={setSkip}
             total={total_reports || 0}
             isLoading={isValidating}
+            rowLink={(row: { id: string }) =>
+              `/report/${row.id}?from=/organisation/user/${id}`
+            }
             fillEmptyRows
             pagination
           />
