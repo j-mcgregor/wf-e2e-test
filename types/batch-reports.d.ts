@@ -12,6 +12,7 @@ export interface BatchReportResponse {
   failed_reports?: number;
   owner_id: number;
   summaries?: BatchSummary[];
+  has_failed?: boolean;
 }
 
 export interface Entity {

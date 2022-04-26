@@ -55,12 +55,7 @@ const ShareHolderCard = ({
         ) : (
           <p className="flex-1 text-left ml-1">{name}</p>
         )}
-        {isPep && (
-          <PepFlag
-            hint={t('this_person_is_risk_relevant_name')}
-            className="mx-2"
-          />
-        )}
+
         {isShareholderIndividual && (
           <Link className="print:hidden" linkTo={linkedInLink}>
             <LinkedinLogo />
@@ -68,11 +63,17 @@ const ShareHolderCard = ({
         )}
       </div>
 
-      <div className="relative h-8">
+      <div className="relative h-8 flex">
         <ShareholderCardSvg className="absolute bottom-0 z-0 h-full" />
         <p className="font-bold relative z-10 ml-3">
           {percentage ? `${percentage}%` : t('na')}
         </p>
+        {isPep && (
+          <PepFlag
+            hint={t('this_person_is_risk_relevant_name')}
+            className=" z-10 relative ml-4"
+          />
+        )}
       </div>
     </div>
   );

@@ -203,14 +203,17 @@ export const isBatchAutoOrManual = (csvData: CsvReport): UploadReportType => {
       type: 'BATCH_AUTO',
       apiUrl: '/api/batch-reports',
       validator: autoBatchUploadValidators,
-      processMsPerCompany: 30000
+      // if all iso_codes are the same, use it.
+      // this is used for default currency selection of auto batch
+      ...(csvData.iso_code.every(iso => iso === csvData.iso_code[0]) && {
+        iso_code: csvData.iso_code[0]
+      })
     };
   } else {
     return {
       type: 'BATCH_MANUAL',
       apiUrl: '/api/batch-reports/manual',
-      validator: manualUploadValidators,
-      processMsPerCompany: 10000
+      validator: manualUploadValidators
     };
   }
 };

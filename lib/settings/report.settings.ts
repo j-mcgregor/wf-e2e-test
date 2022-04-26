@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { HintTypeProps } from '../../components/elements/Hint';
+import { SimpleValue } from '../../components/sme-calc-sections/AdvancedSearch';
 import { MultiGraphDataType } from '../../types/charts';
 
 const thousands = 'thousands';
@@ -689,3 +690,22 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
 export const batchReport = {
   averageTime: 1000 * 30 // average report generation time in ms
 };
+
+export const accountTypes: SimpleValue[] = [
+  { code: 'ALL_STATEMENTS', optionName: 'All statements', optionValue: '0' },
+  { code: 'RECENT_ACCOUNTS', optionName: 'Recent accounts', optionValue: '1' },
+  {
+    code: 'NO_LIMITED_FINANCIALS',
+    optionName: 'No limited financials',
+    optionValue: '2'
+  },
+  { code: 'CONSOLIDATED', optionName: 'Consolidated', optionValue: '3' },
+  { code: 'LOCAL_REGISTRY', optionName: 'Local registry', optionValue: '4' },
+  { code: 'UNCONSOLIDATED', optionName: 'Unconsolidated', optionValue: '5' },
+  { code: 'ANNUAL_REPORT', optionName: 'Annual report', optionValue: '6' },
+  {
+    code: 'NO_RECENT_FINANCIALS',
+    optionName: 'No recent financials',
+    optionValue: '7'
+  }
+];

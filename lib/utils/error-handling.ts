@@ -130,7 +130,7 @@ export const returnUnauthorised = <T extends {}>(
 ) => {
   return response.status(403).json({
     ...makeApiHandlerResponseFailure({
-      message: 'Unauthorised api request, please login to continue.',
+      message: 'Unauthorised API request, please login to continue.',
       error: ErrorConstants.UNAUTHORISED
     }),
     ...defaultNullProps

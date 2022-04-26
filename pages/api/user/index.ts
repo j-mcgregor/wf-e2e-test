@@ -13,7 +13,7 @@ import { makeApiHandlerResponseFailure } from '../../../lib/utils/http-helpers';
 import { UserType } from '../../../types/global';
 import { StatusCodeConstants } from '../../../types/http-status-codes';
 
-import type { NextApiHandler, NextApiResponse } from 'next';
+import type { NextApiHandler } from 'next';
 const { INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
 // @ts-ignore - both handlers return type User but are slightly different
