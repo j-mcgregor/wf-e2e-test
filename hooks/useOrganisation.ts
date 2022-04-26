@@ -17,7 +17,7 @@ const useOrganisation = (fetch: boolean = true) => {
     fetch && `/api/organisation/${orgId}`,
     fetcher,
     {
-      revalidateOnFocus: false
+      revalidateOnFocus: true
     }
   );
 

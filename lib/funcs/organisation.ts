@@ -190,7 +190,25 @@ const postOrganisationUser: ApiHandler<
           Authorization: `Bearer ${token}`,
           'Content-Type': contentType
         },
-        body
+        body: JSON.stringify({
+          is_active: true,
+          is_superuser: false,
+          organisation_id: orgId,
+          preferences: {
+            defaults: {
+              locale: 'en-GB',
+              currency: 'GBP',
+              home_page: 'dashboard',
+              reporting_country: 'GB'
+            },
+            communication: {
+              batch_report_email: true,
+              service_updates: true,
+              company_updates: true
+            }
+          },
+          ...JSON.parse(body)
+        })
       }
     );
 

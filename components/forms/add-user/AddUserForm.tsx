@@ -2,60 +2,57 @@ import { useTranslations } from 'next-intl';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useOrganisation from '../../../hooks/useOrganisation';
+import * as Sentry from '@sentry/nextjs';
 
 import Button from '../../elements/Button';
 import Input from '../../elements/Input';
+import ErrorMessage from '../../elements/ErrorMessage';
+import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 
 interface FormDataType {
   email: string;
   full_name: string;
+  password: string;
   organisation_role: 'Admin' | 'User';
 }
 
 const AddNewUserForm = () => {
+  const [submitError, setSubmitError] = React.useState({ type: '' });
   const t = useTranslations();
   const { organisation, message } = useOrganisation();
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid, isSubmitting }
+    formState: { errors, isDirty, isSubmitting }
   } = useForm<FormDataType>();
 
   const onSubmit: SubmitHandler<FormDataType> = async data => {
-    const res = await fetch(`/api/organisation/${organisation?.id}/user`, {
-      method: 'POST',
-      body: JSON.stringify({
-        ...{
-          email: 'user@example.com',
-          is_active: true,
-          is_superuser: false,
-          full_name: 'string',
-          organisation_id: organisation?.id,
-          preferences: {
-            defaults: {
-              locale: 'en-GB',
-              currency: 'GBP',
-              home_page: 'dashboard',
-              reporting_country: 'GB'
-            },
-            communication: {
-              batch_report_email: true,
-              service_updates: true,
-              company_updates: true
-            }
-          },
-          organisation_role: 'User',
-          password: 'string'
-        },
-        ...data
-      })
-    });
-    reset({ full_name: '', email: '', organisation_role: 'User' });
+    try {
+      const res = await fetch(`/api/organisation/${organisation?.id}/user`, {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+
+      const json = await res.json();
+
+      if (!json.ok) {
+        setSubmitError({ type: json.error });
+      }
+      return reset();
+    } catch (error) {
+      Sentry.captureException(error);
+    }
   };
 
   return (
-    <>
+    <Sentry.ErrorBoundary
+      showDialog
+      fallback={<ErrorMessage text={t(GENERIC_API_ERROR)} />}
+      beforeCapture={scope => {
+        scope.setTag('location', 'form-add-new-organisation-user');
+      }}
+    >
       <div className="bg-white shadow">
         <div className="p-5">
           <h2 className="text-xl font-semibold">{t('new_user_form_title')}</h2>
@@ -63,14 +60,16 @@ const AddNewUserForm = () => {
         </div>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="p-5">
-            <div className="flex flex-col-reverse md:flex-row justify-between gap-4">
+            <div className="flex flex-col-reverse md:flex-row gap-4">
               <div className="w-96">
                 <Input
                   label="Full name *"
                   type="text"
+                  isError={errors.full_name?.type === 'required'}
+                  onErrorClassName="border-highlight border-2"
                   {...register('full_name', {
                     required: true,
-                    pattern: /^[a-zA-Z]+\s[a-zA-Z]+$/i
+                    pattern: /^\S+\s\S+$/i
                   })}
                 />
               </div>
@@ -117,30 +116,49 @@ const AddNewUserForm = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-5 w-96">
-              <Input
-                label="Email *"
-                type="email"
-                {...register('email', {
-                  required: true,
-                  pattern: /^\S+@\S+\.\S+$/i
-                })}
-              />
+            <div className="flex md:flex-row flex-col gap-x-4">
+              <div className="mt-5 w-96">
+                <Input
+                  label="Email *"
+                  type="email"
+                  isError={errors.email?.type === 'required'}
+                  onErrorClassName="border-highlight border-2"
+                  {...register('email', {
+                    required: true,
+                    pattern: /^\S+@\S+\.\S+$/i
+                  })}
+                />
+              </div>
+              <div className="mt-5 w-96">
+                <Input
+                  label="Password *"
+                  type="password"
+                  isError={errors.password?.type === 'required'}
+                  onErrorClassName="border-highlight border-2"
+                  {...register('password', {
+                    required: true
+                  })}
+                />
+              </div>
             </div>
           </div>
           <div className="bg-gray-50 p-5">
+            {submitError.type === GENERIC_API_ERROR && (
+              <ErrorMessage text={t(GENERIC_API_ERROR)} />
+            )}
             <Button
               type="submit"
               variant="alt"
-              disabled={!isValid || isSubmitting}
-              className="max-w-max"
+              loading={isSubmitting}
+              disabled={!isDirty || isSubmitting}
+              className="max-w-fit"
             >
               {t('add_user_button')}
             </Button>
           </div>
         </form>
       </div>
-    </>
+    </Sentry.ErrorBoundary>
   );
 };
 
