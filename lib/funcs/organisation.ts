@@ -20,9 +20,13 @@ import {
 
 const contentType = 'application/json';
 
-// GET /api/organisation/:orgId
+/**
+ * ***************************************************
+ * GET ORGANISATION - /api/organisation/:orgId
+ * ***************************************************
+ */
 export interface GetOrganisation extends HandlerReturn {
-  organisation: OrganisationType | null; // <- null indicates a failure since typing makes this value required
+  organisation: OrganisationType | null;
 }
 
 interface GetOrganisationProps {
@@ -32,7 +36,7 @@ interface GetOrganisationProps {
 const getOrganisation: ApiHandler<
   GetOrganisation,
   GetOrganisationProps
-> = async (token: string, { orgId }) => {
+> = async (token, { orgId }) => {
   try {
     const response = await fetch(
       `${process.env.WF_AP_ROUTE}/organisations/${orgId}`,
@@ -65,7 +69,12 @@ const getOrganisation: ApiHandler<
   }
 };
 
-// PUT /api/organisation/:orgId
+/**
+ * ***************************************************
+ * PUT ORGANISATION - /api/organisation/:orgId
+ * ***************************************************
+ */
+export interface UpdateOrganisation extends GetOrganisation {}
 interface UpdateOrganisationProps extends GetOrganisationProps {
   body: string;
 }
@@ -73,7 +82,7 @@ interface UpdateOrganisationProps extends GetOrganisationProps {
 const updateOrganisation: ApiHandler<
   GetOrganisation,
   UpdateOrganisationProps
-> = async (token: string, { orgId, body }) => {
+> = async (token, { orgId, body }) => {
   try {
     const response = await fetch(
       `${process.env.WF_AP_ROUTE}/organisations/${orgId}`,
@@ -105,9 +114,13 @@ const updateOrganisation: ApiHandler<
   }
 };
 
-// GET /api/organisation/:orgId/users
+/**
+ * ***************************************************
+ * GET ORGANISATION USERS - /api/organisation/:orgId/users
+ * ***************************************************
+ */
 export interface GetOrganisationUsers extends HandlerReturn {
-  users: OrganisationUser[] | null; // <- null indicates a failure since typing makes this value required
+  users: OrganisationUser[] | null;
   total: number | null;
 }
 
@@ -119,7 +132,7 @@ interface GetOrganisationUsersProps extends GetOrganisationProps {
 const getOrganisationUsers: ApiHandler<
   GetOrganisationUsers,
   GetOrganisationUsersProps
-> = async (token: string, { orgId, limit, skip }) => {
+> = async (token, { orgId, limit, skip }) => {
   try {
     const response = await fetch(
       `${
@@ -168,9 +181,13 @@ const getOrganisationUsers: ApiHandler<
   }
 };
 
-// POST /api/organisation/:orgId/users
+/**
+ * ***************************************************
+ * POST ORGANISATION USER - /api/organisation/:orgId/users
+ * ***************************************************
+ */
 export interface PostOrganisationUser extends HandlerReturn {
-  user: OrganisationUser | null; // <- null indicates a failure since typing makes this value required
+  user: OrganisationUser | null;
 }
 
 interface PostOrganisationUserProps extends GetOrganisationProps {
@@ -180,7 +197,7 @@ interface PostOrganisationUserProps extends GetOrganisationProps {
 const postOrganisationUser: ApiHandler<
   PostOrganisationUser,
   PostOrganisationUserProps
-> = async (token: string, { orgId, body }) => {
+> = async (token, { orgId, body }) => {
   try {
     const response = await fetch(
       `${process.env.WF_AP_ROUTE}/organisations/${orgId}/users`,
@@ -214,11 +231,15 @@ const postOrganisationUser: ApiHandler<
   }
 };
 
-// GET /api/organisation/:orgId/users/:userId
-// GET /api/organisation/:orgId/users/:userId?report=true
+/**
+ * ***************************************************
+ * GET ORGANISATION USER - /api/organisation/:orgId/users/:userId
+ * GET ORGANISATION USER REPORTS - /api/organisation/:orgId/users/:userId?report=true
+ * ***************************************************
+ */
 export interface GetOrganisationUserAndReports extends HandlerReturn {
-  user: OrganisationUser | null; // <- null indicates a failure since typing makes this value required
-  userReports: OrganisationUserReport[] | null; // <- null indicates a failure since typing makes this value required
+  user: OrganisationUser | null;
+  userReports: OrganisationUserReport[] | null;
 }
 
 interface GetOrganisationUserAndReportsProps extends GetOrganisationProps {
@@ -231,10 +252,7 @@ interface GetOrganisationUserAndReportsProps extends GetOrganisationProps {
 const getOrganisationUserAndReports: ApiHandler<
   GetOrganisationUserAndReports,
   GetOrganisationUserAndReportsProps
-> = async (
-  token: string,
-  { orgId, userId, limit = 7, skip = 0, reports = false }
-) => {
+> = async (token, { orgId, userId, limit = 7, skip = 0, reports = false }) => {
   try {
     const response = await fetch(`${process.env.WF_AP_ROUTE}/users/${userId}`, {
       method: 'GET',
@@ -296,7 +314,11 @@ const getOrganisationUserAndReports: ApiHandler<
   }
 };
 
-// PATCH /api/organisation/:orgId/users?userId=:userId
+/**
+ * ***************************************************
+ * PATCH ORGANISATION USER - /api/organisation/:orgId/users?userId=:userId
+ * ***************************************************
+ */
 export interface PatchOgranisationUser extends PostOrganisationUser {}
 
 interface PatchOrganisationUserProps {
@@ -308,7 +330,7 @@ interface PatchOrganisationUserProps {
 const patchOrganisationUser: ApiHandler<
   PatchOgranisationUser,
   PatchOrganisationUserProps
-> = async (token: string, { orgId, userId, body }) => {
+> = async (token, { orgId, userId, body }) => {
   try {
     const response = await fetch(
       `${process.env.WF_AP_ROUTE}/organisations/${orgId}/users/${userId}`,

@@ -2,7 +2,8 @@ import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
 
 import Organisation, {
-  GetOrganisation
+  GetOrganisation,
+  UpdateOrganisation
 } from '../../../../lib/funcs/organisation';
 import { NO_COMPANY_ID } from '../../../../lib/utils/error-codes';
 import {
@@ -19,7 +20,9 @@ import type { NextApiHandler } from 'next';
 
 const { NOT_FOUND, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
-export interface OrganisationIndexApi extends GetOrganisation {}
+export interface OrganisationIndexApi
+  extends GetOrganisation,
+    UpdateOrganisation {}
 
 const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
   request,

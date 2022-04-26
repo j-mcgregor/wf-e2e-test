@@ -5,6 +5,7 @@ import { getToken } from 'next-auth/jwt';
 import Organisation, {
   GetOrganisationUserAndReports,
   GetOrganisationUsers,
+  PatchOgranisationUser,
   PostOrganisationUser
 } from '../../../../lib/funcs/organisation';
 import { ORG_404 } from '../../../../lib/utils/error-codes';
@@ -23,6 +24,7 @@ const { NOT_FOUND, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 export interface OrganisationTypeApi
   extends GetOrganisationUsers,
     GetOrganisationUserAndReports,
+    PatchOgranisationUser,
     PostOrganisationUser {}
 
 const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
@@ -32,6 +34,7 @@ const OrganisationUsersApi: NextApiHandler<OrganisationTypeApi> = async (
   const defaultNullProps = {
     users: null,
     user: null,
+    organisation: null,
     total: null,
     userReports: null
   };

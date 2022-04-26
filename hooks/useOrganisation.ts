@@ -6,7 +6,7 @@ import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 import { OrganisationIndexApi } from '../pages/api/organisation/[orgId]';
 
-const useOrganisation = (fetch: boolean = true) => {
+const useOrganisation = (fetch = true) => {
   const { user } = useRecoilValue(appState);
   const setState = useSetRecoilState(appState);
 
