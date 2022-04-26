@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
 
 import appState from '../lib/appState';
@@ -9,15 +9,13 @@ import { OrganisationTypeApi } from '../pages/api/organisation/[orgId]/[type]';
 
 const useOrganisation = (fetch: boolean = true) => {
   const { user } = useRecoilValue(appState);
-  const setState = useSetRecoilState(appState);
-
   const orgId = user?.organisation_id || null;
 
-  const { data, isValidating } = useSWR<OrganisationIndexApi>(
+  const { data } = useSWR<OrganisationIndexApi>(
     fetch && `/api/organisation/${orgId}`,
     fetcher,
     {
-      revalidateOnFocus: true
+      revalidateOnMount: true
     }
   );
 

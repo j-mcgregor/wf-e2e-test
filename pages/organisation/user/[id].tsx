@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
 import React from 'react';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import ReactTimeAgo from 'react-timeago';
 
 import Button from '../../../components/elements/Button';
@@ -14,6 +14,7 @@ import fetcher from '../../../lib/utils/fetcher';
 import { OrganisationIndexApi } from '../../api/organisation/[orgId]';
 import { OrganisationTypeApi } from '../../api/organisation/[orgId]/[type]';
 import { createReportTitle } from '../../../lib/utils/text-helpers';
+import LoadingIcon from '../../../components/svgs/LoadingIcon';
 
 const OrganisationUserPage = () => {
   const t = useTranslations();
@@ -21,6 +22,8 @@ const OrganisationUserPage = () => {
   const { organisation, message } = useOrganisation();
   const { id } = router.query;
   const [skip, setSkip] = React.useState(0);
+
+  const limit = 10;
 
   const getReportName = (row: { company_name: string; created_at: string }) =>
     createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
@@ -43,8 +46,12 @@ const OrganisationUserPage = () => {
     }
   ];
 
-  const { data: result, isValidating } = useSWR<OrganisationTypeApi>(
-    `/api/organisation/${organisation?.id}/user-reports?userId=${id}&skip=${skip}&limit=7`,
+  const {
+    data: result,
+    isValidating,
+    mutate
+  } = useSWR<OrganisationTypeApi>(
+    `/api/organisation/${organisation?.id}/user-reports?userId=${id}&skip=${skip}&limit=10`,
     fetcher
   );
 
@@ -70,6 +77,10 @@ const OrganisationUserPage = () => {
           })
         }
       );
+
+      const json = await res.json();
+      mutate({ ...json });
+      return res.ok;
     };
   };
 
@@ -147,7 +158,7 @@ const OrganisationUserPage = () => {
           <Table
             headers={tableHeaders}
             data={userReports}
-            limit={7}
+            limit={10}
             skip={setSkip}
             total={total_reports || 0}
             isLoading={isValidating}
@@ -170,7 +181,7 @@ interface ToggleUserAccessProps {
   description: string;
   buttonText: string;
   buttonVariant: 'highlight' | 'alt';
-  onClick?: () => void;
+  onClick?: () => Promise<() => boolean>;
 }
 
 const ToggleUserAccess = ({
@@ -180,6 +191,16 @@ const ToggleUserAccess = ({
   buttonVariant,
   onClick
 }: ToggleUserAccessProps) => {
+  const [loading, setLoading] = React.useState(false);
+
+  const handleClick = async () => {
+    setLoading(true);
+    if (onClick) {
+      await onClick();
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-between gap-y-4 max-w-sm min-h-full pr-12">
       <div className="space-y-4">
@@ -189,9 +210,9 @@ const ToggleUserAccess = ({
       <Button
         variant={buttonVariant}
         newClassName={`w-52 md:w-60 h-10 bg-${buttonVariant} text-white font-semibold`}
-        onClick={onClick}
+        onClick={handleClick}
       >
-        {buttonText}
+        {loading ? <LoadingIcon /> : buttonText}
       </Button>
     </div>
   );

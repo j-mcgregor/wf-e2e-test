@@ -10,7 +10,7 @@ export interface TableHeadersType {
   name: string;
   selector: string | ((row: any) => any);
   align?: 'left' | 'right' | 'center';
-  width?: 'w-auto' | 'w-full' | 'w-1/2' | 'w-1/3' | 'w-1/4' | 'w-1/5' | 'w-1/6';
+  width?: string;
   contentClassName?: string | ((row: any) => string);
   rowTitle?: string | ((row: any) => string);
 }
@@ -91,7 +91,7 @@ const Table = ({
             {isLoading && (
               <SkeletonRow
                 cellQty={headers.length}
-                className="bg-gray-200 h-[48px]"
+                className="odd:bg-gray-50 even:bg-gray-100 animate-pulse h-[48px]"
                 rowQty={limit}
               />
             )}
@@ -142,6 +142,7 @@ const Table = ({
                 </TableRow>
               ))}
 
+            {/* These are fill rows not loading rows */}
             {!isLoading &&
               fillEmptyRows &&
               blankRows > 0 &&
