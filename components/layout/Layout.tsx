@@ -22,6 +22,7 @@ interface LayoutProps {
   className?: string;
   children?: React.ReactNode;
   containerClassName?: string;
+  adminRequired?: boolean;
 }
 
 const Layout = ({
@@ -33,7 +34,8 @@ const Layout = ({
   noAuthRequired,
   className,
   children,
-  containerClassName
+  containerClassName,
+  adminRequired
 }: LayoutProps) => {
   const router = useRouter();
 
@@ -47,6 +49,9 @@ const Layout = ({
 
   if (!loading && !session && !noAuthRequired && status !== 'loading')
     router.push('/login');
+
+  if (!loading && session && adminRequired && user.organisation_role === 'User')
+    router.push('/no-access');
 
   React.useEffect(() => {
     if (user) {

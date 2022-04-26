@@ -10,7 +10,7 @@ const AddNewUserPage = () => {
   const t = useTranslations();
 
   return (
-    <Layout>
+    <Layout adminRequired>
       <div className="h-10 flex items-center text-primary mb-3">
         <Button
           linkTo="/organisation"

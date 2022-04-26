@@ -56,13 +56,16 @@ const Organisation = () => {
   } = useSWR<OrganisationTypeApi>(
     organisation?.id &&
       `/api/organisation/${organisation?.id}/users?limit=7&skip=${skip}`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: true
+    }
   );
 
   const users: OrganisationUser[] = result?.users || [];
 
   return (
-    <Layout>
+    <Layout adminRequired>
       <div className="text-primary flex flex-col gap-5">
         <h1 className="text-3xl font-semibold">{t('title')}</h1>
         <p>{t('dashboard_description')}</p>
