@@ -41,7 +41,7 @@ const usersHeaders: TableHeadersType[] = [
         row.is_active ? 'bg-green-300' : 'bg-red-500'
       } rounded-full w-10 h-5 bg-opacity-50 text-black flex justify-center items-center`,
     align: 'center',
-    width: 'w-1/10'
+    width: 'w-1/6'
   }
 ];
 
@@ -70,7 +70,7 @@ const Organisation = () => {
   const users: OrganisationUser[] = result?.users || [];
 
   return (
-    <Layout adminRequired>
+    <Layout adminRequired title={t('title')}>
       <div className="text-primary flex flex-col gap-5">
         <h1 className="text-3xl font-semibold">{t('title')}</h1>
         <p>{t('dashboard_description')}</p>

@@ -14,7 +14,7 @@ const AddNewUserPage = () => {
   const { organisation } = useOrganisation();
 
   return (
-    <Layout adminRequired>
+    <Layout adminRequired title={t('add_user_title')}>
       <div className="h-10 flex items-center text-primary mb-3">
         <Button
           linkTo="/organisation"
