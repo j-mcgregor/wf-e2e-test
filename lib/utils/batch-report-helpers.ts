@@ -71,18 +71,30 @@ export const makeEntitiesForManualBatch = (
   return entities;
 };
 
-export const convertCSVToRequestBody = (
-  csvData: CsvReport,
-  csvValues: string[][],
-  name: string,
-  uploadType: ReportTypeEnum
-): BatchRequest => {
+interface ConvertCsvProps {
+  csvData: CsvReport;
+  csvValues: string[][];
+  name: string;
+  uploadType: ReportTypeEnum;
+  accounts_type?: number;
+  currency?: string;
+}
+export const convertCSVToRequestBody = ({
+  csvData,
+  csvValues,
+  name,
+  uploadType,
+  accounts_type = 0,
+  currency = 'GBP'
+}: ConvertCsvProps): BatchRequest => {
   // BASIC INFO
   let response = {
     name: name,
-    /** @deprecated */
-    accounts_type: 0
+    accounts_type,
+    currency,
+    entities: []
   } as BatchRequest;
+
   if (uploadType === 'BATCH_AUTO') {
     const entities = csvData?.company_id?.map(
       (id, i) =>
@@ -92,18 +104,12 @@ export const convertCSVToRequestBody = (
         } as Entity)
     );
 
-    const currencySymbol =
-      countryCodes.find(country => country.code === entities[0].iso_code)
-        ?.currency_code || '';
-
-    response.currency = currencySymbol;
     response.entities = entities || [];
   }
 
   if (uploadType === 'BATCH_MANUAL') {
     const entities = makeEntitiesForManualBatch(csvData, csvValues);
 
-    response.currency = 'GBP';
     response.entities = entities || [];
   }
 
