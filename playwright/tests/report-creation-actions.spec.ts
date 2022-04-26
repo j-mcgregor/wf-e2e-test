@@ -11,6 +11,8 @@ test.describe('Report Creation & Bookmark Tests', async () => {
   // SCENARIO: USER NAVIGATES TO THE SINGLE SME-CALC PAGE, INPUTS A COMPANY SEARCH AND GENERATES A REPORT
   // FEATURE: USER GENERATES A SINGLE REPORT
   test('User can generate report via API search', async ({ page }) => {
+    // potentially slow test
+    test.setTimeout(120000);
     // GIVEN I CLICK THE 'SINGLE COMPANY' NAV LINK
     await page.locator('text=Single Company').first().click();
 
@@ -34,12 +36,10 @@ test.describe('Report Creation & Bookmark Tests', async () => {
     // WHEN I CLICK THE 'GENERATE REPORT' BUTTON
     await page.locator('text=Generate Report').click();
 
-    // hacky but was fastest way to get it working
-    await page.waitForTimeout(10000);
     // THEN A REPORT SHOULD GENERATE AND I SHOULD BE DIRECTED TO THE CORRECT COMPANY REPORT PAGE
     await page.waitForSelector('h1:has-text("A LIMITED")', {
-      timeout: 40000
-    }); // <-- trick is to use waitForSelector()
+      timeout: 60000
+    });
 
     await expect(page.locator('h1:has-text("A LIMITED")')).toBeVisible();
   });
@@ -170,6 +170,8 @@ test.describe('Report Creation & Bookmark Tests', async () => {
 
     // THEN I SHOULD BE TAKEN TO THE BATCH REPORTS
     await expect(page).toHaveURL('batch-reports');
+
+    await page.reload();
 
     // AND I SHOULD SEE THE NEW BATCH REPORT CARD IN THE LIST
     await expect(page.locator(`text=${batchName}`)).toBeVisible();
