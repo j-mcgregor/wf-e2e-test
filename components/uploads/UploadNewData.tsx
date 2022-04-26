@@ -161,7 +161,7 @@ const UploadNewData = ({
           )}
         </div>
       </div>
-      {uploadType === 'BATCH_AUTO' ? batchAutoOptions : null}
+      {uploadType === 'BATCH_AUTO' && fileSelected ? batchAutoOptions : null}
       <div className="w-full sm:max-w-[200px] mt-2">
         <Button
           variant="highlight"

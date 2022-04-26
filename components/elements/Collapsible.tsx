@@ -6,29 +6,36 @@ import React, { useState } from 'react';
 
 interface CollapsibleProps {
   title: string;
+  collapsed: boolean;
 }
 export const Collapsible: React.FC<CollapsibleProps> = ({
   title,
-  children
+  children,
+  collapsed = false
 }) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(!collapsed);
 
   return (
     <div className="my-6">
-      <h3
-        className="text-xl font-semibold mb-4 cursor-pointer flex items-center"
-        onClick={() => setOpen(!open)}
+      <button onClick={() => setOpen(!open)}>
+        <h3 className="text-xl font-semibold mb-4 flex items-center">
+          <span className="mr-2">{title}</span>
+          <ChevronRightIcon
+            width={22}
+            className={`${open ? 'rotate-90' : ''} transition duration-150`}
+          />
+        </h3>
+      </button>
+
+      <div
+        className={`${
+          !open
+            ? '-translate-y-5 opacity-0 h-0 pointer-events-none'
+            : 'translate-y-0 opacity-100'
+        } transition duration-150`}
       >
-        <span className="mr-2">{title}</span>
-        {open ? (
-          <ChevronDownIcon width={22} />
-        ) : (
-          <ChevronRightIcon width={22} />
-        )}
-      </h3>
-      {open && (
-        <div className="grid md:grid-cols-4 grid-cols-2 gap-3">{children}</div>
-      )}
+        {children}
+      </div>
     </div>
   );
 };
