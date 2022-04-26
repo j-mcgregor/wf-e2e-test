@@ -427,10 +427,7 @@ const Report = ({
         />
 
         {data?.shareholders?.length > 0 && (
-          <ShareHolderList
-            isPrint={forPrint}
-            shareholders={data?.shareholders}
-          />
+          <ShareHolderList shareholders={data?.shareholders} />
         )}
       </HashContainer>
 
@@ -442,7 +439,7 @@ const Report = ({
       >
         <ReportSectionHeader text={t('structure')} />
         <ParentsList parents={data?.parents} />
-        <SubsidiaryList isPrint={forPrint} subsidiaries={data?.subsidiaries} />
+        <SubsidiaryList subsidiaries={data?.subsidiaries} />
       </HashContainer>
 
       <HashContainer

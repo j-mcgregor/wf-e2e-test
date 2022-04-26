@@ -119,6 +119,8 @@ export type ShareholderType = {
   percentage?: number;
   name: string | null;
   type?: string;
+  company_id: string | null;
+  iso_code: string | null;
   peps_sanctions_enforcements: boolean;
 };
 
@@ -147,9 +149,12 @@ export type BoardMember = {
 
 // schema from Swagger
 export type Subsidiary = {
-  id: string;
   name: string;
   iso_code: string;
+  nace_code: string;
+  nace_name: string;
+  website: string;
+  company_id: string | null;
 };
 
 export interface DatedValue {
@@ -201,6 +206,8 @@ export interface ShareHolderCardProps {
   name: string | null;
   type?: string;
   isPep?: boolean;
+  companyId?: string | null;
+  isoCode?: string | null;
 }
 
 export interface RiskOutlookData {
