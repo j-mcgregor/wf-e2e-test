@@ -14,7 +14,7 @@ import Layout from '../components/layout/Layout';
 const NoAccess = () => {
   const t = useTranslations();
   return (
-    <Layout>
+    <Layout containerClassName="min-h-screen sm:-mt-20 flex items-center">
       <div className="py-2">
         <div className="min-w-full py-12 bg-white shadow flex flex-col justify-center items-center font-semibold mb-12">
           <ShieldExclamationIcon className="h-8 w-8" />

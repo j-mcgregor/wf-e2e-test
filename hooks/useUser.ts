@@ -26,8 +26,11 @@ const useUser = (fetch: boolean = true) => {
     }
   }, [data]);
 
+  const isAdmin = user?.organisation_role === 'Admin';
+
   return {
     user: user ? user : null,
+    isAdmin,
     loading: isLoading,
     error: data?.is_error ? data.error : false,
     message: data?.message

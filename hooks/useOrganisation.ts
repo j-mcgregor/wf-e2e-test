@@ -21,7 +21,10 @@ const useOrganisation = (fetch: boolean = true) => {
 
   const { data: result } = useSWR<OrganisationTypeApi>(
     fetch && `/api/organisation/${orgId}/users?limit=1`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnMount: true
+    }
   );
 
   const organisation = {

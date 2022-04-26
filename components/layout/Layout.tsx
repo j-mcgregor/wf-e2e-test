@@ -44,7 +44,7 @@ const Layout = ({
 
   // renamed for consistency
   const { data: session, status } = useSession();
-  const { user, loading, error, message } = useUser(!noAuthRequired);
+  const { user, isAdmin, loading, error, message } = useUser(!noAuthRequired);
   const { HubspotScript } = useHubspotChat('4623266', true, user);
   const [, setHomePage] = useLocalStorage<string>('wf_home_page', '');
 
@@ -57,7 +57,7 @@ const Layout = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  if (!loading && adminRequired && user?.organisation_role === 'User') {
+  if (!loading && adminRequired && !isAdmin && user) {
     router.push('/no-access');
     return <SkeletonLayout />;
   }
@@ -76,9 +76,7 @@ const Layout = ({
       <HubspotScript />
       <Seo title={title} description={description} path={path} />
       <div className="h-screen bg-bg overflow-hidden flex ">
-        {!noNav && user && (
-          <Nav path={path} userRole={user?.organisation_role} />
-        )}
+        {!noNav && user && <Nav path={path} isAdmin={isAdmin} />}
         <main
           className={`flex-1 relative overflow-y-auto focus:outline-none ${
             !noNav && !fullWidth && 'pt-12'

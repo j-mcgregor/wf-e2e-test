@@ -10,17 +10,23 @@ interface PaginationButtonProps {
   active?: boolean;
   onClick: () => void;
   children: React.ReactNode;
+  hoverClassName?: string;
 }
 
 const PaginationButton = ({
   active,
   onClick,
-  children
+  children,
+  hoverClassName
 }: PaginationButtonProps) => (
   <button
     className={`${
       active ? 'bg-highlight bg-opacity-30 text-highlight' : 'bg-white'
-    } flex text-center justify-center items-center h-full w-8 hover:cursor-pointer hover:bg-highlight hover:bg-opacity-30 hover:text-highlight px-1`}
+    } ${
+      hoverClassName
+        ? hoverClassName
+        : 'hover:bg-highlight hover:bg-opacity-30 hover:text-highlight'
+    } flex text-center justify-center items-center h-full w-8 hover:cursor-pointer px-1`}
     onClick={onClick}
   >
     {children}
@@ -54,7 +60,10 @@ const PaginationBar = ({
         of <span className="font-medium">{total}</span> results
       </p>
       <div className="flex items-center h-9 text-xs md:text-sm text-gray-400 bg-white w-min rounded overflow-hidden">
-        <PaginationButton onClick={() => handlePageChange(1)}>
+        <PaginationButton
+          onClick={() => handlePageChange(1)}
+          hoverClassName="bg-gray-200"
+        >
           <ChevronDoubleLeftIcon className="h-5 w-8" />
         </PaginationButton>
         <PaginationButton onClick={handlePageDown}>
@@ -80,7 +89,10 @@ const PaginationBar = ({
         <PaginationButton onClick={handlePageUp}>
           <ChevronRightIcon className="h-5 w-8" />
         </PaginationButton>
-        <PaginationButton onClick={() => handlePageChange(maxPages)}>
+        <PaginationButton
+          onClick={() => handlePageChange(maxPages)}
+          hoverClassName="bg-gray-200"
+        >
           <ChevronDoubleRightIcon className="h-5 w-8" />
         </PaginationButton>
       </div>

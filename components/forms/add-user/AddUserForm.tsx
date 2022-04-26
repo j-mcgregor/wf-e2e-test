@@ -8,6 +8,7 @@ import Button from '../../elements/Button';
 import Input from '../../elements/Input';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
+import ErrorSkeleton from '../../skeletons/ErrorSkeleton';
 
 interface FormDataType {
   email: string;
@@ -48,7 +49,7 @@ const AddNewUserForm = () => {
   return (
     <Sentry.ErrorBoundary
       showDialog
-      fallback={<ErrorMessage text={t(GENERIC_API_ERROR)} />}
+      fallback={<ErrorSkeleton message={t(GENERIC_API_ERROR)} />}
       beforeCapture={scope => {
         scope.setTag('location', 'form-add-new-organisation-user');
       }}
@@ -60,7 +61,7 @@ const AddNewUserForm = () => {
         </div>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="p-5">
-            <div className="flex flex-col-reverse md:flex-row gap-4">
+            <div className="flex flex-col-reverse md:flex-row gap-4 justify-between">
               <div className="w-96">
                 <Input
                   label="Full name *"
@@ -70,6 +71,25 @@ const AddNewUserForm = () => {
                   {...register('full_name', {
                     required: true,
                     pattern: /^\S+\s\S+$/i
+                  })}
+                />
+                <Input
+                  label="Email *"
+                  type="email"
+                  isError={errors.email?.type === 'required'}
+                  onErrorClassName="border-highlight border-2"
+                  {...register('email', {
+                    required: true,
+                    pattern: /^\S+@\S+\.\S+$/i
+                  })}
+                />
+                <Input
+                  label="Password *"
+                  type="password"
+                  isError={errors.password?.type === 'required'}
+                  onErrorClassName="border-highlight border-2"
+                  {...register('password', {
+                    required: true
                   })}
                 />
               </div>
@@ -114,31 +134,6 @@ const AddNewUserForm = () => {
                     </li>
                   </ul>
                 </div>
-              </div>
-            </div>
-            <div className="flex md:flex-row flex-col gap-x-4">
-              <div className="mt-5 w-96">
-                <Input
-                  label="Email *"
-                  type="email"
-                  isError={errors.email?.type === 'required'}
-                  onErrorClassName="border-highlight border-2"
-                  {...register('email', {
-                    required: true,
-                    pattern: /^\S+@\S+\.\S+$/i
-                  })}
-                />
-              </div>
-              <div className="mt-5 w-96">
-                <Input
-                  label="Password *"
-                  type="password"
-                  isError={errors.password?.type === 'required'}
-                  onErrorClassName="border-highlight border-2"
-                  {...register('password', {
-                    required: true
-                  })}
-                />
               </div>
             </div>
           </div>
