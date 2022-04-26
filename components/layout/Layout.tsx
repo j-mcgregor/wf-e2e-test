@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { useSession, signOut } from 'next-auth/react';
 
 import { useRouter } from 'next/router';
@@ -47,12 +48,6 @@ const Layout = ({
   const { HubspotScript } = useHubspotChat('4623266', true, user);
   const [, setHomePage] = useLocalStorage<string>('wf_home_page', '');
 
-  if (!loading && !session && !noAuthRequired && status !== 'loading')
-    router.push('/login');
-
-  if (!loading && session && adminRequired && user.organisation_role === 'User')
-    router.push('/no-access');
-
   React.useEffect(() => {
     if (user) {
       // set sentry to identify user
@@ -61,6 +56,14 @@ const Layout = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  if (!loading && adminRequired && user?.organisation_role === 'User') {
+    router.push('/no-access');
+    return <SkeletonLayout />;
+  }
+
+  if (!loading && !session && !noAuthRequired && status !== 'loading')
+    router.push('/login');
 
   if (!noAuthRequired && loading) return <SkeletonLayout noNav={noNav} />;
   //@ts-ignore
