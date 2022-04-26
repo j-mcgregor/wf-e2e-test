@@ -149,9 +149,11 @@ export type BoardMember = {
 
 // schema from Swagger
 export type Subsidiary = {
-  id: string;
   name: string;
   iso_code: string;
+  nace_code: string;
+  nace_name: string;
+  website: string;
   company_id: string | null;
 };
 
