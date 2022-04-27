@@ -4,9 +4,15 @@ interface ITableRowProps {
   className?: string;
   newClassName?: string;
   children?: React.ReactNode;
+  title?: string;
 }
 
-const TableRow = ({ className, newClassName, children }: ITableRowProps) => {
+const TableRow = ({
+  className,
+  newClassName,
+  title,
+  children
+}: ITableRowProps) => {
   return (
     <tr
       className={

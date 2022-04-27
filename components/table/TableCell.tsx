@@ -11,6 +11,7 @@ interface ITableCellProps {
     | 'text-left justify-start'
     | 'text-right justify-end'
     | 'text-center justify-center';
+  title?: string;
 }
 
 const TableCell = ({
@@ -18,7 +19,8 @@ const TableCell = ({
   contentClassName,
   rowLink,
   align = 'text-left justify-start',
-  children
+  children,
+  title
 }: ITableCellProps) => {
   const ContentComponent = ({ children }: { children: React.ReactNode }) =>
     rowLink ? (
@@ -27,7 +29,7 @@ const TableCell = ({
       <div>{children}</div>
     );
   return (
-    <td className={`${className}`}>
+    <td className={`${className}`} title={title}>
       <ContentComponent>
         <div
           className={`${

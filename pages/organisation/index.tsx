@@ -15,8 +15,8 @@ import { OrganisationUser } from '../../types/organisations';
 import { OrganisationTypeApi } from '../api/organisation/[orgId]/[type]';
 
 const usersHeaders: TableHeadersType[] = [
-  { name: 'Name', selector: 'full_name' },
-  { name: 'Email', selector: 'email' },
+  { name: 'Name', selector: 'full_name', width: 'w-1/5' },
+  { name: 'Email', selector: 'email', width: 'w-1/2' },
   {
     name: 'Role',
     selector: 'organisation_role',
@@ -24,12 +24,14 @@ const usersHeaders: TableHeadersType[] = [
     contentClassName: (row: { organisation_role: string }) =>
       `${
         row.organisation_role === 'Admin' ? 'bg-highlight' : ''
-      } rounded-full w-14 h-5 bg-opacity-20 flex justify-center items-center`
+      } rounded-full w-14 h-5 bg-opacity-20 flex justify-center items-center`,
+    width: 'w-1/10'
   },
   {
     name: 'Reports',
     selector: 'total_reports',
-    align: 'center'
+    align: 'center',
+    width: 'w-1/10'
   },
   {
     name: 'Active',
@@ -38,7 +40,8 @@ const usersHeaders: TableHeadersType[] = [
       `${
         row.is_active ? 'bg-green-300' : 'bg-red-500'
       } rounded-full w-10 h-5 bg-opacity-50 text-black flex justify-center items-center`,
-    align: 'center'
+    align: 'center',
+    width: 'w-1/6'
   }
 ];
 
@@ -49,20 +52,25 @@ const Organisation = () => {
 
   const isIntergrated = false;
 
+  const limit = 10;
+
   const {
     data: result,
     error,
     isValidating
   } = useSWR<OrganisationTypeApi>(
     organisation?.id &&
-      `/api/organisation/${organisation?.id}/users?limit=7&skip=${skip}`,
-    fetcher
+      `/api/organisation/${organisation?.id}/users?limit=${limit}&skip=${skip}`,
+    fetcher,
+    {
+      revalidateOnFocus: true
+    }
   );
 
   const users: OrganisationUser[] = result?.users || [];
 
   return (
-    <Layout>
+    <Layout adminRequired title={t('title')}>
       <div className="text-primary flex flex-col gap-5">
         <h1 className="text-3xl font-semibold">{t('title')}</h1>
         <p>{t('dashboard_description')}</p>
@@ -73,11 +81,14 @@ const Organisation = () => {
               header: t('stats_total_reports_title'),
               data: organisation?.quota?.quota_used || '0'
             },
-            { header: t('stats_users_title'), data: result?.total || '0' }
+            {
+              header: t('stats_users_title'),
+              data: organisation?.totalUsers || '0'
+            }
           ]}
         />
       </div>
-      <div className="mt-12 flex flex-col gap-5">
+      <div className="mt-12 flex flex-col gap-5 mb-48">
         <h2 className="text-2xl font-semibold">{t('users_title')}</h2>
         <div className="flex flex-col gap-4 md:flex-row justify-between md:items-center">
           <p className="pr-14">{t('users_description')}</p>
@@ -89,7 +100,7 @@ const Organisation = () => {
         </div>
         <Table
           total={result?.total || 0}
-          limit={7}
+          limit={limit}
           headers={usersHeaders}
           data={users}
           skip={setSkip}
@@ -99,7 +110,7 @@ const Organisation = () => {
           rowLink={row => `/organisation/user/${row.id}`}
         />
       </div>
-      <div className="mt-12 flex flex-col gap-5">
+      {/* <div className="mt-12 flex flex-col gap-5">
         <h2 className="text-2xl font-semibold">{t('intergrations_title')}</h2>
         <p className="pr-14">{t('intergrations_description')}</p>
         <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-auto md:mr-auto">
@@ -119,9 +130,10 @@ const Organisation = () => {
             }
             header={t('codat_card_title')}
             description={t('codat_card_description')}
+            linkTo="/organisation/integrations/codat"
           />
         </div>
-      </div>
+      </div> */}
     </Layout>
   );
 };

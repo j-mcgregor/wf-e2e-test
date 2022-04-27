@@ -10,8 +10,9 @@ export interface TableHeadersType {
   name: string;
   selector: string | ((row: any) => any);
   align?: 'left' | 'right' | 'center';
-  width?: 'w-auto' | 'w-full' | 'w-1/2' | 'w-1/3' | 'w-1/4' | 'w-1/5' | 'w-1/6';
+  width?: string;
   contentClassName?: string | ((row: any) => string);
+  rowTitle?: string | ((row: any) => string);
 }
 
 interface TableProps {
@@ -90,7 +91,7 @@ const Table = ({
             {isLoading && (
               <SkeletonRow
                 cellQty={headers.length}
-                className="bg-gray-200 h-[48px]"
+                className="odd:bg-gray-50 even:bg-gray-100 animate-pulse h-[48px]"
                 rowQty={limit}
               />
             )}
@@ -99,7 +100,8 @@ const Table = ({
               data?.map((row, rowIndex) => (
                 <TableRow key={`table-row-${rowIndex}`}>
                   {headers.map((header, index) => {
-                    const { align, selector, contentClassName } = header;
+                    const { align, selector, contentClassName, rowTitle } =
+                      header;
 
                     const value =
                       typeof selector === 'function'
@@ -121,13 +123,17 @@ const Table = ({
                         ? 'text-center justify-center'
                         : 'text-left justify-start';
 
+                    const title =
+                      typeof rowTitle === 'function' ? rowTitle(row) : rowTitle;
+
                     return (
                       <TableCell
                         key={`${rowIndex}-${header}-${index}`}
-                        className={`whitespace-no-wrap truncate text-ellipsis overflow-hidden`}
+                        className={`whitespace-nowrap truncate text-ellipsis overflow-hidden`}
                         contentClassName={contentClass}
                         rowLink={link}
                         align={contentAlign}
+                        title={title}
                       >
                         {value}
                       </TableCell>
@@ -136,6 +142,7 @@ const Table = ({
                 </TableRow>
               ))}
 
+            {/* These are fill rows not loading rows */}
             {!isLoading &&
               fillEmptyRows &&
               blankRows > 0 &&
