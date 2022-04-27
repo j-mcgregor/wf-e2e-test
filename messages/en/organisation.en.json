@@ -47,5 +47,6 @@
   "table_email_header": "Email",
   "table_role_header": "Role",
   "table_reports_header": "Reports",
-  "table_active_header": "Active"
+  "table_active_header": "Active",
+  "new_user_created": "New user created"
 }

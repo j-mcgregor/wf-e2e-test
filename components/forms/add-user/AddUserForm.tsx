@@ -9,6 +9,7 @@ import Input from '../../elements/Input';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 import ErrorSkeleton from '../../skeletons/ErrorSkeleton';
+import { CheckIcon } from '@heroicons/react/outline';
 
 interface FormDataType {
   email: string;
@@ -19,13 +20,14 @@ interface FormDataType {
 
 const AddNewUserForm = () => {
   const [submitError, setSubmitError] = React.useState({ type: '' });
+  const [successfulSubmit, setSuccessfulSubmit] = React.useState(false);
   const t = useTranslations();
   const { organisation, message } = useOrganisation();
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isDirty, isSubmitting }
+    formState: { errors, isDirty, isSubmitting, isSubmitted }
   } = useForm<FormDataType>();
 
   const onSubmit: SubmitHandler<FormDataType> = async data => {
@@ -39,7 +41,10 @@ const AddNewUserForm = () => {
 
       if (!json.ok) {
         setSubmitError({ type: json.error });
+      } else {
+        setSuccessfulSubmit(true);
       }
+
       return reset();
     } catch (error) {
       Sentry.captureException(error);
@@ -143,10 +148,7 @@ const AddNewUserForm = () => {
               </div>
             </div>
           </div>
-          <div className="bg-gray-50 p-5">
-            {submitError.type === GENERIC_API_ERROR && (
-              <ErrorMessage text={t(GENERIC_API_ERROR)} />
-            )}
+          <div className="bg-gray-50 p-5 flex justify-between items-center">
             <Button
               type="submit"
               variant="alt"
@@ -156,6 +158,15 @@ const AddNewUserForm = () => {
             >
               {t('add_user_button')}
             </Button>
+            {submitError.type === GENERIC_API_ERROR && (
+              <ErrorMessage text={t(GENERIC_API_ERROR)} />
+            )}
+            {successfulSubmit && (
+              <div className="flex gap-1 items-center text-green-500">
+                <CheckIcon className="h-5 w-5" />
+                <p>{t('new_user_created')}</p>
+              </div>
+            )}
           </div>
         </form>
       </div>
