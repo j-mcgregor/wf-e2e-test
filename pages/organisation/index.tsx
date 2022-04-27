@@ -95,7 +95,7 @@ const Organisation = () => {
           <Button
             className="max-w-min whitespace-nowrap px-16 rounded-none"
             variant="alt"
-            linkTo="/organisation/add-new-user"
+            linkTo="/organisation/user/add"
           >{`Add User`}</Button>
         </div>
         <Table

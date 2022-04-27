@@ -54,7 +54,7 @@ const AddNewUserForm = () => {
         scope.setTag('location', 'form-add-new-organisation-user');
       }}
     >
-      <div className="bg-white shadow">
+      <div className="bg-white shadow max-w-3xl">
         <div className="p-5">
           <h2 className="text-xl font-semibold">{t('new_user_form_title')}</h2>
           <p className="text-gray-500">{t('new_user_form_description')}</p>
@@ -62,36 +62,42 @@ const AddNewUserForm = () => {
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="p-5">
             <div className="flex flex-col-reverse md:flex-row gap-4 justify-between">
-              <div className="w-96">
-                <Input
-                  label="Full name *"
-                  type="text"
-                  isError={errors.full_name?.type === 'required'}
-                  onErrorClassName="border-highlight border-2"
-                  {...register('full_name', {
-                    required: true,
-                    pattern: /^\S+\s\S+$/i
-                  })}
-                />
-                <Input
-                  label="Email *"
-                  type="email"
-                  isError={errors.email?.type === 'required'}
-                  onErrorClassName="border-highlight border-2"
-                  {...register('email', {
-                    required: true,
-                    pattern: /^\S+@\S+\.\S+$/i
-                  })}
-                />
-                <Input
-                  label="Password *"
-                  type="password"
-                  isError={errors.password?.type === 'required'}
-                  onErrorClassName="border-highlight border-2"
-                  {...register('password', {
-                    required: true
-                  })}
-                />
+              <div className="w-full">
+                <div className="w-64">
+                  <Input
+                    label="Full name *"
+                    type="text"
+                    isError={errors.full_name?.type === 'required'}
+                    onErrorClassName="border-highlight border-2"
+                    {...register('full_name', {
+                      required: true,
+                      pattern: /^\S+\s\S+$/i
+                    })}
+                  />
+                </div>
+                <div className="w-4/5">
+                  <Input
+                    label="Email *"
+                    type="email"
+                    isError={errors.email?.type === 'required'}
+                    onErrorClassName="border-highlight border-2"
+                    {...register('email', {
+                      required: true,
+                      pattern: /^\S+@\S+\.\S+$/i
+                    })}
+                  />
+                </div>
+                <div className="w-64">
+                  <Input
+                    label="Password *"
+                    type="password"
+                    isError={errors.password?.type === 'required'}
+                    onErrorClassName="border-highlight border-2"
+                    {...register('password', {
+                      required: true
+                    })}
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium">

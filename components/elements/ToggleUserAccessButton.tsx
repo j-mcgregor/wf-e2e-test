@@ -7,26 +7,18 @@ interface ToggleUserAccessProps {
   description: string;
   buttonText: string;
   buttonVariant: 'highlight' | 'alt';
-  onClick?: () => Promise<boolean>;
+  isLoading?: boolean;
+  onClick?: () => void;
 }
 
 const ToggleUserAccessButton = ({
   title,
   description,
+  isLoading,
   buttonText,
   buttonVariant,
   onClick
 }: ToggleUserAccessProps) => {
-  const [loading, setLoading] = React.useState(false);
-
-  const handleClick = async () => {
-    setLoading(true);
-    if (onClick) {
-      await onClick();
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="flex flex-col justify-between gap-y-4 max-w-sm min-h-full pr-12">
       <div className="space-y-4">
@@ -35,10 +27,10 @@ const ToggleUserAccessButton = ({
       </div>
       <Button
         variant={buttonVariant}
-        newClassName={`w-52 md:w-60 h-10 bg-${buttonVariant} text-white font-semibold flex items-center justify-center`}
-        onClick={handleClick}
+        newClassName={`w-52 md:w-60 h-10 bg-${buttonVariant} text-white rounded  font-semibold flex items-center justify-center transition duration-300`}
+        onClick={onClick}
       >
-        {loading ? <LoadingIcon className="text-white" /> : buttonText}
+        {isLoading ? <LoadingIcon className="text-white" /> : buttonText}
       </Button>
     </div>
   );
