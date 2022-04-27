@@ -68,7 +68,9 @@ const Layout = ({
       <HubspotScript />
       <Seo title={title} description={description} path={path} />
       <div className="h-screen bg-bg overflow-hidden flex ">
-        {!noNav && user && <Nav path={path} />}
+        {!noNav && user && (
+          <Nav path={path} userRole={user?.organisation_role} />
+        )}
         <main
           className={`flex-1 relative overflow-y-auto focus:outline-none ${
             !noNav && !fullWidth && 'pt-12'

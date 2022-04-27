@@ -9,6 +9,7 @@ import {
   KeyIcon,
   LogoutIcon,
   MailIcon,
+  OfficeBuildingIcon,
   SupportIcon,
   UserCircleIcon
 } from '@heroicons/react/outline';
@@ -52,6 +53,12 @@ const useMainNavItems = () => {
       // }
     ],
     secondaryNavigation: [
+      {
+        name: `${t('organisation')}`,
+        href: '/organisation',
+        icon: OfficeBuildingIcon,
+        adminOnly: true
+      },
       {
         name: `${t('api_documentation')}`,
         href: '/api-documentation',

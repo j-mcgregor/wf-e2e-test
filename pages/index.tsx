@@ -2,7 +2,6 @@
 import {
   ChipIcon,
   DocumentDuplicateIcon,
-  LightningBoltIcon,
   HandIcon
 } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
@@ -16,7 +15,6 @@ import TwitterFeed from '../components/elements/TwitterFeed';
 import Layout from '../components/layout/Layout';
 import WFLogo from '../components/svgs/WFLogo';
 import useLocalStorage from '../hooks/useLocalStorage';
-import useTotalReports from '../hooks/useTotalReports';
 import appState from '../lib/appState';
 
 export default function Dashboard() {

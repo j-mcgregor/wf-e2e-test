@@ -1,0 +1,22 @@
+{
+  "title": "Organisation Dashboard",
+  "dashboard_description": "As an owner of your organisation, you have access to seeing a  full overview of your company's usage of Wiserfunding's platform.",
+  "stats_organisation_title": "Organisation",
+  "stats_total_reports_title": "Total Reports Organisation",
+  "stats_users_title": "Users",
+  "users_title": "Users",
+  "users_description": "See all the members of your organisation that have accounts with Wiserfunding and the details of the reports they have run.",
+  "intergrations_title": "Integrations",
+  "intergrations_description": "Integrate with other data sources to improve the accuracy of your reports and get the latest data on the companies you're analysing.",
+  "codat_card_title": "Codat Integration",
+  "codat_card_description": "Add your headers for your Codata integration.",
+  "back_to_organisation": "Back to Organisation Dashboard",
+  "organisation_user_overview": "User Overview",
+  "organisation_user_overview_description": "See details and full list of reports run by this user from your organisation and access admin functionality.",
+  "organisation_user_role_title": "User Role",
+  "organisation_user_role_description": "Toggle the role of the user from \"Admin\" to just a normal user.",
+  "organisation_deactivate_user_title": "Deactivate User",
+  "organisation_deactivate_user_description": "Deactivate this user to prevent them from being able to access their account or reports.",
+  "organisation_user_reports_title": "User Reports",
+  "organisation_user_reports_description": "A list of all recent reports this user has run."
+}
