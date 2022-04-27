@@ -16,5 +16,6 @@
   "generate_report": "Generate report",
   "no_reports_bookmarked": "No reports bookmarked",
   "click_the_bookmark": "Click the bookmark icon in the top right of a report to save it.",
-  "delete_bookmark": "Delete Bookmark"
+  "delete_bookmark": "Delete Bookmark",
+  "no_data_recent_reports": "Recent Reports"
 }

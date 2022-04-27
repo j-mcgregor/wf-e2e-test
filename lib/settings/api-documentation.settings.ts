@@ -4,7 +4,7 @@ export const apiCards: linkCardType[] = [
   {
     header: 'postman_header',
     description: 'postman_description',
-    href: '/api-documentation/postman'
+    href: 'https://documenter.getpostman.com/view/19089611/UVktoCgN'
   },
   {
     header: 'redoc_header',

@@ -16,35 +16,45 @@ export interface TableHeadersType {
 }
 
 interface TableProps {
+  tableName: string;
   headers: TableHeadersType[];
-  data: any[];
-  total: number;
+  data: any[] | null;
   limit: number;
-  skip: (x: number) => void;
   isLoading: boolean;
+  total: number;
+  setSkip?: (x: number) => void;
   pagination?: boolean;
   fillEmptyRows?: boolean;
   rowLink?: string | ((row: any) => string);
 }
 
 const Table = ({
+  tableName,
   headers,
   data,
   total,
   limit,
-  skip,
+  setSkip,
   isLoading,
   pagination = false,
   fillEmptyRows = false,
   rowLink
 }: TableProps) => {
-  const maxPages = Math.ceil(total / limit);
   const [page, setPage] = React.useState(1);
-
   const [blankRows, setBlankRows] = React.useState(limit);
+  const [maxPages, setMaxPages] = React.useState(1);
+  const [tableTotal, setTableTotal] = React.useState(total);
+  const [tableLimit, setTableLimit] = React.useState(limit);
+  // const maxPages = Math.ceil(tableTotal / limit);
 
   React.useEffect(() => {
-    if (data.length) {
+    !isLoading && total !== tableTotal && setTableTotal(total);
+    !isLoading && limit !== tableLimit && setTableLimit(limit);
+    !isLoading && total && limit && setMaxPages(Math.ceil(total / limit));
+  }, [total, limit, isLoading]);
+
+  React.useEffect(() => {
+    if (data?.length) {
       setBlankRows(limit - data.length);
     }
   }, [data]);
@@ -68,46 +78,73 @@ const Table = ({
   };
 
   React.useEffect(() => {
-    skip(page * limit - limit);
+    if (setSkip) {
+      setSkip(page * limit - limit);
+    }
   }, [page]);
+
+  const getAlignment = (align?: 'right' | 'left' | 'center') => {
+    return align === 'right'
+      ? 'text-right justify-end pr-3 md:pr-5'
+      : align === 'center'
+      ? 'text-center justify-center'
+      : 'text-left justify-start pl-3 md:pl-5';
+  };
 
   return (
     <div className="overflow-hidden">
       <div className="overflow-auto">
         <table
-          className="min-w-full text-xs md:text-sm overflow-auto"
+          className="min-w-full text-xs md:text-sm overflow-auto table-fixed"
           style={{ maxHeight: (limit + 1) * 48 }}
         >
           <thead className="bg-gray-200">
-            <tr className="font-semibold">
-              {headers.map(
-                ({ name, align = 'text-left', width = 'min-w-fit' }) => (
+            <tr className="font-semibold w-full">
+              {headers.map(({ name, align = 'left', width = '' }) => {
+                const contentAlignment = getAlignment(align);
+                return (
                   <th
                     key={name}
                     scope="col"
-                    className={`${align} ${width} text-primary px-3 md:px-7 py-3 whitespace-no-wrap truncate`}
+                    className={`${contentAlignment} ${width} text-primary py-3 whitespace-no-wrap truncate `}
                   >
                     {name}
                   </th>
-                )
-              )}
+                );
+              })}
             </tr>
           </thead>
           <tbody>
             {isLoading && (
               <SkeletonRow
                 cellQty={headers.length}
-                className="odd:bg-gray-50 even:bg-gray-100 animate-pulse h-[48px]"
+                className="even:bg-gray-50 odd:bg-gray-100 animate-pulse h-[48px]"
+                widths={headers.map(header => header.width)}
                 rowQty={limit}
               />
             )}
 
+            {!isLoading && tableTotal === 0 && (
+              <td
+                colSpan={headers?.length}
+                className="h-[240px] bg-gray-50 text-center"
+              >
+                No {tableName}
+              </td>
+            )}
+
             {!isLoading &&
+              tableTotal > 0 &&
               data?.map((row, rowIndex) => (
                 <TableRow key={`table-row-${rowIndex}`}>
                   {headers.map((header, index) => {
-                    const { align, selector, contentClassName, rowTitle } =
-                      header;
+                    const {
+                      align,
+                      selector,
+                      contentClassName,
+                      rowTitle,
+                      width
+                    } = header;
 
                     const value =
                       typeof selector === 'function'
@@ -122,23 +159,18 @@ const Table = ({
                     const link =
                       typeof rowLink === 'function' ? rowLink(row) : rowLink;
 
-                    const contentAlign =
-                      align === 'right'
-                        ? 'text-right justify-end'
-                        : align === 'center'
-                        ? 'text-center justify-center'
-                        : 'text-left justify-start';
-
                     const title =
                       typeof rowTitle === 'function' ? rowTitle(row) : rowTitle;
+
+                    const contentAlignment = getAlignment(align);
 
                     return (
                       <TableCell
                         key={`${rowIndex}-${header}-${index}`}
-                        className={`whitespace-nowrap truncate text-ellipsis overflow-hidden`}
+                        className={`whitespace-nowrap truncate text-ellipsis overflow-hidden ${width}`}
                         contentClassName={contentClass}
                         rowLink={link}
-                        align={contentAlign}
+                        align={contentAlignment}
                         title={title}
                       >
                         {value}
@@ -150,6 +182,7 @@ const Table = ({
 
             {/* These are fill rows not loading rows */}
             {!isLoading &&
+              tableTotal > 0 &&
               fillEmptyRows &&
               blankRows > 0 &&
               blankRows <= limit && (
@@ -166,8 +199,8 @@ const Table = ({
         <PaginationBar
           page={page}
           maxPages={maxPages || 0}
-          total={total}
-          limit={limit}
+          total={tableTotal}
+          limit={tableLimit}
           handlePageChange={handlePageChange}
           handlePageUp={handlePageUp}
           handlePageDown={handlePageDown}

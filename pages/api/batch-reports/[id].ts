@@ -57,6 +57,8 @@ const batchReports: NextApiHandler<BatchReportsIdApi> = async (
       // extract report id
       const batchReportId = request.query.id;
       const exportQuery = request.query.export;
+      const skip = parseInt(request.query?.skip?.toString()) || 0;
+      const limit = parseInt(request.query?.limit?.toString()) || 10;
 
       if (!batchReportId) {
         return makeMissingArgsResponse(
@@ -82,7 +84,7 @@ const batchReports: NextApiHandler<BatchReportsIdApi> = async (
         }
         const fetchRes = await BatchReport.getBatchReportsById(
           `${token.accessToken}`,
-          { id: batchReportId.toString() }
+          { id: batchReportId.toString(), skip, limit }
         );
 
         return response.status(fetchRes.status).json({
