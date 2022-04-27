@@ -65,11 +65,22 @@ const PaginationBar = ({
       <div className="flex items-center h-9 text-xs md:text-sm text-gray-400 bg-white w-min rounded overflow-hidden">
         <PaginationButton
           onClick={() => handlePageChange(1)}
-          hoverClassName="bg-gray-200"
+          hoverClassName={`bg-gray-200 ${
+            page > 1
+              ? 'hover:bg-highlight hover:bg-opacity-30'
+              : 'hover:cursor-not-allowed'
+          }`}
         >
           <ChevronDoubleLeftIcon className="h-5 w-8" />
         </PaginationButton>
-        <PaginationButton onClick={handlePageDown}>
+        <PaginationButton
+          onClick={handlePageDown}
+          hoverClassName={` ${
+            page > 1
+              ? 'hover:bg-highlight hover:bg-opacity-30'
+              : 'hover:cursor-not-allowed'
+          }`}
+        >
           <ChevronLeftIcon className="h-5 w-8" />
         </PaginationButton>
         {[...Array(maxPages)]
@@ -89,12 +100,23 @@ const PaginationBar = ({
             ),
             Math.min(page + (page < 3 ? 5 - page : 2), maxPages)
           )}
-        <PaginationButton onClick={handlePageUp}>
+        <PaginationButton
+          onClick={handlePageUp}
+          hoverClassName={` ${
+            page < maxPages
+              ? 'hover:bg-highlight hover:bg-opacity-30'
+              : 'hover:cursor-not-allowed'
+          }`}
+        >
           <ChevronRightIcon className="h-5 w-8" />
         </PaginationButton>
         <PaginationButton
           onClick={() => handlePageChange(maxPages)}
-          hoverClassName="bg-gray-200"
+          hoverClassName={`bg-gray-200 ${
+            page < maxPages
+              ? 'hover:bg-highlight hover:bg-opacity-30'
+              : 'hover:cursor-not-allowed'
+          }`}
         >
           <ChevronDoubleRightIcon className="h-5 w-8" />
         </PaginationButton>
