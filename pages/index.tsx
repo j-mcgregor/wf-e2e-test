@@ -41,7 +41,8 @@ export default function Dashboard() {
       selector: row => createReportTitle(row.company_name, row.created_at),
       align: 'left',
       width: 'w-3/6',
-      contentClassName: 'truncate max-w-[240px]'
+      contentClassName: 'truncate max-w-[240px]',
+      rowTitle: row => createReportTitle(row.company_name, row.created_at)
     },
     {
       name: t('sme_z-score'),

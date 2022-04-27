@@ -2,6 +2,7 @@ interface SkeletonRowProps {
   rowQty: number;
   className: string;
   cellQty: number;
+  widths?: (string | undefined)[];
 }
 
 const SkeletonRow = ({
