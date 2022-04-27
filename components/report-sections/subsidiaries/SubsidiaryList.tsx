@@ -31,7 +31,7 @@ export const SubsidiaryList = ({ subsidiaries }: SubsidiaryListProps) => {
                   setDisabled={setIsGeneratingReport}
                   name={subsidiary.name}
                   iso_code={subsidiary.iso_code}
-                  company_id={subsidiary.company_id} // <-- incorrect; not company_id so causes 404
+                  company_id={subsidiary.company_id}
                   type={type}
                 />
               </li>

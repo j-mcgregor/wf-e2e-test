@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import ShareHolderCard from './ShareHolderCard';
 import { ShareholderType } from '../../../types/report';
+import { useState } from 'react';
 
 interface ShareHolderListProps {
   shareholders: ShareholderType[];
@@ -8,6 +9,7 @@ interface ShareHolderListProps {
 
 const ShareHolderList = ({ shareholders }: ShareHolderListProps) => {
   const t = useTranslations();
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
 
   return (
     <div
@@ -22,8 +24,8 @@ const ShareHolderList = ({ shareholders }: ShareHolderListProps) => {
           return (
             <li key={`${shareholder.name}-${index}`}>
               <ShareHolderCard
-                companyId={shareholder.company_id}
-                isoCode={shareholder.iso_code}
+                company_id={shareholder.company_id}
+                iso_code={shareholder.iso_code}
                 firstName={shareholder.first_name}
                 lastName={shareholder.last_name}
                 name={shareholder.name}
@@ -31,6 +33,8 @@ const ShareHolderList = ({ shareholders }: ShareHolderListProps) => {
                 percentage={shareholder.percentage}
                 type={shareholder.type}
                 isPep={shareholder.peps_sanctions_enforcements}
+                disabled={isGeneratingReport}
+                setDisabled={setIsGeneratingReport}
               />
             </li>
           );
