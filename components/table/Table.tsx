@@ -17,11 +17,11 @@ export interface TableHeadersType {
 
 interface TableProps {
   headers: TableHeadersType[];
-  data: any[];
-  total: number;
+  data: any[] | null;
   limit: number;
-  skip: (x: number) => void;
   isLoading: boolean;
+  total: number;
+  setSkip?: (x: number) => void;
   pagination?: boolean;
   fillEmptyRows?: boolean;
   rowLink?: string | ((row: any) => string);
@@ -32,7 +32,7 @@ const Table = ({
   data,
   total,
   limit,
-  skip,
+  setSkip,
   isLoading,
   pagination = false,
   fillEmptyRows = false,
@@ -44,7 +44,7 @@ const Table = ({
   const [blankRows, setBlankRows] = React.useState(limit);
 
   React.useEffect(() => {
-    if (data.length) {
+    if (data?.length) {
       setBlankRows(limit - data.length);
     }
   }, [data]);
@@ -68,7 +68,9 @@ const Table = ({
   };
 
   React.useEffect(() => {
-    skip(page * limit - limit);
+    if (setSkip) {
+      setSkip(page * limit - limit);
+    }
   }, [page]);
 
   return (

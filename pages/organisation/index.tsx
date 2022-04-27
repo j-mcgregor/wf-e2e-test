@@ -103,7 +103,7 @@ const Organisation = () => {
           limit={limit}
           headers={usersHeaders}
           data={users}
-          skip={setSkip}
+          setSkip={setSkip}
           pagination
           fillEmptyRows
           isLoading={!result || isValidating}

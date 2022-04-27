@@ -6,6 +6,7 @@ import {
 } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
+import ReactTimeago from 'react-timeago';
 import { useRecoilValue } from 'recoil';
 
 import LinkCard from '../components/cards/LinkCard';
@@ -14,14 +15,55 @@ import Stats from '../components/elements/Stats';
 import TwitterFeed from '../components/elements/TwitterFeed';
 import Layout from '../components/layout/Layout';
 import WFLogo from '../components/svgs/WFLogo';
+import Table, { TableHeadersType } from '../components/table/Table';
 import useLocalStorage from '../hooks/useLocalStorage';
 import appState from '../lib/appState';
+import { createReportTitle } from '../lib/utils/text-helpers';
 
 export default function Dashboard() {
   const t = useTranslations();
   const [userLoginTime] = useLocalStorage<number[]>('wf_last_login', []);
 
   const { user } = useRecoilValue(appState);
+
+  const reports: { created_at: string }[] = user?.reports?.slice();
+  const sortedReports =
+    reports &&
+    reports.sort((a, b) => {
+      const bDate = new Date(b.created_at).getTime();
+      const aDate = new Date(a.created_at).getTime();
+      return bDate - aDate;
+    });
+
+  const ReportTableHeaders: TableHeadersType[] = [
+    {
+      name: t('company_name'),
+      selector: row => createReportTitle(row.company_name, row.created_at),
+      align: 'left',
+      width: 'w-3/6',
+      contentClassName: 'truncate max-w-[240px]'
+    },
+    {
+      name: t('sme_z-score'),
+      selector: 'sme_z_score',
+      align: 'center',
+      width: 'w-1/6'
+    },
+    {
+      name: t('bre'),
+      selector: 'bond_rating_equivalent',
+      align: 'center',
+      width: 'w-1/6'
+    },
+    {
+      name: t('created'),
+      selector: (row: { created_at: string }) => (
+        <ReactTimeago date={row.created_at} />
+      ),
+      align: 'center',
+      width: 'w-1/6'
+    }
+  ];
 
   return (
     <Layout title="Dashboard">
@@ -57,14 +99,14 @@ export default function Dashboard() {
               }
             ]}
           />
-          <ReportTable
-            reports={user?.reports}
+          <Table
+            headers={ReportTableHeaders}
+            data={sortedReports}
+            total={user?.reports?.length}
             limit={5}
-            shadow={true}
-            borders={true}
-            fillerRows={true}
-            headerSize="text-[12px] sm:text-sm"
-            linkRoute="/report"
+            isLoading={false}
+            rowLink={(row: { id: string }) => `/report/${row.id}?from=/`}
+            fillEmptyRows
           />
         </div>
 

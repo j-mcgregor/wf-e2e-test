@@ -3,6 +3,7 @@ import { BookmarkIcon } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import ReactTimeago from 'react-timeago';
 import { useRecoilValue } from 'recoil';
 
 import BookmarkCard from '../components/cards/BookmarkCard';
@@ -10,8 +11,10 @@ import Button from '../components/elements/Button';
 import ReportTable from '../components/elements/ReportTable';
 import Layout from '../components/layout/Layout';
 import LoadingIcon from '../components/svgs/LoadingIcon';
+import Table, { TableHeadersType } from '../components/table/Table';
 import useReportHistory from '../hooks/useReportHistory';
 import appState from '../lib/appState';
+import { createReportTitle } from '../lib/utils/text-helpers';
 import { ReportSnippetType } from '../types/global';
 
 const Reports = () => {
@@ -25,6 +28,36 @@ const Reports = () => {
   const { reports, loading } = useReportHistory(10, reportLimit);
 
   const reportLength = reports?.length || 0;
+
+  const ReportTableHeaders: TableHeadersType[] = [
+    {
+      name: t('company_name'),
+      selector: row => createReportTitle(row.company_name, row.created_at),
+      align: 'left',
+      width: 'w-3/6',
+      contentClassName: 'truncate max-w-[240px] lg:max-w-xs xl:max-w-sm'
+    },
+    {
+      name: t('sme_z-score'),
+      selector: 'sme_z_score',
+      align: 'center',
+      width: 'w-1/6'
+    },
+    {
+      name: t('bre'),
+      selector: 'bond_rating_equivalent',
+      align: 'center',
+      width: 'w-1/6'
+    },
+    {
+      name: t('created'),
+      selector: (row: { created_at: string }) => (
+        <ReactTimeago date={row.created_at} />
+      ),
+      align: 'center',
+      width: 'w-1/6'
+    }
+  ];
 
   // load 5 more reports until max of 30
   const handleAddReports = (): void => {
@@ -78,20 +111,18 @@ const Reports = () => {
             {t('recent_reports')}
           </p>
 
-          <ReportTable
-            headerSize="text-[10px] md:text-sm lg:text-base"
-            reports={
+          <Table
+            headers={ReportTableHeaders}
+            data={
               (loading && reports?.length === 0) ||
               reports?.length === user?.reports?.length
                 ? user?.reports
                 : reports
             }
+            isLoading={loading}
             limit={reportLimit + 10}
-            shadow={true}
-            loading={loading}
-            borders={true}
-            fillerRows={false}
-            linkRoute="/report"
+            total={0}
+            rowLink={row => `/report/${row.id}?from=/reports`}
           />
 
           {/* Handle loading cases and if there are enough reports to show more */}

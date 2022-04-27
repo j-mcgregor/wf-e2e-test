@@ -220,7 +220,7 @@ const OrganisationUserPage = () => {
             headers={tableHeaders}
             data={reports || []}
             limit={limit}
-            skip={setSkip}
+            setSkip={setSkip}
             total={totalReports || 0}
             isLoading={isValidating}
             rowLink={(row: { id: string }) =>
