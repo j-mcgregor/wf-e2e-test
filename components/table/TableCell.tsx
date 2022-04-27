@@ -7,10 +7,7 @@ interface ITableCellProps {
   contentClassName?: string;
   cellLink?: string;
   rowLink?: string;
-  align?:
-    | 'text-left justify-start'
-    | 'text-right justify-end'
-    | 'text-center justify-center';
+  align?: string;
   title?: string;
 }
 
@@ -38,8 +35,10 @@ const TableCell = ({
               : ''
           } w-full h-full`}
         >
-          <div className={`md:px-7 px-3 flex ${align}`}>
-            <div className={`${contentClassName}`}>{children}</div>
+          <div className={`flex ${align}`}>
+            <div className={`${contentClassName} overflow-x-hidden`}>
+              {children}
+            </div>
           </div>
         </div>
       </ContentComponent>

@@ -73,26 +73,35 @@ const Table = ({
     }
   }, [page]);
 
+  const getAlignment = (align?: 'right' | 'left' | 'center') => {
+    return align === 'right'
+      ? 'text-right justify-end pr-3 md:pr-5'
+      : align === 'center'
+      ? 'text-center justify-center'
+      : 'text-left justify-start pl-3 md:pl-5';
+  };
+
   return (
     <div className="overflow-hidden">
       <div className="overflow-auto">
         <table
-          className="min-w-full text-xs md:text-sm overflow-auto"
+          className="min-w-full text-xs md:text-sm overflow-auto table-fixed"
           style={{ maxHeight: (limit + 1) * 48 }}
         >
           <thead className="bg-gray-200">
-            <tr className="font-semibold">
-              {headers.map(
-                ({ name, align = 'text-left', width = 'min-w-fit' }) => (
+            <tr className="font-semibold w-full">
+              {headers.map(({ name, align = 'left', width = '' }) => {
+                const contentAlignment = getAlignment(align);
+                return (
                   <th
                     key={name}
                     scope="col"
-                    className={`${align} ${width} text-primary px-3 md:px-7 py-3 whitespace-no-wrap truncate`}
+                    className={`${contentAlignment} ${width} text-primary py-3 whitespace-no-wrap truncate `}
                   >
                     {name}
                   </th>
-                )
-              )}
+                );
+              })}
             </tr>
           </thead>
           <tbody>
@@ -100,6 +109,7 @@ const Table = ({
               <SkeletonRow
                 cellQty={headers.length}
                 className="odd:bg-gray-50 even:bg-gray-100 animate-pulse h-[48px]"
+                widths={headers.map(header => header.width)}
                 rowQty={limit}
               />
             )}
@@ -108,8 +118,13 @@ const Table = ({
               data?.map((row, rowIndex) => (
                 <TableRow key={`table-row-${rowIndex}`}>
                   {headers.map((header, index) => {
-                    const { align, selector, contentClassName, rowTitle } =
-                      header;
+                    const {
+                      align,
+                      selector,
+                      contentClassName,
+                      rowTitle,
+                      width
+                    } = header;
 
                     const value =
                       typeof selector === 'function'
@@ -124,23 +139,18 @@ const Table = ({
                     const link =
                       typeof rowLink === 'function' ? rowLink(row) : rowLink;
 
-                    const contentAlign =
-                      align === 'right'
-                        ? 'text-right justify-end'
-                        : align === 'center'
-                        ? 'text-center justify-center'
-                        : 'text-left justify-start';
-
                     const title =
                       typeof rowTitle === 'function' ? rowTitle(row) : rowTitle;
+
+                    const contentAlignment = getAlignment(align);
 
                     return (
                       <TableCell
                         key={`${rowIndex}-${header}-${index}`}
-                        className={`whitespace-nowrap truncate text-ellipsis overflow-hidden`}
+                        className={`whitespace-nowrap truncate text-ellipsis overflow-hidden ${width}`}
                         contentClassName={contentClass}
                         rowLink={link}
-                        align={contentAlign}
+                        align={contentAlignment}
                         title={title}
                       >
                         {value}

@@ -93,7 +93,10 @@ const OrganisationUserPage = () => {
   React.useEffect(() => {
     // only update if the value for total reports changes
     // prevents load of value on button toggle
-    if (!isValidating && result?.user?.total_reports) {
+    if (
+      (!isValidating && result?.user?.total_reports) ||
+      result?.user?.total_reports === 0
+    ) {
       result?.user && setUser(result?.user);
     }
     if (!isValidating && result?.userReports && result.userReports.length > 0) {
@@ -180,7 +183,8 @@ const OrganisationUserPage = () => {
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="flex items-center justify-center bg-primary rounded-full w-16 h-16 text-white text-xl">
-                {!user?.total_reports ? (
+                {/* @ts-ignore */}
+                {!user?.total_reports && !user?.total_reports === 0 ? (
                   <LoadingIcon className="text-white" />
                 ) : (
                   totalReports

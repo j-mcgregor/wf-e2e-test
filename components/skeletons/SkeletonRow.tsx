@@ -4,15 +4,20 @@ interface SkeletonRowProps {
   cellQty: number;
 }
 
-const SkeletonRow = ({ rowQty, className, cellQty }: SkeletonRowProps) => {
+const SkeletonRow = ({
+  rowQty,
+  className,
+  cellQty,
+  widths = []
+}: SkeletonRowProps) => {
   return (
     <>
       {[...Array(rowQty).keys()].map(row => {
         //fixed not showing - weren't returning from the map..
         return (
           <tr key={row} className={className}>
-            {[...Array(cellQty).keys()].map(cell => {
-              return <td key={cell} className="px-6 py-1" />;
+            {[...Array(cellQty).keys()].map((cell, index) => {
+              return <td key={cell} className={widths[index]} />;
             })}
           </tr>
         );

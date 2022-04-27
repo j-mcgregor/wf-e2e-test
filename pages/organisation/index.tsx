@@ -14,6 +14,8 @@ import fetcher from '../../lib/utils/fetcher';
 import { OrganisationUser } from '../../types/organisations';
 import { OrganisationTypeApi } from '../api/organisation/[orgId]/[type]';
 
+const headerWidth = 'w-1/10 min-w-[88px]';
+
 const usersHeaders: TableHeadersType[] = [
   { name: 'Name', selector: 'full_name', width: 'w-1/5' },
   { name: 'Email', selector: 'email', width: 'w-1/2' },
@@ -25,23 +27,23 @@ const usersHeaders: TableHeadersType[] = [
       `${
         row.organisation_role === 'Admin' ? 'bg-highlight' : ''
       } rounded-full w-14 h-5 bg-opacity-20 flex justify-center items-center`,
-    width: 'w-1/10'
+    width: headerWidth
   },
   {
     name: 'Reports',
     selector: 'total_reports',
     align: 'center',
-    width: 'w-1/10'
+    width: headerWidth
   },
   {
     name: 'Active',
     selector: (row: { is_active: boolean }) => (row.is_active ? 'Yes' : 'No'),
-    contentClassName: (row: { is_active: boolean }) =>
-      `${
-        row.is_active ? 'bg-green-300' : 'bg-red-500'
-      } rounded-full w-10 h-5 bg-opacity-50 text-black flex justify-center items-center`,
+    // contentClassName: (row: { is_active: boolean }) =>
+    //   `${
+    //     row.is_active ? 'bg-green-300' : 'bg-red-500'
+    //   } rounded-full w-10 h-5 bg-opacity-50 text-black flex justify-center items-center`,
     align: 'center',
-    width: 'w-1/6'
+    width: headerWidth
   }
 ];
 
