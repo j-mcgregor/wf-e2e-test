@@ -10,7 +10,6 @@ import ReactTimeago from 'react-timeago';
 import { useRecoilValue } from 'recoil';
 
 import LinkCard from '../components/cards/LinkCard';
-import ReportTable from '../components/elements/ReportTable';
 import Stats from '../components/elements/Stats';
 import TwitterFeed from '../components/elements/TwitterFeed';
 import Layout from '../components/layout/Layout';

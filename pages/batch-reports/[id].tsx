@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import LinkCard from '../../components/cards/LinkCard';
 
-import BatchReportTable from '../../components/elements/BatchReportTable';
 import Button from '../../components/elements/Button';
 import Layout from '../../components/layout/Layout';
 import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
@@ -159,6 +158,9 @@ const BatchReport = () => {
               limit={limit}
               isLoading={!batchReport}
               setSkip={setSkip}
+              rowLink={(row: { id: string }) =>
+                `/report/${row.id}?from=/batch-reports/${id}`
+              }
               pagination
               fillEmptyRows
             />
