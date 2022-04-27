@@ -41,7 +41,13 @@ const Table = ({
   const maxPages = Math.ceil(total / limit);
   const [page, setPage] = React.useState(1);
 
-  const blankRows = limit - data?.length || limit;
+  const [blankRows, setBlankRows] = React.useState(limit);
+
+  React.useEffect(() => {
+    if (data.length) {
+      setBlankRows(limit - data.length);
+    }
+  }, [data]);
 
   const handlePageChange = (page: number) => setPage(page);
   const handlePageDown = () => {
@@ -146,7 +152,7 @@ const Table = ({
             {!isLoading &&
               fillEmptyRows &&
               blankRows > 0 &&
-              blankRows < limit && (
+              blankRows <= limit && (
                 <SkeletonRow
                   cellQty={headers.length}
                   className="bg-gray-200 h-[48px]"

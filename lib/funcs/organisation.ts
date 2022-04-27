@@ -337,7 +337,7 @@ const getOrganisationUserAndReports: ApiHandler<
  * PATCH ORGANISATION USER - /api/organisation/:orgId/users?userId=:userId
  * ***************************************************
  */
-export interface PatchOgranisationUser extends PostOrganisationUser {}
+export interface PatchOrganisationUser extends PostOrganisationUser {}
 
 interface PatchOrganisationUserProps {
   orgId: string;
@@ -346,7 +346,7 @@ interface PatchOrganisationUserProps {
 }
 
 const patchOrganisationUser: ApiHandler<
-  PatchOgranisationUser,
+  PatchOrganisationUser,
   PatchOrganisationUserProps
 > = async (token, { orgId, userId, body }) => {
   try {
