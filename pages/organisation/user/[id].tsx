@@ -85,7 +85,7 @@ const OrganisationUserPage = () => {
     organisation_role: organisationRole,
     is_active: isActive,
     total_reports: totalReports
-  } = user || {};
+  } = result?.user || {};
 
   const isAdmin = organisationRole === 'Admin';
 
