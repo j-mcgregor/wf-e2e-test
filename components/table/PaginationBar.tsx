@@ -52,6 +52,9 @@ const PaginationBar = ({
   handlePageDown,
   handlePageUp
 }: PaginationBarProps) => {
+  const chevronAvailableClass = 'hover:bg-highlight hover:bg-opacity-30';
+  const chevronEndClass = 'hover:cursor-not-allowed';
+
   return (
     <div className="flex flex-col-reverse gap-2 md:flex-row justify-between items-end md:items-center my-2 bg-transparent">
       <p className="text-primary text-xs md:text-sm">
@@ -66,9 +69,7 @@ const PaginationBar = ({
         <PaginationButton
           onClick={() => handlePageChange(1)}
           hoverClassName={`bg-gray-200 ${
-            page > 1
-              ? 'hover:bg-highlight hover:bg-opacity-30'
-              : 'hover:cursor-not-allowed'
+            page > 1 ? chevronAvailableClass : chevronEndClass
           }`}
         >
           <ChevronDoubleLeftIcon className="h-5 w-8" />
@@ -76,9 +77,7 @@ const PaginationBar = ({
         <PaginationButton
           onClick={handlePageDown}
           hoverClassName={` ${
-            page > 1
-              ? 'hover:bg-highlight hover:bg-opacity-30'
-              : 'hover:cursor-not-allowed'
+            page > 1 ? chevronAvailableClass : chevronEndClass
           }`}
         >
           <ChevronLeftIcon className="h-5 w-8" />
@@ -103,9 +102,7 @@ const PaginationBar = ({
         <PaginationButton
           onClick={handlePageUp}
           hoverClassName={` ${
-            page < maxPages
-              ? 'hover:bg-highlight hover:bg-opacity-30'
-              : 'hover:cursor-not-allowed'
+            page < maxPages ? chevronAvailableClass : chevronEndClass
           }`}
         >
           <ChevronRightIcon className="h-5 w-8" />
@@ -113,9 +110,7 @@ const PaginationBar = ({
         <PaginationButton
           onClick={() => handlePageChange(maxPages)}
           hoverClassName={`bg-gray-200 ${
-            page < maxPages
-              ? 'hover:bg-highlight hover:bg-opacity-30'
-              : 'hover:cursor-not-allowed'
+            page < maxPages ? chevronAvailableClass : chevronEndClass
           }`}
         >
           <ChevronDoubleRightIcon className="h-5 w-8" />
