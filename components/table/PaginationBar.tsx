@@ -53,9 +53,12 @@ const PaginationBar = ({
   handlePageUp
 }: PaginationBarProps) => {
   return (
-    <div className="flex flex-col-reverse gap-2 md:flex-row justify-between items-end md:items-center my-2">
+    <div className="flex flex-col-reverse gap-2 md:flex-row justify-between items-end md:items-center my-2 bg-transparent">
       <p className="text-primary text-xs md:text-sm">
-        Showing <span className="font-medium">{page * limit - limit + 1}</span>{' '}
+        Showing{' '}
+        <span className="font-medium">
+          {total > 0 ? page * limit - limit + 1 : 0}
+        </span>{' '}
         to <span className="font-medium">{Math.min(limit * page, total)}</span>{' '}
         of <span className="font-medium">{total}</span> results
       </p>

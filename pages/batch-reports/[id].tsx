@@ -12,9 +12,11 @@ import Button from '../../components/elements/Button';
 import Layout from '../../components/layout/Layout';
 import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
+import Table, { TableHeadersType } from '../../components/table/Table';
 import { REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
 import { downloadFile } from '../../lib/utils/file-helpers';
+import { createReportTitle } from '../../lib/utils/text-helpers';
 
 import type {
   BatchJobGetByIdResponse,
@@ -27,19 +29,57 @@ const BatchReport = () => {
   const router = useRouter();
 
   const [batchReport, setBatchReport] = useState<GetBatchSummary>();
+  const [skip, setSkip] = useState(0);
+  const limit = 10;
 
   const { id = '' } = router.query;
 
-  const { data, error } = useSWR<{
+  const { data, error, isValidating } = useSWR<{
     batchReport: BatchJobGetByIdResponse;
     error: boolean;
-  }>(`/api/batch-reports/${id}`, fetcher);
+  }>(`/api/batch-reports/${id}?skip=${skip}limit=${limit}`, fetcher);
 
   useEffect(() => {
     if (data?.batchReport) {
       setBatchReport(data.batchReport);
     }
   }, [data]);
+
+  const getReportName = (row: { company_name: string; created_at: string }) =>
+    createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
+
+  const batchReportTableHeaders: TableHeadersType[] = [
+    {
+      name: t('company_name'),
+      selector: getReportName,
+      align: 'left',
+      width: 'w-3/6',
+      contentClassName: 'truncate max-w-[240px] lg:max-w-xs xl:max-w-sm',
+      rowTitle: getReportName
+    },
+    {
+      name: t('sme_z-score'),
+      selector: 'sme_z_score',
+      align: 'center',
+      width: 'w-1/6'
+    },
+    {
+      name: t('bre'),
+      selector: 'bond_rating_equivalent',
+      align: 'center',
+      width: 'w-1/6'
+    },
+    {
+      name: t('pd'),
+      selector: (row: { probability_of_default_1_year: number }) =>
+        Intl.NumberFormat('en-GB', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }).format(row.probability_of_default_1_year * 100) + '%',
+      align: 'center',
+      width: 'w-1/6'
+    }
+  ];
 
   const handleExportCsv = async () => {
     if (!id) return null;
@@ -111,9 +151,16 @@ const BatchReport = () => {
               {t('batch_report_results')}
             </p>
             {/* TODO: hook up to newdata fromAPI when ready */}
-            <BatchReportTable
-              data={batchReport?.summaries}
-              reportId={batchReport?.id}
+            <Table
+              tableName={t('batch_report_results')}
+              headers={batchReportTableHeaders}
+              data={batchReport?.summaries || []}
+              total={batchReport?.summaries?.length || 0}
+              limit={limit}
+              isLoading={!batchReport}
+              setSkip={setSkip}
+              pagination
+              fillEmptyRows
             />
           </div>
         </div>

@@ -101,6 +101,7 @@ const Organisation = () => {
           >{`Add User`}</Button>
         </div>
         <Table
+          tableName={t('users_title')}
           total={result?.total || 0}
           limit={limit}
           headers={usersHeaders}

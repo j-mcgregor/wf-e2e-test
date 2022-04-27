@@ -29,11 +29,13 @@ export default function Dashboard() {
   const reports: { created_at: string }[] = user?.reports?.slice();
   const sortedReports =
     reports &&
-    reports.sort((a, b) => {
-      const bDate = new Date(b.created_at).getTime();
-      const aDate = new Date(a.created_at).getTime();
-      return bDate - aDate;
-    });
+    reports
+      .sort((a, b) => {
+        const bDate = new Date(b.created_at).getTime();
+        const aDate = new Date(a.created_at).getTime();
+        return bDate - aDate;
+      })
+      .slice(0, 5);
 
   const getReportName = (row: { company_name: string; created_at: string }) =>
     createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
@@ -104,6 +106,7 @@ export default function Dashboard() {
             ]}
           />
           <Table
+            tableName={t('no_data_recent_reports')}
             headers={ReportTableHeaders}
             data={sortedReports}
             total={user?.reports?.length}

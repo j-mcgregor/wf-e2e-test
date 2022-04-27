@@ -16,6 +16,7 @@ export interface TableHeadersType {
 }
 
 interface TableProps {
+  tableName: string;
   headers: TableHeadersType[];
   data: any[] | null;
   limit: number;
@@ -28,6 +29,7 @@ interface TableProps {
 }
 
 const Table = ({
+  tableName,
   headers,
   data,
   total,
@@ -46,8 +48,8 @@ const Table = ({
   // const maxPages = Math.ceil(tableTotal / limit);
 
   React.useEffect(() => {
-    !isLoading && total && setTableTotal(total);
-    !isLoading && limit && setTableLimit(limit);
+    !isLoading && total !== tableTotal && setTableTotal(total);
+    !isLoading && limit !== tableLimit && setTableLimit(limit);
     !isLoading && total && limit && setMaxPages(Math.ceil(total / limit));
   }, [total, limit, isLoading]);
 
@@ -122,7 +124,17 @@ const Table = ({
               />
             )}
 
+            {!isLoading && tableTotal === 0 && (
+              <td
+                colSpan={headers?.length}
+                className="h-[240px] bg-gray-50 text-center"
+              >
+                No {tableName}
+              </td>
+            )}
+
             {!isLoading &&
+              tableTotal > 0 &&
               data?.map((row, rowIndex) => (
                 <TableRow key={`table-row-${rowIndex}`}>
                   {headers.map((header, index) => {
@@ -170,6 +182,7 @@ const Table = ({
 
             {/* These are fill rows not loading rows */}
             {!isLoading &&
+              tableTotal > 0 &&
               fillEmptyRows &&
               blankRows > 0 &&
               blankRows <= limit && (

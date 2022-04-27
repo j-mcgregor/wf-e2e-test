@@ -5,17 +5,16 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import ReactTimeago from 'react-timeago';
 import { useRecoilValue } from 'recoil';
+import useSWR from 'swr';
 
 import BookmarkCard from '../components/cards/BookmarkCard';
-import Button from '../components/elements/Button';
-import ReportTable from '../components/elements/ReportTable';
 import Layout from '../components/layout/Layout';
-import LoadingIcon from '../components/svgs/LoadingIcon';
 import Table, { TableHeadersType } from '../components/table/Table';
-import useReportHistory from '../hooks/useReportHistory';
 import appState from '../lib/appState';
+import fetcher from '../lib/utils/fetcher';
 import { createReportTitle } from '../lib/utils/text-helpers';
 import { ReportSnippetType } from '../types/global';
+import { UserReportsApi } from './api/user/reports';
 
 const Reports = () => {
   const { user } = useRecoilValue(appState);
@@ -23,11 +22,16 @@ const Reports = () => {
   const bookmarkedReports = user?.bookmarked_reports;
 
   // ADD TO HOOK START
-  const [reportLimit, setReportLimit] = useState(0); // initial limit of 10 reports
+  const [skip, setSkip] = useState(0); // initial limit of 10 reports
+  const limit = 10;
 
-  const { reports, loading } = useReportHistory(10, reportLimit);
-
-  const reportLength = reports?.length || 0;
+  const { data, isValidating } = useSWR<UserReportsApi>(
+    `/api/user/reports?limit=${limit}&skip=${skip}`,
+    fetcher,
+    {
+      revalidateOnFocus: false
+    }
+  );
 
   const getReportName = (row: { company_name: string; created_at: string }) =>
     createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
@@ -62,11 +66,6 @@ const Reports = () => {
       width: 'w-1/6'
     }
   ];
-
-  // load 5 more reports until max of 30
-  const handleAddReports = (): void => {
-    reportLimit + 10 <= reportLength ? setReportLimit(reportLimit + 10) : null;
-  };
   // ADD TO HOOK END
 
   return (
@@ -116,30 +115,17 @@ const Reports = () => {
           </p>
 
           <Table
+            tableName={t('no_data_recent_reports')}
             headers={ReportTableHeaders}
-            data={
-              (loading && reports?.length === 0) ||
-              reports?.length === user?.reports?.length
-                ? user?.reports
-                : reports
-            }
-            isLoading={loading}
-            limit={reportLimit + 10}
-            total={0}
+            data={data?.reports || []}
+            isLoading={isValidating}
+            limit={limit}
+            total={user?.total_reports}
             rowLink={row => `/report/${row.id}?from=/reports`}
+            setSkip={setSkip}
+            pagination
+            fillEmptyRows
           />
-
-          {/* Handle loading cases and if there are enough reports to show more */}
-          {(reportLimit + 10 <= reportLength || loading) && (
-            <Button
-              disabled={loading}
-              variant="none"
-              className="border-alt border max-w-[120px] my-2 mx-auto"
-              onClick={handleAddReports}
-            >
-              {!loading ? <p>{t('show_more')}</p> : <LoadingIcon />}
-            </Button>
-          )}
         </div>
       </div>
     </Layout>

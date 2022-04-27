@@ -206,6 +206,7 @@ const OrganisationUserPage = () => {
             </p>
           </div>
           <Table
+            tableName={t('organisation_user_reports_title')}
             headers={ReportTableHeaders}
             data={result?.userReports || []}
             limit={limit}
