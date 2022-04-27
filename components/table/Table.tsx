@@ -38,10 +38,18 @@ const Table = ({
   fillEmptyRows = false,
   rowLink
 }: TableProps) => {
-  const maxPages = Math.ceil(total / limit);
   const [page, setPage] = React.useState(1);
-
   const [blankRows, setBlankRows] = React.useState(limit);
+  const [maxPages, setMaxPages] = React.useState(1);
+  const [tableTotal, setTableTotal] = React.useState(total);
+  const [tableLimit, setTableLimit] = React.useState(limit);
+  // const maxPages = Math.ceil(tableTotal / limit);
+
+  React.useEffect(() => {
+    !isLoading && total && setTableTotal(total);
+    !isLoading && limit && setTableLimit(limit);
+    !isLoading && total && limit && setMaxPages(Math.ceil(total / limit));
+  }, [total, limit, isLoading]);
 
   React.useEffect(() => {
     if (data?.length) {
@@ -108,7 +116,7 @@ const Table = ({
             {isLoading && (
               <SkeletonRow
                 cellQty={headers.length}
-                className="odd:bg-gray-50 even:bg-gray-100 animate-pulse h-[48px]"
+                className="even:bg-gray-50 odd:bg-gray-100 animate-pulse h-[48px]"
                 widths={headers.map(header => header.width)}
                 rowQty={limit}
               />
@@ -178,8 +186,8 @@ const Table = ({
         <PaginationBar
           page={page}
           maxPages={maxPages || 0}
-          total={total}
-          limit={limit}
+          total={tableTotal}
+          limit={tableLimit}
           handlePageChange={handlePageChange}
           handlePageUp={handlePageUp}
           handlePageDown={handlePageDown}

@@ -14,39 +14,6 @@ import fetcher from '../../lib/utils/fetcher';
 import { OrganisationUser } from '../../types/organisations';
 import { OrganisationTypeApi } from '../api/organisation/[orgId]/[type]';
 
-const headerWidth = 'w-1/10 min-w-[88px]';
-
-const usersHeaders: TableHeadersType[] = [
-  { name: 'Name', selector: 'full_name', width: 'w-1/5' },
-  { name: 'Email', selector: 'email', width: 'w-1/2' },
-  {
-    name: 'Role',
-    selector: 'organisation_role',
-    align: 'center',
-    contentClassName: (row: { organisation_role: string }) =>
-      `${
-        row.organisation_role === 'Admin' ? 'bg-highlight' : ''
-      } rounded-full w-14 h-5 bg-opacity-20 flex justify-center items-center`,
-    width: headerWidth
-  },
-  {
-    name: 'Reports',
-    selector: 'total_reports',
-    align: 'center',
-    width: headerWidth
-  },
-  {
-    name: 'Active',
-    selector: (row: { is_active: boolean }) => (row.is_active ? 'Yes' : 'No'),
-    // contentClassName: (row: { is_active: boolean }) =>
-    //   `${
-    //     row.is_active ? 'bg-green-300' : 'bg-red-500'
-    //   } rounded-full w-10 h-5 bg-opacity-50 text-black flex justify-center items-center`,
-    align: 'center',
-    width: headerWidth
-  }
-];
-
 const Organisation = () => {
   const t = useTranslations();
   const { organisation, message } = useOrganisation();
@@ -68,6 +35,39 @@ const Organisation = () => {
       revalidateOnFocus: true
     }
   );
+
+  const headerWidth = 'w-1/10 min-w-[88px]';
+
+  const usersHeaders: TableHeadersType[] = [
+    { name: t('table_name_header'), selector: 'full_name', width: 'w-1/5' },
+    { name: t('table_email_header'), selector: 'email', width: 'w-1/2' },
+    {
+      name: t('table_role_header'),
+      selector: 'organisation_role',
+      align: 'center',
+      contentClassName: (row: { organisation_role: string }) =>
+        `${
+          row.organisation_role === 'Admin' ? 'bg-highlight' : ''
+        } rounded-full w-14 h-5 bg-opacity-20 flex justify-center items-center`,
+      width: headerWidth
+    },
+    {
+      name: t('table_reports_header'),
+      selector: 'total_reports',
+      align: 'center',
+      width: headerWidth
+    },
+    {
+      name: t('table_active_header'),
+      selector: (row: { is_active: boolean }) => (row.is_active ? 'Yes' : 'No'),
+      contentClassName: (row: { is_active: boolean }) =>
+        `${
+          row.is_active ? 'bg-green-300' : 'bg-red-500'
+        } rounded-full w-10 h-5 bg-opacity-50 text-black flex justify-center items-center`,
+      align: 'center',
+      width: headerWidth
+    }
+  ];
 
   const users: OrganisationUser[] = result?.users || [];
 
@@ -108,7 +108,7 @@ const Organisation = () => {
           setSkip={setSkip}
           pagination
           fillEmptyRows
-          isLoading={!result || isValidating}
+          isLoading={isValidating}
           rowLink={row => `/organisation/user/${row.id}`}
         />
       </div>

@@ -29,14 +29,17 @@ const Reports = () => {
 
   const reportLength = reports?.length || 0;
 
+  const getReportName = (row: { company_name: string; created_at: string }) =>
+    createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
+
   const ReportTableHeaders: TableHeadersType[] = [
     {
       name: t('company_name'),
-      selector: row => createReportTitle(row.company_name, row.created_at),
+      selector: getReportName,
       align: 'left',
       width: 'w-3/6',
       contentClassName: 'truncate max-w-[240px] lg:max-w-xs xl:max-w-sm',
-      rowTitle: row => createReportTitle(row.company_name, row.created_at)
+      rowTitle: getReportName
     },
     {
       name: t('sme_z-score'),

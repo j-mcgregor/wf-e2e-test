@@ -42,5 +42,10 @@
   "add_user_form_role_label": "Role",
   "user_role": "User",
   "admin_role": "Admin",
-  "add_user_button": "Add new user"
+  "add_user_button": "Add new user",
+  "table_name_header": "Name",
+  "table_email_header": "Email",
+  "table_role_header": "Role",
+  "table_reports_header": "Reports",
+  "table_active_header": "Active"
 }

@@ -20,15 +20,13 @@ import {
   OrganisationUser,
   OrganisationUserReport
 } from '../../../types/organisations';
+import ReactTimeago from 'react-timeago';
 
 const OrganisationUserPage = () => {
   const t = useTranslations();
   const router = useRouter();
   const { organisation, message } = useOrganisation();
   const [user, setUser] = React.useState<OrganisationUser>();
-  const [reports, setReports] = React.useState<
-    OrganisationUserReport[] | null | undefined
-  >([]);
   const { id } = router.query;
   const [skip, setSkip] = React.useState(0);
 
@@ -37,30 +35,31 @@ const OrganisationUserPage = () => {
   const getReportName = (row: { company_name: string; created_at: string }) =>
     createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
 
-  const tableHeaders: TableHeadersType[] = [
+  const ReportTableHeaders: TableHeadersType[] = [
     {
-      name: 'Report Name',
+      name: t('company_name'),
       selector: getReportName,
-      rowTitle: getReportName,
-      contentClassName: 'truncate max-w-[240px] lg:max-w-sm',
-      width: 'w-3/6'
+      align: 'left',
+      width: 'w-3/6',
+      contentClassName: 'truncate max-w-[240px] lg:max-w-xs xl:max-w-sm',
+      rowTitle: getReportName
     },
     {
-      name: 'SME Z-Score',
+      name: t('sme_z-score'),
       selector: 'sme_z_score',
       align: 'center',
       width: 'w-1/6'
     },
     {
-      name: 'BRE',
+      name: t('bre'),
       selector: 'bond_rating_equivalent',
       align: 'center',
       width: 'w-1/6'
     },
     {
-      name: 'Created At',
+      name: t('created'),
       selector: (row: { created_at: string }) => (
-        <ReactTimeAgo date={row.created_at} />
+        <ReactTimeago date={row.created_at} />
       ),
       align: 'center',
       width: 'w-1/6'
@@ -89,20 +88,6 @@ const OrganisationUserPage = () => {
   } = user || {};
 
   const isAdmin = organisationRole === 'Admin';
-
-  React.useEffect(() => {
-    // only update if the value for total reports changes
-    // prevents load of value on button toggle
-    if (
-      (!isValidating && result?.user?.total_reports) ||
-      result?.user?.total_reports === 0
-    ) {
-      result?.user && setUser(result?.user);
-    }
-    if (!isValidating && result?.userReports && result.userReports.length > 0) {
-      result?.userReports && setReports(result?.userReports);
-    }
-  }, [result, isValidating]);
 
   const updateUserFn = async (body: Partial<OrganisationUser>) => {
     const res = await fetch(
@@ -221,11 +206,11 @@ const OrganisationUserPage = () => {
             </p>
           </div>
           <Table
-            headers={tableHeaders}
-            data={reports || []}
+            headers={ReportTableHeaders}
+            data={result?.userReports || []}
             limit={limit}
             setSkip={setSkip}
-            total={totalReports || 0}
+            total={result?.user?.total_reports || 0}
             isLoading={isValidating}
             rowLink={(row: { id: string }) =>
               `/report/${row.id}?from=/organisation/user/${id}`
@@ -250,6 +235,7 @@ export async function getServerSideProps({
         // You can get the messages from anywhere you like, but the recommended
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
+        ...require(`../../../messages/${locale}/reports.${locale}.json`),
         ...require(`../../../messages/${locale}/organisation.${locale}.json`),
         ...require(`../../../messages/${locale}/general.${locale}.json`)
       }
