@@ -274,9 +274,9 @@
   {
     "name": "Estonia",
     "code": "EE",
-    "currency_code": "EEK",
-    "currency": "Kroon",
-    "currency_symbol": "kr",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
     "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/estonia.png"
   },
   {
