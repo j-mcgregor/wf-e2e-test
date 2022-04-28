@@ -1,10 +1,12 @@
 import { OfficeBuildingIcon, UserIcon } from '@heroicons/react/outline';
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 import { useCreateReport } from '../../hooks/useCreateReport';
 import { Company } from '../../types/report';
 import LoadingIcon from '../svgs/LoadingIcon';
 import { WFTwoToneLogo } from '../svgs/WFTwoToneLogo';
+import { CircleX } from '../svgs/CircleX';
 
 interface EntityCardProps extends Company {
   disabled: boolean;
@@ -19,7 +21,9 @@ const EntityCard = ({
   disabled,
   setDisabled
 }: EntityCardProps) => {
-  const { createReport, loading } = useCreateReport({
+  const t = useTranslations();
+
+  const { createReport, loading, isError } = useCreateReport({
     iso_code,
     company_id,
     disabled,
@@ -50,10 +54,21 @@ const EntityCard = ({
       {company_id && (
         <div
           className="min-w-32 flex items-center justify-center w-[65px] "
-          title={`Generate a report on ${name}`}
+          title={
+            isError
+              ? t('generate_report_fail', { name })
+              : t('generate_report', { name })
+          }
         >
           {!loading ? (
-            <WFTwoToneLogo onClick={handleGenerateReport} disabled={disabled} />
+            !isError ? (
+              <WFTwoToneLogo
+                onClick={handleGenerateReport}
+                disabled={disabled}
+              />
+            ) : (
+              <CircleX fill="white" stroke="red" />
+            )
           ) : (
             <LoadingIcon />
           )}
