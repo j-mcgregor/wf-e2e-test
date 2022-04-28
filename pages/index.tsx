@@ -80,6 +80,7 @@ export default function Dashboard() {
             <div className="flex justify-between">
               <h1 className="text-2xl font-semibold">
                 {user && user.full_name}
+                {user?.organisation_name && `(${user.organisation_name})`}
               </h1>
             </div>
           </div>
