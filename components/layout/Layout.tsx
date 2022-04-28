@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { useSession, signOut } from 'next-auth/react';
 
 import { useRouter } from 'next/router';
@@ -22,6 +23,7 @@ interface LayoutProps {
   className?: string;
   children?: React.ReactNode;
   containerClassName?: string;
+  adminRequired?: boolean;
 }
 
 const Layout = ({
@@ -33,29 +35,18 @@ const Layout = ({
   noAuthRequired,
   className,
   children,
-  containerClassName
+  containerClassName,
+  adminRequired
 }: LayoutProps) => {
   const router = useRouter();
 
   const path: string = router.asPath;
 
   // renamed for consistency
-  const { data: session } = useSession();
-  const { user, loading, error, message } = useUser(!noAuthRequired);
+  const { data: session, status } = useSession();
+  const { user, isAdmin, loading, error, message } = useUser(!noAuthRequired);
   const { HubspotScript } = useHubspotChat('4623266', true, user);
   const [, setHomePage] = useLocalStorage<string>('wf_home_page', '');
-  const [, setLastPageVisited] = useSessionStorage('wf_last_page_visited', '');
-
-  if (!loading && !session && !noAuthRequired) router.push('/login');
-
-  useEffect(() => {
-    // Listen for page changes after a navigation or when the query changes and set last page. Dont set if login
-    router?.events?.on('routeChangeComplete', url => {
-      if (!url.includes('/login')) {
-        setLastPageVisited(url);
-      }
-    });
-  }, [router.events]);
 
   React.useEffect(() => {
     if (user) {
@@ -66,18 +57,26 @@ const Layout = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  if (!loading && adminRequired && !isAdmin && user) {
+    router.push('/no-access');
+    return <SkeletonLayout />;
+  }
+
+  if (!loading && !session && !noAuthRequired && status !== 'loading')
+    router.push('/login');
+
   if (!noAuthRequired && loading) return <SkeletonLayout noNav={noNav} />;
   //@ts-ignore
 
   if (!noAuthRequired && error)
-    return <ErrorSkeleton header={error} message={message} />;
+    return <ErrorSkeleton header={`${error}`} message={message} />;
 
   return (
     <div>
       <HubspotScript />
       <Seo title={title} description={description} path={path} />
       <div className="h-screen bg-bg overflow-hidden flex ">
-        {!noNav && user && <Nav path={path} />}
+        {!noNav && user && <Nav path={path} isAdmin={isAdmin} />}
         <main
           className={`flex-1 relative overflow-y-auto focus:outline-none ${
             !noNav && !fullWidth && 'pt-12'

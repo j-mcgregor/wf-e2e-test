@@ -16,6 +16,7 @@ interface NavItemProps {
   icon?: HeroIcon | undefined;
   title?: boolean;
   onClick?: () => Promise<undefined> | void;
+  adminOnly?: boolean;
 }
 
 interface NavStyleProps {
@@ -30,13 +31,15 @@ interface NavListProps {
   navigation: NavItemProps[];
   navStyle?: NavStyleProps;
   noText?: boolean;
+  isAdmin?: boolean;
 }
 
 type NavProps = {
   path: string;
+  isAdmin?: boolean;
 };
 
-const Nav = ({ path }: NavProps) => {
+const Nav = ({ path, isAdmin }: NavProps) => {
   const { primaryNavigation, secondaryNavigation } = useMainNavItems();
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
@@ -135,7 +138,11 @@ const Nav = ({ path }: NavProps) => {
               <NavItems path={path} navigation={primaryNavigation} />
             </div>
             <div className="flex-shrink-0 flex border-gray-200">
-              <NavItems path={path} navigation={secondaryNavigation} />
+              <NavItems
+                path={path}
+                navigation={secondaryNavigation}
+                isAdmin={isAdmin}
+              />
             </div>
           </div>
         </div>
@@ -172,6 +179,7 @@ const Nav = ({ path }: NavProps) => {
                 path={path}
                 navigation={secondaryNavigation}
                 noText={true}
+                isAdmin={isAdmin}
               />
             </div>
           </div>
@@ -200,10 +208,11 @@ const Nav = ({ path }: NavProps) => {
 
 export default Nav;
 
-const NavItems = ({ path, navigation, noText }: NavListProps) => {
+const NavItems = ({ path, navigation, noText, isAdmin }: NavListProps) => {
   return (
     <nav className={'flex-1 bg-primary px-2 space-y-1'}>
-      {navigation.map(({ title, name, href, onClick, ...item }) => {
+      {navigation.map(({ title, name, href, onClick, adminOnly, ...item }) => {
+        if (!isAdmin && adminOnly) return null;
         if (title && !noText) {
           return (
             <div

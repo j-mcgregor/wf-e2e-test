@@ -210,7 +210,7 @@ export interface UploadReportType {
   apiUrl: string;
   type: ReportTypeEnum;
   validator: CsvValueValidation[];
-  processMsPerCompany: number;
+  iso_code?: string;
 }
 
 export declare global {

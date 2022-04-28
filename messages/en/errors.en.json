@@ -18,5 +18,6 @@
   "INVALID_SSO_LOGIN": "We couldn't log you in with your SSO credentials. Please check that you have access and try again. If the problem persists please contact support.",
   "INCORRECT_DETAILS": "Your details are incorrect. Please try again.",
   "NEW_PASSWORD_REQUIRED": "Password must have at least 8 characters",
-  "CONFIRM_PASSWORD_MATCH": "Your passwords must match."
+  "CONFIRM_PASSWORD_MATCH": "Your passwords must match.",
+  "REPORT_422": "There was a validation error processing this report. Please contact support."
 }

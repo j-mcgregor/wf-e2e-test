@@ -13,6 +13,7 @@ import BatchReportCard from '../../components/cards/BatchReportCard';
 import EmptyCard from '../../components/cards/EmptyCard';
 import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
+import { Collapsible } from '../../components/elements/Collapsible';
 import Layout from '../../components/layout/Layout';
 import LoadingIcon from '../../components/svgs/LoadingIcon';
 import useBatchReportsHistory from '../../hooks/useBatchReportsHistory';
@@ -20,10 +21,20 @@ import { appUser } from '../../lib/appState';
 
 import type { BatchReportResponse } from '../../types/batch-reports';
 
+const LIMIT = 4; // eg 4 hours ago
+
+const lessThanFourHoursAgo = (date: number) => {
+  const HOURS = 60 * 60 * 1000 * LIMIT;
+  const hoursAgo = Date.now() - HOURS;
+
+  return date > hoursAgo;
+};
+
 const BatchReports: NextPage = () => {
   const t = useTranslations();
   const [pendingJobs, setPendingJobs] = useState<BatchReportResponse[]>([]);
   const [completedJobs, setCompletedJobs] = useState<BatchReportResponse[]>([]);
+  const [failedJobs, setFailedJobs] = useState<BatchReportResponse[]>([]);
 
   // ADD TO HOOK START
   const [reportLimit, setReportLimit] = useState(0); // initial limit of 8 reports
@@ -49,12 +60,27 @@ const BatchReports: NextPage = () => {
       const complete = batchReports?.filter(
         job => job.total_reports !== job.failed_reports
       );
-      const pending = batchReports?.filter(
-        job => job.total_reports == job.failed_reports
-      );
+      const pending = batchReports?.filter(job => {
+        if (
+          lessThanFourHoursAgo(new Date(job.created_at).getTime()) &&
+          job.total_reports === job.failed_reports
+        ) {
+          return job;
+        }
+      });
+
+      const failed = batchReports?.filter(job => {
+        if (
+          !lessThanFourHoursAgo(new Date(job.created_at).getTime()) &&
+          job.total_reports === job.failed_reports
+        ) {
+          return job;
+        }
+      });
 
       setCompletedJobs(complete);
       setPendingJobs(pending);
+      setFailedJobs(failed);
     }
   }, [batchReports]);
 
@@ -81,48 +107,42 @@ const BatchReports: NextPage = () => {
           />
         </div>
 
-        <div className="my-6">
-          <p className="text-xl font-semibold mb-4">
-            {t('in_progress_batch_reports')}
-          </p>
-
-          <div className="grid md:grid-cols-4 grid-cols-2 gap-3">
-            {user &&
-              pendingJobs?.map(report => {
-                return (
-                  <BatchReportCard
-                    key={report.id}
-                    header={report.name}
-                    quantity={report.total_reports || 0}
-                    quantityText={`${t('processing')}...`}
-                    icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
-                    iconColor="bg-highlight"
-                    disabled
-                  />
-                );
-              })}
-            {user && !batchReports && (
-              <>
-                <EmptyCard loading />
-                <EmptyCard loading />
-              </>
-            )}
-            {user && batchReports && pendingJobs?.length === 0 && (
-              <EmptyCard
-                text={t('no_batch_reports_in_progress')}
-                icon={<RefreshIcon className="h-10 w-10" />}
-              />
-            )}
-          </div>
+        <h3 className="text-xl font-semibold mb-4 flex items-center">
+          <span className="mr-2">{t('in_progress_batch_reports')}</span>
+        </h3>
+        <div className="grid md:grid-cols-4 grid-cols-2 gap-3 ">
+          {user &&
+            pendingJobs?.map(report => {
+              return (
+                <BatchReportCard
+                  key={report.id}
+                  header={report.name}
+                  quantity={report.total_reports || 0}
+                  quantityText={
+                    report.has_failed ? 'Failed' : `${t('processing')}...`
+                  }
+                  icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
+                  iconColor={report.has_failed ? 'bg-red-300' : 'bg-highlight'}
+                  disabled
+                />
+              );
+            })}
+          {user && !batchReports && (
+            <>
+              <EmptyCard loading />
+              <EmptyCard loading />
+            </>
+          )}
+          {user && batchReports && pendingJobs?.length === 0 && (
+            <EmptyCard
+              text={t('no_batch_reports_in_progress')}
+              icon={<RefreshIcon className="h-10 w-10" />}
+            />
+          )}
         </div>
 
-        {/* completed batch reports */}
-        <div className="my-6">
-          <p className="text-xl font-semibold mb-4">
-            {t('completed_batch_reports')}
-          </p>
-
-          <div className="grid md:grid-cols-4 grid-cols-2 gap-3">
+        <Collapsible title={t('completed_batch_reports')} collapsed={false}>
+          <div className="grid md:grid-cols-4 grid-cols-2 gap-3 mb-8">
             {user &&
               completedJobs?.map((report, index) => {
                 return (
@@ -153,18 +173,39 @@ const BatchReports: NextPage = () => {
               />
             )}
           </div>
-        </div>
-        {/* Handle loading cases and if there are enough reports to show more */}
-        {(reportLimit + 8 <= reportLength || loading) && (
-          <Button
-            disabled={loading}
-            variant="none"
-            className="border-alt border max-w-[120px] my-2 mx-auto"
-            onClick={handleAddReports}
-          >
-            {!loading ? <p>{t('show_more')}</p> : <LoadingIcon />}
-          </Button>
-        )}
+          {/* Handle loading cases and if there are enough reports to show more */}
+          {(reportLimit + 8 <= reportLength || loading) && (
+            <Button
+              disabled={loading}
+              variant="none"
+              className="border-alt border max-w-[120px] my-2 mx-auto"
+              onClick={handleAddReports}
+            >
+              {!loading ? <p>{t('show_more')}</p> : <LoadingIcon />}
+            </Button>
+          )}
+        </Collapsible>
+
+        {failedJobs.length > 0 ? (
+          <Collapsible title={t('failed_batch_reports')} collapsed={true}>
+            <div className="grid md:grid-cols-4 grid-cols-2 gap-3 "></div>
+            {user &&
+              failedJobs?.map(report => {
+                return (
+                  <BatchReportCard
+                    key={report.id}
+                    header={report.name}
+                    quantity={report.total_reports || 0}
+                    quantityText={`${t('batch_failed')}`}
+                    icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
+                    iconColor="bg-red-500"
+                    disabled
+                  />
+                );
+              })}
+            <div className="grid md:grid-cols-4 grid-cols-2 gap-3 "></div>
+          </Collapsible>
+        ) : null}
       </div>
     </Layout>
   );

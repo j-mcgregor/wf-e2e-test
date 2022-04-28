@@ -76,15 +76,17 @@ export interface GetBatchReportById extends HandlerReturn {
 
 interface GetBatchReportByIdProps {
   id: string;
+  skip: number;
+  limit: number;
 }
 
 const getBatchReportsById: ApiHandler<
   GetBatchReportById,
   GetBatchReportByIdProps
-> = async (token, { id }) => {
+> = async (token, { id, skip, limit }) => {
   try {
     const response = await fetch(
-      `${process.env.WF_AP_ROUTE}/jobs/batch/${id}`,
+      `${process.env.WF_AP_ROUTE}/jobs/batch/${id}?skip=${skip}&limit=${limit}`,
       {
         method: 'GET',
         headers: {

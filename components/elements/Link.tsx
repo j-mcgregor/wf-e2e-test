@@ -8,6 +8,7 @@ interface LinkProps {
   style?: React.CSSProperties;
   onClick?: () => void;
   disabled?: boolean;
+  download?: boolean;
 }
 const Link = ({
   children,
@@ -16,6 +17,7 @@ const Link = ({
   style,
   onClick,
   disabled,
+  download = false,
   ...rest
 }: LinkProps) => {
   // who added this?
@@ -39,10 +41,11 @@ const Link = ({
   const mail = mailRegex.test(linkTo);
   const tel = phoneRegex.test(linkTo);
 
-  if (outward || mail || tel)
+  if (outward || mail || tel || download)
     return (
       <a
         href={linkTo}
+        download={download}
         target="_blank"
         rel="noopener noreferrer"
         className={className}

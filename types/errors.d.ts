@@ -69,7 +69,9 @@ export type ErrorCodeKeys =
   | 'TOO_MANY_REQUESTS'
   | 'INTERNAL_SERVER_ERROR'
   | 'SERVICE_UNAVAILABLE'
-  | 'TOO_MANY_REQUESTS';
+  | 'TOO_MANY_REQUESTS'
+  // ORGANISATION
+  | 'ORG_404';
 
 export type HttpStatusKeys =
   | 'ACCEPTED'

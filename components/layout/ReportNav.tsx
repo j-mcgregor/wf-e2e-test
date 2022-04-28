@@ -1,4 +1,3 @@
-import { StringUtils } from '@azure/msal-browser';
 import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -22,24 +21,37 @@ const nonTestingProps = {
   containerId: 'secondary-layout-container'
 };
 
-export const handleExportCsv = async (
+export const handleExport = async (
+  format: 'csv' | 'pdf',
   id: string,
-  setDownloadingCsv: (value: boolean) => void
+  setDownloading: (value: boolean) => void
 ) => {
   if (!id) return null;
-  setDownloadingCsv(true);
+  setDownloading(true);
 
   try {
+    const isPDF = format === 'pdf';
+
     const response = await fetcher(
-      `/api/reports/report?id=${id}&export=csv-full`,
+      `/api/reports/report?id=${id}&export=${isPDF ? 'pdf' : 'csv-full'}`,
       'GET',
       null,
-      {}
+      {
+        'Content-Type': isPDF ? 'application/pdf' : 'application/json'
+      }
     );
-    setDownloadingCsv(false);
 
-    const fileName = `report-${id}.csv`;
-    downloadFile({
+    const fileName = `report-${id}.${format}`;
+
+    if (isPDF)
+      return downloadFile({
+        data: response,
+        // eg report-companyName.csv
+        fileName: fileName,
+        fileType: 'application/pdf'
+      });
+
+    return downloadFile({
       data: response.csv,
       // eg report-companyName.csv
       fileName: fileName,
@@ -49,6 +61,8 @@ export const handleExportCsv = async (
     // TODO remove console.log
     // eslint-disable-next-line no-console
     console.log(error);
+  } finally {
+    setDownloading(false);
   }
 };
 
@@ -65,6 +79,7 @@ const ReportNav = ({
   const [activeItem, setActiveItem] = useState<string>('summary');
 
   const [downloadingCsv, setDownloadingCsv] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   if (loading) {
     return (
@@ -148,11 +163,11 @@ const ReportNav = ({
 
       <div className="space-y-2 items-end flex-1 justify-end flex flex-col pb-4">
         <Button
+          loading={downloadingPdf}
+          disabled={downloadingPdf}
           variant="alt"
           className="w-full"
-          linkTo={`/api/reports/report?id=${id}&export=pdf`}
-          target="_blank"
-          rel="noreferrer"
+          onClick={() => handleExport('pdf', `${id}`, setDownloadingPdf)}
         >
           {t('export_pdf')}
         </Button>
@@ -160,7 +175,7 @@ const ReportNav = ({
           loading={downloadingCsv}
           disabled={downloadingCsv}
           variant="secondary"
-          onClick={() => handleExportCsv(`${id}`, setDownloadingCsv)}
+          onClick={() => handleExport('csv', `${id}`, setDownloadingCsv)}
         >
           {t('export_csv')}
         </Button>

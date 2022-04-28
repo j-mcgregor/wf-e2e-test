@@ -112,16 +112,6 @@ export type Profile = {
   other_associations: Association[];
 };
 
-export type ShareholderType = {
-  first_name: string | null;
-  last_name: string | null;
-  linkedin?: string;
-  percentage?: number;
-  name: string | null;
-  type?: string;
-  peps_sanctions_enforcements: boolean;
-};
-
 export type FileContentType = string | ArrayBuffer | null | undefined;
 
 export interface CsvValueValidation {
@@ -145,12 +135,31 @@ export type BoardMember = {
   is_liability: boolean;
 };
 
+export interface Company {
+  company_id: string | null;
+  name: string | null;
+  iso_code: string | null;
+  type?: string;
+  nace_code?: string;
+  nace_name?: string;
+}
+
 // schema from Swagger
-export type Subsidiary = {
-  id: string;
-  name: string;
-  iso_code: string;
-};
+export interface Subsidiary extends Company {
+  website: string;
+}
+
+export interface Parent extends Company {
+  percentage?: number;
+}
+
+export interface ShareholderType extends Company {
+  first_name: string | null;
+  last_name: string | null;
+  linkedin?: string;
+  percentage?: number;
+  peps_sanctions_enforcements: boolean;
+}
 
 export interface DatedValue {
   date: Date | string;
@@ -193,14 +202,14 @@ export interface Benchmarks {
   };
 }
 
-export interface ShareHolderCardProps {
+export interface ShareHolderCardProps extends Company {
   firstName?: string | null;
   lastName?: string | null;
   linkedin?: string;
   percentage?: number;
-  name: string | null;
-  type?: string;
   isPep?: boolean;
+  disabled: boolean;
+  setDisabled: (value: boolean) => void;
 }
 
 export interface RiskOutlookData {

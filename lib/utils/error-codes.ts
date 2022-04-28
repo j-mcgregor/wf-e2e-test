@@ -93,3 +93,9 @@ export const NOT_FOUND: ErrorCodeKeys = 'NOT_FOUND';
 export const TOO_MANY_REQUESTS: ErrorCodeKeys = 'TOO_MANY_REQUESTS';
 export const INTERNAL_SERVER_ERROR: ErrorCodeKeys = 'INTERNAL_SERVER_ERROR';
 export const SERVICE_UNAVAILABLE: ErrorCodeKeys = 'SERVICE_UNAVAILABLE';
+/**
+ * *****************************************
+ * ORGANISATION
+ * *****************************************
+ */
+export const ORG_404: ErrorCodeKeys = 'ORG_404';

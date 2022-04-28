@@ -28,6 +28,7 @@ interface UploadNewDataProps {
   setFileSelected: (selectedFile: File | null) => void;
   children?: React.ReactNode;
   numberOfCompanies?: number;
+  batchAutoOptions?: React.ReactNode;
 }
 
 const UploadNewData = ({
@@ -45,6 +46,7 @@ const UploadNewData = ({
   fileSelected,
   setFileSelected,
   handleRemoveFile = () => setFileSelected(null), // I dont like this. Will come back and fix it
+  batchAutoOptions,
   children
 }: UploadNewDataProps) => {
   const [loading, setLoading] = useState(false);
@@ -159,6 +161,7 @@ const UploadNewData = ({
           )}
         </div>
       </div>
+      {uploadType === 'BATCH_AUTO' && fileSelected ? batchAutoOptions : null}
       <div className="w-full sm:max-w-[200px] mt-2">
         <Button
           variant="highlight"
