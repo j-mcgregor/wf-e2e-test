@@ -111,6 +111,7 @@ const OrganisationUserPage = () => {
       })
     );
   };
+
   const toggleAdminUser = () => {
     const optimisticData = result &&
       user && {
