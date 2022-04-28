@@ -536,9 +536,9 @@
   {
     "name": "Latvia",
     "code": "LV",
-    "currency_code": "LVL",
-    "currency": "Lat",
-    "currency_symbol": "Ls",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
     "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/latvia.png"
   },
   {
@@ -562,9 +562,9 @@
   {
     "name": "Lithuania",
     "code": "LT",
-    "currency_code": "LTL",
-    "currency": "Litas",
-    "currency_symbol": "Lt",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
     "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/lithuania.png"
   },
   {
@@ -831,7 +831,14 @@
     "currency_symbol": "€",
     "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/euro.png"
   },
-
+  {
+    "name": "Slovenia",
+    "code": "SI",
+    "currency_code": "EUR",
+    "currency": "Euro",
+    "currency_symbol": "€",
+    "flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Flag_of_Slovenia.svg/250px-Flag_of_Slovenia.svg.png"
+  },
   {
     "name": "Somalia",
     "code": "SO",
