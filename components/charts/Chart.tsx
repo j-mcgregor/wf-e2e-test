@@ -5,14 +5,14 @@ import { GraphDataType, MultiGraphDataType } from '../../types/charts';
 import { TranslateInput } from '../../types/global';
 import Hint from '../elements/Hint';
 import ChartContainer from './ChartContainer';
-import { companyBlue, orangeFill, orangeLine } from './theme';
+import { companyBlue } from './theme';
 
 interface ChartProps {
   title: TranslateInput;
   subtitle: TranslateInput;
   data: GraphDataType[] | MultiGraphDataType[];
-  hintTitle: TranslateInput;
-  hintBody: TranslateInput;
+  hintTitle?: TranslateInput;
+  hintBody?: TranslateInput;
   showLabels?: boolean;
   tickCount?: number;
 }
@@ -73,7 +73,7 @@ const Chart = ({
           <p className="font-bold pb-2">{title}</p>
           <p className="opacity-70">{subtitle}</p>
         </div>
-        <Hint title={hintTitle} body={hintBody} />
+        {hintTitle && hintBody && <Hint title={hintTitle} body={hintBody} />}
       </div>
 
       <div onMouseLeave={() => setToolTipValue(null)}>

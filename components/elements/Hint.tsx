@@ -6,8 +6,8 @@ import { InformationCircleIcon } from '@heroicons/react/outline';
 import { usePopper } from 'react-popper';
 
 export type HintTypeProps = {
-  title: TranslateInput;
-  body: TranslateInput;
+  title?: TranslateInput;
+  body?: TranslateInput;
   className?: string;
 };
 const Hint = ({ title, body, className }: HintTypeProps) => {
