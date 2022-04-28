@@ -135,7 +135,7 @@ const ESGContainer = ({
               />
             }
             classes="w-full"
-            innerClasses="scale-110 lg:scale-125 xl:scale-150"
+            innerClasses="scale-110 lg:scale-125 xl:scale-130"
           />
         </div>
 
