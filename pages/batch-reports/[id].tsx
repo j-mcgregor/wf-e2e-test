@@ -145,7 +145,7 @@ const BatchReport = () => {
               )}
             </div>
           </>
-          <div className="mt-8">
+          <div className="mt-8 mb-40">
             <p className="text-xl font-semibold pb-4">
               {t('batch_report_results')}
             </p>
@@ -154,7 +154,10 @@ const BatchReport = () => {
               tableName={t('batch_report_results')}
               headers={batchReportTableHeaders}
               data={batchReport?.summaries || []}
-              total={batchReport?.summaries?.length || 0}
+              total={
+                Number(batchReport?.total_reports) -
+                  Number(batchReport?.failed_reports) || 0
+              }
               limit={limit}
               isLoading={!batchReport}
               setSkip={setSkip}

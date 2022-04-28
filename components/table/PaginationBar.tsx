@@ -53,7 +53,8 @@ const PaginationBar = ({
   handlePageUp
 }: PaginationBarProps) => {
   const chevronAvailableClass = 'hover:bg-highlight hover:bg-opacity-30';
-  const chevronEndClass = 'hover:cursor-not-allowed';
+  const chevronEndClass =
+    'bg-gray-300 bg-opacity-100 opacity-40 text-primary pointer-events-none';
 
   return (
     <div className="flex flex-col-reverse gap-2 md:flex-row justify-between items-end md:items-center my-2 bg-transparent">
@@ -65,10 +66,10 @@ const PaginationBar = ({
         to <span className="font-medium">{Math.min(limit * page, total)}</span>{' '}
         of <span className="font-medium">{total}</span> results
       </p>
-      <div className="flex items-center h-9 text-xs md:text-sm text-gray-400 bg-white w-min rounded overflow-hidden">
+      <div className="flex items-center h-9 text-xs md:text-sm text-gray-400  w-min rounded overflow-hidden">
         <PaginationButton
           onClick={() => handlePageChange(1)}
-          hoverClassName={`bg-gray-200 ${
+          hoverClassName={`bg-primary bg-opacity-30 text-primary  ${
             page > 1 ? chevronAvailableClass : chevronEndClass
           }`}
         >
@@ -109,7 +110,7 @@ const PaginationBar = ({
         </PaginationButton>
         <PaginationButton
           onClick={() => handlePageChange(maxPages)}
-          hoverClassName={`bg-gray-200 ${
+          hoverClassName={`bg-primary bg-opacity-30 text-primary  ${
             page < maxPages ? chevronAvailableClass : chevronEndClass
           }`}
         >
