@@ -1,6 +1,6 @@
 {
   "name": "wiserfunding-platform",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -16,7 +16,7 @@
     "commit": "git-cz",
     "prepare": "husky install && next telemetry disable",
     "playwright": "NODE_ENV=test playwright test",
-    "playwright:debug": "PWDEBUG=1 playwright test"
+    "playwright:debug": "NODE_ENV=test PWDEBUG=1 playwright test"
   },
   "dependencies": {
     "@azure/msal-browser": "^2.18.0",
@@ -62,6 +62,9 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.20.0",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/release-notes-generator": "^10.0.3",
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tailwindcss/forms": "^0.4.0-alpha.2",
     "@tailwindcss/typography": "^0.5.0-alpha.3",
@@ -100,7 +103,7 @@
     "jest": "^27.1.1",
     "msw": "^0.35.0",
     "papaparse": "^5.3.1",
-    "playwright": "^1.20.0",
+    "playwright": "^1.21.0",
     "postcss": "^8.3.6",
     "prettier": "^2.3.2",
     "pretty-quick": "^3.1.1",
@@ -113,6 +116,19 @@
   "release": {
     "branches": [
       "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      "@semantic-release/git",
+      "@semantic-release/github",
+      "@semantic-release/release-notes-generator"
     ]
   }
 }
