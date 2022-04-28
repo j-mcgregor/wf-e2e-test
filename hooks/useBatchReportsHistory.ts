@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import fetcher from '../lib/utils/fetcher';
 import { BatchReportsIndexApi } from '../pages/api/batch-reports';
@@ -7,7 +7,7 @@ import {
   BatchReportResponse
 } from '../types/batch-reports';
 
-const useBatchReportHistory = (
+const useBatchReportsHistory = (
   limit: number,
   skip: number = 0,
   pendingJobs: BatchReportResponse[]
@@ -24,8 +24,9 @@ const useBatchReportHistory = (
     }
   );
 
-  const isLoading = isValidating || !data;
-  React.useEffect(() => {
+  const isFetching = isValidating || !data;
+
+  useEffect(() => {
     if (data?.batchReports && !isValidating) {
       const newReports = data?.batchReports;
       const oldReports = batchReports;
@@ -52,10 +53,10 @@ const useBatchReportHistory = (
         : hasFetchedReports
         ? batchReports
         : null,
-    loading: isLoading,
+    fetching: isFetching,
     error: data?.error,
     message: data?.message
   };
 };
 
-export default useBatchReportHistory;
+export default useBatchReportsHistory;
