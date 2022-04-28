@@ -1,5 +1,7 @@
 import { test } from '@playwright/test';
 
+export const testCSVFile = 'master.csv'; // name of test file for the manual uploads
+
 // automates the login process and directs to home page
 // from there we can add the test cases
 export const login = () =>
