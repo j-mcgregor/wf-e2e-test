@@ -64,7 +64,7 @@ const Reports = () => {
         <ReactTimeago date={row.created_at} />
       ),
       align: 'center',
-      width: 'w-[10%]'
+      width: 'w-[10%] pr-6'
     }
   ];
   // ADD TO HOOK END
