@@ -25,12 +25,12 @@ const ErrorSkeleton = ({ header, message, code }: ErrorSkeletonProps) => {
         <p>{message ? `${message}` : `${defaultMessage}`}</p>
 
         {/* for unauthorised errors */}
-        {code === 403 && (
+        {(code === 403 || code === 401) && (
           <>
             <p className="mt-4 font-bold">{t('please_sign_out_and_in')}</p>
             <div className="max-w-[10rem] mx-auto mt-4">
               <Button variant="primary" onClick={() => signOut()}>
-                Sign out{' '}
+                Sign out
               </Button>
             </div>
           </>

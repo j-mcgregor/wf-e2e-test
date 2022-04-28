@@ -28,6 +28,8 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
 
   const data = result?.report;
 
+  console.log(result);
+
   const backLink = Array.isArray(router?.query?.from)
     ? router.query.from[0]
     : router?.query?.from;

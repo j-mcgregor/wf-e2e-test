@@ -44,7 +44,7 @@ const Layout = ({
 
   // renamed for consistency
   const { data: session, status } = useSession();
-  const { user, isAdmin, loading, error, message } = useUser(!noAuthRequired);
+  const { user, isAdmin, loading, error, isError } = useUser(!noAuthRequired);
   const { HubspotScript } = useHubspotChat('4623266', true, user);
   const [, setHomePage] = useLocalStorage<string>('wf_home_page', '');
 
@@ -68,14 +68,8 @@ const Layout = ({
   if (!noAuthRequired && loading) return <SkeletonLayout noNav={noNav} />;
   //@ts-ignore
 
-  if (!noAuthRequired && error)
-    return (
-      <ErrorSkeleton
-        header={`${error}`}
-        message={message}
-        code={user?.status}
-      />
-    );
+  if (!noAuthRequired && isError)
+    return <ErrorSkeleton header={`${error?.message}`} code={error?.status} />;
 
   return (
     <div>
