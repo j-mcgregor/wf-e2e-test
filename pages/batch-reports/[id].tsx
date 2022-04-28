@@ -70,11 +70,20 @@ const BatchReport = () => {
     },
     {
       name: t('pd'),
-      selector: (row: { probability_of_default_1_year: number }) =>
-        Intl.NumberFormat('en-GB', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }).format(row.probability_of_default_1_year * 100) + '%',
+      selector: ({
+        probability_of_default_1_year: pd
+      }: {
+        probability_of_default_1_year: number;
+      }) => {
+        if (Number(pd) && pd > 0) {
+          return (
+            Intl.NumberFormat('en-GB', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            }).format(pd * 100) + '%'
+          );
+        }
+      },
       align: 'center',
       width: 'w-1/6'
     }
