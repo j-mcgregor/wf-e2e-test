@@ -32,7 +32,11 @@ const useUser = (fetch: boolean = true) => {
     user: user ? user : null,
     isAdmin,
     loading: isLoading,
-    error: data?.is_error ? data.error : false,
+    isError: data?.is_error,
+    error: {
+      message: data?.is_error ? data?.message : false,
+      status: data?.status
+    },
     message: data?.message
   };
 };

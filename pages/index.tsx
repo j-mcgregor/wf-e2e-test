@@ -44,21 +44,21 @@ export default function Dashboard() {
       name: t('company_name'),
       selector: getReportName,
       align: 'left',
-      width: 'w-3/6',
-      contentClassName: 'truncate max-w-[240px]',
+      width: 'w-[70%]',
+      contentClassName: 'truncate max-w-[400px]',
       rowTitle: getReportName
     },
     {
       name: t('sme_z-score'),
       selector: 'sme_z_score',
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%]'
     },
     {
       name: t('bre'),
       selector: 'bond_rating_equivalent',
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%]'
     },
     {
       name: t('created'),
@@ -66,7 +66,7 @@ export default function Dashboard() {
         <ReactTimeago date={row.created_at} />
       ),
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%] pr-4'
     }
   ];
 

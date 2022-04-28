@@ -36,8 +36,8 @@ const BatchReport = () => {
   const { data, error, isValidating } = useSWR<{
     batchReport: BatchJobGetByIdResponse;
     error: boolean;
+    status: number;
   }>(`/api/batch-reports/${id}?skip=${skip}limit=${limit}`, fetcher);
-
   useEffect(() => {
     if (data?.batchReport) {
       setBatchReport(data.batchReport);
@@ -52,7 +52,7 @@ const BatchReport = () => {
       name: t('company_name'),
       selector: getReportName,
       align: 'left',
-      width: 'w-3/6',
+      width: 'w-[70%]',
       contentClassName: 'truncate max-w-[240px] lg:max-w-xs xl:max-w-sm',
       rowTitle: getReportName
     },
@@ -60,13 +60,13 @@ const BatchReport = () => {
       name: t('sme_z-score'),
       selector: 'sme_z_score',
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%]'
     },
     {
       name: t('bre'),
       selector: 'bond_rating_equivalent',
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%]'
     },
     {
       name: t('pd'),
@@ -76,7 +76,7 @@ const BatchReport = () => {
           maximumFractionDigits: 2
         }).format(row.probability_of_default_1_year * 100) + '%',
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%]'
     }
   ];
 
@@ -109,7 +109,11 @@ const BatchReport = () => {
       {!data ? (
         <SkeletonReport />
       ) : error || data.error ? (
-        <ErrorSkeleton header={`${t(REPORT_FETCHING_ERROR)}`} />
+        <ErrorSkeleton
+          header={`${t(REPORT_FETCHING_ERROR)}`}
+          message={error.message}
+          code={data?.status}
+        />
       ) : (
         <div className="text-primary">
           <Button

@@ -36,6 +36,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     ? data?.details?.company_name || data?.details?.name || 'Unnamed Company'
     : '';
 
+  const isError = error || result?.is_error || data?.error;
   return (
     <Layout
       title={`${
@@ -63,13 +64,14 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
           )
         }
       >
-        {!data ? (
-          <SkeletonReport />
-        ) : error || data?.error ? (
+        {isError ? (
           <ErrorSkeleton
-            header={data?.error ? t(data?.error) : ''}
-            message={data?.message}
+            message={data?.error ? t(data?.error) : ''}
+            header={result?.message}
+            code={result?.status}
           />
+        ) : !data ? (
+          <SkeletonReport />
         ) : (
           data && <Report data={data} id={id || []} />
         )}
