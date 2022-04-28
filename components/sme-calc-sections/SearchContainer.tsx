@@ -242,10 +242,10 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
 
         {(error.error || error.message) && (
           <div className="py-4 px-2 border-2 rounded-md border-red-400 bg-red-50 my-2">
-            {error.error && <ErrorMessage text={t(`${error.error}`)} />}
-            {error.message && (
+            {error.error && (
               <ErrorMessage className="font-bold mt-2" text={error.message} />
             )}
+            {error.message && <ErrorMessage text={`${t(error.message)}`} />}
           </div>
         )}
 
