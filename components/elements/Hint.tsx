@@ -8,9 +8,11 @@ import { usePopper } from 'react-popper';
 export type HintTypeProps = {
   title?: TranslateInput;
   body?: TranslateInput;
+  /** using as a last resort since I can't get t.rich to work */
+  rawBody?: string;
   className?: string;
 };
-const Hint = ({ title, body, className }: HintTypeProps) => {
+const Hint = ({ title, body, className, rawBody }: HintTypeProps) => {
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
@@ -34,6 +36,7 @@ const Hint = ({ title, body, className }: HintTypeProps) => {
       >
         <p className="font-bold pb-1">{title}</p>
         <p>{body}</p>
+        {rawBody && <div dangerouslySetInnerHTML={{ __html: rawBody }} />}
       </Popover.Panel>
     </Popover>
   );
