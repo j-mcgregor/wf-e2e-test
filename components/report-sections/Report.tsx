@@ -461,7 +461,15 @@ const Report = ({
       </HashContainer>
 
       <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>
-        <ReportSectionHeader text={t('environmental')} />
+        <ReportSectionHeader
+          text={t('environmental')}
+          hint={
+            <Hint
+              title={t('report_hints.esg.title')}
+              body={t('report_hints.esg.body')}
+            />
+          }
+        />
         <ESGCard
           title={t('activities')}
           description={t('data_on_activities')}

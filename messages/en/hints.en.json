@@ -1,8 +1,12 @@
 {
   "report_hints": {
     "esg": {
-      "title": "Environmental Risk",
-      "body": "Nulla ipsum elit anim sint cupidatat ad est ex dolor."
+      "title": "Environmental",
+      "body": "In this section, we present the transition and physical risk associated with the company. For the transition risk, we assess the CO2 consumption of the company based on the activity and (where known) the location. For the physical risk, we assess the exposure of the company to flooding and heatwave risk based on the postcode of the location of the company.",
+      "environmental_risk": {
+        "title": "Environmental Risk",
+        "body": "Nulla ipsum elit anim sint cupidatat ad est ex dolor."
+      }
     },
     "charts": {
       "days_payable": {
@@ -91,7 +95,7 @@
       },
       "liquidity_ratio": {
         "title": "Liquidity Ratio",
-        "body": "Return on assets (ROA) is an indicator of how profitable a company is relative to its total assets. ROA gives an idea as to how efficient a company's management is at using its assets to generate earnings"
+        "body": "A liquidity ratio is a type of financial ratio used to determine a company’s ability to pay its short-term debt obligations. The metric helps determine if a company can use its current, or liquid, assets to cover its current liabilities"
       },
       "current_ratio": {
         "title": "Current Ratio",

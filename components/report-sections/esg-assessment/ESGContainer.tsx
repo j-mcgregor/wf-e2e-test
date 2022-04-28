@@ -130,8 +130,8 @@ const ESGContainer = ({
             reverseX
             hint={
               <Hint
-                title={t('report_hints.esg.title')}
-                body={t('report_hints.esg.body')}
+                title={t('report_hints.esg.environmental_risk.title')}
+                body={t('report_hints.esg.environmental_risk.body')}
               />
             }
             classes="w-full"
