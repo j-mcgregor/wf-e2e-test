@@ -66,8 +66,9 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
       >
         {isError ? (
           <ErrorSkeleton
-            header={data?.error ? t(data?.error) : ''}
-            message={result?.message}
+            message={data?.error ? t(data?.error) : ''}
+            header={result?.message}
+            code={result?.status}
           />
         ) : !data ? (
           <SkeletonReport />

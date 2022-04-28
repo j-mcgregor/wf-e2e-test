@@ -69,7 +69,13 @@ const Layout = ({
   //@ts-ignore
 
   if (!noAuthRequired && error)
-    return <ErrorSkeleton header={`${error}`} message={message} />;
+    return (
+      <ErrorSkeleton
+        header={`${error}`}
+        message={message}
+        code={user?.status}
+      />
+    );
 
   return (
     <div>
