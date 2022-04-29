@@ -184,7 +184,8 @@
     "BBB-": "Less profitable, decreased liquidity or increased proportion of debt. More susceptible to adverse economic conditions",
     "BBB": "Slightly less profitable firms, decreased liquidity or increased proportion of debt",
     "BBB+": "Profitable, liquid and equity-heavy, but more susceptible to adverse economic conditions",
-    "A": "Strong, profitable firms with sufficient liquidity and equity-heavy capital structure"
+    "A": "Strong, profitable firms with sufficient liquidity and equity-heavy capital structure",
+    "A-": "Strong, profitable firms with sufficient liquidity and equity-heavy capital structure"
   },
   "loading_printable_report": "Loading printable report",
   "leverage_1": "The company shows a negative equity ratio having consumed all the equity to absorb losses. This makes it extremely vulnerable to any external shock.",

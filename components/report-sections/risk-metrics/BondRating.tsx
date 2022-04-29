@@ -21,23 +21,34 @@ interface BondRatingProps {
   hint: ReactElement;
 }
 
+const determineScore = (score: RatingType): number => {
+  switch (score) {
+    case 'CC-':
+    case 'CC+':
+    case 'CC':
+      return 1;
+    case 'B+':
+    case 'B':
+      return 6;
+    case 'BB-':
+    case 'BB':
+      return 7;
+    case 'BB+':
+    case 'BBB-':
+      return 8;
+    case 'A-':
+      return bondRatings.findIndex(rating => rating.score === 'A');
+    default:
+      return bondRatings.findIndex(rating => rating.score === score);
+  }
+};
+
 const BondRating = ({ score, hint }: BondRatingProps) => {
   const t = useTranslations();
 
-  // does score fit within the CC/CC+/CC- range?
-  const isCC = score === 'CC+' || score === 'CC' || score === 'CC-';
-
   // decide which index the score should correspond to in the bondRatings array
   // then use this value when rendering to specify the option to focus on/value to display
-  const indexOfScoreToRender = isCC
-    ? 1
-    : score === ('B+' || 'B')
-    ? 6
-    : score === ('BB-' || 'BB')
-    ? 7
-    : score === ('BB+' || 'BBB-')
-    ? 8
-    : bondRatings.findIndex(rating => rating.score === score);
+  const indexOfScoreToRender = determineScore(score);
 
   const printClasses = usePrintClasses(bondRatingClasses);
 
