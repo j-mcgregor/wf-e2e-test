@@ -35,10 +35,11 @@ const BatchReports: NextPage = () => {
   const [pendingJobs, setPendingJobs] = useState<BatchReportResponse[]>([]);
   const [completedJobs, setCompletedJobs] = useState<BatchReportResponse[]>([]);
   const [failedJobs, setFailedJobs] = useState<BatchReportResponse[]>([]);
+  const [loading, setLoading] = useState(false);
 
   // ADD TO HOOK START
   const [reportLimit, setReportLimit] = useState(0); // initial limit of 8 reports
-  const { batchReports, loading } = useBatchReportsHistory(
+  const { batchReports, fetching } = useBatchReportsHistory(
     8,
     reportLimit,
     pendingJobs
@@ -48,7 +49,9 @@ const BatchReports: NextPage = () => {
 
   // load 5 more reports until max of 30
   const handleAddReports = (): void => {
+    setLoading(true);
     reportLimit + 8 <= reportLength ? setReportLimit(reportLimit + 8) : null;
+    setLoading(false);
   };
   // ADD TO HOOK END
 
@@ -174,14 +177,18 @@ const BatchReports: NextPage = () => {
             )}
           </div>
           {/* Handle loading cases and if there are enough reports to show more */}
-          {(reportLimit + 8 <= reportLength || loading) && (
+          {reportLimit + 8 <= reportLength && (
             <Button
-              disabled={loading}
+              disabled={loading && fetching}
               variant="none"
               className="border-alt border max-w-[120px] my-2 mx-auto"
               onClick={handleAddReports}
             >
-              {!loading ? <p>{t('show_more')}</p> : <LoadingIcon />}
+              {!loading || !fetching ? (
+                <p>{t('show_more')}</p>
+              ) : (
+                <LoadingIcon />
+              )}
             </Button>
           )}
         </Collapsible>
@@ -226,3 +233,5 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
     }
   };
 }
+
+// if show more clicked, show loading if currently fetching, else don't show button

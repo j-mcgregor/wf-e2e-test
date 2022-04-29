@@ -1,18 +1,20 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import Link from '../../elements/Link';
-import { toTitleCase } from '../../../lib/utils/text-helpers';
-import LinkedinLogo from '../../elements/LinkedinLogo';
-// import UserIcon from '../../svgs/UserIcon';
-import ShareholderCardSvg from '../../svgs/backgrounds/ShareholderCardBG';
-import { ShareHolderCardProps } from '../../../types/report';
 import { OfficeBuildingIcon, UserIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
-import PepFlag from '../../elements/PepFlag';
 import React from 'react';
+
+import { useCreateReport } from '../../../hooks/useCreateReport';
+import { toTitleCase } from '../../../lib/utils/text-helpers';
+import { ShareHolderCardProps } from '../../../types/report';
+import Link from '../../elements/Link';
+import LinkedinLogo from '../../elements/LinkedinLogo';
+import PepFlag from '../../elements/PepFlag';
+import ShareholderCardSvg from '../../svgs/backgrounds/ShareholderCardBG';
+import { CircleX } from '../../svgs/CircleX';
 import LoadingIcon from '../../svgs/LoadingIcon';
 import { WFTwoToneLogo } from '../../svgs/WFTwoToneLogo';
-import { useCreateReport } from '../../../hooks/useCreateReport';
 
+// import UserIcon from '../../svgs/UserIcon';
 const ShareHolderCard = ({
   firstName,
   lastName,
@@ -43,7 +45,7 @@ const ShareHolderCard = ({
     }`;
   }
 
-  const { createReport, loading } = useCreateReport({
+  const { createReport, loading, isError } = useCreateReport({
     iso_code,
     company_id,
     disabled,
@@ -86,13 +88,21 @@ const ShareHolderCard = ({
         {company_id && !isShareholderIndividual && (
           <div
             className="min-w-32 flex items-center justify-center w-[65px] h-[65px]"
-            title={`Generate a report on ${name}`}
+            title={
+              isError
+                ? t('generate_report_fail', { name })
+                : t('generate_report', { name })
+            }
           >
             {!loading ? (
-              <WFTwoToneLogo
-                onClick={handleGenerateReport}
-                disabled={disabled}
-              />
+              !isError ? (
+                <WFTwoToneLogo
+                  onClick={handleGenerateReport}
+                  disabled={disabled}
+                />
+              ) : (
+                <CircleX fill="white" stroke="red" />
+              )
             ) : (
               <LoadingIcon />
             )}

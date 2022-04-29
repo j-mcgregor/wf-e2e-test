@@ -55,6 +55,12 @@
   "show_more": "Show more",
   "account_type_title": "Account Type",
   "account_type_description": "Choose the Account Type to run all batched reports with.",
+  "hints": {
+    "account_type": {
+      "title": "Account Type",
+      "body": "<small><b>ALL STATEMENTS</b> (All accounts available)<br><b>RECENT ACCOUNTS</b> (The most recent accounts available)<br><b>NO LIMITED FINANCIALS</b> (Do not consider accounts with limited financial data if both limited and detailed financial accounts are available)<br><b>CONSOLIDATED</b><br><b>LOCAL REGISTRY</b> (Local registry filings)<br><b>UNCONSOLIDATED</b><br><b>ANNUAL REPORT</b> (Annual reports)<br><b>NO RECENT FINANCIALS</b> (Do not consider accounts with no recent financial data (NRF) as a preferred choice if other accounts are available)</small>"
+    }
+  },
   "currency_title": "Currency",
   "currency_description": "Run all batched reports in a specific currency"
 }

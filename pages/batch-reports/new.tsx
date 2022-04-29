@@ -11,7 +11,9 @@ import { useTranslations } from 'use-intl';
 import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
 import ErrorMessage from '../../components/elements/ErrorMessage';
+import Hint from '../../components/elements/Hint';
 import Input from '../../components/elements/Input';
+import { OptionRow } from '../../components/elements/OptionRow';
 import SelectMenu from '../../components/elements/SelectMenu';
 import Layout from '../../components/layout/Layout';
 import { SimpleValue } from '../../components/sme-calc-sections/AdvancedSearch';
@@ -19,6 +21,7 @@ import UploadNewData from '../../components/uploads/UploadNewData';
 import { useCSV } from '../../hooks/useCSV';
 import { useCsvValidators } from '../../hooks/useCsvValidators';
 import { appUser } from '../../lib/appState';
+import { accountTypes } from '../../lib/settings/report.settings';
 import Settings from '../../lib/settings/settings.settings';
 import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
@@ -27,9 +30,6 @@ import { BatchReportsIndexApi } from '../api/batch-reports';
 import { BatchReportsManualApi } from '../api/batch-reports/manual';
 
 import type { SubmitReportType } from '../../types/report';
-import { accountTypes } from '../../lib/settings/report.settings';
-import { OptionRow } from '../../components/elements/OptionRow';
-
 const CreateBatchReport: NextPage = () => {
   const t = useTranslations();
   const router = useRouter();
@@ -218,6 +218,12 @@ const CreateBatchReport: NextPage = () => {
               <OptionRow
                 title={t('account_type_title')}
                 description={t('account_type_description')}
+                hint={
+                  <Hint
+                    title={t('hints.account_type.title')}
+                    rawBody={t.raw('hints.account_type.body')}
+                  />
+                }
               >
                 <SelectMenu
                   values={accountTypes}

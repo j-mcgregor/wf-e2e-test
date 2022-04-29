@@ -24,6 +24,7 @@ export const useCreateReport = ({
 
   const [loading, setLoading] = useState(false);
   const [reportId, setReportId] = useState('');
+  const [isError, setIsError] = useState(false);
 
   const createReport = async () => {
     if (company_id && !disabled) {
@@ -61,6 +62,7 @@ export const useCreateReport = ({
         if (!createReportRes?.reportId) {
           setLoading(false);
           setDisabled(false);
+          setIsError(createReportRes.is_error);
 
           Sentry.captureException(new Error(createReportRes.error), {
             extra: {
@@ -91,6 +93,7 @@ export const useCreateReport = ({
   return {
     createReport,
     loading,
-    reportId
+    reportId,
+    isError
   };
 };

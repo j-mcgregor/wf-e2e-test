@@ -575,6 +575,7 @@ export interface EnvironmentalSocialGovernance {
  */
 export type RatingType =
   | 'A'
+  | 'A-'
   | 'BBB+'
   | 'BBB'
   | 'BB+'

@@ -223,6 +223,9 @@ const batchJobReportUpload: ApiHandler<
 /**
  * ***************************************************
  * GET CSV REPORT
+ * * used directly in the client since AWS has a 5mb limit
+ * * on downloads, so we need to call the API directly to
+ * * bypass lamda limits
  * ***************************************************
  */
 
@@ -234,13 +237,13 @@ export interface GetBatchReportCsvFullProps {
   batchReportId: string;
 }
 
-const getBatchReportsCsv: ApiHandler<
+export const getBatchReportsCsv: ApiHandler<
   GetBatchReportCsvFull,
   GetBatchReportCsvFullProps
 > = async (token: string, { batchReportId }) => {
   try {
     const response = await fetch(
-      `${process.env.WF_AP_ROUTE}/jobs/batch/${batchReportId}/export/full`,
+      `${process.env.NEXT_PUBLIC_WF_AP_ROUTE}/jobs/batch/${batchReportId}/export/full`,
       {
         method: 'GET',
         headers: {
