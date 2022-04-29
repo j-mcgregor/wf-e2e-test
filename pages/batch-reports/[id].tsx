@@ -1,17 +1,22 @@
 /* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, DownloadIcon } from '@heroicons/react/outline';
 import { GetServerSidePropsContext } from 'next';
+import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
-import LinkCard from '../../components/cards/LinkCard';
 
+import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
 import Layout from '../../components/layout/Layout';
 import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import Table, { TableHeadersType } from '../../components/table/Table';
+import {
+  GetBatchReportCsvFull,
+  getBatchReportsCsv
+} from '../../lib/funcs/batch-reports';
 import { REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
 import { downloadFile } from '../../lib/utils/file-helpers';
@@ -21,9 +26,8 @@ import type {
   BatchJobGetByIdResponse,
   GetBatchSummary
 } from '../../types/batch-reports';
-import { BatchReportsIdApi } from '../api/batch-reports/[id]';
-
 const BatchReport = () => {
+  const { data: session } = useSession();
   const t = useTranslations();
   const router = useRouter();
 
@@ -33,7 +37,7 @@ const BatchReport = () => {
 
   const { id = '' } = router.query;
 
-  const { data, error, isValidating } = useSWR<{
+  const { data, error } = useSWR<{
     batchReport: BatchJobGetByIdResponse;
     error: boolean;
   }>(`/api/batch-reports/${id}?skip=${skip}limit=${limit}`, fetcher);
@@ -90,16 +94,13 @@ const BatchReport = () => {
   ];
 
   const handleExportCsv = async () => {
-    if (!id) return null;
+    if (!id || !session?.token) return null;
 
     try {
-      const response: BatchReportsIdApi = await fetcher(
-        `/api/batch-reports/${id}?export=csv`,
-        'GET',
-        null,
-        {}
+      const response: GetBatchReportCsvFull = await getBatchReportsCsv(
+        `${session?.token}`,
+        { batchReportId: `${id}` }
       );
-
       downloadFile({
         data: response.csv,
         // eg report-id.csv
