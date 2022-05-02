@@ -23,7 +23,7 @@ const EntityCard = ({
 }: EntityCardProps) => {
   const t = useTranslations();
 
-  const { createReport, loading, isError } = useCreateReport({
+  const { createReport, loading, isError, isValidIso } = useCreateReport({
     iso_code,
     company_id,
     disabled,
@@ -51,7 +51,7 @@ const EntityCard = ({
         </div>
         <p className="break-all">{name}</p>
       </div>
-      {company_id && (
+      {isValidIso && company_id && (
         <div
           className="min-w-32 flex items-center justify-center w-[65px] "
           title={
