@@ -23,7 +23,7 @@ const EntityCard = ({
 }: EntityCardProps) => {
   const t = useTranslations();
 
-  const { createReport, loading, isError } = useCreateReport({
+  const { createReport, loading, isError, isValidIso } = useCreateReport({
     iso_code,
     company_id,
     disabled,
@@ -60,18 +60,20 @@ const EntityCard = ({
               : t('generate_report', { name })
           }
         >
-          {!loading ? (
-            !isError ? (
-              <WFTwoToneLogo
-                onClick={handleGenerateReport}
-                disabled={disabled}
-              />
+          {isValidIso ? (
+            !loading ? (
+              !isError ? (
+                <WFTwoToneLogo
+                  onClick={handleGenerateReport}
+                  disabled={disabled}
+                />
+              ) : (
+                <CircleX fill="white" stroke="red" />
+              )
             ) : (
-              <CircleX fill="white" stroke="red" />
+              <LoadingIcon />
             )
-          ) : (
-            <LoadingIcon />
-          )}
+          ) : null}
         </div>
       )}
     </div>

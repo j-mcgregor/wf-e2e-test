@@ -14,7 +14,6 @@ import { CircleX } from '../../svgs/CircleX';
 import LoadingIcon from '../../svgs/LoadingIcon';
 import { WFTwoToneLogo } from '../../svgs/WFTwoToneLogo';
 
-// import UserIcon from '../../svgs/UserIcon';
 const ShareHolderCard = ({
   firstName,
   lastName,
@@ -45,7 +44,7 @@ const ShareHolderCard = ({
     }`;
   }
 
-  const { createReport, loading, isError } = useCreateReport({
+  const { createReport, loading, isError, isValidIso } = useCreateReport({
     iso_code,
     company_id,
     disabled,
@@ -94,18 +93,20 @@ const ShareHolderCard = ({
                 : t('generate_report', { name })
             }
           >
-            {!loading ? (
-              !isError ? (
-                <WFTwoToneLogo
-                  onClick={handleGenerateReport}
-                  disabled={disabled}
-                />
+            {isValidIso ? (
+              !loading ? (
+                !isError ? (
+                  <WFTwoToneLogo
+                    onClick={handleGenerateReport}
+                    disabled={disabled}
+                  />
+                ) : (
+                  <CircleX fill="white" stroke="red" />
+                )
               ) : (
-                <CircleX fill="white" stroke="red" />
+                <LoadingIcon />
               )
-            ) : (
-              <LoadingIcon />
-            )}
+            ) : null}
           </div>
         )}
       </div>
