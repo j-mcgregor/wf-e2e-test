@@ -51,7 +51,7 @@ const EntityCard = ({
         </div>
         <p className="break-all">{name}</p>
       </div>
-      {company_id && (
+      {isValidIso && company_id && (
         <div
           className="min-w-32 flex items-center justify-center w-[65px] "
           title={
@@ -60,20 +60,18 @@ const EntityCard = ({
               : t('generate_report', { name })
           }
         >
-          {isValidIso ? (
-            !loading ? (
-              !isError ? (
-                <WFTwoToneLogo
-                  onClick={handleGenerateReport}
-                  disabled={disabled}
-                />
-              ) : (
-                <CircleX fill="white" stroke="red" />
-              )
+          {!loading ? (
+            !isError ? (
+              <WFTwoToneLogo
+                onClick={handleGenerateReport}
+                disabled={disabled}
+              />
             ) : (
-              <LoadingIcon />
+              <CircleX fill="white" stroke="red" />
             )
-          ) : null}
+          ) : (
+            <LoadingIcon />
+          )}
         </div>
       )}
     </div>

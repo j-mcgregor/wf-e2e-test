@@ -51,6 +51,8 @@ const ShareHolderCard = ({
     setDisabled
   });
 
+  // console.log(name, iso_code, isValidIso);
+
   const handleGenerateReport = async () => await createReport();
 
   return (
@@ -60,7 +62,7 @@ const ShareHolderCard = ({
       }
     >
       <div
-        className="flex avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs bg-white justify-between items-end"
+        className="flex avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs bg-white justify-between items-start"
         data-testid="shareholder-card-testid "
       >
         <div className="flex py-3 px-2 w-full justify-between">
@@ -84,7 +86,7 @@ const ShareHolderCard = ({
           )}
         </div>
 
-        {company_id && !isShareholderIndividual && (
+        {isValidIso && company_id && !isShareholderIndividual && (
           <div
             className="min-w-32 flex items-center justify-center w-[65px] h-[65px]"
             title={
@@ -93,20 +95,18 @@ const ShareHolderCard = ({
                 : t('generate_report', { name })
             }
           >
-            {isValidIso ? (
-              !loading ? (
-                !isError ? (
-                  <WFTwoToneLogo
-                    onClick={handleGenerateReport}
-                    disabled={disabled}
-                  />
-                ) : (
-                  <CircleX fill="white" stroke="red" />
-                )
+            {!loading ? (
+              !isError ? (
+                <WFTwoToneLogo
+                  onClick={handleGenerateReport}
+                  disabled={disabled}
+                />
               ) : (
-                <LoadingIcon />
+                <CircleX fill="white" stroke="red" />
               )
-            ) : null}
+            ) : (
+              <LoadingIcon />
+            )}
           </div>
         )}
       </div>
