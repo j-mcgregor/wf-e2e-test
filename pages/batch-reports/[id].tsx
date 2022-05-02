@@ -12,6 +12,7 @@ import Button from '../../components/elements/Button';
 import Layout from '../../components/layout/Layout';
 import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
+import LoadingIcon from '../../components/svgs/LoadingIcon';
 import Table, { TableHeadersType } from '../../components/table/Table';
 import {
   GetBatchReportCsvFull,
@@ -30,6 +31,7 @@ const BatchReport = () => {
   const { data: session } = useSession();
   const t = useTranslations();
   const router = useRouter();
+  const [downloading, setDownloading] = useState(false);
 
   const [batchReport, setBatchReport] = useState<GetBatchSummary>();
   const [skip, setSkip] = useState(0);
@@ -97,6 +99,7 @@ const BatchReport = () => {
     if (!id || !session?.token) return null;
 
     try {
+      setDownloading(true);
       const response: GetBatchReportCsvFull = await getBatchReportsCsv(
         `${session?.token}`,
         { batchReportId: `${id}` }
@@ -107,6 +110,7 @@ const BatchReport = () => {
         fileName: `batch-report-${id}.csv`,
         fileType: 'text/csv'
       });
+      setDownloading(false);
     } catch (error) {
       // TODO remove console.log
       // eslint-disable-next-line no-console
@@ -149,12 +153,20 @@ const BatchReport = () => {
             <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {batchReport && (
                 <LinkCard
-                  icon={<DownloadIcon className="w-8 h-8" />}
+                  icon={
+                    !downloading ? (
+                      <DownloadIcon className="w-8 h-8" />
+                    ) : (
+                      <LoadingIcon className="w-8 h-8 text-black" />
+                    )
+                  }
                   iconColor="bg-highlight bg-opacity-50"
                   header={`${batchReport.name}.csv`}
                   description={t('all_results_in_a_single_csv')}
                   onClick={() => handleExportCsv()}
-                  className="text-left"
+                  className={`text-left ${
+                    downloading ? 'pointer-events-none' : ''
+                  }`}
                 />
               )}
             </div>
