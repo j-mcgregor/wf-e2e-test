@@ -3,14 +3,14 @@ import { GetStaticPropsContext } from 'next/types';
 import React from 'react';
 import useSWR from 'swr';
 
-import Button from '../../components/elements/Button';
-import Stats from '../../components/elements/Stats';
-import Table, { TableHeadersType } from '../../components/table/Table';
-import Layout from '../../components/layout/Layout';
-import useOrganisation from '../../hooks/useOrganisation';
-import fetcher from '../../lib/utils/fetcher';
-import { OrganisationUser } from '../../types/organisations';
-import { OrganisationTypeApi } from '../api/organisation/[orgId]/[type]';
+import Button from '../components/elements/Button';
+import Stats from '../components/elements/Stats';
+import Table, { TableHeadersType } from '../components/table/Table';
+import Layout from '../components/layout/Layout';
+import useOrganisation from '../hooks/useOrganisation';
+import fetcher from '../lib/utils/fetcher';
+import { OrganisationUser } from '../types/organisations';
+import { OrganisationTypeApi } from './api/organisation/[orgId]/[type]';
 
 const Organisation = () => {
   const t = useTranslations();
@@ -156,8 +156,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // You can get the messages from anywhere you like, but the recommended
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
-        ...require(`../../messages/${locale}/organisation.${locale}.json`),
-        ...require(`../../messages/${locale}/general.${locale}.json`)
+        ...require(`../messages/${locale}/organisation.${locale}.json`),
+        ...require(`../messages/${locale}/general.${locale}.json`)
       }
     }
   };
