@@ -119,15 +119,18 @@ const Table = ({
             )}
 
             {!isLoading && tableTotal === 0 && (
-              <td
-                colSpan={headers?.length}
+              <tr
                 style={{
                   height: limit * 48
                 }}
-                className="bg-gray-50 text-center"
               >
-                No {tableName}
-              </td>
+                <td
+                  colSpan={headers?.length}
+                  className="bg-gray-50 text-center"
+                >
+                  No {tableName}
+                </td>
+              </tr>
             )}
 
             {!isLoading &&
