@@ -43,7 +43,6 @@ const Table = ({
   const [page, setPage] = React.useState(1);
   const [maxPages, setMaxPages] = React.useState(1);
   const [tableTotal, setTableTotal] = React.useState(total);
-  const [tableLimit, setTableLimit] = React.useState(limit);
   // const maxPages = Math.ceil(tableTotal / limit);
   const length = data?.length || 0;
 
@@ -51,9 +50,8 @@ const Table = ({
 
   React.useEffect(() => {
     !isLoading && total !== tableTotal && setTableTotal(total);
-    !isLoading && limit !== tableLimit && setTableLimit(limit);
     !isLoading && total && limit && setMaxPages(Math.ceil(total / limit));
-  }, [total, limit, isLoading]);
+  }, [total, isLoading]);
 
   const handlePageChange = (page: number) => setPage(page);
   const handlePageDown = () => {
@@ -123,7 +121,10 @@ const Table = ({
             {!isLoading && tableTotal === 0 && (
               <td
                 colSpan={headers?.length}
-                className="h-[240px] bg-gray-50 text-center"
+                style={{
+                  height: limit * 48
+                }}
+                className="bg-gray-50 text-center"
               >
                 No {tableName}
               </td>
@@ -196,7 +197,7 @@ const Table = ({
           page={page}
           maxPages={maxPages || 0}
           total={tableTotal}
-          limit={tableLimit}
+          limit={limit}
           handlePageChange={handlePageChange}
           handlePageUp={handlePageUp}
           handlePageDown={handlePageDown}

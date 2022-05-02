@@ -1,10 +1,8 @@
-import { CheckIcon, LightningBoltIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { GetStaticPropsContext } from 'next/types';
 import React from 'react';
 import useSWR from 'swr';
 
-import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
 import Stats from '../../components/elements/Stats';
 import Table, { TableHeadersType } from '../../components/table/Table';
@@ -18,7 +16,7 @@ const Organisation = () => {
   const t = useTranslations();
   const { organisation, message } = useOrganisation();
   const [skip, setSkip] = React.useState(0);
-
+  const [users, setUsers] = React.useState<OrganisationUser[]>([]);
   const isIntergrated = false;
 
   const limit = 10;
@@ -32,9 +30,16 @@ const Organisation = () => {
       `/api/organisation/${organisation?.id}/users?limit=${limit}&skip=${skip}`,
     fetcher,
     {
-      revalidateOnFocus: true
+      revalidateOnFocus: false,
+      revalidateOnMount: true
     }
   );
+
+  React.useEffect(() => {
+    if (result?.users) {
+      setUsers(result.users);
+    }
+  }, [result]);
 
   const headerWidth = 'w-1/10 min-w-[88px]';
 
@@ -69,8 +74,6 @@ const Organisation = () => {
     }
   ];
 
-  const users: OrganisationUser[] = result?.users || [];
-
   return (
     <Layout adminRequired title={t('title')}>
       <div className="text-primary flex flex-col gap-5">
@@ -90,7 +93,7 @@ const Organisation = () => {
           ]}
         />
       </div>
-      <div className="mt-12 flex flex-col gap-5 mb-48">
+      <div className="mt-12 flex flex-col gap-5 mb-24">
         <h2 className="text-2xl font-semibold">{t('users_title')}</h2>
         <div className="flex flex-col gap-4 md:flex-row justify-between md:items-center">
           <p className="pr-14">{t('users_description')}</p>
@@ -100,18 +103,21 @@ const Organisation = () => {
             linkTo="/organisation/user/add"
           >{`Add User`}</Button>
         </div>
-        <Table
-          tableName={t('users_title')}
-          total={result?.total || 0}
-          limit={limit}
-          headers={usersHeaders}
-          data={users}
-          setSkip={setSkip}
-          pagination
-          fillEmptyRows
-          isLoading={isValidating}
-          rowLink={row => `/organisation/user/${row.id}`}
-        />
+
+        <div className="h-[700px]">
+          <Table
+            tableName={t('users_title')}
+            total={result?.total || 0}
+            limit={limit}
+            headers={usersHeaders}
+            data={users}
+            setSkip={setSkip}
+            pagination
+            fillEmptyRows
+            isLoading={isValidating}
+            rowLink={row => `/organisation/user/${row.id}`}
+          />
+        </div>
       </div>
       {/* <div className="mt-12 flex flex-col gap-5">
         <h2 className="text-2xl font-semibold">{t('intergrations_title')}</h2>
