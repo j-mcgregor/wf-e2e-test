@@ -41,23 +41,19 @@ const Table = ({
   rowLink
 }: TableProps) => {
   const [page, setPage] = React.useState(1);
-  const [blankRows, setBlankRows] = React.useState(limit);
   const [maxPages, setMaxPages] = React.useState(1);
   const [tableTotal, setTableTotal] = React.useState(total);
   const [tableLimit, setTableLimit] = React.useState(limit);
   // const maxPages = Math.ceil(tableTotal / limit);
+  const length = data?.length || 0;
+
+  const blankRows = limit - length;
 
   React.useEffect(() => {
     !isLoading && total !== tableTotal && setTableTotal(total);
     !isLoading && limit !== tableLimit && setTableLimit(limit);
     !isLoading && total && limit && setMaxPages(Math.ceil(total / limit));
   }, [total, limit, isLoading]);
-
-  React.useEffect(() => {
-    if (data?.length) {
-      setBlankRows(limit - data.length);
-    }
-  }, [data]);
 
   const handlePageChange = (page: number) => setPage(page);
   const handlePageDown = () => {

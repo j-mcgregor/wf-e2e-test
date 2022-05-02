@@ -41,9 +41,11 @@ const BatchReport = () => {
 
   const { data, error } = useSWR<{
     batchReport: BatchJobGetByIdResponse;
-    error: boolean;
+    is_error: boolean;
+    ok: boolean;
     status: number;
   }>(`/api/batch-reports/${id}?skip=${skip}limit=${limit}`, fetcher);
+
   useEffect(() => {
     if (data?.batchReport) {
       setBatchReport(data.batchReport);
@@ -120,9 +122,9 @@ const BatchReport = () => {
 
   return (
     <Layout title="Batched Report">
-      {!data ? (
+      {!batchReport ? (
         <SkeletonReport />
-      ) : error || data.error ? (
+      ) : error || data?.is_error ? (
         <ErrorSkeleton
           header={`${t(REPORT_FETCHING_ERROR)}`}
           message={error.message}

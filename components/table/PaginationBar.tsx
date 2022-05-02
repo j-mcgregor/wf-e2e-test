@@ -20,6 +20,7 @@ const PaginationButton = ({
   hoverClassName
 }: PaginationButtonProps) => (
   <button
+    type="button"
     className={`${
       active ? 'bg-highlight bg-opacity-30 text-highlight' : 'bg-white'
     } ${
