@@ -205,7 +205,7 @@
     "highlights": {
       "reliability_index": {
         "title": "Reliability Index",
-        "body": "This index rates as either reliable, caution or concern the quality of the underlying data used to derive the risk assessment report. We require a great deal of both structured and unstructured data to derive our reports that may sometimes not be fully available or may be volatile. This is often the case with young or small companies for which it is difficult to find reliable data."
+        "body": "This index helps to understand the quality of the underlying data used to derive the risk assessment report. We use a large quantity of structured and unstructured data and these may sometime not be available or be highly volatile. This is often due to particularly young or small companies for which is difficult to find reliable data. The index can return as reliable, caution or concern."
       },
       "risk_outlook": {
         "title": "Risk Outlook",
