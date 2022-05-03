@@ -62,10 +62,10 @@ const ShareHolderCard = ({
       }
     >
       <div
-        className="flex avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs bg-white justify-between items-start"
+        className="flex avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs bg-white justify-between "
         data-testid="shareholder-card-testid "
       >
-        <div className="flex py-3 px-2 w-full justify-between">
+        <div className="flex py-3 px-2 w-[90%] justify-between">
           {isShareholderIndividual ? (
             <UserIcon className="h-6 w-6" />
           ) : (
@@ -88,7 +88,7 @@ const ShareHolderCard = ({
 
         {isValidIso && company_id && !isShareholderIndividual && (
           <div
-            className="min-w-32 flex items-center justify-center w-[65px] h-[65px]"
+            className="flex items-end w-10 justify-end absolute right-0 bottom-8"
             title={
               isError
                 ? t('generate_report_fail', { name })
@@ -105,7 +105,7 @@ const ShareHolderCard = ({
                 <CircleX fill="white" stroke="red" />
               )
             ) : (
-              <LoadingIcon />
+              <LoadingIcon className="h-6 w-6 p-[4px] text-highlight" />
             )}
           </div>
         )}

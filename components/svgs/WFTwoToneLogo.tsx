@@ -7,7 +7,9 @@ export const WFTwoToneLogo: React.FC<{
   return (
     <svg
       onClick={onClick}
-      className={`h-full  ${disabled ? 'opacity-50' : 'cursor-pointer group '}`}
+      className={`h-10 w-10  ${
+        disabled ? 'opacity-50' : 'cursor-pointer group '
+      }`}
       width="63"
       viewBox="0 0 63 65"
       fill="none"

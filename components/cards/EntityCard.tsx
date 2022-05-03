@@ -53,7 +53,7 @@ const EntityCard = ({
       </div>
       {isValidIso && company_id && (
         <div
-          className="min-w-32 flex items-center justify-center w-[65px] "
+          className=" flex items-end w-10 justify-end  "
           title={
             isError
               ? t('generate_report_fail', { name })
@@ -70,7 +70,7 @@ const EntityCard = ({
               <CircleX fill="white" stroke="red" />
             )
           ) : (
-            <LoadingIcon />
+            <LoadingIcon className="h-6 w-6 p-[4px] text-highlight" />
           )}
         </div>
       )}
