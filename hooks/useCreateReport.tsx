@@ -1,9 +1,11 @@
+/* eslint-disable security/detect-object-injection */
 import * as Sentry from '@sentry/nextjs';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { mutate } from 'swr';
-import { useRouter } from 'next/router';
 
 import countryCodes from '../lib/data/countryCodes.json';
+import OrbisValidIsoCodes from '../lib/data/orbisValidIsoCountries.json';
 import fetcher from '../lib/utils/fetcher';
 import { ReportsReportApi } from '../pages/api/reports/report';
 
@@ -25,6 +27,7 @@ export const useCreateReport = ({
   const [loading, setLoading] = useState(false);
   const [reportId, setReportId] = useState('');
   const [isError, setIsError] = useState(false);
+  const [isValidIso, setIsValidIso] = useState(false);
 
   const createReport = async () => {
     if (company_id && !disabled) {
@@ -85,6 +88,12 @@ export const useCreateReport = ({
   };
 
   useEffect(() => {
+    if (iso_code && (OrbisValidIsoCodes as Record<string, string>)[iso_code]) {
+      setIsValidIso(true);
+    }
+  }, []);
+
+  useEffect(() => {
     if (reportId) {
       router.push(`/report/${reportId}?from=${router.asPath}`);
     }
@@ -94,6 +103,7 @@ export const useCreateReport = ({
     createReport,
     loading,
     reportId,
-    isError
+    isError,
+    isValidIso
   };
 };

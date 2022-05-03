@@ -14,7 +14,6 @@ import { CircleX } from '../../svgs/CircleX';
 import LoadingIcon from '../../svgs/LoadingIcon';
 import { WFTwoToneLogo } from '../../svgs/WFTwoToneLogo';
 
-// import UserIcon from '../../svgs/UserIcon';
 const ShareHolderCard = ({
   firstName,
   lastName,
@@ -45,12 +44,14 @@ const ShareHolderCard = ({
     }`;
   }
 
-  const { createReport, loading, isError } = useCreateReport({
+  const { createReport, loading, isError, isValidIso } = useCreateReport({
     iso_code,
     company_id,
     disabled,
     setDisabled
   });
+
+  // console.log(name, iso_code, isValidIso);
 
   const handleGenerateReport = async () => await createReport();
 
@@ -61,7 +62,7 @@ const ShareHolderCard = ({
       }
     >
       <div
-        className="flex avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs bg-white justify-between items-end"
+        className="flex avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs bg-white justify-between items-start"
         data-testid="shareholder-card-testid "
       >
         <div className="flex py-3 px-2 w-full justify-between">
@@ -85,7 +86,7 @@ const ShareHolderCard = ({
           )}
         </div>
 
-        {company_id && !isShareholderIndividual && (
+        {isValidIso && company_id && !isShareholderIndividual && (
           <div
             className="min-w-32 flex items-center justify-center w-[65px] h-[65px]"
             title={
