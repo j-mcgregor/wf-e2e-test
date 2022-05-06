@@ -36,7 +36,7 @@ const CodatCompanySearch = ({
         value.toLowerCase().includes(searchValue.toLowerCase())
       )
     );
-  }, [searchValue]);
+  }, [searchValue, data]);
 
   const loadingText = t('loading');
   const searchStartText = t('search_start');
