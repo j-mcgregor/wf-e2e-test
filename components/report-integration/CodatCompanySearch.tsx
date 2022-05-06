@@ -31,11 +31,10 @@ const CodatCompanySearch = ({
       return data;
     }
 
-    return data.filter(
-      item =>
-        item.company_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        item.company_id.toLowerCase().includes(searchValue.toLowerCase()) ||
-        item.connection_id.toLowerCase().includes(searchValue.toLowerCase())
+    return data.filter(item =>
+      Object.values(item).some(value =>
+        value.toLowerCase().includes(searchValue.toLowerCase())
+      )
     );
   }, [searchValue]);
 
