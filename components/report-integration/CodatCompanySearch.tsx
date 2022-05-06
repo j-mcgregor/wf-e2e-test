@@ -32,9 +32,14 @@ const CodatCompanySearch = ({
     }
 
     return data.filter(item =>
-      Object.values(item).some(value =>
-        value.toLowerCase().includes(searchValue.toLowerCase())
-      )
+      searchValue
+        .toLowerCase()
+        .split(' ')
+        .every(word =>
+          Object.values(item).some(value =>
+            value.toLowerCase().includes(word.toLowerCase())
+          )
+        )
     );
   }, [searchValue, data]);
 
