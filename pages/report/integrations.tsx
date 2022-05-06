@@ -1,4 +1,4 @@
-import { CheckIcon, XIcon } from '@heroicons/react/outline';
+import { CheckIcon, LightningBoltIcon, XIcon } from '@heroicons/react/outline';
 import { GetServerSidePropsContext, NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
@@ -266,7 +266,7 @@ const ReportIntegrations: NextPage = () => {
           <LinkCard
             header="Future Integration"
             description={'Add your headers for your Codata integration.'}
-            icon={<CheckIcon className="h-6 w-6" />}
+            icon={<LightningBoltIcon className="h-6 w-6" />}
             iconColor="bg-alt bg-opacity-20"
             disabled
           />
