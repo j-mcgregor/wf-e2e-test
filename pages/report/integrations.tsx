@@ -14,6 +14,19 @@ import {
 import LoadingIcon from '../../components/svgs/LoadingIcon';
 import IntegrationErrorMessages from '../../components/report-integration/IntegrationErrorMessages';
 
+const data: CodatCompanyType[] = [
+  {
+    company_id: '7d7fd6ee-2d8e-4038-963c-839381eea4d2',
+    connection_id: '449d32fc-a354-44c5-a122-3e0abc0484d2',
+    company_name: 'Large UK Company - Sandbox'
+  },
+  {
+    company_id: '3244dba1-5e79-40be-8128-7e4172a9356b',
+    connection_id: 'b8835617-1445-47f2-9aef-08083db7cfc1',
+    company_name: 'Xero USD UAT-1'
+  }
+];
+
 const ErrorMessages: CodatIntegrationErrorType[] = [
   {
     id: '06595846-e5c4-43d9-accc-53f0566a2bb9',
@@ -291,7 +304,7 @@ const ReportIntegrations: NextPage = () => {
               setChosenResult={(option: CodatCompanyType) =>
                 setSelectedCompany(option)
               }
-              data={[]}
+              data={data}
             />
 
             {/* Selected Company Button */}

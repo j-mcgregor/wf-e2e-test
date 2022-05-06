@@ -9,48 +9,15 @@ import LoadingIcon from '../svgs/LoadingIcon';
 
 interface ICodatCompanySearchProps {
   disabled: boolean;
-  data: any[];
+  data: CodatCompanyType[];
   searchFunction: (searchValue: CodatCompanyType) => void;
   setChosenResult: (option: CodatCompanyType) => void;
   selectedResult: CodatCompanyType | null;
 }
 
-const data: CodatCompanyType[] = [
-  {
-    company_id: '7d7fd6ee-2d8e-4038-963c-839381eea4d2',
-    connection_id: '449d32fc-a354-44c5-a122-3e0abc0484d2',
-    company_name: 'Large UK Company - Sandbox'
-  },
-  {
-    company_id: '3244dba1-5e79-40be-8128-7e4172a9356b',
-    connection_id: 'b8835617-1445-47f2-9aef-08083db7cfc1',
-    company_name: 'Xero USD UAT-1'
-  },
-  {
-    company_id: '7d7fd6ee-2d8e-4038-963c-839381eea4d2',
-    connection_id: '449d32fc-a354-44c5-a122-3e0abc0484d2',
-    company_name: 'Large UK Company - Sandbox'
-  },
-  {
-    company_id: '3244dba1-5e79-40be-8128-7e4172a9356b',
-    connection_id: 'b8835617-1445-47f2-9aef-08083db7cfc1',
-    company_name: 'Xero USD UAT-1'
-  },
-  {
-    company_id: '7d7fd6ee-2d8e-4038-963c-839381eea4d2',
-    connection_id: '449d32fc-a354-44c5-a122-3e0abc0484d2',
-    company_name: 'Large UK Company - Sandbox'
-  },
-  {
-    company_id: '3244dba1-5e79-40be-8128-7e4172a9356b',
-    connection_id: 'b8835617-1445-47f2-9aef-08083db7cfc1',
-    company_name: 'Xero USD UAT-1'
-  }
-];
-
 const CodatCompanySearch = ({
   disabled,
-  // data = [],
+  data = [],
   selectedResult,
   setChosenResult
 }: ICodatCompanySearchProps) => {
