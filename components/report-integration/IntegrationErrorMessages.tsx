@@ -29,8 +29,8 @@ const IntegrationErrorMessages = ({
         <div className="flex flex-col gap-2 max-h-96 overflow-y-scroll">
           {errors.map(({ id, name }: CodatIntegrationErrorType) => {
             return (
-              <div key={id} className="flex gap-2 p-2 bg-white">
-                <XIcon className="h-6 w-6 text-red-500" />
+              <div key={id} className="flex items-center gap-2 p-2 bg-white">
+                <XIcon className="min-w-[24px] min-h-[24px] h-6 w-6 text-red-500" />
                 <p>{name}</p>
               </div>
             );

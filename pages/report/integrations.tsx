@@ -1,4 +1,9 @@
-import { CheckIcon, LightningBoltIcon, XIcon } from '@heroicons/react/outline';
+import {
+  ArrowLeftIcon,
+  CheckIcon,
+  LightningBoltIcon,
+  XIcon
+} from '@heroicons/react/outline';
 import { GetServerSidePropsContext, NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
@@ -13,6 +18,8 @@ import {
 } from '../../types/report';
 import LoadingIcon from '../../components/svgs/LoadingIcon';
 import IntegrationErrorMessages from '../../components/report-integration/IntegrationErrorMessages';
+import Button from '../../components/elements/Button';
+import { useRouter } from 'next/router';
 
 const data: CodatCompanyType[] = [
   {
@@ -254,14 +261,28 @@ const ReportIntegrations: NextPage = () => {
 
   const errorMessages: CodatIntegrationErrorType[] | null = ErrorMessages;
 
+  const router = useRouter();
+
+  const backLink = Array.isArray(router?.query?.from)
+    ? router.query.from[0]
+    : router?.query?.from;
+
   const t = useTranslations();
 
   return (
-    <Layout title="Import Data">
+    <Layout title="Report Integrations">
       <div className="flex flex-col gap-6">
+        <Button
+          linkTo={!backLink ? '/reports' : backLink}
+          variant="highlight"
+          newClassName=" bg-bg hover:text-alt relative h-[50px] top-0 flex items-center justify-start"
+        >
+          <ArrowLeftIcon className="h-full w-6" />
+          <p className="ml-2">Back to report</p>
+        </Button>
         <h1 className="text-3xl font-semibold">{t('integration_stage_1')}</h1>
         <p>{t('integration_stage_1_description')}</p>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <button
             type="button"
             onClick={() => setFirstStage(true)}

@@ -31,7 +31,7 @@ const CTACard = ({
   const t = useTranslations();
 
   return (
-    <div className={`${disabled ? 'pointer-events-none opacity-40' : ''}`}>
+    <div>
       <div className="bg-white p-3 mb-3 rounded-sm text-sm">
         <p className="font-bold">{title}</p>
         <p className="py-3">{body}</p>
@@ -40,7 +40,9 @@ const CTACard = ({
           <Button
             disabled={locked}
             onClick={clickButton}
-            className={`${buttonColor} w-full mr-2 text-white max-w-xs`}
+            className={`${buttonColor} ${
+              disabled ? 'pointer-events-none opacity-40' : ''
+            } mr-2 text-white w-36`}
             variant="none"
             linkTo={linkTo}
           >
@@ -51,7 +53,7 @@ const CTACard = ({
             linkTo={learnMoreLink}
             className={`${
               learnMoreLink ? 'block' : 'hidden'
-            } shadow-none hover:text-alt`} // made invisible rather than comment out - so as to not break the layout
+            } shadow-none whitespace-nowrap hover:text-alt`} // made invisible rather than comment out - so as to not break the layout
           >
             <p className={`${learnMoreLink ? 'block' : 'hidden'}`}>
               {t('learn_more')}

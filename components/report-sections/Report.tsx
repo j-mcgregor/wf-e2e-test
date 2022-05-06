@@ -44,7 +44,7 @@ const Report = ({
   id,
   forPrint,
   isAdmin = false,
-  isIntegrated = false
+  isIntegrated = true
 }: {
   data: ReportDataProps;
   id: string | string[];
