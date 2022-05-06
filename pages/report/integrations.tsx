@@ -271,7 +271,7 @@ const ReportIntegrations: NextPage = () => {
 
   return (
     <Layout title="Report Integrations">
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 pb-24">
         <Button
           linkTo={!backLink ? '/reports' : backLink}
           variant="highlight"
