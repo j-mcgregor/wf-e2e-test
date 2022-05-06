@@ -364,10 +364,10 @@ const Report = ({
               title={t('import_data')}
               body={t('unlock_api_to_gain_access')}
               buttonText="Import"
-              locked={true}
               buttonColor="bg-[#2BAD01]"
+              linkTo={`/report/integrations?from=/report/${id}`}
               learnMoreLink="#"
-              disabled={true}
+              disabled={false}
             />
             <CTACard
               title={t('upload_more_data')}
@@ -375,7 +375,6 @@ const Report = ({
               buttonText="Upload"
               buttonColor="bg-alt"
               linkTo={`${id}/upload-data`}
-              learnMoreLink="#"
             />
           </div>
         </div>

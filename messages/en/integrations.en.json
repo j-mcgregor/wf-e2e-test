@@ -1,0 +1,10 @@
+{
+  "integration_stage_1": "1. Select Source",
+  "integration_stage_1_description": "Select the integrated data source you wish to import company data from.",
+  "integration_stage_2": "2. Select Company",
+  "integration_stage_2_description": "Select the company from your integrations source list.",
+  "itegration_search_title": "Search available companies",
+  "itegration_validating_company": " Validating <b>{company_name}</b> accounts",
+  "itegration_validated_company": "Validated <b>{company_name}</b> accounts",
+  "itegration_not_valid_company": "<b>{company_name}</b> has uncategorised accounts, please login to Codat and categorise these accounts before trying again."
+}
