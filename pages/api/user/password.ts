@@ -48,7 +48,9 @@ const userIndexApi: NextApiHandler<UserIndexApi> = async (
         // TODO: user passed here needs a type or it needs to be revised.
         // It has no type and updateUser needs a UserType type.
         const result = await User.updatePassword(`${token?.accessToken}`, {
-          user: {}
+          user: {
+            id: ''
+          }
         });
 
         return response.status(result.status).json({
