@@ -516,6 +516,58 @@ const getUserBookmarks: ApiHandler<GetUserBookmarks> = async (
   }
 };
 
+/**
+ * ***************************************************
+ * UPDATE USER
+ * ***************************************************
+ */
+
+export interface UpdatePassword extends HandlerReturn {
+  user: UserType | null;
+}
+
+interface UpdatePasswordProps {
+  user: UserType;
+}
+
+const updatePassword: ApiHandler<UpdatePassword, UpdatePasswordProps> = async (
+  token: string,
+  { user }
+) => {
+  try {
+    const params = {
+      method: 'PUT',
+      headers: {
+        ...JSONHeaders,
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(user)
+    };
+
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/users/password`,
+      params
+    );
+
+    if (response.ok) {
+      const user: UserType = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        user
+      };
+    }
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'USER'
+      }),
+      user: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), user: null };
+  }
+};
+
 const User = {
   authenticate,
   getUser,
@@ -527,7 +579,8 @@ const User = {
   getSSOToken,
   giveDefaults,
   bookmarkReport,
-  getUserBookmarks
+  getUserBookmarks,
+  updatePassword
 };
 
 export default User;

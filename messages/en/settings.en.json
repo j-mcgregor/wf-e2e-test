@@ -51,6 +51,7 @@
       "logged_in_microsoft": "You are logged in with Microsoft"
     },
     "password-management": {
+      "current_password": "Current Password",
       "new_password": "New Password",
       "confirm_password": "Confirm Password"
     }

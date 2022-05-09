@@ -56,6 +56,7 @@ export const INCORRECT_DETAILS: ErrorCodeKeys = 'INCORRECT_DETAILS';
  */
 export const INVALID_SSO_LOGIN: ErrorCodeKeys = 'INVALID_SSO_LOGIN';
 export const NEW_PASSWORD_REQUIRED: ErrorCodeKeys = 'NEW_PASSWORD_REQUIRED';
+export const PASSWORD_REQUIREMENTS: ErrorCodeKeys = 'PASSWORD_REQUIREMENTS';
 export const PASSWORD_REQUIRED: ErrorCodeKeys = 'PASSWORD_REQUIRED';
 export const SIGNED_OUT: ErrorCodeKeys = 'SIGNED_OUT';
 export const UNAUTHORISED: ErrorCodeKeys = 'UNAUTHORISED';

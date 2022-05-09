@@ -9,13 +9,16 @@ import appState, { appUser } from '../../../lib/appState';
 import {
   CONFIRM_PASSWORD_MATCH,
   GENERIC_API_ERROR,
-  NEW_PASSWORD_REQUIRED
+  NEW_PASSWORD_REQUIRED,
+  PASSWORD_REQUIREMENTS
 } from '../../../lib/utils/error-codes';
+import { validPasswordRegex } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
 
 interface PasswordFormInput {
+  currentPassword: string;
   newPassword: string;
   confirmPassword: string;
 }
@@ -33,18 +36,23 @@ const PasswordManagement = () => {
 
   // @ts-ignore
   const onSubmit: SubmitHandler = async (data: {
+    currentPassword: string;
     newPassword: string;
     confirmPassword: string;
   }) => {
-    const { newPassword } = data;
+    const { newPassword, currentPassword } = data;
     try {
-      const fetchRes = await fetch(`${config.URL}/api/user?id=${user.id}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-          ...user,
-          password: newPassword.trim()
-        })
-      });
+      const fetchRes = await fetch(
+        `${config.URL}/api/user/password?id=${user.id}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            ...user,
+            currentPassword,
+            password: newPassword.trim()
+          })
+        }
+      );
 
       const json = await fetchRes.json();
 
@@ -74,21 +82,46 @@ const PasswordManagement = () => {
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div className=" xs:w-full sm:w-1/2 ">
             <Input
-              {...register('newPassword', {
+              {...register('currentPassword', {
                 required: 'You must specify a password',
                 minLength: {
                   value: 8,
                   message: 'Password must have at least 8 characters'
                 }
               })}
+              label={t('forms.password-management.current_password')}
+              name="currentPassword"
+              autoComplete="current-password"
+              type="password"
+              showEye
+            />
+            {errors.currentPassword && (
+              <ErrorMessage text={t(NEW_PASSWORD_REQUIRED)} />
+            )}
+            <Input
+              {...register('newPassword', {
+                required: 'You must specify a password',
+                minLength: {
+                  value: 8,
+                  message: 'Password must have at least 8 characters'
+                },
+                validate: value =>
+                  validPasswordRegex.test(value) ||
+                  'Password should be minimum 8 characters and contain at least one uppercase letter, one lowercase letter, one number, one special character'
+              })}
               label={t('forms.password-management.new_password')}
               name="newPassword"
               autoComplete="new-password"
               type="password"
+              showEye
             />
-            {errors.newPassword && (
-              <ErrorMessage text={t(NEW_PASSWORD_REQUIRED)} />
-            )}
+            {errors.newPassword ? (
+              errors.newPassword.message ? (
+                <ErrorMessage text={t(PASSWORD_REQUIREMENTS)} />
+              ) : (
+                <ErrorMessage text={t(NEW_PASSWORD_REQUIRED)} />
+              )
+            ) : null}
             <Input
               {...register('confirmPassword', {
                 validate: {
@@ -104,7 +137,7 @@ const PasswordManagement = () => {
               label={t('forms.password-management.confirm_password')}
               name="confirmPassword"
               autoComplete="new-password"
-              type="password"
+              showEye
             />
             {errors?.confirmPassword && (
               <ErrorMessage text={t(CONFIRM_PASSWORD_MATCH)} />
