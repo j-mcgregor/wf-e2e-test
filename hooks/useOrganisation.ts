@@ -8,15 +8,15 @@ import fetcher from '../lib/utils/fetcher';
 import { OrganisationIndexApi } from '../pages/api/organisation/[orgId]';
 import { OrganisationTypeApi } from '../pages/api/organisation/[orgId]/[type]';
 
-interface OrganisationHookObject {
-  name?: string;
-  id?: string;
-  totalUsers?: number;
-  quota?: {
-    quota_used: number;
-  };
-  totalOrganisationReports?: string | null;
-}
+// interface OrganisationHookObject {
+//   name?: string;
+//   id?: string;
+//   totalUsers?: number;
+//   quota?: {
+//     quota_used: number;
+//   };
+//   totalOrganisationReports?: string | null;
+// }
 
 const useOrganisation = (fetch = true) => {
   const { user } = useRecoilValue(appState);
