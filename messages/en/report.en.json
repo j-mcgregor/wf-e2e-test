@@ -364,5 +364,6 @@
   "cautionText": "We have found some volatility in the financial and non-financial data sourced for this company and we recommend you investigate the source of this volatility. We are confident that the quality of our risk assessment is fit for purpose, but the trends of our risk metrics may have been affected. When possible, we would recommend you provide additional data using the option below.",
   "concernText": "We have not been able to find enough financial and non-financial data to provide a reliable risk assessment. The company could be too young or too small to be processed confidently by our models. We advise you seek alternative sources of financial data such as management accounts and upload using the Manual Data Input option.",
   "generate_report": "Generate a report on {name}",
-  "generate_report_fail": "Unable to generate a report on {name}"
+  "generate_report_fail": "Unable to generate a report on {name}",
+  "no_risk_outlook": "There was not enough data to provide a risk Risk Outlook analysis on this company."
 }
