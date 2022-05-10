@@ -24,7 +24,7 @@ const AddNewUserForm = ({
   onSubmitSuccess: () => void;
 }) => {
   const [submitError, setSubmitError] = React.useState({
-    type: 'INTERNAL_SERVER_ERROR'
+    type: ''
   });
   const [successfulSubmit, setSuccessfulSubmit] = React.useState(false);
   const t = useTranslations();

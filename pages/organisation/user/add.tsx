@@ -34,11 +34,11 @@ const AddNewUserPage = () => {
               {
                 header: t('add_user_total_stats'),
                 data: `${organisation.totalUsers || '-'}`
+              },
+              {
+                header: t('add_user_max_stats'),
+                data: `${organisation?.max_users || '-'}`
               }
-              // {
-              //   header: t('add_user_max_stats'),
-              //   data: `${organisation?.max_users || '-'}`
-              // }
             ]}
           />
         </div>
