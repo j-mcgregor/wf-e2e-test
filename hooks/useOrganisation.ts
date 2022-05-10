@@ -11,6 +11,14 @@ const useOrganisation = (fetch = true) => {
   const { user } = useRecoilValue(appState);
   const orgId = user?.organisation_id || null;
 
+  if (!orgId)
+    return {
+      organisation: {},
+      loading: false,
+      error: true,
+      message: 'No Organisation ID'
+    };
+
   const { data } = useSWR<OrganisationIndexApi>(
     fetch && `/api/organisation/${orgId}`,
     fetcher,

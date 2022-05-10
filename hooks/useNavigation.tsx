@@ -68,12 +68,7 @@ const useMainNavItems = () => {
       { name: `${t('support')}`, href: '/support', icon: SupportIcon },
       {
         name: `${t('logout')}`,
-        onClick: () => {
-          // clear sentry user before logout
-          setLastPageVisited('');
-          Sentry.configureScope(scope => scope.setUser(null));
-          return signOut({ callbackUrl: `${window.location.origin}/login` });
-        },
+        href: '/logout',
         icon: LogoutIcon
       }
     ]
