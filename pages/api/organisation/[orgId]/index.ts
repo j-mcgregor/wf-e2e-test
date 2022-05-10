@@ -28,7 +28,10 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
   request,
   response
 ) => {
-  const defaultNullProps = { organisation: null };
+  const defaultNullProps = {
+    organisation: null,
+    totalOrganisationReports: null
+  };
   const token = await getToken({
     req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
@@ -60,7 +63,10 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
           `${token?.accessToken}`,
           { orgId }
         );
-        return response.status(result.status).json(result);
+        console.log(result);
+        return response
+          .status(result.status)
+          .json({ ...defaultNullProps, ...result });
       } catch (error) {
         return response.status(NOT_FOUND).json({
           ...makeApiHandlerResponseFailure({
@@ -76,7 +82,9 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
           `${token?.accessToken}`,
           { orgId, body: request.body }
         );
-        return response.status(result.status).json(result);
+        return response
+          .status(result.status)
+          .json({ ...defaultNullProps, ...result });
       } catch (error) {
         return response.status(NOT_FOUND).json({
           ...makeApiHandlerResponseFailure({
