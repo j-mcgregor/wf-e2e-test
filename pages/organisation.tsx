@@ -84,7 +84,7 @@ const Organisation = () => {
             { header: t('stats_organisation_title'), data: organisation?.name },
             {
               header: t('stats_total_reports_title'),
-              data: organisation?.totalOrganisationReports || '0'
+              data: organisation?.totalOrganisationReports
             },
             {
               header: t('stats_users_title'),

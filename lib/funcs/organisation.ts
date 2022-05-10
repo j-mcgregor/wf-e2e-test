@@ -102,7 +102,7 @@ const getOrganisation: ApiHandler<
  */
 
 export interface getTotalOrganisationReportsType extends HandlerReturn {
-  totalOrganisationReports: string | null;
+  totalOrganisationReports: string | null | number;
 }
 
 const getOrganisationReports: ApiHandler<
