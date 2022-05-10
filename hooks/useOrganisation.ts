@@ -8,21 +8,21 @@ import fetcher from '../lib/utils/fetcher';
 import { OrganisationIndexApi } from '../pages/api/organisation/[orgId]';
 import { OrganisationTypeApi } from '../pages/api/organisation/[orgId]/[type]';
 
-interface OrganisationHookObject {
-  name?: string;
-  id?: string;
-  totalUsers?: number;
-  quota?: {
-    quota_used: number;
-  };
-  totalOrganisationReports?: string | null;
-}
+// interface OrganisationHookObject {
+//   name?: string;
+//   id?: string;
+//   totalUsers?: number;
+//   quota?: {
+//     quota_used: number;
+//   };
+//   totalOrganisationReports?: string | null;
+// }
 
 const useOrganisation = (fetch = true) => {
   const { user } = useRecoilValue(appState);
   const orgId = user?.organisation_id || null;
 
-  const { data: result } = useSWR<OrganisationIndexApi>(
+  const { data: reports, mutate: mutateOrg } = useSWR<OrganisationIndexApi>(
     fetch && orgId && `/api/organisation/${orgId}?reports=true`,
     fetcher,
     {
@@ -30,7 +30,15 @@ const useOrganisation = (fetch = true) => {
     }
   );
 
-  const { data } = useSWR<OrganisationTypeApi>(
+  const { data: orgDetails } = useSWR<OrganisationIndexApi>(
+    fetch && `/api/organisation/${orgId}`,
+    fetcher,
+    {
+      revalidateOnMount: true
+    }
+  );
+
+  const { data, mutate: mutateUsers } = useSWR<OrganisationTypeApi>(
     fetch && orgId && `/api/organisation/${orgId}/users?limit=1`,
     fetcher,
     {
@@ -38,17 +46,20 @@ const useOrganisation = (fetch = true) => {
     }
   );
 
-  const organisation: OrganisationHookObject = {
+  const organisation = {
     name: user?.organisation_name,
     id: user?.organisation_id,
     totalUsers: (data && data?.total) || 0,
-    totalOrganisationReports: result?.totalOrganisationReports
+    totalOrganisationReports: reports?.totalOrganisationReports,
+    ...(orgDetails && orgDetails?.organisation)
   };
 
   const isLoading = !data;
 
   return {
     organisation,
+    mutateOrg,
+    mutateUsers,
     loading: isLoading,
     error: data?.error,
     message: data?.message

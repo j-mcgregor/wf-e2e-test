@@ -14,6 +14,7 @@
   "FULL_NAME_REQUIRED": "Your full name is required.",
   "PASSWORD_REQUIRED": "Your password is required.",
   "NO_REPORT": "No report found",
+  "INTERNAL_SERVER_ERROR": "There is an error processing your request on the backend please contact support.",
   "SIGNED_OUT": "You are not signed in. Please log out and then log in.",
   "INVALID_SSO_LOGIN": "We couldn't log you in with your SSO credentials. Please check that you have access and try again. If the problem persists please contact support.",
   "INCORRECT_DETAILS": "Your details are incorrect. Please try again.",

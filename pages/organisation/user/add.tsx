@@ -11,7 +11,7 @@ import useOrganisation from '../../../hooks/useOrganisation';
 
 const AddNewUserPage = () => {
   const t = useTranslations();
-  const { organisation } = useOrganisation();
+  const { organisation, mutateUsers } = useOrganisation();
 
   return (
     <Layout adminRequired title={t('add_user_title')}>
@@ -34,15 +34,15 @@ const AddNewUserPage = () => {
               {
                 header: t('add_user_total_stats'),
                 data: `${organisation.totalUsers || '-'}`
+              },
+              {
+                header: t('add_user_max_stats'),
+                data: `${organisation?.max_users || '-'}`
               }
-              // {
-              //   header: t('add_user_max_stats'),
-              //   data: `${organisation?.max_users || '-'}`
-              // }
             ]}
           />
         </div>
-        <AddNewUserForm />
+        <AddNewUserForm onSubmitSuccess={mutateUsers} />
       </div>
     </Layout>
   );
