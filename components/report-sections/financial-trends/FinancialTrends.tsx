@@ -37,7 +37,7 @@ const FinancialTrends = ({
         ])
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [financialData]
   );
 
   // charts split into arrays of 6 for print layout

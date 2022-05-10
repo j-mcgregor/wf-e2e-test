@@ -5,6 +5,7 @@ import useSWR from 'swr';
 
 import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
+import { OrganisationIndexApi } from '../pages/api/organisation/[orgId]';
 import { OrganisationTypeApi } from '../pages/api/organisation/[orgId]/[type]';
 
 interface OrganisationHookObject {
@@ -14,11 +15,20 @@ interface OrganisationHookObject {
   quota?: {
     quota_used: number;
   };
+  totalOrganisationReports?: string | null;
 }
 
 const useOrganisation = (fetch = true) => {
   const { user } = useRecoilValue(appState);
   const orgId = user?.organisation_id || null;
+
+  const { data: result } = useSWR<OrganisationIndexApi>(
+    fetch && orgId && `/api/organisation/${orgId}?reports=true`,
+    fetcher,
+    {
+      revalidateOnMount: true
+    }
+  );
 
   const { data } = useSWR<OrganisationTypeApi>(
     fetch && orgId && `/api/organisation/${orgId}/users?limit=1`,
@@ -31,7 +41,8 @@ const useOrganisation = (fetch = true) => {
   const organisation: OrganisationHookObject = {
     name: user?.organisation_name,
     id: user?.organisation_id,
-    totalUsers: (data && data?.total) || 0
+    totalUsers: (data && data?.total) || 0,
+    totalOrganisationReports: result?.totalOrganisationReports
   };
 
   const isLoading = !data;

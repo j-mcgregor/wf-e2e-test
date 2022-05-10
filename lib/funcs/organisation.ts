@@ -27,6 +27,7 @@ const contentType = 'application/json';
  */
 export interface GetOrganisation extends HandlerReturn {
   organisation: OrganisationType | null;
+  totalOrganisationReports: string | null;
 }
 
 interface GetOrganisationProps {
@@ -51,9 +52,29 @@ const getOrganisation: ApiHandler<
 
     if (response.ok) {
       const organisation: OrganisationType = await response.json();
+      const totalReports = await fetch(
+        `${process.env.WF_AP_ROUTE}/organisations/${orgId}/reports?limit=1`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': contentType
+          }
+        }
+      );
+
+      if (totalReports.ok) {
+        return {
+          ...makeApiHandlerResponseSuccess(),
+          organisation,
+          totalOrganisationReports: totalReports.headers.get('x-total-count')
+        };
+      }
+
       return {
         ...makeApiHandlerResponseSuccess(),
-        organisation
+        organisation,
+        totalOrganisationReports: null
       };
     }
 
@@ -62,10 +83,63 @@ const getOrganisation: ApiHandler<
         status: response.status,
         sourceType: 'ORGANISATION'
       }),
-      organisation: null
+      organisation: null,
+      totalOrganisationReports: null
     };
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), organisation: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      organisation: null,
+      totalOrganisationReports: null
+    };
+  }
+};
+
+/**
+ * ***************************************************
+ * GET ORGANISATION REPORTS - /api/organisation/:orgId?reports=true
+ * ***************************************************
+ */
+
+export interface getTotalOrganisationReportsType extends HandlerReturn {
+  totalOrganisationReports: string | null;
+}
+
+const getOrganisationReports: ApiHandler<
+  getTotalOrganisationReportsType,
+  GetOrganisationProps
+> = async (token, { orgId }) => {
+  try {
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/organisations/${orgId}/reports?limit=1`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': contentType
+        }
+      }
+    );
+
+    if (response.ok) {
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        totalOrganisationReports: response.headers.get('x-total-count')
+      };
+    }
+
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'ORGANISATION'
+      }),
+      totalOrganisationReports: null
+    };
+  } catch (error) {
+    return {
+      ...makeApiHandlerResponseFailure(),
+      totalOrganisationReports: null
+    };
   }
 };
 
@@ -74,13 +148,15 @@ const getOrganisation: ApiHandler<
  * PUT ORGANISATION - /api/organisation/:orgId
  * ***************************************************
  */
-export interface UpdateOrganisation extends GetOrganisation {}
+export interface UpdateOrganisation extends HandlerReturn {
+  organisation: OrganisationType | null;
+}
 interface UpdateOrganisationProps extends GetOrganisationProps {
   body: string;
 }
 
 const updateOrganisation: ApiHandler<
-  GetOrganisation,
+  UpdateOrganisation,
   UpdateOrganisationProps
 > = async (token, { orgId, body }) => {
   try {
@@ -382,6 +458,7 @@ const patchOrganisationUser: ApiHandler<
 
 const Organisation = {
   getOrganisation,
+  getOrganisationReports,
   getOrganisationUsers,
   getOrganisationUserAndReports,
   postOrganisationUser,

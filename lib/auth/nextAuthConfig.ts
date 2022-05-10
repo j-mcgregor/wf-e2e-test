@@ -76,6 +76,7 @@ const nextAuthConfig: NextAuthOptions = {
   //HINT: is this showing login screen unexpectedly due to error?
   pages: {
     signIn: '/login',
+    signOut: '/logout',
     error: '/login'
   },
 
@@ -85,6 +86,7 @@ const nextAuthConfig: NextAuthOptions = {
       if (user) {
         token.accessToken = user?.accessToken;
         token.is_sso = user?.is_sso;
+        token.maxAge = 7 * 24 * 60 * 60;
       }
       return token;
     },
