@@ -13,7 +13,6 @@ import LoadingIcon from '../components/svgs/LoadingIcon';
 
 const LogOut = () => {
   const t = useTranslations();
-  const router = useRouter();
 
   const { data: session, status } = useSession();
   const loading = status === 'loading';

@@ -365,5 +365,5 @@
   "concernText": "We have not been able to find enough financial and non-financial data to provide a reliable risk assessment. The company could be too young or too small to be processed confidently by our models. We advise you seek alternative sources of financial data such as management accounts and upload using the Manual Data Input option.",
   "generate_report": "Generate a report on {name}",
   "generate_report_fail": "Unable to generate a report on {name}",
-  "no_risk_outlook": "There was not enough data to provide a risk Risk Outlook analysis on this company."
+  "no_risk_outlook": "There was not enough data to provide a risk Risk Outlook analysis on this company as it has defaulted."
 }
