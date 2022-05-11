@@ -84,7 +84,7 @@ export const convertCSVToRequestBody = ({
   csvValues,
   name,
   uploadType,
-  accounts_type = 0,
+  accounts_type = 1,
   currency = 'GBP'
 }: ConvertCsvProps): BatchRequest => {
   // BASIC INFO

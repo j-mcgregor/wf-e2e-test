@@ -51,7 +51,7 @@ export const useCreateReport = ({
         const createReportRes: ReportsReportApi = await fetcher(
           '/api/reports/report',
           'POST',
-          { company_id, iso_code, currency: currencySymbol, accounts_type: 0 }
+          { company_id, iso_code, currency: currencySymbol, accounts_type: 1 }
         );
 
         if (createReportRes?.reportId) {

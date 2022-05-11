@@ -59,7 +59,7 @@ const batchReports: NextApiHandler<BatchReportsManualApi> = async (
           name: request?.body?.name || '',
           currency: request?.body?.currency || '',
           /** @deprecated */
-          accounts_type: request?.body?.accounts_type
+          accounts_type: request?.body?.accounts_type || 1
         };
 
         try {
