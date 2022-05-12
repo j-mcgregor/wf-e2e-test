@@ -38,6 +38,7 @@ const AddNewUserForm = ({
 
   const onSubmit: SubmitHandler<FormDataType> = async data => {
     try {
+      setSubmitError({ type: '' });
       const res = await fetch(`/api/organisation/${organisation?.id}/user`, {
         method: 'POST',
         body: JSON.stringify(data)
