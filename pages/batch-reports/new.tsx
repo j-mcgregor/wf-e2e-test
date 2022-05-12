@@ -20,21 +20,20 @@ import { SimpleValue } from '../../components/sme-calc-sections/AdvancedSearch';
 import UploadNewData from '../../components/uploads/UploadNewData';
 import { useCSV } from '../../hooks/useCSV';
 import { useCsvValidators } from '../../hooks/useCsvValidators';
-import { appUser } from '../../lib/appState';
 import { accountTypes } from '../../lib/settings/report.settings';
 import Settings from '../../lib/settings/settings.settings';
 import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
+import { ISO, ISO_CODE } from '../../lib/utils/constants';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
+import type { SubmitReportType } from '../../types/report';
 import { BatchReportsIndexApi } from '../api/batch-reports';
 import { BatchReportsManualApi } from '../api/batch-reports/manual';
 
-import type { SubmitReportType } from '../../types/report';
 const CreateBatchReport: NextPage = () => {
   const t = useTranslations();
-  const router = useRouter();
 
-  const user = useRecoilValue(appUser);
+  const router = useRouter();
 
   const [fileSelected, setFileSelected] = useState<File | null>(null);
   const [fileSelectedName, setFileSelectedName] = useState<string>('');
@@ -54,6 +53,15 @@ const CreateBatchReport: NextPage = () => {
     }
   }, [fileName]);
 
+  const allCurrencyOptions = [
+    {
+      optionName: 'Use company country currency',
+      optionValue: ISO_CODE,
+      code: ISO
+    },
+    ...Settings.supportedCurrencies
+  ];
+
   const [processing, setProcessing] = useState(false);
   const [complete, setComplete] = useState(false);
   const [reportName, setReportName] = useState('');
@@ -61,21 +69,7 @@ const CreateBatchReport: NextPage = () => {
   const [results, setResults] = useState<{ id?: string }>({});
   const [error, setError] = useState('');
   const [accountType, setAccountType] = useState<SimpleValue>(accountTypes[0]);
-  const [currency, setCurrency] = useState<SimpleValue>(
-    Settings.supportedCurrencies[0]
-  );
-
-  useEffect(() => {
-    if (user?.preferences?.defaults?.reporting_country) {
-      const defaultCurrency = Settings.supportedCurrencies.find(
-        curr => curr.optionValue === user.preferences?.defaults?.currency
-      );
-
-      if (defaultCurrency) {
-        setCurrency(defaultCurrency);
-      }
-    }
-  }, [user?.preferences]);
+  const [currency, setCurrency] = useState<SimpleValue>(allCurrencyOptions[0]);
 
   const filenameRef = createRef<HTMLInputElement>();
 
@@ -86,8 +80,8 @@ const CreateBatchReport: NextPage = () => {
       return false;
     }
 
-    setLoading(true);
-    setProcessing(true);
+    // setLoading(true);
+    // setProcessing(true);
 
     // req body is different for /jobs/batch and /jobs/batch/upload
     // if /jobs/batch           BatchAutoRequest
@@ -235,10 +229,16 @@ const CreateBatchReport: NextPage = () => {
               <OptionRow
                 title={t('currency_title')}
                 description={t('currency_description')}
+                hint={
+                  <Hint
+                    title={t('hints.currency.title')}
+                    rawBody={t.raw('hints.currency.body')}
+                  />
+                }
               >
                 <SelectMenu
-                  values={Settings.supportedCurrencies}
-                  defaultValue={Settings.supportedCurrencies[0]}
+                  values={allCurrencyOptions}
+                  defaultValue={allCurrencyOptions[0]}
                   selectedValue={currency}
                   setSelectedValue={setCurrency}
                 />
