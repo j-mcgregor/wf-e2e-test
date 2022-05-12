@@ -71,12 +71,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               {showPassword ? (
                 <EyeIcon
                   onClick={() => setShowPassword(!showPassword)}
-                  className="h-5 w-5 cursor-pointer"
+                  className="h-5 w-5 cursor-pointer fill-black"
                 />
               ) : (
                 <EyeOffIcon
                   onClick={() => setShowPassword(!showPassword)}
-                  className="h-5 w-5 cursor-pointer"
+                  className="h-5 w-5 cursor-pointer fill-black"
                 />
               )}
             </div>
