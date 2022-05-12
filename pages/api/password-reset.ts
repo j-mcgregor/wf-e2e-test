@@ -38,7 +38,6 @@ const passwordReset: NextApiHandler<PasswordResetApi> = async (
         msg: null
       });
     case 'POST':
-      /** @action CHANGE PASSWORD THROUGH THE SETTINGS */
       if (token && newPassword) {
         /* @TODO update with new error handling */
         if (!VALID_PASSWORD.test(newPassword)) {
