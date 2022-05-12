@@ -221,7 +221,7 @@ const CreateBatchReport: NextPage = () => {
               >
                 <SelectMenu
                   values={accountTypes}
-                  defaultValue={accountTypes[1]}
+                  defaultValue={accountTypes[0]}
                   selectedValue={accountType}
                   setSelectedValue={setAccountType}
                 />
