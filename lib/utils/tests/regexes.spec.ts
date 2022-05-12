@@ -1,4 +1,4 @@
-import { validPasswordRegex } from '../regexes';
+import { VALID_PASSWORD } from '../regexes';
 import { passwords } from '../../../__mocks__/passwords';
 
 describe('Valid Password', () => {
@@ -6,7 +6,7 @@ describe('Valid Password', () => {
     // Require at least 8 characters with at least 1 upper case, 1 lower case, 1 numeric and 1 symbol
     // symbols: !@£$%^&*()_=+[]{};:'"<>/?#
     passwords.forEach(val => {
-      expect(validPasswordRegex.test(val.password)).toBe(val.valid);
+      expect(VALID_PASSWORD.test(val.password)).toBe(val.valid);
     });
   });
 });
