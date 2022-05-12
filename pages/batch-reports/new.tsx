@@ -111,7 +111,7 @@ const CreateBatchReport: NextPage = () => {
         setResults({ id: result.batchReportId ?? '' });
       }
       if (result.batchReportId) {
-        // fetch the new batchreports
+        // fetch the new batch reports
         mutate<BatchReportsIndexApi>('/api/batch-reports');
         // push to batch-reports where in progress reports will show
         return router.push(`/batch-reports`);
