@@ -21,7 +21,7 @@ const Hint = ({ title, body, className, rawBody }: HintTypeProps) => {
   const { styles, attributes } = usePopper(referenceElement, popperElement);
 
   return (
-    <Popover>
+    <Popover as="div">
       <Popover.Button ref={setReferenceElement}>
         <InformationCircleIcon
           className={`${className} h-6 w-6 opacity-50 print:hidden `}
@@ -32,6 +32,7 @@ const Hint = ({ title, body, className, rawBody }: HintTypeProps) => {
         ref={setPopperElement}
         style={styles.popper}
         {...attributes.popper}
+        as={'div'}
         className="bg-white px-6 py-4 rounded-sm shadow text-sm -mx-6 z-20 max-w-xs"
       >
         <p className="font-bold pb-1">{title}</p>

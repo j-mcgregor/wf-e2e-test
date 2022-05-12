@@ -53,13 +53,14 @@ const AdvancedSearch = ({
 
       <div className="my-4 flex justify-between items-center">
         <div className="py-2 w-1/2">
-          <p className="text-lg font-semibold py-1 flex w-full justify-between">
-            {t('account_type')}
+          <div className="flex w-full justify-between">
+            <p className="text-lg font-semibold py-1 ">{t('account_type')}</p>
             <Hint
               title={t('account_type_hint.title')}
               rawBody={t.raw('account_type_hint.body')}
             />
-          </p>
+          </div>
+
           <p>{t('choose_the_type_of_accounts_to_generate')}</p>
         </div>
 
