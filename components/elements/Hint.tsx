@@ -35,7 +35,7 @@ const Hint = ({ title, body, className, rawBody }: HintTypeProps) => {
         className="bg-white px-6 py-4 rounded-sm shadow text-sm -mx-6 z-20 max-w-xs"
       >
         <p className="font-bold pb-1">{title}</p>
-        <p>{body}</p>
+        {body && <p>{body}</p>}
         {rawBody && <div dangerouslySetInnerHTML={{ __html: rawBody }} />}
       </Popover.Panel>
     </Popover>

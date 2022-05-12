@@ -4,6 +4,7 @@ import SettingsSettings from '../../lib/settings/settings.settings';
 import SelectMenu from '../elements/SelectMenu';
 import Input from '../elements/Input';
 import { accountTypes } from '../../lib/settings/report.settings';
+import Hint from '../elements/Hint';
 
 export type SimpleValue = {
   optionValue: string;
@@ -52,7 +53,13 @@ const AdvancedSearch = ({
 
       <div className="my-4 flex justify-between items-center">
         <div className="py-2 w-1/2">
-          <p className="text-lg font-semibold py-1">{t('account_type')}</p>
+          <p className="text-lg font-semibold py-1 flex w-full justify-between">
+            {t('account_type')}
+            <Hint
+              title={t('account_type_hint.title')}
+              rawBody={t.raw('account_type_hint.body')}
+            />
+          </p>
           <p>{t('choose_the_type_of_accounts_to_generate')}</p>
         </div>
 
