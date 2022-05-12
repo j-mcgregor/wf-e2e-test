@@ -107,7 +107,7 @@ const PasswordManagement = () => {
             </div>
             <Input
               {...register('currentPassword', {
-                required: 'You must specify a password',
+                required: 'You must enter your current password',
                 minLength: {
                   value: 8,
                   message: 'Password must have at least 8 characters'
@@ -120,7 +120,11 @@ const PasswordManagement = () => {
               showEye
             />
             {errors.currentPassword && (
-              <ErrorMessage text={t(NEW_PASSWORD_REQUIRED)} />
+              <ErrorMessage
+                text={
+                  errors.currentPassword.message || t(NEW_PASSWORD_REQUIRED)
+                }
+              />
             )}
             <Input
               {...register('newPassword', {

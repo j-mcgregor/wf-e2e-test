@@ -15,7 +15,8 @@ import { UserType } from '../../../types/global';
 import { StatusCodeConstants } from '../../../types/http-status-codes';
 
 import type { NextApiHandler } from 'next';
-const { INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED } = StatusCodeConstants;
+const { INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED, BAD_REQUEST } =
+  StatusCodeConstants;
 
 // @ts-ignore - both handlers return type User but are slightly different
 export interface UserIndexApi extends GetFullUser, UpdateUser {}
@@ -38,6 +39,15 @@ const userPasswordApi: NextApiHandler<UserIndexApi> = async (
   switch (method) {
     case 'PUT':
       const user = await JSON.parse(request.body);
+
+      if (!user.old_password) {
+        return response.status(BAD_REQUEST).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.USER[BAD_REQUEST]
+          }),
+          user: null
+        });
+      }
 
       try {
         // TODO: user passed here needs a type or it needs to be revised.
