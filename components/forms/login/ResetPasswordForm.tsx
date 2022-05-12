@@ -1,14 +1,18 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
+import { generatePassword } from '../../../lib/utils/generatePassword';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
 import Link from '../../elements/Link';
 import Logo from '../../elements/Logo';
+import { PasswordValidation } from '../settings/PasswordValidation';
 
 type FormProps = {
   token?: string;
@@ -31,7 +35,9 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
     register,
     handleSubmit,
     getValues,
-    formState: { errors, isSubmitting }
+    setValue,
+    formState: { errors, isSubmitting },
+    watch
   } = useForm<FormValues>();
 
   const onSubmit = async (data: FormValues) => {
@@ -48,17 +54,23 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
       });
       const body = await res.json();
 
-      if (res.ok) {
-        return setFormSubmitted(true);
+      if (body.ok) {
+        setFormSubmitted(true);
       }
-      if (body.error) {
-        return setSubmitError({ type: body.error });
+      if (body.is_error) {
+        setSubmitError({ type: body.message });
       }
-      return setSubmitError({ type: GENERIC_API_ERROR });
+      setSubmitError({ type: GENERIC_API_ERROR });
     } catch (e) {
       // log the details of the error to the logger
-      return setSubmitError({ type: GENERIC_API_ERROR });
+      setSubmitError({ type: GENERIC_API_ERROR });
     }
+  };
+
+  const createPassword = () => {
+    const generatedPassword = generatePassword();
+    setValue('newPassword', generatedPassword);
+    setValue('confirmPassword', generatedPassword);
   };
 
   return (
@@ -80,8 +92,14 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
 
         {!formSubmitted && isValid && (
           <>
-            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
               <p>{t('enter_new_password')}</p>
+              <div
+                className="text-xs text-orange-400 cursor-pointer hover:text-orange-200"
+                onClick={() => createPassword()}
+              >
+                Generate password?
+              </div>
               <div className="mt-6">
                 <Input
                   {...register('newPassword', {
@@ -90,6 +108,7 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
                   })}
                   type="password"
                   placeholder={`${t('placeholders.your_new_password')}`}
+                  showEye
                 />
                 {errors.newPassword?.type === 'minLength' && (
                   <ErrorMessage text={t('errors.min_length')} />
@@ -97,6 +116,7 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
                 {errors.newPassword?.type === 'required' && (
                   <ErrorMessage text={t('errors.required')} />
                 )}
+                <PasswordValidation password={watch('newPassword')} />
               </div>
 
               <p>{t('confirm_new_password')}</p>
@@ -110,6 +130,7 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
                   })}
                   type="password"
                   placeholder={`${t('placeholders.your_new_password')}`}
+                  showEye
                 />
                 {errors.confirmPassword?.type === 'sameAs' && (
                   <ErrorMessage text={t('errors.not_same')} />

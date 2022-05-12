@@ -20,7 +20,7 @@ const { INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 // @ts-ignore - both handlers return type User but are slightly different
 export interface UserIndexApi extends GetFullUser, UpdateUser {}
 
-const userIndexApi: NextApiHandler<UserIndexApi> = async (
+const userPasswordApi: NextApiHandler<UserIndexApi> = async (
   request,
   response
 ) => {
@@ -37,20 +37,13 @@ const userIndexApi: NextApiHandler<UserIndexApi> = async (
 
   switch (method) {
     case 'PUT':
-      console.log('query', request.query);
-      const json = await JSON.parse(request.body);
-
-      console.log('json', json);
-      // validate current password
-      // validate new password
+      const user = await JSON.parse(request.body);
 
       try {
         // TODO: user passed here needs a type or it needs to be revised.
         // It has no type and updateUser needs a UserType type.
-        const result = await User.updatePassword(`${token?.accessToken}`, {
-          user: {
-            id: ''
-          }
+        const result = await User.updateUser(`${token?.accessToken}`, {
+          user
         });
 
         return response.status(result.status).json({
@@ -75,4 +68,4 @@ const userIndexApi: NextApiHandler<UserIndexApi> = async (
   }
 };
 
-export default withSentry(userIndexApi);
+export default withSentry(userPasswordApi);

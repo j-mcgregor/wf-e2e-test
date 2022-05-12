@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import * as Sentry from '@sentry/nextjs';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -12,10 +14,12 @@ import {
   NEW_PASSWORD_REQUIRED,
   PASSWORD_REQUIREMENTS
 } from '../../../lib/utils/error-codes';
-import { validPasswordRegex } from '../../../lib/utils/regexes';
+import { generatePassword } from '../../../lib/utils/generatePassword';
+import { VALID_PASSWORD } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
+import { PasswordValidation } from './PasswordValidation';
 
 interface PasswordFormInput {
   currentPassword: string;
@@ -29,8 +33,15 @@ const PasswordManagement = () => {
 
   const t = useTranslations();
 
-  const { register, formState, getValues, handleSubmit, reset } =
-    useForm<PasswordFormInput>();
+  const {
+    register,
+    formState,
+    getValues,
+    handleSubmit,
+    reset,
+    watch,
+    setValue
+  } = useForm<PasswordFormInput>();
   const { isDirty, errors, isSubmitting } = formState;
   const [submitError, setSubmitError] = useState({ type: '' });
 
@@ -48,8 +59,8 @@ const PasswordManagement = () => {
           method: 'PUT',
           body: JSON.stringify({
             ...user,
-            currentPassword,
-            password: newPassword.trim()
+            old_password: currentPassword,
+            new_password: newPassword.trim()
           })
         }
       );
@@ -70,6 +81,12 @@ const PasswordManagement = () => {
     }
   };
 
+  const createPassword = () => {
+    const generatedPassword = generatePassword();
+    setValue('newPassword', generatedPassword);
+    setValue('confirmPassword', generatedPassword);
+  };
+
   return (
     <Sentry.ErrorBoundary
       showDialog
@@ -79,8 +96,14 @@ const PasswordManagement = () => {
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
+        <div className="bg-white py-6 px-4 space-y-6 sm:p-6 flex justify-between">
           <div className=" xs:w-full sm:w-1/2 ">
+            <div
+              className="text-xs text-orange-400 cursor-pointer hover:text-orange-200 mb-2"
+              onClick={() => createPassword()}
+            >
+              Generate password?
+            </div>
             <Input
               {...register('currentPassword', {
                 required: 'You must specify a password',
@@ -106,7 +129,7 @@ const PasswordManagement = () => {
                   message: 'Password must have at least 8 characters'
                 },
                 validate: value =>
-                  validPasswordRegex.test(value) ||
+                  VALID_PASSWORD.test(value) ||
                   'Password should be minimum 8 characters and contain at least one uppercase letter, one lowercase letter, one number, one special character'
               })}
               label={t('forms.password-management.new_password')}
@@ -142,6 +165,9 @@ const PasswordManagement = () => {
             {errors?.confirmPassword && (
               <ErrorMessage text={t(CONFIRM_PASSWORD_MATCH)} />
             )}
+          </div>
+          <div>
+            <PasswordValidation password={watch('newPassword')} />
           </div>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">

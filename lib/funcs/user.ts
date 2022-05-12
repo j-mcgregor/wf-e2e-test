@@ -518,7 +518,7 @@ const getUserBookmarks: ApiHandler<GetUserBookmarks> = async (
 
 /**
  * ***************************************************
- * UPDATE USER
+ * UPDATE PASSWORD - FORGOT PASSWORD
  * ***************************************************
  */
 

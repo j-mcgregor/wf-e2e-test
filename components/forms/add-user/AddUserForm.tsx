@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -10,6 +12,8 @@ import ErrorMessage from '../../elements/ErrorMessage';
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 import ErrorSkeleton from '../../skeletons/ErrorSkeleton';
 import { CheckIcon } from '@heroicons/react/outline';
+import { generatePassword } from '../../../lib/utils/generatePassword';
+import { PasswordValidation } from '../settings/PasswordValidation';
 
 interface FormDataType {
   email: string;
@@ -27,7 +31,9 @@ const AddNewUserForm = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isDirty, isSubmitting, isSubmitted }
+    formState: { errors, isDirty, isSubmitting, isSubmitted },
+    setValue,
+    watch
   } = useForm<FormDataType>();
 
   const onSubmit: SubmitHandler<FormDataType> = async data => {
@@ -49,6 +55,11 @@ const AddNewUserForm = () => {
     } catch (error) {
       Sentry.captureException(error);
     }
+  };
+
+  const createPassword = () => {
+    const generatedPassword = generatePassword();
+    setValue('password', generatedPassword);
   };
 
   return (
@@ -75,7 +86,10 @@ const AddNewUserForm = () => {
                     isError={errors.full_name?.type === 'required'}
                     onErrorClassName="border-highlight border-2"
                     {...register('full_name', {
-                      required: true,
+                      required: {
+                        value: true,
+                        message: 'Full name required'
+                      },
                       pattern: /^\S+\s\S+$/i
                     })}
                   />
@@ -101,7 +115,15 @@ const AddNewUserForm = () => {
                     {...register('password', {
                       required: true
                     })}
+                    showEye
                   />
+                  <div
+                    className="text-xs text-orange-400 cursor-pointer hover:text-orange-200"
+                    onClick={() => createPassword()}
+                  >
+                    Generate password?
+                  </div>
+                  <PasswordValidation password={watch('password')} />
                 </div>
               </div>
               <div>
