@@ -153,7 +153,9 @@ describe('LoginForm', () => {
       expect(signInSpy).not.toHaveBeenCalled();
     });
 
-    expect(screen.getByText(/your email is required\./i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Please provide an email address\./i)
+    ).toBeInTheDocument();
   });
 
   it('displays a password required message if form submitted with no password', async () => {
