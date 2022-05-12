@@ -12,7 +12,8 @@ import {
   CONFIRM_PASSWORD_MATCH,
   GENERIC_API_ERROR,
   NEW_PASSWORD_REQUIRED,
-  PASSWORD_REQUIREMENTS
+  PASSWORD_REQUIREMENTS,
+  USER_NOT_AUTHORISED
 } from '../../../lib/utils/error-codes';
 import { generatePassword } from '../../../lib/utils/generatePassword';
 import { VALID_PASSWORD } from '../../../lib/utils/regexes';
@@ -68,7 +69,7 @@ const PasswordManagement = () => {
       const json = await fetchRes.json();
 
       if (!json.ok) {
-        setSubmitError({ type: json.error });
+        setSubmitError({ type: json.message });
         return reset();
       }
 
@@ -130,7 +131,7 @@ const PasswordManagement = () => {
                 },
                 validate: value =>
                   VALID_PASSWORD.test(value) ||
-                  'Password should be minimum 8 characters and contain at least one uppercase letter, one lowercase letter, one number, one special character'
+                  'Please check your new password is valid'
               })}
               label={t('forms.password-management.new_password')}
               name="newPassword"
@@ -173,6 +174,9 @@ const PasswordManagement = () => {
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">
           {submitError.type === GENERIC_API_ERROR && (
             <ErrorMessage className="text-left" text={t(GENERIC_API_ERROR)} />
+          )}
+          {submitError.type === USER_NOT_AUTHORISED && (
+            <ErrorMessage className="text-left" text={t(USER_NOT_AUTHORISED)} />
           )}
           <Button
             disabled={!isDirty}

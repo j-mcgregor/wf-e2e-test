@@ -14,6 +14,7 @@ import ErrorSkeleton from '../../skeletons/ErrorSkeleton';
 import { CheckIcon } from '@heroicons/react/outline';
 import { generatePassword } from '../../../lib/utils/generatePassword';
 import { PasswordValidation } from '../settings/PasswordValidation';
+import { VALID_PASSWORD } from '../../../lib/utils/regexes';
 
 interface FormDataType {
   email: string;
@@ -113,7 +114,10 @@ const AddNewUserForm = () => {
                     isError={errors.password?.type === 'required'}
                     onErrorClassName="border-highlight border-2"
                     {...register('password', {
-                      required: true
+                      required: true,
+                      validate: value =>
+                        VALID_PASSWORD.test(value) ||
+                        'Please check your new password is valid'
                     })}
                     showEye
                   />

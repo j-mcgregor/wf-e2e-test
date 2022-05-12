@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 import { generatePassword } from '../../../lib/utils/generatePassword';
+import { VALID_PASSWORD } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
@@ -104,7 +105,10 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
                 <Input
                   {...register('newPassword', {
                     required: true,
-                    minLength: 8
+                    minLength: 8,
+                    validate: value =>
+                      VALID_PASSWORD.test(value) ||
+                      'Please check your new password is valid'
                   })}
                   type="password"
                   placeholder={`${t('placeholders.your_new_password')}`}

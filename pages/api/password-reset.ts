@@ -53,8 +53,6 @@ const passwordReset: NextApiHandler<PasswordResetApi> = async (
           newPassword
         });
 
-        console.log('result', result);
-
         return response.status(200).json(result);
       }
 
