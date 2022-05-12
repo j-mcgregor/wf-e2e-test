@@ -98,4 +98,9 @@ export const SERVICE_UNAVAILABLE: ErrorCodeKeys = 'SERVICE_UNAVAILABLE';
  * ORGANISATION
  * *****************************************
  */
+export const ORG_400: ErrorCodeKeys = 'ORG_400';
 export const ORG_404: ErrorCodeKeys = 'ORG_404';
+export const ORG_422: ErrorCodeKeys = 'ORG_422';
+export const ORG_429: ErrorCodeKeys = 'ORG_429';
+export const ORG_500: ErrorCodeKeys = 'ORG_500';
+export const ORG_503: ErrorCodeKeys = 'ORG_503';

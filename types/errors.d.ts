@@ -71,7 +71,12 @@ export type ErrorCodeKeys =
   | 'SERVICE_UNAVAILABLE'
   | 'TOO_MANY_REQUESTS'
   // ORGANISATION
-  | 'ORG_404';
+  | 'ORG_400'
+  | 'ORG_404'
+  | 'ORG_422'
+  | 'ORG_429'
+  | 'ORG_500'
+  | 'ORG_503';
 
 export type HttpStatusKeys =
   | 'ACCEPTED'
