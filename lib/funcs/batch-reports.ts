@@ -1,5 +1,5 @@
 import { ApiHandler, HandlerReturn } from '../../types/http';
-import { makeErrorResponse } from '../utils/error-handling';
+import { errorsBySourceType, makeErrorResponse } from '../utils/error-handling';
 import {
   makeApiHandlerResponseFailure,
   makeApiHandlerResponseSuccess
@@ -53,15 +53,34 @@ const getAllBatchReports: ApiHandler<
       };
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'BATCH_REPORT'
-      }),
-      batchReports: null
-    };
+    if (
+      Object.keys(errorsBySourceType.BATCH_REPORT).includes(
+        `${response.status}`
+      )
+    ) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReports: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReports: null,
+        message: 'BATCH_REPORT_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), batchReports: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      batchReports: null,
+      message: 'BATCH_REPORT_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -103,15 +122,34 @@ const getBatchReportsById: ApiHandler<
       };
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'BATCH_REPORT'
-      }),
-      batchReport: null
-    };
+    if (
+      Object.keys(errorsBySourceType.BATCH_REPORT).includes(
+        `${response.status}`
+      )
+    ) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReport: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReport: null,
+        message: 'BATCH_REPORT_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), batchReport: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      batchReport: null,
+      message: 'BATCH_REPORT_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -151,17 +189,33 @@ const createBatchReport: ApiHandler<
       };
     }
 
+    if (
+      Object.keys(errorsBySourceType.BATCH_REPORT).includes(
+        `${response.status}`
+      )
+    ) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReportId: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReportId: null,
+        message: 'BATCH_REPORT_PROCESSING_ISSUE'
+      };
+    }
+  } catch (error) {
     return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'BATCH_REPORT'
-      }),
-      batchReportId: null
-    };
-  } catch (err: any) {
-    return {
-      ...makeApiHandlerResponseFailure({ message: err.message }),
-      batchReportId: null
+      ...makeApiHandlerResponseFailure(),
+      batchReportId: null,
+      message: 'BATCH_REPORT_PROCESSING_ISSUE'
     };
   }
 };
@@ -205,17 +259,33 @@ const batchJobReportUpload: ApiHandler<
       };
     }
 
+    if (
+      Object.keys(errorsBySourceType.BATCH_REPORT).includes(
+        `${response.status}`
+      )
+    ) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReportId: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReportId: null,
+        message: 'BATCH_REPORT_PROCESSING_ISSUE'
+      };
+    }
+  } catch (error) {
     return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'BATCH_REPORT'
-      }),
-      batchReportId: null
-    };
-  } catch (err: any) {
-    return {
-      ...makeApiHandlerResponseFailure({ message: err.message }),
-      batchReportId: null
+      ...makeApiHandlerResponseFailure(),
+      batchReportId: null,
+      message: 'BATCH_REPORT_PROCESSING_ISSUE'
     };
   }
 };
@@ -259,12 +329,34 @@ export const getBatchReportsCsv: ApiHandler<
         csv
       };
     }
-    return {
-      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
-      csv: null
-    };
+    if (
+      Object.keys(errorsBySourceType.BATCH_REPORT).includes(
+        `${response.status}`
+      )
+    ) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        csv: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        csv: null,
+        message: 'BATCH_REPORT_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), csv: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      csv: null,
+      message: 'BATCH_REPORT_PROCESSING_ISSUE'
+    };
   }
 };
 
