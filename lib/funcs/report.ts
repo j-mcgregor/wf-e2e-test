@@ -220,8 +220,6 @@ const createReport: ApiHandler<CreateReport, CreateReportProps> = async (
       };
     }
 
-    console.log(response.status);
-
     if (Object.keys(errorsBySourceType.REPORT).includes(`${response.status}`)) {
       return {
         ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
