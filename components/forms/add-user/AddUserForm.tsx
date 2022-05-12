@@ -35,7 +35,11 @@ const AddNewUserForm = () => {
     formState: { errors, isDirty, isSubmitting, isSubmitted },
     setValue,
     watch
-  } = useForm<FormDataType>();
+  } = useForm<FormDataType>({
+    defaultValues: {
+      password: generatePassword()
+    }
+  });
 
   const onSubmit: SubmitHandler<FormDataType> = async data => {
     try {
@@ -119,7 +123,7 @@ const AddNewUserForm = () => {
                         VALID_PASSWORD.test(value) ||
                         'Please check your new password is valid'
                     })}
-                    showEye
+                    showEye={{ isOpen: true }}
                   />
                   <div
                     className="text-xs text-orange-400 cursor-pointer hover:text-orange-200"

@@ -18,7 +18,7 @@ interface InputProps extends BaseInputProps {
   isError?: boolean;
   select?: boolean;
   options?: { optionValue: string; optionName: string }[];
-  showEye?: boolean;
+  showEye?: boolean | { isOpen: true };
 }
 
 const defaultFocusClasses = 'focus:ring-highlight focus:border-highlight';
@@ -44,9 +44,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     }: InputProps,
     ref
   ) => {
-    const [showPassword, setShowPassword] = useState(false);
+    const eyeOpenByDefault = typeof showEye === 'object' && showEye.isOpen;
+
+    const [showPassword, setShowPassword] = useState(eyeOpenByDefault);
 
     const inputType = showEye ? (showPassword ? 'text' : 'password') : type;
+
     return (
       <>
         {label && (
