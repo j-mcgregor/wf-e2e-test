@@ -80,8 +80,8 @@ const CreateBatchReport: NextPage = () => {
       return false;
     }
 
-    // setLoading(true);
-    // setProcessing(true);
+    setLoading(true);
+    setProcessing(true);
 
     // req body is different for /jobs/batch and /jobs/batch/upload
     // if /jobs/batch           BatchAutoRequest
