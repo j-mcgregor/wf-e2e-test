@@ -49,19 +49,22 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          token,
+          token: token || '',
           newPassword: data.newPassword
         })
       });
       const body = await res.json();
 
       if (body.ok) {
-        setFormSubmitted(true);
+        return setFormSubmitted(true);
       }
       if (body.is_error) {
-        setSubmitError({ type: body.message });
+        if (body.error === 'Invalid token') {
+          return setSubmitError({ type: 'INVALID_TOKEN' });
+        }
+        return setSubmitError({ type: body.message });
       }
-      setSubmitError({ type: GENERIC_API_ERROR });
+      return setSubmitError({ type: GENERIC_API_ERROR });
     } catch (e) {
       // log the details of the error to the logger
       setSubmitError({ type: GENERIC_API_ERROR });
@@ -95,12 +98,13 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
           <>
             <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
               <p>{t('enter_new_password')}</p>
-              <div
+              <button
+                type="button"
                 className="text-xs text-orange-400 cursor-pointer hover:text-orange-200"
                 onClick={() => createPassword()}
               >
-                Generate password?
-              </div>
+                {t('generate_password')}
+              </button>
               <div className="mt-6">
                 <Input
                   {...register('newPassword', {
@@ -114,11 +118,8 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
                   placeholder={`${t('placeholders.your_new_password')}`}
                   showEye
                 />
-                {errors.newPassword?.type === 'minLength' && (
-                  <ErrorMessage text={t('errors.min_length')} />
-                )}
-                {errors.newPassword?.type === 'required' && (
-                  <ErrorMessage text={t('errors.required')} />
+                {errors.newPassword && (
+                  <ErrorMessage text={t('valid_password_required')} />
                 )}
                 <PasswordValidation password={watch('newPassword')} />
               </div>
@@ -140,11 +141,14 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
                   <ErrorMessage text={t('errors.not_same')} />
                 )}
                 {errors.confirmPassword?.type === 'required' && (
-                  <ErrorMessage text={t('errors.required')} />
+                  <ErrorMessage text={t('errors.confirm_required')} />
                 )}
               </div>
               {submitError.type === GENERIC_API_ERROR && (
                 <ErrorMessage text={t('errors.submit_error')} />
+              )}
+              {submitError.type === 'INVALID_TOKEN' && (
+                <ErrorMessage text={t('errors.INVALID_TOKEN')} />
               )}
               <div className="mt-6">
                 <Button

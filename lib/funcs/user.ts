@@ -306,14 +306,16 @@ const resetPassword: ApiHandler<ResetPassword, ResetPasswordProps> = async (
       },
       body: JSON.stringify({ token, new_password: newPassword })
     });
-
+    const result = await response.json();
     if (response.ok) {
-      const result = await response.json();
       return { ...makeApiHandlerResponseSuccess(), msg: result.msg };
     }
     return {
-      ...makeApiHandlerResponseFailure({ message: INTERNAL_SERVER_ERROR }),
-      msg: null
+      ...makeApiHandlerResponseFailure({
+        message: INTERNAL_SERVER_ERROR,
+        error: result.detail
+      }),
+      msg: result.detail
     };
   } catch (error) {
     return {

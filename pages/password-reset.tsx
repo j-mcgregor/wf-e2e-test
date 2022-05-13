@@ -26,11 +26,10 @@ export async function getServerSideProps({
   locale,
   query
 }: GetServerSidePropsContext) {
-  const token = `${query.password_token}`;
+  const token = query.password_token || '';
 
   // make a request to determine if the token is valid on the backend
   // const isValidToken = await validateToken(token)
-
   return {
     props: {
       isValid: !!token,

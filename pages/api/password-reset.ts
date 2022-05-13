@@ -21,7 +21,6 @@ const passwordReset: NextApiHandler<PasswordResetApi> = async (
 ) => {
   const { email } = request.query;
   const { token, newPassword } = request.body;
-
   switch (request.method) {
     case 'GET':
       /** @action REQUEST EMAIL TO CHANGE EMAIL ADDRESS  */
