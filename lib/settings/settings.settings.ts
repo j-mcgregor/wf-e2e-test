@@ -24,7 +24,7 @@ const supportedCurrencies = countryCodeJSON.map(country => ({
   code: country.currency_code
 }));
 
-const getCurrencyByIsoCode = (iso_code: string, defaultCode = 'GBP') => {
+export const getCurrencyByIsoCode = (iso_code: string, defaultCode = 'GBP') => {
   const currency_code = countryCodeJSON.find(
     country => country.code === iso_code
   )?.currency_code;

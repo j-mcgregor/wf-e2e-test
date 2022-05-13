@@ -692,7 +692,7 @@ export const batchReport = {
 };
 
 export const accountTypes: SimpleValue[] = [
-  { code: 'ALL_STATEMENTS', optionName: 'All statements', optionValue: '0' },
+  // { code: 'ALL_STATEMENTS', optionName: 'All statements', optionValue: '0' },
   { code: 'RECENT_ACCOUNTS', optionName: 'Recent accounts', optionValue: '1' },
   {
     code: 'NO_LIMITED_FINANCIALS',

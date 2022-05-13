@@ -82,7 +82,7 @@ const batchReports: NextApiHandler<BatchReportsIndexApi> = async (
           entities: request?.body?.entities || [],
           name: request?.body?.name || '',
           currency: request?.body?.currency || '',
-          accounts_type: request?.body?.accounts_type || 0
+          accounts_type: request?.body?.accounts_type || 1
         };
 
         try {

@@ -3,6 +3,7 @@ import { getToken } from 'next-auth/jwt';
 
 import Organisation, {
   GetOrganisation,
+  getTotalOrganisationReportsType,
   UpdateOrganisation
 } from '../../../../lib/funcs/organisation';
 import { NO_COMPANY_ID } from '../../../../lib/utils/error-codes';
@@ -22,13 +23,17 @@ const { NOT_FOUND, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
 export interface OrganisationIndexApi
   extends GetOrganisation,
+    getTotalOrganisationReportsType,
     UpdateOrganisation {}
 
 const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
   request,
   response
 ) => {
-  const defaultNullProps = { organisation: null };
+  const defaultNullProps = {
+    organisation: null,
+    totalOrganisationReports: null
+  };
   const token = await getToken({
     req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
@@ -42,6 +47,7 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
 
   // get the company id from the query
   const orgId: string = request?.query?.orgId?.toString();
+  const reports: boolean = request?.query?.reports?.toString() === 'true';
 
   // return an error if no company id is provided
   if (!orgId) {
@@ -60,7 +66,21 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
           `${token?.accessToken}`,
           { orgId }
         );
-        return response.status(result.status).json(result);
+
+        if (reports) {
+          const resultReports = await Organisation.getOrganisationReports(
+            `${token?.accessToken}`,
+            { orgId }
+          );
+
+          return response
+            .status(resultReports.status)
+            .json({ ...defaultNullProps, ...result, ...resultReports });
+        }
+
+        return response
+          .status(result.status)
+          .json({ ...defaultNullProps, ...result });
       } catch (error) {
         return response.status(NOT_FOUND).json({
           ...makeApiHandlerResponseFailure({
@@ -76,7 +96,9 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
           `${token?.accessToken}`,
           { orgId, body: request.body }
         );
-        return response.status(result.status).json(result);
+        return response
+          .status(result.status)
+          .json({ ...defaultNullProps, ...result });
       } catch (error) {
         return response.status(NOT_FOUND).json({
           ...makeApiHandlerResponseFailure({

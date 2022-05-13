@@ -23,8 +23,14 @@ interface FormDataType {
   organisation_role: 'Admin' | 'User';
 }
 
-const AddNewUserForm = () => {
-  const [submitError, setSubmitError] = React.useState({ type: '' });
+const AddNewUserForm = ({
+  onSubmitSuccess
+}: {
+  onSubmitSuccess: () => void;
+}) => {
+  const [submitError, setSubmitError] = React.useState({
+    type: ''
+  });
   const [successfulSubmit, setSuccessfulSubmit] = React.useState(false);
   const t = useTranslations();
   const { organisation, message } = useOrganisation();
@@ -49,10 +55,12 @@ const AddNewUserForm = () => {
       });
 
       const json = await res.json();
+      onSubmitSuccess();
 
       if (!json.ok) {
-        setSubmitError({ type: json.error });
+        setSubmitError({ type: json.message });
       } else {
+        onSubmitSuccess();
         setSuccessfulSubmit(true);
       }
 
@@ -89,7 +97,7 @@ const AddNewUserForm = () => {
                     label="Full name *"
                     type="text"
                     isError={errors.full_name?.type === 'required'}
-                    onErrorClassName="border-highlight border-2"
+                    onErrorClassName="border-red-500 border-2"
                     {...register('full_name', {
                       required: {
                         value: true,
@@ -99,24 +107,35 @@ const AddNewUserForm = () => {
                     })}
                   />
                 </div>
+                {errors.full_name && (
+                  <p className="mb-2 text-xs text-red-500">
+                    Full name is required and must be a first and last name.
+                  </p>
+                )}
                 <div className="w-4/5">
                   <Input
                     label="Email *"
                     type="email"
                     isError={errors.email?.type === 'required'}
-                    onErrorClassName="border-highlight border-2"
+                    onErrorClassName="border-red-500 border-2"
                     {...register('email', {
                       required: true,
                       pattern: /^\S+@\S+\.\S+$/i
                     })}
                   />
                 </div>
+                {errors.email && (
+                  <p className="mb-2 text-xs text-red-500">
+                    A valid email is required.
+                  </p>
+                )}
+
                 <div className="w-64">
                   <Input
                     label="Password *"
                     type="password"
                     isError={errors.password?.type === 'required'}
-                    onErrorClassName="border-highlight border-2"
+                    onErrorClassName="border-red-500 border-2"
                     {...register('password', {
                       required: true,
                       validate: value =>
@@ -133,6 +152,12 @@ const AddNewUserForm = () => {
                   </div>
                   <PasswordValidation password={watch('password')} />
                 </div>
+                {errors.password && (
+                  <p className="mb-2 text-xs text-red-500">
+                    A valid password is required (at least 8 characters with at
+                    least 1 upper case, 1 lower case, 1 numeric and 1 symbol).
+                  </p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium">
@@ -188,9 +213,7 @@ const AddNewUserForm = () => {
             >
               {t('add_user_button')}
             </Button>
-            {submitError.type === GENERIC_API_ERROR && (
-              <ErrorMessage text={t(GENERIC_API_ERROR)} />
-            )}
+            {submitError.type && <ErrorMessage text={t(submitError.type)} />}
             {successfulSubmit && (
               <div className="flex gap-1 items-center text-green-500">
                 <CheckIcon className="h-5 w-5" />

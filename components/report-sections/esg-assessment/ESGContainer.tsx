@@ -128,12 +128,6 @@ const ESGContainer = ({
             title={t('carbon_intensity')}
             titleMiddle={true}
             reverseX
-            hint={
-              <Hint
-                title={t('report_hints.esg.environmental_risk.title')}
-                body={t('report_hints.esg.environmental_risk.body')}
-              />
-            }
             classes="w-full"
             innerClasses="scale-110 lg:scale-125 xl:scale-130"
           />

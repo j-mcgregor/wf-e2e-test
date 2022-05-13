@@ -18,7 +18,7 @@ interface SpeedometerProps {
   secondaryValues?: SecondaryValue[];
   value?: number | null;
   weighting?: number;
-  hint: ReactElement;
+  hint?: ReactElement;
   asMetric?: string;
   decimalPoints?: number;
   reverseX?: boolean;
