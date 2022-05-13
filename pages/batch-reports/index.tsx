@@ -56,7 +56,6 @@ const BatchReports: NextPage = () => {
 
     if (batchReports) {
       batchReports.forEach(job => {
-        // PENDING
         if (job.created_at === job.updated_at || !job.finished_at) {
           pending.push(job);
         } else {
