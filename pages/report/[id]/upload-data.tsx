@@ -165,7 +165,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // the desired one based on the `locale` received from Next.js.
         ...require(`../../../messages/${locale}/upload-data.${locale}.json`),
         ...require(`../../../messages/${locale}/hints.${locale}.json`),
-        ...require(`../../../messages/${locale}/general.${locale}.json`)
+        ...require(`../../../messages/${locale}/general.${locale}.json`),
+        ...require(`../../../messages/${locale}/errors.${locale}.json`)
       }
     }
   };

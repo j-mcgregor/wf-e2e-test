@@ -257,7 +257,8 @@ export async function getServerSideProps({
         // the desired one based on the `locale` received from Next.js.
         ...require(`../../../messages/${locale}/reports.${locale}.json`),
         ...require(`../../../messages/${locale}/organisation.${locale}.json`),
-        ...require(`../../../messages/${locale}/general.${locale}.json`)
+        ...require(`../../../messages/${locale}/general.${locale}.json`),
+        ...require(`../../../messages/${locale}/errors.${locale}.json`)
       }
     }
   };

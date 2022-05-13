@@ -2,9 +2,9 @@
 import { GetStaticPropsContext } from 'next';
 import { useSession, signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import * as Sentry from '@sentry/react';
+import Auth from '../lib/utils/auth-helpers';
 
 import LoginContainer from '../components/containers/LoginContainer';
 import Logo from '../components/elements/Logo';
@@ -19,7 +19,17 @@ const LogOut = () => {
 
   useEffect(() => {
     const signout = async () => {
+      const token = session?.token;
+
+      if (token) {
+        // invalidate the token on the backend
+        await Auth.invalidateAuthToken(`${token}`);
+      }
+
+      // log out of sentry
       Sentry.configureScope(scope => scope.setUser(null));
+
+      // // signout of next-auth
       signOut({ callbackUrl: `${window.location.origin}/login` });
     };
 
