@@ -36,21 +36,23 @@ export const PasswordValidation: React.FC<{ password?: string }> = ({
   ];
 
   return (
-    <div className="w-auto h-full mt-2">
-      <ul className="text-xs space-y-2">
-        {validations.map((val, i) => (
-          <li className="flex items-center" key={`validation-${i}`}>
-            <span className="h-4 w-4 mr-1 mt-[2px]">
-              {val.valid ? (
-                <CheckIcon className="h-full fill-green-700" fill="#123445" />
-              ) : (
-                <XIcon className="h-full fill-red-700" />
-              )}
-            </span>
-            {val.label}
-          </li>
-        ))}
-      </ul>
+    <div className="w-auto mt-2">
+      {password && (
+        <ul className="text-xs space-y-2">
+          {validations.map((val, i) => (
+            <li className="flex items-center" key={`validation-${i}`}>
+              <span className="h-4 w-4 mr-1 mt-[2px]">
+                {val.valid ? (
+                  <CheckIcon className="h-full fill-green-700" fill="#123445" />
+                ) : (
+                  <XIcon className="h-full fill-red-700" />
+                )}
+              </span>
+              {val.label}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

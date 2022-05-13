@@ -45,6 +45,7 @@ const PasswordManagement = () => {
   } = useForm<PasswordFormInput>();
   const { isDirty, errors, isSubmitting } = formState;
   const [submitError, setSubmitError] = useState({ type: '' });
+  const [showPassword, setShowPassword] = useState(false);
 
   // @ts-ignore
   const onSubmit: SubmitHandler = async (data: {
@@ -84,6 +85,7 @@ const PasswordManagement = () => {
 
   const createPassword = () => {
     const generatedPassword = generatePassword();
+    setShowPassword(true);
     setValue('newPassword', generatedPassword);
     setValue('confirmPassword', generatedPassword);
   };
@@ -97,14 +99,8 @@ const PasswordManagement = () => {
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="bg-white py-6 px-4 space-y-6 sm:p-6 flex justify-between">
+        <div className="bg-white py-6 px-4 sm:space-x-4 space-y-6 sm:p-6 flex flex-col sm:flex-row justify-between">
           <div className=" xs:w-full sm:w-1/2 ">
-            <div
-              className="text-xs text-orange-400 cursor-pointer hover:text-orange-200 mb-2"
-              onClick={() => createPassword()}
-            >
-              Generate password?
-            </div>
             <Input
               {...register('currentPassword', {
                 required: 'You must enter your current password',
@@ -117,7 +113,9 @@ const PasswordManagement = () => {
               name="currentPassword"
               autoComplete="current-password"
               type="password"
-              showEye
+              showEye={{
+                isOpen: showPassword
+              }}
             />
             {errors.currentPassword && (
               <ErrorMessage
@@ -171,8 +169,14 @@ const PasswordManagement = () => {
               <ErrorMessage text={t(CONFIRM_PASSWORD_MATCH)} />
             )}
           </div>
-          <div>
+          <div className="sm:w-2/5">
             <PasswordValidation password={watch('newPassword')} />
+            <button
+              className="text-xs text-orange-400 cursor-pointer mt-4 hover:text-orange-200 mb-2"
+              onClick={() => createPassword()}
+            >
+              {t('forms.password-management.generate_password')}
+            </button>
           </div>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">

@@ -18,7 +18,7 @@ interface InputProps extends BaseInputProps {
   isError?: boolean;
   select?: boolean;
   options?: { optionValue: string; optionName: string }[];
-  showEye?: boolean | { isOpen: true };
+  showEye?: boolean | { isOpen: boolean };
 }
 
 const defaultFocusClasses = 'focus:ring-highlight focus:border-highlight';
@@ -66,7 +66,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             placeholder={placeholder}
             className={`${
               isError ? onErrorClassName : onFocusClassName
-            } ${className}`}
+            } ${className} ${showEye && 'pr-9'}`}
             {...props}
           />
           {showEye && (
