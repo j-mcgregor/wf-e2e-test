@@ -21,15 +21,6 @@ import { appUser } from '../../lib/appState';
 
 import type { BatchReportResponse } from '../../types/batch-reports';
 
-const LIMIT = 4; // eg 4 hours ago
-
-const lessThanFourHoursAgo = (date: number) => {
-  const HOURS = 60 * 60 * 1000 * LIMIT;
-  const hoursAgo = Date.now() - HOURS;
-
-  return date > hoursAgo;
-};
-
 const BatchReports: NextPage = () => {
   const t = useTranslations();
   const [pendingJobs, setPendingJobs] = useState<BatchReportResponse[]>([]);
@@ -59,28 +50,23 @@ const BatchReports: NextPage = () => {
 
   // run on allJobs
   useEffect(() => {
+    const pending: BatchReportResponse[] = [];
+    const complete: BatchReportResponse[] = [];
+    const failed: BatchReportResponse[] = [];
+
     if (batchReports) {
-      const complete = batchReports?.filter(
-        job => job.total_reports !== job.failed_reports
-      );
-      const pending = batchReports?.filter(job => {
-        if (
-          lessThanFourHoursAgo(new Date(job.created_at).getTime()) &&
-          job.total_reports === job.failed_reports
-        ) {
-          return job;
+      batchReports.forEach(job => {
+        // PENDING
+        if (job.created_at === job.updated_at || !job.finished_at) {
+          pending.push(job);
+        } else {
+          if (job.total_reports === job.failed_reports) {
+            failed.push(job);
+          } else {
+            complete.push(job);
+          }
         }
       });
-
-      const failed = batchReports?.filter(job => {
-        if (
-          !lessThanFourHoursAgo(new Date(job.created_at).getTime()) &&
-          job.total_reports === job.failed_reports
-        ) {
-          return job;
-        }
-      });
-
       setCompletedJobs(complete);
       setPendingJobs(pending);
       setFailedJobs(failed);
