@@ -177,7 +177,7 @@ const BatchReports: NextPage = () => {
             )}
           </div>
           {/* Handle loading cases and if there are enough reports to show more */}
-          {reportLimit + 8 <= reportLength && (
+          {reportLimit + 8 <= completedJobs.length && (
             <Button
               disabled={loading && fetching}
               variant="none"
@@ -195,22 +195,24 @@ const BatchReports: NextPage = () => {
 
         {failedJobs.length > 0 ? (
           <Collapsible title={t('failed_batch_reports')} collapsed={true}>
-            <div className="grid md:grid-cols-4 grid-cols-2 gap-3 "></div>
-            {user &&
-              failedJobs?.map(report => {
-                return (
-                  <BatchReportCard
-                    key={report.id}
-                    header={report.name}
-                    quantity={report.total_reports || 0}
-                    quantityText={`${t('batch_failed')}`}
-                    icon={<DocumentReportIcon className="w-6 h-6 text-white" />}
-                    iconColor="bg-red-500"
-                    disabled
-                  />
-                );
-              })}
-            <div className="grid md:grid-cols-4 grid-cols-2 gap-3 "></div>
+            <div className="grid md:grid-cols-4 grid-cols-2 gap-3 ">
+              {user &&
+                failedJobs?.map(report => {
+                  return (
+                    <BatchReportCard
+                      key={report.id}
+                      header={report.name}
+                      quantity={report.total_reports || 0}
+                      quantityText={`${t('batch_failed')}`}
+                      icon={
+                        <DocumentReportIcon className="w-6 h-6 text-white" />
+                      }
+                      iconColor="bg-red-500"
+                      disabled
+                    />
+                  );
+                })}
+            </div>
           </Collapsible>
         ) : null}
       </div>

@@ -183,7 +183,7 @@ const AddNewUserForm = ({
             >
               {t('add_user_button')}
             </Button>
-            {submitError && <ErrorMessage text={t(submitError.type)} />}
+            {submitError.type && <ErrorMessage text={t(submitError.type)} />}
             {successfulSubmit && (
               <div className="flex gap-1 items-center text-green-500">
                 <CheckIcon className="h-5 w-5" />

@@ -3,6 +3,8 @@ import { useTranslations } from 'next-intl';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import SelectMenu from '../elements/SelectMenu';
 import Input from '../elements/Input';
+import { accountTypes } from '../../lib/settings/report.settings';
+import Hint from '../elements/Hint';
 
 export type SimpleValue = {
   optionValue: string;
@@ -13,13 +15,14 @@ export type SimpleValue = {
 type AdvancedSearchType = {
   handleSearchReg: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectCountry: (value: SimpleValue) => void;
+  handleSelectAccountType: (value: SimpleValue) => void;
   handleSelectCurrency: (SimpleValue: SimpleValue) => void;
   selectedCurrency?: SimpleValue;
 };
 
 const AdvancedSearch = ({
   handleSearchReg,
-  handleSelectCountry,
+  handleSelectAccountType,
   selectedCurrency,
   handleSelectCurrency
 }: AdvancedSearchType) => {
@@ -48,19 +51,28 @@ const AdvancedSearch = ({
         </div>
       </div>
 
-      {/* <div className="my-4 flex justify-between items-center">
+      <div className="my-4 flex justify-between items-center">
         <div className="py-2 w-1/2">
-          <p className="text-lg font-semibold py-1">{t('account_type')}</p>
+          <div className="flex w-full justify-between">
+            <p className="text-lg font-semibold py-1 ">{t('account_type')}</p>
+            <Hint
+              title={t('account_type_hint.title')}
+              rawBody={t.raw('account_type_hint.body')}
+            />
+          </div>
+
           <p>{t('choose_the_type_of_accounts_to_generate')}</p>
         </div>
 
         <div className="w-1/3">
           <SelectMenu
-            defaultValue={t('account_type')}
-            setSelectedValue={handleSelectCountry}
+            values={accountTypes}
+            defaultValue={accountTypes[0]}
+            selectedValue={accountTypes[0]}
+            setSelectedValue={handleSelectAccountType}
           />
         </div>
-      </div> */}
+      </div>
 
       <div className="my-4 flex flex-col sm:flex-row justify-between items-center">
         <div className="py-2 sm:w-1/2 w-full">

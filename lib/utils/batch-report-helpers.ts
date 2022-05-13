@@ -14,6 +14,8 @@ import type {
   CsvReportUploadHeaders,
   ReportUploadRequestBody
 } from '../../types/report';
+import { getCurrencyByIsoCode } from '../settings/settings.settings';
+import { ISO } from './constants';
 
 type BatchRequest = BatchAutoRequest | BatchManualRequest;
 
@@ -85,22 +87,28 @@ export const convertCSVToRequestBody = ({
   name,
   uploadType,
   accounts_type = 1,
-  currency = 'GBP'
+  currency
 }: ConvertCsvProps): BatchRequest => {
   // BASIC INFO
   let response = {
     name: name,
     accounts_type,
-    currency,
+    // currency,
     entities: []
   } as BatchRequest;
+
+  // handle setting currency by ISO
+  const hasCurrency = !!currency && currency !== ISO;
 
   if (uploadType === 'BATCH_AUTO') {
     const entities = csvData?.company_id?.map(
       (id, i) =>
         ({
           company_id: id?.trim(),
-          iso_code: csvData.iso_code[Number(i)]?.trim()
+          iso_code: csvData.iso_code[Number(i)]?.trim(),
+          currency: hasCurrency
+            ? currency
+            : getCurrencyByIsoCode(csvData.iso_code[Number(i)]?.trim(), 'GBP')
         } as Entity)
     );
 
