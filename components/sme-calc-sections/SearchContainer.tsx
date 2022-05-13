@@ -149,7 +149,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
       iso_code: selectedCountry?.optionValue,
       company_id: selectedCompany?.company_number || regSearchValue,
       currency: selectedCurrency?.code,
-      accounts_type: selectedAccountType?.optionValue || 1
+      accounts_type: Number(selectedAccountType?.optionValue) || 1
     };
 
     const sentryExtraInfo = {
