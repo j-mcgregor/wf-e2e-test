@@ -168,15 +168,17 @@ const PasswordManagement = () => {
             {errors?.confirmPassword && (
               <ErrorMessage text={t(CONFIRM_PASSWORD_MATCH)} />
             )}
+            {isDirty && (
+              <button
+                className="text-xs text-orange-400 cursor-pointer mt-4 hover:text-orange-200 mb-2"
+                onClick={() => createPassword()}
+              >
+                {t('forms.password-management.generate_password')}
+              </button>
+            )}
           </div>
           <div className="sm:w-2/5">
             <PasswordValidation password={watch('newPassword')} />
-            <button
-              className="text-xs text-orange-400 cursor-pointer mt-4 hover:text-orange-200 mb-2"
-              onClick={() => createPassword()}
-            >
-              {t('forms.password-management.generate_password')}
-            </button>
           </div>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">
