@@ -1,6 +1,6 @@
 import { ApiHandler, HandlerReturn } from '../../types/http';
 import { ReportDataProps } from '../../types/report';
-import { makeErrorResponse } from '../utils/error-handling';
+import { errorsBySourceType, makeErrorResponse } from '../utils/error-handling';
 import {
   makeApiHandlerResponseFailure,
   makeApiHandlerResponseSuccess
@@ -43,12 +43,24 @@ const getExistingReport: ApiHandler<
       };
     }
 
-    return {
-      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
-      report: null
-    };
+    if (errorsBySourceType.REPORT[response.status]) {
+      return {
+        ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+        report: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+        report: null,
+        message: 'REPORT_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), report: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      report: null,
+      message: 'REPORT_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -88,12 +100,24 @@ const getReportShortCsv: ApiHandler<
         csv
       };
     }
-    return {
-      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
-      csv: null
-    };
+    if (errorsBySourceType.REPORT[response.status]) {
+      return {
+        ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+        csv: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+        csv: null,
+        message: 'REPORT_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), csv: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      csv: null,
+      message: 'REPORT_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -132,12 +156,25 @@ const getReportFullCsv: ApiHandler<
         csv
       };
     }
-    return {
-      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
-      csv: null
-    };
+
+    if (errorsBySourceType.REPORT[response.status]) {
+      return {
+        ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+        csv: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+        csv: null,
+        message: 'REPORT_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), csv: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      csv: null,
+      message: 'REPORT_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -156,7 +193,7 @@ export interface CreateReportProps {
     iso_code: string;
     company_id: string;
     currency: string;
-    /** @deprecated */
+    // /** @deprecated */
     accounts_type: number;
   };
 }
@@ -183,12 +220,24 @@ const createReport: ApiHandler<CreateReport, CreateReportProps> = async (
       };
     }
 
-    return {
-      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
-      reportId: null
-    };
+    if (errorsBySourceType.REPORT[response.status]) {
+      return {
+        ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+        reportId: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+        reportId: null,
+        message: 'REPORT_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), reportId: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      reportId: null,
+      message: 'REPORT_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -233,12 +282,24 @@ const uploadReport: ApiHandler<UploadReport, UploadReportProps> = async (
       };
     }
 
-    return {
-      ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
-      reportId: null
-    };
+    if (errorsBySourceType.REPORT[response.status]) {
+      return {
+        ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+        reportId: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
+        reportId: null,
+        message: 'REPORT_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), reportId: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      reportId: null,
+      message: 'REPORT_PROCESSING_ISSUE'
+    };
   }
 };
 

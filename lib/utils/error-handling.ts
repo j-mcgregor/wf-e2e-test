@@ -71,7 +71,12 @@ export const errorsBySourceType: Record<SourceType, Record<number, string>> = {
     503: ErrorConstants.SERVICE_UNAVAILABLE
   },
   ORGANISATION: {
-    404: ErrorConstants.ORG_404
+    400: ErrorConstants.ORG_400,
+    404: ErrorConstants.ORG_404,
+    422: ErrorConstants.ORG_422,
+    429: ErrorConstants.ORG_429,
+    500: ErrorConstants.ORG_500,
+    503: ErrorConstants.ORG_503
   }
 };
 
@@ -88,6 +93,13 @@ export const makeErrorResponse = ({
       return {
         ...makeApiHandlerResponseFailure({
           status: 404,
+          message
+        })
+      };
+    case 400:
+      return {
+        ...makeApiHandlerResponseFailure({
+          status: 400,
           message
         })
       };

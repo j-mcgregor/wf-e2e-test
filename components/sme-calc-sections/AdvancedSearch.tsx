@@ -18,12 +18,14 @@ type AdvancedSearchType = {
   handleSelectAccountType: (value: SimpleValue) => void;
   handleSelectCurrency: (SimpleValue: SimpleValue) => void;
   selectedCurrency?: SimpleValue;
+  selectedAccountType?: SimpleValue;
 };
 
 const AdvancedSearch = ({
   handleSearchReg,
   handleSelectAccountType,
   selectedCurrency,
+  selectedAccountType,
   handleSelectCurrency
 }: AdvancedSearchType) => {
   // list of all currencies
@@ -68,7 +70,7 @@ const AdvancedSearch = ({
           <SelectMenu
             values={accountTypes}
             defaultValue={accountTypes[0]}
-            selectedValue={accountTypes[0]}
+            selectedValue={selectedAccountType}
             setSelectedValue={handleSelectAccountType}
           />
         </div>

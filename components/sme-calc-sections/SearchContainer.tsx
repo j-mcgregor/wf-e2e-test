@@ -86,7 +86,6 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     const country = countries.find(x => x.code === defaultCountry);
     setSelectedCountry(country);
 
-    // const currency = countries.find(x => x.currency_code === defaultCurrency);
     const currency = currencies.find(x => x.code === defaultCurrency);
     currency && setSelectedCurrency(currency);
   }, [user]);
@@ -127,7 +126,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     return setSelectedCountry(value);
   };
   const handleSelectAccountType = (value: SimpleValue): void => {
-    return setSelectedAccountType(value);
+    setSelectedAccountType(value);
   };
 
   const handleSearchReg = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -243,6 +242,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
             handleSelectAccountType={handleSelectAccountType}
             handleSelectCountry={handleSelectCountry}
             selectedCurrency={selectedCurrency}
+            selectedAccountType={selectedAccountType}
             handleSelectCurrency={handleSelectCurrency}
           />
         )}
@@ -250,7 +250,10 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         {(error.error || error.message) && (
           <div className="py-4 px-2 border-2 rounded-md border-red-400 bg-red-50 my-2">
             {error.error && (
-              <ErrorMessage className="font-bold mt-2" text={error.message} />
+              <ErrorMessage
+                className="font-bold mt-2"
+                text={`${t('ERROR_TITLE')}`}
+              />
             )}
             {error.message && <ErrorMessage text={`${t(error.message)}`} />}
           </div>

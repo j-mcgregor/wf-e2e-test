@@ -6,7 +6,7 @@ import {
   OrganisationUserReport,
   OrganisationUserSchema
 } from '../../types/organisations';
-import { makeErrorResponse } from '../utils/error-handling';
+import { errorsBySourceType, makeErrorResponse } from '../utils/error-handling';
 import {
   makeApiHandlerResponseFailure,
   makeApiHandlerResponseSuccess
@@ -78,19 +78,32 @@ const getOrganisation: ApiHandler<
       };
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      organisation: null,
-      totalOrganisationReports: null
-    };
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        organisation: null,
+        totalOrganisationReports: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        organisation: null,
+        totalOrganisationReports: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
     return {
       ...makeApiHandlerResponseFailure(),
       organisation: null,
-      totalOrganisationReports: null
+      totalOrganisationReports: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
     };
   }
 };
@@ -128,17 +141,29 @@ const getOrganisationReports: ApiHandler<
       };
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      totalOrganisationReports: null
-    };
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        totalOrganisationReports: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        totalOrganisationReports: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
     return {
       ...makeApiHandlerResponseFailure(),
-      totalOrganisationReports: null
+      totalOrganisationReports: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
     };
   }
 };
@@ -171,6 +196,7 @@ const updateOrganisation: ApiHandler<
         body
       }
     );
+
     if (response.ok) {
       const organisation: OrganisationType = await response.json();
       return {
@@ -178,15 +204,31 @@ const updateOrganisation: ApiHandler<
         organisation
       };
     }
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      organisation: null
-    };
+
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        organisation: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        organisation: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), organisation: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      organisation: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -244,16 +286,33 @@ const getOrganisationUsers: ApiHandler<
       }
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      users: null,
-      total: null
-    };
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        users: null,
+        total: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        users: null,
+        total: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), users: null, total: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      users: null,
+      total: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -313,15 +372,30 @@ const postOrganisationUser: ApiHandler<
       };
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      user: null
-    };
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), user: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      user: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -391,19 +465,32 @@ const getOrganisationUserAndReports: ApiHandler<
       };
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      user: null,
-      userReports: null
-    };
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null,
+        userReports: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null,
+        userReports: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
     return {
       ...makeApiHandlerResponseFailure(),
       user: null,
-      userReports: null
+      userReports: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
     };
   }
 };
@@ -444,15 +531,31 @@ const patchOrganisationUser: ApiHandler<
         user: await response.json()
       };
     }
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      user: null
-    };
+
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), user: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      user: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
+    };
   }
 };
 

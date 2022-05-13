@@ -106,7 +106,7 @@ const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
   if (!results || !results.ok) {
     return response.status(500).json({
       error: SEARCH_ERROR,
-      message: 'Error when accessing API.'
+      message: 'Error when accessing search API.'
     } as ApiError);
   }
 };
