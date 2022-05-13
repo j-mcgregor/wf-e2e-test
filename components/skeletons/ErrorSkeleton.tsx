@@ -20,9 +20,9 @@ const ErrorSkeleton = ({ header, message, code }: ErrorSkeletonProps) => {
       <article className="max-w-lg border-2 border-red-300 w-full text-center p-4 rounded-md mx-auto">
         <ExclamationCircleIcon className="w-10 h-10 mx-auto my-2" />
         <h3 className="font-bold mb-1">
-          {header ? `${header}` : defaultHeader}
+          {header ? `${t(header)}` : defaultHeader}
         </h3>
-        <p>{message ? `${message}` : `${defaultMessage}`}</p>
+        <p>{message ? `${t(message)}` : `${defaultMessage}`}</p>
 
         {/* for unauthorised errors */}
         {(code === 403 || code === 401) && (
