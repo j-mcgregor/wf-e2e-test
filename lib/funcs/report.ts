@@ -43,7 +43,7 @@ const getExistingReport: ApiHandler<
       };
     }
 
-    if (Object.keys(errorsBySourceType.REPORT).includes(`${response.status}`)) {
+    if (errorsBySourceType.REPORT[response.status]) {
       return {
         ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
         report: null
@@ -100,7 +100,7 @@ const getReportShortCsv: ApiHandler<
         csv
       };
     }
-    if (Object.keys(errorsBySourceType.REPORT).includes(`${response.status}`)) {
+    if (errorsBySourceType.REPORT[response.status]) {
       return {
         ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
         csv: null
@@ -157,7 +157,7 @@ const getReportFullCsv: ApiHandler<
       };
     }
 
-    if (Object.keys(errorsBySourceType.REPORT).includes(`${response.status}`)) {
+    if (errorsBySourceType.REPORT[response.status]) {
       return {
         ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
         csv: null
@@ -193,7 +193,7 @@ export interface CreateReportProps {
     iso_code: string;
     company_id: string;
     currency: string;
-    /** @deprecated */
+    // /** @deprecated */
     accounts_type: number;
   };
 }
@@ -220,7 +220,7 @@ const createReport: ApiHandler<CreateReport, CreateReportProps> = async (
       };
     }
 
-    if (Object.keys(errorsBySourceType.REPORT).includes(`${response.status}`)) {
+    if (errorsBySourceType.REPORT[response.status]) {
       return {
         ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
         reportId: null
@@ -282,7 +282,7 @@ const uploadReport: ApiHandler<UploadReport, UploadReportProps> = async (
       };
     }
 
-    if (Object.keys(errorsBySourceType.REPORT).includes(`${response.status}`)) {
+    if (errorsBySourceType.REPORT[response.status]) {
       return {
         ...makeErrorResponse({ status: response.status, sourceType: 'REPORT' }),
         reportId: null

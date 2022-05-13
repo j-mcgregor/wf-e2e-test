@@ -78,11 +78,7 @@ const getOrganisation: ApiHandler<
       };
     }
 
-    if (
-      Object.keys(errorsBySourceType.ORGANISATION).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.ORGANISATION[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -145,11 +141,7 @@ const getOrganisationReports: ApiHandler<
       };
     }
 
-    if (
-      Object.keys(errorsBySourceType.ORGANISATION).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.ORGANISATION[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -213,11 +205,7 @@ const updateOrganisation: ApiHandler<
       };
     }
 
-    if (
-      Object.keys(errorsBySourceType.ORGANISATION).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.ORGANISATION[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -298,11 +286,7 @@ const getOrganisationUsers: ApiHandler<
       }
     }
 
-    if (
-      Object.keys(errorsBySourceType.ORGANISATION).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.ORGANISATION[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -388,11 +372,7 @@ const postOrganisationUser: ApiHandler<
       };
     }
 
-    if (
-      Object.keys(errorsBySourceType.ORGANISATION).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.ORGANISATION[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -485,11 +465,7 @@ const getOrganisationUserAndReports: ApiHandler<
       };
     }
 
-    if (
-      Object.keys(errorsBySourceType.ORGANISATION).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.ORGANISATION[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -556,11 +532,7 @@ const patchOrganisationUser: ApiHandler<
       };
     }
 
-    if (
-      Object.keys(errorsBySourceType.ORGANISATION).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.ORGANISATION[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,

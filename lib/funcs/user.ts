@@ -99,7 +99,7 @@ const getFullUser: ApiHandler<GetFullUser> = async token => {
       };
     }
 
-    if (Object.keys(errorsBySourceType.USER).includes(`${response.status}`)) {
+    if (errorsBySourceType.USER[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -170,7 +170,7 @@ const getUser: ApiHandler<GetUser> = async (token: string) => {
       };
     }
 
-    if (Object.keys(errorsBySourceType.USER).includes(`${response.status}`)) {
+    if (errorsBySourceType.USER[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -258,7 +258,7 @@ const forgotPassword: ApiHandler<ForgotPassword> = async (email: string) => {
       };
     }
 
-    if (Object.keys(errorsBySourceType.USER).includes(`${response.status}`)) {
+    if (errorsBySourceType.USER[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -359,7 +359,7 @@ const resetPassword: ApiHandler<ResetPassword, ResetPasswordProps> = async (
       return { ...makeApiHandlerResponseSuccess(), msg: result.msg };
     }
 
-    if (Object.keys(errorsBySourceType.USER).includes(`${response.status}`)) {
+    if (errorsBySourceType.USER[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -424,7 +424,7 @@ const updateUser: ApiHandler<UpdateUser, UpdateUserProps> = async (
       };
     }
 
-    if (Object.keys(errorsBySourceType.USER).includes(`${response.status}`)) {
+    if (errorsBySourceType.USER[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -492,7 +492,7 @@ const getReportsHistory: ApiHandler<
       };
     }
 
-    if (Object.keys(errorsBySourceType.USER).includes(`${response.status}`)) {
+    if (errorsBySourceType.USER[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -553,7 +553,7 @@ const bookmarkReport: ApiHandler<BookmarkReport, BookmarkReportProps> = async (
       };
     }
 
-    if (Object.keys(errorsBySourceType.USER).includes(`${response.status}`)) {
+    if (errorsBySourceType.USER[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -611,7 +611,7 @@ const getUserBookmarks: ApiHandler<GetUserBookmarks> = async (
       };
     }
 
-    if (Object.keys(errorsBySourceType.USER).includes(`${response.status}`)) {
+    if (errorsBySourceType.USER[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,

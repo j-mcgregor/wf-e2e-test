@@ -53,11 +53,7 @@ const getAllBatchReports: ApiHandler<
       };
     }
 
-    if (
-      Object.keys(errorsBySourceType.BATCH_REPORT).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.BATCH_REPORT[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -122,11 +118,7 @@ const getBatchReportsById: ApiHandler<
       };
     }
 
-    if (
-      Object.keys(errorsBySourceType.BATCH_REPORT).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.BATCH_REPORT[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -189,11 +181,7 @@ const createBatchReport: ApiHandler<
       };
     }
 
-    if (
-      Object.keys(errorsBySourceType.BATCH_REPORT).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.BATCH_REPORT[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -259,11 +247,7 @@ const batchJobReportUpload: ApiHandler<
       };
     }
 
-    if (
-      Object.keys(errorsBySourceType.BATCH_REPORT).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.BATCH_REPORT[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
@@ -329,11 +313,7 @@ export const getBatchReportsCsv: ApiHandler<
         csv
       };
     }
-    if (
-      Object.keys(errorsBySourceType.BATCH_REPORT).includes(
-        `${response.status}`
-      )
-    ) {
+    if (errorsBySourceType.BATCH_REPORT[response.status]) {
       return {
         ...makeErrorResponse({
           status: response.status,
