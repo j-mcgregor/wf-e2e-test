@@ -6,6 +6,7 @@ import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
 
 import appState from '../../lib/appState';
+import { accountTypes } from '../../lib/settings/report.settings';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import {
   orbisAvailableSearchCountries,
@@ -88,6 +89,8 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
 
     const currency = currencies.find(x => x.code === defaultCurrency);
     currency && setSelectedCurrency(currency);
+
+    setSelectedAccountType(accountTypes[0]);
   }, [user]);
 
   // hides the advance search when disabled

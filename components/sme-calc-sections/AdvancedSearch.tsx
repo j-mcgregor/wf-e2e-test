@@ -69,7 +69,7 @@ const AdvancedSearch = ({
         <div className="w-1/3">
           <SelectMenu
             values={accountTypes}
-            defaultValue={accountTypes[0]}
+            defaultValue={accountTypes[0].optionName}
             selectedValue={selectedAccountType}
             setSelectedValue={handleSelectAccountType}
           />
