@@ -34,7 +34,7 @@ const AddNewUserForm = ({
   const [successfulSubmit, setSuccessfulSubmit] = React.useState(false);
   const t = useTranslations();
 
-  const { organisation, message } = useOrganisation();
+  const { organisation } = useOrganisation();
   const {
     register,
     handleSubmit,
@@ -55,14 +55,11 @@ const AddNewUserForm = ({
       const json = await res.json();
       if (!json.ok) {
         setSubmitError({ type: json.message });
-        createPassword();
       } else {
         onSubmitSuccess();
-        createPassword();
         setSuccessfulSubmit(true);
+        return reset();
       }
-
-      return reset();
     } catch (error) {
       Sentry.captureException(error);
     }
