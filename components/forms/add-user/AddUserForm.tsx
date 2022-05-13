@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -10,6 +12,9 @@ import ErrorMessage from '../../elements/ErrorMessage';
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 import ErrorSkeleton from '../../skeletons/ErrorSkeleton';
 import { CheckIcon } from '@heroicons/react/outline';
+import { generatePassword } from '../../../lib/utils/generatePassword';
+import { PasswordValidation } from '../settings/PasswordValidation';
+import { VALID_PASSWORD } from '../../../lib/utils/regexes';
 
 interface FormDataType {
   email: string;
@@ -28,12 +33,15 @@ const AddNewUserForm = ({
   });
   const [successfulSubmit, setSuccessfulSubmit] = React.useState(false);
   const t = useTranslations();
+
   const { organisation, message } = useOrganisation();
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isDirty, isSubmitting, isSubmitted }
+    formState: { errors, isDirty, isSubmitting, isSubmitted },
+    setValue,
+    watch
   } = useForm<FormDataType>();
 
   const onSubmit: SubmitHandler<FormDataType> = async data => {
@@ -44,12 +52,12 @@ const AddNewUserForm = ({
       });
 
       const json = await res.json();
-      onSubmitSuccess();
-
       if (!json.ok) {
         setSubmitError({ type: json.message });
+        createPassword();
       } else {
         onSubmitSuccess();
+        createPassword();
         setSuccessfulSubmit(true);
       }
 
@@ -57,6 +65,11 @@ const AddNewUserForm = ({
     } catch (error) {
       Sentry.captureException(error);
     }
+  };
+
+  const createPassword = () => {
+    const generatedPassword = generatePassword();
+    setValue('password', generatedPassword);
   };
 
   return (
@@ -84,13 +97,13 @@ const AddNewUserForm = ({
                     onErrorClassName="border-red-500 border-2"
                     {...register('full_name', {
                       required: true,
-                      pattern: /^\S+\s\S+$/i
+                      pattern: /^\S+\s\S+/i
                     })}
                   />
                 </div>
                 {errors.full_name && (
                   <p className="mb-2 text-xs text-red-500">
-                    Full name is required and must be a first and last name.
+                    {t('first_and_last_required')}
                   </p>
                 )}
                 <div className="w-4/5">
@@ -107,7 +120,7 @@ const AddNewUserForm = ({
                 </div>
                 {errors.email && (
                   <p className="mb-2 text-xs text-red-500">
-                    A valid email is required.
+                    {t('valid_email_required')}
                   </p>
                 )}
 
@@ -118,14 +131,24 @@ const AddNewUserForm = ({
                     isError={errors.password?.type === 'required'}
                     onErrorClassName="border-red-500 border-2"
                     {...register('password', {
-                      required: true
+                      required: true,
+                      validate: value =>
+                        VALID_PASSWORD.test(value) ||
+                        'Please check your new password is valid'
                     })}
+                    showEye={{ isOpen: true }}
                   />
+                  <button
+                    type="button"
+                    className="text-xs text-orange-400 cursor-pointer hover:text-orange-200"
+                    onClick={() => createPassword()}
+                  >
+                    {t('generate_password_button')}
+                  </button>
                 </div>
                 {errors.password && (
                   <p className="mb-2 text-xs text-red-500">
-                    A valid password is required (at least 8 characters with at
-                    least 1 upper case, 1 lower case, 1 numeric and 1 symbol).
+                    {t('valid_password_required')}
                   </p>
                 )}
               </div>
@@ -133,7 +156,7 @@ const AddNewUserForm = ({
                 <label className="block text-sm font-medium">
                   {t('add_user_form_role_label')}
                 </label>
-                <div className="flex w-52 my-2 h-9">
+                <div className="flex w-64 my-2 h-9 mb-28">
                   <ul className="grid grid-cols-2 w-full">
                     <li className="relative">
                       <input
@@ -149,7 +172,7 @@ const AddNewUserForm = ({
                         htmlFor="user_role"
                         className="flex h-10 px-2 items-center justify-center rounded-l-lg border-[1px] border-primary bg-white text-primary peer-checked:text-white peer-checked:bg-alt cursor-pointer"
                       >
-                        User
+                        {t('user')}
                       </label>
                     </li>
                     <li className="relative">
@@ -163,13 +186,14 @@ const AddNewUserForm = ({
                       />
                       <label
                         htmlFor="admin_role"
-                        className="flex h-10 px-2 items-center justify-center rounded-r-lg border-[1px] border-primary  bg-white text-primary peer-checked:text-white peer-checked:bg-highlight cursor-pointer"
+                        className="flex h-10 px-2 items-center justify-center rounded-r-lg -ml-px border-[1px] border-primary  bg-white text-primary peer-checked:text-white peer-checked:bg-highlight cursor-pointer"
                       >
-                        Admin
+                        {t('admin')}
                       </label>
                     </li>
                   </ul>
                 </div>
+                <PasswordValidation password={watch('password')} />
               </div>
             </div>
           </div>

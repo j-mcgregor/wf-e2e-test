@@ -284,6 +284,7 @@ const postOrganisationUser: ApiHandler<
           'Content-Type': contentType
         },
         body: JSON.stringify({
+          ...JSON.parse(body),
           is_active: true,
           is_superuser: false,
           organisation_id: orgId,
@@ -299,8 +300,7 @@ const postOrganisationUser: ApiHandler<
               service_updates: true,
               company_updates: true
             }
-          },
-          ...JSON.parse(body)
+          }
         })
       }
     );

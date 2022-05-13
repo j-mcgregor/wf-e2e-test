@@ -8,7 +8,7 @@ import {
   VALID_EMAIL_REQUIRED
 } from '../../../lib/utils/error-codes';
 import fetcher from '../../../lib/utils/fetcher';
-import { validEmailRegex } from '../../../lib/utils/regexes';
+import { VALID_EMAIL } from '../../../lib/utils/regexes';
 import { PasswordResetApi } from '../../../pages/api/password-reset';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
@@ -71,7 +71,7 @@ const ForgotPasswordForm = () => {
                 <Input
                   {...register('email', {
                     required: true,
-                    pattern: validEmailRegex
+                    pattern: VALID_EMAIL
                   })}
                   type="email"
                   label={`${t('email_address')}`}
