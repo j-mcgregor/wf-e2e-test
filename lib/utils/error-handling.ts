@@ -110,6 +110,13 @@ export const makeErrorResponse = ({
           message
         })
       };
+    case 403:
+      return {
+        ...makeApiHandlerResponseFailure({
+          status: 403,
+          message
+        })
+      };
     case 422:
       return {
         ...makeApiHandlerResponseFailure({

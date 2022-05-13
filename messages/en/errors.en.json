@@ -41,6 +41,8 @@
   "ORG_500": "There was an error processing your request, please try again in a moment.",
   "ORG_503": "There was an error processing your request, please try again in a moment.",
   "ORGANISATION_PROCESSING_ISSUE": "There was a problem processing your request.",
+  "USER_401": "You are not authorised to view this page.",
+  "USER_403": "You are not authorised to view this page.",
   "USER_404": "We can't find your user account. Please logout and login in. Contact support if you have issues.",
   "USER_422": "We can't find your user account. Please logout and login in. Contact support if you have issues.",
   "USER_429": "Too many requests. Please try again later.",
