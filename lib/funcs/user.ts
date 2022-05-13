@@ -354,9 +354,8 @@ const resetPassword: ApiHandler<ResetPassword, ResetPasswordProps> = async (
       },
       body: JSON.stringify({ token, new_password: newPassword })
     });
-
+    const result = await response.json();
     if (response.ok) {
-      const result = await response.json();
       return { ...makeApiHandlerResponseSuccess(), msg: result.msg };
     }
 
@@ -366,7 +365,7 @@ const resetPassword: ApiHandler<ResetPassword, ResetPasswordProps> = async (
           status: response.status,
           sourceType: 'USER'
         }),
-        msg: null
+        msg: result.detail
       };
     } else {
       return {
@@ -639,6 +638,58 @@ const getUserBookmarks: ApiHandler<GetUserBookmarks> = async (
   }
 };
 
+/**
+ * ***************************************************
+ * UPDATE PASSWORD - FORGOT PASSWORD
+ * ***************************************************
+ */
+
+export interface UpdatePassword extends HandlerReturn {
+  user: UserType | null;
+}
+
+interface UpdatePasswordProps {
+  user: UserType;
+}
+
+const updatePassword: ApiHandler<UpdatePassword, UpdatePasswordProps> = async (
+  token: string,
+  { user }
+) => {
+  try {
+    const params = {
+      method: 'PUT',
+      headers: {
+        ...JSONHeaders,
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(user)
+    };
+
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/users/password`,
+      params
+    );
+
+    if (response.ok) {
+      const user: UserType = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        user
+      };
+    }
+    return {
+      ...makeErrorResponse({
+        status: response.status,
+        sourceType: 'USER'
+      }),
+      user: null
+    };
+  } catch (error) {
+    return { ...makeApiHandlerResponseFailure(), user: null };
+  }
+};
+
 const User = {
   authenticate,
   getUser,
@@ -650,7 +701,8 @@ const User = {
   getSSOToken,
   giveDefaults,
   bookmarkReport,
-  getUserBookmarks
+  getUserBookmarks,
+  updatePassword
 };
 
 export default User;

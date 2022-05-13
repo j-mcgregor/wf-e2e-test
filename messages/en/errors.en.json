@@ -53,5 +53,7 @@
   "INCORRECT_DETAILS": "Your details are incorrect. Please try again.",
   "CONFIRM_PASSWORD_MATCH": "Your passwords must match.",
   "USER_PROCESSING_ISSUE": "There was a problem processing your user request, please try again in a moment.",
-  "SEARCH_QUERY_PROCESSING_ISSUE": "There was a problem processing your search query, please try again later."
+  "SEARCH_QUERY_PROCESSING_ISSUE": "There was a problem processing your search query, please try again later.",
+  "REPORT_422": "There was a validation error processing this report. Please contact support.",
+  "PASSWORD_REQUIREMENTS": "Password must have at least 8 characters and contain at least one uppercase letter, one lowercase letter, one number, one special character"
 }

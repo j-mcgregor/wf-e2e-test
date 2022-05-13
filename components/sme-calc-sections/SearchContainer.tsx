@@ -56,6 +56,10 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     SimpleValue | undefined
   >(undefined);
 
+  const [selectedAccountType, setSelectedAccountType] = useState<
+    SimpleValue | undefined
+  >(undefined);
+
   const [selectedCurrency, setSelectedCurrency] = useState<
     SimpleValue | undefined
   >(undefined);
@@ -122,6 +126,9 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const handleSelectCountry = (value: SimpleValue): void => {
     return setSelectedCountry(value);
   };
+  const handleSelectAccountType = (value: SimpleValue): void => {
+    return setSelectedAccountType(value);
+  };
 
   const handleSearchReg = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setRegSearchValue(e.target.value);
@@ -140,7 +147,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
       iso_code: selectedCountry?.optionValue,
       company_id: selectedCompany?.company_number || regSearchValue,
       currency: selectedCurrency?.code,
-      accounts_type: 1
+      accounts_type: selectedAccountType?.optionValue || 1
     };
 
     const sentryExtraInfo = {
@@ -233,6 +240,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         {showAdvanceSearch && (
           <AdvancedSearch
             handleSearchReg={handleSearchReg}
+            handleSelectAccountType={handleSelectAccountType}
             handleSelectCountry={handleSelectCountry}
             selectedCurrency={selectedCurrency}
             handleSelectCurrency={handleSelectCurrency}

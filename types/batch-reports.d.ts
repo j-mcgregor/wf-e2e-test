@@ -44,7 +44,7 @@ export interface GetBatchSummary extends BatchReportResponse {
  */
 export interface BatchReport<T> {
   name: string;
-  currency: string;
+  currency?: string;
   entities: T[];
   /** @deprecated */
   accounts_type: number;

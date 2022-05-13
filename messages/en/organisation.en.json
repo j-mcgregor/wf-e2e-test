@@ -1,5 +1,7 @@
 {
   "title": "Organisation Dashboard",
+  "admin": "Admin",
+  "user": "User",
   "dashboard_description": "As an owner of your organisation, you have access to seeing a  full overview of your company's usage of Wiserfunding's platform.",
   "stats_organisation_title": "Organisation",
   "stats_total_reports_title": "Total Reports Organisation",
@@ -48,5 +50,14 @@
   "table_role_header": "Role",
   "table_reports_header": "Reports",
   "table_active_header": "Active",
-  "new_user_created": "New user created"
+  "new_user_created": "New user created",
+  "generate_password_button": "Generate password",
+  "valid_email_required": "A valid email is required.",
+  "first_and_last_required": "A first and last name is required.",
+  "valid_password_required": "A valid password is required (at least 8 characters with at least 1 upper case, 1 lower case, 1 numeric and 1 symbol).",
+  "errors": {
+    "valid_email_required": "A valid email is required.",
+    "first_and_last_required": "A first and last name is required.",
+    "valid_password_required": "A valid password is required (at least 8 characters with at least 1 upper case, 1 lower case, 1 numeric and 1 symbol)."
+  }
 }

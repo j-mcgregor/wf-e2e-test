@@ -13,7 +13,7 @@ import {
   FULL_NAME_REQUIRED,
   GENERIC_API_ERROR
 } from '../../../lib/utils/error-codes';
-import { validEmailRegex } from '../../../lib/utils/regexes';
+import { VALID_EMAIL } from '../../../lib/utils/regexes';
 import { FormWithClassProps } from '../../../pages/settings';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
@@ -113,7 +113,7 @@ const PersonalInformationForm = ({
 
               <div className="col-span-6 sm:col-span-4">
                 <Input
-                  {...register('email', { pattern: validEmailRegex })}
+                  {...register('email', { pattern: VALID_EMAIL })}
                   type="email"
                   label={t('forms.personal.email_address')}
                   className={formClassName}
