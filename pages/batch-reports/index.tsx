@@ -50,25 +50,27 @@ const BatchReports: NextPage = () => {
 
   // run on allJobs
   useEffect(() => {
-    const pending: BatchReportResponse[] = [];
-    const complete: BatchReportResponse[] = [];
-    const failed: BatchReportResponse[] = [];
-
     if (batchReports) {
-      batchReports.forEach(job => {
-        if (job.created_at === job.updated_at || !job.finished_at) {
-          pending.push(job);
-        } else {
-          if (job.total_reports === job.failed_reports) {
-            failed.push(job);
-          } else {
-            complete.push(job);
-          }
-        }
-      });
-      setCompletedJobs(complete);
-      setPendingJobs(pending);
-      setFailedJobs(failed);
+      const failedJobs = batchReports.filter(
+        job =>
+          ((job.created_at !== job.updated_at || job.finished_at) &&
+            job.total_reports === job.failed_reports) ||
+          job.total_reports === null
+      );
+      const completeJobs = batchReports.filter(
+        job =>
+          job.total_reports !== job.failed_reports &&
+          job.total_reports !== null &&
+          (job.created_at !== job.updated_at || job.finished_at)
+      );
+      const pendingJobs = batchReports.filter(
+        job =>
+          (job.created_at === job.updated_at || job.finished_at === null) &&
+          job.failed_reports !== job.total_reports
+      );
+      setCompletedJobs(completeJobs);
+      setPendingJobs(pendingJobs);
+      setFailedJobs(failedJobs);
     }
   }, [batchReports]);
 
