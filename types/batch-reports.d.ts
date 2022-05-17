@@ -8,6 +8,7 @@ export interface BatchReportResponse {
   name: string;
   created_at: Date;
   updated_at: Date;
+  finished_at?: Date;
   total_reports?: number;
   failed_reports?: number;
   owner_id: number;

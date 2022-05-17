@@ -170,6 +170,7 @@ const PasswordManagement = () => {
             )}
             {isDirty && (
               <button
+                type="button"
                 className="text-xs text-orange-400 cursor-pointer mt-4 hover:text-orange-200 mb-2"
                 onClick={() => createPassword()}
               >
@@ -186,7 +187,10 @@ const PasswordManagement = () => {
             <ErrorMessage className="text-left" text={t(GENERIC_API_ERROR)} />
           )}
           {submitError.type === USER_NOT_AUTHORISED && (
-            <ErrorMessage className="text-left" text={t(USER_NOT_AUTHORISED)} />
+            <ErrorMessage
+              className="text-left"
+              text={t(`forms.password-management.incorrect_password`)}
+            />
           )}
           <Button
             disabled={!isDirty}

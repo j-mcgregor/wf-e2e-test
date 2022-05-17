@@ -172,7 +172,6 @@ const createBatchReport: ApiHandler<
       },
       body: JSON.stringify(report)
     });
-
     if (response.ok) {
       const reportData: CreateBatchJobResponse = await response.json();
       return {

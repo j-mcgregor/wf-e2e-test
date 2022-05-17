@@ -19,33 +19,17 @@ import LoadingIcon from '../../components/svgs/LoadingIcon';
 import useBatchReportsHistory from '../../hooks/useBatchReportsHistory';
 import { appUser } from '../../lib/appState';
 
-import type { BatchReportResponse } from '../../types/batch-reports';
-
-const LIMIT = 4; // eg 4 hours ago
-
-const lessThanFourHoursAgo = (date: number) => {
-  const HOURS = 60 * 60 * 1000 * LIMIT;
-  const hoursAgo = Date.now() - HOURS;
-
-  return date > hoursAgo;
-};
-
 const BatchReports: NextPage = () => {
   const t = useTranslations();
-  const [pendingJobs, setPendingJobs] = useState<BatchReportResponse[]>([]);
-  const [completedJobs, setCompletedJobs] = useState<BatchReportResponse[]>([]);
-  const [failedJobs, setFailedJobs] = useState<BatchReportResponse[]>([]);
+
   const [loading, setLoading] = useState(false);
 
   // ADD TO HOOK START
   const [reportLimit, setReportLimit] = useState(0); // initial limit of 8 reports
-  const { batchReports, fetching } = useBatchReportsHistory(
-    8,
-    reportLimit,
-    pendingJobs
-  );
+  const { pendingJobs, failedJobs, totalLength, completedJobs, fetching } =
+    useBatchReportsHistory(8, reportLimit);
 
-  const reportLength = batchReports?.length || 0;
+  const reportLength = totalLength;
 
   // load 5 more reports until max of 30
   const handleAddReports = (): void => {
@@ -53,39 +37,8 @@ const BatchReports: NextPage = () => {
     reportLimit + 8 <= reportLength ? setReportLimit(reportLimit + 8) : null;
     setLoading(false);
   };
-  // ADD TO HOOK END
 
   const user = useRecoilValue(appUser);
-
-  // run on allJobs
-  useEffect(() => {
-    if (batchReports) {
-      const complete = batchReports?.filter(
-        job => job.total_reports !== job.failed_reports
-      );
-      const pending = batchReports?.filter(job => {
-        if (
-          lessThanFourHoursAgo(new Date(job.created_at).getTime()) &&
-          job.total_reports === job.failed_reports
-        ) {
-          return job;
-        }
-      });
-
-      const failed = batchReports?.filter(job => {
-        if (
-          !lessThanFourHoursAgo(new Date(job.created_at).getTime()) &&
-          job.total_reports === job.failed_reports
-        ) {
-          return job;
-        }
-      });
-
-      setCompletedJobs(complete);
-      setPendingJobs(pending);
-      setFailedJobs(failed);
-    }
-  }, [batchReports]);
 
   return (
     <Layout title={t('multiple_companies')}>
@@ -130,13 +83,13 @@ const BatchReports: NextPage = () => {
                 />
               );
             })}
-          {user && !batchReports && (
+          {user && totalLength === 0 && (
             <>
               <EmptyCard loading />
               <EmptyCard loading />
             </>
           )}
-          {user && batchReports && pendingJobs?.length === 0 && (
+          {user && pendingJobs?.length === 0 && totalLength !== 0 && (
             <EmptyCard
               text={t('no_batch_reports_in_progress')}
               icon={<RefreshIcon className="h-10 w-10" />}
@@ -161,7 +114,7 @@ const BatchReports: NextPage = () => {
                 );
               })}
 
-            {user && !batchReports && (
+            {user && totalLength === 0 && (
               <>
                 <EmptyCard loading />
                 <EmptyCard loading />
@@ -169,7 +122,7 @@ const BatchReports: NextPage = () => {
                 <EmptyCard loading />
               </>
             )}
-            {user && batchReports && completedJobs?.length === 0 && (
+            {user && totalLength === 0 && completedJobs?.length !== 0 && (
               <EmptyCard
                 text={t('no_completed_batch_reports')}
                 icon={<DocumentDuplicateIcon className="h-10 w-10" />}
@@ -177,7 +130,7 @@ const BatchReports: NextPage = () => {
             )}
           </div>
           {/* Handle loading cases and if there are enough reports to show more */}
-          {reportLimit + 8 <= completedJobs.length && (
+          {reportLimit + 8 <= totalLength && (
             <Button
               disabled={loading && fetching}
               variant="none"
