@@ -54,7 +54,8 @@
       "current_password": "Current Password",
       "new_password": "New Password",
       "confirm_password": "Confirm Password",
-      "generate_password": "Generate a valid password"
+      "generate_password": "Generate a valid password",
+      "incorrect_password": "Password not updated, your current password is incorrect."
     }
   }
 }
