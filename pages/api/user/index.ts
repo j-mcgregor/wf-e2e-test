@@ -38,7 +38,6 @@ const userIndexApi: NextApiHandler<UserIndexApi> = async (
     case 'GET':
       try {
         const result = await User.getFullUser(`${token?.accessToken}`, {});
-        console.log('result', result);
         return response.status(result.status).json(result);
       } catch (error) {
         return response.status(INTERNAL_SERVER_ERROR).json({

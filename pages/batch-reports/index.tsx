@@ -122,7 +122,7 @@ const BatchReports: NextPage = () => {
                 <EmptyCard loading />
               </>
             )}
-            {user && totalLength === 0 && completedJobs?.length === 0 && (
+            {user && totalLength === 0 && completedJobs?.length !== 0 && (
               <EmptyCard
                 text={t('no_completed_batch_reports')}
                 icon={<DocumentDuplicateIcon className="h-10 w-10" />}

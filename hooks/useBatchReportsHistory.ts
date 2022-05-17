@@ -11,6 +11,16 @@ function calculateHoursBetweenDates(begin: Date, end: number) {
   return diff / 3600;
 }
 
+const removeDuplicateReports = (reports: BatchReportResponse[]) => {
+  let reportIds = [...new Set([...reports.map(report => report.id)])];
+  return reports.filter(report => {
+    if (reportIds.indexOf(report.id) > -1) {
+      reportIds = reportIds.filter(id => id !== report.id);
+      return true;
+    }
+  });
+};
+
 const useBatchReportsHistory = (limit: number, skip: number = 0) => {
   const [batchReports, setBatchReports] = useState<{
     pendingJobs: BatchReportResponse[];
@@ -64,23 +74,15 @@ const useBatchReportsHistory = (limit: number, skip: number = 0) => {
       );
       setBatchReports({
         pendingJobs: pendJobs,
-        failedJobs: [...new Set([...failingJobs, ...batchReports.failedJobs])],
-        completedJobs: [
-          ...new Set([...completeJobs, ...batchReports.completedJobs])
-        ]
+        failedJobs: removeDuplicateReports([
+          ...failingJobs,
+          ...batchReports.failedJobs
+        ]),
+        completedJobs: removeDuplicateReports([
+          ...completeJobs,
+          ...batchReports.completedJobs
+        ])
       });
-
-      // if (skip === 0) {
-      //   setReports(newReports);
-      // } else {
-      //   // handle multiple requests for the same batchReports
-      //   const oldReportIds = [...oldReports.map(report => report.id)];
-      //   const noDuplicateNewReports = newReports.filter(
-      //     report => oldReportIds.indexOf(report.id) === -1
-      //   );
-      //   const uniqueReports = [...oldReports, ...noDuplicateNewReports];
-      //   setReports(uniqueReports);
-      // }
     }
   }, [isFetching]);
 
