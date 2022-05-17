@@ -52,8 +52,6 @@ const useBatchReportsHistory = (limit: number, skip: number = 0) => {
 
   useEffect(() => {
     if (data?.batchReports && !isValidating) {
-      // const newReports = data?.batchReports;
-      // const oldReports = batchReports;
       const failingJobs = fetchedBatchReports.filter(
         job =>
           ((job.created_at !== job.updated_at || job.finished_at) &&
