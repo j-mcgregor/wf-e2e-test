@@ -19,6 +19,7 @@ import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import Input from '../../elements/Input';
+import SuccessMessage from '../../elements/SuccessMessage';
 
 interface PersonalInformationFormInput {
   fullName: string;
@@ -46,6 +47,7 @@ const PersonalInformationForm = ({
 
   const { isDirty, errors, isSubmitting } = formState;
   const [submitError, setSubmitError] = useState({ type: '' });
+  const [successMessage, setSuccessMessage] = useState<string>('');
 
   useEffect(() => {
     reset(currentUserValues);
@@ -59,8 +61,7 @@ const PersonalInformationForm = ({
       const fetchRes = await fetch(`${config.URL}/api/user?id=${user.id}`, {
         method: 'PUT',
         body: JSON.stringify({
-          full_name: data.fullName?.trim(),
-          email: data.email?.trim()
+          full_name: data.fullName?.trim()
         })
       });
 
@@ -72,6 +73,7 @@ const PersonalInformationForm = ({
       }
 
       if (json.ok) {
+        setSuccessMessage('USER_UPDATED');
         setCurrentUser({ ...user, ...json.data });
         mutate('/api/user');
         // this might be used to update the session user - might be needed for email updates
@@ -115,8 +117,9 @@ const PersonalInformationForm = ({
                 <Input
                   {...register('email', { pattern: VALID_EMAIL })}
                   type="email"
+                  disabled={true}
                   label={t('forms.personal.email_address')}
-                  className={formClassName}
+                  className={`${formClassName} !bg-gray-200`}
                   labelClassName={formLabelClassName}
                 />
 
@@ -128,6 +131,9 @@ const PersonalInformationForm = ({
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">
             {submitError.type === GENERIC_API_ERROR && (
               <ErrorMessage text={t(GENERIC_API_ERROR)} />
+            )}
+            {successMessage === 'USER_UPDATED' && (
+              <SuccessMessage text={t('forms.personal.update_name')} />
             )}
             <Button
               disabled={!isDirty || isSubmitting}

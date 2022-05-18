@@ -8,7 +8,8 @@
     "personal": {
       "update_your_personal": "Update your personal information",
       "name": "Name",
-      "email_address": "Email address"
+      "email_address": "Email address",
+      "update_name": "Your name was updated."
     },
     "communication-form": {
       "change_or_update": "Change or update your personal information",
@@ -19,7 +20,8 @@
       "get_notified": "Get notified when a batch report has completed all reports.",
       "get_all_the_latest_updates_relating": "Get all the latest updates relating to Wiserfunding.",
       "company_updates": "Company Updates",
-      "save": "save"
+      "save": "save",
+      "update_communication_preference": "Your communication preferences have been updated."
     },
     "preference": {
       "locale": "Localisation",
@@ -31,7 +33,8 @@
       "change_your_default_country": "Change your default country to run your reports in.",
       "change_the_default_reporting": "Change the default reporting currency.",
       "change_the_screen": "Change the screen you see on your first login.",
-      "reset_to_defaults": "Reset to defaults"
+      "reset_to_defaults": "Reset to defaults",
+      "update_preferences": "Your preferences have been updated."
     },
     "specialist-props": {
       "localisation": "Localisation",
@@ -55,7 +58,8 @@
       "new_password": "New Password",
       "confirm_password": "Confirm Password",
       "generate_password": "Generate a valid password",
-      "incorrect_password": "Password not updated, your current password is incorrect."
+      "incorrect_password": "Password not updated, your current password is incorrect.",
+      "updated_password": "Password updated successfully."
     }
   }
 }

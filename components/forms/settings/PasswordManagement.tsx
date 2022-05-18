@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import { CheckIcon } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';
 import { useTranslations } from 'next-intl';
 import React, { ReactNode, useEffect, useState } from 'react';
@@ -20,6 +21,7 @@ import { VALID_PASSWORD } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
+import SuccessMessage from '../../elements/SuccessMessage';
 import { PasswordValidation } from './PasswordValidation';
 
 interface PasswordFormInput {
@@ -46,6 +48,7 @@ const PasswordManagement = () => {
   const { isDirty, errors, isSubmitting } = formState;
   const [submitError, setSubmitError] = useState({ type: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   // @ts-ignore
   const onSubmit: SubmitHandler = async (data: {
@@ -76,6 +79,7 @@ const PasswordManagement = () => {
 
       if (json.ok) {
         setCurrentUser({ ...user });
+        setSuccessMessage('USER_UPDATED');
         return reset();
       }
     } catch (error) {
@@ -190,6 +194,11 @@ const PasswordManagement = () => {
             <ErrorMessage
               className="text-left"
               text={t(`forms.password-management.incorrect_password`)}
+            />
+          )}
+          {successMessage === 'USER_UPDATED' && (
+            <SuccessMessage
+              text={t(`forms.password-management.updated_password`)}
             />
           )}
           <Button
