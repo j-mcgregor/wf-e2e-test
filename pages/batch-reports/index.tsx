@@ -29,12 +29,10 @@ const BatchReports: NextPage = () => {
   const { pendingJobs, failedJobs, totalLength, completedJobs, fetching } =
     useBatchReportsHistory(8, reportLimit);
 
-  const reportLength = totalLength;
-
   // load 5 more reports until max of 30
   const handleAddReports = (): void => {
     setLoading(true);
-    reportLimit + 8 <= reportLength ? setReportLimit(reportLimit + 8) : null;
+    reportLimit + 8 <= totalLength ? setReportLimit(reportLimit + 8) : null;
     setLoading(false);
   };
 
@@ -97,7 +95,10 @@ const BatchReports: NextPage = () => {
           )}
         </div>
 
-        <Collapsible title={t('completed_batch_reports')} collapsed={false}>
+        <Collapsible
+          title={`${t('completed_batch_reports')} (${completedJobs.length})`}
+          collapsed={false}
+        >
           <div className="grid md:grid-cols-4 grid-cols-2 gap-3 mb-8">
             {user &&
               completedJobs?.map((report, index) => {
@@ -147,7 +148,10 @@ const BatchReports: NextPage = () => {
         </Collapsible>
 
         {failedJobs.length > 0 ? (
-          <Collapsible title={t('failed_batch_reports')} collapsed={true}>
+          <Collapsible
+            title={`${t('failed_batch_reports')} (${failedJobs.length})`}
+            collapsed={true}
+          >
             <div className="grid md:grid-cols-4 grid-cols-2 gap-3 ">
               {user &&
                 failedJobs?.map(report => {

@@ -9,13 +9,14 @@ import type {
   CsvValueValidation
 } from '../types/report';
 
-const MAX_COMPANIES = 50;
+const MAX_COMPANIES = 1000;
 const MAX_ERRORS = 500;
 
 export const useCsvValidators = (
   csvData: CsvReport,
   validators: CsvValueValidation[],
-  csvValues: string[][]
+  csvValues: string[][],
+  totalCompanies: number = 0
 ) => {
   const t = useTranslations();
   let errors: Array<string | boolean> = [];
@@ -24,19 +25,18 @@ export const useCsvValidators = (
     errors.push('CSV has no values');
   }
 
-  const uniqueCompanies = getUniqueStringsFromArray(csvData?.details_name);
-  const numberOfCompanies = uniqueCompanies.filter(Boolean);
-  const tooManyCompanies = numberOfCompanies.length > MAX_COMPANIES;
+  const uniqueCompanies = getUniqueStringsFromArray(csvData?.company_id);
+  const tooManyCompanies = totalCompanies > MAX_COMPANIES;
 
   // if too many companies, add error
-  // if (tooManyCompanies) {
-  //   errors.push(
-  //     t('max_companies', {
-  //       max_companies: MAX_COMPANIES,
-  //       total_companies: numberOfCompanies.length
-  //     })
-  //   );
-  // }
+  if (tooManyCompanies) {
+    errors.push(
+      t('max_companies', {
+        max_companies: MAX_COMPANIES,
+        total_companies: totalCompanies
+      })
+    );
+  }
 
   // checks the reportObject for the headers that are required
   // returns an array of missing header names
@@ -122,6 +122,6 @@ export const useCsvValidators = (
     errors,
     isValid,
     missingHeaders,
-    numberOfCompanies: numberOfCompanies.length
+    numberOfCompanies: totalCompanies
   };
 };

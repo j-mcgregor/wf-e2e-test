@@ -27,6 +27,8 @@ export interface BatchSummary {
   iso_code: string;
   company_id: string;
   sme_z_score: number;
+  finished_at: string;
+  failed_reports: number | null;
   bond_rating_equivalent: string;
   loss_given_default: number;
   probability_of_default_1_year: number;

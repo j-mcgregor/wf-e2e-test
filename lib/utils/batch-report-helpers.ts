@@ -117,7 +117,6 @@ export const convertCSVToRequestBody = ({
 
   if (uploadType === 'BATCH_MANUAL') {
     const entities = makeEntitiesForManualBatch(csvData, csvValues);
-
     response.entities = entities || [];
   }
 

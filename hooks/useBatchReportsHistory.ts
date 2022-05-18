@@ -2,19 +2,52 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import fetcher from '../lib/utils/fetcher';
 import { BatchReportsIndexApi } from '../pages/api/batch-reports';
-import { BatchReportResponse } from '../types/batch-reports';
+import { BatchReportResponse, BatchSummary } from '../types/batch-reports';
 
-function calculateHoursBetweenDates(begin: Date, end: number) {
+function calculateHoursBetweenDates(begin: Date | string, end: number) {
   const date1 = new Date(begin);
   const date2 = new Date(end);
   const diff = (date2.getTime() - date1.getTime()) / 1000;
   return diff / 3600;
 }
 
+const filterPendingReports = (reports: BatchReportResponse[]) => {
+  return reports.filter(
+    job =>
+      !job.finished_at &&
+      job.failed_reports === null &&
+      calculateHoursBetweenDates(job.created_at, Date.now()) < 24
+  );
+};
+
 const removeDuplicateReports = (reports: BatchReportResponse[]) => {
   let reportIds = [...new Set([...reports.map(report => report.id)])];
   return reports.filter(report => {
     if (reportIds.indexOf(report.id) > -1) {
+      reportIds = reportIds.filter(id => id !== report.id);
+      return true;
+    }
+  });
+};
+
+const orderReports = (reports: BatchReportResponse[]) => {
+  return reports.sort((a, b) => {
+    const aDate = new Date(a.created_at);
+    const bDate = new Date(b.created_at);
+    if (a.created_at < b.created_at) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+};
+
+const removePendingDuplicateReports = (reports: BatchReportResponse[]) => {
+  // get all unique ids
+  // filter by unique ids
+  let reportIds = [...new Set([...reports.map(report => report.id)])];
+  return reports.filter(report => {
+    if (reportIds.indexOf(report.id) > -1 && report.finished_at) {
       reportIds = reportIds.filter(id => id !== report.id);
       return true;
     }
@@ -31,9 +64,10 @@ const useBatchReportsHistory = (limit: number, skip: number = 0) => {
     failedJobs: [],
     completedJobs: []
   });
+
   // if no user then revalidate onMount to prevent blank page
   const { data, isValidating } = useSWR<BatchReportsIndexApi>(
-    `/api/batch-reports?limit=${limit}&skip=${skip}`,
+    `/api/batch-reports?limit=${limit + skip}&skip=${0}`,
     fetcher,
     {
       revalidateOnFocus: false,
@@ -64,22 +98,28 @@ const useBatchReportsHistory = (limit: number, skip: number = 0) => {
           job.total_reports !== null &&
           job.finished_at
       );
-      const pendJobs = fetchedBatchReports.filter(
-        job =>
-          !job.finished_at &&
-          job.failed_reports === null &&
-          calculateHoursBetweenDates(job.created_at, Date.now()) < 24
-      );
+      const pendJobs = filterPendingReports(fetchedBatchReports);
+
       setBatchReports({
-        pendingJobs: pendJobs,
-        failedJobs: removeDuplicateReports([
-          ...failingJobs,
-          ...batchReports.failedJobs
-        ]),
-        completedJobs: removeDuplicateReports([
-          ...completeJobs,
-          ...batchReports.completedJobs
-        ])
+        pendingJobs: orderReports(
+          removeDuplicateReports([
+            ...pendJobs
+            // re filter in case they are already done
+            // ...batchReports.pendingJobs
+          ])
+        ),
+        failedJobs: orderReports(
+          removeDuplicateReports([
+            ...failingJobs
+            // ...batchReports.failedJobs
+          ])
+        ),
+        completedJobs: orderReports(
+          removeDuplicateReports([
+            ...completeJobs
+            // ...batchReports.completedJobs
+          ])
+        )
       });
     }
   }, [isFetching]);
