@@ -11,15 +11,22 @@ import {
 } from '../../lib/utils/error-codes';
 import { ApiError, ApiResType } from '../../types/global';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler, NextApiResponse } from 'next';
 import { getToken } from 'next-auth/jwt';
-// Declaring function for readability with Sentry wrapper
-const SearchCompanies = async (
-  request: NextApiRequest,
-  response: NextApiResponse
-) => {
 
-  const token = await getToken({ req: request, secret: `${process.env.NEXTAUTH_SECRET}` });
+type UkCompanyFilter = ReturnType<typeof Company.filterUKCompanyInformation>;
+type EuCompanyFilter = ReturnType<
+  typeof Company.mapEUCompanyDataToResponseFormat
+>;
+
+// Declaring function for readability with Sentry wrapper
+const searchCompaniesApi: NextApiHandler<
+  UkCompanyFilter | EuCompanyFilter | ApiError
+> = async (request, response) => {
+  const token = await getToken({
+    req: request,
+    secret: `${process.env.NEXTAUTH_SECRET}`
+  });
 
   // unauthenticated requests
   if (!token) {
@@ -99,9 +106,9 @@ const handleSearchError = (results: ApiResType, response: NextApiResponse) => {
   if (!results || !results.ok) {
     return response.status(500).json({
       error: SEARCH_ERROR,
-      message: 'Error when accessing API.'
+      message: 'Error when accessing search API.'
     } as ApiError);
   }
 };
 
-export default withSentry(SearchCompanies);
+export default withSentry(searchCompaniesApi);

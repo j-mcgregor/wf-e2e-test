@@ -21,6 +21,51 @@ const nonTestingProps = {
   containerId: 'secondary-layout-container'
 };
 
+export const handleExport = async (
+  format: 'csv' | 'pdf',
+  id: string,
+  setDownloading: (value: boolean) => void
+) => {
+  if (!id) return null;
+  setDownloading(true);
+
+  try {
+    const isPDF = format === 'pdf';
+
+    const response = await fetcher(
+      `/api/reports/report?id=${id}&export=${isPDF ? 'pdf' : 'csv-full'}`,
+      'GET',
+      null,
+      {
+        'Content-Type': isPDF ? 'application/pdf' : 'application/json'
+      }
+    );
+
+    const fileName = `report-${id}.${format}`;
+
+    if (isPDF)
+      return downloadFile({
+        data: response,
+        // eg report-companyName.csv
+        fileName: fileName,
+        fileType: 'application/pdf'
+      });
+
+    return downloadFile({
+      data: response.csv,
+      // eg report-companyName.csv
+      fileName: fileName,
+      fileType: 'text/csv'
+    });
+  } catch (error) {
+    // TODO remove console.log
+    // eslint-disable-next-line no-console
+    console.log(error);
+  } finally {
+    setDownloading(false);
+  }
+};
+
 const ReportNav = ({
   companyName,
   loading,
@@ -34,6 +79,7 @@ const ReportNav = ({
   const [activeItem, setActiveItem] = useState<string>('summary');
 
   const [downloadingCsv, setDownloadingCsv] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   if (loading) {
     return (
@@ -46,36 +92,6 @@ const ReportNav = ({
       </>
     );
   }
-
-  const handleExportCsv = async () => {
-    if (!id) return null;
-    setDownloadingCsv(true);
-
-    try {
-      const csv = await fetcher(
-        `/api/reports/report?id=${id}&export=csv-full`,
-        'GET',
-        null,
-        {},
-        'csv'
-      );
-      setDownloadingCsv(false);
-
-      const fileName = `report-${id}.csv`;
-      downloadFile({
-        data: csv,
-        // eg report-companyName.csv
-        fileName: fileName,
-        fileType: 'text/csv'
-      });
-      // console.log(csv);
-    } catch (error) {
-      // TODO remove console.log
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-  };
-
   return (
     <div className="px-6 pt-8 flex-col h-full hidden xl:flex">
       <div>
@@ -147,11 +163,11 @@ const ReportNav = ({
 
       <div className="space-y-2 items-end flex-1 justify-end flex flex-col pb-4">
         <Button
+          loading={downloadingPdf}
+          disabled={downloadingPdf}
           variant="alt"
           className="w-full"
-          linkTo={`/report/${id}/print`}
-          target="_blank"
-          rel="noreferrer"
+          onClick={() => handleExport('pdf', `${id}`, setDownloadingPdf)}
         >
           {t('export_pdf')}
         </Button>
@@ -159,7 +175,7 @@ const ReportNav = ({
           loading={downloadingCsv}
           disabled={downloadingCsv}
           variant="secondary"
-          onClick={() => handleExportCsv()}
+          onClick={() => handleExport('csv', `${id}`, setDownloadingCsv)}
         >
           {t('export_csv')}
         </Button>

@@ -427,10 +427,7 @@ const Report = ({
         />
 
         {data?.shareholders?.length > 0 && (
-          <ShareHolderList
-            isPrint={forPrint}
-            shareholders={data?.shareholders}
-          />
+          <ShareHolderList shareholders={data?.shareholders} />
         )}
       </HashContainer>
 
@@ -442,7 +439,7 @@ const Report = ({
       >
         <ReportSectionHeader text={t('structure')} />
         <ParentsList parents={data?.parents} />
-        <SubsidiaryList isPrint={forPrint} subsidiaries={data?.subsidiaries} />
+        <SubsidiaryList subsidiaries={data?.subsidiaries} />
       </HashContainer>
 
       <HashContainer
@@ -464,7 +461,15 @@ const Report = ({
       </HashContainer>
 
       <HashContainer name={'ESG'} id={`esg`} fullHeight={false}>
-        <ReportSectionHeader text={t('environmental')} />
+        <ReportSectionHeader
+          text={t('environmental')}
+          hint={
+            <Hint
+              title={t('report_hints.esg.title')}
+              body={t('report_hints.esg.body')}
+            />
+          }
+        />
         <ESGCard
           title={t('activities')}
           description={t('data_on_activities')}

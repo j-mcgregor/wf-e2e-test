@@ -6,12 +6,14 @@
   "create_a_new_batch_report": "Create a new Batch Report",
   "create_a_batch_report": "Create a Batch Report",
   "completed_batch_reports": "Completed Batch Reports",
+  "failed_batch_reports": "Failed Batch Reports",
   "in_progress_batch_reports": "In Progress Batch Reports",
   "upload_company_numbers_and_country_codes": "Upload company numbers and country codes to start.",
   "total_companies_analysed": "Total companies analysed",
   "back_to_all_batch_reports": "Back to all Batch Reports",
   "utilise_our_powerful_automated_reports_at_scale": "Utlise our powerful Automated Reports at scale and get insights across 1000s of companies at once.",
   "run_multiple_reports": "Run multiple reports",
+  "batch_failed": "Batch failed",
   "run_batch": "Run Batch",
   "csv_templates": "CSV Templates",
   "batch_ads_template": "Batch ADS Template (.csv)",
@@ -49,5 +51,20 @@
   "max_companies": "Your CSV has {total_companies} companies which is more than the max of {max_companies}",
   "pending": "Pending",
   "processing": "Processing",
-  "report_name_required": "A batch report name is required"
+  "report_name_required": "A batch report name is required",
+  "show_more": "Show more",
+  "account_type_title": "Account Type",
+  "account_type_description": "Choose the Account Type to run all batched reports with.",
+  "hints": {
+    "account_type": {
+      "title": "Account Type",
+      "body": "<small>By default we will use the most recent accounts associated with company. You can override this by choosing a different type of account, which will then be used for every company in the batch. <br> <br> <b>RECENT ACCOUNTS</b> (The most recent accounts available)<br><b>NO LIMITED FINANCIALS</b> (Do not consider accounts with limited financial data if both limited and detailed financial accounts are available)<br><b>CONSOLIDATED</b><br><b>LOCAL REGISTRY</b> (Local registry filings)<br><b>UNCONSOLIDATED</b><br><b>ANNUAL REPORT</b> (Annual reports)<br><b>NO RECENT FINANCIALS</b> (Do not consider accounts with no recent financial data (NRF) as a preferred choice if other accounts are available)</small>"
+    },
+    "currency": {
+      "title": "Batch currency",
+      "body": "<small><b>By default we will use the currency associated with ISO code of that company.</b> You can override this by choosing a different currency, which will then be used for every company in the batch.</small>"
+    }
+  },
+  "currency_title": "Currency",
+  "currency_description": "Run all batched reports in a specific currency"
 }

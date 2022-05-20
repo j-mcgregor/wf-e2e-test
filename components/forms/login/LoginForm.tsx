@@ -5,13 +5,14 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import useLocalStorage from '../../../hooks/useLocalStorage';
+import useUserHomePageRedirect from '../../../hooks/useUserHomePageRedirect';
 import {
   EMAIL_REQUIRED,
   INCORRECT_DETAILS,
   PASSWORD_REQUIRED,
   VALID_EMAIL_REQUIRED
 } from '../../../lib/utils/error-codes';
-import { validEmailRegex } from '../../../lib/utils/regexes';
+import { VALID_EMAIL } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import CheckboxInput from '../../elements/Checkbox';
 import ErrorMessage from '../../elements/ErrorMessage';
@@ -23,11 +24,8 @@ type FormValues = {
   password: string;
   remember: boolean;
 };
-interface LogingFormProps {
-  defaultHomepageRedirect: (hp: string) => void;
-}
 
-const LoginForm = ({ defaultHomepageRedirect }: LogingFormProps) => {
+const LoginForm = () => {
   const t = useTranslations();
   const router = useRouter();
   const {
@@ -49,6 +47,9 @@ const LoginForm = ({ defaultHomepageRedirect }: LogingFormProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userEmail]);
 
+  // set the user redirect preferences
+  const homepageRedirect = useUserHomePageRedirect(homePage);
+
   // only runs if form is valid
   const onSubmit = async (data: FormValues) => {
     // if remember add email to local state
@@ -69,7 +70,6 @@ const LoginForm = ({ defaultHomepageRedirect }: LogingFormProps) => {
 
     if (authenticated?.ok) {
       data.remember && setActiveUser(data.email);
-      const homepageRedirect = defaultHomepageRedirect(homePage);
       router.push(`${homepageRedirect}`);
     }
     return setAuthError(true);
@@ -100,7 +100,7 @@ const LoginForm = ({ defaultHomepageRedirect }: LogingFormProps) => {
                 <Input
                   {...register('email', {
                     required: true,
-                    pattern: validEmailRegex
+                    pattern: VALID_EMAIL
                   })}
                   label={`${t('email')}`}
                   type="email"

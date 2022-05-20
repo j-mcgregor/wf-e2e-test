@@ -10,7 +10,6 @@ import BookmarkDropdown from '../elements/BookmarkDropdown';
 import useBookmark from '../../hooks/useBookmark';
 
 import Link from '../elements/Link';
-import { isDisabled } from '@testing-library/user-event/dist/utils';
 
 interface BookmarkCardProps {
   linkTo: string;
@@ -54,6 +53,7 @@ const BookmarkCard = ({
       className={`${disableLink ? 'pointer-events-none' : ''}`}
     >
       <div
+        id={`bookmark-card-${reportId}`}
         className={`bg-white shadow hover:shadow-2xl transition-shadow duration-300 rounded w-full flex flex-col relative `}
       >
         <div className="flex w-full justify-between p-2 ">

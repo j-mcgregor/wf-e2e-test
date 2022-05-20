@@ -1,24 +1,43 @@
+/* eslint-disable security/detect-object-injection */
+/* eslint-disable sonarjs/no-small-switch */
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
 
-import BatchReport from '../../../lib/funcs/batch-reports';
+import BatchReport, {
+  BatchJobReportUpload
+} from '../../../lib/funcs/batch-reports';
+import { MISSING_DATA } from '../../../lib/utils/error-codes';
 import {
-  GENERIC_API_ERROR,
-  METHOD_NOT_ALLOWED,
-  MISSING_DATA,
-  UNAUTHORISED
-} from '../../../lib/utils/error-codes';
+  errorsBySourceType,
+  returnUnauthorised
+} from '../../../lib/utils/error-handling';
+import {
+  makeApiHandlerResponseFailure,
+  makeMissingArgsResponse
+} from '../../../lib/utils/http-helpers';
+import { StatusCodeConstants } from '../../../types/http-status-codes';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
-import type { ApiError } from '../../../types/global';
+import type { NextApiHandler } from 'next';
 import type { BatchManualRequest } from '../../../types/batch-reports';
 
+/** @COMPLETE */
+
+const { INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED } = StatusCodeConstants;
+
+export interface BatchReportsManualApi extends BatchJobReportUpload {
+  batchReportId: string | null;
+}
+
 // Declaring function for readability with Sentry wrapper
-const batchReports = async (
-  request: NextApiRequest,
-  response: NextApiResponse
-): Promise<any> => {
+const batchReports: NextApiHandler<BatchReportsManualApi> = async (
+  request,
+  response
+) => {
+  const defaultNullProps = {
+    batchReportId: null,
+    report: null
+  };
   const token = await getToken({
     req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
@@ -26,16 +45,13 @@ const batchReports = async (
 
   // unauthenticated requests
   if (!token) {
-    return response.status(403).json({
-      error: UNAUTHORISED,
-      message: 'Unauthorised api request, please login to continue.'
-    } as ApiError);
+    return returnUnauthorised(response, defaultNullProps);
   }
 
   const { method } = request;
-  const isPost = method === 'POST';
-  if (isPost) {
-    try {
+
+  switch (method) {
+    case 'POST':
       if (request?.body?.entities?.length > 0) {
         const batchReport: BatchManualRequest = {
           // they removed the .report_in requirement
@@ -43,45 +59,41 @@ const batchReports = async (
           name: request?.body?.name || '',
           currency: request?.body?.currency || '',
           /** @deprecated */
-          accounts_type: request?.body?.accounts_type
+          accounts_type: request?.body?.accounts_type || 1
         };
 
-        const fetchRes = await BatchReport.batchJobReportUpload(
-          batchReport,
-          `${token.accessToken}`
-        );
+        try {
+          const result = await BatchReport.batchJobReportUpload(
+            `${token.accessToken}`,
+            { report: batchReport }
+          );
 
-        if (fetchRes.ok && fetchRes.report?.id) {
-          return response.status(fetchRes.status).json({
-            ok: true,
-            batchReportId: fetchRes.report?.id
+          return response.status(result.status).json({
+            ...defaultNullProps,
+            ...result
+          });
+        } catch (error: any) {
+          return response.status(INTERNAL_SERVER_ERROR).json({
+            ...makeApiHandlerResponseFailure({ message: error.message }),
+            ...defaultNullProps
           });
         }
-
-        return response.status(fetchRes.status).json({
-          error: MISSING_DATA,
-          message: fetchRes.details,
-          ok: false
-        } as ApiError);
       } else {
-        return response.status(404).json({
-          error: MISSING_DATA,
-          message: 'No entities list provided',
-          ok: false
-        } as ApiError);
+        return makeMissingArgsResponse(
+          response,
+          MISSING_DATA,
+          'No entities list provided',
+          defaultNullProps
+        );
       }
-    } catch (error) {
-      return response.status(500).json({
-        ok: false,
-        error: GENERIC_API_ERROR,
-        message: error
-      } as ApiError);
-    }
+    default:
+      return response.status(METHOD_NOT_ALLOWED).json({
+        ...makeApiHandlerResponseFailure({
+          message: errorsBySourceType.GENERAL[METHOD_NOT_ALLOWED]
+        }),
+        ...defaultNullProps
+      });
   }
-  return response.status(500).json({
-    error: METHOD_NOT_ALLOWED,
-    message: 'Method not allowed, please use allowed method.'
-  } as ApiError);
 };
 
 export default withSentry(batchReports);

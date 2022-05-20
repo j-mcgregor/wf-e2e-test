@@ -15,6 +15,7 @@ import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { SettingsSectionHeader } from '../../elements/Headers';
 import Select from '../../elements/Select';
+import SuccessMessage from '../../elements/SuccessMessage';
 
 type PreferenceFormInput = {
   locale: string;
@@ -43,12 +44,10 @@ const PreferenceForm = ({
 
   const dashboardOptions = React.useMemo(
     () =>
-      dashboardOptionValues.map(value =>
-      ({
+      dashboardOptionValues.map(value => ({
         optionValue: value,
         optionName: t(`forms.specialist-props.${value}`)
-      })
-      ),
+      })),
     [t]
   );
 
@@ -65,6 +64,7 @@ const PreferenceForm = ({
   // form state
   const { isDirty, isValid, isSubmitting } = formState;
   const [submitError, setSubmitError] = useState({ type: '' });
+  const [successMessage, setSuccessMessage] = useState<string>('');
 
   // @ts-ignore
   const onSubmit: SubmitHandler<PreferenceFormInput> = async (
@@ -95,6 +95,7 @@ const PreferenceForm = ({
       }
 
       if (json.ok) {
+        setSuccessMessage('USER_UPDATED');
         // mutate the user state to get the new preferences
         // useUser hook is being called here
         mutate('/api/user');
@@ -203,6 +204,11 @@ const PreferenceForm = ({
                 <ErrorMessage
                   className="w-1/2 text-left"
                   text={t(GENERIC_API_ERROR)}
+                />
+              )}
+              {successMessage === 'USER_UPDATED' && (
+                <SuccessMessage
+                  text={t('forms.preference.update_preferences')}
                 />
               )}
               <Button

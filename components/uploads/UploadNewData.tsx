@@ -2,13 +2,9 @@
 import { CheckIcon, XIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
+import { ErrorCodeKeys } from '../../types/errors';
 
-import {
-  ApiError,
-  ErrorCodeKeys,
-  ReportTypeEnum,
-  TranslateInput
-} from '../../types/global';
+import { ApiError, ReportTypeEnum, TranslateInput } from '../../types/global';
 import { SubmitReportType } from '../../types/report';
 import Button from '../elements/Button';
 import ErrorBoundary from '../elements/ErrorBoundary';
@@ -32,6 +28,7 @@ interface UploadNewDataProps {
   setFileSelected: (selectedFile: File | null) => void;
   children?: React.ReactNode;
   numberOfCompanies?: number;
+  batchAutoOptions?: React.ReactNode;
 }
 
 const UploadNewData = ({
@@ -49,6 +46,7 @@ const UploadNewData = ({
   fileSelected,
   setFileSelected,
   handleRemoveFile = () => setFileSelected(null), // I dont like this. Will come back and fix it
+  batchAutoOptions,
   children
 }: UploadNewDataProps) => {
   const [loading, setLoading] = useState(false);
@@ -60,8 +58,12 @@ const UploadNewData = ({
 
   const hasErrors = errors.length > 0;
 
-  const tick = <CheckIcon className="h-6 w-6 text-green-500 mr-1" />;
-  const cross = <XIcon className="h-6 w-6 text-red-500 mr-1" />;
+  const tick = (
+    <CheckIcon id="validation-tick" className="h-6 w-6 text-green-500 mr-1" />
+  );
+  const cross = (
+    <XIcon id="validation-cross" className="h-6 w-6 text-red-500 mr-1" />
+  );
   return (
     <div className="bg-white rounded-sm shadow-sm sm:p-8 p-6">
       <div className="grid sm:grid-cols-2">
@@ -159,6 +161,7 @@ const UploadNewData = ({
           )}
         </div>
       </div>
+      {uploadType === 'BATCH_AUTO' && fileSelected ? batchAutoOptions : null}
       <div className="w-full sm:max-w-[200px] mt-2">
         <Button
           variant="highlight"

@@ -1,23 +1,45 @@
+/* eslint-disable security/detect-object-injection */
+/* eslint-disable no-case-declarations */
+/* eslint-disable sonarjs/no-small-switch */
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
 
-import BatchReport from '../../../lib/funcs/batch-reports';
+import BatchReport, {
+  GetBatchReportById,
+  GetBatchReportCsvFull
+} from '../../../lib/funcs/batch-reports';
+import { NO_REPORT_ID } from '../../../lib/utils/error-codes';
 import {
-  METHOD_NOT_ALLOWED,
-  NO_REPORT,
-  NO_REPORT_ID,
-  UNAUTHORISED
-} from '../../../lib/utils/error-codes';
+  errorsBySourceType,
+  returnUnauthorised
+} from '../../../lib/utils/error-handling';
+import {
+  makeApiHandlerResponseFailure,
+  makeMissingArgsResponse
+} from '../../../lib/utils/http-helpers';
+import { StatusCodeConstants } from '../../../types/http-status-codes';
 
-import type { ApiError } from '../../../types/global';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler } from 'next';
+
+/** @COMPLETE */
+
+const { METHOD_NOT_ALLOWED, NOT_FOUND } = StatusCodeConstants;
+
+export interface BatchReportsIdApi
+  extends GetBatchReportById,
+    GetBatchReportCsvFull {}
 
 // Declaring function for readability with Sentry wrapper
-const batchReports = async (
-  request: NextApiRequest,
-  response: NextApiResponse
-): Promise<any> => {
+const batchReports: NextApiHandler<BatchReportsIdApi> = async (
+  request,
+  response
+) => {
+  const defaultNullProps = {
+    batchReport: null,
+    report: null,
+    csv: null
+  };
   const token = await getToken({
     req: request,
     secret: `${process.env.NEXTAUTH_SECRET}`
@@ -25,51 +47,66 @@ const batchReports = async (
 
   // unauthenticated requests
   if (!token) {
-    return response.status(403).json({
-      error: UNAUTHORISED,
-      message: 'Unauthorised api request, please login to continue.'
-    } as ApiError);
+    return returnUnauthorised(response, defaultNullProps);
   }
 
   const { method } = request;
-  const isGet = method === 'GET';
 
-  // GET BY ID
-  if (isGet) {
-    // extract report id
-    const batchReportId = request.query.id;
+  switch (method) {
+    case 'GET':
+      // extract report id
+      const batchReportId = request.query.id;
+      const exportQuery = request.query.export;
+      const skip = parseInt(request.query?.skip?.toString()) || 0;
+      const limit = parseInt(request.query?.limit?.toString()) || 10;
 
-    if (!batchReportId) {
-      return response.status(500).json({
-        error: NO_REPORT_ID,
-        message: 'No report ID provided, please add batched report ID.'
-      } as ApiError);
-    }
+      if (!batchReportId) {
+        return makeMissingArgsResponse(
+          response,
+          NO_REPORT_ID,
+          'No report ID provided, please add batched report ID.',
+          defaultNullProps
+        );
+      }
 
-    try {
-      const fetchRes = await BatchReport.getBatchReportsById(
-        batchReportId.toString(),
-        `${token.accessToken}`
-      );
+      try {
+        // GET CSV
+        if (exportQuery === 'csv') {
+          const fetchRes = await BatchReport.getBatchReportsCsv(
+            `${token.accessToken}`,
+            { batchReportId: batchReportId.toString() }
+          );
 
-      if (fetchRes.ok) {
+          return response.status(fetchRes.status).json({
+            ...defaultNullProps,
+            ...fetchRes
+          });
+        }
+        const fetchRes = await BatchReport.getBatchReportsById(
+          `${token.accessToken}`,
+          { id: batchReportId.toString(), skip, limit }
+        );
+
         return response.status(fetchRes.status).json({
-          ok: true,
-          batchReport: fetchRes.batchReport
+          ...defaultNullProps,
+          ...fetchRes
+        });
+      } catch (error) {
+        return response.status(NOT_FOUND).json({
+          ...makeApiHandlerResponseFailure({
+            message: errorsBySourceType.BATCH_REPORT[NOT_FOUND]
+          }),
+          ...defaultNullProps
         });
       }
-    } catch (error) {
-      return response.status(404).json({
-        error: NO_REPORT,
-        message: 'No batched report job found with that ID.'
-      } as ApiError);
-    }
+    default:
+      return response.status(METHOD_NOT_ALLOWED).json({
+        ...makeApiHandlerResponseFailure({
+          message: errorsBySourceType.GENERAL[METHOD_NOT_ALLOWED]
+        }),
+        ...defaultNullProps
+      });
   }
-
-  return response.status(500).json({
-    error: METHOD_NOT_ALLOWED,
-    message: 'Method not allowed, please use allowed method.'
-  } as ApiError);
 };
 
 export default withSentry(batchReports);

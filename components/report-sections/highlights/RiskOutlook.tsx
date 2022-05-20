@@ -2,6 +2,8 @@ import { useTranslations } from 'next-intl';
 
 import { RiskOutlookData } from '../../../types/report';
 import Hint from '../../elements/Hint';
+import { PlaceholderBox } from '../../elements/PlaceholderBox';
+import { CircleX } from '../../svgs/CircleX';
 
 interface RiskOutlookProps {
   hintTitle: string;
@@ -14,7 +16,6 @@ interface RiskOutlookProps {
 const RiskOutlook = ({
   hintTitle,
   hintBody,
-  country,
   riskOutlookData,
   hasLegalEvents
 }: RiskOutlookProps) => {
@@ -24,8 +25,6 @@ const RiskOutlook = ({
     `${riskOutlookData?.governance?.judgements_12_months}` || t('na');
   const paymentRemarks =
     `${riskOutlookData?.governance?.payment_remarks_12_months}` || t('na');
-  const region = riskOutlookData?.benchmark?.region;
-  const sector = riskOutlookData?.benchmark?.sector;
 
   return (
     <div className="flex flex-col w-full">
@@ -34,43 +33,43 @@ const RiskOutlook = ({
         <Hint title={hintTitle} body={hintBody} />
       </div>
       <div className="flex flex-col print:border-2 w-full">
-        <ul
-          className="list-disc bg-white px-8 rounded-md py-2 w-full"
-          data-testid="risk-outlook-list"
-        >
-          <li className="py-2 text-sm lg:text-sm">
-            {riskOutlookData?.leverage === 'positive'
-              ? t('leverage_positive')
-              : t('leverage_negative')}
-          </li>
-          <li className="py-2 text-sm lg:text-sm">
-            {riskOutlookData?.liquidity === "'positive"
-              ? t('liquidity_positive')
-              : t('liquidity_negative')}
-          </li>
-          <li className="py-2 text-sm lg:text-sm">
-            {riskOutlookData?.profitability === 'positive'
-              ? t('profitability_positive')
-              : t('profitability_negative')}
-          </li>
-          {hasLegalEvents && judgements && paymentRemarks && (
+        {riskOutlookData ? (
+          <ul
+            className="list-disc bg-white px-8 rounded-md py-2 w-full"
+            data-testid="risk-outlook-list"
+          >
             <li className="py-2 text-sm lg:text-sm">
-              {t('governance_template', {
-                judgements,
-                paymentRemarks
-              })}
+              {riskOutlookData?.leverage &&
+                t(`leverage_${riskOutlookData?.leverage}`)}
             </li>
-          )}
-          {region && sector && country && (
             <li className="py-2 text-sm lg:text-sm">
-              {t('benchmark_template', {
-                region,
-                sector,
-                country
-              })}
+              {riskOutlookData?.liquidity &&
+                t(`liquidity_${riskOutlookData?.liquidity}`)}
             </li>
-          )}
-        </ul>
+            <li className="py-2 text-sm lg:text-sm">
+              {riskOutlookData?.profitability &&
+                t(`profitability_${riskOutlookData?.profitability}`)}
+            </li>
+            {riskOutlookData?.indebtedness && (
+              <li className="py-2 text-sm lg:text-sm">
+                {t(`indebtedness_${riskOutlookData?.indebtedness}`)}
+              </li>
+            )}
+            {hasLegalEvents && judgements && paymentRemarks && (
+              <li className="py-2 text-sm lg:text-sm">
+                {t('governance_template', {
+                  judgements,
+                  paymentRemarks
+                })}
+              </li>
+            )}
+          </ul>
+        ) : (
+          <PlaceholderBox
+            icon={<CircleX className="mr-3 stroke-orange-400" />}
+            message={t('no_risk_outlook')}
+          />
+        )}
       </div>
     </div>
   );

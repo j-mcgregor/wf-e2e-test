@@ -3,34 +3,71 @@ import { BookmarkIcon } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import ReactTimeago from 'react-timeago';
 import { useRecoilValue } from 'recoil';
+import useSWR from 'swr';
 
 import BookmarkCard from '../components/cards/BookmarkCard';
-import Button from '../components/elements/Button';
-import ReportTable from '../components/elements/ReportTable';
 import Layout from '../components/layout/Layout';
-import LoadingIcon from '../components/svgs/LoadingIcon';
-import useReportHistory from '../hooks/useReportHistory';
+import Table, { TableHeadersType } from '../components/table/Table';
 import appState from '../lib/appState';
+import fetcher from '../lib/utils/fetcher';
+import { createReportTitle } from '../lib/utils/text-helpers';
 import { ReportSnippetType } from '../types/global';
+import { UserReportsApi } from './api/user/reports';
 
 const Reports = () => {
   const { user } = useRecoilValue(appState);
-
-  const [reportLimit, setReportLimit] = useState(0); // initial limit of 10 reports
-
-  const { reports, loading } = useReportHistory(10, reportLimit);
-
+  const t = useTranslations();
   const bookmarkedReports = user?.bookmarked_reports;
 
-  const t = useTranslations();
+  // ADD TO HOOK START
+  const [skip, setSkip] = useState(0); // initial limit of 10 reports
+  const limit = 10;
 
-  const reportLength = reports?.length || 0;
+  const { data, isValidating } = useSWR<UserReportsApi>(
+    `/api/user/reports?limit=${limit}&skip=${skip}`,
+    fetcher,
+    {
+      revalidateOnFocus: false
+    }
+  );
 
-  // load 5 more reports until max of 30
-  const handleAddReports = (): void => {
-    reportLimit + 10 <= reportLength ? setReportLimit(reportLimit + 10) : null;
-  };
+  const getReportName = (row: { company_name: string; created_at: string }) =>
+    createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
+
+  const ReportTableHeaders: TableHeadersType[] = [
+    {
+      name: t('company_name'),
+      selector: getReportName,
+      align: 'left',
+      width: 'w-[70%]',
+      contentClassName:
+        'truncate max-w-[400px] sm:max-w-lg lg:max-w-lg xl:max-w-2xl',
+      rowTitle: getReportName
+    },
+    {
+      name: t('sme_z-score'),
+      selector: 'sme_z_score',
+      align: 'center',
+      width: 'w-[10%]'
+    },
+    {
+      name: t('bre'),
+      selector: 'bond_rating_equivalent',
+      align: 'center',
+      width: 'w-[10%]'
+    },
+    {
+      name: t('created'),
+      selector: (row: { created_at: string }) => (
+        <ReactTimeago date={row.created_at} />
+      ),
+      align: 'center',
+      width: 'w-[10%] pr-6'
+    }
+  ];
+  // ADD TO HOOK END
 
   return (
     <Layout noNav={false} title="Reports">
@@ -78,33 +115,18 @@ const Reports = () => {
             {t('recent_reports')}
           </p>
 
-          <ReportTable
-            headerSize="text-[10px] md:text-sm lg:text-base"
-            reports={
-              (loading && reports?.length === 0) ||
-              reports?.length === user?.reports?.length
-                ? user?.reports
-                : reports
-            }
-            limit={reportLimit + 10}
-            shadow={true}
-            loading={loading}
-            borders={true}
-            fillerRows={false}
-            linkRoute="/report"
+          <Table
+            tableName={t('no_data_recent_reports')}
+            headers={ReportTableHeaders}
+            data={data?.reports || []}
+            isLoading={isValidating}
+            limit={limit}
+            total={user?.total_reports}
+            rowLink={row => `/report/${row.id}?from=/reports`}
+            setSkip={setSkip}
+            pagination
+            fillEmptyRows
           />
-
-          {/* Handle loading cases and if there are enough reports to show more */}
-          {(reportLimit + 10 <= reportLength || loading) && (
-            <Button
-              disabled={loading}
-              variant="none"
-              className="border-alt border max-w-[120px] my-2 mx-auto"
-              onClick={handleAddReports}
-            >
-              {!loading ? <p>{t('show_more')}</p> : <LoadingIcon />}
-            </Button>
-          )}
         </div>
       </div>
     </Layout>
@@ -121,7 +143,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
         ...require(`../messages/${locale}/reports.${locale}.json`),
-        ...require(`../messages/${locale}/general.${locale}.json`)
+        ...require(`../messages/${locale}/general.${locale}.json`),
+        ...require(`../messages/${locale}/errors.${locale}.json`)
       }
     }
   };

@@ -9,6 +9,7 @@ import {
   KeyIcon,
   LogoutIcon,
   MailIcon,
+  OfficeBuildingIcon,
   SupportIcon,
   UserCircleIcon
 } from '@heroicons/react/outline';
@@ -53,6 +54,12 @@ const useMainNavItems = () => {
     ],
     secondaryNavigation: [
       {
+        name: `${t('organisation')}`,
+        href: '/organisation',
+        icon: OfficeBuildingIcon,
+        adminOnly: true
+      },
+      {
         name: `${t('api_documentation')}`,
         href: '/api-documentation',
         icon: ChipIcon
@@ -61,12 +68,7 @@ const useMainNavItems = () => {
       { name: `${t('support')}`, href: '/support', icon: SupportIcon },
       {
         name: `${t('logout')}`,
-        onClick: () => {
-          // clear sentry user before logout
-          setLastPageVisited('');
-          Sentry.configureScope(scope => scope.setUser(null));
-          return signOut({ callbackUrl: `${window.location.origin}/login` });
-        },
+        href: '/logout',
         icon: LogoutIcon
       }
     ]

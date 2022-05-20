@@ -22,6 +22,9 @@ import { ApiResType } from '../../types/global';
 //   'au'
 // ];
 
+/**
+ * @deprecated I think
+ */
 const getCompanyNews = async (
   companyName: string | undefined
   // countryCode?: string

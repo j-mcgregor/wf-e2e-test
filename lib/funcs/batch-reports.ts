@@ -1,3 +1,10 @@
+import { ApiHandler, HandlerReturn } from '../../types/http';
+import { errorsBySourceType, makeErrorResponse } from '../utils/error-handling';
+import {
+  makeApiHandlerResponseFailure,
+  makeApiHandlerResponseSuccess
+} from '../utils/http-helpers';
+
 import type {
   BatchJobGetByIdResponse,
   BatchJobsGetAllResponse,
@@ -6,73 +13,158 @@ import type {
   BatchAutoRequest,
   CreateBatchJobResponse
 } from '../../types/batch-reports';
-import { GENERIC_API_ERROR } from '../utils/error-codes';
+/**
+ * ***************************************************
+ * GET ALL BATCH REPORTS
+ * ***************************************************
+ */
 
-const getAllBatchReports = async (
-  token: string
-): Promise<{
-  ok: boolean;
-  batchReports?: BatchJobsGetAllResponse;
-  status: number;
-  error?: boolean;
-  message?: string;
-}> => {
+export interface GetAllBatchReports extends HandlerReturn {
+  batchReports: BatchJobsGetAllResponse | null; // <- null indicates a failure since typing makes this value required
+}
+
+interface GetAllBatchReportsProps {
+  limit?: number;
+  skip?: number;
+}
+
+const getAllBatchReports: ApiHandler<
+  GetAllBatchReports,
+  GetAllBatchReportsProps
+> = async (token: string, { limit = 10, skip = 0 }) => {
+  const limitAndSkipString = limit ? `?limit=${limit}&skip=${skip}` : '';
+
   try {
-    const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch?limit=8`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/jobs/batch${limitAndSkipString}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
 
-    if (res.status === 200 && res.ok) {
-      const batchReports: BatchJobsGetAllResponse = await res.json();
-
+    if (response.ok) {
+      const batchReports: BatchJobsGetAllResponse = await response.json();
       return {
-        ok: true,
-        batchReports: batchReports,
-        status: res.status
+        ...makeApiHandlerResponseSuccess(),
+        batchReports
+      };
+    }
+
+    if (errorsBySourceType.BATCH_REPORT[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReports: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReports: null,
+        message: 'BATCH_REPORT_PROCESSING_ISSUE'
       };
     }
   } catch (error) {
-    return { ok: false, error: true, message: GENERIC_API_ERROR, status: 500 };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      batchReports: null,
+      message: 'BATCH_REPORT_PROCESSING_ISSUE'
+    };
   }
-  return { ok: false, status: 500 };
 };
 
-const getBatchReportsById = async (
-  id: string,
-  token: string
-): Promise<{
-  ok: boolean;
-  batchReport?: BatchJobGetByIdResponse;
-  status: number;
-}> => {
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch/${id}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+/**
+ * ***************************************************
+ * GET BATCH REPORT BY ID
+ * ***************************************************
+ */
+export interface GetBatchReportById extends HandlerReturn {
+  batchReport: BatchJobGetByIdResponse | null;
+}
 
-  if (res.status === 200 && res.ok) {
-    const batchReport: BatchJobGetByIdResponse = await res.json();
-    return { ok: true, batchReport, status: res.status };
-  }
-  return { ok: false, status: res.status };
-};
+interface GetBatchReportByIdProps {
+  id: string;
+  skip: number;
+  limit: number;
+}
 
-const createBatchReport = async (
-  report: BatchAutoRequest,
-  token: string
-): Promise<{
-  ok: boolean;
-  status: number;
-  report?: CreateBatchJobResponse;
-  details?: string | {};
-}> => {
+const getBatchReportsById: ApiHandler<
+  GetBatchReportById,
+  GetBatchReportByIdProps
+> = async (token, { id, skip, limit }) => {
   try {
-    const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch`, {
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/jobs/batch/${id}?skip=${skip}&limit=${limit}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    if (response.ok) {
+      const batchReport: BatchJobGetByIdResponse = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        batchReport
+      };
+    }
+
+    if (errorsBySourceType.BATCH_REPORT[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReport: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReport: null,
+        message: 'BATCH_REPORT_PROCESSING_ISSUE'
+      };
+    }
+  } catch (error) {
+    return {
+      ...makeApiHandlerResponseFailure(),
+      batchReport: null,
+      message: 'BATCH_REPORT_PROCESSING_ISSUE'
+    };
+  }
+};
+
+/**
+ * ***************************************************
+ * CREATE BATCH REPORT
+ * ***************************************************
+ */
+
+export interface CreateBatchReport extends HandlerReturn {
+  batchReportId: string | null;
+}
+
+interface CreateBatchReportProps {
+  report: BatchAutoRequest;
+}
+
+const createBatchReport: ApiHandler<
+  CreateBatchReport,
+  CreateBatchReportProps
+> = async (token: string, { report }) => {
+  try {
+    const response = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -80,45 +172,170 @@ const createBatchReport = async (
       },
       body: JSON.stringify(report)
     });
-    if (res.ok) {
-      const report: CreateBatchJobResponse = await res.json();
-      return { ok: true, report, status: res.status };
+    if (response.ok) {
+      const reportData: CreateBatchJobResponse = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        batchReportId: reportData.id
+      };
     }
-    const error = await res?.json();
-    return { ok: false, status: res.status, details: error?.detail };
-  } catch (e: any) {
-    return { ok: false, status: 500, details: e.message };
+
+    if (errorsBySourceType.BATCH_REPORT[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReportId: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReportId: null,
+        message: 'BATCH_REPORT_PROCESSING_ISSUE'
+      };
+    }
+  } catch (error) {
+    return {
+      ...makeApiHandlerResponseFailure(),
+      batchReportId: null,
+      message: 'BATCH_REPORT_PROCESSING_ISSUE'
+    };
   }
 };
 
-const batchJobReportUpload = async (
-  report: BatchManualRequest,
-  token: string
-): Promise<{
-  ok: boolean;
-  status: number;
-  report?: BatchJobUploadResponse;
-  details?: string | {};
-}> => {
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch/upload`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(report)
-  });
+/**
+ * ***************************************************
+ * BATCH REPORT UPLOAD
+ * ***************************************************
+ */
 
-  if (res.ok) {
-    const report: BatchJobUploadResponse = await res.json();
-    return { ok: true, report, status: res.status };
-  }
+export interface BatchJobReportUpload extends HandlerReturn {
+  batchReportId: string | null;
+}
 
+export interface BatchJobReportUploadProps {
+  report: BatchManualRequest;
+}
+
+const batchJobReportUpload: ApiHandler<
+  BatchJobReportUpload,
+  BatchJobReportUploadProps
+> = async (token: string, { report }) => {
   try {
-    const error = await res?.json();
-    return { ok: false, status: res.status, details: error?.detail };
-  } catch (e: any) {
-    return { ok: false, status: res.status, details: e.message };
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/jobs/batch/upload`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(report)
+      }
+    );
+
+    if (response.ok) {
+      const reportData: BatchJobUploadResponse = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        batchReportId: reportData.id
+      };
+    }
+
+    if (errorsBySourceType.BATCH_REPORT[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReportId: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        batchReportId: null,
+        message: 'BATCH_REPORT_PROCESSING_ISSUE'
+      };
+    }
+  } catch (error) {
+    return {
+      ...makeApiHandlerResponseFailure(),
+      batchReportId: null,
+      message: 'BATCH_REPORT_PROCESSING_ISSUE'
+    };
+  }
+};
+
+/**
+ * ***************************************************
+ * GET CSV REPORT
+ * * used directly in the client since AWS has a 5mb limit
+ * * on downloads, so we need to call the API directly to
+ * * bypass lamda limits
+ * ***************************************************
+ */
+
+export interface GetBatchReportCsvFull extends HandlerReturn {
+  csv: string | null;
+}
+
+export interface GetBatchReportCsvFullProps {
+  batchReportId: string;
+}
+
+export const getBatchReportsCsv: ApiHandler<
+  GetBatchReportCsvFull,
+  GetBatchReportCsvFullProps
+> = async (token: string, { batchReportId }) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_WF_AP_ROUTE}/jobs/batch/${batchReportId}/export/full`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    if (response.ok) {
+      const csv = await response.text();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        csv
+      };
+    }
+    if (errorsBySourceType.BATCH_REPORT[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        csv: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'BATCH_REPORT'
+        }),
+        csv: null,
+        message: 'BATCH_REPORT_PROCESSING_ISSUE'
+      };
+    }
+  } catch (error) {
+    return {
+      ...makeApiHandlerResponseFailure(),
+      csv: null,
+      message: 'BATCH_REPORT_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -126,7 +343,8 @@ const BatchReport = {
   getAllBatchReports,
   getBatchReportsById,
   createBatchReport,
-  batchJobReportUpload
+  batchJobReportUpload,
+  getBatchReportsCsv
 };
 
 export default BatchReport;

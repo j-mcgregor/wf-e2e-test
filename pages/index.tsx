@@ -2,27 +2,73 @@
 import {
   ChipIcon,
   DocumentDuplicateIcon,
-  LightningBoltIcon,
   HandIcon
 } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
+import ReactTimeago from 'react-timeago';
 import { useRecoilValue } from 'recoil';
 
 import LinkCard from '../components/cards/LinkCard';
-import ReportTable from '../components/elements/ReportTable';
 import Stats from '../components/elements/Stats';
 import TwitterFeed from '../components/elements/TwitterFeed';
 import Layout from '../components/layout/Layout';
+import WFLogo from '../components/svgs/WFLogo';
+import Table, { TableHeadersType } from '../components/table/Table';
 import useLocalStorage from '../hooks/useLocalStorage';
-import useTotalReports from '../hooks/useTotalReports';
 import appState from '../lib/appState';
+import { createReportTitle } from '../lib/utils/text-helpers';
 
 export default function Dashboard() {
   const t = useTranslations();
   const [userLoginTime] = useLocalStorage<number[]>('wf_last_login', []);
 
   const { user } = useRecoilValue(appState);
+
+  const reports: { created_at: string }[] = user?.reports?.slice();
+  const sortedReports =
+    reports &&
+    reports
+      .sort((a, b) => {
+        const bDate = new Date(b.created_at).getTime();
+        const aDate = new Date(a.created_at).getTime();
+        return bDate - aDate;
+      })
+      .slice(0, 5);
+
+  const getReportName = (row: { company_name: string; created_at: string }) =>
+    createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
+
+  const ReportTableHeaders: TableHeadersType[] = [
+    {
+      name: t('company_name'),
+      selector: getReportName,
+      align: 'left',
+      width: 'w-[70%]',
+      contentClassName: 'truncate max-w-[400px]',
+      rowTitle: getReportName
+    },
+    {
+      name: t('sme_z-score'),
+      selector: 'sme_z_score',
+      align: 'center',
+      width: 'w-[10%]'
+    },
+    {
+      name: t('bre'),
+      selector: 'bond_rating_equivalent',
+      align: 'center',
+      width: 'w-[10%]'
+    },
+    {
+      name: t('created'),
+      selector: (row: { created_at: string }) => (
+        <ReactTimeago date={row.created_at} />
+      ),
+      align: 'center',
+      width: 'w-[10%] pr-4'
+    }
+  ];
 
   return (
     <Layout title="Dashboard">
@@ -33,7 +79,8 @@ export default function Dashboard() {
 
             <div className="flex justify-between">
               <h1 className="text-2xl font-semibold">
-                {user && user.full_name}
+                {user && user.full_name}{' '}
+                {user?.organisation_name && `(${user.organisation_name})`}
               </h1>
             </div>
           </div>
@@ -58,14 +105,15 @@ export default function Dashboard() {
               }
             ]}
           />
-          <ReportTable
-            reports={user?.reports}
+          <Table
+            tableName={t('no_data_recent_reports')}
+            headers={ReportTableHeaders}
+            data={sortedReports}
+            total={user?.reports?.length}
             limit={5}
-            shadow={true}
-            borders={true}
-            fillerRows={true}
-            headerSize="text-[12px] sm:text-sm"
-            linkRoute="/report"
+            isLoading={false}
+            rowLink={(row: { id: string }) => `/report/${row.id}?from=/`}
+            fillEmptyRows
           />
         </div>
 
@@ -78,21 +126,12 @@ export default function Dashboard() {
       <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-auto md:mr-auto ">
         <LinkCard
           className="mx-auto"
-          icon={<LightningBoltIcon className='className="h-6 w-6 text-white' />}
+          icon={<WFLogo className="w-6 h-6 text-white" />}
           iconColor="bg-highlight"
           header={t('automated_report_header')}
           description={t('automated_report_description')}
           linkTo="/sme-calculator"
         />
-        {/* Removed until feature is added */}
-        {/* <LinkCard
-          className="mx-auto"
-          icon={<SearchCircleIcon className='className="h-6 w-6 text-white' />}
-          iconColor="bg-highlight-2"
-          header={t('sme_prospector_header')}
-          description={t('sme_prospector_description')}
-          linkTo="/sme-prospector"
-        /> */}
         <LinkCard
           className="mx-auto"
           icon={
@@ -138,7 +177,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
         ...require(`../messages/${locale}/index.${locale}.json`),
-        ...require(`../messages/${locale}/general.${locale}.json`)
+        ...require(`../messages/${locale}/general.${locale}.json`),
+        ...require(`../messages/${locale}/errors.${locale}.json`)
       }
     }
   };

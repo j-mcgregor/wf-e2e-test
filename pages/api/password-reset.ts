@@ -1,45 +1,73 @@
+/* eslint-disable sonarjs/no-small-switch */
+/* eslint-disable security/detect-object-injection */
 import { withSentry } from '@sentry/nextjs';
 
-import User from '../../lib/funcs/user';
-import {
-  GENERIC_API_ERROR,
-  VALID_EMAIL_REQUIRED
-} from '../../lib/utils/error-codes';
-import { ApiError } from '../../types/global';
+import User, { ForgotPassword, ResetPassword } from '../../lib/funcs/user';
+import { errorsBySourceType } from '../../lib/utils/error-handling';
+import { makeApiHandlerResponseFailure } from '../../lib/utils/http-helpers';
+import { StatusCodeConstants } from '../../types/http-status-codes';
 
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler } from 'next';
+import { VALID_PASSWORD } from '../../lib/utils/regexes';
+
+const { BAD_REQUEST, METHOD_NOT_ALLOWED } = StatusCodeConstants;
+
+export interface PasswordResetApi extends ForgotPassword, ResetPassword {}
+
 // Declaring function for readability with Sentry wrapper
-const passwordReset = async (
-  request: NextApiRequest,
-  response: NextApiResponse
+const passwordReset: NextApiHandler<PasswordResetApi> = async (
+  request,
+  response
 ) => {
   const { email } = request.query;
   const { token, newPassword } = request.body;
-  if (email && typeof email === 'string') {
-    const status = await User.forgotPassword(email);
-    if (status.ok) {
-      return response.status(200).json(status);
-    }
-    if (!status.ok) {
-      return response
-        .status(404)
-        .json({ error: GENERIC_API_ERROR } as ApiError);
-    }
-  }
+  switch (request.method) {
+    case 'GET':
+      /** @action REQUEST EMAIL TO CHANGE EMAIL ADDRESS  */
+      if (email && typeof email === 'string') {
+        const result = await User.forgotPassword(email, {});
 
-  if (token && newPassword) {
-    const status = await User.resetPassword(token, newPassword);
-    if (status.ok && status.msg) {
-      return response.status(200).json(status);
-    }
+        return response.status(result.status).json(result);
+      }
 
-    if (!status.ok) {
-      return response
-        .status(404)
-        .json({ error: GENERIC_API_ERROR } as ApiError);
-    }
+      return response.status(BAD_REQUEST).json({
+        ...makeApiHandlerResponseFailure({
+          message: errorsBySourceType.GENERAL[BAD_REQUEST]
+        }),
+        msg: null
+      });
+    case 'POST':
+      if (token && newPassword) {
+        /* @TODO update with new error handling */
+        if (!VALID_PASSWORD.test(newPassword)) {
+          return response.status(BAD_REQUEST).json({
+            ...makeApiHandlerResponseFailure({
+              message: errorsBySourceType.GENERAL[BAD_REQUEST]
+            }),
+            msg: null
+          });
+        }
+        const result: ResetPassword = await User.resetPassword(token, {
+          newPassword
+        });
+
+        return response.status(200).json(result);
+      }
+
+      return response.status(BAD_REQUEST).json({
+        ...makeApiHandlerResponseFailure({
+          message: errorsBySourceType.GENERAL[BAD_REQUEST]
+        }),
+        msg: null
+      });
+    default:
+      return response.status(METHOD_NOT_ALLOWED).json({
+        ...makeApiHandlerResponseFailure({
+          message: errorsBySourceType.GENERAL[METHOD_NOT_ALLOWED]
+        }),
+        msg: null
+      });
   }
-  return response.status(404).json({ error: VALID_EMAIL_REQUIRED } as ApiError);
 };
 
 export default withSentry(passwordReset);

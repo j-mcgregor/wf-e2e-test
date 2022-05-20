@@ -19,7 +19,7 @@ const SMECalculator = () => {
 
   return (
     <Layout title={t('single_company')} className="overflow-y-scroll">
-      <div className={`text-primary`}>
+      <div className={`text-primary pb-48`}>
         <div className="py-4">
           <p className="text-3xl font-semibold py-2">{t('single_company')}</p>
           <p className="max-w-2xl leading-loose">

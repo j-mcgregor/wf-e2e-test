@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { LegalEvent } from '../../../types/report';
 import LegalRow from './LegalRow';
@@ -25,6 +25,10 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
   const negativeEvents = allEvents?.filter(event => event.is_negative) || [];
 
   const [events, setEvents] = useState(allEvents);
+
+  useEffect(() => {
+    setEvents(allEvents);
+  }, [legalEvents]);
 
   const hasEvents = events?.length > 0;
 
@@ -90,7 +94,7 @@ const LegalEvents = ({ legalEvents, forPrint }: LegalEventsProps) => {
         ) : null}
       </div>
 
-      {hasEvents ? (
+      {events?.length > 0 ? (
         <>
           <p className="text-xl px-4 print:hidden">{t(filter)}</p>
 

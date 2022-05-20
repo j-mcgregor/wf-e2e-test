@@ -8,10 +8,12 @@ export interface BatchReportResponse {
   name: string;
   created_at: Date;
   updated_at: Date;
+  finished_at?: Date;
   total_reports?: number;
   failed_reports?: number;
   owner_id: number;
   summaries?: BatchSummary[];
+  has_failed?: boolean;
 }
 
 export interface Entity {
@@ -25,10 +27,12 @@ export interface BatchSummary {
   iso_code: string;
   company_id: string;
   sme_z_score: number;
+  finished_at: string;
+  failed_reports: number | null;
   bond_rating_equivalent: string;
   loss_given_default: number;
   probability_of_default_1_year: number;
-  created_at: Date;
+  created_at: string;
   bookmarked: boolean;
 }
 
@@ -43,11 +47,15 @@ export interface GetBatchSummary extends BatchReportResponse {
  */
 export interface BatchReport<T> {
   name: string;
-  currency: string;
+  currency?: string;
   entities: T[];
   /** @deprecated */
   accounts_type: number;
 }
+
+/**
+ * @todo check to see if still relevant since the refactor
+ */
 
 // GET /api/v1/jobs/batch response
 

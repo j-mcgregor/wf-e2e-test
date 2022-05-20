@@ -15,6 +15,7 @@ import React, { useEffect } from 'react';
 
 import LoadingIcon from '../components/svgs/LoadingIcon';
 import useLocalStorage from '../hooks/useLocalStorage';
+import useUserHomePageRedirect from '../hooks/useUserHomePageRedirect';
 
 const Login = () => {
   const t = useTranslations();
@@ -28,40 +29,19 @@ const Login = () => {
     []
   );
   const [homePage] = useLocalStorage<string>('wf_home_page', '');
-  const [lastPageVisited] = useLocalStorage<string>('wf_last_page_visited', '');
+
+  // assign the user home page redirect if they have one
+  const userHomePagePref = useUserHomePageRedirect(homePage);
 
   useEffect(() => {
     setUserLoginTime([currentTimeAndDate, userLoginTime[0]]);
   }, []);
 
-  //checks local for home_page default redirect
-  const defaultHomepageRedirect = (hp: string) => {
-    let local = hp;
-    switch (local) {
-      case 'reports':
-        local = '/reports';
-        break;
-      case 'single_report':
-        local = '/sme-calculator';
-        break;
-      case 'multiple_reports':
-        local = '/batch-reports';
-        break;
-      default:
-        local = '/';
+  useEffect(() => {
+    if (session && session.user) {
+      router.push(`${userHomePagePref}`);
     }
-    return local;
-  };
-
-  if (!loading && session) {
-    // check localstorage for last page component visited, if present and not empty string, push that page
-    if (lastPageVisited && lastPageVisited !== '') {
-      router.push(`${lastPageVisited}`);
-    } else {
-      const homepageRedirect = defaultHomepageRedirect(homePage);
-      router.push(`${homepageRedirect}`);
-    }
-  }
+  }, [session]);
 
   const currentTimeAndDate = Date.now();
 
@@ -82,7 +62,7 @@ const Login = () => {
                       return (
                         <Link
                           className="text-highlight"
-                          linkTo="https://wiserfunding.com/free-trial"
+                          linkTo="https://www.wiserfunding.com/demorequest?hsLang=en"
                         >
                           {children}
                         </Link>
@@ -93,7 +73,7 @@ const Login = () => {
               </div>
             </div>
             <LoginSSO />
-            <LoginForm defaultHomepageRedirect={defaultHomepageRedirect} />
+            <LoginForm />
           </div>
         ) : (
           <div>

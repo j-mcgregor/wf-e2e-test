@@ -39,8 +39,29 @@ export const useCSV = (file: File | null) => {
   // split out the rows from the csv string
   const contentSplit = csvString?.split('\n');
 
+  const trailingCommaRegEx = new RegExp(/,\s*$/);
+  const doubleTrailingCommaRegEx = new RegExp(/,,\s*$/);
+
+  // when exporting from .xlsx, rows can sometimes have a single trailing comma
+  // in the header row, this throws the auto vs batch calulation later
+  // in data rows it can lead to issues. A double comma is indicative
+  // of an empty value, but a single comma implies the next column
+
+  const processCommas = (safe: string) => {
+    const hasTrailingComma = trailingCommaRegEx.test(safe);
+    const hasDoubleTrailingComma = doubleTrailingCommaRegEx.test(safe);
+
+    if (hasTrailingComma && !hasDoubleTrailingComma) {
+      safe = safe.replace(trailingCommaRegEx, '');
+    }
+
+    return safe;
+  };
+
   // create a safe array
-  const safeContent = Array.isArray(contentSplit) ? contentSplit : [];
+  const safeContent = (Array.isArray(contentSplit) ? contentSplit : []).map(
+    processCommas
+  );
 
   // get the first row of headers from the string
   const csvHeaders = safeContent?.[0]?.split(',') || [];

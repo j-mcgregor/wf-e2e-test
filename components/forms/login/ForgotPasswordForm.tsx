@@ -2,18 +2,19 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { validEmailRegex } from '../../../lib/utils/regexes';
-import Button from '../../elements/Button';
-import ErrorMessage from '../../elements/ErrorMessage';
-import Input from '../../elements/Input';
-import Link from '../../elements/Link';
-import Logo from '../../elements/Logo';
-import config from '../../../config';
 import {
   EMAIL_REQUIRED,
   GENERIC_API_ERROR,
   VALID_EMAIL_REQUIRED
 } from '../../../lib/utils/error-codes';
+import fetcher from '../../../lib/utils/fetcher';
+import { VALID_EMAIL } from '../../../lib/utils/regexes';
+import { PasswordResetApi } from '../../../pages/api/password-reset';
+import Button from '../../elements/Button';
+import ErrorMessage from '../../elements/ErrorMessage';
+import Input from '../../elements/Input';
+import Link from '../../elements/Link';
+import Logo from '../../elements/Logo';
 
 type FormValues = {
   email: string;
@@ -34,17 +35,15 @@ const ForgotPasswordForm = () => {
   const onSubmit = async (data: FormValues) => {
     try {
       // absolute URLs necessary for tests
-      const res = await fetch(
-        `${config.URL}/api/password-reset?email=${data.email}`
+      const response: PasswordResetApi = await fetcher(
+        `/api/password-reset?email=${data.email}`
       );
 
-      const body = await res.json();
-
-      if (res.ok) {
+      if (response.ok) {
         return setSubmittedState(true);
       }
-      if (body.error) {
-        return setSubmitError({ type: body.error });
+      if (response.error) {
+        return setSubmitError({ type: response.error });
       }
       return setSubmitError({ type: GENERIC_API_ERROR });
     } catch (e) {
@@ -72,7 +71,7 @@ const ForgotPasswordForm = () => {
                 <Input
                   {...register('email', {
                     required: true,
-                    pattern: validEmailRegex
+                    pattern: VALID_EMAIL
                   })}
                   type="email"
                   label={`${t('email_address')}`}

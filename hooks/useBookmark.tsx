@@ -5,6 +5,7 @@ import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 import { mutate } from 'swr';
 import { UserReports, userReports } from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
+import { UserBookmarkApi } from '../pages/api/user/bookmarks';
 import { ReportSnippetType } from '../types/global';
 
 // hook to use bookmarks
@@ -45,22 +46,6 @@ const useBookmark = (
     }
   }, [bookmarkedReports]);
 
-  const optimisticallyRemoveBookMark = () =>
-    setReportBookmarks(reports => ({
-      ...reports,
-      bookmarkedReports: reports.bookmarkedReports.filter(
-        bookmark => bookmark.id !== reportId
-      )
-    }));
-
-  const optimisticallyAddBookMark = (report: ReportSnippetType | undefined) =>
-    setReportBookmarks(reports => ({
-      ...reports,
-      bookmarkedReports: report
-        ? [...reports.bookmarkedReports, report]
-        : reports.bookmarkedReports
-    }));
-
   const handleBookmark = useRecoilCallback(
     () => async (action: 'ADD' | 'REMOVE') => {
       try {
@@ -68,20 +53,11 @@ const useBookmark = (
         // this is in reports
         setIsBookmarked(!isBookMarked);
 
-        // // optimistically update global state
-        // if (action === 'REMOVE') {
-        //   optimisticallyRemoveBookMark();
-        // }
-        // // optimistically update global state
-        // if (action === 'ADD') {
-        //   optimisticallyAddBookMark(reportSnippet);
-        // }
-
         // turn and action into an API method
         const method = action === 'REMOVE' ? 'DELETE' : 'POST';
 
         // added return_all so that we can return the bookmarks in the same request
-        const updater = await fetcher(
+        const updater: UserBookmarkApi = await fetcher(
           `/api/user/bookmarks?reportId=${reportId}&return_all=true`,
           method
         );
@@ -90,13 +66,6 @@ const useBookmark = (
         if (!updater.ok) {
           // if fails to save, revert to previous state
           setIsBookmarked(!isBookMarked);
-
-          // // if errors undo global state changes
-          // if (action === 'ADD') {
-          //   optimisticallyRemoveBookMark();
-          // } else if (action === 'REMOVE') {
-          //   optimisticallyAddBookMark(reportSnippet);
-          // }
         }
 
         if (updater.ok && updater.bookmarks) {
@@ -105,8 +74,8 @@ const useBookmark = (
           // recoil requires that what comes out of state is the same as what goes in,
           // but that is in efficient and problematic
           // we're working around it for now
-          // @ts-ignore
 
+          // @ts-ignore
           setReportBookmarks(reports => ({
             ...reports,
             bookmarkedReports: updater.bookmarks

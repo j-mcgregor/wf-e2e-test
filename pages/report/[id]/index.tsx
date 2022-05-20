@@ -13,7 +13,7 @@ import Report from '../../../components/report-sections/Report';
 import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
 import SkeletonReport from '../../../components/skeletons/SkeletonReport';
 import fetcher from '../../../lib/utils/fetcher';
-import { ReportDataProps } from '../../../types/report';
+import { ReportsReportApi } from '../../api/reports/report';
 
 const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const t = useTranslations();
@@ -21,10 +21,12 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data, error } = useSWR<ReportDataProps>(
+  const { data: result, error } = useSWR<ReportsReportApi>(
     id && `/api/reports/report?id=${id}`,
     fetcher
   );
+
+  const data = result?.report;
 
   const backLink = Array.isArray(router?.query?.from)
     ? router.query.from[0]
@@ -34,6 +36,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     ? data?.details?.company_name || data?.details?.name || 'Unnamed Company'
     : '';
 
+  const isError = error || result?.is_error || data?.error;
   return (
     <Layout
       title={`${
@@ -44,7 +47,11 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
       <SecondaryLayout
         navigation={
           companyName && (
-            <>
+            <div
+              className={`${
+                data ? 'opacity-100' : 'opacity-0'
+              } transition-opacity duration-[1500ms] flex flex-col h-full`}
+            >
               <ReportNav
                 isTesting={isTesting}
                 companyName={companyName}
@@ -57,20 +64,27 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
                 loading={!data}
                 backLink={backLink}
               />
-            </>
+            </div>
           )
         }
       >
-        {!data ? (
-          <SkeletonReport />
-        ) : error || data?.error ? (
-          <ErrorSkeleton
-            header={data?.error ? t(data?.error) : ''}
-            message={data?.message}
-          />
-        ) : (
-          data && <Report data={data} id={id || []} />
-        )}
+        {!data && <SkeletonReport />}
+
+        <div
+          className={`${
+            data || isError ? 'opacity-100' : 'opacity-0'
+          } transition-opacity duration-[1500ms]`}
+        >
+          {isError ? (
+            <ErrorSkeleton
+              message={data?.error ? t(data?.error) : ''}
+              header={result?.message}
+              code={result?.status}
+            />
+          ) : (
+            data && <Report data={data} id={id || []} />
+          )}
+        </div>
       </SecondaryLayout>
     </Layout>
   );

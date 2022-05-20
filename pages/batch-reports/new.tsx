@@ -1,40 +1,57 @@
 /* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
-import { GetStaticPropsContext } from 'next';
+import * as Sentry from '@sentry/nextjs';
+import { GetStaticPropsContext, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createRef, useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
-import * as Sentry from '@sentry/nextjs';
 
 import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
 import ErrorMessage from '../../components/elements/ErrorMessage';
+import Hint from '../../components/elements/Hint';
 import Input from '../../components/elements/Input';
+import { OptionRow } from '../../components/elements/OptionRow';
+import SelectMenu from '../../components/elements/SelectMenu';
 import Layout from '../../components/layout/Layout';
+import { SimpleValue } from '../../components/sme-calc-sections/AdvancedSearch';
 import UploadNewData from '../../components/uploads/UploadNewData';
 import { useCSV } from '../../hooks/useCSV';
 import { useCsvValidators } from '../../hooks/useCsvValidators';
+import { accountTypes } from '../../lib/settings/report.settings';
+import Settings from '../../lib/settings/settings.settings';
 import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
+import { ISO, ISO_CODE } from '../../lib/utils/constants';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
-
 import type { SubmitReportType } from '../../types/report';
+import { BatchReportsIndexApi } from '../api/batch-reports';
+import { BatchReportsManualApi } from '../api/batch-reports/manual';
 
-const CreateBatchReport = () => {
+const CreateBatchReport: NextPage = () => {
   const t = useTranslations();
+
   const router = useRouter();
 
   const [fileSelected, setFileSelected] = useState<File | null>(null);
   const [fileSelectedName, setFileSelectedName] = useState<string>('');
 
-  const { csvData, csvValues, fileName, isCSV, isAutoOrManual } =
-    useCSV(fileSelected);
+  const {
+    csvData,
+    csvValues,
+    fileName,
+    totalCompanies,
+    isCSV,
+    isAutoOrManual
+  } = useCSV(fileSelected);
 
   const { isValid, errors, missingHeaders } = useCsvValidators(
     csvData,
     isAutoOrManual.validator,
-    csvValues
+    csvValues,
+    totalCompanies
   );
 
   useEffect(() => {
@@ -43,12 +60,23 @@ const CreateBatchReport = () => {
     }
   }, [fileName]);
 
+  const allCurrencyOptions = [
+    {
+      optionName: 'Use company country currency',
+      optionValue: ISO_CODE,
+      code: ISO
+    },
+    ...Settings.supportedCurrencies
+  ];
+
   const [processing, setProcessing] = useState(false);
   const [complete, setComplete] = useState(false);
   const [reportName, setReportName] = useState('');
   const [reportNameError, setReportNameError] = useState<boolean>();
   const [results, setResults] = useState<{ id?: string }>({});
   const [error, setError] = useState('');
+  const [accountType, setAccountType] = useState<SimpleValue>(accountTypes[0]);
+  const [currency, setCurrency] = useState<SimpleValue>(allCurrencyOptions[0]);
 
   const filenameRef = createRef<HTMLInputElement>();
 
@@ -65,30 +93,36 @@ const CreateBatchReport = () => {
     // req body is different for /jobs/batch and /jobs/batch/upload
     // if /jobs/batch           BatchAutoRequest
     // if /jobs/batch/upload    BatchManualRequest
-    const reqData = convertCSVToRequestBody(
+    const reqData = convertCSVToRequestBody({
       csvData,
       csvValues,
-      reportName,
-      isAutoOrManual.type
-    );
+      name: reportName,
+      uploadType: isAutoOrManual.type,
+      accounts_type: Number(accountType.optionValue),
+      currency: currency.code
+    });
 
     try {
-      const res = await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
-      if (res.ok) {
-        setResults(res.data);
+      // POST '/api/batch-reports' => BatchReportsIndexApi (auto)
+      // POST '/api/batch-reports/upload' => BatchReportsManualApi (manual)
+      const result: BatchReportsIndexApi | BatchReportsManualApi =
+        await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
+
+      if (result.ok) {
+        setResults({ id: result.batchReportId ?? '' });
       }
-      if (res.batchReportId) {
-        // fetch the new batchreports
-        mutate('/api/batch-reports');
+      if (result.batchReportId) {
+        // fetch the new batch reports
+        mutate<BatchReportsIndexApi>('/api/batch-reports');
         // push to batch-reports where in progress reports will show
         return router.push(`/batch-reports`);
       }
-      if (!res.ok) {
+      if (!result.ok) {
         setError({
           error: BATCH_REPORT_FETCHING_ERROR,
           message: 'Could not make post request to batch endpoint.'
         });
-        Sentry.captureException({ error: res.error });
+        Sentry.captureException({ error: result.error });
         setComplete(false);
         setLoading(false);
         setProcessing(false);
@@ -180,6 +214,44 @@ const CreateBatchReport = () => {
               )}
             </>
           }
+          batchAutoOptions={
+            <div className="my-4">
+              <OptionRow
+                title={t('account_type_title')}
+                description={t('account_type_description')}
+                hint={
+                  <Hint
+                    title={t('hints.account_type.title')}
+                    rawBody={t.raw('hints.account_type.body')}
+                  />
+                }
+              >
+                <SelectMenu
+                  values={accountTypes}
+                  defaultValue={accountTypes[0]}
+                  selectedValue={accountType}
+                  setSelectedValue={setAccountType}
+                />
+              </OptionRow>
+              <OptionRow
+                title={t('currency_title')}
+                description={t('currency_description')}
+                hint={
+                  <Hint
+                    title={t('hints.currency.title')}
+                    rawBody={t.raw('hints.currency.body')}
+                  />
+                }
+              >
+                <SelectMenu
+                  values={allCurrencyOptions}
+                  defaultValue={allCurrencyOptions[0]}
+                  selectedValue={currency}
+                  setSelectedValue={setCurrency}
+                />
+              </OptionRow>
+            </div>
+          }
         >
           <div className="w-3/12 my-4">
             {results?.id && !error && (
@@ -255,18 +327,9 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // the desired one based on the `locale` received from Next.js.
         ...require(`../../messages/${locale}/batch-reports.${locale}.json`),
         ...require(`../../messages/${locale}/general.${locale}.json`),
-        ...require(`../../messages/${locale}/upload-data.${locale}.json`)
+        ...require(`../../messages/${locale}/upload-data.${locale}.json`),
+        ...require(`../../messages/${locale}/errors.${locale}.json`)
       }
     }
   };
 }
-
-// disable input when submitting - done
-// disable file upload when submitting - done
-// progress bar runs after successful request - done
-// page redirects to ID after
-
-// auto-batch (30s max per company) and manual-batch (10s per company) have different averageTime to complete - done
-// if time to complete is > 5 mins, kick back to index - done
-// else wait for response, then trigger progress bar and take to ID page - done
-// handle api errors

@@ -3,12 +3,19 @@ import React from 'react';
 interface SecondaryNavProps {
   children?: React.ReactNode;
   navigation?: React.ReactNode;
+  className?: string;
   // ^ I made this optional for empty use in the skeleton report <- dan
 }
 
-const SecondaryNav = ({ navigation, children }: SecondaryNavProps) => {
+const SecondaryNav = ({
+  navigation,
+  children,
+  className = ''
+}: SecondaryNavProps) => {
   return (
-    <div className="flex h-screen overflow-hidden flex-1 relative ">
+    <div
+      className={`flex h-screen overflow-hidden flex-1 relative ${className}`}
+    >
       <aside className="bg-gray-200 bg-opacity-75 flex xl:flex-shrink-0">
         <div className="xl:w-64 w-0 flex flex-col">{navigation}</div>
       </aside>
