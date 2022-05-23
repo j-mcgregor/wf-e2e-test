@@ -20,6 +20,9 @@ import LoadingIcon from '../../components/svgs/LoadingIcon';
 import IntegrationErrorMessages from '../../components/report-integration/IntegrationErrorMessages';
 import Button from '../../components/elements/Button';
 import { useRouter } from 'next/router';
+import RadioSelector from '../../components/elements/RadioSelector';
+import Dropdown from '../../components/elements/Dropdown';
+import Select from '../../components/elements/Select';
 
 const data: CodatCompanyType[] = [
   {
@@ -254,7 +257,7 @@ const ErrorMessages: CodatIntegrationErrorType[] = [
 ];
 
 const ReportIntegrations: NextPage = () => {
-  const [firstStage, setFirstStage] = useState(false);
+  const [stage, setStage] = useState(0);
   const [selectedCompany, setSelectedCompany] =
     useState<CodatCompanyType | null>(null);
   const [errors, setErrors] = useState({});
@@ -285,9 +288,9 @@ const ReportIntegrations: NextPage = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <button
             type="button"
-            onClick={() => setFirstStage(true)}
+            onClick={() => setStage(1)}
             className={`${
-              firstStage ? 'border-2 border-highlight-2 shadow-inner' : ''
+              stage > 0 ? 'border-2 border-highlight-2 shadow-inner' : ''
             } text-left`}
           >
             <LinkCard
@@ -307,7 +310,7 @@ const ReportIntegrations: NextPage = () => {
         </div>
         <div
           className={`flex flex-col gap-6 ${
-            firstStage ? 'opacity-100' : 'opacity-60'
+            stage > 0 ? 'opacity-100' : 'opacity-60'
           }`}
         >
           <h1 className="text-3xl font-semibold mt-12">
@@ -319,7 +322,7 @@ const ReportIntegrations: NextPage = () => {
               {t('itegration_search_title')}
             </h2>
             <CodatCompanySearch
-              disabled={!firstStage}
+              disabled={stage === 0}
               searchFunction={() => null}
               selectedResult={selectedCompany}
               setChosenResult={(option: CodatCompanyType) =>
@@ -351,7 +354,7 @@ const ReportIntegrations: NextPage = () => {
                     </p>
                   </div>
                 )}
-                {errorMessages?.length === 0 && (
+                {errorMessages?.length === 0 && setStage(2) && (
                   <div className="flex items-center gap-2 mt-4">
                     <CheckIcon className="h-6 w-6 text-highlight-2" />
                     <p>
@@ -370,6 +373,59 @@ const ReportIntegrations: NextPage = () => {
                 )}
               </div>
             )}
+          </div>
+        </div>
+        {/* Stage 3 */}
+        <div
+          className={`flex flex-col gap-6 ${
+            true ? 'opacity-100' : 'opacity-60'
+          }`}
+        >
+          <h1 className="text-3xl font-semibold mt-12">
+            {t('integration_stage_3')}
+          </h1>
+          <p>{t('integration_stage_3_description')}</p>
+          <div className="bg-white w-full shadow p-6 flex flex-col md:flex-row gap-4">
+            <div className="flex flex-col gap-4 w-7/12">
+              <h2 className="text-xl font-semibold">
+                {t('integration_sampling_frequency')}
+              </h2>
+              <p className="text-sm text-gray-500">
+                {t('integration_sampling_frequency_description')}
+              </p>
+              <RadioSelector
+                name="sampleFrequency"
+                options={[
+                  { label: '3_months', value: 3 },
+                  { label: '6_months', value: 6 },
+                  { label: '9_months', value: 9 }
+                ]}
+              />
+              <h2 className="text-xl font-semibold mt-2">
+                {t('integration_data_period')}
+              </h2>
+              <p className="text-sm text-gray-500">
+                {t('integration_data_period_description')}
+              </p>
+              <div className="flex gap-2 max-w-xs">
+                <Select
+                  name={'year'}
+                  options={[{ optionValue: '2022' }, { optionValue: '2021' }]}
+                />
+                <Select
+                  name={'month'}
+                  options={[
+                    { optionValue: 'January' },
+                    { optionValue: 'February' }
+                  ]}
+                />
+              </div>
+            </div>
+            <div className="md:ml-8 grow">
+              <h2 className="text-xl font-semibold mt-2">
+                {t('integration_information_title')}
+              </h2>
+            </div>
           </div>
         </div>
       </div>

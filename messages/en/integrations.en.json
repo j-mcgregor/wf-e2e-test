@@ -12,9 +12,12 @@
   "integration_sampling_frequency": "Sampling Frequency",
   "integration_sampling_frequency_description": "Choose the frequency which you want to sample the data. The sample rate is set at 5. i.e. 3 months frequency will sample a total of 15 months from the date selected.",
   "integration_data_period": "Data Period",
-  "integration_data_period_description": "Choose the latest date you want to sample from i.e. January 2022 at 3 months frequency 15 months would be the date range October 2020 - January 2022.",
+  "integration_data_period_description": "Choose the latest date you want to sample from. i.e. January 2022 at 3 months frequency 15 months would be the date range October 2020 - January 2022.",
   "integration_information_title": "Information",
   "integration_timeframe_success": "The full period selected is available ({total_months} months)",
   "integration_timeframe_error": "There are no complete periods of data available",
-  "integration_timeframe_warning": "One period will have incomplete data available"
+  "integration_timeframe_warning": "One period will have incomplete data available",
+  "3_months": "3 Months",
+  "6_months": "6 Months",
+  "9_months": "9 Months"
 }
