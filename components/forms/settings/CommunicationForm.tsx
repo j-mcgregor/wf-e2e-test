@@ -12,6 +12,7 @@ import Button from '../../elements/Button';
 import CheckboxInput from '../../elements/Checkbox';
 import ErrorMessage from '../../elements/ErrorMessage';
 import { SettingsSectionHeader } from '../../elements/Headers';
+import SuccessMessage from '../../elements/SuccessMessage';
 
 interface CommunicationFormInput {
   batch_report_email: boolean;
@@ -35,6 +36,7 @@ const CommunicationForm = () => {
   const { isDirty, isSubmitting } = formState;
 
   const [submitError, setSubmitError] = useState({ type: '' });
+  const [successMessage, setSuccessMessage] = useState('');
 
   const onSubmit: SubmitHandler<CommunicationFormInput> = async data => {
     try {
@@ -61,6 +63,7 @@ const CommunicationForm = () => {
       }
 
       if (json.ok) {
+        setSuccessMessage('UPDATED_USER');
         mutate('/api/user');
       }
     } catch (error) {
@@ -130,6 +133,13 @@ const CommunicationForm = () => {
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">
             {submitError.type === GENERIC_API_ERROR && (
               <ErrorMessage className="text-left" text={t(GENERIC_API_ERROR)} />
+            )}
+            {successMessage === 'USER_UPDATED' && (
+              <SuccessMessage
+                text={t(
+                  'forms.communication-form.update_communication_preference'
+                )}
+              />
             )}
             <Button
               disabled={!isDirty || isSubmitting}

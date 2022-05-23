@@ -1,6 +1,6 @@
 {
   "name": "wiserfunding-platform",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,10 +13,10 @@
     "test:watch": "jest --runInBand --watchAll --forceExit --detectOpenHandles",
     "test:coverage": "yarn jest --coverage ",
     "clean": "rm -rf node_modules coverage .next yarn.lock",
-    "commit": "git-cz",
+    "cz": "git-cz",
     "prepare": "husky install && next telemetry disable",
     "playwright": "NODE_ENV=test playwright test",
-    "playwright:debug": "PWDEBUG=1 playwright test"
+    "playwright:debug": "NODE_ENV=test PWDEBUG=1 playwright test"
   },
   "dependencies": {
     "@azure/msal-browser": "^2.18.0",
@@ -53,6 +53,7 @@
     "react-tsparticles": "^1.37.3",
     "react-twitter-widgets": "^1.10.0",
     "recoil": "^0.5.2",
+    "semantic-release": "^19.0.2",
     "sharp": "^0.29.2",
     "swr": "^1.0.0",
     "ts-jest": "^27.0.5",
@@ -62,6 +63,9 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.20.0",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/release-notes-generator": "^10.0.3",
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tailwindcss/forms": "^0.4.0-alpha.2",
     "@tailwindcss/typography": "^0.5.0-alpha.3",
@@ -69,6 +73,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
     "@testing-library/user-event": "^13.5.0",
+    "@types/aos": "^3.0.4",
     "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^27.0.1",
     "@types/lodash": "^4.14.173",
@@ -100,7 +105,7 @@
     "jest": "^27.1.1",
     "msw": "^0.35.0",
     "papaparse": "^5.3.1",
-    "playwright": "^1.20.0",
+    "playwright": "^1.21.0",
     "postcss": "^8.3.6",
     "prettier": "^2.3.2",
     "pretty-quick": "^3.1.1",
@@ -113,6 +118,19 @@
   "release": {
     "branches": [
       "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      "@semantic-release/git",
+      "@semantic-release/github",
+      "@semantic-release/release-notes-generator"
     ]
   }
 }

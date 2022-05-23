@@ -1,14 +1,19 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
+import { generatePassword } from '../../../lib/utils/generatePassword';
+import { VALID_PASSWORD } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
 import Link from '../../elements/Link';
 import Logo from '../../elements/Logo';
+import { PasswordValidation } from '../settings/PasswordValidation';
 
 type FormProps = {
   token?: string;
@@ -31,7 +36,9 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
     register,
     handleSubmit,
     getValues,
-    formState: { errors, isSubmitting }
+    setValue,
+    formState: { errors, isSubmitting },
+    watch
   } = useForm<FormValues>();
 
   const onSubmit = async (data: FormValues) => {
@@ -42,23 +49,32 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          token,
+          token: token || '',
           newPassword: data.newPassword
         })
       });
       const body = await res.json();
 
-      if (res.ok) {
+      if (body.ok) {
         return setFormSubmitted(true);
       }
-      if (body.error) {
-        return setSubmitError({ type: body.error });
+      if (body.is_error) {
+        if (body.error === 'Invalid token') {
+          return setSubmitError({ type: 'INVALID_TOKEN' });
+        }
+        return setSubmitError({ type: body.message });
       }
       return setSubmitError({ type: GENERIC_API_ERROR });
     } catch (e) {
       // log the details of the error to the logger
-      return setSubmitError({ type: GENERIC_API_ERROR });
+      setSubmitError({ type: GENERIC_API_ERROR });
     }
+  };
+
+  const createPassword = () => {
+    const generatedPassword = generatePassword();
+    setValue('newPassword', generatedPassword);
+    setValue('confirmPassword', generatedPassword);
   };
 
   return (
@@ -80,23 +96,32 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
 
         {!formSubmitted && isValid && (
           <>
-            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
               <p>{t('enter_new_password')}</p>
+              <button
+                type="button"
+                className="text-xs text-orange-400 cursor-pointer hover:text-orange-200"
+                onClick={() => createPassword()}
+              >
+                {t('generate_password')}
+              </button>
               <div className="mt-6">
                 <Input
                   {...register('newPassword', {
                     required: true,
-                    minLength: 8
+                    minLength: 8,
+                    validate: value =>
+                      VALID_PASSWORD.test(value) ||
+                      'Please check your new password is valid'
                   })}
                   type="password"
                   placeholder={`${t('placeholders.your_new_password')}`}
+                  showEye
                 />
-                {errors.newPassword?.type === 'minLength' && (
-                  <ErrorMessage text={t('errors.min_length')} />
+                {errors.newPassword && (
+                  <ErrorMessage text={t('valid_password_required')} />
                 )}
-                {errors.newPassword?.type === 'required' && (
-                  <ErrorMessage text={t('errors.required')} />
-                )}
+                <PasswordValidation password={watch('newPassword')} />
               </div>
 
               <p>{t('confirm_new_password')}</p>
@@ -110,16 +135,20 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
                   })}
                   type="password"
                   placeholder={`${t('placeholders.your_new_password')}`}
+                  showEye
                 />
                 {errors.confirmPassword?.type === 'sameAs' && (
                   <ErrorMessage text={t('errors.not_same')} />
                 )}
                 {errors.confirmPassword?.type === 'required' && (
-                  <ErrorMessage text={t('errors.required')} />
+                  <ErrorMessage text={t('errors.confirm_required')} />
                 )}
               </div>
               {submitError.type === GENERIC_API_ERROR && (
                 <ErrorMessage text={t('errors.submit_error')} />
+              )}
+              {submitError.type === 'INVALID_TOKEN' && (
+                <ErrorMessage text={t('errors.INVALID_TOKEN')} />
               )}
               <div className="mt-6">
                 <Button

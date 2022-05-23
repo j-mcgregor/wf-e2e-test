@@ -62,7 +62,7 @@ const Login = () => {
                       return (
                         <Link
                           className="text-highlight"
-                          linkTo="https://wiserfunding.com/free-trial"
+                          linkTo="https://www.wiserfunding.com/demorequest?hsLang=en"
                         >
                           {children}
                         </Link>

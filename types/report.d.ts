@@ -213,9 +213,10 @@ export interface ShareHolderCardProps extends Company {
 }
 
 export interface RiskOutlookData {
-  leverage: string;
-  liquidity: string;
-  profitability: string;
+  leverage: number;
+  liquidity: number;
+  profitability: number;
+  indebtedness: number;
   governance: {
     judgements_12_months: number;
     payment_remarks_12_months: number;
@@ -574,6 +575,7 @@ export interface EnvironmentalSocialGovernance {
  */
 export type RatingType =
   | 'A'
+  | 'A-'
   | 'BBB+'
   | 'BBB'
   | 'BB+'

@@ -56,6 +56,7 @@ export const INCORRECT_DETAILS: ErrorCodeKeys = 'INCORRECT_DETAILS';
  */
 export const INVALID_SSO_LOGIN: ErrorCodeKeys = 'INVALID_SSO_LOGIN';
 export const NEW_PASSWORD_REQUIRED: ErrorCodeKeys = 'NEW_PASSWORD_REQUIRED';
+export const PASSWORD_REQUIREMENTS: ErrorCodeKeys = 'PASSWORD_REQUIREMENTS';
 export const PASSWORD_REQUIRED: ErrorCodeKeys = 'PASSWORD_REQUIRED';
 export const SIGNED_OUT: ErrorCodeKeys = 'SIGNED_OUT';
 export const UNAUTHORISED: ErrorCodeKeys = 'UNAUTHORISED';
@@ -98,4 +99,9 @@ export const SERVICE_UNAVAILABLE: ErrorCodeKeys = 'SERVICE_UNAVAILABLE';
  * ORGANISATION
  * *****************************************
  */
+export const ORG_400: ErrorCodeKeys = 'ORG_400';
 export const ORG_404: ErrorCodeKeys = 'ORG_404';
+export const ORG_422: ErrorCodeKeys = 'ORG_422';
+export const ORG_429: ErrorCodeKeys = 'ORG_429';
+export const ORG_500: ErrorCodeKeys = 'ORG_500';
+export const ORG_503: ErrorCodeKeys = 'ORG_503';

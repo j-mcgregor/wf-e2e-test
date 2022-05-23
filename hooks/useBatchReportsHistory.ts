@@ -1,61 +1,136 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import fetcher from '../lib/utils/fetcher';
 import { BatchReportsIndexApi } from '../pages/api/batch-reports';
-import {
-  BatchJobsGetAllResponse,
-  BatchReportResponse
-} from '../types/batch-reports';
+import { BatchReportResponse, BatchSummary } from '../types/batch-reports';
 
-const useBatchReportHistory = (
-  limit: number,
-  skip: number = 0,
-  pendingJobs: BatchReportResponse[]
-) => {
-  const [batchReports, setReports] = useState<BatchJobsGetAllResponse>([]);
+function calculateHoursBetweenDates(begin: Date | string, end: number) {
+  const date1 = new Date(begin);
+  const date2 = new Date(end);
+  const diff = (date2.getTime() - date1.getTime()) / 1000;
+  return diff / 3600;
+}
+
+const filterPendingReports = (reports: BatchReportResponse[]) => {
+  return reports.filter(
+    job =>
+      !job.finished_at &&
+      job.failed_reports === null &&
+      calculateHoursBetweenDates(job.created_at, Date.now()) < 24
+  );
+};
+
+const removeDuplicateReports = (reports: BatchReportResponse[]) => {
+  let reportIds = [...new Set([...reports.map(report => report.id)])];
+  return reports.filter(report => {
+    if (reportIds.indexOf(report.id) > -1) {
+      reportIds = reportIds.filter(id => id !== report.id);
+      return true;
+    }
+  });
+};
+
+const orderReports = (reports: BatchReportResponse[]) => {
+  return reports.sort((a, b) => {
+    const aDate = new Date(a.created_at);
+    const bDate = new Date(b.created_at);
+    if (a.created_at < b.created_at) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+};
+
+const removePendingDuplicateReports = (reports: BatchReportResponse[]) => {
+  // get all unique ids
+  // filter by unique ids
+  let reportIds = [...new Set([...reports.map(report => report.id)])];
+  return reports.filter(report => {
+    if (reportIds.indexOf(report.id) > -1 && report.finished_at) {
+      reportIds = reportIds.filter(id => id !== report.id);
+      return true;
+    }
+  });
+};
+
+const useBatchReportsHistory = (limit: number, skip: number = 0) => {
+  const [batchReports, setBatchReports] = useState<{
+    pendingJobs: BatchReportResponse[];
+    failedJobs: BatchReportResponse[];
+    completedJobs: BatchReportResponse[];
+  }>({
+    pendingJobs: [],
+    failedJobs: [],
+    completedJobs: []
+  });
 
   // if no user then revalidate onMount to prevent blank page
   const { data, isValidating } = useSWR<BatchReportsIndexApi>(
-    `/api/batch-reports?limit=${limit}&skip=${skip}`,
+    `/api/batch-reports?limit=${limit + skip}&skip=${0}`,
     fetcher,
     {
       revalidateOnFocus: false,
-      ...(pendingJobs?.length > 0 ? { refreshInterval: 1000 } : {})
+      ...(batchReports.pendingJobs?.length > 0 ? { refreshInterval: 1000 } : {})
     }
   );
 
-  const isLoading = isValidating || !data;
-  React.useEffect(() => {
-    if (data?.batchReports && !isValidating) {
-      const newReports = data?.batchReports;
-      const oldReports = batchReports;
-      if (skip === 0) {
-        setReports(newReports);
-      } else {
-        // handle multiple requests for the same batchReports
-        const oldReportIds = [...oldReports.map(report => report.id)];
-        const noDuplicateNewReports = newReports.filter(
-          report => oldReportIds.indexOf(report.id) === -1
-        );
-        const uniqueReports = [...oldReports, ...noDuplicateNewReports];
-        setReports(uniqueReports);
-      }
-    }
-  }, [isValidating]);
+  const isFetching = isValidating || !data;
 
-  const hasFetchedReports = data || !isValidating;
+  const fetchedBatchReports = data?.batchReports || [];
+
+  const totalLength =
+    batchReports.completedJobs.length +
+    batchReports.failedJobs.length +
+    batchReports.pendingJobs.length;
+
+  useEffect(() => {
+    if (data?.batchReports && !isValidating) {
+      const failingJobs = fetchedBatchReports.filter(
+        job =>
+          ((job.created_at !== job.updated_at || job.finished_at) &&
+            job.total_reports === job.failed_reports) ||
+          calculateHoursBetweenDates(job.created_at, Date.now()) > 24
+      );
+      const completeJobs = fetchedBatchReports.filter(
+        job =>
+          job.total_reports !== job.failed_reports &&
+          job.total_reports !== null &&
+          job.finished_at
+      );
+      const pendJobs = filterPendingReports(fetchedBatchReports);
+
+      setBatchReports({
+        pendingJobs: orderReports(
+          removeDuplicateReports([
+            ...pendJobs
+            // re filter in case they are already done
+            // ...batchReports.pendingJobs
+          ])
+        ),
+        failedJobs: orderReports(
+          removeDuplicateReports([
+            ...failingJobs
+            // ...batchReports.failedJobs
+          ])
+        ),
+        completedJobs: orderReports(
+          removeDuplicateReports([
+            ...completeJobs
+            // ...batchReports.completedJobs
+          ])
+        )
+      });
+    }
+  }, [isFetching]);
 
   return {
-    batchReports:
-      batchReports.length > 0
-        ? batchReports
-        : hasFetchedReports
-        ? batchReports
-        : null,
-    loading: isLoading,
+    ...batchReports,
+    fetching: isFetching,
     error: data?.error,
+    totalLength,
     message: data?.message
   };
 };
 
-export default useBatchReportHistory;
+export default useBatchReportsHistory;

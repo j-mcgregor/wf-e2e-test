@@ -65,8 +65,20 @@ const ESGContainer = ({
   });
 
   const calculateCarbonIntensityPercent = (x: number) => {
-    // calculations performed on percentage
-    return x / 350;
+    const val = x && x / 100;
+    if (val < 0.1) {
+      return val * 1.03;
+    }
+    if (val > 0.15 && val < 0.3) {
+      return Math.min(val * 1.15, 0.3);
+    }
+    if (val > 0.3 && val < 0.5) {
+      return Math.min(val * 1.6, 0.75);
+    }
+    if (val >= 0.5 && val <= 1) {
+      return Math.min(val * 1.3, 1);
+    }
+    return Math.min(val * 1.1, 1);
   };
 
   const calculateCarbonIntensityRotation = (value: number) => {
@@ -87,8 +99,7 @@ const ESGContainer = ({
   };
 
   const speedometerValue =
-    (transition?.carbon_intensity && transition?.carbon_intensity * 100) ||
-    null;
+    (transition?.carbon_intensity && transition.carbon_intensity * 100) || null;
 
   return (
     <div className="bg-white p-10 avoid-break ">
@@ -117,14 +128,8 @@ const ESGContainer = ({
             title={t('carbon_intensity')}
             titleMiddle={true}
             reverseX
-            hint={
-              <Hint
-                title={t('report_hints.esg.title')}
-                body={t('report_hints.esg.body')}
-              />
-            }
             classes="w-full"
-            innerClasses="scale-110 lg:scale-125 xl:scale-150"
+            innerClasses="scale-110 lg:scale-125 xl:scale-130"
           />
         </div>
 

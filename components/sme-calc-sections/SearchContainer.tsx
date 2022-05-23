@@ -6,6 +6,7 @@ import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
 
 import appState from '../../lib/appState';
+import { accountTypes } from '../../lib/settings/report.settings';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import {
   orbisAvailableSearchCountries,
@@ -56,6 +57,10 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     SimpleValue | undefined
   >(undefined);
 
+  const [selectedAccountType, setSelectedAccountType] = useState<
+    SimpleValue | undefined
+  >(undefined);
+
   const [selectedCurrency, setSelectedCurrency] = useState<
     SimpleValue | undefined
   >(undefined);
@@ -82,9 +87,10 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     const country = countries.find(x => x.code === defaultCountry);
     setSelectedCountry(country);
 
-    // const currency = countries.find(x => x.currency_code === defaultCurrency);
     const currency = currencies.find(x => x.code === defaultCurrency);
     currency && setSelectedCurrency(currency);
+
+    setSelectedAccountType(accountTypes[0]);
   }, [user]);
 
   // hides the advance search when disabled
@@ -122,6 +128,9 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const handleSelectCountry = (value: SimpleValue): void => {
     return setSelectedCountry(value);
   };
+  const handleSelectAccountType = (value: SimpleValue): void => {
+    setSelectedAccountType(value);
+  };
 
   const handleSearchReg = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setRegSearchValue(e.target.value);
@@ -140,8 +149,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
       iso_code: selectedCountry?.optionValue,
       company_id: selectedCompany?.company_number || regSearchValue,
       currency: selectedCurrency?.code,
-      /** @deprecated */
-      accounts_type: 0
+      accounts_type: Number(selectedAccountType?.optionValue) || 1
     };
 
     const sentryExtraInfo = {
@@ -234,18 +242,23 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         {showAdvanceSearch && (
           <AdvancedSearch
             handleSearchReg={handleSearchReg}
+            handleSelectAccountType={handleSelectAccountType}
             handleSelectCountry={handleSelectCountry}
             selectedCurrency={selectedCurrency}
+            selectedAccountType={selectedAccountType}
             handleSelectCurrency={handleSelectCurrency}
           />
         )}
 
         {(error.error || error.message) && (
           <div className="py-4 px-2 border-2 rounded-md border-red-400 bg-red-50 my-2">
-            {error.error && <ErrorMessage text={t(`${error.error}`)} />}
-            {error.message && (
-              <ErrorMessage className="font-bold mt-2" text={error.message} />
+            {error.error && (
+              <ErrorMessage
+                className="font-bold mt-2"
+                text={`${t('ERROR_TITLE')}`}
+              />
             )}
+            {error.message && <ErrorMessage text={`${t(error.message)}`} />}
           </div>
         )}
 

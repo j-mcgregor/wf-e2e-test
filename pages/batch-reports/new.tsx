@@ -11,41 +11,47 @@ import { useTranslations } from 'use-intl';
 import LinkCard from '../../components/cards/LinkCard';
 import Button from '../../components/elements/Button';
 import ErrorMessage from '../../components/elements/ErrorMessage';
+import Hint from '../../components/elements/Hint';
 import Input from '../../components/elements/Input';
+import { OptionRow } from '../../components/elements/OptionRow';
 import SelectMenu from '../../components/elements/SelectMenu';
 import Layout from '../../components/layout/Layout';
 import { SimpleValue } from '../../components/sme-calc-sections/AdvancedSearch';
 import UploadNewData from '../../components/uploads/UploadNewData';
 import { useCSV } from '../../hooks/useCSV';
 import { useCsvValidators } from '../../hooks/useCsvValidators';
-import { appUser } from '../../lib/appState';
+import { accountTypes } from '../../lib/settings/report.settings';
 import Settings from '../../lib/settings/settings.settings';
 import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
+import { ISO, ISO_CODE } from '../../lib/utils/constants';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
+import type { SubmitReportType } from '../../types/report';
 import { BatchReportsIndexApi } from '../api/batch-reports';
 import { BatchReportsManualApi } from '../api/batch-reports/manual';
 
-import type { SubmitReportType } from '../../types/report';
-import { accountTypes } from '../../lib/settings/report.settings';
-import { OptionRow } from '../../components/elements/OptionRow';
-
 const CreateBatchReport: NextPage = () => {
   const t = useTranslations();
-  const router = useRouter();
 
-  const user = useRecoilValue(appUser);
+  const router = useRouter();
 
   const [fileSelected, setFileSelected] = useState<File | null>(null);
   const [fileSelectedName, setFileSelectedName] = useState<string>('');
 
-  const { csvData, csvValues, fileName, isCSV, isAutoOrManual } =
-    useCSV(fileSelected);
+  const {
+    csvData,
+    csvValues,
+    fileName,
+    totalCompanies,
+    isCSV,
+    isAutoOrManual
+  } = useCSV(fileSelected);
 
   const { isValid, errors, missingHeaders } = useCsvValidators(
     csvData,
     isAutoOrManual.validator,
-    csvValues
+    csvValues,
+    totalCompanies
   );
 
   useEffect(() => {
@@ -54,6 +60,15 @@ const CreateBatchReport: NextPage = () => {
     }
   }, [fileName]);
 
+  const allCurrencyOptions = [
+    {
+      optionName: 'Use company country currency',
+      optionValue: ISO_CODE,
+      code: ISO
+    },
+    ...Settings.supportedCurrencies
+  ];
+
   const [processing, setProcessing] = useState(false);
   const [complete, setComplete] = useState(false);
   const [reportName, setReportName] = useState('');
@@ -61,21 +76,7 @@ const CreateBatchReport: NextPage = () => {
   const [results, setResults] = useState<{ id?: string }>({});
   const [error, setError] = useState('');
   const [accountType, setAccountType] = useState<SimpleValue>(accountTypes[0]);
-  const [currency, setCurrency] = useState<SimpleValue>(
-    Settings.supportedCurrencies[0]
-  );
-
-  useEffect(() => {
-    if (user?.preferences?.defaults?.reporting_country) {
-      const defaultCurrency = Settings.supportedCurrencies.find(
-        curr => curr.optionValue === user.preferences?.defaults?.currency
-      );
-
-      if (defaultCurrency) {
-        setCurrency(defaultCurrency);
-      }
-    }
-  }, [user?.preferences]);
+  const [currency, setCurrency] = useState<SimpleValue>(allCurrencyOptions[0]);
 
   const filenameRef = createRef<HTMLInputElement>();
 
@@ -111,7 +112,7 @@ const CreateBatchReport: NextPage = () => {
         setResults({ id: result.batchReportId ?? '' });
       }
       if (result.batchReportId) {
-        // fetch the new batchreports
+        // fetch the new batch reports
         mutate<BatchReportsIndexApi>('/api/batch-reports');
         // push to batch-reports where in progress reports will show
         return router.push(`/batch-reports`);
@@ -218,6 +219,12 @@ const CreateBatchReport: NextPage = () => {
               <OptionRow
                 title={t('account_type_title')}
                 description={t('account_type_description')}
+                hint={
+                  <Hint
+                    title={t('hints.account_type.title')}
+                    rawBody={t.raw('hints.account_type.body')}
+                  />
+                }
               >
                 <SelectMenu
                   values={accountTypes}
@@ -229,10 +236,16 @@ const CreateBatchReport: NextPage = () => {
               <OptionRow
                 title={t('currency_title')}
                 description={t('currency_description')}
+                hint={
+                  <Hint
+                    title={t('hints.currency.title')}
+                    rawBody={t.raw('hints.currency.body')}
+                  />
+                }
               >
                 <SelectMenu
-                  values={Settings.supportedCurrencies}
-                  defaultValue={Settings.supportedCurrencies[0]}
+                  values={allCurrencyOptions}
+                  defaultValue={allCurrencyOptions[0]}
                   selectedValue={currency}
                   setSelectedValue={setCurrency}
                 />
@@ -314,7 +327,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // the desired one based on the `locale` received from Next.js.
         ...require(`../../messages/${locale}/batch-reports.${locale}.json`),
         ...require(`../../messages/${locale}/general.${locale}.json`),
-        ...require(`../../messages/${locale}/upload-data.${locale}.json`)
+        ...require(`../../messages/${locale}/upload-data.${locale}.json`),
+        ...require(`../../messages/${locale}/errors.${locale}.json`)
       }
     }
   };

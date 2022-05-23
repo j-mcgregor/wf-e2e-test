@@ -1,17 +1,18 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import Link from '../../elements/Link';
-import { toTitleCase } from '../../../lib/utils/text-helpers';
-import LinkedinLogo from '../../elements/LinkedinLogo';
-// import UserIcon from '../../svgs/UserIcon';
-import ShareholderCardSvg from '../../svgs/backgrounds/ShareholderCardBG';
-import { ShareHolderCardProps } from '../../../types/report';
 import { OfficeBuildingIcon, UserIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
-import PepFlag from '../../elements/PepFlag';
 import React from 'react';
+
+import { useCreateReport } from '../../../hooks/useCreateReport';
+import { toTitleCase } from '../../../lib/utils/text-helpers';
+import { ShareHolderCardProps } from '../../../types/report';
+import Link from '../../elements/Link';
+import LinkedinLogo from '../../elements/LinkedinLogo';
+import PepFlag from '../../elements/PepFlag';
+import ShareholderCardSvg from '../../svgs/backgrounds/ShareholderCardBG';
+import { CircleX } from '../../svgs/CircleX';
 import LoadingIcon from '../../svgs/LoadingIcon';
 import { WFTwoToneLogo } from '../../svgs/WFTwoToneLogo';
-import { useCreateReport } from '../../../hooks/useCreateReport';
 
 const ShareHolderCard = ({
   firstName,
@@ -43,12 +44,14 @@ const ShareHolderCard = ({
     }`;
   }
 
-  const { createReport, loading } = useCreateReport({
+  const { createReport, loading, isError, isValidIso } = useCreateReport({
     iso_code,
     company_id,
     disabled,
     setDisabled
   });
+
+  // console.log(name, iso_code, isValidIso);
 
   const handleGenerateReport = async () => await createReport();
 
@@ -59,10 +62,10 @@ const ShareHolderCard = ({
       }
     >
       <div
-        className="flex avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs bg-white justify-between items-end"
+        className="flex avoid-break  print:shadow-none print:px-1 print:py-1 print:text-xs bg-white justify-between "
         data-testid="shareholder-card-testid "
       >
-        <div className="flex py-3 px-2 w-full justify-between">
+        <div className="flex py-3 px-2 w-[90%] justify-between">
           {isShareholderIndividual ? (
             <UserIcon className="h-6 w-6" />
           ) : (
@@ -83,18 +86,26 @@ const ShareHolderCard = ({
           )}
         </div>
 
-        {company_id && !isShareholderIndividual && (
+        {isValidIso && company_id && !isShareholderIndividual && (
           <div
-            className="min-w-32 flex items-center justify-center w-[65px] h-[65px]"
-            title={`Generate a report on ${name}`}
+            className="flex items-end w-10 justify-end absolute right-0 bottom-8"
+            title={
+              isError
+                ? t('generate_report_fail', { name })
+                : t('generate_report', { name })
+            }
           >
             {!loading ? (
-              <WFTwoToneLogo
-                onClick={handleGenerateReport}
-                disabled={disabled}
-              />
+              !isError ? (
+                <WFTwoToneLogo
+                  onClick={handleGenerateReport}
+                  disabled={disabled}
+                />
+              ) : (
+                <CircleX fill="white" stroke="red" />
+              )
             ) : (
-              <LoadingIcon />
+              <LoadingIcon className="h-6 w-6 p-[4px] text-highlight" />
             )}
           </div>
         )}

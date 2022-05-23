@@ -41,21 +41,22 @@ const Reports = () => {
       name: t('company_name'),
       selector: getReportName,
       align: 'left',
-      width: 'w-3/6',
-      contentClassName: 'truncate max-w-[240px] lg:max-w-xs xl:max-w-sm',
+      width: 'w-[70%]',
+      contentClassName:
+        'truncate max-w-[400px] sm:max-w-lg lg:max-w-lg xl:max-w-2xl',
       rowTitle: getReportName
     },
     {
       name: t('sme_z-score'),
       selector: 'sme_z_score',
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%]'
     },
     {
       name: t('bre'),
       selector: 'bond_rating_equivalent',
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%]'
     },
     {
       name: t('created'),
@@ -63,7 +64,7 @@ const Reports = () => {
         <ReactTimeago date={row.created_at} />
       ),
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%] pr-6'
     }
   ];
   // ADD TO HOOK END
@@ -142,7 +143,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
         ...require(`../messages/${locale}/reports.${locale}.json`),
-        ...require(`../messages/${locale}/general.${locale}.json`)
+        ...require(`../messages/${locale}/general.${locale}.json`),
+        ...require(`../messages/${locale}/errors.${locale}.json`)
       }
     }
   };

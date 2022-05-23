@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { test, expect } from '@playwright/test';
-import { login } from '../playwright-helpers';
+import { login } from '../../playwright-helpers';
 
 login();
 
@@ -41,7 +41,9 @@ test.describe('User Settings Tests', async () => {
     await expect(page).toHaveURL('/');
 
     // AND MY NEW NAME SHOULD BE DISPLAYED AT THE TOP OF THE PAGE
-    await expect(page.locator(`h1:has-text("${newUserName}")`)).toBeVisible();
+    await expect(page.locator(`h1:has-text("${newUserName}")`)).toBeVisible({
+      timeout: 120000
+    });
   });
 
   // --------------------------------------------------

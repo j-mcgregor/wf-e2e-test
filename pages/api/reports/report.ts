@@ -217,10 +217,17 @@ const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
             }
           );
 
+          if (result.status === 401 || result.status === 403) {
+            return returnUnauthorised(response, defaultNullProps);
+          }
+
           return response.status(result.status).json({
             ...defaultNullProps,
             ...result
           });
+        }
+        if (!token.accessToken) {
+          return returnUnauthorised(response, defaultNullProps);
         }
       } catch (error: any) {
         return response.status(INTERNAL_SERVER_ERROR).json({

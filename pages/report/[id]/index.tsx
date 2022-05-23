@@ -36,6 +36,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     ? data?.details?.company_name || data?.details?.name || 'Unnamed Company'
     : '';
 
+  const isError = error || result?.is_error || data?.error;
   return (
     <Layout
       title={`${
@@ -46,7 +47,11 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
       <SecondaryLayout
         navigation={
           companyName && (
-            <>
+            <div
+              className={`${
+                data ? 'opacity-100' : 'opacity-0'
+              } transition-opacity duration-[1500ms] flex flex-col h-full`}
+            >
               <ReportNav
                 isTesting={isTesting}
                 companyName={companyName}
@@ -59,20 +64,27 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
                 loading={!data}
                 backLink={backLink}
               />
-            </>
+            </div>
           )
         }
       >
-        {!data ? (
-          <SkeletonReport />
-        ) : error || data?.error ? (
-          <ErrorSkeleton
-            header={data?.error ? t(data?.error) : ''}
-            message={data?.message}
-          />
-        ) : (
-          data && <Report data={data} id={id || []} />
-        )}
+        {!data && <SkeletonReport />}
+
+        <div
+          className={`${
+            data || isError ? 'opacity-100' : 'opacity-0'
+          } transition-opacity duration-[1500ms]`}
+        >
+          {isError ? (
+            <ErrorSkeleton
+              message={data?.error ? t(data?.error) : ''}
+              header={result?.message}
+              code={result?.status}
+            />
+          ) : (
+            data && <Report data={data} id={id || []} />
+          )}
+        </div>
       </SecondaryLayout>
     </Layout>
   );

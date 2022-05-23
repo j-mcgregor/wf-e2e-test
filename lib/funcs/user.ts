@@ -3,7 +3,7 @@ import { User as AuthUser } from 'next-auth';
 import { UserType, ReportSnippetType } from '../../types/global';
 import { ApiHandler, HandlerReturn } from '../../types/http';
 import { GENERIC_API_ERROR, INTERNAL_SERVER_ERROR } from '../utils/error-codes';
-import { makeErrorResponse } from '../utils/error-handling';
+import { errorsBySourceType, makeErrorResponse } from '../utils/error-handling';
 import {
   makeApiHandlerResponseFailure,
   makeApiHandlerResponseSuccess
@@ -98,15 +98,31 @@ const getFullUser: ApiHandler<GetFullUser> = async token => {
         user: userWithReports
       };
     }
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'USER'
-      }),
-      user: null
-    };
+
+    if (errorsBySourceType.USER[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        user: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        user: null,
+        message: 'USER_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), user: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      user: null,
+      message: 'USER_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -153,15 +169,31 @@ const getUser: ApiHandler<GetUser> = async (token: string) => {
         user: structuredUser
       };
     }
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'USER'
-      }),
-      user: null
-    };
+
+    if (errorsBySourceType.USER[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        user: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        user: null,
+        message: 'USER_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), user: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      user: null,
+      message: 'USER_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -225,14 +257,30 @@ const forgotPassword: ApiHandler<ForgotPassword> = async (email: string) => {
         msg: result.msg
       };
     }
-    return {
-      ...makeApiHandlerResponseFailure({ status: response.status }),
-      msg: null
-    };
+
+    if (errorsBySourceType.USER[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        msg: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        msg: null,
+        message: 'USER_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
     return {
-      ...makeApiHandlerResponseFailure({ message: GENERIC_API_ERROR }),
-      msg: null
+      ...makeApiHandlerResponseFailure(),
+      msg: null,
+      message: 'USER_PROCESSING_ISSUE'
     };
   }
 };
@@ -306,19 +354,34 @@ const resetPassword: ApiHandler<ResetPassword, ResetPasswordProps> = async (
       },
       body: JSON.stringify({ token, new_password: newPassword })
     });
-
+    const result = await response.json();
     if (response.ok) {
-      const result = await response.json();
       return { ...makeApiHandlerResponseSuccess(), msg: result.msg };
     }
-    return {
-      ...makeApiHandlerResponseFailure({ message: INTERNAL_SERVER_ERROR }),
-      msg: null
-    };
+
+    if (errorsBySourceType.USER[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        msg: result.detail
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        msg: null,
+        message: 'USER_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
     return {
-      ...makeApiHandlerResponseFailure({ message: GENERIC_API_ERROR }),
-      msg: null
+      ...makeApiHandlerResponseFailure(),
+      msg: null,
+      message: 'USER_PROCESSING_ISSUE'
     };
   }
 };
@@ -360,15 +423,31 @@ const updateUser: ApiHandler<UpdateUser, UpdateUserProps> = async (
         user
       };
     }
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'USER'
-      }),
-      user: null
-    };
+
+    if (errorsBySourceType.USER[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        user: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        user: null,
+        message: 'USER_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), user: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      user: null,
+      message: 'USER_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -413,15 +492,30 @@ const getReportsHistory: ApiHandler<
       };
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'USER'
-      }),
-      reports: null
-    };
+    if (errorsBySourceType.USER[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        reports: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        reports: null,
+        message: 'USER_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), reports: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      reports: null,
+      message: 'USER_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -459,14 +553,27 @@ const bookmarkReport: ApiHandler<BookmarkReport, BookmarkReportProps> = async (
       };
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'USER'
-      })
-    };
+    if (errorsBySourceType.USER[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        })
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        message: 'USER_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure() };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      message: 'USER_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -504,15 +611,82 @@ const getUserBookmarks: ApiHandler<GetUserBookmarks> = async (
       };
     }
 
+    if (errorsBySourceType.USER[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        bookmarks: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'USER'
+        }),
+        bookmarks: null,
+        message: 'USER_PROCESSING_ISSUE'
+      };
+    }
+  } catch (error) {
+    return {
+      ...makeApiHandlerResponseFailure(),
+      bookmarks: null,
+      message: 'USER_PROCESSING_ISSUE'
+    };
+  }
+};
+
+/**
+ * ***************************************************
+ * UPDATE PASSWORD - FORGOT PASSWORD
+ * ***************************************************
+ */
+
+export interface UpdatePassword extends HandlerReturn {
+  user: UserType | null;
+}
+
+interface UpdatePasswordProps {
+  user: UserType;
+}
+
+const updatePassword: ApiHandler<UpdatePassword, UpdatePasswordProps> = async (
+  token: string,
+  { user }
+) => {
+  try {
+    const params = {
+      method: 'PUT',
+      headers: {
+        ...JSONHeaders,
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(user)
+    };
+
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/users/password`,
+      params
+    );
+
+    if (response.ok) {
+      const user: UserType = await response.json();
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        user
+      };
+    }
     return {
       ...makeErrorResponse({
         status: response.status,
         sourceType: 'USER'
       }),
-      bookmarks: null
+      user: null
     };
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), bookmarks: null };
+    return { ...makeApiHandlerResponseFailure(), user: null };
   }
 };
 
@@ -527,7 +701,8 @@ const User = {
   getSSOToken,
   giveDefaults,
   bookmarkReport,
-  getUserBookmarks
+  getUserBookmarks,
+  updatePassword
 };
 
 export default User;

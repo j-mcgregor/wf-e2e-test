@@ -1,24 +1,22 @@
-import { CheckIcon, LightningBoltIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { GetStaticPropsContext } from 'next/types';
 import React from 'react';
 import useSWR from 'swr';
 
-import LinkCard from '../../components/cards/LinkCard';
-import Button from '../../components/elements/Button';
-import Stats from '../../components/elements/Stats';
-import Table, { TableHeadersType } from '../../components/table/Table';
-import Layout from '../../components/layout/Layout';
-import useOrganisation from '../../hooks/useOrganisation';
-import fetcher from '../../lib/utils/fetcher';
-import { OrganisationUser } from '../../types/organisations';
-import { OrganisationTypeApi } from '../api/organisation/[orgId]/[type]';
+import Button from '../components/elements/Button';
+import Stats from '../components/elements/Stats';
+import Table, { TableHeadersType } from '../components/table/Table';
+import Layout from '../components/layout/Layout';
+import useOrganisation from '../hooks/useOrganisation';
+import fetcher from '../lib/utils/fetcher';
+import { OrganisationUser } from '../types/organisations';
+import { OrganisationTypeApi } from './api/organisation/[orgId]/[type]';
 
 const Organisation = () => {
   const t = useTranslations();
   const { organisation, message } = useOrganisation();
   const [skip, setSkip] = React.useState(0);
-
+  const [users, setUsers] = React.useState<OrganisationUser[]>([]);
   const isIntergrated = false;
 
   const limit = 10;
@@ -32,9 +30,16 @@ const Organisation = () => {
       `/api/organisation/${organisation?.id}/users?limit=${limit}&skip=${skip}`,
     fetcher,
     {
-      revalidateOnFocus: true
+      revalidateOnFocus: false,
+      revalidateOnMount: true
     }
   );
+
+  React.useEffect(() => {
+    if (result?.users) {
+      setUsers(result.users);
+    }
+  }, [result]);
 
   const headerWidth = 'w-1/10 min-w-[88px]';
 
@@ -69,8 +74,6 @@ const Organisation = () => {
     }
   ];
 
-  const users: OrganisationUser[] = result?.users || [];
-
   return (
     <Layout adminRequired title={t('title')}>
       <div className="text-primary flex flex-col gap-5">
@@ -81,7 +84,7 @@ const Organisation = () => {
             { header: t('stats_organisation_title'), data: organisation?.name },
             {
               header: t('stats_total_reports_title'),
-              data: organisation?.quota?.quota_used || '0'
+              data: organisation?.totalOrganisationReports
             },
             {
               header: t('stats_users_title'),
@@ -90,7 +93,7 @@ const Organisation = () => {
           ]}
         />
       </div>
-      <div className="mt-12 flex flex-col gap-5 mb-48">
+      <div className="mt-12 flex flex-col gap-5 mb-24">
         <h2 className="text-2xl font-semibold">{t('users_title')}</h2>
         <div className="flex flex-col gap-4 md:flex-row justify-between md:items-center">
           <p className="pr-14">{t('users_description')}</p>
@@ -100,18 +103,21 @@ const Organisation = () => {
             linkTo="/organisation/user/add"
           >{`Add User`}</Button>
         </div>
-        <Table
-          tableName={t('users_title')}
-          total={result?.total || 0}
-          limit={limit}
-          headers={usersHeaders}
-          data={users}
-          setSkip={setSkip}
-          pagination
-          fillEmptyRows
-          isLoading={isValidating}
-          rowLink={row => `/organisation/user/${row.id}`}
-        />
+
+        <div className="h-[700px]">
+          <Table
+            tableName={t('users_title')}
+            total={result?.total || 0}
+            limit={limit}
+            headers={usersHeaders}
+            data={users}
+            setSkip={setSkip}
+            pagination
+            fillEmptyRows
+            isLoading={isValidating}
+            rowLink={row => `/organisation/user/${row.id}`}
+          />
+        </div>
       </div>
       {/* <div className="mt-12 flex flex-col gap-5">
         <h2 className="text-2xl font-semibold">{t('intergrations_title')}</h2>
@@ -150,8 +156,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // You can get the messages from anywhere you like, but the recommended
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
-        ...require(`../../messages/${locale}/organisation.${locale}.json`),
-        ...require(`../../messages/${locale}/general.${locale}.json`)
+        ...require(`../messages/${locale}/organisation.${locale}.json`),
+        ...require(`../messages/${locale}/general.${locale}.json`)
       }
     }
   };

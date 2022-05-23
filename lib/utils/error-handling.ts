@@ -22,6 +22,7 @@ interface MakeErrorProps {
 
 export const errorsBySourceType: Record<SourceType, Record<number, string>> = {
   USER: {
+    401: ErrorConstants.USER_NOT_AUTHORISED,
     403: ErrorConstants.USER_NOT_AUTHORISED,
     404: ErrorConstants.USER_404,
     422: ErrorConstants.USER_422,
@@ -30,6 +31,8 @@ export const errorsBySourceType: Record<SourceType, Record<number, string>> = {
     503: ErrorConstants.USER_503
   },
   COMPANY: {
+    401: ErrorConstants.UNAUTHORISED,
+    403: ErrorConstants.UNAUTHORISED,
     404: ErrorConstants.COMPANY_404,
     422: ErrorConstants.COMPANY_422,
     429: ErrorConstants.COMPANY_429,
@@ -40,6 +43,8 @@ export const errorsBySourceType: Record<SourceType, Record<number, string>> = {
     403: ErrorConstants.UNAUTHORISED
   },
   REPORT: {
+    401: ErrorConstants.UNAUTHORISED,
+    403: ErrorConstants.UNAUTHORISED,
     404: ErrorConstants.REPORT_404,
     422: ErrorConstants.REPORT_422,
     429: ErrorConstants.REPORT_429,
@@ -47,6 +52,7 @@ export const errorsBySourceType: Record<SourceType, Record<number, string>> = {
     503: ErrorConstants.REPORT_503
   },
   BATCH_REPORT: {
+    401: ErrorConstants.UNAUTHORISED,
     404: ErrorConstants.BATCH_REPORT_404,
     422: ErrorConstants.BATCH_REPORT_422,
     429: ErrorConstants.BATCH_REPORT_429,
@@ -55,6 +61,7 @@ export const errorsBySourceType: Record<SourceType, Record<number, string>> = {
   },
   GENERAL: {
     400: ErrorConstants.BAD_REQUEST,
+    401: ErrorConstants.UNAUTHORISED,
     403: ErrorConstants.UNAUTHORISED,
     404: ErrorConstants.NOT_FOUND,
     405: ErrorConstants.METHOD_NOT_ALLOWED,
@@ -64,7 +71,12 @@ export const errorsBySourceType: Record<SourceType, Record<number, string>> = {
     503: ErrorConstants.SERVICE_UNAVAILABLE
   },
   ORGANISATION: {
-    404: ErrorConstants.ORG_404
+    400: ErrorConstants.ORG_400,
+    404: ErrorConstants.ORG_404,
+    422: ErrorConstants.ORG_422,
+    429: ErrorConstants.ORG_429,
+    500: ErrorConstants.ORG_500,
+    503: ErrorConstants.ORG_503
   }
 };
 
@@ -81,6 +93,27 @@ export const makeErrorResponse = ({
       return {
         ...makeApiHandlerResponseFailure({
           status: 404,
+          message
+        })
+      };
+    case 400:
+      return {
+        ...makeApiHandlerResponseFailure({
+          status: 400,
+          message
+        })
+      };
+    case 401:
+      return {
+        ...makeApiHandlerResponseFailure({
+          status: 401,
+          message
+        })
+      };
+    case 403:
+      return {
+        ...makeApiHandlerResponseFailure({
+          status: 403,
           message
         })
       };
@@ -131,7 +164,8 @@ export const returnUnauthorised = <T extends {}>(
   return response.status(403).json({
     ...makeApiHandlerResponseFailure({
       message: 'Unauthorised API request, please login to continue.',
-      error: ErrorConstants.UNAUTHORISED
+      error: ErrorConstants.UNAUTHORISED,
+      status: 403
     }),
     ...defaultNullProps
   });

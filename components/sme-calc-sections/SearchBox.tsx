@@ -139,8 +139,10 @@ const SearchBox = ({
           {data?.error && (
             <div className="px-4 border border-primary text-red-600 rounded overflow-y-scroll pt-4 h-[120px] text-center absolute w-full z-10 bg-white">
               <ExclamationCircleIcon className="h-6 w-6 mx-auto" />
-              <h4 className="text-2xl ">Error fetching company data</h4>
-              <p>Please contact support.</p>
+              <h4 className="text-2xl ">
+                Error when searching company details. Please try again later
+              </h4>
+              <p>If the problem persists please contact support.</p>
             </div>
           )}
 

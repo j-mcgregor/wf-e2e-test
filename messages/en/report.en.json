@@ -184,17 +184,23 @@
     "BBB-": "Less profitable, decreased liquidity or increased proportion of debt. More susceptible to adverse economic conditions",
     "BBB": "Slightly less profitable firms, decreased liquidity or increased proportion of debt",
     "BBB+": "Profitable, liquid and equity-heavy, but more susceptible to adverse economic conditions",
-    "A": "Strong, profitable firms with sufficient liquidity and equity-heavy capital structure"
+    "A": "Strong, profitable firms with sufficient liquidity and equity-heavy capital structure",
+    "A-": "Strong, profitable firms with sufficient liquidity and equity-heavy capital structure"
   },
   "loading_printable_report": "Loading printable report",
-  "leverage_negative": "The company is well collateralised.",
-  "leverage_positive": "This company is highly leveraged.",
-  "liquidity_positive": "There is good liquidity.",
-  "liquidity_negative": "Liquidity is below the optimum.",
-  "profitability_positive": "An efficiently run company making a good return on assets.",
-  "profitability_negative": "Assets are not being used as profitably as they could.",
+  "leverage_1": "The company shows a negative equity ratio having consumed all the equity to absorb losses. This makes it extremely vulnerable to any external shock.",
+  "leverage_2": "The company shows a low equity ratio due to the high leverage that makes it more vulnerable to any external shock.",
+  "leverage_3": "The company shows an equity ratio in line with the industry benchmark that makes it less vulnerable to any external shock.",
+  "leverage_4": "The company shows an equity ratio above the industry benchmark that makes it resilient to any external shock.",
+  "liquidity_1": "The company presents a low level of liquidity potentially putting at risk the short-term solvency of the business.",
+  "liquidity_2": "The company presents a level of liquidity in line with the industry benchmark which should be sufficient to ensure the short-term solvency of the business.",
+  "liquidity_3": "The company presents a level of liquidity above the industry benchmark which should ensure the short-term solvency of the business.",
+  "profitability_1": "The company presents a negative profitability even after accounting for long term investments, financial and tax costs. This could be justifiable if the company is still investing to grow, but it is not sustainable in the longer term.",
+  "profitability_2": "The company presents a low level of profitability even after accounting for long term investments, financial and tax costs. This could be justifiable if the company is still investing to grow, but it is not sustainable in the longer term.",
+  "profitability_3": "The company presents a good level of profitability after accounting for long term investments, financial and tax costs.",
+  "indebtedness_1": "The company has most of its debt obligations maturing in more than 12 months. This positively affects the solvency and profitability of the company in the short-term.",
+  "indebtedness_2": "The company has a high level of its debt obligations maturing in less than 12 months. This negatively affects the solvency and profitability of the company in the short-term.",
   "governance_template": "In the last 12 months there were {judgements} judgements and {paymentRemarks} payment remarks for this company.",
-  "benchmark_template": "The credit score is {sector} the average for this sector and {region} the average for {country}.",
   "this_person_is_risk_relevant_name": "This person's name is similar to a risk relevant name.",
   "there_are_names_that_are_the_same_or_similar_to_a_risk_relevant_name": "There are names that are the same, or similar to, a risk relevant name.",
   "industries": {
@@ -356,5 +362,8 @@
   "drought_risk_text": "<b>{company_name}</b> has a <b>{risk_level}</b> drought risk as it is located in <b>{location}</b> which has a <b>{location_risk}</b> risk for location and a <b>{industry_risk}</b> risk for its industry, {industry}.",
   "reliableText": "We have found sufficient reliable financial and non-financial data to derive our risk assessment for this company.",
   "cautionText": "We have found some volatility in the financial and non-financial data sourced for this company and we recommend you investigate the source of this volatility. We are confident that the quality of our risk assessment is fit for purpose, but the trends of our risk metrics may have been affected. When possible, we would recommend you provide additional data using the option below.",
-  "concernText": "We have not been able to find enough financial and non-financial data to provide a reliable risk assessment. The company could be too young or too small to be processed confidently by our models. We advise you seek alternative sources of financial data such as management accounts and upload using the Manual Data Input option."
+  "concernText": "We have not been able to find enough financial and non-financial data to provide a reliable risk assessment. The company could be too young or too small to be processed confidently by our models. We advise you seek alternative sources of financial data such as management accounts and upload using the Manual Data Input option.",
+  "generate_report": "Generate a report on {name}",
+  "generate_report_fail": "Unable to generate a report on {name}",
+  "no_risk_outlook": "There was not enough data to provide a risk Risk Outlook analysis on this company as it has defaulted."
 }

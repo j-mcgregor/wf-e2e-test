@@ -6,7 +6,7 @@ import {
   OrganisationUserReport,
   OrganisationUserSchema
 } from '../../types/organisations';
-import { makeErrorResponse } from '../utils/error-handling';
+import { errorsBySourceType, makeErrorResponse } from '../utils/error-handling';
 import {
   makeApiHandlerResponseFailure,
   makeApiHandlerResponseSuccess
@@ -27,6 +27,7 @@ const contentType = 'application/json';
  */
 export interface GetOrganisation extends HandlerReturn {
   organisation: OrganisationType | null;
+  totalOrganisationReports: string | null;
 }
 
 interface GetOrganisationProps {
@@ -51,21 +52,119 @@ const getOrganisation: ApiHandler<
 
     if (response.ok) {
       const organisation: OrganisationType = await response.json();
+      const totalReports = await fetch(
+        `${process.env.WF_AP_ROUTE}/organisations/${orgId}/reports?limit=1`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': contentType
+          }
+        }
+      );
+
+      if (totalReports.ok) {
+        return {
+          ...makeApiHandlerResponseSuccess(),
+          organisation,
+          totalOrganisationReports: totalReports.headers.get('x-total-count')
+        };
+      }
+
       return {
         ...makeApiHandlerResponseSuccess(),
-        organisation
+        organisation,
+        totalOrganisationReports: null
       };
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      organisation: null
-    };
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        organisation: null,
+        totalOrganisationReports: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        organisation: null,
+        totalOrganisationReports: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), organisation: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      organisation: null,
+      totalOrganisationReports: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
+    };
+  }
+};
+
+/**
+ * ***************************************************
+ * GET ORGANISATION REPORTS - /api/organisation/:orgId?reports=true
+ * ***************************************************
+ */
+
+export interface getTotalOrganisationReportsType extends HandlerReturn {
+  totalOrganisationReports: string | null;
+}
+
+const getOrganisationReports: ApiHandler<
+  getTotalOrganisationReportsType,
+  GetOrganisationProps
+> = async (token, { orgId }) => {
+  try {
+    const response = await fetch(
+      `${process.env.WF_AP_ROUTE}/organisations/${orgId}/reports?limit=1`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': contentType
+        }
+      }
+    );
+
+    if (response.ok) {
+      return {
+        ...makeApiHandlerResponseSuccess(),
+        totalOrganisationReports: response.headers.get('x-total-count')
+      };
+    }
+
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        totalOrganisationReports: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        totalOrganisationReports: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
+  } catch (error) {
+    return {
+      ...makeApiHandlerResponseFailure(),
+      totalOrganisationReports: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -74,13 +173,15 @@ const getOrganisation: ApiHandler<
  * PUT ORGANISATION - /api/organisation/:orgId
  * ***************************************************
  */
-export interface UpdateOrganisation extends GetOrganisation {}
+export interface UpdateOrganisation extends HandlerReturn {
+  organisation: OrganisationType | null;
+}
 interface UpdateOrganisationProps extends GetOrganisationProps {
   body: string;
 }
 
 const updateOrganisation: ApiHandler<
-  GetOrganisation,
+  UpdateOrganisation,
   UpdateOrganisationProps
 > = async (token, { orgId, body }) => {
   try {
@@ -95,6 +196,7 @@ const updateOrganisation: ApiHandler<
         body
       }
     );
+
     if (response.ok) {
       const organisation: OrganisationType = await response.json();
       return {
@@ -102,15 +204,31 @@ const updateOrganisation: ApiHandler<
         organisation
       };
     }
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      organisation: null
-    };
+
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        organisation: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        organisation: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), organisation: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      organisation: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -168,16 +286,33 @@ const getOrganisationUsers: ApiHandler<
       }
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      users: null,
-      total: null
-    };
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        users: null,
+        total: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        users: null,
+        total: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), users: null, total: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      users: null,
+      total: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -208,6 +343,7 @@ const postOrganisationUser: ApiHandler<
           'Content-Type': contentType
         },
         body: JSON.stringify({
+          ...JSON.parse(body),
           is_active: true,
           is_superuser: false,
           organisation_id: orgId,
@@ -223,8 +359,7 @@ const postOrganisationUser: ApiHandler<
               service_updates: true,
               company_updates: true
             }
-          },
-          ...JSON.parse(body)
+          }
         })
       }
     );
@@ -237,15 +372,30 @@ const postOrganisationUser: ApiHandler<
       };
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      user: null
-    };
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), user: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      user: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
+    };
   }
 };
 
@@ -315,19 +465,32 @@ const getOrganisationUserAndReports: ApiHandler<
       };
     }
 
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      user: null,
-      userReports: null
-    };
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null,
+        userReports: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null,
+        userReports: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
     return {
       ...makeApiHandlerResponseFailure(),
       user: null,
-      userReports: null
+      userReports: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
     };
   }
 };
@@ -368,20 +531,37 @@ const patchOrganisationUser: ApiHandler<
         user: await response.json()
       };
     }
-    return {
-      ...makeErrorResponse({
-        status: response.status,
-        sourceType: 'ORGANISATION'
-      }),
-      user: null
-    };
+
+    if (errorsBySourceType.ORGANISATION[response.status]) {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null
+      };
+    } else {
+      return {
+        ...makeErrorResponse({
+          status: response.status,
+          sourceType: 'ORGANISATION'
+        }),
+        user: null,
+        message: 'ORGANISATION_PROCESSING_ISSUE'
+      };
+    }
   } catch (error) {
-    return { ...makeApiHandlerResponseFailure(), user: null };
+    return {
+      ...makeApiHandlerResponseFailure(),
+      user: null,
+      message: 'ORGANISATION_PROCESSING_ISSUE'
+    };
   }
 };
 
 const Organisation = {
   getOrganisation,
+  getOrganisationReports,
   getOrganisationUsers,
   getOrganisationUserAndReports,
   postOrganisationUser,

@@ -1,6 +1,9 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import { CheckIcon } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -9,13 +12,20 @@ import appState, { appUser } from '../../../lib/appState';
 import {
   CONFIRM_PASSWORD_MATCH,
   GENERIC_API_ERROR,
-  NEW_PASSWORD_REQUIRED
+  NEW_PASSWORD_REQUIRED,
+  PASSWORD_REQUIREMENTS,
+  USER_NOT_AUTHORISED
 } from '../../../lib/utils/error-codes';
+import { generatePassword } from '../../../lib/utils/generatePassword';
+import { VALID_PASSWORD } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
+import SuccessMessage from '../../elements/SuccessMessage';
+import { PasswordValidation } from './PasswordValidation';
 
 interface PasswordFormInput {
+  currentPassword: string;
   newPassword: string;
   confirmPassword: string;
 }
@@ -26,40 +36,62 @@ const PasswordManagement = () => {
 
   const t = useTranslations();
 
-  const { register, formState, getValues, handleSubmit, reset } =
-    useForm<PasswordFormInput>();
+  const {
+    register,
+    formState,
+    getValues,
+    handleSubmit,
+    reset,
+    watch,
+    setValue
+  } = useForm<PasswordFormInput>();
   const { isDirty, errors, isSubmitting } = formState;
   const [submitError, setSubmitError] = useState({ type: '' });
+  const [showPassword, setShowPassword] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   // @ts-ignore
   const onSubmit: SubmitHandler = async (data: {
+    currentPassword: string;
     newPassword: string;
     confirmPassword: string;
   }) => {
-    const { newPassword } = data;
+    const { newPassword, currentPassword } = data;
     try {
-      const fetchRes = await fetch(`${config.URL}/api/user?id=${user.id}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-          ...user,
-          password: newPassword.trim()
-        })
-      });
+      const fetchRes = await fetch(
+        `${config.URL}/api/user/password?id=${user.id}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            ...user,
+            old_password: currentPassword,
+            new_password: newPassword.trim()
+          })
+        }
+      );
 
       const json = await fetchRes.json();
 
       if (!json.ok) {
-        setSubmitError({ type: json.error });
+        setSubmitError({ type: json.message });
         return reset();
       }
 
       if (json.ok) {
         setCurrentUser({ ...user });
+        setSuccessMessage('USER_UPDATED');
         return reset();
       }
     } catch (error) {
       Sentry.captureException(error);
     }
+  };
+
+  const createPassword = () => {
+    const generatedPassword = generatePassword();
+    setShowPassword(true);
+    setValue('newPassword', generatedPassword);
+    setValue('confirmPassword', generatedPassword);
   };
 
   return (
@@ -71,24 +103,55 @@ const PasswordManagement = () => {
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
+        <div className="bg-white py-6 px-4 sm:space-x-4 space-y-6 sm:p-6 flex flex-col sm:flex-row justify-between">
           <div className=" xs:w-full sm:w-1/2 ">
+            <Input
+              {...register('currentPassword', {
+                required: 'You must enter your current password',
+                minLength: {
+                  value: 8,
+                  message: 'Password must have at least 8 characters'
+                }
+              })}
+              label={t('forms.password-management.current_password')}
+              name="currentPassword"
+              autoComplete="current-password"
+              type="password"
+              showEye={{
+                isOpen: showPassword
+              }}
+            />
+            {errors.currentPassword && (
+              <ErrorMessage
+                text={
+                  errors.currentPassword.message || t(NEW_PASSWORD_REQUIRED)
+                }
+              />
+            )}
             <Input
               {...register('newPassword', {
                 required: 'You must specify a password',
                 minLength: {
                   value: 8,
                   message: 'Password must have at least 8 characters'
-                }
+                },
+                validate: value =>
+                  VALID_PASSWORD.test(value) ||
+                  'Please check your new password is valid'
               })}
               label={t('forms.password-management.new_password')}
               name="newPassword"
               autoComplete="new-password"
               type="password"
+              showEye
             />
-            {errors.newPassword && (
-              <ErrorMessage text={t(NEW_PASSWORD_REQUIRED)} />
-            )}
+            {errors.newPassword ? (
+              errors.newPassword.message ? (
+                <ErrorMessage text={t(PASSWORD_REQUIREMENTS)} />
+              ) : (
+                <ErrorMessage text={t(NEW_PASSWORD_REQUIRED)} />
+              )
+            ) : null}
             <Input
               {...register('confirmPassword', {
                 validate: {
@@ -104,16 +167,39 @@ const PasswordManagement = () => {
               label={t('forms.password-management.confirm_password')}
               name="confirmPassword"
               autoComplete="new-password"
-              type="password"
+              showEye
             />
             {errors?.confirmPassword && (
               <ErrorMessage text={t(CONFIRM_PASSWORD_MATCH)} />
             )}
+            {isDirty && (
+              <button
+                type="button"
+                className="text-xs text-orange-400 cursor-pointer mt-4 hover:text-orange-200 mb-2"
+                onClick={() => createPassword()}
+              >
+                {t('forms.password-management.generate_password')}
+              </button>
+            )}
+          </div>
+          <div className="sm:w-2/5">
+            <PasswordValidation password={watch('newPassword')} />
           </div>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">
           {submitError.type === GENERIC_API_ERROR && (
             <ErrorMessage className="text-left" text={t(GENERIC_API_ERROR)} />
+          )}
+          {submitError.type === USER_NOT_AUTHORISED && (
+            <ErrorMessage
+              className="text-left"
+              text={t(`forms.password-management.incorrect_password`)}
+            />
+          )}
+          {successMessage === 'USER_UPDATED' && (
+            <SuccessMessage
+              text={t(`forms.password-management.updated_password`)}
+            />
           )}
           <Button
             disabled={!isDirty}

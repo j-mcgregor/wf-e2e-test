@@ -12,7 +12,7 @@ import {
   PASSWORD_REQUIRED,
   VALID_EMAIL_REQUIRED
 } from '../../../lib/utils/error-codes';
-import { validEmailRegex } from '../../../lib/utils/regexes';
+import { VALID_EMAIL } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
 import CheckboxInput from '../../elements/Checkbox';
 import ErrorMessage from '../../elements/ErrorMessage';
@@ -100,7 +100,7 @@ const LoginForm = () => {
                 <Input
                   {...register('email', {
                     required: true,
-                    pattern: validEmailRegex
+                    pattern: VALID_EMAIL
                   })}
                   label={`${t('email')}`}
                   type="email"
