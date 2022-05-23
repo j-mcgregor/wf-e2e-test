@@ -11,6 +11,8 @@ import useOrganisation from '../hooks/useOrganisation';
 import fetcher from '../lib/utils/fetcher';
 import { OrganisationUser } from '../types/organisations';
 import { OrganisationTypeApi } from './api/organisation/[orgId]/[type]';
+import LinkCard from '../components/cards/LinkCard';
+import { CheckIcon, LightningBoltIcon } from '@heroicons/react/outline';
 
 const Organisation = () => {
   const t = useTranslations();
@@ -93,7 +95,7 @@ const Organisation = () => {
           ]}
         />
       </div>
-      <div className="mt-12 flex flex-col gap-5 mb-24">
+      <div className="mt-12 flex flex-col gap-5">
         <h2 className="text-2xl font-semibold">{t('users_title')}</h2>
         <div className="flex flex-col gap-4 md:flex-row justify-between md:items-center">
           <p className="pr-14">{t('users_description')}</p>
@@ -104,7 +106,7 @@ const Organisation = () => {
           >{`Add User`}</Button>
         </div>
 
-        <div className="h-[700px]">
+        <div className="max-h-[700px]">
           <Table
             tableName={t('users_title')}
             total={result?.total || 0}
@@ -119,10 +121,10 @@ const Organisation = () => {
           />
         </div>
       </div>
-      {/* <div className="mt-12 flex flex-col gap-5">
+      <div className="mt-12 pb-24 flex flex-col gap-5">
         <h2 className="text-2xl font-semibold">{t('intergrations_title')}</h2>
         <p className="pr-14">{t('intergrations_description')}</p>
-        <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-auto md:mr-auto">
+        <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none md:mr-auto">
           <LinkCard
             className="mx-auto"
             icon={
@@ -142,7 +144,7 @@ const Organisation = () => {
             linkTo="/organisation/integrations/codat"
           />
         </div>
-      </div> */}
+      </div>
     </Layout>
   );
 };
