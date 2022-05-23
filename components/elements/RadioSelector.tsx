@@ -9,10 +9,11 @@ interface IRadioOption {
 interface IRadioSelectorProps {
   name: string;
   options: IRadioOption[];
+  disabled?: boolean;
 }
 
 const RadioSelector = React.forwardRef<HTMLInputElement, IRadioSelectorProps>(
-  ({ name, options, ...otherProps }, ref) => {
+  ({ name, options, disabled, ...otherProps }, ref) => {
     const t = useTranslations();
     const isFirstOption = (index: number) => index === 0;
     const isLastOption = (index: number) => index === options.length - 1;
@@ -26,6 +27,7 @@ const RadioSelector = React.forwardRef<HTMLInputElement, IRadioSelectorProps>(
               name={name}
               id={`option-${idx}`}
               className="sr-only peer"
+              disabled={disabled}
               value={value}
               defaultChecked={isFirstOption(idx)}
               {...otherProps}
@@ -38,7 +40,9 @@ const RadioSelector = React.forwardRef<HTMLInputElement, IRadioSelectorProps>(
                   : isLastOption(idx)
                   ? 'rounded-r-lg'
                   : ''
-              } whitespace-nowrap flex h-10 px-4 items-center text-sm justify-center border-[1px] bg-white text-primary peer-checked:border-highlight peer-checked:text-highlight cursor-pointer`}
+              } ${
+                disabled ? 'cursor-default' : 'cursor-pointer'
+              } whitespace-nowrap flex h-10 px-4 items-center text-sm justify-center border-[1px] bg-white text-primary peer-checked:border-highlight peer-checked:text-highlight`}
             >
               {t(`${label}`)}
             </label>

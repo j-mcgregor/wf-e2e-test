@@ -1,28 +1,27 @@
 import {
   ArrowLeftIcon,
   CheckIcon,
+  ExclamationIcon,
   LightningBoltIcon,
   XIcon
 } from '@heroicons/react/outline';
 import { GetServerSidePropsContext, NextPage } from 'next';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+
 import LinkCard from '../../components/cards/LinkCard';
+import Button from '../../components/elements/Button';
+import RadioSelector from '../../components/elements/RadioSelector';
+import Select from '../../components/elements/Select';
 import Layout from '../../components/layout/Layout';
-import SearchBox from '../../components/sme-calc-sections/SearchBox';
-import SearchContainer from '../../components/sme-calc-sections/SearchContainer';
 import CodatCompanySearch from '../../components/report-integration/CodatCompanySearch';
+import IntegrationErrorMessages from '../../components/report-integration/IntegrationErrorMessages';
+import LoadingIcon from '../../components/svgs/LoadingIcon';
 import {
   CodatCompanyType,
   CodatIntegrationErrorType
 } from '../../types/report';
-import LoadingIcon from '../../components/svgs/LoadingIcon';
-import IntegrationErrorMessages from '../../components/report-integration/IntegrationErrorMessages';
-import Button from '../../components/elements/Button';
-import { useRouter } from 'next/router';
-import RadioSelector from '../../components/elements/RadioSelector';
-import Dropdown from '../../components/elements/Dropdown';
-import Select from '../../components/elements/Select';
 
 const data: CodatCompanyType[] = [
   {
@@ -257,7 +256,7 @@ const ErrorMessages: CodatIntegrationErrorType[] = [
 ];
 
 const ReportIntegrations: NextPage = () => {
-  const [stage, setStage] = useState(0);
+  const [stage, setStage] = useState(1);
   const [selectedCompany, setSelectedCompany] =
     useState<CodatCompanyType | null>(null);
   const [errors, setErrors] = useState({});
@@ -271,6 +270,16 @@ const ReportIntegrations: NextPage = () => {
     : router?.query?.from;
 
   const t = useTranslations();
+
+  React.useEffect(() => {
+    if (selectedCompany && errorMessages.length === 0) {
+      setStage(3);
+    } else if (selectedCompany && errorMessages.length > 0) {
+      setStage(2);
+    } else {
+      setStage(1);
+    }
+  }, [selectedCompany, errorMessages]);
 
   return (
     <Layout title="Report Integrations">
@@ -310,7 +319,7 @@ const ReportIntegrations: NextPage = () => {
         </div>
         <div
           className={`flex flex-col gap-6 ${
-            stage > 0 ? 'opacity-100' : 'opacity-60'
+            stage >= 2 ? 'opacity-100' : 'opacity-60'
           }`}
         >
           <h1 className="text-3xl font-semibold mt-12">
@@ -378,7 +387,7 @@ const ReportIntegrations: NextPage = () => {
         {/* Stage 3 */}
         <div
           className={`flex flex-col gap-6 ${
-            true ? 'opacity-100' : 'opacity-60'
+            stage >= 3 ? 'opacity-100' : 'opacity-60'
           }`}
         >
           <h1 className="text-3xl font-semibold mt-12">
@@ -386,7 +395,7 @@ const ReportIntegrations: NextPage = () => {
           </h1>
           <p>{t('integration_stage_3_description')}</p>
           <div className="bg-white w-full shadow p-6 flex flex-col md:flex-row gap-4">
-            <div className="flex flex-col gap-4 w-7/12">
+            <div className="flex flex-col gap-4 max-w-lg">
               <h2 className="text-xl font-semibold">
                 {t('integration_sampling_frequency')}
               </h2>
@@ -400,6 +409,7 @@ const ReportIntegrations: NextPage = () => {
                   { label: '6_months', value: 6 },
                   { label: '9_months', value: 9 }
                 ]}
+                disabled={stage < 3}
               />
               <h2 className="text-xl font-semibold mt-2">
                 {t('integration_data_period')}
@@ -411,6 +421,7 @@ const ReportIntegrations: NextPage = () => {
                 <Select
                   name={'year'}
                   options={[{ optionValue: '2022' }, { optionValue: '2021' }]}
+                  disabled={stage < 3}
                 />
                 <Select
                   name={'month'}
@@ -418,13 +429,34 @@ const ReportIntegrations: NextPage = () => {
                     { optionValue: 'January' },
                     { optionValue: 'February' }
                   ]}
+                  disabled={stage < 3}
                 />
               </div>
             </div>
-            <div className="md:ml-8 grow">
+            <div className="md:ml-8 w-fit flex flex-col gap-2">
               <h2 className="text-xl font-semibold mt-2">
                 {t('integration_information_title')}
               </h2>
+              <div className="flex gap-2 text-sm items-center">
+                {true && (
+                  <>
+                    <ExclamationIcon className="text-red-500 h-6 w-6" />
+                    <p>{t('integration_timeframe_error')}</p>
+                  </>
+                )}
+                {false && (
+                  <>
+                    <ExclamationIcon className="text-highlight h-6 w-6" />
+                    <p>{t('integration_timeframe_warning')}</p>
+                  </>
+                )}
+                {false && (
+                  <>
+                    <CheckIcon className="text-highlight-2 h-6 w-6" />
+                    <p>{t('integration_timeframe_success')}</p>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
