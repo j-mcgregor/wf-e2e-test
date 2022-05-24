@@ -16,8 +16,8 @@
   "integration_information_title": "Information",
   "integration_timeframe_success": "The full period selected is available ({total_months} months)",
   "integration_timeframe_error": "There are no complete periods of data available",
-  "integration_timeframe_warning": "One period will have incomplete data available",
+  "integration_timeframe_warning": "The period will have incomplete data available ({total_months} months missing)",
   "3_months": "3 Months",
   "6_months": "6 Months",
-  "9_months": "9 Months"
+  "12_months": "12 Months"
 }
