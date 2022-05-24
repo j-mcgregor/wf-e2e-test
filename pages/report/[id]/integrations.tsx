@@ -8,7 +8,7 @@ import {
 import { GetServerSidePropsContext, NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import React, { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import useSWR from 'swr';
 
 import LinkCard from '../../../components/cards/LinkCard';
@@ -19,7 +19,6 @@ import Layout from '../../../components/layout/Layout';
 import CodatCompanySearch from '../../../components/report-integration/CodatCompanySearch';
 import IntegrationErrorMessages from '../../../components/report-integration/IntegrationErrorMessages';
 import LoadingIcon from '../../../components/svgs/LoadingIcon';
-import { SuccessResponseType } from '../../../lib/api-handler/api-handler';
 import fetcher from '../../../lib/utils/fetcher';
 import { convertToDateString } from '../../../lib/utils/text-helpers';
 import { TranslateInput } from '../../../types/global';
@@ -61,6 +60,16 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       `/api/integrations/account-categorisation?companyId=${selectedCompany?.company_id}&connectionId=${selectedCompany?.connection_id}`,
     fetcher
   );
+
+  const handleSubmit = async () => {
+    const res = await fetch(
+      `/api/integrations/codat?companyId=${selectedCompany?.company_id}&connectionId=${selectedCompany?.connection_id}&parentId=${id}&periodLength=${monthSample}`,
+      {
+        method: 'POST'
+      }
+    );
+    console.log(res);
+  };
 
   const categorisationErrorMessages: CodatIntegrationErrorType[] =
     accountCategorisation?.data?.uncategorised_accounts;
@@ -132,7 +141,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       const months = Array(12)
         .fill(0)
         .map((_, i) => ({
-          optionValue: i + 1,
+          optionValue: `${i + 1}`,
           optionName: Intl.DateTimeFormat(locale, { month: 'long' }).format(
             new Date(`${first.getFullYear()}-${i + 1}`)
           )
@@ -146,31 +155,19 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
         return months.slice(first.getMonth());
       }
 
-      return months;
+      return months as { optionValue: string; optionName?: TranslateInput }[];
     }
   }, [selectedCompany, yearPeriod]);
-
-  const handleSubmit = async () => {
-    console.log(
-      selectedCompany?.company_id,
-      selectedCompany?.connection_id,
-      id,
-      monthSample
-    );
-    const res = await fetch(
-      `/api/integrations/codat?companyId=${selectedCompany?.company_id}&connectionId=${selectedCompany?.connection_id}&parentId=${id}&periodLength=${monthSample}`,
-      {
-        method: 'POST'
-      }
-    );
-    console.log(res);
-  };
 
   React.useEffect(() => {
     if (selectedCompany && categorisationErrorMessages?.length === 0) {
       setStage(3);
     } else if (selectedCompany && categorisationErrorMessages?.length > 0) {
       setStage(2);
+    }
+
+    if (!monthPeriod && monthsAvailable) {
+      setMonthPeriod(monthsAvailable[0].optionValue);
     }
   }, [selectedCompany, categorisationErrorMessages]);
 
@@ -333,7 +330,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
                 />
                 <Select
                   name={'month'}
-                  options={monthsAvailable}
+                  options={monthsAvailable || []}
                   // disabled={stage < 3}
                   onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                     setMonthPeriod(e.target.value)
