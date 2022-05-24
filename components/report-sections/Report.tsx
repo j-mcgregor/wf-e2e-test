@@ -373,7 +373,7 @@ const Report = ({
               buttonColor={
                 isAdmin && !isIntegrated ? 'bg-[#278EC8]' : 'bg-[#2BAD01]'
               }
-              linkTo={`/report/integrations?from=/report/${id}`}
+              linkTo={`/report/${id}/integrations?from=/report/${id}`}
               learnMoreLink="#"
               disabled={(!isAdmin && !isIntegrated) ?? false}
             />
