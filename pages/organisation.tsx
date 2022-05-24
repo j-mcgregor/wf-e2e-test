@@ -19,7 +19,14 @@ const Organisation = () => {
   const { organisation, message } = useOrganisation();
   const [skip, setSkip] = React.useState(0);
   const [users, setUsers] = React.useState<OrganisationUser[]>([]);
-  const isIntergrated = false;
+
+  const { data: codat } = useSWR(
+    organisation?.id &&
+      `/api/integrations/codat-credentials?orgId=${organisation?.id}`,
+    fetcher
+  );
+
+  const isIntergrated = codat?.data?.auth_header ?? false;
 
   const limit = 10;
 
