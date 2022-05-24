@@ -323,7 +323,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
                 <Select
                   name={'year'}
                   options={yearsAvailable}
-                  // disabled={stage < 3}
+                  disabled={stage < 3}
                   onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                     setYearPeriod(e.target.value)
                   }
@@ -331,7 +331,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
                 <Select
                   name={'month'}
                   options={monthsAvailable || []}
-                  // disabled={stage < 3}
+                  disabled={stage < 3}
                   onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                     setMonthPeriod(e.target.value)
                   }
