@@ -1,7 +1,8 @@
 /* eslint-disable security/detect-object-injection */
-import { NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import {
   APIHandlerOptionsType,
+  APIInitalisationType,
   ErrorResponseType,
   HandlerArgumentsType,
   MakeErrorOutput,
@@ -22,45 +23,28 @@ import {
   makeResponseObject
 } from './make-reponses';
 
-export type MakeHttpResponse = <T = any>(
-  args: HandlerArgumentsType
-) => Promise<
-  | {
-      // response: NextApiResponse<MakeErrorOutput | SuccessResponseType<T>>;
-      response?: Response;
-      defaultResponse?: DefaultErrorType;
-    }
-  | undefined
->;
-
-// Partial so not every method is required for each handler instance
-type APIHandlerMethods = Partial<Record<MethodTypes, MakeHttpResponse>>;
-
 // default to auth required
 const APIHandler = async <T>(
   // options and parameters
   // accepts an authenticate function, and an object of unauthenticated methods
   // also has a source type for error handling
-  {
-    // all the details about the requests
-    request,
-    response,
-    authenticate,
-    publicMethods,
-    sourceType
-  }: APIHandlerOptionsType,
-  // handles the methods
-  handler: APIHandlerMethods,
-  // pass in the custom errors
-  customErrors: CustomErrorsType = []
-  // eslint-disable-next-line sonarjs/cognitive-complexity
-): Promise<SuccessResponseType<T> | ErrorResponseType | void> => {
+  // all the details about the requests
+  request: NextApiRequest,
+  response: NextApiResponse,
+  options: APIInitalisationType
+): // handles the methods
+// pass in the custom errors
+// eslint-disable-next-line sonarjs/cognitive-complexity
+Promise<SuccessResponseType<T> | ErrorResponseType | void> => {
   // extract all the basic details from the request
   const method = request.method as MethodTypes;
   const query = request.query;
   const url = request.url as string;
   const headers = request.headers;
   const body = request.body;
+
+  const { config, customErrors = [] } = options;
+  const { authenticate, publicMethods, sourceType } = config;
 
   // pass in an authentication function to authenticate the request
   // should return null or a JTW token / object
@@ -171,7 +155,7 @@ const APIHandler = async <T>(
     };
 
     // assign function
-    const handlerMethodFunction = handler[method];
+    const handlerMethodFunction = options[method];
 
     // if method return method
     if (handlerMethodFunction) {

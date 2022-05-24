@@ -65,12 +65,29 @@ export type UnauthenticatedMethodsType = {
 };
 
 type APIHandlerOptionsType = {
-  response: NextApiResponse;
-  request: NextApiRequest;
   authenticate: (req: NextApiRequest) => Promise<JWT | null>;
   publicMethods?: UnauthenticatedMethodsType;
   sourceType: string;
 };
+
+export type MakeHttpResponse = <T = any>(
+  args: HandlerArgumentsType
+) => Promise<
+  | {
+      // response: NextApiResponse<MakeErrorOutput | SuccessResponseType<T>>;
+      response?: Response;
+      defaultResponse?: DefaultErrorType;
+    }
+  | undefined
+>;
+
+// Partial so not every method is required for each handler instance
+type APIHandlerMethods = Partial<Record<MethodTypes, MakeHttpResponse>>;
+
+export interface APIInitalisationType extends APIHandlerMethods {
+  config: APIHandlerOptionsType;
+  customErrors?: CustomErrorsType;
+}
 
 type HandlerArgumentsType = {
   query: NextApiRequestQuery;
