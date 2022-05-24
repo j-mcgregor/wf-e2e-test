@@ -74,6 +74,26 @@ const IntegrationsAPI = (
         };
       }
     },
+    POST: async ({ query, authentication }) => {
+      const {
+        type,
+        companyId,
+        connectionId,
+        parentId,
+        periodLength,
+        startMonth
+      } = query;
+      if (type === 'codat') {
+        const baseUrl = `${process.env.WF_AP_ROUTE}/integrations/codat?company_id=${companyId}&connection_id=${connectionId}&parent_id=${parentId}&period_length=${periodLength}`;
+        return {
+          response: await integrationsFetcher({
+            url: startMonth ? `${baseUrl}&start_month=${startMonth}` : baseUrl,
+            method: 'POST',
+            authentication
+          })
+        };
+      }
+    },
     PUT: async ({ query, authentication, body }) => {
       const { type, orgId } = query;
       if (type === 'codat-credentials') {
