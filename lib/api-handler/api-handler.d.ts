@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { JWT } from 'next-auth/jwt';
 import { NextApiRequestQuery } from 'next/dist/server/api-utils';
-import { CustomErrorsType } from './errors';
+import { CustomErrorsType, DefaultErrorType } from './errors';
 import HttpStatusCode from './http-status-codes';
 
 export type FetcherOptions = {

@@ -68,7 +68,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
         method: 'POST'
       }
     );
-    console.log(res);
   };
 
   const categorisationErrorMessages: CodatIntegrationErrorType[] =
@@ -119,10 +118,9 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       const start = new Date(selectedCompany?.first);
       const end = new Date(selectedCompany?.last);
       const numberOfyears = end.getFullYear() - start.getFullYear();
-      const years = Array(numberOfyears + 1)
+      return Array(numberOfyears + 1)
         .fill(0)
         .map((_, i) => ({ optionValue: `${start.getFullYear() + i}` }));
-      return years;
     }
     return [];
   }, [selectedCompany]);

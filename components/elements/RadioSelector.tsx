@@ -60,4 +60,6 @@ const RadioSelector = React.forwardRef<HTMLInputElement, IRadioSelectorProps>(
   }
 );
 
+RadioSelector.displayName = 'RadioSelector';
+
 export default RadioSelector;

@@ -70,7 +70,12 @@ const IntegrationsAPI = (
         };
       } else {
         return {
-          defaultResponse: null
+          defaultResponse: {
+            code: 'TYPE_NOT_FOUND',
+            message:
+              'GET request only accepts companies, account-categorisation, codat-credentials',
+            status: 500
+          }
         };
       }
     },
