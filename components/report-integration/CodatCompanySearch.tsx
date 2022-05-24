@@ -4,6 +4,7 @@ import React, { KeyboardEventHandler, useMemo, useRef, useState } from 'react';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 import debounce from '../../lib/utils/debounce';
+import { convertToDateString } from '../../lib/utils/text-helpers';
 import { CodatCompanyType } from '../../types/report';
 import LoadingIcon from '../svgs/LoadingIcon';
 
@@ -131,11 +132,19 @@ const CodatCompanySearch = ({
             .map((option, index) => (
               <button
                 key={option.company_id + `${index}`}
-                className="bg-bg w-full p-5 text-left"
+                className="bg-bg w-full p-5 text-left flex flex-col md:flex-row justify-between gap-4"
                 onClick={() => handleClick(option)}
               >
-                <p className="font-bold">{option.company_name}</p>
-                <p>{option.company_id}</p>
+                <div>
+                  <p className="font-bold">{option.company_name}</p>
+                  <p>{option.company_id}</p>
+                </div>
+                <div className="md:text-right">
+                  <p className="font-bold">Data availability</p>
+                  <p className="text-sm">{`${convertToDateString(
+                    option.first
+                  )} - ${convertToDateString(option.last)}`}</p>
+                </div>
               </button>
             ))}
         </div>
