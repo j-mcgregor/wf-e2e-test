@@ -1,5 +1,6 @@
+import { setSelectionRange } from '@testing-library/user-event/dist/utils';
 import { useTranslations } from 'next-intl';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 interface IRadioOption {
   label: string;
@@ -10,10 +11,11 @@ interface IRadioSelectorProps {
   name: string;
   options: IRadioOption[];
   disabled?: boolean;
+  setSelector?: (value: string) => void;
 }
 
 const RadioSelector = React.forwardRef<HTMLInputElement, IRadioSelectorProps>(
-  ({ name, options, disabled, ...otherProps }, ref) => {
+  ({ name, options, disabled, setSelector, ...otherProps }, ref) => {
     const t = useTranslations();
     const isFirstOption = (index: number) => index === 0;
     const isLastOption = (index: number) => index === options.length - 1;
@@ -30,6 +32,11 @@ const RadioSelector = React.forwardRef<HTMLInputElement, IRadioSelectorProps>(
               disabled={disabled}
               value={value}
               defaultChecked={isFirstOption(idx)}
+              onChange={
+                setSelector &&
+                ((e: ChangeEvent<HTMLInputElement>) =>
+                  setSelector(e.target.value))
+              }
               {...otherProps}
             />
             <label
