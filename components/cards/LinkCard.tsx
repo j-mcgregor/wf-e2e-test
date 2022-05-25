@@ -16,6 +16,7 @@ interface LinkCardProps {
   disabled?: boolean;
   download?: boolean;
   onClick?: () => any;
+  includeHover?: boolean;
 }
 
 const LinkCard = ({
@@ -27,7 +28,8 @@ const LinkCard = ({
   className,
   disabled,
   download,
-  onClick
+  onClick,
+  includeHover
 }: LinkCardProps) => {
   return (
     // eslint-disable-next-line jsx-a11y/anchor-is-valid
@@ -39,10 +41,8 @@ const LinkCard = ({
       download={download}
     >
       <div
-        className={`${
-          !disabled
-            ? 'hover:shadow-xl duration-300 transition-shadow'
-            : 'opacity-50'
+        className={`${!disabled ? 'opacity-100' : 'opacity-50'} ${
+          includeHover ? 'hover:shadow-xl duration-300 transition-shadow' : ''
         } shadow  h-full  bg-white rounded p-3`}
         data-testid="link-card"
       >

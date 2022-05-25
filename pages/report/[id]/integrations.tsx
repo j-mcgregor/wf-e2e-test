@@ -43,8 +43,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const [canGenerateReport, setCanGenerateReport] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // const errorMessages: CodatIntegrationErrorType[] | null = ErrorMessages;
-
   const router = useRouter();
 
   const backLink = Array.isArray(router?.query?.from)
@@ -79,7 +77,9 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
     );
 
     if (res.ok) {
-      console.log(res);
+      const { data } = await res.json();
+      setLoading(false);
+      router.push(`/report/${data.id}?from=/report/${id}/integrations/`);
     }
 
     setLoading(false);
@@ -93,24 +93,24 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       const start = new Date(selectedCompany?.first);
       const end = new Date(`${yearPeriod}-${monthPeriod}-1`);
       let months = (end.getFullYear() - start.getFullYear()) * 12;
-      months += end.getMonth() - start.getMonth();
+      months += end.getMonth() - start.getMonth() + 1;
 
-      if (months + 1 < monthSample) {
+      if (months < monthSample) {
         if (canGenerateReport) setCanGenerateReport(false);
         return (
           <>
-            <ExclamationIcon className="text-red-500 h-6 w-6 min-h-[24px] min-w-[24px]" />
+            <ExclamationIcon className="text-red-500 h-6 w-6 min-h-[24px] min-w-[24px] mt-2" />
             <p>{t('integration_timeframe_error')}</p>
           </>
         );
-      } else if (monthSample * sampleFrequency - months - 1 > 0) {
+      } else if (monthSample * sampleFrequency - months > 0) {
         if (!canGenerateReport) setCanGenerateReport(true);
         return (
           <>
-            <ExclamationIcon className="text-highlight h-6 w-6" />
+            <ExclamationIcon className="text-highlight h-6 w-6 min-h-[24px] min-w-[24px] mt-2" />
             <p>
               {t.rich('integration_timeframe_warning', {
-                total_months: monthSample * sampleFrequency - months - 1
+                total_periods: Math.ceil(sampleFrequency - months / monthSample)
               })}
             </p>
           </>
@@ -119,16 +119,16 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
         if (!canGenerateReport) setCanGenerateReport(true);
         return (
           <>
-            <CheckIcon className="text-highlight-2 h-6 w-6 min-h-[24px] min-w-[24px]" />
+            <CheckIcon className="text-highlight-2 h-6 w-6 min-h-[24px] min-w-[24px] mt-2" />
             <p>
               {t.rich('integration_timeframe_success', {
-                br: total_months => (
+                br: total_periods => (
                   <>
                     <br />
-                    {total_months}
+                    {total_periods}
                   </>
                 ),
-                total_months: monthSample * sampleFrequency
+                total_periods: sampleFrequency
               })}
             </p>
           </>
@@ -219,7 +219,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
               onClick={() => setStage(2)}
               className={`${
                 stage > 1 && !loading
-                  ? 'border-2 border-highlight-2 shadow-inner'
+                  ? 'border-2 border-highlight-2 shadow-inner hover:shadow-none'
                   : ''
               } text-left h-36`}
             >
@@ -228,6 +228,8 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
                 description={'Add your headers for your Codata integration.'}
                 icon={<CheckIcon className="h-6 w-6" />}
                 iconColor="bg-highlight-2 bg-opacity-20"
+                includeHover={stage <= 1}
+                disabled={loading}
               />
             </button>
             {/* <LinkCard
@@ -376,7 +378,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
               <h2 className="text-xl font-semibold mt-2">
                 {t('integration_information_title')}
               </h2>
-              <div className="flex gap-2 text-sm items-center">
+              <div className="flex gap-2 text-sm items-start">
                 {dataAvailable()}
               </div>
             </div>
