@@ -34,12 +34,14 @@ interface ReportIntegrationsPageProps {
 const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   locale
 }) => {
-  const [stage, setStage] = useState(1);
+  const [stage, setStage] = useState(2);
   const [selectedCompany, setSelectedCompany] =
     useState<CodatCompanyType | null>(null);
   const [monthSample, setMonthSample] = useState<number>(3);
   const [yearPeriod, setYearPeriod] = useState<string | null>(null);
   const [monthPeriod, setMonthPeriod] = useState<string | null>(null);
+  const [canGenerateReport, setCanGenerateReport] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // const errorMessages: CodatIntegrationErrorType[] | null = ErrorMessages;
 
@@ -62,12 +64,25 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   );
 
   const handleSubmit = async () => {
+    setLoading(true);
     const res = await fetch(
-      `/api/integrations/codat?companyId=${selectedCompany?.company_id}&connectionId=${selectedCompany?.connection_id}&parentId=${id}&periodLength=${monthSample}`,
+      `/api/integrations/codat?companyId=${
+        selectedCompany?.company_id
+      }&connectionId=${
+        selectedCompany?.connection_id
+      }&parentId=${id}&periodLength=${monthSample}&startMonth=${yearPeriod}-${
+        monthPeriod?.length === 1 ? `0${monthPeriod}` : monthPeriod
+      }`,
       {
         method: 'POST'
       }
     );
+
+    if (res.ok) {
+      console.log(res);
+    }
+
+    setLoading(false);
   };
 
   const categorisationErrorMessages: CodatIntegrationErrorType[] =
@@ -75,19 +90,21 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
   const dataAvailable = (sampleFrequency = 5) => {
     if (selectedCompany) {
-      const start = new Date(`${yearPeriod}-${monthPeriod}-1`);
-      const end = new Date(selectedCompany?.last);
+      const start = new Date(selectedCompany?.first);
+      const end = new Date(`${yearPeriod}-${monthPeriod}-1`);
       let months = (end.getFullYear() - start.getFullYear()) * 12;
       months += end.getMonth() - start.getMonth();
 
       if (months + 1 < monthSample) {
+        if (canGenerateReport) setCanGenerateReport(false);
         return (
           <>
-            <ExclamationIcon className="text-red-500 h-6 w-6" />
+            <ExclamationIcon className="text-red-500 h-6 w-6 min-h-[24px] min-w-[24px]" />
             <p>{t('integration_timeframe_error')}</p>
           </>
         );
       } else if (monthSample * sampleFrequency - months - 1 > 0) {
+        if (!canGenerateReport) setCanGenerateReport(true);
         return (
           <>
             <ExclamationIcon className="text-highlight h-6 w-6" />
@@ -99,11 +116,18 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           </>
         );
       } else {
+        if (!canGenerateReport) setCanGenerateReport(true);
         return (
           <>
-            <CheckIcon className="text-highlight-2 h-6 w-6" />
+            <CheckIcon className="text-highlight-2 h-6 w-6 min-h-[24px] min-w-[24px]" />
             <p>
               {t.rich('integration_timeframe_success', {
+                br: total_months => (
+                  <>
+                    <br />
+                    {total_months}
+                  </>
+                ),
                 total_months: monthSample * sampleFrequency
               })}
             </p>
@@ -118,6 +142,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       const start = new Date(selectedCompany?.first);
       const end = new Date(selectedCompany?.last);
       const numberOfyears = end.getFullYear() - start.getFullYear();
+      if (yearPeriod === null) setYearPeriod(end.getFullYear().toString());
       return Array(numberOfyears + 1)
         .fill(0)
         .map((_, i) => ({ optionValue: `${start.getFullYear() + i}` }));
@@ -130,6 +155,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       const first = new Date(selectedCompany?.first);
       const yearSelected = new Date(`${yearPeriod}-01`);
       const end = new Date(selectedCompany?.last);
+      if (monthPeriod === null) setMonthPeriod((end.getMonth() + 1).toString());
 
       const isNotEqualToFirstYear =
         yearSelected.getFullYear() !== first.getFullYear();
@@ -153,8 +179,12 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
         return months.slice(first.getMonth());
       }
 
-      return months as { optionValue: string; optionName?: TranslateInput }[];
+      return months as {
+        optionValue: string;
+        optionName?: TranslateInput;
+      }[];
     }
+    return [];
   }, [selectedCompany, yearPeriod]);
 
   React.useEffect(() => {
@@ -162,10 +192,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       setStage(3);
     } else if (selectedCompany && categorisationErrorMessages?.length > 0) {
       setStage(2);
-    }
-
-    if (!monthPeriod && monthsAvailable) {
-      setMonthPeriod(monthsAvailable[0].optionValue);
     }
   }, [selectedCompany, categorisationErrorMessages]);
 
@@ -180,34 +206,42 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           <ArrowLeftIcon className="h-full w-6" />
           <p className="ml-2">Back to report</p>
         </Button>
-        <h1 className="text-3xl font-semibold">{t('integration_stage_1')}</h1>
-        <p>{t('integration_stage_1_description')}</p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <button
-            type="button"
-            onClick={() => setStage(2)}
-            className={`${
-              stage > 1 ? 'border-2 border-highlight-2 shadow-inner' : ''
-            } text-left`}
-          >
-            <LinkCard
-              header="Codat Integration"
-              description={'Add your headers for your Codata integration.'}
-              icon={<CheckIcon className="h-6 w-6" />}
-              iconColor="bg-highlight-2 bg-opacity-20"
-            />
-          </button>
-          <LinkCard
+        <div
+          className={`${
+            loading ? 'opacity-60' : 'opacity-100'
+          } flex flex-col gap-6`}
+        >
+          <h1 className="text-3xl font-semibold">{t('integration_stage_1')}</h1>
+          <p>{t('integration_stage_1_description')}</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <button
+              type="button"
+              onClick={() => setStage(2)}
+              className={`${
+                stage > 1 && !loading
+                  ? 'border-2 border-highlight-2 shadow-inner'
+                  : ''
+              } text-left h-36`}
+            >
+              <LinkCard
+                header="Codat Integration"
+                description={'Add your headers for your Codata integration.'}
+                icon={<CheckIcon className="h-6 w-6" />}
+                iconColor="bg-highlight-2 bg-opacity-20"
+              />
+            </button>
+            {/* <LinkCard
             header="Future Integration"
             description={'Add your headers for your Codata integration.'}
             icon={<LightningBoltIcon className="h-6 w-6" />}
             iconColor="bg-alt bg-opacity-20"
             disabled
-          />
+          /> */}
+          </div>
         </div>
         <div
           className={`flex flex-col gap-6 ${
-            stage >= 2 ? 'opacity-100' : 'opacity-60'
+            stage >= 2 && !loading ? 'opacity-100' : 'opacity-60'
           }`}
         >
           <h1 className="text-3xl font-semibold mt-12">
@@ -219,7 +253,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
               {t('itegration_search_title')}
             </h2>
             <CodatCompanySearch
-              disabled={stage < 2}
+              disabled={stage < 2 || loading}
               searchFunction={() => null}
               selectedResult={selectedCompany}
               setChosenResult={(option: CodatCompanyType) =>
@@ -286,7 +320,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
         {/* Stage 3 */}
         <div
           className={`flex flex-col gap-6 ${
-            stage >= 3 ? 'opacity-100' : 'opacity-60'
+            stage >= 3 && !loading ? 'opacity-100' : 'opacity-60'
           }`}
         >
           <h1 className="text-3xl font-semibold mt-12">
@@ -294,7 +328,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           </h1>
           <p>{t('integration_stage_3_description')}</p>
           <div className="bg-white w-full shadow p-6 flex flex-col md:flex-row gap-4">
-            <div className="flex flex-col gap-4 max-w-lg">
+            <div className="flex flex-col gap-4 max-w-lg w-full grow">
               <h2 className="text-xl font-semibold">
                 {t('integration_sampling_frequency')}
               </h2>
@@ -308,7 +342,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
                   { label: '6_months', value: 6 },
                   { label: '12_months', value: 12 }
                 ]}
-                disabled={stage < 3}
+                disabled={stage < 3 || loading}
                 setSelector={(e: string) => setMonthSample(parseInt(e))}
               />
               <h2 className="text-xl font-semibold mt-2">
@@ -321,22 +355,24 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
                 <Select
                   name={'year'}
                   options={yearsAvailable}
-                  disabled={stage < 3}
+                  disabled={stage < 3 && !loading}
                   onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                     setYearPeriod(e.target.value)
                   }
+                  value={yearPeriod ?? ''}
                 />
                 <Select
                   name={'month'}
-                  options={monthsAvailable || []}
-                  disabled={stage < 3}
+                  options={monthsAvailable}
+                  disabled={stage < 3 && !loading}
                   onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                     setMonthPeriod(e.target.value)
                   }
+                  value={monthPeriod ?? ''}
                 />
               </div>
             </div>
-            <div className="md:ml-8 w-fit flex flex-col gap-2">
+            <div className="md:ml-8 flex flex-col gap-2 max-w-xs">
               <h2 className="text-xl font-semibold mt-2">
                 {t('integration_information_title')}
               </h2>
@@ -350,6 +386,8 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           variant="highlight"
           className="max-w-xs"
           onClick={() => handleSubmit()}
+          disabled={!canGenerateReport}
+          loading={loading}
         >
           Generate New Report
         </Button>
