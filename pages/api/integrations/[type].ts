@@ -11,14 +11,14 @@ import APIHandler from '../../../lib/api-handler/handler';
 
 interface IntegrationFetcherOptions {
   url: string;
-  method: MethodTypes;
+  method?: MethodTypes;
   body?: RequestBodyType;
   authentication: JWT | null;
 }
 
 const integrationsFetcher = async ({
   url,
-  method,
+  method = 'GET',
   body,
   authentication
 }: IntegrationFetcherOptions) =>
@@ -46,7 +46,6 @@ const IntegrationsAPI = (
         return {
           response: await integrationsFetcher({
             url: `${process.env.WF_AP_ROUTE}/integrations/codat/companies`,
-            method: 'GET',
             authentication
           })
         };
@@ -55,7 +54,6 @@ const IntegrationsAPI = (
         return {
           response: await integrationsFetcher({
             url: `${process.env.WF_AP_ROUTE}/integrations/codat/account-categorisation?company_id=${companyId}&connection_id=${connectionId}`,
-            method: 'GET',
             authentication
           })
         };
@@ -64,7 +62,6 @@ const IntegrationsAPI = (
         return {
           response: await integrationsFetcher({
             url: `${process.env.WF_AP_ROUTE}/integrations/codat/credentials/organisation/${orgId}`,
-            method: 'GET',
             authentication
           })
         };
