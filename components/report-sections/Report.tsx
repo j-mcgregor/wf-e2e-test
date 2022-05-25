@@ -374,7 +374,7 @@ const Report = ({
                 isAdmin && !isIntegrated ? 'bg-[#278EC8]' : 'bg-[#2BAD01]'
               }
               linkTo={`/report/${id}/integrations?from=/report/${id}`}
-              learnMoreLink="#"
+              // learnMoreLink="#"
               disabled={(!isAdmin && !isIntegrated) ?? false}
             />
             <CTACard
