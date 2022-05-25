@@ -17,7 +17,6 @@ interface IIntegrationsStageThreeProps {
   canGenerateReport: boolean;
   setCanGenerateReport: (value: boolean) => void;
   stage: number;
-  setStage: (value: number) => void;
   locale: string;
   loading: boolean;
   enabledClassName: string;
@@ -35,7 +34,6 @@ const IntegrationsStageThree: React.FC<IIntegrationsStageThreeProps> = ({
   canGenerateReport,
   setCanGenerateReport,
   stage,
-  setStage,
   locale,
   loading,
   enabledClassName,
