@@ -23,7 +23,7 @@ const useOrganisation = (fetch = true) => {
   const orgId = user?.organisation_id || null;
 
   const { data: reports, mutate: mutateOrg } = useSWR<OrganisationIndexApi>(
-    fetch && orgId && `/api/organisation/${orgId}?reports=true`,
+    fetch && orgId && `/api/organisation/${orgId}?reports=true&limit=1`,
     fetcher,
     {
       revalidateOnMount: true
