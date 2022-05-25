@@ -109,3 +109,11 @@ export const getDirectorsFromBoardMembers = (board_members?: BoardMember[]) => {
 
 export const getUniqueStringsFromArray = (arr?: string[]) =>
   arr ? [...new Set(arr)] : [];
+
+export const convertToDateString = (date: string) => {
+  const d = new Date(date);
+  return Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    year: 'numeric'
+  }).format(d);
+};

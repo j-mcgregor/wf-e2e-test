@@ -12,6 +12,7 @@ import TabletReportNav from '../../../components/layout/TabletReportNav';
 import Report from '../../../components/report-sections/Report';
 import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
 import SkeletonReport from '../../../components/skeletons/SkeletonReport';
+import useUser from '../../../hooks/useUser';
 import fetcher from '../../../lib/utils/fetcher';
 import { ReportsReportApi } from '../../api/reports/report';
 
@@ -25,6 +26,15 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     id && `/api/reports/report?id=${id}`,
     fetcher
   );
+
+  const user = useUser();
+
+  const { data: codat } = useSWR(
+    `/api/integrations/codat-credentials?orgId=${user?.user?.organisation_id}`,
+    fetcher
+  );
+
+  const isIntergrated = codat?.data?.auth_header ?? false;
 
   const data = result?.report;
 
@@ -82,7 +92,9 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
               code={result?.status}
             />
           ) : (
-            data && <Report data={data} id={id || []} />
+            data && (
+              <Report data={data} id={id || []} isIntegrated={isIntergrated} />
+            )
           )}
         </div>
       </SecondaryLayout>

@@ -42,11 +42,15 @@ import SummaryMap from './summary/SummaryMap';
 const Report = ({
   data,
   id,
-  forPrint
+  forPrint,
+  isAdmin = false,
+  isIntegrated = true
 }: {
   data: ReportDataProps;
   id: string | string[];
   forPrint?: boolean;
+  isAdmin?: boolean;
+  isIntegrated?: boolean;
 }) => {
   const t = useTranslations();
 
@@ -363,11 +367,15 @@ const Report = ({
             <CTACard
               title={t('import_data')}
               body={t('unlock_api_to_gain_access')}
-              buttonText="Import"
-              locked={true}
-              buttonColor="bg-[#2BAD01]"
-              learnMoreLink="#"
-              disabled={true}
+              buttonText={
+                isAdmin && !isIntegrated ? 'Add Integrations' : 'Import Data'
+              }
+              buttonColor={
+                isAdmin && !isIntegrated ? 'bg-[#278EC8]' : 'bg-[#2BAD01]'
+              }
+              linkTo={`/report/${id}/integrations?from=/report/${id}`}
+              // learnMoreLink="#"
+              disabled={(!isAdmin && !isIntegrated) ?? false}
             />
             <CTACard
               title={t('upload_more_data')}
@@ -375,7 +383,6 @@ const Report = ({
               buttonText="Upload"
               buttonColor="bg-alt"
               linkTo={`${id}/upload-data`}
-              learnMoreLink="#"
             />
           </div>
         </div>

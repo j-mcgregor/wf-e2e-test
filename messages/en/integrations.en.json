@@ -1,0 +1,23 @@
+{
+  "integration_stage_1": "1. Select Source",
+  "integration_stage_1_description": "Select the integrated data source you wish to import company data from.",
+  "integration_stage_2": "2. Select Company",
+  "integration_stage_2_description": "Select the company from your integrations source list.",
+  "itegration_search_title": "Search available companies",
+  "itegration_validating_company": " Validating <b>{company_name}</b> accounts",
+  "itegration_validated_company": "Validated <b>{company_name}</b> accounts",
+  "itegration_not_valid_company": "<b>{company_name}</b> has uncategorised accounts, please login to Codat and categorise these accounts before trying again.",
+  "integration_stage_3": "3. Select Timeframe",
+  "integration_stage_3_description": "Select the sample frequency and the data period to access.",
+  "integration_sampling_frequency": "Sampling Frequency",
+  "integration_sampling_frequency_description": "Choose the frequency which you want to sample the data. The sample rate is set at 5. i.e. 3 months frequency will sample a total of 15 months from the date selected.",
+  "integration_data_period": "Data Period",
+  "integration_data_period_description": "Choose the latest date you want to sample from. i.e. January 2022 at 3 months frequency 15 months would be the date range October 2020 - January 2022.",
+  "integration_information_title": "Information",
+  "integration_timeframe_success": "Data for all periods is available <br>({total_periods} periods)</br>",
+  "integration_timeframe_error": "There are no complete periods of data available. In order to generate a report, you will need at least one period of data avaialble. If possible, please select a shorter frequency or choose a different data period to increase the range.",
+  "integration_timeframe_warning": "The period will have incomplete data available ({total_periods} periods missing)",
+  "3_months": "3 Months",
+  "6_months": "6 Months",
+  "12_months": "12 Months"
+}

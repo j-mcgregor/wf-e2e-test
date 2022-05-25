@@ -648,3 +648,16 @@ export interface ReportDataProps {
     chairman: string;
   };
 }
+
+export interface CodatCompanyType {
+  company_id: string;
+  connection_id: string;
+  company_name: string;
+  first: string;
+  last: string;
+}
+
+export interface CodatIntegrationErrorType {
+  id: string;
+  name: string;
+}
