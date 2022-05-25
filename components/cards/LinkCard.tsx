@@ -29,7 +29,7 @@ const LinkCard = ({
   disabled,
   download,
   onClick,
-  includeHover
+  includeHover = true
 }: LinkCardProps) => {
   return (
     // eslint-disable-next-line jsx-a11y/anchor-is-valid
