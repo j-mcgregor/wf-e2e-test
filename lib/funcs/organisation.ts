@@ -132,7 +132,7 @@ const getOrganisationReports: ApiHandler<
     const response = await fetch(
       `${process.env.WF_AP_ROUTE}/organisations/${orgId}/reports?_end=${
         skip + limit
-      }&_start=${skip}`,
+      }&_start=${skip}&_sort=created_at&_order=desc`,
       {
         method: 'GET',
         headers: {
@@ -267,7 +267,9 @@ const getOrganisationUsers: ApiHandler<
     const response = await fetch(
       `${
         process.env.WF_AP_ROUTE
-      }/organisations/${orgId}/users?_start=${skip}&_end=${skip + limit}`,
+      }/organisations/${orgId}/users?_start=${skip}&_end=${
+        skip + limit
+      }&_sort=full_name&_order=asc`,
       {
         method: 'GET',
         headers: {
