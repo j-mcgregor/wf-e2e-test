@@ -2,12 +2,35 @@ import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { GetStaticPropsContext } from 'next/types';
 import React from 'react';
+import { FieldValues, useForm } from 'react-hook-form';
+import useSWR from 'swr';
 
 import Button from '../../../components/elements/Button';
 import Layout from '../../../components/layout/Layout';
+import useUser from '../../../hooks/useUser';
+import { fetcher } from '../../../lib/api-handler/fetcher';
 
 const AddNewUserPage = () => {
   const t = useTranslations();
+  const { register, handleSubmit } = useForm();
+  const user = useUser();
+
+  const { data: result } = useSWR(
+    user?.user?.organisation_id &&
+      `/api/integrations/codat-credentials?orgId=${user?.user?.organisation_id}`,
+    fetcher
+  );
+
+  const onSubmit = async (data: FieldValues) => {
+    await fetch(
+      user?.user?.organisation_id &&
+        `/api/integrations/codat-credentials?orgId=${user?.user.organisation_id}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      }
+    );
+  };
 
   return (
     <Layout adminRequired>
@@ -44,7 +67,7 @@ const AddNewUserPage = () => {
             </li>
           </ol>
         </div>
-        <div className="shadow">
+        <form className="shadow" onSubmit={handleSubmit(onSubmit)}>
           <div className="bg-white py-7 px-5 space-y-4">
             <h2 className="text-xl font-semibold">
               {t('codat_add_auth_header_title')}
@@ -55,14 +78,16 @@ const AddNewUserPage = () => {
             <textarea
               className="w-full bg-gray-50 border-none h-52"
               placeholder={t('codat_auth_header_placeholder')}
-            ></textarea>
+              defaultValue={result?.data?.auth_header}
+              {...register('auth_header')}
+            />
           </div>
           <div className="bg-gray-50 px-5 py-3">
             <Button variant="alt" className="max-w-max rounded-none">
               {t('add_integration_button')}
             </Button>
           </div>
-        </div>
+        </form>
       </div>
     </Layout>
   );

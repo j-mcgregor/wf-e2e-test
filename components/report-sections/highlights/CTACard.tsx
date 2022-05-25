@@ -2,6 +2,7 @@ import { TranslateInput } from '../../../types/global';
 import { useTranslations } from 'next-intl';
 import Button from '../../elements/Button';
 import Lock from '../../icons/Lock';
+import Link from '../../elements/Link';
 
 interface AddDataProps {
   title: TranslateInput;
@@ -30,30 +31,34 @@ const CTACard = ({
   const t = useTranslations();
 
   return (
-    <div className={`${disabled ? 'pointer-events-none opacity-40' : ''}`}>
+    <div>
       <div className="bg-white p-3 mb-3 rounded-sm text-sm">
         <p className="font-bold">{title}</p>
         <p className="py-3">{body}</p>
 
-        <div className="flex w-3/4">
+        <div className="flex w-3/4 items-center gap-4">
           <Button
             disabled={locked}
             onClick={clickButton}
-            className={`${buttonColor} w-full mr-2 text-white`}
+            className={`${buttonColor} ${
+              disabled ? 'pointer-events-none opacity-40' : ''
+            } mr-2 text-white w-36`}
             variant="none"
             linkTo={linkTo}
           >
             <p className="mx-2">{!locked ? buttonText : 'Unlock'}</p>
             {locked && <Lock color="white" />}
           </Button>
-          <Button
-            disabled
+          <Link
             linkTo={learnMoreLink}
-            className="shadow-none hover:text-alt invisible" // made invisible rather than comment out - so as to not break the layout
-            variant="none"
+            className={`${
+              learnMoreLink ? 'block' : 'hidden'
+            } shadow-none whitespace-nowrap hover:text-alt`} // made invisible rather than comment out - so as to not break the layout
           >
-            <p>{t('learn_more')}</p>
-          </Button>
+            <p className={`${learnMoreLink ? 'block' : 'hidden'}`}>
+              {t('learn_more')}
+            </p>
+          </Link>
         </div>
       </div>
     </div>

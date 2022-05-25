@@ -15,6 +15,7 @@ import { CheckIcon } from '@heroicons/react/outline';
 import { generatePassword } from '../../../lib/utils/generatePassword';
 import { PasswordValidation } from '../settings/PasswordValidation';
 import { VALID_PASSWORD } from '../../../lib/utils/regexes';
+import RadioSelector from '../../elements/RadioSelector';
 
 interface FormDataType {
   email: string;
@@ -155,41 +156,14 @@ const AddNewUserForm = ({
                   {t('add_user_form_role_label')}
                 </label>
                 <div className="flex w-64 my-2 h-9 mb-28">
-                  <ul className="grid grid-cols-2 w-full">
-                    <li className="relative">
-                      <input
-                        {...register('organisation_role', { required: true })}
-                        type="radio"
-                        name="role"
-                        id="user_role"
-                        className="sr-only peer"
-                        value="User"
-                        checked
-                      />
-                      <label
-                        htmlFor="user_role"
-                        className="flex h-10 px-2 items-center justify-center rounded-l-lg border-[1px] border-primary bg-white text-primary peer-checked:text-white peer-checked:bg-alt cursor-pointer"
-                      >
-                        {t('user')}
-                      </label>
-                    </li>
-                    <li className="relative">
-                      <input
-                        {...register('organisation_role', { required: true })}
-                        type="radio"
-                        name="role"
-                        id="admin_role"
-                        className="sr-only peer"
-                        value="Admin"
-                      />
-                      <label
-                        htmlFor="admin_role"
-                        className="flex h-10 px-2 items-center justify-center rounded-r-lg -ml-px border-[1px] border-primary  bg-white text-primary peer-checked:text-white peer-checked:bg-highlight cursor-pointer"
-                      >
-                        {t('admin')}
-                      </label>
-                    </li>
-                  </ul>
+                  <RadioSelector
+                    {...register('organisation_role', { required: true })}
+                    name="role"
+                    options={[
+                      { label: 'user', value: 'User' },
+                      { label: 'admin', value: 'Admin' }
+                    ]}
+                  />
                 </div>
                 <PasswordValidation password={watch('password')} />
               </div>
