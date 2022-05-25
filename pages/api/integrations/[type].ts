@@ -41,7 +41,7 @@ const IntegrationsAPI = (
       authenticate: authenticators.NextAuth
     },
     GET: async ({ query, authentication }) => {
-      const { type } = query;
+      const { type, companyId, connectionId, orgId } = query;
       switch (type) {
         case 'companies':
           return {
@@ -52,7 +52,6 @@ const IntegrationsAPI = (
             })
           };
         case 'account-categorisation':
-          const { companyId, connectionId } = query;
           return {
             response: await integrationsFetcher({
               url: `${process.env.WF_AP_ROUTE}/integrations/codat/account-categorisation?company_id=${companyId}&connection_id=${connectionId}`,
@@ -61,7 +60,6 @@ const IntegrationsAPI = (
             })
           };
         case 'codat-credentials':
-          const { orgId } = query;
           return {
             response: await integrationsFetcher({
               url: `${process.env.WF_AP_ROUTE}/integrations/codat/credentials/organisation/${orgId}`,
