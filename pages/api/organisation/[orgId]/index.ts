@@ -32,7 +32,8 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
 ) => {
   const defaultNullProps = {
     organisation: null,
-    totalOrganisationReports: null
+    totalOrganisationReports: null,
+    organisationUserReports: null
   };
   const token = await getToken({
     req: request,
@@ -48,6 +49,8 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
   // get the company id from the query
   const orgId: string = request?.query?.orgId?.toString();
   const reports: boolean = request?.query?.reports?.toString() === 'true';
+  const limit: number = parseInt(request?.query?.limit?.toString()) || 10;
+  const skip: number = parseInt(request?.query?.skip?.toString()) || 0;
 
   // return an error if no company id is provided
   if (!orgId) {
@@ -70,7 +73,7 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
         if (reports) {
           const resultReports = await Organisation.getOrganisationReports(
             `${token?.accessToken}`,
-            { orgId }
+            { orgId, limit, skip }
           );
 
           return response

@@ -1,12 +1,12 @@
 import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import React, { ChangeEvent } from 'react';
-import { TranslateInput } from '../../../types/global';
-import { CodatCompanyType } from '../../../types/report';
-import RadioSelector from '../../elements/RadioSelector';
-import Select from '../../elements/Select';
+import { TranslateInput } from '../../../../types/global';
+import { CodatCompanyType } from '../../../../types/report';
+import RadioSelector from '../../../elements/RadioSelector';
+import Select from '../../../elements/Select';
 
-interface IIntegrationsStageThreeProps {
+interface ICodatStageThreeProps {
   selectedCompany: CodatCompanyType | null;
   yearPeriod: string | null;
   setYearPeriod: (value: string | null) => void;
@@ -14,17 +14,14 @@ interface IIntegrationsStageThreeProps {
   setMonthPeriod: (value: string | null) => void;
   monthSample: number;
   setMonthSample: (value: number) => void;
-  canGenerateReport: boolean;
-  setCanGenerateReport: (value: boolean) => void;
   stage: number;
-  setStage: (value: number) => void;
   locale: string;
   loading: boolean;
   enabledClassName: string;
   disabledClassName: string;
 }
 
-const IntegrationsStageThree: React.FC<IIntegrationsStageThreeProps> = ({
+const CodatStageThree: React.FC<ICodatStageThreeProps> = ({
   selectedCompany,
   yearPeriod,
   setYearPeriod,
@@ -32,16 +29,19 @@ const IntegrationsStageThree: React.FC<IIntegrationsStageThreeProps> = ({
   setMonthPeriod,
   monthSample,
   setMonthSample,
-  canGenerateReport,
-  setCanGenerateReport,
   stage,
-  setStage,
   locale,
   loading,
   enabledClassName,
   disabledClassName
 }) => {
   const t = useTranslations();
+  const [yearsAvailable, setYearsAvailable] = React.useState<
+    { optionValue: string; optionName?: string }[]
+  >([]);
+  const [monthsAvailable, setMonthsAvailable] = React.useState<
+    { optionValue: string; optionName?: string }[]
+  >([]);
 
   const dataAvailable = (sampleFrequency = 5) => {
     if (selectedCompany) {
@@ -51,7 +51,6 @@ const IntegrationsStageThree: React.FC<IIntegrationsStageThreeProps> = ({
       months += end.getMonth() - start.getMonth() + 1;
 
       if (months < monthSample) {
-        if (canGenerateReport) setCanGenerateReport(false);
         return (
           <>
             <ExclamationIcon className="text-red-500 h-6 w-6 min-h-[24px] min-w-[24px] mt-2" />
@@ -59,7 +58,6 @@ const IntegrationsStageThree: React.FC<IIntegrationsStageThreeProps> = ({
           </>
         );
       } else if (monthSample * sampleFrequency - months > 0) {
-        if (!canGenerateReport) setCanGenerateReport(true);
         return (
           <>
             <ExclamationIcon className="text-highlight h-6 w-6 min-h-[24px] min-w-[24px] mt-2" />
@@ -71,7 +69,6 @@ const IntegrationsStageThree: React.FC<IIntegrationsStageThreeProps> = ({
           </>
         );
       } else {
-        if (!canGenerateReport) setCanGenerateReport(true);
         return (
           <>
             <CheckIcon className="text-highlight-2 h-6 w-6 min-h-[24px] min-w-[24px] mt-2" />
@@ -92,25 +89,27 @@ const IntegrationsStageThree: React.FC<IIntegrationsStageThreeProps> = ({
     }
   };
 
-  const yearsAvailable = React.useMemo(() => {
+  React.useEffect(() => {
     if (selectedCompany) {
       const start = new Date(selectedCompany?.first);
       const end = new Date(selectedCompany?.last);
       const numberOfyears = end.getFullYear() - start.getFullYear();
-      if (yearPeriod === null) setYearPeriod(end.getFullYear().toString());
-      return Array(numberOfyears + 1)
-        .fill(0)
-        .map((_, i) => ({ optionValue: `${start.getFullYear() + i}` }));
+      // if (yearPeriod === null) setYearPeriod(end.getFullYear().toString());
+      return setYearsAvailable(
+        Array(numberOfyears + 1)
+          .fill(0)
+          .map((_, i) => ({ optionValue: `${start.getFullYear() + i}` }))
+      );
     }
-    return [];
+    setYearsAvailable([]);
   }, [selectedCompany]);
 
-  const monthsAvailable = React.useMemo(() => {
+  React.useEffect(() => {
     if (selectedCompany) {
       const first = new Date(selectedCompany?.first);
       const yearSelected = new Date(`${yearPeriod}-01`);
       const end = new Date(selectedCompany?.last);
-      if (monthPeriod === null) setMonthPeriod((end.getMonth() + 1).toString());
+      // if (monthPeriod === null) setMonthPeriod((end.getMonth() + 1).toString());
 
       const isNotEqualToFirstYear =
         yearSelected.getFullYear() !== first.getFullYear();
@@ -127,19 +126,16 @@ const IntegrationsStageThree: React.FC<IIntegrationsStageThreeProps> = ({
         }));
 
       if (isNotEqualToFirstYear && isNotEqualToLastYear) {
-        return months;
+        return setMonthsAvailable(months);
       } else if (isNotEqualToFirstYear && !isNotEqualToLastYear) {
-        return months.slice(0, end.getMonth() + 1);
+        return setMonthsAvailable(months.slice(0, end.getMonth() + 1));
       } else if (!isNotEqualToFirstYear && isNotEqualToLastYear) {
-        return months.slice(first.getMonth());
+        return setMonthsAvailable(months.slice(first.getMonth()));
       }
 
-      return months as {
-        optionValue: string;
-        optionName?: TranslateInput;
-      }[];
+      return setMonthsAvailable(months);
     }
-    return [];
+    setMonthsAvailable([]);
   }, [selectedCompany, yearPeriod]);
 
   return (
@@ -210,4 +206,4 @@ const IntegrationsStageThree: React.FC<IIntegrationsStageThreeProps> = ({
   );
 };
 
-export default IntegrationsStageThree;
+export default CodatStageThree;

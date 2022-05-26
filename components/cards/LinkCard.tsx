@@ -28,8 +28,7 @@ const LinkCard = ({
   className,
   disabled,
   download,
-  onClick,
-  includeHover = true
+  onClick
 }: LinkCardProps) => {
   return (
     // eslint-disable-next-line jsx-a11y/anchor-is-valid
@@ -41,8 +40,8 @@ const LinkCard = ({
       download={download}
     >
       <div
-        className={`${!disabled ? 'opacity-100' : 'opacity-50'} ${
-          includeHover ? 'hover:shadow-xl duration-300 transition-shadow' : ''
+        className={`${
+          !disabled ? 'opacity-100' : 'opacity-50'
         } shadow  h-full  bg-white rounded p-3`}
         data-testid="link-card"
       >

@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import Button from '../../../components/elements/Button';
-import IntegrationsStageThree from '../../../components/forms/integrations/integrationsStageThree';
-import IntegrationsStageTwo from '../../../components/forms/integrations/integrationsStageTwo';
-import IntegrationsStageOne from '../../../components/forms/integrations/integrationStageOne';
+import CodatStageOne from '../../../components/forms/integrations/codat/CodatStageOne';
+import CodatStageThree from '../../../components/forms/integrations/codat/CodatStageThree';
+import CodatStageTwo from '../../../components/forms/integrations/codat/CodatStageTwo';
 import Layout from '../../../components/layout/Layout';
 import { CodatCompanyType } from '../../../types/report';
 
@@ -26,6 +26,29 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const [canGenerateReport, setCanGenerateReport] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  React.useEffect(() => {
+    if (yearPeriod === null && monthPeriod === null && selectedCompany) {
+      const end = new Date(selectedCompany?.last);
+      setYearPeriod(end.getFullYear().toString());
+      setMonthPeriod((end.getMonth() + 1).toString());
+    }
+  }, [selectedCompany]);
+
+  React.useEffect(() => {
+    if (selectedCompany) {
+      const start = new Date(selectedCompany?.first);
+      const end = new Date(`${yearPeriod}-${monthPeriod}-1`);
+      let months = (end.getFullYear() - start.getFullYear()) * 12;
+      months += end.getMonth() - start.getMonth() + 1;
+
+      if (months < monthSample) {
+        setCanGenerateReport(false);
+      } else {
+        setCanGenerateReport(true);
+      }
+    }
+  }, [selectedCompany, yearPeriod, monthPeriod]);
+
   const router = useRouter();
 
   const backLink = Array.isArray(router?.query?.from)
@@ -37,7 +60,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const handleSubmit = async () => {
     setLoading(true);
     const res = await fetch(
-      `/api/integrations/codat?companyId=${
+      `/api/integrations/codat/codat?companyId=${
         selectedCompany?.company_id
       }&connectionId=${
         selectedCompany?.connection_id
@@ -58,7 +81,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
     setLoading(false);
   };
 
-  const disabledClassName = 'opacity-60';
+  const disabledClassName = 'opacity-20';
   const enabledClassName = 'opacity-100';
 
   return (
@@ -72,7 +95,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           <ArrowLeftIcon className="h-full w-6" />
           <p className="ml-2">Back to report</p>
         </Button>
-        <IntegrationsStageOne
+        <CodatStageOne
           loading={loading}
           disabledClassName={disabledClassName}
           enabledClassName={enabledClassName}
@@ -80,7 +103,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           setStage={setStage}
         />
 
-        <IntegrationsStageTwo
+        <CodatStageTwo
           selectedCompany={selectedCompany}
           setSelectedCompany={setSelectedCompany}
           stage={stage}
@@ -90,10 +113,9 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           disabledClassName={disabledClassName}
         />
 
-        <IntegrationsStageThree
+        <CodatStageThree
           selectedCompany={selectedCompany}
           stage={stage}
-          setStage={setStage}
           loading={loading}
           enabledClassName={enabledClassName}
           disabledClassName={disabledClassName}
@@ -103,8 +125,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           setMonthPeriod={setMonthPeriod}
           monthSample={monthSample}
           setMonthSample={setMonthSample}
-          canGenerateReport={canGenerateReport}
-          setCanGenerateReport={setCanGenerateReport}
           locale={locale}
         />
 

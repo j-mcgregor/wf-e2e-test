@@ -116,15 +116,23 @@ const getOrganisation: ApiHandler<
 
 export interface getTotalOrganisationReportsType extends HandlerReturn {
   totalOrganisationReports: string | null;
+  organisationUserReports: OrganisationUserReport[] | null;
+}
+
+interface GetOrganisationReportsProps extends GetOrganisationProps {
+  limit: number;
+  skip: number;
 }
 
 const getOrganisationReports: ApiHandler<
   getTotalOrganisationReportsType,
-  GetOrganisationProps
-> = async (token, { orgId }) => {
+  GetOrganisationReportsProps
+> = async (token, { orgId, limit, skip }) => {
   try {
     const response = await fetch(
-      `${process.env.WF_AP_ROUTE}/organisations/${orgId}/reports?limit=1`,
+      `${process.env.WF_AP_ROUTE}/organisations/${orgId}/reports?_end=${
+        skip + limit
+      }&_start=${skip}&_sort=created_at&_order=desc`,
       {
         method: 'GET',
         headers: {
@@ -137,6 +145,7 @@ const getOrganisationReports: ApiHandler<
     if (response.ok) {
       return {
         ...makeApiHandlerResponseSuccess(),
+        organisationUserReports: await response.json(),
         totalOrganisationReports: response.headers.get('x-total-count')
       };
     }
@@ -147,7 +156,8 @@ const getOrganisationReports: ApiHandler<
           status: response.status,
           sourceType: 'ORGANISATION'
         }),
-        totalOrganisationReports: null
+        totalOrganisationReports: null,
+        organisationUserReports: null
       };
     } else {
       return {
@@ -156,6 +166,7 @@ const getOrganisationReports: ApiHandler<
           sourceType: 'ORGANISATION'
         }),
         totalOrganisationReports: null,
+        organisationUserReports: null,
         message: 'ORGANISATION_PROCESSING_ISSUE'
       };
     }
@@ -163,6 +174,7 @@ const getOrganisationReports: ApiHandler<
     return {
       ...makeApiHandlerResponseFailure(),
       totalOrganisationReports: null,
+      organisationUserReports: null,
       message: 'ORGANISATION_PROCESSING_ISSUE'
     };
   }
@@ -255,7 +267,9 @@ const getOrganisationUsers: ApiHandler<
     const response = await fetch(
       `${
         process.env.WF_AP_ROUTE
-      }/organisations/${orgId}/users?_start=${skip}&_end=${skip + limit}`,
+      }/organisations/${orgId}/users?_start=${skip}&_end=${
+        skip + limit
+      }&_sort=full_name&_order=asc`,
       {
         method: 'GET',
         headers: {

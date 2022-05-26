@@ -22,6 +22,7 @@ interface TableProps {
   limit: number;
   isLoading: boolean;
   total: number;
+  skip?: number;
   setSkip?: (x: number) => void;
   pagination?: boolean;
   fillEmptyRows?: boolean;
@@ -34,13 +35,14 @@ const Table = ({
   data,
   total,
   limit,
+  skip,
   setSkip,
   isLoading,
   pagination = false,
   fillEmptyRows = false,
   rowLink
 }: TableProps) => {
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = React.useState((skip && skip / limit + 1) || 1);
   const [maxPages, setMaxPages] = React.useState(1);
   const [tableTotal, setTableTotal] = React.useState(total);
   // const maxPages = Math.ceil(tableTotal / limit);

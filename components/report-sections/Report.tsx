@@ -455,7 +455,16 @@ const Report = ({
           hint={
             <Hint
               title={t('report_hints.esg.title')}
-              body={t('report_hints.esg.body')}
+              body={t.rich('report_hints.esg.body', {
+                a: children => (
+                  <a
+                    href="https://www.ecb.europa.eu/pub/pdf/other/ecb.climateriskfinancialstability202107~87822fae81.en.pdf"
+                    className="underline"
+                  >
+                    {children}
+                  </a>
+                )
+              })}
             />
           }
         />

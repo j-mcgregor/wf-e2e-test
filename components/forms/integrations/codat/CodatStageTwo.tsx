@@ -1,20 +1,20 @@
-import { CheckIcon, XIcon } from '@heroicons/react/outline';
+import { CheckIcon, ExclamationIcon, XIcon } from '@heroicons/react/outline';
 import { data } from 'msw/lib/types/context';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import useSWR from 'swr';
 
-import fetcher from '../../../lib/utils/fetcher';
-import { convertToDateString } from '../../../lib/utils/text-helpers';
+import fetcher from '../../../../lib/utils/fetcher';
+import { convertToDateString } from '../../../../lib/utils/text-helpers';
 import {
   CodatCompanyType,
   CodatIntegrationErrorType
-} from '../../../types/report';
-import CodatCompanySearch from '../../report-integration/CodatCompanySearch';
-import IntegrationErrorMessages from '../../report-integration/IntegrationErrorMessages';
-import LoadingIcon from '../../svgs/LoadingIcon';
+} from '../../../../types/report';
+import CodatCompanySearch from '../../../report-integration/CodatCompanySearch';
+import IntegrationErrorMessages from '../../../report-integration/IntegrationErrorMessages';
+import LoadingIcon from '../../../svgs/LoadingIcon';
 
-interface IIntegrationsStageTwoProps {
+interface ICodatStageTwoProps {
   selectedCompany: CodatCompanyType | null;
   setSelectedCompany: (option: CodatCompanyType | null) => void;
   stage: number;
@@ -24,7 +24,7 @@ interface IIntegrationsStageTwoProps {
   disabledClassName: string;
 }
 
-const IntegrationsStageTwo: React.FC<IIntegrationsStageTwoProps> = ({
+const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
   selectedCompany,
   setSelectedCompany,
   stage,
@@ -35,11 +35,14 @@ const IntegrationsStageTwo: React.FC<IIntegrationsStageTwoProps> = ({
 }) => {
   const t = useTranslations();
 
-  const { data } = useSWR('/api/integrations/companies', fetcher);
+  const { data, isValidating } = useSWR(
+    '/api/integrations/codat/companies',
+    fetcher
+  );
 
   const { data: accountCategorisation } = useSWR(
     selectedCompany &&
-      `/api/integrations/account-categorisation?companyId=${selectedCompany?.company_id}&connectionId=${selectedCompany?.connection_id}`,
+      `/api/integrations/codat/account-categorisation?companyId=${selectedCompany?.company_id}&connectionId=${selectedCompany?.connection_id}`,
     fetcher
   );
 
@@ -66,17 +69,27 @@ const IntegrationsStageTwo: React.FC<IIntegrationsStageTwoProps> = ({
       <p>{t('integration_stage_2_description')}</p>
       <div className="bg-white w-full shadow p-6 flex flex-col gap-4">
         <h2 className="text-xl font-semibold">
-          {t('itegration_search_title')}
+          {!data?.isError ? (
+            t('integration_search_title')
+          ) : (
+            <span className="text-red-500 flex items-center ">
+              {' '}
+              <ExclamationIcon className="h-6 w-6 mr-4" />{' '}
+              {t('integration_error_title', { integration: 'Codat' })}
+            </span>
+          )}
         </h2>
-        <CodatCompanySearch
-          disabled={stage < 2 || loading}
-          searchFunction={() => null}
-          selectedResult={selectedCompany}
-          setChosenResult={(option: CodatCompanyType) =>
-            setSelectedCompany(option)
-          }
-          data={data?.data?.companies}
-        />
+        {!data?.isError && !isValidating && (
+          <CodatCompanySearch
+            disabled={stage < 2 || loading}
+            searchFunction={() => null}
+            selectedResult={selectedCompany}
+            setChosenResult={(option: CodatCompanyType) =>
+              setSelectedCompany(option)
+            }
+            data={data?.data?.companies}
+          />
+        )}
 
         {/* Selected Company Button */}
         {selectedCompany && (
@@ -103,7 +116,7 @@ const IntegrationsStageTwo: React.FC<IIntegrationsStageTwoProps> = ({
               <div className="flex items-center gap-4 mt-4">
                 <LoadingIcon className="h-4 w-4 text-highlight" />
                 <p>
-                  {t.rich('itegration_validating_company', {
+                  {t.rich('integration_validating_company', {
                     b: company_name => <b>{company_name}</b>,
                     company_name: selectedCompany.company_name
                   })}
@@ -114,7 +127,7 @@ const IntegrationsStageTwo: React.FC<IIntegrationsStageTwoProps> = ({
               <div className="flex items-center gap-2 mt-4">
                 <CheckIcon className="h-6 w-6 text-highlight-2" />
                 <p>
-                  {t.rich('itegration_validated_company', {
+                  {t.rich('integration_validated_company', {
                     b: company_name => <b>{company_name}</b>,
                     company_name: selectedCompany.company_name
                   })}
@@ -134,4 +147,4 @@ const IntegrationsStageTwo: React.FC<IIntegrationsStageTwoProps> = ({
   );
 };
 
-export default IntegrationsStageTwo;
+export default CodatStageTwo;

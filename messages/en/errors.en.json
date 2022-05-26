@@ -56,5 +56,9 @@
   "CONFIRM_PASSWORD_MATCH": "Your passwords must match.",
   "USER_PROCESSING_ISSUE": "There was a problem processing your user request, please try again in a moment.",
   "SEARCH_QUERY_PROCESSING_ISSUE": "There was a problem processing your search query, please try again later.",
-  "PASSWORD_REQUIREMENTS": "Password must have at least 8 characters and contain at least one uppercase letter, one lowercase letter, one number, one special character"
+  "PASSWORD_REQUIREMENTS": "Password must have at least 8 characters and contain at least one uppercase letter, one lowercase letter, one number, one special character",
+  "ORGANISATION_NOT_FOUND": "Organisation not found",
+  "VALIDATION_ERROR": "There was a validation error processing this request. Please contact support.",
+  "NOTHING_TO_SYNCHRONISE": "Cannot find any company to synchronise.",
+  "CREDENTIALS_NOT_FOUND": "Organisation does not have integration credentials."
 }

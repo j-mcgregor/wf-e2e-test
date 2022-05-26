@@ -1,7 +1,11 @@
-import { ArrowLeftIcon } from '@heroicons/react/outline';
+import {
+  ArrowLeftIcon,
+  CheckIcon,
+  ExclamationIcon
+} from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { GetStaticPropsContext } from 'next/types';
-import React from 'react';
+import React, { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import useSWR from 'swr';
 
@@ -12,8 +16,14 @@ import { fetcher } from '../../../lib/api-handler/fetcher';
 
 const AddNewUserPage = () => {
   const t = useTranslations();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const user = useUser();
+
+  const [header, setHeader] = useState('');
+
+  const [loading, setLoading] = React.useState(false);
+  const [showSuccess, setShowSuccess] = React.useState(false);
+  const [error, setError] = React.useState(null);
 
   const { data: result } = useSWR(
     user?.user?.organisation_id &&
@@ -21,8 +31,14 @@ const AddNewUserPage = () => {
     fetcher
   );
 
+  React.useEffect(() => {
+    setHeader(result?.data?.auth_header);
+  }, [result]);
+
   const onSubmit = async (data: FieldValues) => {
-    await fetch(
+    setError(null);
+    setLoading(true);
+    const res = await fetch(
       user?.user?.organisation_id &&
         `/api/integrations/codat-credentials?orgId=${user?.user.organisation_id}`,
       {
@@ -30,6 +46,18 @@ const AddNewUserPage = () => {
         body: JSON.stringify(data)
       }
     );
+    const json = await res.json();
+    setLoading(false);
+
+    if (res.ok) {
+      setShowSuccess(true);
+      setLoading(false);
+      return setTimeout(() => {
+        setShowSuccess(false);
+      }, 3000);
+    }
+
+    setError(json.code);
   };
 
   return (
@@ -78,14 +106,49 @@ const AddNewUserPage = () => {
             <textarea
               className="w-full bg-gray-50 border-none h-52"
               placeholder={t('codat_auth_header_placeholder')}
-              defaultValue={result?.data?.auth_header}
+              defaultValue={header}
               {...register('auth_header')}
             />
           </div>
-          <div className="bg-gray-50 px-5 py-3">
-            <Button variant="alt" className="max-w-max rounded-none">
-              {t('add_integration_button')}
-            </Button>
+          <div className="bg-gray-50 px-5 py-3 flex justify-between items-center w-full">
+            <div className="grow">
+              {showSuccess && (
+                <div className="text-green-500 flex gap-2 items-center">
+                  <CheckIcon className="h-5 w-5" />
+                  <p>{t('codat_auth_header_success')}</p>
+                </div>
+              )}
+              {error && (
+                <div className="text-red-500 flex gap-2 items-center">
+                  <ExclamationIcon className="h-5 w-5" />
+                  <p>{t(error)}</p>
+                </div>
+              )}
+            </div>
+            <div className="flex gap-4">
+              <div className="max-w-xs">
+                <Button
+                  variant="none"
+                  newClassName="shadow-0 h-10 text-xs"
+                  onClick={() => {
+                    setHeader('');
+                    reset();
+                    onSubmit({ auth_header: '' });
+                  }}
+                >
+                  Remove integration
+                </Button>
+              </div>
+              <div className="max-w-xs">
+                <Button
+                  variant="alt"
+                  loading={loading}
+                  className="max-w-[160px]"
+                >
+                  {t('add_integration_button')}
+                </Button>
+              </div>
+            </div>
           </div>
         </form>
       </div>
