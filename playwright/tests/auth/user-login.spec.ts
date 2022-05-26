@@ -3,13 +3,14 @@ import { test, expect, chromium } from '@playwright/test';
 
 // FEATURE: USER LOGS IN
 // SCENARIO: USER GOES TO LOGIN PAGE, ENTERS VALID CREDENTIALS, SIGNS IN AND IS TAKEN TO DASHBOARD
-test.skip('User can log-in', async () => {
-  const browser = await chromium.launch();
-  const context = await browser.newContext();
+test('User can log-in', async ({ browser }) => {
+  const context = await browser.newContext({
+    storageState: './playwright/not-auth.json'
+  });
   const page = await context.newPage();
 
-  // GIVE I NAVIGATE TO LOGIN PAGE
-  await page.goto(`login`);
+  // GIVEN I AM ON THE HOME PAGE
+  await page.goto('/');
 
   // WHEN I CLICK THE EMAIL INPUT
   await page.locator('[placeholder="you\\@example\\.com"]').click();

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { login, testCSVFile } from '../../playwright-helpers';
+import { testCSVFile } from '../../playwright-helpers';
 
 const batchName = new Date().toISOString(); // weird I know, but it makes a unique batch name for checking, so 🤷
 

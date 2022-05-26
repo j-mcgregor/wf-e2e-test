@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../../playwright-helpers';
 
 test.describe('Bookmark Report', async () => {
   // SCENARIO: USER NAVIGATES TO NEWLY CREATED REPORT, BOOKMARKS IT, NAVIGATES TO 'REPORTS' TO CHECK IT WAS SUCCESSFULLY BOOKMARKED
