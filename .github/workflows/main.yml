@@ -51,6 +51,8 @@ jobs:
     name: End-to-end tests
     needs: wait_for_vercel
     runs-on: ubuntu-latest
+    env:
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -63,5 +65,5 @@ jobs:
         env:
           VERCEL_URL: ${{ needs.wait_for_vercel.outputs.preview_url }}
           VERCEL_ENV: preview
-          PLAYWRIGHT_LOGIN_USERNAME: dan@dan.com
-          PLAYWRIGHT_LOGIN_PASSWORD: password
+          PLAYWRIGHT_LOGIN_USERNAME: ${{  secrets.PLAYWRIGHT_LOGIN_USERNAME  }}
+          PLAYWRIGHT_LOGIN_PASSWORD: ${{  secrets.PLAYWRIGHT_LOGIN_PASSWORD  }}
