@@ -26,6 +26,7 @@
   "codat_auth_header_placeholder": "Copy and paste your authorisation here.",
   "codat_auth_header_success": "Authorisation header successfully updated",
   "add_integration_button": "Add integration",
+  "remove_integration_button": "Remove integration",
   "back_to_organisation": "Back to Organisation Dashboard",
   "organisation_user_overview": "User Overview",
   "organisation_user_overview_description": "See details and full list of reports run by this user from your organisation and access admin functionality.",

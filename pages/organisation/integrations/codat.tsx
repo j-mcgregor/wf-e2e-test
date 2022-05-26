@@ -136,7 +136,7 @@ const AddNewUserPage = () => {
                     onSubmit({ auth_header: '' });
                   }}
                 >
-                  Remove integration
+                  {t('remove_integration_button')}
                 </Button>
               </div>
               <div className="max-w-xs">
