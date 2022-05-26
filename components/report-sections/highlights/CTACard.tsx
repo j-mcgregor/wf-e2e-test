@@ -42,7 +42,7 @@ const CTACard = ({
             onClick={clickButton}
             className={`${buttonColor} ${
               disabled ? 'pointer-events-none opacity-40' : ''
-            } mr-2 text-white w-36`}
+            } mr-2 text-white `}
             variant="none"
             linkTo={linkTo}
           >

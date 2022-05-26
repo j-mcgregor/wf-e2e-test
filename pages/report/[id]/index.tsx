@@ -27,13 +27,14 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     fetcher
   );
 
-  const user = useUser();
+  const { user, isAdmin } = useUser();
 
   const { data: codat } = useSWR(
-    `/api/integrations/codat-credentials?orgId=${user?.user?.organisation_id}`,
+    `/api/integrations/codat-credentials?orgId=${user?.organisation_id}`,
     fetcher
   );
 
+  // will not work for non-admin user currently until the users can access organisation
   const isIntegrated = codat?.data?.auth_header ?? false;
 
   const data = result?.report;
@@ -93,7 +94,12 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
             />
           ) : (
             data && (
-              <Report data={data} id={id || []} isIntegrated={isIntegrated} />
+              <Report
+                data={data}
+                id={id || []}
+                isIntegrated={isIntegrated}
+                isAdmin={isAdmin}
+              />
             )
           )}
         </div>
