@@ -14,7 +14,7 @@ const config: PlaywrightTestConfig = {
   outputDir: './playwright/test-results',
   use: {
     headless: true,
-    baseURL: 'https://wiserfunding-platform-o89wwcjoy-wiserfunding.vercel.app',
+    baseURL: env.URL,
     viewport: { width: 1400, height: 980 },
     browserName: 'chromium',
     screenshot: 'only-on-failure',
