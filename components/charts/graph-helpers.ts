@@ -92,16 +92,18 @@ export const convertData = (
 export const formatToolTip = (
   value: number,
   type?: string,
-  isMillions?: boolean
+  isMillions?: boolean,
+  isThousands?: boolean,
+  header?: string
 ) => {
   if (type === 'percentage') {
     return Number(value).toFixed(2).toLocaleString();
   } else if (type === 'ratio') {
     return Number(value).toFixed(2).toLocaleString();
   } else if (type === 'currency') {
-    return isMillions
-      ? Number(value * 1000000).toLocaleString()
-      : Number(value * 1000).toLocaleString();
+    if (isMillions) return Number(value * 1000000).toLocaleString();
+    if (isThousands) return Number(value * 1000).toLocaleString();
+    return Number(value).toLocaleString();
   } else if (type === 'days') {
     return value;
   }
