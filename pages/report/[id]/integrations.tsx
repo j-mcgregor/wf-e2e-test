@@ -93,7 +93,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
         <IntegrationsStageThree
           selectedCompany={selectedCompany}
           stage={stage}
-          setStage={setStage}
           loading={loading}
           enabledClassName={enabledClassName}
           disabledClassName={disabledClassName}

@@ -27,15 +27,15 @@ const integrationsFetcher = async ({
     headers: {
       Authorization: `Bearer ${authentication?.accessToken}`,
       'Content-Type': 'application/json'
-    }
-    // body: body && (body as BodyInit)
+    },
+    body: body && (body as BodyInit)
   });
 
 const IntegrationsAPI = (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  return APIHandler(request, response, {
+  APIHandler(request, response, {
     config: {
       sourceType: 'INTEGRATIONS',
       authenticate: authenticators.NextAuth
@@ -120,4 +120,4 @@ const IntegrationsAPI = (
   });
 };
 
-export default IntegrationsAPI;
+export default withSentry(IntegrationsAPI);
