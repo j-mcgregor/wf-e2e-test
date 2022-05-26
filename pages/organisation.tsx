@@ -19,6 +19,8 @@ import { Tab } from '@headlessui/react';
 import { getTotalOrganisationReportsType } from '../lib/funcs/organisation';
 import ReactTimeago from 'react-timeago';
 import { createReportTitle } from '../lib/utils/text-helpers';
+import { CheckIcon, LightningBoltIcon } from '@heroicons/react/outline';
+import LinkCard from '../components/cards/LinkCard';
 
 const Organisation = () => {
   const t = useTranslations();
@@ -27,7 +29,14 @@ const Organisation = () => {
   const [users, setUsers] = React.useState<OrganisationUser[]>([]);
   const [reportsSkip, setReportsSkip] = React.useState(0);
   const [reports, setReports] = React.useState<OrganisationUserReport[]>([]);
-  const isIntergrated = false;
+
+  const { data: codat } = useSWR(
+    organisation?.id &&
+      `/api/integrations/codat-credentials?orgId=${organisation?.id}`,
+    fetcher
+  );
+
+  const isIntergrated = codat?.data?.auth_header ?? false;
 
   const limit = 10;
 
@@ -148,7 +157,7 @@ const Organisation = () => {
             organisation_name: organisation?.name
           })}
         </h1>
-        <p>{t('dashboard_description')}</p>
+        <p className=" max-w-2xl">{t('dashboard_description')}</p>
 
         <Tab.Group>
           <Tab.List className="flex flex-col md:flex-row max-w-full md:max-w-lg shadow">
@@ -193,7 +202,7 @@ const Organisation = () => {
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
-              <div className="mt-12 flex flex-col gap-5 mb-24">
+              <div className="mt-12 flex flex-col gap-5">
                 <h2 className="text-2xl font-semibold">{t('users_title')}</h2>
                 <div className="flex flex-col gap-4 md:flex-row justify-between md:items-center">
                   <p className="pr-14 max-w-2xl">{t('users_description')}</p>
@@ -204,7 +213,7 @@ const Organisation = () => {
                   >{`Add User`}</Button>
                 </div>
 
-                <div className="h-[700px]">
+                <div className="max-h-[700px]">
                   <Table
                     tableName={t('users_title')}
                     total={result?.total || 0}
@@ -222,7 +231,7 @@ const Organisation = () => {
               </div>
             </Tab.Panel>
             <Tab.Panel>
-              <div className="mt-12 flex flex-col gap-5 mb-24">
+              <div className="mt-12 flex flex-col gap-5">
                 <h2 className="text-2xl font-semibold">
                   {t('table_reports_header')}
                 </h2>
@@ -230,7 +239,7 @@ const Organisation = () => {
                   <p className="pr-14">{t('reports_description')}</p>
                 </div>
 
-                <div className="h-[700px]">
+                <div className="max-h-[700px]">
                   <Table
                     tableName={t('users_title')}
                     total={
@@ -251,31 +260,31 @@ const Organisation = () => {
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
-      </div>
-      {/* <div className="mt-12 flex flex-col gap-5">
-        <h2 className="text-2xl font-semibold">{t('intergrations_title')}</h2>
-        <p className="pr-14">{t('intergrations_description')}</p>
-        <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-auto md:mr-auto">
-          <LinkCard
-            className="mx-auto"
-            icon={
-              isIntergrated ? (
-                <CheckIcon className='className="h-6 w-6 text-black' />
-              ) : (
-                <LightningBoltIcon className='className="h-6 w-6 text-black' />
-              )
-            }
-            iconColor={
-              isIntergrated
-                ? 'bg-highlight-2 bg-opacity-20'
-                : 'bg-alt bg-opacity-40'
-            }
-            header={t('codat_card_title')}
-            description={t('codat_card_description')}
-            linkTo="/organisation/integrations/codat"
-          />
+        <div className="mt-12 flex flex-col gap-5 mb-24">
+          <h2 className="text-2xl font-semibold">{t('intergrations_title')}</h2>
+          <p className="pr-14">{t('intergrations_description')}</p>
+          <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-0 md:mr-auto">
+            <LinkCard
+              className="mx-auto"
+              icon={
+                isIntergrated ? (
+                  <CheckIcon className='className="h-6 w-6 text-black' />
+                ) : (
+                  <LightningBoltIcon className='className="h-6 w-6 text-black' />
+                )
+              }
+              iconColor={
+                isIntergrated
+                  ? 'bg-highlight-2 bg-opacity-20'
+                  : 'bg-alt bg-opacity-40'
+              }
+              header={t('codat_card_title')}
+              description={t('codat_card_description')}
+              linkTo="/organisation/integrations/codat"
+            />
+          </div>
         </div>
-      </div> */}
+      </div>
     </Layout>
   );
 };

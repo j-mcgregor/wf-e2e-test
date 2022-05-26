@@ -2,7 +2,7 @@
   "report_hints": {
     "esg": {
       "title": "Environmental",
-      "body": "In this section, we present the transition and physical risk associated with the company. For the transition risk, we assess the CO2 consumption of the company based on the activity and (where known) the location. For the physical risk, we assess the exposure of the company to flooding and heatwave risk based on the postcode of the location of the company.",
+      "body": "In this section, we present the transition and physical risk associated with the company. For the transition risk, we assess the CO2 consumption of the company based on the activity and (where known) the location. For the physical risk, we assess the exposure of the company to flooding and heatwave risk based on the postcode of the location of the company. <a>To learn more please click here.</a>",
       "environmental_risk": {
         "title": "Environmental Risk",
         "body": "Nulla ipsum elit anim sint cupidatat ad est ex dolor."
