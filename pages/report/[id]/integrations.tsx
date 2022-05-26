@@ -27,12 +27,10 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const [loading, setLoading] = useState(false);
 
   React.useEffect(() => {
-    if (yearPeriod === null && monthPeriod === null) {
-      if (selectedCompany) {
-        const end = new Date(selectedCompany?.last);
-        setYearPeriod(end.getFullYear().toString());
-        setMonthPeriod(end.getMonth().toString());
-      }
+    if (yearPeriod === null && monthPeriod === null && selectedCompany) {
+      const end = new Date(selectedCompany?.last);
+      setYearPeriod(end.getFullYear().toString());
+      setMonthPeriod((end.getMonth() + 1).toString());
     }
   }, [selectedCompany]);
 

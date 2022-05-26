@@ -41,7 +41,8 @@ Promise<SuccessResponseType<T> | ErrorResponseType | void> => {
   const query = request.query;
   const url = request.url as string;
   const headers = request.headers;
-  const body = request.body;
+  const body =
+    Object.keys(request.body).length > 0 ? JSON.parse(request.body) : undefined;
 
   const { config, customErrors = [] } = options;
   const { authenticate, publicMethods, sourceType } = config;

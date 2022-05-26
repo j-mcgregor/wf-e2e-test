@@ -1,7 +1,7 @@
 import { withSentry } from '@sentry/nextjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { integrationsFetcher } from '../[type]';
+import { integrationsFetcher } from '../[integrationType]';
 import authenticators from '../../../../lib/api-handler/authenticators';
 import APIHandler from '../../../../lib/api-handler/handler';
 
@@ -15,8 +15,8 @@ const CodatIntegrationsAPI = (
       authenticate: authenticators.NextAuth
     },
     GET: async ({ query, authentication }) => {
-      const { type, orgId, companyId, connectionId } = query;
-      switch (type) {
+      const { codatType, orgId, companyId, connectionId } = query;
+      switch (codatType) {
         case 'companies':
           return {
             response: await integrationsFetcher({
@@ -44,14 +44,14 @@ const CodatIntegrationsAPI = (
     },
     POST: async ({ query, authentication }) => {
       const {
-        type,
+        codatType,
         companyId,
         connectionId,
         parentId,
         periodLength,
         startMonth
       } = query;
-      if (type === 'codat') {
+      if (codatType === 'codat') {
         const baseUrl = `${process.env.WF_AP_ROUTE}/integrations/codat?company_id=${companyId}&connection_id=${connectionId}&parent_id=${parentId}&period_length=${periodLength}`;
         return {
           response: await integrationsFetcher({

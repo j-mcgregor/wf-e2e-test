@@ -28,7 +28,7 @@ export const integrationsFetcher = async ({
       Authorization: `Bearer ${authentication?.accessToken}`,
       'Content-Type': 'application/json'
     },
-    body: body && (body as BodyInit)
+    body: body ? JSON.stringify(body) : undefined
   });
 
 const IntegrationsAPI = (
@@ -41,28 +41,28 @@ const IntegrationsAPI = (
       authenticate: authenticators.NextAuth
     },
     GET: async ({ query, authentication }) => {
-      const { type, orgId } = query;
-      switch (type) {
-        case 'codat-credentials':
-          return {
-            response: await integrationsFetcher({
-              url: `${process.env.WF_AP_ROUTE}/integrations/codat/credentials/organisation/${orgId}`,
-              authentication
-            })
-          };
-        default:
-          return {
-            defaultResponse: {
-              code: 'TYPE_NOT_FOUND',
-              message: 'GET request only accepts codat-credentials',
-              status: 500
-            }
-          };
+      const { integrationType, orgId } = query;
+      if (integrationType === 'codat-credentials') {
+        return {
+          response: await integrationsFetcher({
+            url: `${process.env.WF_AP_ROUTE}/integrations/codat/credentials/organisation/${orgId}`,
+            authentication
+          })
+        };
+      } else {
+        return {
+          defaultResponse: {
+            code: 'TYPE_NOT_FOUND',
+            message: 'GET request only accepts codat-credentials',
+            status: 500
+          }
+        };
       }
     },
     PUT: async ({ query, authentication, body }) => {
-      const { type, orgId } = query;
-      if (type === 'codat-credentials') {
+      const { integrationType, orgId } = query;
+      if (integrationType === 'codat-credentials') {
+        // console.log('Type Body', body);
         return {
           response: await integrationsFetcher({
             url: `${process.env.WF_AP_ROUTE}/integrations/codat/credentials/organisation/${orgId}`,
@@ -70,6 +70,14 @@ const IntegrationsAPI = (
             authentication,
             body
           })
+        };
+      } else {
+        return {
+          defaultResponse: {
+            code: 'TYPE_NOT_FOUND',
+            message: 'PUT request only accepts codat-credentials',
+            status: 500
+          }
         };
       }
     },
