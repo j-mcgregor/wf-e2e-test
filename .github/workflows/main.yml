@@ -51,8 +51,6 @@ jobs:
     name: End-to-end tests
     needs: wait_for_vercel
     runs-on: ubuntu-latest
-    env:
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
