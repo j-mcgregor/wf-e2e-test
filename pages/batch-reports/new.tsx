@@ -51,7 +51,8 @@ const CreateBatchReport: NextPage = () => {
     csvData,
     isAutoOrManual.validator,
     csvValues,
-    totalCompanies
+    totalCompanies,
+    isAutoOrManual.type
   );
 
   useEffect(() => {

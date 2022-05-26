@@ -2,6 +2,7 @@
 /* eslint-disable security/detect-object-injection */
 import { useTranslations } from 'next-intl';
 import { getUniqueStringsFromArray } from '../lib/utils/text-helpers';
+import { ReportTypeEnum } from '../types/global';
 
 import type {
   CsvReport,
@@ -16,16 +17,20 @@ export const useCsvValidators = (
   csvData: CsvReport,
   validators: CsvValueValidation[],
   csvValues: string[][],
-  totalCompanies: number = 0
+  totalCompanies: number = 0,
+  type: ReportTypeEnum
 ) => {
   const t = useTranslations();
-  let errors: Array<string | boolean> = [];
 
+  const isManual = type === 'BATCH_MANUAL';
+  let errors: Array<string | boolean> = [];
   if (csvValues?.length === 0) {
     errors.push('CSV has no values');
   }
 
-  const uniqueCompanies = getUniqueStringsFromArray(csvData?.company_id);
+  const uniqueCompanies = getUniqueStringsFromArray(
+    isManual ? csvData?.details_name : csvData?.company_id
+  );
   const tooManyCompanies = totalCompanies > MAX_COMPANIES;
 
   // if too many companies, add error
@@ -50,7 +55,11 @@ export const useCsvValidators = (
   const isValid = errors?.length === 0 && missingHeaders.length === 0;
 
   if (uniqueCompanies.indexOf('') !== -1) {
-    errors.push('All rows must have a company name');
+    if (isManual) {
+      errors.push('All rows must have a company name');
+    } else {
+      errors.push('All rows must have a company ID');
+    }
   }
 
   // if we limit errors to eg 100, we need to be able to break the loop of
