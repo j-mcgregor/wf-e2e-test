@@ -34,7 +34,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     fetcher
   );
 
-  const isIntergrated = codat?.data?.auth_header ?? false;
+  const isIntegrated = codat?.data?.auth_header ?? false;
 
   const data = result?.report;
 
@@ -93,7 +93,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
             />
           ) : (
             data && (
-              <Report data={data} id={id || []} isIntegrated={isIntergrated} />
+              <Report data={data} id={id || []} isIntegrated={isIntegrated} />
             )
           )}
         </div>
