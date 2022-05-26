@@ -35,11 +35,11 @@ const IntegrationsStageTwo: React.FC<IIntegrationsStageTwoProps> = ({
 }) => {
   const t = useTranslations();
 
-  const { data } = useSWR('/api/integrations/companies', fetcher);
+  const { data } = useSWR('/api/integrations/codat/companies', fetcher);
 
   const { data: accountCategorisation } = useSWR(
     selectedCompany &&
-      `/api/integrations/account-categorisation?companyId=${selectedCompany?.company_id}&connectionId=${selectedCompany?.connection_id}`,
+      `/api/integrations/codat/account-categorisation?companyId=${selectedCompany?.company_id}&connectionId=${selectedCompany?.connection_id}`,
     fetcher
   );
 

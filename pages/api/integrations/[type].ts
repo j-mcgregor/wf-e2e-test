@@ -1,6 +1,6 @@
 import { withSentry } from '@sentry/nextjs';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getToken, JWT } from 'next-auth/jwt';
+import { JWT } from 'next-auth/jwt';
 import {
   MethodTypes,
   RequestBodyType
@@ -9,14 +9,14 @@ import {
 import authenticators from '../../../lib/api-handler/authenticators';
 import APIHandler from '../../../lib/api-handler/handler';
 
-interface IntegrationFetcherOptions {
+export interface IntegrationFetcherOptions {
   url: string;
   method?: MethodTypes;
   body?: RequestBodyType;
   authentication: JWT | null;
 }
 
-const integrationsFetcher = async ({
+export const integrationsFetcher = async ({
   url,
   method = 'GET',
   body,
@@ -41,22 +41,8 @@ const IntegrationsAPI = (
       authenticate: authenticators.NextAuth
     },
     GET: async ({ query, authentication }) => {
-      const { type, orgId, companyId, connectionId } = query;
+      const { type, orgId } = query;
       switch (type) {
-        case 'companies':
-          return {
-            response: await integrationsFetcher({
-              url: `${process.env.WF_AP_ROUTE}/integrations/codat/companies`,
-              authentication
-            })
-          };
-        case 'account-categorisation':
-          return {
-            response: await integrationsFetcher({
-              url: `${process.env.WF_AP_ROUTE}/integrations/codat/account-categorisation?company_id=${companyId}&connection_id=${connectionId}`,
-              authentication
-            })
-          };
         case 'codat-credentials':
           return {
             response: await integrationsFetcher({
@@ -68,31 +54,10 @@ const IntegrationsAPI = (
           return {
             defaultResponse: {
               code: 'TYPE_NOT_FOUND',
-              message:
-                'GET request only accepts companies, account-categorisation, codat-credentials',
+              message: 'GET request only accepts codat-credentials',
               status: 500
             }
           };
-      }
-    },
-    POST: async ({ query, authentication }) => {
-      const {
-        type,
-        companyId,
-        connectionId,
-        parentId,
-        periodLength,
-        startMonth
-      } = query;
-      if (type === 'codat') {
-        const baseUrl = `${process.env.WF_AP_ROUTE}/integrations/codat?company_id=${companyId}&connection_id=${connectionId}&parent_id=${parentId}&period_length=${periodLength}`;
-        return {
-          response: await integrationsFetcher({
-            url: startMonth ? `${baseUrl}&start_month=${startMonth}` : baseUrl,
-            method: 'POST',
-            authentication
-          })
-        };
       }
     },
     PUT: async ({ query, authentication, body }) => {
@@ -110,10 +75,10 @@ const IntegrationsAPI = (
     },
     customErrors: [
       {
-        status: 406,
-        code: 'NOTHING_TO_SYNCHRONISE',
-        message: 'Cannot find any company to synchronise.',
-        hasError: ({ res }) => false
+        status: 404,
+        code: 'ORGANISATION_NOT_FOUND',
+        message: 'Organisation not found',
+        hasError: ({ res }) => res?.status === 404
       }
     ]
   });

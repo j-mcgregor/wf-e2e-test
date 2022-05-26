@@ -37,7 +37,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const handleSubmit = async () => {
     setLoading(true);
     const res = await fetch(
-      `/api/integrations/codat?companyId=${
+      `/api/integrations/codat/codat?companyId=${
         selectedCompany?.company_id
       }&connectionId=${
         selectedCompany?.connection_id
