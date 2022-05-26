@@ -1,12 +1,12 @@
 import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import React, { ChangeEvent } from 'react';
-import { TranslateInput } from '../../../types/global';
-import { CodatCompanyType } from '../../../types/report';
-import RadioSelector from '../../elements/RadioSelector';
-import Select from '../../elements/Select';
+import { TranslateInput } from '../../../../types/global';
+import { CodatCompanyType } from '../../../../types/report';
+import RadioSelector from '../../../elements/RadioSelector';
+import Select from '../../../elements/Select';
 
-interface IIntegrationsStageThreeProps {
+interface ICodatStageThreeProps {
   selectedCompany: CodatCompanyType | null;
   yearPeriod: string | null;
   setYearPeriod: (value: string | null) => void;
@@ -21,7 +21,7 @@ interface IIntegrationsStageThreeProps {
   disabledClassName: string;
 }
 
-const IntegrationsStageThree: React.FC<IIntegrationsStageThreeProps> = ({
+const CodatStageThree: React.FC<ICodatStageThreeProps> = ({
   selectedCompany,
   yearPeriod,
   setYearPeriod,
@@ -206,4 +206,4 @@ const IntegrationsStageThree: React.FC<IIntegrationsStageThreeProps> = ({
   );
 };
 
-export default IntegrationsStageThree;
+export default CodatStageThree;

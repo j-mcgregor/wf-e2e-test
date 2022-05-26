@@ -1,9 +1,9 @@
 import { CheckIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import LinkCard from '../../cards/LinkCard';
+import LinkCard from '../../../cards/LinkCard';
 
-interface IIntegrationsStageOneProps {
+interface ICodatStageOneProps {
   loading: boolean;
   disabledClassName: string;
   enabledClassName: string;
@@ -11,7 +11,7 @@ interface IIntegrationsStageOneProps {
   setStage: (stage: number) => void;
 }
 
-const IntegrationsStageOne: React.FC<IIntegrationsStageOneProps> = ({
+const CodatStageOne: React.FC<ICodatStageOneProps> = ({
   loading,
   disabledClassName,
   enabledClassName,
@@ -34,15 +34,14 @@ const IntegrationsStageOne: React.FC<IIntegrationsStageOneProps> = ({
           className={`${
             stage > 1 && !loading
               ? 'border-2 border-highlight-2 shadow-inner hover:shadow-none'
-              : ''
-          } text-left h-36`}
+              : 'hover:shadow-sm transition-shadow duration-200'
+          } text-left`}
         >
           <LinkCard
-            header="Codat Integration"
-            description={'Add your headers for your Codata integration.'}
+            header={t('codat_integration')}
+            description={t('codat_integration_body')}
             icon={<CheckIcon className="h-6 w-6" />}
             iconColor="bg-highlight-2 bg-opacity-20"
-            includeHover={stage <= 1}
             disabled={loading}
           />
         </button>
@@ -58,4 +57,4 @@ const IntegrationsStageOne: React.FC<IIntegrationsStageOneProps> = ({
   );
 };
 
-export default IntegrationsStageOne;
+export default CodatStageOne;

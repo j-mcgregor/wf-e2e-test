@@ -18,7 +18,7 @@ const IntegrationErrorMessages = ({
       <div className="flex items-center gap-2 mt-4">
         <XIcon className="h-6 w-6 text-red-500" />
         <p>
-          {t.rich('itegration_not_valid_company', {
+          {t.rich('integration_not_valid_company', {
             b: company_name => <b>{company_name}</b>,
             company_name: companyName
           })}

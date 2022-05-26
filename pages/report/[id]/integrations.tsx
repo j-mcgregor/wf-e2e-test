@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import Button from '../../../components/elements/Button';
-import IntegrationsStageThree from '../../../components/forms/integrations/integrationsStageThree';
-import IntegrationsStageTwo from '../../../components/forms/integrations/integrationsStageTwo';
-import IntegrationsStageOne from '../../../components/forms/integrations/integrationStageOne';
+import CodatStageOne from '../../../components/forms/integrations/codat/CodatStageOne';
+import CodatStageThree from '../../../components/forms/integrations/codat/CodatStageThree';
+import CodatStageTwo from '../../../components/forms/integrations/codat/CodatStageTwo';
 import Layout from '../../../components/layout/Layout';
 import { CodatCompanyType } from '../../../types/report';
 
@@ -81,7 +81,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
     setLoading(false);
   };
 
-  const disabledClassName = 'opacity-60';
+  const disabledClassName = 'opacity-20';
   const enabledClassName = 'opacity-100';
 
   return (
@@ -95,7 +95,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           <ArrowLeftIcon className="h-full w-6" />
           <p className="ml-2">Back to report</p>
         </Button>
-        <IntegrationsStageOne
+        <CodatStageOne
           loading={loading}
           disabledClassName={disabledClassName}
           enabledClassName={enabledClassName}
@@ -103,7 +103,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           setStage={setStage}
         />
 
-        <IntegrationsStageTwo
+        <CodatStageTwo
           selectedCompany={selectedCompany}
           setSelectedCompany={setSelectedCompany}
           stage={stage}
@@ -113,7 +113,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           disabledClassName={disabledClassName}
         />
 
-        <IntegrationsStageThree
+        <CodatStageThree
           selectedCompany={selectedCompany}
           stage={stage}
           loading={loading}
