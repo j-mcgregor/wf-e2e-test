@@ -18,7 +18,7 @@ export const useCsvValidators = (
   validators: CsvValueValidation[],
   csvValues: string[][],
   totalCompanies: number = 0,
-  type: ReportTypeEnum
+  type?: ReportTypeEnum
 ) => {
   const t = useTranslations();
 
