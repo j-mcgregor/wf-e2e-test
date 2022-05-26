@@ -26,6 +26,31 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const [canGenerateReport, setCanGenerateReport] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  React.useEffect(() => {
+    if (yearPeriod === null && monthPeriod === null) {
+      if (selectedCompany) {
+        const end = new Date(selectedCompany?.last);
+        setYearPeriod(end.getFullYear().toString());
+        setMonthPeriod(end.getMonth().toString());
+      }
+    }
+  }, [selectedCompany]);
+
+  React.useEffect(() => {
+    if (selectedCompany) {
+      const start = new Date(selectedCompany?.first);
+      const end = new Date(`${yearPeriod}-${monthPeriod}-1`);
+      let months = (end.getFullYear() - start.getFullYear()) * 12;
+      months += end.getMonth() - start.getMonth() + 1;
+
+      if (months < monthSample) {
+        setCanGenerateReport(false);
+      } else {
+        setCanGenerateReport(true);
+      }
+    }
+  }, [selectedCompany, yearPeriod, monthPeriod]);
+
   const router = useRouter();
 
   const backLink = Array.isArray(router?.query?.from)
@@ -102,8 +127,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           setMonthPeriod={setMonthPeriod}
           monthSample={monthSample}
           setMonthSample={setMonthSample}
-          canGenerateReport={canGenerateReport}
-          setCanGenerateReport={setCanGenerateReport}
           locale={locale}
         />
 
