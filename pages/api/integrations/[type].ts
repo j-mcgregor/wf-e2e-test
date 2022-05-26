@@ -41,39 +41,38 @@ const IntegrationsAPI = (
       authenticate: authenticators.NextAuth
     },
     GET: async ({ query, authentication }) => {
-      const { type } = query;
-      if (type === 'companies') {
-        return {
-          response: await integrationsFetcher({
-            url: `${process.env.WF_AP_ROUTE}/integrations/codat/companies`,
-            authentication
-          })
-        };
-      } else if (type === 'account-categorisation') {
-        const { companyId, connectionId } = query;
-        return {
-          response: await integrationsFetcher({
-            url: `${process.env.WF_AP_ROUTE}/integrations/codat/account-categorisation?company_id=${companyId}&connection_id=${connectionId}`,
-            authentication
-          })
-        };
-      } else if (type === 'codat-credentials') {
-        const { orgId } = query;
-        return {
-          response: await integrationsFetcher({
-            url: `${process.env.WF_AP_ROUTE}/integrations/codat/credentials/organisation/${orgId}`,
-            authentication
-          })
-        };
-      } else {
-        return {
-          defaultResponse: {
-            code: 'TYPE_NOT_FOUND',
-            message:
-              'GET request only accepts companies, account-categorisation, codat-credentials',
-            status: 500
-          }
-        };
+      const { type, orgId, companyId, connectionId } = query;
+      switch (type) {
+        case 'companies':
+          return {
+            response: await integrationsFetcher({
+              url: `${process.env.WF_AP_ROUTE}/integrations/codat/companies`,
+              authentication
+            })
+          };
+        case 'account-categorisation':
+          return {
+            response: await integrationsFetcher({
+              url: `${process.env.WF_AP_ROUTE}/integrations/codat/account-categorisation?company_id=${companyId}&connection_id=${connectionId}`,
+              authentication
+            })
+          };
+        case 'codat-credentials':
+          return {
+            response: await integrationsFetcher({
+              url: `${process.env.WF_AP_ROUTE}/integrations/codat/credentials/organisation/${orgId}`,
+              authentication
+            })
+          };
+        default:
+          return {
+            defaultResponse: {
+              code: 'TYPE_NOT_FOUND',
+              message:
+                'GET request only accepts companies, account-categorisation, codat-credentials',
+              status: 500
+            }
+          };
       }
     },
     POST: async ({ query, authentication }) => {
