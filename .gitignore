@@ -41,3 +41,4 @@ yarn-error.log*
 .sentryclirc
 
 playwright/test-results
+playwright/auth.json

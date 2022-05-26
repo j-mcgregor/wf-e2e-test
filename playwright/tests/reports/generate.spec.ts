@@ -1,13 +1,23 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { test, expect } from '@playwright/test';
-import { login } from '../../playwright-helpers';
 
 test.describe('Generate report with API', async () => {
-  login();
   // SCENARIO: USER NAVIGATES TO THE SINGLE SME-CALC PAGE, INPUTS A COMPANY SEARCH AND GENERATES A REPORT
   // FEATURE: USER GENERATES A SINGLE REPORT
-  test('User can generate report via API search', async ({ page }) => {
+  test('User can generate report via API search', async ({ browser }) => {
+    const context = await browser.newContext({
+      storageState: './playwright/auth.json'
+    });
+    const page = await context.newPage();
+
     test.setTimeout(120000);
+
+    // GIVEN I AM ON THE HOMEPAGE
+    await page.goto('/');
+
+    // accept cookies banner
+    await page.locator('text=Accept').click();
+
     // GIVEN I CLICK THE 'SINGLE COMPANY' NAV LINK
     await page.locator('text=Single Company').first().click();
 
@@ -31,8 +41,7 @@ test.describe('Generate report with API', async () => {
     // WHEN I CLICK THE 'GENERATE REPORT' BUTTON
     await page.locator('text=Generate Report').click();
 
-    // hacky but was fastest way to get it working
-    await page.waitForTimeout(10000);
+    await page.waitForNavigation({ timeout: 30000 });
 
     await expect(page.locator('h1:has-text("A LIMITED")')).toBeVisible({
       timeout: 60000
@@ -41,14 +50,22 @@ test.describe('Generate report with API', async () => {
 });
 
 test.describe('Generate report with Company ID', async () => {
-  login();
-  // --------------------------------------------------
-
   // SCENARIO: USER NAVIGATES TO THE SINGLE SME-CALC PAGE, MAKES AN ADVANCED SEARCH WITH A COMPANY ID AND CHANGES CURRENCY
   // FEATURE: USER CREATES A MANUAL REPORT
   test('User can generate report via company ID & custom currency', async ({
-    page
+    browser
   }) => {
+    const context = await browser.newContext({
+      storageState: './playwright/auth.json'
+    });
+    const page = await context.newPage();
+
+    // GIVEN I AM ON THE HOMEPAGE
+    await page.goto('/');
+
+    // accept cookies banner
+    await page.locator('text=Accept').click();
+
     // GIVEN I CLICK THE 'SINGLE COMPANY' NAV LINK
     await page.locator('text=Single Company').first().click();
 
@@ -66,6 +83,9 @@ test.describe('Generate report with Company ID', async () => {
 
     // WHEN I CLICK THE 'GENERATE REPORT' BUTTON
     await page.locator('text=Generate Report').click();
+
+    await page.waitForNavigation({ timeout: 30000 });
+
     await page.waitForSelector('h1:has-text("CHOPOVA LOWENA LIMITED")', {
       timeout: 40000
     });

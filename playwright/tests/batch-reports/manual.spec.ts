@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { login, testCSVFile } from '../../playwright-helpers';
+import { testCSVFile } from '../../playwright-helpers';
 
 const batchName = new Date().toISOString(); // weird I know, but it makes a unique batch name for checking, so 🤷
 
@@ -8,15 +8,14 @@ const batchName = new Date().toISOString(); // weird I know, but it makes a uniq
 // ----------------------------------
 
 test.describe('Batch report', () => {
-  login();
+  test('User can create a manual BATCH report by CSV', async ({ browser }) => {
+    const context = await browser.newContext({
+      storageState: './playwright/auth.json'
+    });
+    const page = await context.newPage();
 
-  test('User can create a manual BATCH report by CSV', async ({ page }) => {
-    test.setTimeout(120000);
-    // GIVEN I CLICK THE MULTIPLE COMPANIES NAV BUTTON
-    await page.locator('text=Multiple Companies').first().click();
-
-    // THEN I SHOULD BE DIRECTED TO THE BATCH REPORTS PAGE
-    await expect(page).toHaveURL('batch-reports');
+    // GIVEN IAM ON THE BATCH-REPORTS PAGE
+    await page.goto('batch-reports');
 
     // AND I SHOULD SEE A CREATE BATCH REPORT LINK
     const createBatchReportLink = page.locator('text=Create a Batch Report');

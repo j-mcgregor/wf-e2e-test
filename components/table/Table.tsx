@@ -93,6 +93,7 @@ const Table = ({
         <table
           className="min-w-full text-xs md:text-sm overflow-auto table-fixed"
           style={{ maxHeight: (limit + 1) * 48 }}
+          id={tableName}
         >
           <thead className="bg-gray-200">
             <tr className="font-semibold w-full">

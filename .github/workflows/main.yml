@@ -63,5 +63,11 @@ jobs:
         env:
           VERCEL_URL: ${{ needs.wait_for_vercel.outputs.preview_url }}
           VERCEL_ENV: preview
-          PLAYWRIGHT_LOGIN_USERNAME: dan@dan.com
-          PLAYWRIGHT_LOGIN_PASSWORD: password
+          PLAYWRIGHT_LOGIN_USERNAME: ${{  secrets.PLAYWRIGHT_LOGIN_USERNAME  }}
+          PLAYWRIGHT_LOGIN_PASSWORD: ${{  secrets.PLAYWRIGHT_LOGIN_PASSWORD  }}
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-report
+          path: playwright-report
