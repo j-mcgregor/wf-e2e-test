@@ -14,6 +14,7 @@ import { ReportDataProps } from '../../types/report';
 import HashContainer from '../elements/HashContainer';
 import { ReportSectionHeader } from '../elements/Headers';
 import Hint from '../elements/Hint';
+import AddMoreData from './add-more-data/AddMoreData';
 import CorporateOverview from './corporate-governance/CorporateOverview';
 import ExecutiveCardList from './corporate-governance/ExecutiveList';
 import Profiles from './corporate-governance/Profiles';
@@ -361,30 +362,11 @@ const Report = ({
               <FinancialAccounts financialYears={transformedFinancials} />
             </div>
           )}
-
-          <div className="w-full lg:ml-8 print:hidden">
-            <p className="font-bold py-2">{t('add_more_data')}</p>
-            <CTACard
-              title={t('import_data')}
-              body={t('unlock_api_to_gain_access')}
-              buttonText={
-                isAdmin && !isIntegrated ? 'Add Integrations' : 'Import Data'
-              }
-              buttonColor={
-                isAdmin && !isIntegrated ? 'bg-[#278EC8]' : 'bg-[#2BAD01]'
-              }
-              linkTo={`/report/${id}/integrations?from=/report/${id}`}
-              // learnMoreLink="#"
-              disabled={(!isAdmin && !isIntegrated) ?? false}
-            />
-            <CTACard
-              title={t('upload_more_data')}
-              body={t('upload_data_for_more_recent_report')}
-              buttonText="Upload"
-              buttonColor="bg-alt"
-              linkTo={`${id}/upload-data`}
-            />
-          </div>
+          <AddMoreData
+            isAdmin={isAdmin}
+            isIntegrated={isIntegrated}
+            id={`${id}`}
+          />
         </div>
       </HashContainer>
 
