@@ -162,8 +162,10 @@ const ChartMulti = ({
   const chartTypeText =
     chartType === 'currency' && useMillions
       ? `${currencySymbol} ${t('millions')}`
-      : chartType === 'currency' && !useMillions
+      : chartType === 'currency' && useThousands
       ? `${currencySymbol} ${t('thousands')}`
+      : chartType === 'currency' && !useThousands && !useMillions
+      ? `${currencySymbol}`
       : chartType === 'percentage'
       ? `${t('percentage')} %`
       : chartType === 'ratio'
@@ -173,8 +175,7 @@ const ChartMulti = ({
       : null;
 
   // how to log only one graph
-  // header === 'Net Income' &&
-  //   console.log('largestNumberLength', largestNumberLength);
+  // header === 'Net Income' && console.log('useThousands  Net', useThousands);
 
   return (
     <div
@@ -252,9 +253,14 @@ const ChartMulti = ({
                 fillOpacity: 1
               }
             }}
-            labels={({ datum }) =>
-              formatToolTip(datum.y, chartType, useMillions)
-            }
+            labels={({ datum }) => {
+              return formatToolTip(
+                datum.y,
+                chartType,
+                useMillions,
+                useThousands
+              );
+            }}
             // containerComponent={<VictoryVoronoiContainer />}
             {...(showLabels && {
               labelComponent: (
