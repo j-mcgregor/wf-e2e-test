@@ -10,16 +10,16 @@ if (!env.VERCEL_ENV) {
 
 const config: PlaywrightTestConfig = {
   testDir: './playwright', // location of tests
-  // globalSetup: require.resolve('./playwright/global-setup'),
+  globalSetup: require.resolve('./playwright/global-setup'),
   outputDir: './playwright/test-results',
   use: {
     headless: true,
     baseURL: env.URL,
     viewport: { width: 1400, height: 980 },
     browserName: 'chromium',
-    screenshot: 'only-on-failure'
+    screenshot: 'only-on-failure',
     // Tell all tests to load signed-in state from 'storageState.json'.
-    // storageState: './playwright/storageState.json'
+    storageState: './playwright/auth.json'
   },
   ...(!env.VERCEL_ENV && {
     webServer: {

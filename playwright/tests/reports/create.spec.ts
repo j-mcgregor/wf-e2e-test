@@ -1,10 +1,17 @@
 import { test, expect } from '@playwright/test';
 
-import { login, testCSVFile } from '../../playwright-helpers';
+import { testCSVFile } from '../../playwright-helpers';
 
-test('User can create a manual SINGLE report by CSV', async ({ page }) => {
-  login();
-  // GIVEN I CLICK THE SINGLE COMPANY NAV BUTTON
+test('User can create a manual SINGLE report by CSV', async ({ browser }) => {
+  const context = await browser.newContext({
+    storageState: './playwright/auth.json'
+  });
+  const page = await context.newPage();
+
+  // GIVEN I AM ON THE HOMEPAGE
+  await page.goto('/');
+
+  // AND I CLICK SINGLE COMPANY
   await page.locator('text=Single Company').first().click();
 
   // THEN I SHOULD BE DIRECTED TO THE SME-CALC PAGE

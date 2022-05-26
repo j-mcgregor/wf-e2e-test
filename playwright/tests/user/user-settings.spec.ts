@@ -1,15 +1,20 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { test, expect } from '@playwright/test';
-import { login } from '../../playwright-helpers';
-
-login();
 
 test.describe('User Settings Tests', async () => {
   // SCENARIO: USER NAVIGATES TO SETTINGS AND CHANGES THEIR NAME
   // FEATURE: USER CAN CHANGE THEIR NAME
-  test('User can change their user name', async ({ page }) => {
+  test('User can change their user name', async ({ browser }) => {
+    const context = await browser.newContext({
+      storageState: './playwright/auth.json'
+    });
+    const page = await context.newPage();
+
+    // GIVEN I AM ON THE HOME PAGE
+    await page.goto('/');
+
     // GIVEN I CLICK ON SETTINGS BUTTON
-    await page.locator('text=Settings').first().click();
+    await page.locator('a:has-text("Settings")').click();
 
     // THEN I AM DIRECTED TO THE SETTINGS PAGE
     await expect(page).toHaveURL('settings');
@@ -29,9 +34,8 @@ test.describe('User Settings Tests', async () => {
 
     // THEN I CLICK THE SAVE BUTTON
     await page
-      .locator(
-        'text=Personal InformationUpdate your personal informationNameEmail addressSave >> button'
-      )
+      .locator('div[name="personal_information"]')
+      .locator('button:has-text("Save")')
       .click();
 
     // WHEN I CLICK THE DASHBOARD NAVIGATION BUTTON
@@ -50,74 +54,88 @@ test.describe('User Settings Tests', async () => {
 
   // SCENARIO: USER NAVIGATES TO SETTINGS AND CHANGES THEIR PASSWORD
   // FEATURE: USER CAN CHANGE THEIR PASSWORD
-  test('User can change their password', async ({ page }) => {
+  test('User can change their password', async ({ browser }) => {
+    const context = await browser.newContext({
+      storageState: './playwright/auth.json'
+    });
+    const page = await context.newPage();
+
+    const oldPassword = `${process.env.PLAYWRIGHT_LOGIN_PASSWORD}`;
+    const newPassword = `new-${process.env.PLAYWRIGHT_LOGIN_PASSWORD}`;
+
+    // GIVEN I AM ON THE HOME PAGE
+    await page.goto('/');
     // GIVEN I CLICK ON SETTINGS BUTTON
-    await page.locator('text=Settings').first().click();
+    await page.locator('a:has-text("Settings")').click();
 
     // THEN I SHOULD BE TAKEN TO THE SETTINGS PAGE
     await expect(page).toHaveURL('settings');
+
+    // WHEN I SELECT THE CURRENT PASSWORD INPUT
+    await page.locator('input[name="currentPassword"]').click();
+
+    // AND I TYPE A NEW PASSWORD INTO THE NEW PASSWORD INPUT FIELD
+    await page.locator('input[name="currentPassword"]').fill(oldPassword);
 
     // WHEN I SELECT THE NEW PASSWORD INPUT
     await page.locator('input[name="newPassword"]').click();
 
     // AND I TYPE A NEW PASSWORD INTO THE NEW PASSWORD INPUT FIELD
-    await page.locator('input[name="newPassword"]').fill(`123`);
+    await page.locator('input[name="newPassword"]').fill(newPassword);
 
     // AND I SELECT THE CONFIRM PASSWORD INPUT
     await page.locator('input[name="confirmPassword"]').click();
 
     // AND I TYPE A NEW PASSWORD INTO THE CONFIRM PASSWORD INPUT FIELD
-    await page.locator('input[name="confirmPassword"]').fill(`123`); // repeat password
+    await page.locator('input[name="confirmPassword"]').fill(newPassword); // repeat password
 
     // THEN THE SAVE BUTTON SHOULD BE ENABLED
     await expect(
-      page.locator('text=New PasswordConfirm PasswordSave >> button')
+      page.locator('div[name="password"]').locator('button:has-text("Save")')
     ).toBeEnabled();
-  });
+    await page
+      .locator('div[name="password"]')
+      .locator('button:has-text("Save")')
+      .click();
 
-  // --------------------------------------------------
-
-  // SCENARIO: USER NAVIGATES TO SETTINGS AND CHANGES THEIR EMAIL
-  // FEATURE: USER CAN CHANGE THEIR EMAIL
-  test('User can change their email', async ({ page }) => {
-    // GIVEN I CLICK ON SETTINGS BUTTON
-    await page.locator('text=Settings').first().click();
-
-    // THEN I SHOULD BE DIRECTED TO THE SETTINGS PAGE
-    await expect(page).toHaveURL('settings');
-
-    // WHEN I CLICK THE EMAIL ADDRESS INPUT
-    await page.locator('input[name="email"]').click(); // click email input
-
-    // AND I SELECT ALL OF THE EXISTING TEXT (TRIPLE CLICK)
-    await page.locator('input[name="email"]').click({
-      clickCount: 3
-    });
-
-    // AND I TYPE IN A NEW EMAIL ADDRESS INTO THE INPUT FIELD
-    await page.locator('input[name="email"]').fill('test@test.com'); // enter new email
-
-    // THEN THE SAVE BUTTON SHOULD BE ENABLED
     await expect(
-      page.locator(
-        'text=Personal InformationUpdate your personal informationNameEmail addressSave >> button'
-      )
-    ).toBeEnabled();
+      page.locator('text=Password updated successfully')
+    ).toBeVisible();
+
+    // RESET
+
+    await page.locator('input[name="currentPassword"]').fill(newPassword);
+    await page.locator('input[name="newPassword"]').fill(oldPassword);
+    await page.locator('input[name="confirmPassword"]').fill(oldPassword);
+    await page
+      .locator('div[name="password"]')
+      .locator('button:has-text("Save")')
+      .click();
   });
 
   // --------------------------------------------------
 
   // SCENARIO: USER NAVIGATES TO THE SETTINGS PAGE AND CHANGES THEIR PREFERENCES
   // FEATURE: USER CAN CHANGE THEIR PREFERENCES
-  test('User can change their preferences', async ({ page }) => {
+  test('User can change their preferences', async ({ browser }) => {
+    const context = await browser.newContext({
+      storageState: './playwright/auth.json'
+    });
+    const page = await context.newPage();
+
+    // GIVEN I AM ON THE HOME PAGE
+    await page.goto('/');
+
     // GIVEN I CLICK ON SETTINGS BUTTON
-    await page.locator('text=Settings').first().click();
+    await page.locator('a:has-text("Settings")').click();
 
     // THEN I SHOULD BE DIRECTED TO THE SETTINGS PAGE
     await expect(page).toHaveURL('settings');
 
     // selectors
-    const saveButton = page.locator('text=Save').nth(1); // save button
+    const saveButton = page
+      .locator('div[name="preferences"]')
+      .locator('button:has-text("Save")'); // save button
     const resetButton = page.locator('text=Reset to defaults'); // reset button
     const countrySelect = page.locator('select[name="reporting"]'); // locate country select
 
@@ -158,15 +176,27 @@ test.describe('User Settings Tests', async () => {
 
   // SCENARIO: USER NAVIGATES TO SETTINGS AND UPDATES THEIR NOTIFICATIONS
   // FEATURE: USER CAN CHANGE THEIR NOTIFICATIONS
-  test('User can update their notifications', async ({ page }) => {
+  test('User can update their notifications', async ({ browser }) => {
+    const context = await browser.newContext({
+      storageState: './playwright/auth.json'
+    });
+    const page = await context.newPage();
+
+    // GIVEN I AM ON THE HOME PAGE
+    await page.goto('/');
+    // accept cookies banner
+    await page.locator('text=Accept').click();
+
     // GIVEN I CLICK ON SETTINGS BUTTON
-    await page.locator('text=Settings').first().click();
+    await page.locator('a:has-text("Settings")').click();
 
     // THEN I SHOULD BE DIRECTED TO THE SETTINGS PAGE
     await expect(page).toHaveURL('settings');
 
     // selectors etc
-    const saveButton = page.locator('text=Save').nth(3); // communications save button
+    const saveButton = page
+      .locator('div[name="communication"]')
+      .locator('button:has-text("Save")'); // communications save button
     const reportCheckbox = page.locator('input[name="batch_report_email"]'); // first checkbox
     const reportCheckboxStatus = await reportCheckbox.isChecked(); // initial state of checkbox
 
@@ -178,6 +208,11 @@ test.describe('User Settings Tests', async () => {
       ? await reportCheckbox.uncheck()
       : await reportCheckbox.check();
 
+    // AND THE CHECKBOX I TOGGLED SHOULD BE IN THE CORRECT STATE (OPPOSITE OF INITIAL STATE)
+    reportCheckboxStatus
+      ? expect(reportCheckbox).not.toBeChecked()
+      : expect(reportCheckbox).toBeChecked();
+
     // THEN THE SAVE BUTTON SHOULD BE ENABLED
     await expect(saveButton).toBeEnabled();
 
@@ -187,9 +222,6 @@ test.describe('User Settings Tests', async () => {
     // THEN THE SAVE BUTTON SHOULD BE DISABLED
     await expect(saveButton).toBeDisabled();
 
-    // AND THE CHECKBOX I TOGGLED SHOULD BE IN THE CORRECT STATE (OPPOSITE OF INITIAL STATE)
-    reportCheckboxStatus
-      ? expect(reportCheckbox).not.toBeChecked()
-      : expect(reportCheckbox).toBeChecked();
+    await page.pause();
   });
 });

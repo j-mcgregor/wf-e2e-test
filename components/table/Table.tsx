@@ -40,6 +40,7 @@ const Table = ({
   fillEmptyRows = false,
   rowLink
 }: TableProps) => {
+  console.log('tableName', tableName);
   const [page, setPage] = React.useState(1);
   const [maxPages, setMaxPages] = React.useState(1);
   const [tableTotal, setTableTotal] = React.useState(total);
@@ -91,6 +92,7 @@ const Table = ({
         <table
           className="min-w-full text-xs md:text-sm overflow-auto table-fixed"
           style={{ maxHeight: (limit + 1) * 48 }}
+          id={tableName}
         >
           <thead className="bg-gray-200">
             <tr className="font-semibold w-full">

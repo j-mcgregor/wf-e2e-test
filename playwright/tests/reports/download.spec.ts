@@ -1,28 +1,36 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../../playwright-helpers';
-
-login();
 
 test.describe('Download CSV', () => {
   // SCENARIO: USER NAVIGATES TO A REPORT, CLICKS 'EXPORT CSV' AND DOWNLOADS A CSV FILE
   // FEATURE: USER CAN EXPORT A CSV FILE OF A REPORT
-  test('User can download CSV of a report', async ({ page }) => {
+  test('User can download CSV of a report', async ({ browser }) => {
+    const context = await browser.newContext({
+      storageState: './playwright/auth.json'
+    });
+    const page = await context.newPage();
+
     // GIVEN I AM ON THE HOMEPAGE
-    await expect(page).toHaveURL('/');
+    await page.goto('/');
+
+    // accept cookies banner
+    await page.locator('text=Accept').click();
 
     // WHEN I NAVIGATE TO THE MOST RECENT REPORT
-    await Promise.all([
-      page.waitForNavigation(),
-      page.locator('td >> nth=0').click()
-    ]);
+    await page.locator('#Recent\\ Reports tbody tr:nth-child(1)').click();
+    await page.waitForNavigation();
 
     // AND I CLICK THE 'EXPORT CSV' BUTTON
     const [download] = await Promise.all([
+      // It is important to call waitForEvent before click to set up waiting.
       page.waitForEvent('download'),
+      // Triggers the download.
       page.locator('text=Export CSV').click()
     ]);
 
+    // wait for download to complete
+    const path = await download.path();
+
     // THEN A CSV FILE OF THE REPORT SHOULD BE DOWNLOADED
-    await expect(download.path()).toBeTruthy(); // download has filepath === true = success -> no obvious alternative?
+    expect(path).toBeTruthy(); // download has filepath === true = success -> no obvious alternative?
   });
 });

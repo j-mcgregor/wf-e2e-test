@@ -2,26 +2,28 @@ import { test, expect } from '@playwright/test';
 import { login, testCSVFile } from '../../playwright-helpers';
 
 // SCENARIO: USER NAVIGATES TO NEWLY CREATED REPORT, BOOKMARKS IT, NAVIGATES TO 'REPORTS' TO CHECK IT WAS SUCCESSFULLY BOOKMARKED
-test('User can upload additional report data by CSV', async ({ page }) => {
-  login();
+test('User can upload additional report data by CSV', async ({ browser }) => {
+  const context = await browser.newContext({
+    storageState: './playwright/auth.json'
+  });
+  const page = await context.newPage();
+
   // GIVEN I AM ON THE HOME PAGE
   await page.goto('/');
 
+  // accept cookies banner
+  await page.locator('text=Accept').click();
+
   // WHEN I NAVIGATE TO THE MOST RECENT REPORT
-  await Promise.all([
-    page.waitForNavigation(),
-    page.locator('td >> nth=0').click()
-  ]);
+  await page.locator('#Recent\\ Reports tbody tr:nth-child(1)').click();
+  await page.waitForNavigation({ timeout: 30000 });
 
   // AND I CLICK THE 'UPLOAD MORE DATA' BUTTON
-  await Promise.all([
-    page.waitForNavigation(),
-    page.locator('text=Upload').nth(3).click()
-  ]);
+  await page.locator('a:has-text("Upload")').click();
+  await page.waitForNavigation({ timeout: 30000 });
 
-  page.waitForTimeout(10000);
   // THEN I SHOULD BE NAVIGATED TO THE UPLOAD DATA PAGE
-  await expect(page.url()).toContain('upload-data');
+  expect(page.url()).toContain('upload-data');
 
   // WHEN I SELECT A VALID CSV FILE TO UPLOAD
   const [fileChooser] = await Promise.all([
