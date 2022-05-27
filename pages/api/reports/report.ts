@@ -3,7 +3,7 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
 import { getToken } from 'next-auth/jwt';
-
+import mockNewDates from '../../../lib/mock-data/mock-new-dates.json';
 import Report, {
   CreateReport,
   GetExistingReport,
@@ -114,6 +114,12 @@ const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
   if (isGet) {
     // extract report id
     const reportId = request.query.id;
+
+    if (reportId === 'new-dates') {
+      return response.status(200).json({
+        report: mockNewDates
+      });
+    }
 
     if (!reportId) {
       return makeMissingArgsResponse(

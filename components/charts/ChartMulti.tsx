@@ -175,7 +175,7 @@ const ChartMulti = ({
       : null;
 
   // how to log only one graph
-  // header === 'Net Income' && console.log('useThousands  Net', useThousands);
+  // header === 'Net Income' && console.log('useThousands  Net', convertedCompanyGraph.data, convertedCompanyGraph.data.map(({x, y}) => ({ x: x.replace(/-/g, '/'), y})));
 
   return (
     <div

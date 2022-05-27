@@ -41,7 +41,7 @@ const RiskMetricGraphs = ({ data, companyName }: RiskMetricGraphsProps) => {
       <div className="print:inline-block  avoid-break ">
         <ChartMulti
           header={t('sme_zscore_trend')}
-          subHeader={t('trend_yearly')}
+          subHeader={t('trend')}
           hintBody={'report_hints.risk_metrics.sme_zscore_trend.body'}
           hintTitle={'report_hints.risk_metrics.sme_zscore_trend.title'}
           graphData={smeZScore}

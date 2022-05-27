@@ -78,8 +78,9 @@ export const convertData = (
   isValueThousands: boolean
 ) => {
   return graph?.map((data: GraphDataType) => {
+    const date = convertToReadableDate(data.x);
     return {
-      x: data.x,
+      x: date,
       y: isValueMillions
         ? data.y / 1000000
         : isValueThousands
@@ -89,6 +90,35 @@ export const convertData = (
   });
 };
 
+const convertToReadableDate = (dateString: string) => {
+  const dateIsNotYear = dateString.length > 4;
+  if (!dateIsNotYear) return dateString;
+  const dateArray = dateString.split('-');
+  const newDateArray = dateArray.map((date, index) =>
+    index === 0 ? date.slice(0, 4) : date
+  );
+  return `${newDateArray[2]} ${getMonthName(Number(newDateArray[1]) - 1)} \n ${
+    newDateArray[0]
+  }`;
+};
+
+const getMonthName = (month: number) => {
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ];
+  return monthNames[month];
+};
 export const formatToolTip = (
   value: number,
   type?: string,
