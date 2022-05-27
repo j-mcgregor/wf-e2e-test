@@ -323,7 +323,7 @@ export const financialTrendsCharts: AllFinancialTrendsChartsType = {
         name: chart.name,
         data: chart.data.map((year: any) => ({
           x: year.period,
-          y: Number((year?.total_debt / 1000).toFixed(2)) || null
+          y: Number((year?.total_debt).toFixed(2)) || null
         }))
       })),
       'currency'
