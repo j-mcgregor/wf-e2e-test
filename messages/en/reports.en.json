@@ -8,6 +8,7 @@
   "pd_ratio": "PD",
   "company_name": "Company Name",
   "sme_z-score": "SME Z-Score",
+  "source": "Source",
   "created": "Created",
   "recent_reports": "All Recent Reports",
   "show_more": "Show more",

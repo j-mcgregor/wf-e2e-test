@@ -41,10 +41,16 @@ const Reports = () => {
       name: t('company_name'),
       selector: getReportName,
       align: 'left',
-      width: 'w-[70%]',
+      width: 'w-[60%]',
       contentClassName:
         'truncate max-w-[400px] sm:max-w-lg lg:max-w-lg xl:max-w-2xl',
       rowTitle: getReportName
+    },
+    {
+      name: t('source'),
+      selector: 'source',
+      align: 'center',
+      width: 'w-[10%]'
     },
     {
       name: t('sme_z-score'),

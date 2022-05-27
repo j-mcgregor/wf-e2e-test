@@ -42,21 +42,27 @@ const OrganisationUserPage = () => {
       name: t('company_name'),
       selector: getReportName,
       align: 'left',
-      width: 'w-3/6',
+      width: 'w-[60%]',
       contentClassName: 'truncate max-w-[240px] lg:max-w-xs xl:max-w-sm',
       rowTitle: getReportName
+    },
+    {
+      name: t('source'),
+      selector: 'source',
+      align: 'center',
+      width: 'w-[10%]'
     },
     {
       name: t('sme_z-score'),
       selector: 'sme_z_score',
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%]'
     },
     {
       name: t('bre'),
       selector: 'bond_rating_equivalent',
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%]'
     },
     {
       name: t('created'),
@@ -64,7 +70,7 @@ const OrganisationUserPage = () => {
         <ReactTimeago date={row.created_at} />
       ),
       align: 'center',
-      width: 'w-1/6'
+      width: 'w-[10%]'
     }
   ];
 
