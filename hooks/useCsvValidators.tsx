@@ -10,7 +10,7 @@ import type {
   CsvValueValidation
 } from '../types/report';
 
-const MAX_COMPANIES = 1000;
+const BATCH_MAX_COMPANIES = 1000;
 const MAX_ERRORS = 500;
 
 export const useCsvValidators = (
@@ -21,23 +21,26 @@ export const useCsvValidators = (
   type?: ReportTypeEnum
 ) => {
   const t = useTranslations();
-
-  const isManual = type === 'BATCH_MANUAL';
+  const isBatch = type === 'BATCH_AUTO' || type === 'BATCH_MANUAL';
+  const isManualBatch = type === 'BATCH_MANUAL';
+  const isManualSingle = type === 'REPORT_MANUAL';
   let errors: Array<string | boolean> = [];
   if (csvValues?.length === 0) {
     errors.push('CSV has no values');
   }
 
   const uniqueCompanies = getUniqueStringsFromArray(
-    isManual ? csvData?.details_name : csvData?.company_id
+    isManualBatch || isManualSingle
+      ? csvData?.details_name
+      : csvData?.company_id
   );
-  const tooManyCompanies = totalCompanies > MAX_COMPANIES;
 
+  const tooManyCompaniesBatch = isBatch && totalCompanies > BATCH_MAX_COMPANIES;
   // if too many companies, add error
-  if (tooManyCompanies) {
+  if (tooManyCompaniesBatch) {
     errors.push(
       t('max_companies', {
-        max_companies: MAX_COMPANIES,
+        max_companies: BATCH_MAX_COMPANIES,
         total_companies: totalCompanies
       })
     );
@@ -55,7 +58,7 @@ export const useCsvValidators = (
   const isValid = errors?.length === 0 && missingHeaders.length === 0;
 
   if (uniqueCompanies.indexOf('') !== -1) {
-    if (isManual) {
+    if (isManualBatch) {
       errors.push('All rows must have a company name');
     } else {
       errors.push('All rows must have a company ID');
@@ -67,7 +70,7 @@ export const useCsvValidators = (
   // or Object.entries
   // it's more verbose this way but won't keep running if theres thousands of errors
   if (
-    !tooManyCompanies &&
+    !tooManyCompaniesBatch &&
     csvData &&
     validators &&
     errors.length < MAX_ERRORS

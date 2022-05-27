@@ -25,10 +25,16 @@ const ProvideData = () => {
     setFileSelected(file);
   };
 
-  const { csvData, csvValues, isCSV } = useCSV(fileSelected);
+  const { csvData, csvValues, isCSV, totalCompanies } = useCSV(fileSelected);
 
   const { isValid, errors, missingHeaders, numberOfCompanies } =
-    useCsvValidators(csvData, manualUploadValidators, csvValues);
+    useCsvValidators(
+      csvData,
+      manualUploadValidators,
+      csvValues,
+      totalCompanies,
+      'REPORT_MANUAL'
+    );
 
   const t = useTranslations();
 
@@ -70,7 +76,7 @@ const ProvideData = () => {
   const moreThanOneCompany = numberOfCompanies > 1;
 
   const allErrors = moreThanOneCompany
-    ? [...errors, t('multiple_companies_cannot_be_uploaded_here')]
+    ? [t('multiple_companies_cannot_be_uploaded_here')]
     : errors;
 
   return (
