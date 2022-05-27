@@ -25,11 +25,10 @@ export const templateText = [
   // },
   {
     title: 'excel_full_template',
-    templateLink: '/download-templates/Sunrise_Client_Input_Sheet_v1.00.xlsm',
+    templateLink: '/download-templates/Sunrise_Client_Input_Sheet_v1.01.xlsm',
     backgroundColor: 'bg-highlight-3 bg-opacity-50'
   }
 ];
-
 export const orbisAvailableSearchCountries = [
   'al',
   'at',

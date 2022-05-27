@@ -309,7 +309,7 @@ const CreateBatchReport: NextPage = () => {
             iconColor="bg-highlight-3 bg-opacity-50"
             header={t('batch_mdi_excel_template')}
             description={t('batch_mdi_excel_template_desc')}
-            linkTo="/download-templates/Sunrise_Client_Input_Sheet_v1.00.xlsm"
+            linkTo="/download-templates/Sunrise_Client_Input_Sheet_v1.01.xlsm"
           />
         </div>
       </div>
