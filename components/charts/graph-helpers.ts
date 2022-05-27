@@ -95,11 +95,9 @@ const convertToReadableDate = (dateString: string) => {
   if (!dateIsNotYear) return dateString;
   const dateArray = dateString.split('-');
   const newDateArray = dateArray.map((date, index) =>
-    index === 0 ? date.slice(0, 4) : date
+    index === 0 ? date.slice(2, 4) : date
   );
-  return `${newDateArray[2]} ${getMonthName(Number(newDateArray[1]) - 1)} \n ${
-    newDateArray[0]
-  }`;
+  return `${getMonthName(Number(newDateArray[1]) - 1)}-${newDateArray[0]}`;
 };
 
 const getMonthName = (month: number) => {
