@@ -463,7 +463,8 @@ const Report = ({
                   >
                     {children}
                   </a>
-                )
+                ),
+                p: children => <p className="mt-2">{children}</p>
               })}
             />
           }
