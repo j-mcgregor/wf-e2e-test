@@ -31,5 +31,55 @@ export const handlers = [
     const id = query.get('id');
     console.info(id);
     return res(ctx.delay(500), ctx.status(200), ctx.json(mockReport));
-  })
+  }),
+  rest.get(
+    'http://localhost:3000/api/integrations/codat/companies',
+    (req, res, ctx) => {
+      return res(
+        ctx.delay(500),
+        ctx.status(200),
+        ctx.json({
+          isError: false,
+          data: {
+            companies: [
+              {
+                company_id: '456',
+                connection_id: 'connection-456',
+                company_name: 'Avengers',
+                first: new Date('2021-01-01').toDateString(),
+                last: new Date('2021-02-01').toDateString()
+              },
+              {
+                company_id: '789',
+                connection_id: 'connection-789',
+                company_name: 'Guardians of the Galaxy',
+                first: new Date('2021-01-01').toDateString(),
+                last: new Date('2021-02-01').toDateString()
+              }
+            ]
+          }
+        })
+      );
+    }
+  ),
+  rest.get(
+    'http://localhost:3000/api/integrations/codat/account-categorisation',
+    (req, res, ctx) => {
+      return res(
+        ctx.delay(500),
+        ctx.status(200),
+        ctx.json({
+          isError: false,
+          data: {
+            uncategorised_accounts: [
+              {
+                id: 'potato',
+                name: 'Is Potato'
+              }
+            ]
+          }
+        })
+      );
+    }
+  )
 ];
