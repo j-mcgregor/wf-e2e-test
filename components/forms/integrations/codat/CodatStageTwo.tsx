@@ -39,8 +39,6 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
     '/api/integrations/codat/companies',
     fetcher
   );
-  console.log('data', data);
-  // console.log('isValidating', isValidating);
 
   const { data: accountCategorisation } = useSWR(
     selectedCompany &&
