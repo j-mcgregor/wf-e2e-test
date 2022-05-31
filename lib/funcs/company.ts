@@ -1,4 +1,5 @@
 import { ApiResType, CompanyType } from '../../types/global';
+import { fetchWrapper } from '../utils/fetchWrapper';
 
 const UK_COMPANY_KEYS = [
   'company_number',
@@ -94,7 +95,7 @@ const searchUKCompaniesHouse = async (
     if (!token) {
       return { ok: false };
     }
-    const res = await fetch(
+    const res = await fetchWrapper(
       `https://api.company-information.service.gov.uk/search/${searchQuery}`,
       {
         method: 'GET',
@@ -140,7 +141,7 @@ const SearchOrbisCompanies = async (
   searchCountry: string
 ) => {
   try {
-    const res = await fetch(
+    const res = await fetchWrapper(
       'https://Orbis4europe.bvdinfo.com/api/orbis4europe//Companies/data',
       {
         method: 'POST',

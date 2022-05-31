@@ -7,7 +7,11 @@ export const fetchWrapper = async (
     method,
     headers,
     body
-  }: { method: MethodTypes; headers: Record<string, string>; body?: string }
+  }: {
+    method: MethodTypes;
+    headers?: Record<string, string>;
+    body?: ReadableStream | string | URLSearchParams;
+  }
 ) => {
   return await fetch(route, {
     method,
