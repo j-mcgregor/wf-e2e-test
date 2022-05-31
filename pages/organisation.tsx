@@ -36,7 +36,7 @@ const Organisation = () => {
     fetcher
   );
 
-  const isIntergrated = codat?.data?.auth_header ?? false;
+  const isIntegrated = codat?.data?.auth_header ?? false;
 
   const limit = 10;
 
@@ -151,7 +151,7 @@ const Organisation = () => {
         organisation_name: organisation?.name
       })}`}
     >
-      <div className="text-primary flex flex-col gap-5">
+      <div className="text-primary flex flex-col gap-5 mb-40">
         <h1 className="text-3xl font-semibold">
           {t.rich('title', {
             organisation_name: organisation?.name
@@ -260,30 +260,34 @@ const Organisation = () => {
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
-        <div className="mt-12 flex flex-col gap-5 mb-24">
-          <h2 className="text-2xl font-semibold">{t('intergrations_title')}</h2>
-          <p className="pr-14">{t('intergrations_description')}</p>
-          <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-0 md:mr-auto">
-            <LinkCard
-              className="mx-auto"
-              icon={
-                isIntergrated ? (
-                  <CheckIcon className='className="h-6 w-6 text-black' />
-                ) : (
-                  <LightningBoltIcon className='className="h-6 w-6 text-black' />
-                )
-              }
-              iconColor={
-                isIntergrated
-                  ? 'bg-highlight-2 bg-opacity-20'
-                  : 'bg-alt bg-opacity-40'
-              }
-              header={t('codat_card_title')}
-              description={t('codat_card_description')}
-              linkTo="/organisation/integrations/codat"
-            />
+        {isIntegrated ? (
+          <div className="mt-12 flex flex-col gap-5 mb-24">
+            <h2 className="text-2xl font-semibold">
+              {t('intergrations_title')}
+            </h2>
+            <p className="pr-14">{t('intergrations_description')}</p>
+            <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-4 max-w-lg md:max-w-none mx-0 md:mr-auto">
+              <LinkCard
+                className="mx-auto"
+                icon={
+                  isIntegrated ? (
+                    <CheckIcon className='className="h-6 w-6 text-black' />
+                  ) : (
+                    <LightningBoltIcon className='className="h-6 w-6 text-black' />
+                  )
+                }
+                iconColor={
+                  isIntegrated
+                    ? 'bg-highlight-2 bg-opacity-20'
+                    : 'bg-alt bg-opacity-40'
+                }
+                header={t('codat_card_title')}
+                description={t('codat_card_description')}
+                linkTo="/organisation/integrations/codat"
+              />
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </Layout>
   );

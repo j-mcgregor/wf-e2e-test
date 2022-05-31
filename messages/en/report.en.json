@@ -71,6 +71,7 @@
   "add_more_data": "Add more data",
   "use_integration_unlock_private_apis": "Unlock our private APIs to get access to non-public information and resources about this company.",
   "enable_integrations_through_organisation": "To enable integrations for your organisation, add them through the organisation dashboard.",
+  "enable_integrations_through_support": "To enable integrations for your organisation, please contact Wiserfunding support. You can use the support chat box or email <a>support@wiserfunding.com</a>.",
   "no_access_request_integration_to_be_enabled": "You don’t have access to any integrations, speak to your organisation owner to add integrations for your company.",
   "import": "Import",
   "import_data": "Import open banking and accounting data",

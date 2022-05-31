@@ -13,11 +13,27 @@ const AddMoreData = ({
 }) => {
   const t = useTranslations();
 
+  // until feature specification is created we are making this simpler
+  // const integrationText = isIntegrated
+  //   ? t('use_integration_unlock_private_apis')
+  //   : isAdmin
+  //   ? t('enable_integrations_through_organisation')
+  //   : t('no_access_request_integration_to_be_enabled');
+
   const integrationText = isIntegrated
     ? t('use_integration_unlock_private_apis')
-    : isAdmin
-    ? t('enable_integrations_through_organisation')
-    : t('no_access_request_integration_to_be_enabled');
+    : t.rich('enable_integrations_through_support', {
+        a: children => (
+          <a
+            className="underline hover:text-highlight"
+            href="mailto:support@wiserfunding.com"
+          >
+            {children}
+          </a>
+        )
+      });
+  //   : t('no_access_request_integration_to_be_enabled');
+
   const integrationButtonText = isIntegrated
     ? 'Import Data'
     : 'Add Integration';
