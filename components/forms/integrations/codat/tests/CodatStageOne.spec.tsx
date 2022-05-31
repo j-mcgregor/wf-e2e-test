@@ -62,11 +62,12 @@ describe('CodatStageOne', () => {
 
     expect(setStage).toHaveBeenCalledWith(2);
   });
+
   it('doesnt set the next stage when loading=true', () => {
     const loading = true;
     const disabledClassName = 'batman';
     const enabledClassName = 'superman';
-    const stage = 2;
+    const stage = 1;
     const setStage = jest.fn();
 
     render(
@@ -92,6 +93,7 @@ describe('CodatStageOne', () => {
 
     expect(setStage).not.toHaveBeenCalled();
   });
+
   it('doesnt set the next stage when stage > 1 and loading=true', () => {
     const loading = true;
     const disabledClassName = 'batman';
