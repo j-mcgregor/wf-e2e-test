@@ -35,6 +35,30 @@ const AddNewUserPage = () => {
     setHeader(result?.data?.auth_header);
   }, [result]);
 
+  const onRemoveIntegration = async () => {
+    setError(null);
+    setLoading(true);
+    const res = await fetch(
+      user?.user?.organisation_id &&
+        `/api/integrations/codat-credentials?orgId=${user?.user.organisation_id}`,
+      {
+        method: 'DELETE'
+      }
+    );
+    const json = await res.json();
+    setLoading(false);
+
+    if (res.ok) {
+      setShowSuccess(true);
+      setLoading(false);
+      return setTimeout(() => {
+        setShowSuccess(false);
+      }, 3000);
+    }
+
+    setError(json.code);
+  };
+
   const onSubmit = async (data: FieldValues) => {
     setError(null);
     setLoading(true);
@@ -128,12 +152,13 @@ const AddNewUserPage = () => {
             <div className="flex gap-4">
               <div className="max-w-xs">
                 <Button
+                  type="button"
                   variant="none"
                   newClassName="shadow-0 h-10 text-xs"
                   onClick={() => {
                     setHeader('');
                     reset();
-                    onSubmit({ auth_header: '' });
+                    onRemoveIntegration();
                   }}
                 >
                   {t('remove_integration_button')}
