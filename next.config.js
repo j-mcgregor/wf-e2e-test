@@ -9,6 +9,15 @@
 
 const { withSentryConfig } = require('@sentry/nextjs');
 
+// For optimum security the Cache-Control header should prevent
+// caching by downstream devices and the client itself, this
+// can be achieved by configuring the following HTTP header
+
+const cacheControlHeader = {
+  key: 'Cache-Control',
+  value: 'no-cache, no-store'
+};
+
 const moduleExports = {
   api: {
     // this issue https://github.com/getsentry/sentry-javascript/issues/3852#issuecomment-918820923
@@ -39,6 +48,14 @@ const moduleExports = {
     });
 
     return config;
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [cacheControlHeader]
+      }
+    ];
   }
 };
 
