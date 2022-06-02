@@ -7,7 +7,7 @@ import { SessionProvider } from 'next-auth/react';
 import { NextIntlProvider } from 'next-intl';
 import { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
-import useFullstory from '../hooks/useFullstory';
+import useFullStory from '../hooks/useFullstory';
 
 // ignore in-browser next/js recoil warnings until its fixed.
 const mutedConsole = memoize(console => ({
@@ -25,8 +25,7 @@ if (
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  useFullstory();
-
+  useFullStory();
   return (
     <RecoilRoot>
       <SessionProvider session={pageProps.session}>
