@@ -2,7 +2,6 @@ import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import Button from '../elements/Button';
-import { signOut } from 'next-auth/react';
 
 type ErrorSkeletonProps = {
   header?: string;
@@ -29,7 +28,7 @@ const ErrorSkeleton = ({ header, message, code }: ErrorSkeletonProps) => {
           <>
             <p className="mt-4 font-bold">{t('please_sign_out_and_in')}</p>
             <div className="max-w-[10rem] mx-auto mt-4">
-              <Button variant="primary" onClick={() => signOut()}>
+              <Button variant="primary" linkTo="/logout">
                 Sign out
               </Button>
             </div>
