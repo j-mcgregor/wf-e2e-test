@@ -5,6 +5,7 @@ import {
   FetcherOptions,
   SuccessResponseType
 } from './api-handler';
+import { defaultHeaders } from './headers';
 import { makeErrorObject } from './make-reponses';
 
 export const fetcher = async (
@@ -17,7 +18,7 @@ export const fetcher = async (
     if (method === 'GET') {
       const res = await fetch(`${config.URL}${relativeUrl}`, {
         headers: {
-          'Content-Type': 'application/json'
+          ...defaultHeaders
         }
       });
 
@@ -28,7 +29,7 @@ export const fetcher = async (
       method: method,
       body: data && JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json',
+        ...defaultHeaders,
         ...headers
       }
     });
