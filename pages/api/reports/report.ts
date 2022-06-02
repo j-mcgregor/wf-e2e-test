@@ -29,6 +29,7 @@ import {
 import { StatusCodeConstants } from '../../../types/http-status-codes';
 
 import type { NextApiHandler } from 'next';
+import { fetchWrapper } from '../../../lib/utils/fetchWrapper';
 
 /** @COMPLETE */
 
@@ -172,7 +173,7 @@ const report: NextApiHandler<ReportsReportApi> = async (request, response) => {
       }
     } else if (request?.query?.export === 'pdf') {
       try {
-        const fetchRes = await fetch(
+        const fetchRes = await fetchWrapper(
           `${process.env.WF_AP_ROUTE}/reports/${reportId}/export/pdf`,
           {
             method: 'GET',

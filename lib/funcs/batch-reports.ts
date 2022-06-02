@@ -13,6 +13,7 @@ import type {
   BatchAutoRequest,
   CreateBatchJobResponse
 } from '../../types/batch-reports';
+import { fetchWrapper } from '../utils/fetchWrapper';
 /**
  * ***************************************************
  * GET ALL BATCH REPORTS
@@ -35,7 +36,7 @@ const getAllBatchReports: ApiHandler<
   const limitAndSkipString = limit ? `?limit=${limit}&skip=${skip}` : '';
 
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/jobs/batch${limitAndSkipString}`,
       {
         method: 'GET',
@@ -100,7 +101,7 @@ const getBatchReportsById: ApiHandler<
   GetBatchReportByIdProps
 > = async (token, { id, skip, limit }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/jobs/batch/${id}?skip=${skip}&limit=${limit}`,
       {
         method: 'GET',
@@ -164,14 +165,17 @@ const createBatchReport: ApiHandler<
   CreateBatchReportProps
 > = async (token: string, { report }) => {
   try {
-    const response = await fetch(`${process.env.WF_AP_ROUTE}/jobs/batch`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(report)
-    });
+    const response = await fetchWrapper(
+      `${process.env.WF_AP_ROUTE}/jobs/batch`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(report)
+      }
+    );
     if (response.ok) {
       const reportData: CreateBatchJobResponse = await response.json();
       return {
@@ -226,7 +230,7 @@ const batchJobReportUpload: ApiHandler<
   BatchJobReportUploadProps
 > = async (token: string, { report }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/jobs/batch/upload`,
       {
         method: 'POST',
@@ -295,7 +299,7 @@ export const getBatchReportsCsv: ApiHandler<
   GetBatchReportCsvFullProps
 > = async (token: string, { batchReportId }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.NEXT_PUBLIC_WF_AP_ROUTE}/jobs/batch/${batchReportId}/export/full`,
       {
         method: 'GET',
