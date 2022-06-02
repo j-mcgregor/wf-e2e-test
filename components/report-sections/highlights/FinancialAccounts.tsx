@@ -23,9 +23,10 @@ const FinancialAccounts = ({
 
   const years = preYears.map(index => `${latestYearAvailable - index}`);
 
-  const availableFinancialYears = financialYears?.map(
-    financialData => financialData.period
-  );
+  const availableFinancialYears = financialYears?.map(financialData => {
+    const date = new Date(`${financialData.period}`);
+    return `${date.getFullYear()}`;
+  });
 
   const t = useTranslations();
   return (
