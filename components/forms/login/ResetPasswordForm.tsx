@@ -79,8 +79,6 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
     }
   };
 
-  console.log(submitError);
-
   const createPassword = () => {
     const generatedPassword = generatePassword();
     setValue('newPassword', generatedPassword);

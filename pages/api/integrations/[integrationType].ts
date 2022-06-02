@@ -16,6 +16,8 @@ export interface IntegrationFetcherOptions {
   authentication: JWT | null;
 }
 
+const codatCredentials = 'codat-credentials';
+
 export const integrationsFetcher = async ({
   url,
   method = 'GET',
@@ -42,7 +44,7 @@ const IntegrationsAPI = (
     },
     GET: async ({ query, authentication }) => {
       const { integrationType, orgId } = query;
-      if (integrationType === 'codat-credentials') {
+      if (integrationType === codatCredentials) {
         return {
           response: await integrationsFetcher({
             url: `${process.env.WF_AP_ROUTE}/integrations/codat/credentials/organisation/${orgId}`,
@@ -61,7 +63,7 @@ const IntegrationsAPI = (
     },
     PUT: async ({ query, authentication, body }) => {
       const { integrationType, orgId } = query;
-      if (integrationType === 'codat-credentials') {
+      if (integrationType === codatCredentials) {
         // console.log('Type Body', body);
         return {
           response: await integrationsFetcher({
@@ -83,7 +85,7 @@ const IntegrationsAPI = (
     },
     DELETE: async ({ query, authentication }) => {
       const { integrationType, orgId } = query;
-      if (integrationType === 'codat-credentials') {
+      if (integrationType === codatCredentials) {
         return {
           response: await integrationsFetcher({
             url: `${process.env.WF_AP_ROUTE}/integrations/codat/credentials/organisation/${orgId}`,
