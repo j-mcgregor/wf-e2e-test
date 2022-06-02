@@ -54,7 +54,7 @@
     "react-twitter-widgets": "^1.10.0",
     "recoil": "^0.5.2",
     "semantic-release": "^19.0.2",
-    "sharp": "^0.29.2",
+    "sharp": "^0.30.5",
     "swr": "^1.0.0",
     "ts-jest": "^27.0.5",
     "tsparticles": "^1.33.3",
