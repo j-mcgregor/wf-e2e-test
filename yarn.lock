@@ -4949,6 +4949,11 @@ internal-slot@^1.0.3:
   resolved "https://registry.yarnpkg.com/internmap/-/internmap-2.0.3.tgz#6685f23755e43c524e251d29cbc97248e3061009"
   integrity sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==
 
+interval-hooks@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/interval-hooks/-/interval-hooks-0.2.0.tgz#b63834de1ac89c46ee8e276a5fa545f6e2076bb5"
+  integrity sha512-C69KSbs2QeMGlcfhjTHDXlVKu47bKQ3gbhLhB8f53ubOgnVtdeK3nBTwa+XW4M7JGuvKsigJ9PGWdd4KXcg02w==
+
 intl-messageformat@^9.3.18:
   version "9.11.4"
   resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-9.11.4.tgz#0f9030bc6d10e6a48592142f88e646d88f05f1f2"
@@ -6632,6 +6637,14 @@ next-auth@^4.3.3:
     preact "^10.6.3"
     preact-render-to-string "^5.1.19"
     uuid "^8.3.2"
+
+next-deploy-notifications@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/next-deploy-notifications/-/next-deploy-notifications-0.1.4.tgz#10b7da2ba81259572dace49033c593b6a33be643"
+  integrity sha512-rFVR4zTIyNFUkXMK/mvUHUDDMa1esNuhOMAboCgvUWqb2mEFWOP4ZxLGU+krXGlVE45eCXTWKpGvh7TXt7Cdbw==
+  dependencies:
+    interval-hooks "^0.2.0"
+    use-window-focus "^1.4.0"
 
 next-intl@^2.5.0:
   version "2.6.0"
@@ -9024,6 +9037,11 @@ use-intl@^2.6.0:
   dependencies:
     "@formatjs/ecma402-abstract" "^1.11.4"
     intl-messageformat "^9.3.18"
+
+use-window-focus@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/use-window-focus/-/use-window-focus-1.4.0.tgz#1c2e318d600daf4e5c23a59d3117546d71e45e24"
+  integrity sha512-nukGk7GklW0/xUkyRnWr+835Q4C9hI29GvUGrpo2GzwtbgsUUp1K/MD4WDaI3977sh9rJq2XhDQ41T8VZiohgw==
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
