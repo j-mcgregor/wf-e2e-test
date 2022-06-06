@@ -5,7 +5,10 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
+import {
+  GENERIC_API_ERROR,
+  USER_BAD_REQUEST
+} from '../../../lib/utils/error-codes';
 import { generatePassword } from '../../../lib/utils/generatePassword';
 import { VALID_PASSWORD } from '../../../lib/utils/regexes';
 import Button from '../../elements/Button';
@@ -55,15 +58,20 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
       });
       const body = await res.json();
 
-      if (body.ok) {
-        return setFormSubmitted(true);
-      }
       if (body.is_error) {
         if (body.error === 'Invalid token') {
           return setSubmitError({ type: 'INVALID_TOKEN' });
         }
+        if (body.error === USER_BAD_REQUEST) {
+          return setSubmitError({ type: 'USER_BAD_REQUEST' });
+        }
         return setSubmitError({ type: body.message });
       }
+
+      if (body.ok) {
+        return setFormSubmitted(true);
+      }
+
       return setSubmitError({ type: GENERIC_API_ERROR });
     } catch (e) {
       // log the details of the error to the logger
@@ -144,6 +152,9 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
                   <ErrorMessage text={t('errors.confirm_required')} />
                 )}
               </div>
+              {submitError.type === 'USER_BAD_REQUEST' && (
+                <ErrorMessage text={t('USER_BAD_REQUEST')} />
+              )}
               {submitError.type === GENERIC_API_ERROR && (
                 <ErrorMessage text={t('errors.submit_error')} />
               )}

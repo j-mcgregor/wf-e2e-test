@@ -1,5 +1,10 @@
 import { ArrowLeftIcon } from '@heroicons/react/outline';
-import { GetServerSidePropsContext, NextPage } from 'next';
+import {
+  GetServerSidePropsContext,
+  GetStaticPathsContext,
+  GetStaticPropsContext,
+  NextPage
+} from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -8,6 +13,7 @@ import CodatStageOne from '../../../components/forms/integrations/codat/CodatSta
 import CodatStageThree from '../../../components/forms/integrations/codat/CodatStageThree';
 import CodatStageTwo from '../../../components/forms/integrations/codat/CodatStageTwo';
 import Layout from '../../../components/layout/Layout';
+import SkeletonLayout from '../../../components/skeletons/SkeletonLayout';
 import { CodatCompanyType } from '../../../types/report';
 
 interface ReportIntegrationsPageProps {
@@ -84,6 +90,11 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const disabledClassName = 'opacity-20';
   const enabledClassName = 'opacity-100';
 
+  // handle language error messages during fallback
+  if (router.isFallback) {
+    return <SkeletonLayout />;
+  }
+
   return (
     <Layout title="Report Integrations">
       <div className="flex flex-col gap-6 pb-24">
@@ -144,7 +155,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
 export default ReportIntegrations;
 
-export const getServerSideProps = ({ locale }: GetServerSidePropsContext) => {
+export const getStaticProps = ({ locale }: GetStaticPropsContext) => {
   return {
     props: {
       locale,
@@ -157,5 +168,12 @@ export const getServerSideProps = ({ locale }: GetServerSidePropsContext) => {
         ...require(`../../../messages/${locale}/general.${locale}.json`)
       }
     }
+  };
+};
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: true
   };
 };

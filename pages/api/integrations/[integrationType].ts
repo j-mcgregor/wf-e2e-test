@@ -16,6 +16,8 @@ export interface IntegrationFetcherOptions {
   authentication: JWT | null;
 }
 
+const codatCredentials = 'codat-credentials';
+
 export const integrationsFetcher = async ({
   url,
   method = 'GET',
@@ -42,7 +44,7 @@ const IntegrationsAPI = (
     },
     GET: async ({ query, authentication }) => {
       const { integrationType, orgId } = query;
-      if (integrationType === 'codat-credentials') {
+      if (integrationType === codatCredentials) {
         return {
           response: await integrationsFetcher({
             url: `${process.env.WF_AP_ROUTE}/integrations/codat/credentials/organisation/${orgId}`,
@@ -61,7 +63,7 @@ const IntegrationsAPI = (
     },
     PUT: async ({ query, authentication, body }) => {
       const { integrationType, orgId } = query;
-      if (integrationType === 'codat-credentials') {
+      if (integrationType === codatCredentials) {
         // console.log('Type Body', body);
         return {
           response: await integrationsFetcher({
@@ -81,12 +83,38 @@ const IntegrationsAPI = (
         };
       }
     },
+    DELETE: async ({ query, authentication }) => {
+      const { integrationType, orgId } = query;
+      if (integrationType === codatCredentials) {
+        return {
+          response: await integrationsFetcher({
+            url: `${process.env.WF_AP_ROUTE}/integrations/codat/credentials/organisation/${orgId}`,
+            method: 'DELETE',
+            authentication
+          })
+        };
+      } else {
+        return {
+          defaultResponse: {
+            code: 'TYPE_NOT_FOUND',
+            message: 'DELETE request only accepts codat-credentials',
+            status: 500
+          }
+        };
+      }
+    },
     customErrors: [
       {
         status: 404,
         code: 'ORGANISATION_NOT_FOUND',
         message: 'Organisation not found',
         hasError: ({ res }) => res?.status === 404
+      },
+      {
+        status: 400,
+        code: 'ORGANISATION_INVALID_CREDENTIALS',
+        message: 'Invalid Credentials',
+        hasError: ({ res }) => res?.status === 400
       }
     ]
   });

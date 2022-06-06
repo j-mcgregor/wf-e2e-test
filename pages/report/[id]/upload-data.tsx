@@ -20,6 +20,7 @@ import { makeUploadReportReqBody } from '../../../lib/utils/report-helpers';
 import { SubmitReportType } from '../../../types/report';
 import { mutate } from 'swr';
 import { ReportsUploadApi } from '../../api/reports/upload';
+import SkeletonLayout from '../../../components/skeletons/SkeletonLayout';
 
 const UploadData = () => {
   const t = useTranslations();
@@ -100,6 +101,11 @@ const UploadData = () => {
       Sentry.captureException(err);
     }
   };
+
+  // handle language error messages during fallback
+  if (router.isFallback) {
+    return <SkeletonLayout />;
+  }
 
   return (
     <Layout noNav={false}>
