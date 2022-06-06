@@ -56,7 +56,7 @@ const passwordReset: NextApiHandler<PasswordResetApi> = async (
 
       return response.status(BAD_REQUEST).json({
         ...makeApiHandlerResponseFailure({
-          message: errorsBySourceType.GENERAL[BAD_REQUEST]
+          message: errorsBySourceType.USER[BAD_REQUEST]
         }),
         msg: null
       });

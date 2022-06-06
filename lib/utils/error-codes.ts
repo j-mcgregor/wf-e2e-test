@@ -38,6 +38,7 @@ export const BATCH_REPORT_503: ErrorCodeKeys = 'BATCH_REPORT_503';
  * USER
  * *****************************************
  */
+export const USER_BAD_REQUEST: ErrorCodeKeys = 'USER_BAD_REQUEST';
 export const EMAIL_REQUIRED: ErrorCodeKeys = 'EMAIL_REQUIRED';
 export const FULL_NAME_REQUIRED: ErrorCodeKeys = 'FULL_NAME_REQUIRED';
 export const USER_NOT_AUTHORISED: ErrorCodeKeys = 'USER_NOT_AUTHORISED';

@@ -27,6 +27,7 @@ export type ErrorCodeKeys =
   | 'BATCH_REPORT_500'
   | 'BATCH_REPORT_503'
   // USER
+  | 'USER_BAD_REQUEST'
   | 'EMAIL_REQUIRED'
   | 'FULL_NAME_REQUIRED'
   | 'USER_NOT_AUTHORISED'

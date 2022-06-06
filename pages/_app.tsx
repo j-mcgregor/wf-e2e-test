@@ -4,7 +4,7 @@ import '../styles/globals.css';
 
 import memoize from 'lodash/memoize';
 import { SessionProvider } from 'next-auth/react';
-import { NextIntlProvider } from 'next-intl';
+import { IntlError, NextIntlProvider } from 'next-intl';
 import { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
 import useFullStory from '../hooks/useFullstory';
@@ -29,7 +29,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <SessionProvider session={pageProps.session}>
-        <NextIntlProvider messages={pageProps.messages || {}}>
+        <NextIntlProvider
+          messages={pageProps.messages || {}}
+          onError={(_: IntlError) => null}
+        >
           <Component {...pageProps} />
         </NextIntlProvider>
       </SessionProvider>

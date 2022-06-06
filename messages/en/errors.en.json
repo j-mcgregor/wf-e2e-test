@@ -60,5 +60,7 @@
   "ORGANISATION_NOT_FOUND": "Organisation not found",
   "VALIDATION_ERROR": "There was a validation error processing this request. Please contact support.",
   "NOTHING_TO_SYNCHRONISE": "Cannot find any company to synchronise.",
-  "CREDENTIALS_NOT_FOUND": "Organisation does not have integration credentials."
+  "CREDENTIALS_NOT_FOUND": "Organisation does not have integration credentials.",
+  "ORGANISATION_INVALID_CREDENTIALS": "The authorisation header is invalid. Please try again.",
+  "USER_BAD_REQUEST": "The password does not match the required format. Please try again."
 }

@@ -22,6 +22,7 @@ interface MakeErrorProps {
 
 export const errorsBySourceType: Record<SourceType, Record<number, string>> = {
   USER: {
+    400: ErrorConstants.USER_BAD_REQUEST,
     401: ErrorConstants.USER_NOT_AUTHORISED,
     403: ErrorConstants.USER_NOT_AUTHORISED,
     404: ErrorConstants.USER_404,

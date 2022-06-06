@@ -56,6 +56,15 @@ const userPasswordApi: NextApiHandler<UserIndexApi> = async (
           user
         });
 
+        if (result.status === 400) {
+          return response.status(BAD_REQUEST).json({
+            ...makeApiHandlerResponseFailure({
+              message: errorsBySourceType.USER[BAD_REQUEST]
+            }),
+            user: null
+          });
+        }
+
         return response.status(result.status).json({
           ...result,
           user: null
