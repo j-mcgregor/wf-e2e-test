@@ -16,7 +16,6 @@ describe('PasswordReset', () => {
 
   beforeEach(() => {
     mockSession = makeMockSession();
-
     (useSession as jest.Mock).mockReturnValue([mockSession, false]);
   });
 
