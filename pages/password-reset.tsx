@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import LoginContainer from '../components/containers/LoginContainer';
 import ResetPasswordForm from '../components/forms/login/ResetPasswordForm';
 import Layout from '../components/layout/Layout';
+import config from '../config';
 
 const PasswordReset = ({
   token,

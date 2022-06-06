@@ -28,13 +28,13 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   URL = 'http://localhost:3000';
 }
-
 const config = {
   NODE_ENV: process.env.NODE_ENV,
   VERCEL_ENV: process.env.VERCEL_ENV,
   NEXT_PUBLIC_VERCEL_URL: process.env.NEXT_PUBLIC_VERCEL_URL,
   API_URL: process.env.WF_AP_ROUTE,
   URL,
+  IS_TEST: process.env.NODE_ENV === 'test',
   WF_ENV
 };
 

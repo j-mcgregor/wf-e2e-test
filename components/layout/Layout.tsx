@@ -12,6 +12,8 @@ import ErrorSkeleton from '../skeletons/ErrorSkeleton';
 import useHubspotChat from '../../hooks/useHubspotChat';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import useSessionStorage from '../../hooks/useSessionStorage';
+import NewDeploymentNotification from '../cards/NewDeploymentNotification';
+import config from '../../config';
 interface LayoutProps {
   title?: string;
   pageTitle?: string;
@@ -73,6 +75,7 @@ const Layout = ({
 
   return (
     <div>
+      {!config.IS_TEST && <NewDeploymentNotification />}
       <HubspotScript />
       <Seo title={title} description={description} path={path} />
       <div className="h-screen bg-bg overflow-hidden flex ">

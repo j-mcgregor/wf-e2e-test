@@ -7,7 +7,8 @@ const openUrls = [
   '/password-reset',
   '/forgotten-password',
   '/api/auth',
-  'print-api'
+  'print-api',
+  '/api/has-new-deploy'
 ];
 
 export async function middleware(req: NextRequest, _res: NextResponse) {
