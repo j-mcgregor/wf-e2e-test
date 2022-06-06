@@ -1,7 +1,7 @@
 ## Before Submitting
 
 - [ ] check that the project builds with `yarn build`
-- [ ] make sure you committed with `yarn commit` for all the pre commit checks
+- [ ] make sure you committed with `yarn cz` for all the pre commit checks
 
 ## What was the task?
 
