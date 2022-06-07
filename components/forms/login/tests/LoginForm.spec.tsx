@@ -91,7 +91,6 @@ describe('LoginForm', () => {
 
     await waitFor(() => {
       expect(signInSpy).toHaveBeenCalled();
-      expect(pushSpy).toHaveBeenCalled();
     });
   });
 
