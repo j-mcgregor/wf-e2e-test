@@ -8,6 +8,8 @@ import {
 
 import authenticators from '../../../lib/api-handler/authenticators';
 import APIHandler from '../../../lib/api-handler/handler';
+import { defaultHeaders } from '../../../lib/api-handler/headers';
+import { fetchWrapper } from '../../../lib/utils/fetchWrapper';
 
 export interface IntegrationFetcherOptions {
   url: string;
@@ -24,7 +26,7 @@ export const integrationsFetcher = async ({
   body,
   authentication
 }: IntegrationFetcherOptions) =>
-  await fetch(url, {
+  await fetchWrapper(url, {
     method: method,
     headers: {
       Authorization: `Bearer ${authentication?.accessToken}`,
