@@ -8,13 +8,13 @@
  * development - internal, development API for basic PRs and monitoring @ beta.wiserfunding.com
  */
 let URL = '';
-let WF_ENV = 'development';
+let WF_ENV = 'local';
 
 // NODE_ENV === 'production' on live AND preview
 if (process.env.NODE_ENV === 'production') {
+  WF_ENV = 'development';
   if (process.env.VERCEL_ENV === 'preview') {
     URL = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-    WF_ENV = 'staging';
   }
   if (process.env.VERCEL_ENV === 'production') {
     URL = 'https://risk.wiserfunding.com';
