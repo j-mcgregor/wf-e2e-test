@@ -16,6 +16,7 @@ import React, { useEffect } from 'react';
 import LoadingIcon from '../components/svgs/LoadingIcon';
 import useLocalStorage from '../hooks/useLocalStorage';
 import useUserHomePageRedirect from '../hooks/useUserHomePageRedirect';
+import { UserType } from '../types/global';
 
 const Login = () => {
   const t = useTranslations();
@@ -28,17 +29,20 @@ const Login = () => {
     'wf_last_login',
     []
   );
-  const [homePage] = useLocalStorage<string>('wf_home_page', '');
-
-  // assign the user home page redirect if they have one
-  const userHomePagePref = useUserHomePageRedirect(homePage);
 
   useEffect(() => {
     setUserLoginTime([currentTimeAndDate, userLoginTime[0]]);
   }, []);
 
+  const { getRouteFromPage } = useUserHomePageRedirect;
+
   useEffect(() => {
     if (session && session.user) {
+      const user = session?.user as UserType;
+      // get their preference for where to land and redirect them
+      const userHomePagePref = getRouteFromPage(
+        user?.preferences?.defaults?.home_page || ''
+      );
       router.push(`${userHomePagePref}`);
     }
   }, [session]);
