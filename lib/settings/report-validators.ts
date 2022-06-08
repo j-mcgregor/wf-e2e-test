@@ -8,6 +8,7 @@ import type {
   CsvReportUploadHeaders,
   CsvValueValidation
 } from '../../types/report';
+import { dateIsValid } from '../utils/date-helpers';
 
 /**
  * @param strArr "['Active','Inactive']"
@@ -34,6 +35,17 @@ export const convertStringArrayToArrayOfStrings = (
   const splitValues = valuesFromString.split(',');
 
   return { value: splitValues, isValid: true };
+};
+
+const validateCompanyType = (company_type: string) => {
+  if (
+    company_type === 'Large' ||
+    company_type === 'Medium' ||
+    company_type === 'Small'
+  ) {
+    return true;
+  }
+  return false;
 };
 
 /**
@@ -87,6 +99,12 @@ export const uploadReportCSVHeaders: {
       !x && `A value for "details_nace_code" is required`,
     formatted: 'NACE Code'
   },
+  details_company_type: {
+    required: (x: string) =>
+      (!x || !validateCompanyType(x)) &&
+      `"details_company_type" must be 'Large', 'Medium' or 'Small'`,
+    formatted: 'Company Type'
+  },
   // not required but if there, validated as a website
   details_website: {
     required: false,
@@ -104,19 +122,19 @@ export const uploadReportCSVHeaders: {
       return false;
     }
   },
-  details_number_of_directors: {
-    required: false,
-    formatted: 'Details number of directors'
-  },
-  details_number_of_subsidiaries: {
-    required: false,
-    formatted: 'Details number of subsidiaries'
-  },
   /**
    * *********************************
    * FINANCIALS
    * *********************************
    */
+  number_of_directors: {
+    required: false,
+    formatted: 'Number of directors'
+  },
+  number_of_subsidiaries: {
+    required: false,
+    formatted: 'Number of subsidiaries'
+  },
   net_income: {
     required: false,
     formatted: 'Net Income'
@@ -164,8 +182,7 @@ export const uploadReportCSVHeaders: {
   period: {
     required: (x: string) => !x && `A value for "period" is required`,
     validator: (x: string) =>
-      Number(x).toString().length !== 4 &&
-      'Period must be a year with 4 digits',
+      !dateIsValid(x) && 'Period must be in a YYYY-MM-DD format',
     formatted: 'Period'
   },
   retained_earnings: {
@@ -237,6 +254,10 @@ export const uploadReportCSVHeaders: {
     required: (x: string) =>
       !x && `A value for "current_liabilities" is required`,
     formatted: 'Current liabilities'
+  },
+  company_age: {
+    required: (x: string) => !x && `A value for "company_age" is required`,
+    formatted: 'Company Age'
   }
 };
 

@@ -11,7 +11,8 @@ import type {
   CsvReportUploadHeaders,
   ESG_SectorKeys,
   IndustrySectorCodes,
-  ReportUploadFinancialRequestBody
+  ReportUploadFinancialRequestBody,
+  ReportUploadRequestBody
 } from '../../types/report';
 
 // adds blank objects to the array to make it the same length as the other arrays
@@ -30,7 +31,7 @@ export const makeUploadReportReqBody = (
   reportObject: CsvReport,
   csvValues: string[][],
   parent_id?: string
-) => {
+): ReportUploadRequestBody => {
   // setter functions
   const setNumberValue = (key: CsvReportUploadHeaders, i: number) =>
     Number(reportObject[key]?.[i] ?? 0);
@@ -43,6 +44,7 @@ export const makeUploadReportReqBody = (
       return {
         cash_and_equivalents: setNumberValue('cash_and_equivalents', i),
         creditors: setNumberValue('creditors', i),
+        company_age: setNumberValue('company_age', i),
         current_assets: setNumberValue('current_assets', i),
         current_liabilities: setNumberValue('current_liabilities', i),
         debtors: setNumberValue('debtors', i),
@@ -58,6 +60,8 @@ export const makeUploadReportReqBody = (
           setStringValue('management_experience', i) || 'Medium',
         net_income: setNumberValue('net_income', i),
         non_current_liabilities: setNumberValue('non_current_liabilities', i),
+        number_of_directors: setNumberValue('number_of_directors', i),
+        number_of_subsidiaries: setNumberValue('number_of_subsidiaries', i),
         number_of_employees: setNumberValue('number_of_employees', i),
         other_non_current_liabilities: setNumberValue(
           'other_non_current_liabilities',
@@ -75,7 +79,9 @@ export const makeUploadReportReqBody = (
       };
     }
   );
+
   return {
+    parent_id: parent_id || null,
     // MAIN ========================
     iso_code: setStringValue('iso_code', 0),
     company_id: setStringValue('company_id', 0),
@@ -88,19 +94,12 @@ export const makeUploadReportReqBody = (
         'details_industry_sector_code',
         0
       ) as IndustrySectorCodes,
-      number_of_directors: setNumberValue('details_number_of_directors', 0),
-      number_of_subsidiaries: setNumberValue(
-        'details_number_of_subsidiaries',
-        0
-      ),
-      // NOTE: req.body expects string[] but below will only set single value string[]
-      // TODO setArrayValue
-      website: setStringValue('details_website', 0)
+      website: setStringValue('details_website', 0),
+      company_type: setStringValue('details_company_type', 0)
     },
     // FINANCIALS ==================
     // multiple years per report are mapped here
-    financials,
-    parent_id: parent_id || null
+    financials
   };
 };
 
