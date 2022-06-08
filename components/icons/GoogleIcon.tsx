@@ -1,10 +1,11 @@
-const GoogleIcon = () => {
+const GoogleIcon = ({ className }: { className?: string }) => {
   return (
     <svg
       width="21"
       height="21"
       viewBox="0 0 21 21"
       fill="none"
+      className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
