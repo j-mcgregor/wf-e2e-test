@@ -12,8 +12,8 @@ let WF_ENV = 'local';
 
 // NODE_ENV === 'production' on live AND preview
 if (process.env.NODE_ENV === 'production') {
-  WF_ENV = 'development';
   if (process.env.VERCEL_ENV === 'preview') {
+    WF_ENV = 'development';
     URL = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   }
   if (process.env.VERCEL_ENV === 'production') {
