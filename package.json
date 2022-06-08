@@ -60,7 +60,8 @@
     "ts-jest": "^27.0.5",
     "tsparticles": "^1.33.3",
     "use-file-picker": "^1.4.0",
-    "victory": "^36.0.1"
+    "victory": "^36.0.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@playwright/test": "^1.20.0",

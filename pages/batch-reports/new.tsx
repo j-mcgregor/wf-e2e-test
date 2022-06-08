@@ -1,10 +1,12 @@
+/* eslint-disable sonarjs/prefer-immediate-return */
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';
 import { GetStaticPropsContext, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createRef, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import * as Excel from 'xlsx';
 import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
 
@@ -17,6 +19,7 @@ import { OptionRow } from '../../components/elements/OptionRow';
 import SelectMenu from '../../components/elements/SelectMenu';
 import Layout from '../../components/layout/Layout';
 import { SimpleValue } from '../../components/sme-calc-sections/AdvancedSearch';
+import { XLS, XLSX } from '../../components/uploads/UploadFile';
 import UploadNewData from '../../components/uploads/UploadNewData';
 import { useCSV } from '../../hooks/useCSV';
 import { useCsvValidators } from '../../hooks/useCsvValidators';
@@ -26,9 +29,83 @@ import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
 import { ISO, ISO_CODE } from '../../lib/utils/constants';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
-import type { SubmitReportType } from '../../types/report';
+import type {
+  CsvReportUploadHeaders,
+  SubmitReportType
+} from '../../types/report';
 import { BatchReportsIndexApi } from '../api/batch-reports';
 import { BatchReportsManualApi } from '../api/batch-reports/manual';
+import type { CsvReport, FileContentType } from '../../types/report';
+
+const useXLS = (file: File | null) => {
+  const [fileContent, setFileContent] = useState<unknown[]>();
+  const [fileName, setFileName] = useState<string>('');
+
+  if (file && (file.type === XLS || file.type === XLSX)) {
+    // extract the file name
+    // if (fileName !== file?.name) {
+    //   file?.name && setFileName(file.name);
+    // }
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      const data = e.target?.result;
+      const workbook = Excel.read(data);
+
+      const jsonSheets = workbook.SheetNames.map(sheet => {
+        if (workbook.Sheets[sheet]) {
+          const worksheet = workbook.Sheets[sheet];
+          const json: Record<CsvReportUploadHeaders, string | number>[] =
+            Excel.utils.sheet_to_json(worksheet);
+          return json;
+        }
+        return [];
+      });
+
+      console.log('jsonSheets :>> ', jsonSheets);
+
+      // map over data = { details_company_type: '', etc... }[][]
+      // get every property's values and push into one each
+      // assign array values to keys
+
+      // instead of [6][36] I need [36][6]
+
+      const mapped = jsonSheets.map(sheet => {
+        // length = 8
+        const valuesArray = sheet.map(sh => Object.values(sh));
+
+        let obj: Record<any, any> = {};
+
+        const x1 = valuesArray.forEach((x, i) => {
+          // x length = 36
+          console.log('x :>> ', x);
+          obj[i] = x;
+        });
+
+        console.log('x1 :>> ', x1);
+      });
+
+      // console.log('mapped :>> ', mapped);
+
+      // create object from headers / values
+      const csvData = jsonSheets?.reduce((acc, curr, i) => {
+        // map csvValues to get the array of values for each header
+        // const row = filteredValues.map(cell => cell[Number(i)]);
+
+        return {
+          ...acc
+          // [header]: row
+        };
+      }, {} as CsvReport);
+
+      // setFileContent(jsonSheets);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  return { xlsData: fileContent };
+};
 
 const CreateBatchReport: NextPage = () => {
   const t = useTranslations();
@@ -46,6 +123,8 @@ const CreateBatchReport: NextPage = () => {
     isCSV,
     isAutoOrManual
   } = useCSV(fileSelected);
+
+  const { xlsData } = useXLS(fileSelected);
 
   const { isValid, errors, missingHeaders } = useCsvValidators(
     csvData,
