@@ -1,6 +1,7 @@
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import User from '../funcs/user';
+import GoogleProvider from 'next-auth/providers/google';
 
 const nextAuthConfig: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -25,7 +26,6 @@ const nextAuthConfig: NextAuthOptions = {
           if (req.ok) {
             return {
               ...req.user,
-              ok: req.ok,
               is_sso: 'microsoft',
               accessToken: wfToken.access_token
             };
@@ -36,7 +36,42 @@ const nextAuthConfig: NextAuthOptions = {
       clientId: process.env.REACT_APP_AZURE_CLIENT_ID,
       clientSecret: process.env.REACT_APP_AZURE_CLIENT_SECRET
     },
+    GoogleProvider({
+      clientId: `${process.env.GOOGLE_CLIENT_ID}`,
+      clientSecret: `${process.env.GOOGLE_CLIENT_SECRET}`,
+      // authorization: {
+      //   // params: {
+      //   //   prompt: "consent",
+      //   //   access_type: "offline",
+      //   //   response_type: "code"
+      //   // }
+      // },
+      // @ts-ignore
+      profile: async (_profile, token) => {
+        // console.log('here!', _profile, token)
+        // console.log(_profile)
+        const wfToken = await User.getSSOToken(`${token.access_token}`);
+        const wfToken2 = await User.getSSOToken(`${token.id_token}`);
+        const wfToken3 = await User.getSSOToken(`${token.refresh_token}`);
 
+        // console.log('wfToken', wfToken)
+        // console.log('wfToken2', wfToken2)
+        // console.log('wfToken3', wfToken3)
+        if (wfToken.ok) {
+          // use the backend api auth token to get the user information
+          const req = await User.getUser(`${wfToken.access_token}`, {});
+          // console.log('req', req.user)
+          if (req.ok) {
+            return {
+              ...req.user,
+              is_sso: 'google',
+              accessToken: wfToken.access_token
+            };
+          }
+        }
+        return false;
+      }
+    }),
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
       name: 'Credentials',
@@ -81,6 +116,9 @@ const nextAuthConfig: NextAuthOptions = {
   },
 
   callbacks: {
+    // async signIn({ account, profile }) {
+
+    // },
     async jwt({ token, user }) {
       // Persist the backend access token to the token right after sign in
       if (user) {
