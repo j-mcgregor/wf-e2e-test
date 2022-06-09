@@ -33,10 +33,14 @@ const UploadData = () => {
     setFileSelected(file);
   };
 
-  const { csvData, csvValues, isCSV } = useCSV(fileSelected);
+  const { csvData, csvValues, isCSV, isExcel } = useCSV(fileSelected);
 
   const { isValid, errors, missingHeaders, numberOfCompanies } =
-    useCsvValidators(csvData, manualUploadValidators, csvValues);
+    useCsvValidators({
+      csvData,
+      validators: manualUploadValidators,
+      csvValues
+    });
 
   const router = useRouter();
 
@@ -67,6 +71,7 @@ const UploadData = () => {
   };
 
   const handleSubmit: SubmitReportType = async (setError, setLoading) => {
+    if (!csvData) return;
     setLoading(true);
     const params = makeUploadReportReqBody(csvData, csvValues, `${id}`);
     try {
@@ -149,6 +154,7 @@ const UploadData = () => {
           fileSelected={fileSelected}
           onSubmit={handleSubmit}
           isCSV={isCSV}
+          isExcel={isExcel}
           isValid={isValid}
           errors={errors}
           missingHeaders={missingHeaders}

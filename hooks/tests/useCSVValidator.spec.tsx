@@ -29,7 +29,7 @@ describe('useCsvValidators', () => {
 //       expect(current.isValid).toBe(false);
 //     });
 //     it('should test if CSV', () => {
-//       expect(current.isCSV).toBe(true);
+//       expect(current.isCSVorExcel).toBe(true);
 //     });
 //     it('should see the filename', () => {
 //       expect(current.fileName).toBe('test');
@@ -80,7 +80,7 @@ describe('useCsvValidators', () => {
 //     });
 
 //     it('should be invalid csv', () => {
-//       expect(current.isCSV).toBe(false);
+//       expect(current.isCSVorExcel).toBe(false);
 //     });
 //   });
 // });

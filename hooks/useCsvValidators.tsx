@@ -2,7 +2,7 @@
 /* eslint-disable security/detect-object-injection */
 import { useTranslations } from 'next-intl';
 import { getUniqueStringsFromArray } from '../lib/utils/text-helpers';
-import { ReportTypeEnum } from '../types/global';
+import { ReportTypeEnum, UploadReportType } from '../types/global';
 
 import type {
   CsvReport,
@@ -13,13 +13,19 @@ import type {
 const BATCH_MAX_COMPANIES = 1000;
 const MAX_ERRORS = 500;
 
-export const useCsvValidators = (
-  csvData: CsvReport,
-  validators: CsvValueValidation[],
-  csvValues: string[][],
-  totalCompanies: number = 0,
-  type?: ReportTypeEnum
-) => {
+export const useCsvValidators = ({
+  csvData,
+  validators,
+  csvValues,
+  totalCompanies = 0,
+  type
+}: {
+  csvData?: CsvReport;
+  validators?: CsvValueValidation[];
+  csvValues: string[][];
+  totalCompanies?: number;
+  type?: ReportTypeEnum;
+}) => {
   const t = useTranslations();
   const isBatch = type === 'BATCH_AUTO' || type === 'BATCH_MANUAL';
   const isManualBatch = type === 'BATCH_MANUAL';
@@ -48,14 +54,16 @@ export const useCsvValidators = (
 
   // checks the reportObject for the headers that are required
   // returns an array of missing header names
-  const missingHeaders = Object.entries(validators)
-    .map(([_index, { header, required }]) => {
-      const isPresent = csvData[header as CsvReportUploadHeaders];
-      return isPresent ? null : required ? null : header;
-    })
-    .filter(x => x);
+  const missingHeaders =
+    validators &&
+    Object.entries(validators)
+      .map(([_index, { header, required }]) => {
+        const isPresent = csvData?.[header as CsvReportUploadHeaders];
+        return isPresent ? null : required ? null : header;
+      })
+      .filter(x => x);
 
-  const isValid = errors?.length === 0 && missingHeaders.length === 0;
+  const isValid = errors?.length === 0 && missingHeaders?.length === 0;
 
   if (uniqueCompanies.indexOf('') !== -1) {
     if (isManualBatch) {
@@ -83,10 +91,10 @@ export const useCsvValidators = (
       if (Object.prototype.hasOwnProperty.call(csvData, key)) {
         const values = csvData[key];
 
-        // find the validator for the header
+        // find the validators for the header
         const columnHeader = validators.find(item => item.header === key);
 
-        // access the validator function in valueValidation
+        // access the validators function in valueValidation
         const validatorFunctions = columnHeader?.validate ?? null;
 
         // loop 2: values

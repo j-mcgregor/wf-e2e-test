@@ -1,9 +1,18 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 import { useState } from 'react';
+import * as Excel from 'xlsx';
 
+import { XLS, XLSX } from '../components/uploads/UploadFile';
 import { readFile } from '../lib/utils/file-helpers';
 import { isBatchAutoOrManual } from '../lib/utils/report-helpers';
 import { getUniqueStringsFromArray } from '../lib/utils/text-helpers';
+import { UploadReportType } from '../types/global';
+import {
+  CsvReport,
+  CsvReportUploadHeaders,
+  FileContentType
+} from '../types/report';
 
 // have to handle all possible mime types
 // see this issue https://christianwood.net/posts/csv-file-upload-validation/
@@ -18,19 +27,30 @@ const csvFileTypes = [
   'text/x-comma-separated-values'
 ];
 
-import type { CsvReport, FileContentType } from '../types/report';
-
 export const useCSV = (file: File | null) => {
   const [fileContent, setFileContent] = useState<FileContentType>();
   const [fileName, setFileName] = useState<string>('');
+  const [fileType, setFileType] = useState<'csv' | 'excel' | null>();
+
+  // const [data, setData] = useState<CsvReport>();
+  // const [isAutoOrManual, setIsAutoOrManual] = useState<UploadReportType>();
+  let data = {} as CsvReport;
+  let isAutoOrManual = {} as UploadReportType;
 
   // extract the file name
   if (fileName !== file?.name) {
     file?.name && setFileName(file.name);
+    if (file?.type) {
+      if (csvFileTypes.includes(file?.type)) {
+        setFileType('csv');
+        // read the file and set the content
+        readFile(file, setFileContent);
+      }
+      if (file.type === XLS || file.type === XLSX) {
+        setFileType('excel');
+      }
+    }
   }
-
-  // read the file and set the content
-  readFile(file, setFileContent);
 
   // get headers & values as array from content
   // convert csv content to string & remove carriage returns ('\r')
@@ -83,45 +103,108 @@ export const useCSV = (file: File | null) => {
     return row;
   });
 
-  // create object from headers / values
-  const csvData =
-    csvValues &&
-    csvHeaders?.reduce((acc, header: string, i) => {
-      // map csvValues to get the array of values for each header
-      const row = filteredValues.map(cell => cell[Number(i)]);
+  if (fileType === 'csv') {
+    // create object from headers / values
+    const csvReport =
+      csvValues &&
+      csvHeaders?.reduce((acc, header: string, i) => {
+        // map csvValues to get the array of values for each header
+        const row = filteredValues.map(cell => cell[Number(i)]);
 
-      return {
-        ...acc,
-        [header]: row
-      };
-    }, {} as CsvReport);
+        return {
+          ...acc,
+          [header]: row
+        };
+      }, {} as CsvReport);
 
-  // handle excels bullshit
-  const isCSV = csvFileTypes.includes(`${file?.type}`) || false;
-  const isAutoOrManual = isBatchAutoOrManual(csvData);
+    data = csvReport;
+    isAutoOrManual = isBatchAutoOrManual(csvReport);
+  }
 
-  let totalCompanies: string[] = [];
+  if (file && fileType === 'excel') {
+    // tried to extract this to separate function but setting the return value from fileOnLoad can get messy and cause infinite loops
+    const reader = new FileReader();
+    let excelReport = {} as CsvReport;
 
-  switch (isAutoOrManual.type) {
+    const fileOnLoad = (e: ProgressEvent<FileReader>) => {
+      const result = e.target?.result;
+      const workbook = Excel.read(result);
+
+      const jsonSheets = workbook.SheetNames.map(sheet => {
+        if (workbook.Sheets[sheet]) {
+          const worksheet = workbook.Sheets[sheet];
+          const json: Record<CsvReportUploadHeaders, string | number>[] =
+            Excel.utils.sheet_to_json(worksheet, { defval: '' });
+          // console.log('json', json);
+          return json;
+        }
+        return [];
+      });
+
+      // console.log('jsonSheets[0]', jsonSheets[0]);
+      // Only first sheet is required
+      jsonSheets[0].forEach(sheet => {
+        // split each row, use header for excelReport key
+        Object.entries(sheet).forEach(([key, value], i) => {
+          // console.log('key', key);
+          // cast to CsvReportUploadHeaders
+          const k = key as CsvReportUploadHeaders;
+
+          // if property exists, push into values
+          if (excelReport[k]) {
+            let tmp = excelReport[k];
+            tmp.push(`${value}`);
+            excelReport[k] = tmp;
+          } else {
+            // else create value as array
+            excelReport[k] = [`${value}`];
+          }
+        });
+      });
+
+      console.log('excelReport', excelReport);
+      if (!data) {
+        data = excelReport;
+        isAutoOrManual = isBatchAutoOrManual(excelReport);
+      }
+    };
+
+    reader.onload = fileOnLoad;
+    reader.readAsArrayBuffer(file);
+  }
+
+  let totalCompanies: (string | number)[] = [];
+
+  switch (isAutoOrManual?.type) {
     case 'BATCH_AUTO':
-      totalCompanies = getUniqueStringsFromArray(csvData?.company_id).filter(
+      totalCompanies = getUniqueStringsFromArray(data?.company_id).filter(
         Boolean
       );
       break;
     case 'BATCH_MANUAL':
-      totalCompanies = getUniqueStringsFromArray(csvData?.details_name).filter(
+      totalCompanies = getUniqueStringsFromArray(data?.details_name).filter(
         Boolean
       );
       break;
   }
 
+  console.log('data', data);
   return {
-    csvData,
+    csvData: data,
     csvValues: filteredValues,
     fileName,
-    isCSV,
+    isCSV: fileType === 'csv',
+    isExcel: fileType === 'excel',
     isAutoOrManual,
     totalRows: csvValues?.length || 0,
     totalCompanies: totalCompanies?.length || 0
   };
 };
+
+// useFile hook
+// 1. determine file type
+// 2. convert
+// 3. isBatchAutoOrManual
+
+// useFileValidator
+// 4. refactor useCsvValidator to work with useFile hook
