@@ -1,11 +1,17 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import {
+  mockCsvValues,
+  mockReportObject,
+  mockUploadReportReqBody
+} from '../../../__mocks__/reports/report-helpers/mock-data';
+import {
   calculateLGDPercent,
   calculateLGDRotation,
   calculatePoDRatio,
   calculatePoDRotation,
   calculateSMEZScoreMax,
-  calculateSMEZScoreRotation
+  calculateSMEZScoreRotation,
+  makeUploadReportReqBody
 } from '../report-helpers';
 
 describe('report helpers', () => {
@@ -365,6 +371,14 @@ describe('report helpers', () => {
       expect(calculateLGDRotation(8.5)).toBe(-107.9);
       expect(calculateLGDRotation(9)).toBe(-106.6);
       expect(calculateLGDRotation(9.5)).toBe(-105.3);
+    });
+  });
+
+  describe('makeUploadReportReqBody', () => {
+    it('should create the correct upload object given the correct data', () => {
+      expect(makeUploadReportReqBody(mockReportObject, mockCsvValues)).toEqual(
+        mockUploadReportReqBody
+      );
     });
   });
 });

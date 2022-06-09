@@ -244,12 +244,11 @@ export type CsvReportUploadHeaders =
   // DETAILS =============
   | 'details_name'
   | 'details_industry_sector_code'
-  | 'details_website' // <-- becomes details.websites
+  | 'details_website'
   | 'details_nace_code'
-  | 'details_number_of_directors' // <-- becomes details.number_of_directors
-  | 'details_number_of_subsidiaries' // <-- becomes details.number_of_subsidiaries
+  | 'details_company_type'
   // FINANCIALS =============
-  | 'number_of_employees' // <-- becomes financials[x].number_of_employees
+  | 'company_age'
   | 'cash_and_equivalents'
   | 'creditors'
   | 'current_assets'
@@ -266,8 +265,11 @@ export type CsvReportUploadHeaders =
   | 'management_experience' // High, Medium (default) or Low only
   | 'net_income'
   | 'non_current_liabilities'
+  | 'number_of_directors'
+  | 'number_of_subsidiaries'
+  | 'number_of_employees'
   | 'other_non_current_liabilities'
-  | 'period'
+  | 'period' // yyyy-mm-dd
   | 'retained_earnings'
   | 'short_term_debt'
   | 'tangible_fixed_assets'
@@ -278,8 +280,7 @@ export type CsvReportUploadHeaders =
   | 'working_capital';
 
 export interface ReportUploadFinancialRequestBody {
-  number_of_employees: number;
-  period: string;
+  company_age: number;
   cash_and_equivalents: number;
   creditors: number;
   current_assets: number;
@@ -293,10 +294,14 @@ export interface ReportUploadFinancialRequestBody {
   inventory: number;
   loans: number;
   long_term_debt: number;
-  management_experience: string;
+  management_experience: string; // High | Medium | Low
   net_income: number;
   non_current_liabilities: number;
+  number_of_directors: number;
+  number_of_subsidiaries: number;
+  number_of_employees: number;
   other_non_current_liabilities: number;
+  period: string; // in yyyy-mm-dd format
   retained_earnings: number;
   short_term_debt: number;
   tangible_fixed_assets: number;
@@ -311,9 +316,8 @@ export interface ReportUploadDetailsRequestBody {
   nace_code: number;
   industry_sector_code: IndustrySectorCodes;
   name: string;
-  number_of_directors: number;
-  number_of_subsidiaries: number;
   website: string;
+  company_type: string; // Large | Medium | Small
 }
 
 /**
