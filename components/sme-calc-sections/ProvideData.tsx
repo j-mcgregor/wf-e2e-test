@@ -5,8 +5,8 @@ import router from 'next/router';
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 
-import { useManualReportUploadFile } from '../../hooks/useCSV';
-import { useCsvValidators } from '../../hooks/useCsvValidators';
+import { useManualReportUploadFile } from '../../hooks/useManualReportUploadFile';
+import { useFileValidators } from '../../hooks/useFileValidators';
 import { manualUploadValidators } from '../../lib/settings/report-validators';
 import { templateText } from '../../lib/settings/sme-calc.settings';
 import { NO_REPORT_ID, REPORT_500 } from '../../lib/utils/error-codes';
@@ -28,7 +28,7 @@ const ProvideData = () => {
     useManualReportUploadFile(fileSelected);
 
   const { isValid, errors, missingHeaders, numberOfCompanies } =
-    useCsvValidators({
+    useFileValidators({
       csvData: data,
       validators: manualUploadValidators,
       csvValues: values,

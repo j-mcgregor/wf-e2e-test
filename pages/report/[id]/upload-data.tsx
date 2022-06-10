@@ -12,8 +12,8 @@ import Button from '../../../components/elements/Button';
 import Layout from '../../../components/layout/Layout';
 import SkeletonLayout from '../../../components/skeletons/SkeletonLayout';
 import UploadNewData from '../../../components/uploads/UploadNewData';
-import { useManualReportUploadFile } from '../../../hooks/useCSV';
-import { useCsvValidators } from '../../../hooks/useCsvValidators';
+import { useManualReportUploadFile } from '../../../hooks/useManualReportUploadFile';
+import { useFileValidators } from '../../../hooks/useFileValidators';
 import { manualUploadValidators } from '../../../lib/settings/report-validators';
 import { NO_REPORT_ID } from '../../../lib/utils/error-codes';
 import fetcher from '../../../lib/utils/fetcher';
@@ -37,7 +37,7 @@ const UploadData = () => {
     useManualReportUploadFile(fileSelected);
 
   const { isValid, errors, missingHeaders, numberOfCompanies } =
-    useCsvValidators({
+    useFileValidators({
       csvData: data,
       validators: manualUploadValidators,
       csvValues: values,

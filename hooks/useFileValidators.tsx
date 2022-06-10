@@ -13,7 +13,7 @@ import type {
 const BATCH_MAX_COMPANIES = 1000;
 const MAX_ERRORS = 500;
 
-export const useCsvValidators = ({
+export const useFileValidators = ({
   csvData,
   validators,
   csvValues,

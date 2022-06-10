@@ -18,8 +18,8 @@ import SelectMenu from '../../components/elements/SelectMenu';
 import Layout from '../../components/layout/Layout';
 import { SimpleValue } from '../../components/sme-calc-sections/AdvancedSearch';
 import UploadNewData from '../../components/uploads/UploadNewData';
-import { useManualReportUploadFile } from '../../hooks/useCSV';
-import { useCsvValidators } from '../../hooks/useCsvValidators';
+import { useManualReportUploadFile } from '../../hooks/useManualReportUploadFile';
+import { useFileValidators } from '../../hooks/useFileValidators';
 import { accountTypes } from '../../lib/settings/report.settings';
 import Settings from '../../lib/settings/settings.settings';
 import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
@@ -49,7 +49,7 @@ const CreateBatchReport: NextPage = () => {
     fileName
   } = useManualReportUploadFile(fileSelected);
 
-  const { isValid, errors, missingHeaders } = useCsvValidators({
+  const { isValid, errors, missingHeaders } = useFileValidators({
     csvData: data,
     validators: isAutoOrManual?.validator,
     csvValues: values,

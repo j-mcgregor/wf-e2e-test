@@ -1,6 +1,6 @@
 import React from 'react';
 
-describe('useCsvValidators', () => {
+describe('useFileValidators', () => {
   it('should have a placeholder test for future refactoring', () => {
     expect(true).toBe(true);
   });
@@ -9,18 +9,18 @@ describe('useCsvValidators', () => {
 // import { renderHook } from '@testing-library/react-hooks';
 
 // import { manualUploadValidators } from '../../lib/settings/report-validators';
-// import {useCsvValidators} from '../useCsvValidators';
+// import {useFileValidators} from '../useFileValidators';
 
-// describe('useCsvValidators', () => {
+// describe('useFileValidators', () => {
 //   let fileSelected: File;
-//   let current: ReturnType<typeof useCsvValidators>;
+//   let current: ReturnType<typeof useFileValidators>;
 
 //   describe('empty CSV', () => {
 //     beforeAll(() => {
 //       fileSelected = new File([], 'test', { type: 'text/csv' });
 
 //       const { result } = renderHook(() =>
-//         useCsvValidators(fileSelected, manualUploadValidators)
+//         useFileValidators(fileSelected, manualUploadValidators)
 //       );
 //       current = result.current;
 //     });
@@ -74,7 +74,7 @@ describe('useCsvValidators', () => {
 //       fileSelected = new File([], 'test', { type: 'text/csvx' });
 
 //       const { result } = renderHook(() =>
-//         useCsvValidators(fileSelected, manualUploadValidators)
+//         useFileValidators(fileSelected, manualUploadValidators)
 //       );
 //       current = result.current;
 //     });
