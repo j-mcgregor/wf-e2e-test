@@ -8,6 +8,7 @@
   "integration_search_title": "Search available companies",
   "integration_error_title": "Error connecting to {integration}, please check your integration.",
   "integration_validating_company": " Validating <b>{company_name}</b> accounts",
+  "error_validating_company": " Error validating <b>{company_name}</b> accounts.",
   "integration_validated_company": "Validated <b>{company_name}</b> accounts",
   "integration_not_valid_company": "<b>{company_name}</b> has uncategorised accounts, please login to Codat and categorise these accounts before trying again.",
   "integration_stage_3": "3. Select Timeframe",

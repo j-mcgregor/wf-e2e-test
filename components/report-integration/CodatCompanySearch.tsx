@@ -31,17 +31,12 @@ const CodatCompanySearch = ({
     if (!searchValue || searchValue === '') {
       return data;
     }
+    const preRegex = `${searchValue?.toLowerCase()?.trim()}`;
+    const searchRegex = new RegExp(preRegex);
 
-    return data.filter(item =>
-      searchValue
-        .toLowerCase()
-        .split(' ')
-        .every(word =>
-          Object.values(item).some(value =>
-            value.toLowerCase().includes(word.toLowerCase())
-          )
-        )
-    );
+    return data.filter(item => {
+      return searchRegex.test(item.company_name.toLowerCase());
+    });
   }, [searchValue, data]);
 
   const loadingText = t('loading');
@@ -115,13 +110,13 @@ const CodatCompanySearch = ({
               // shows if there is searchValue
               // is overridden and hidden by the component below
               // which shows when there is data
-              <>
+              <div className="flex justify-center space-x-2 flex-col items-center py-4">
                 <QuestionMarkCircleIcon
                   className="mb-1 w-6 h-6"
                   aria-hidden="true"
                 />
-                {noResultsFoundText}
-              </>
+                <p>{noResultsFoundText}</p>
+              </div>
             )
           )}
 
