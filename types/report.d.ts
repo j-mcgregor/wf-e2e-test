@@ -1,6 +1,11 @@
 import { SetStateAction } from 'react';
 
-import type { ApiError, CompanyStatusType, ValidateFunction } from './global';
+import type {
+  ApiError,
+  CompanyStatusType,
+  ValidateFunction,
+  UploadReportType
+} from './global';
 
 export type FinancialYear = {
   [index: string]: string;
@@ -664,4 +669,16 @@ export interface CodatCompanyType {
 export interface CodatIntegrationErrorType {
   id: string;
   name: string;
+}
+
+export interface ReportHandlerReturn {
+  data: CsvReport | null;
+  values: string[][];
+  fileName: string;
+  fileType: 'xlsx' | 'csv' | null;
+  isCSV: boolean;
+  isExcel: boolean;
+  isAutoOrManual: UploadReportType | null;
+  totalRows: number;
+  totalCompanies: number;
 }

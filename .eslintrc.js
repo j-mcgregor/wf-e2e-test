@@ -37,6 +37,7 @@ module.exports = {
   ],
   rules: {
     'no-console': 'error',
+    'security/detect-object-injection': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react-hooks/exhaustive-deps': [

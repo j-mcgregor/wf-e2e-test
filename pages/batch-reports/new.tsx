@@ -1,5 +1,4 @@
 /* eslint-disable sonarjs/prefer-immediate-return */
-/* eslint-disable security/detect-object-injection */
 /* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';

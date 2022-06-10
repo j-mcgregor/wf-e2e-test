@@ -5,19 +5,18 @@ import router from 'next/router';
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 
-import { useCSV, useManualReportUploadFile } from '../../hooks/useCSV';
+import { useManualReportUploadFile } from '../../hooks/useCSV';
 import { useCsvValidators } from '../../hooks/useCsvValidators';
 import { manualUploadValidators } from '../../lib/settings/report-validators';
 import { templateText } from '../../lib/settings/sme-calc.settings';
 import { NO_REPORT_ID, REPORT_500 } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
 import { makeUploadReportReqBody } from '../../lib/utils/report-helpers';
+import { ReportsUploadApi } from '../../pages/api/reports/upload';
 import LinkCard from '../cards/LinkCard';
 import UploadNewData from '../uploads/UploadNewData';
 
 import type { SubmitReportType } from '../../types/report';
-import { ReportsUploadApi } from '../../pages/api/reports/upload';
-
 const ProvideData = () => {
   const [fileSelected, setFileSelected] = useState<File | null>(null);
 

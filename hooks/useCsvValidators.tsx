@@ -1,8 +1,8 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable security/detect-object-injection */
 import { useTranslations } from 'next-intl';
+
 import { getUniqueStringsFromArray } from '../lib/utils/text-helpers';
-import { ReportTypeEnum, UploadReportType } from '../types/global';
+import { ReportTypeEnum } from '../types/global';
 
 import type {
   CsvReport,
