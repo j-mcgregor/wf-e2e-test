@@ -58,5 +58,6 @@
   "excel_financials_template": {
     "title": "Excel Financials Template",
     "body": "An Excel spreadsheet where you can add custom financials to run a report."
-  }
+  },
+  "integrated_data_source": "Integrated data source"
 }
