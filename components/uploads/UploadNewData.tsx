@@ -38,6 +38,7 @@ const UploadNewData = ({
   missingHeaders = [],
   errors = [],
   header,
+  fileType,
   description,
   buttonText,
   disableButton,
@@ -95,7 +96,7 @@ const UploadNewData = ({
                   {isValidFileType ? (
                     <>
                       {tick}
-                      <p>{t('file_is_valid_csv')}</p>
+                      <p>{t.rich('file_is_valid_csv', { type: fileType })}</p>
                     </>
                   ) : (
                     <>

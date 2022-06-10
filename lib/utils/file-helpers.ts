@@ -48,12 +48,14 @@ export const readExcelFile = (
   file: File | null,
   setFile: (file: Excel.Sheet) => void
 ) => {
+  console.log('Starting excel read', typeof FileReader !== 'undefined');
   if (typeof FileReader !== 'undefined') {
     var reader = new FileReader();
     reader.onload = function (e) {
+      console.log('fileReader', e.target?.result);
       var data = e?.target?.result;
       var workbook = Excel.read(data);
-
+      console.log('workbook', workbook);
       setFile(workbook);
     };
 

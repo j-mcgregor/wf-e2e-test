@@ -28,11 +28,12 @@ const ProvideData = () => {
   const {
     data,
     values,
-    isCSV: isCsv2,
+    isCSV,
     isExcel,
     totalCompanies: totalCompanies2
   } = useManualReportUploadFile(fileSelected);
   console.log('provideData > data', data);
+  console.log('provideData > isCSV', isCSV);
 
   const { isValid, errors, missingHeaders, numberOfCompanies } =
     useCsvValidators(
@@ -99,6 +100,7 @@ const ProvideData = () => {
           fileSelected={fileSelected}
           onSubmit={handleSubmit}
           isValidFileType={isCSV || isExcel}
+          fileType={isCSV ? 'csv' : 'xlsx'}
           isValid={isValid}
           errors={allErrors}
           missingHeaders={missingHeaders}

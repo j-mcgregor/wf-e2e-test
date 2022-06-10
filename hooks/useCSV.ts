@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { readExcelFile, readFile } from '../lib/utils/file-helpers';
 import { isBatchAutoOrManual } from '../lib/utils/report-helpers';
@@ -35,6 +35,9 @@ export const useManualReportUploadFile = (file: File | null) => {
   const [fileContent, setFileContent] = useState<FileContentType | Excel.Sheet>(
     null
   );
+  const [fileContentCsv, setFileContentCsv] = useState<
+    FileContentType | Excel.Sheet
+  >(null);
 
   const fileType = csvFileTypes.includes(`${file?.type}`)
     ? 'csv'
@@ -42,25 +45,39 @@ export const useManualReportUploadFile = (file: File | null) => {
     ? 'excel'
     : null;
 
+  useEffect(() => {
+    return () => {
+      setFileContent(null);
+      setFileContentCsv(null);
+    };
+  }, [file]);
+
   if (fileType === 'csv') {
     // read the file and set the content
-    readFile(file, setFileContent);
-    return handleCSV(fileContent as FileContentType, file?.name);
+    readFile(!fileContent ? file : null, setFileContentCsv);
+    return handleCSV(fileContentCsv as FileContentType, file?.name);
   }
 
   if (fileType === 'excel') {
+    console.log('Reading file', file?.name);
     readExcelFile(!fileContent ? file : null, setFileContent);
     return handleExcel(fileContent as Excel.Sheet, file?.name);
   }
 
-  return {};
+  if (file !== null && !file) {
+    setFileContent(null);
+  }
+
+  return {
+    data: {}
+  };
 };
 
 const handleExcel = (file: Excel.Sheet | null, fileName?: string) => {
-  if (file) {
+  if (file?.Sheets) {
     const firstSheetName = file?.SheetNames?.[0];
 
-    const firstSheet = file.Sheets[firstSheetName];
+    const firstSheet = file?.Sheets[firstSheetName];
 
     // pass headers: 1 to access the headers
     // format returned is [[headers], [data], [data]] // similar to CSV
@@ -133,7 +150,9 @@ const handleExcel = (file: Excel.Sheet | null, fileName?: string) => {
     };
   }
 
-  return {};
+  return {
+    data: {}
+  };
 };
 
 const handleCSV = (file: FileContentType, fileName?: string) => {
