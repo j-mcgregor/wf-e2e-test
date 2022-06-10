@@ -90,19 +90,19 @@ const CodatCompanySearch = ({
         )}
       </div>
       {searchHasFocus && !selectedResult && (
-        <div className="flex flex-col gap-4 mt-4 max-h-96 overflow-y-scroll">
+        <div className="flex flex-col gap-4 mt-4 max-h-96 overflow-y-scroll items-center pb-1 pt-4">
           {searchValue && !data ? (
             // shows if there is searchValue but no data (loading)
             <>
               <LoadingIcon className="mb-1 w-6 h-6" aria-hidden="true" />
-              {loadingText}
+              <p>{loadingText}</p>
             </>
           ) : !filteredData || (!searchValue && filteredData?.length === 0) ? (
             // shows if there is no data at all (initial stage)
             // also shows if there is no text input and the search data has a length of 0
             <>
               <SearchIcon className="mb-1 w-6 h-6" aria-hidden="true" />
-              {searchStartText}
+              <p>{searchStartText}</p>
             </>
           ) : (
             searchValue &&
@@ -110,13 +110,13 @@ const CodatCompanySearch = ({
               // shows if there is searchValue
               // is overridden and hidden by the component below
               // which shows when there is data
-              <div className="flex justify-center space-x-2 flex-col items-center py-4">
+              <>
                 <QuestionMarkCircleIcon
                   className="mb-1 w-6 h-6"
                   aria-hidden="true"
                 />
                 <p>{noResultsFoundText}</p>
-              </div>
+              </>
             )
           )}
 
