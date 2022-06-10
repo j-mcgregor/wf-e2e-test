@@ -301,7 +301,7 @@ const getSSOToken = async (
   }
 
   const res = await fetchWrapper(
-    `${process.env.WF_AP_ROUTE}/login/single-signon?client=${client}`,
+    `${process.env.WF_AP_ROUTE}/login/single-signon/${client}`,
     {
       method: 'POST',
       headers: {
