@@ -8,13 +8,14 @@ import {
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import Button from '../../../components/elements/Button';
-import CodatStageOne from '../../../components/forms/integrations/codat/CodatStageOne';
-import CodatStageThree from '../../../components/forms/integrations/codat/CodatStageThree';
-import CodatStageTwo from '../../../components/forms/integrations/codat/CodatStageTwo';
-import Layout from '../../../components/layout/Layout';
-import SkeletonLayout from '../../../components/skeletons/SkeletonLayout';
-import { CodatCompanyType } from '../../../types/report';
+import Button from '../../components/elements/Button';
+import CodatStageFour from '../../components/forms/integrations/codat/CodatStageFour';
+import CodatStageOne from '../../components/forms/integrations/codat/CodatStageOne';
+import CodatStageThree from '../../components/forms/integrations/codat/CodatStageThree';
+import CodatStageTwo from '../../components/forms/integrations/codat/CodatStageTwo';
+import Layout from '../../components/layout/Layout';
+import SkeletonLayout from '../../components/skeletons/SkeletonLayout';
+import { CodatCompanyType } from '../../types/report';
 
 interface ReportIntegrationsPageProps {
   locale: string;
@@ -61,7 +62,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
     ? router.query.from[0]
     : router?.query?.from;
 
-  const { id } = router?.query;
+  const { parentId } = router?.query;
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -70,9 +71,9 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
         selectedCompany?.company_id
       }&connectionId=${
         selectedCompany?.connection_id
-      }&parentId=${id}&periodLength=${monthSample}&startMonth=${yearPeriod}-${
+      }&periodLength=${monthSample}&startMonth=${yearPeriod}-${
         monthPeriod?.length === 1 ? '0' + monthPeriod : monthPeriod
-      }`,
+      }${parentId ? `&parentId=${parentId}` : ''}`,
       {
         method: 'POST'
       }
@@ -81,7 +82,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
     if (res.ok) {
       const { data } = await res.json();
       setLoading(false);
-      router.push(`/report/${data.id}?from=/report/${id}/integrations/`);
+      router.push(`/report/${data.id}?from=/report/integrations/`);
     }
 
     setLoading(false);
@@ -139,6 +140,15 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           locale={locale}
         />
 
+        {!parentId && (
+          <CodatStageFour
+            stage={stage}
+            loading={loading}
+            // enabledClassName={enabledClassName}
+            // disabledClassName={disabledClassName}
+          />
+        )}
+
         <Button
           variant="highlight"
           className="max-w-xs"
@@ -163,17 +173,10 @@ export const getStaticProps = ({ locale }: GetStaticPropsContext) => {
         // You can get the messages from anywhere you like, but the recommended
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
-        ...require(`../../../messages/${locale}/sme-calculator.${locale}.json`),
-        ...require(`../../../messages/${locale}/integrations.${locale}.json`),
-        ...require(`../../../messages/${locale}/general.${locale}.json`)
+        ...require(`../../messages/${locale}/sme-calculator.${locale}.json`),
+        ...require(`../../messages/${locale}/integrations.${locale}.json`),
+        ...require(`../../messages/${locale}/general.${locale}.json`)
       }
     }
-  };
-};
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: true
   };
 };
