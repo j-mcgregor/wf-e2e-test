@@ -3,6 +3,9 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import User from '../funcs/user';
 import GoogleProvider from 'next-auth/providers/google';
 
+const GOOGLE_CLIENT = 'google';
+const MICROSOFT_CLIENT = 'microsoft';
+
 const nextAuthConfig: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   // Configure one or more authentication providers
@@ -18,7 +21,10 @@ const nextAuthConfig: NextAuthOptions = {
       // @ts-ignore
       profile: async (_profile, token) => {
         // use the SSO token to get the backend api auth token
-        const wfToken = await User.getSSOToken(`${token.id_token}`);
+        const wfToken = await User.getSSOToken(
+          `${token.id_token}`,
+          MICROSOFT_CLIENT
+        );
         if (wfToken.ok) {
           // use the backend api auth token to get the user information
           const req = await User.getUser(`${wfToken.access_token}`, {});
@@ -39,28 +45,16 @@ const nextAuthConfig: NextAuthOptions = {
     GoogleProvider({
       clientId: `${process.env.GOOGLE_CLIENT_ID}`,
       clientSecret: `${process.env.GOOGLE_CLIENT_SECRET}`,
-      // authorization: {
-      //   // params: {
-      //   //   prompt: "consent",
-      //   //   access_type: "offline",
-      //   //   response_type: "code"
-      //   // }
-      // },
       // @ts-ignore
       profile: async (_profile, token) => {
-        // console.log('here!', _profile, token)
-        // console.log(_profile)
-        const wfToken = await User.getSSOToken(`${token.access_token}`);
-        const wfToken2 = await User.getSSOToken(`${token.id_token}`);
-        const wfToken3 = await User.getSSOToken(`${token.refresh_token}`);
+        const wfToken = await User.getSSOToken(
+          `${token.id_token}`,
+          GOOGLE_CLIENT
+        );
 
-        // console.log('wfToken', wfToken)
-        // console.log('wfToken2', wfToken2)
-        // console.log('wfToken3', wfToken3)
         if (wfToken.ok) {
           // use the backend api auth token to get the user information
           const req = await User.getUser(`${wfToken.access_token}`, {});
-          // console.log('req', req.user)
           if (req.ok) {
             return {
               ...req.user,

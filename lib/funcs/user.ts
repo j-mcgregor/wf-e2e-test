@@ -293,14 +293,15 @@ const forgotPassword: ApiHandler<ForgotPassword> = async (email: string) => {
  */
 
 const getSSOToken = async (
-  token: string
+  token: string,
+  client: 'google' | 'microsoft'
 ): Promise<{ access_token?: string; ok?: boolean }> => {
   if (!token) {
     return { ok: false };
   }
 
   const res = await fetchWrapper(
-    `${process.env.WF_AP_ROUTE}/login/single-signon`,
+    `${process.env.WF_AP_ROUTE}/login/single-signon?client=${client}`,
     {
       method: 'POST',
       headers: {
