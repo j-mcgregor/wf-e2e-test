@@ -20,7 +20,7 @@ export const useCsvValidators = ({
   totalCompanies = 0,
   type
 }: {
-  csvData?: CsvReport;
+  csvData?: CsvReport | null;
   validators?: CsvValueValidation[];
   csvValues: string[][];
   totalCompanies?: number;

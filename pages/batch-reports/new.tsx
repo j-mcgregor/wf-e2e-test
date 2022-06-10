@@ -19,7 +19,7 @@ import SelectMenu from '../../components/elements/SelectMenu';
 import Layout from '../../components/layout/Layout';
 import { SimpleValue } from '../../components/sme-calc-sections/AdvancedSearch';
 import UploadNewData from '../../components/uploads/UploadNewData';
-import { useCSV } from '../../hooks/useCSV';
+import { useManualReportUploadFile } from '../../hooks/useCSV';
 import { useCsvValidators } from '../../hooks/useCsvValidators';
 import { accountTypes } from '../../lib/settings/report.settings';
 import Settings from '../../lib/settings/settings.settings';
@@ -41,19 +41,19 @@ const CreateBatchReport: NextPage = () => {
   const [fileSelectedName, setFileSelectedName] = useState<string>('');
 
   const {
-    csvData,
-    csvValues,
-    fileName,
-    totalCompanies,
+    data,
+    values,
     isCSV,
     isExcel,
-    isAutoOrManual
-  } = useCSV(fileSelected);
+    totalCompanies,
+    isAutoOrManual,
+    fileName
+  } = useManualReportUploadFile(fileSelected);
 
   const { isValid, errors, missingHeaders } = useCsvValidators({
-    csvData,
+    csvData: data,
     validators: isAutoOrManual?.validator,
-    csvValues,
+    csvValues: values,
     totalCompanies,
     type: isAutoOrManual?.type
   });
@@ -86,7 +86,7 @@ const CreateBatchReport: NextPage = () => {
 
   const runReports: SubmitReportType = async (setError, setLoading) => {
     // if input name missing, show error
-    if (!reportName || reportName.length === 0 || !csvData || !isAutoOrManual) {
+    if (!reportName || reportName.length === 0 || !data || !isAutoOrManual) {
       setReportNameError(true);
       return false;
     }
@@ -98,8 +98,8 @@ const CreateBatchReport: NextPage = () => {
     // if /jobs/batch           BatchAutoRequest
     // if /jobs/batch/upload    BatchManualRequest
     const reqData = convertCSVToRequestBody({
-      csvData,
-      csvValues,
+      csvData: data,
+      csvValues: values,
       name: reportName,
       uploadType: isAutoOrManual.type,
       accounts_type: Number(accountType.optionValue),

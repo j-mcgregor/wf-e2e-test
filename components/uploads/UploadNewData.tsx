@@ -20,6 +20,7 @@ interface UploadNewDataProps {
   nameFileInput?: React.ReactNode;
   isCSV?: boolean;
   isExcel?: boolean;
+  isValidFileType?: boolean;
   isValid?: boolean;
   uploadType?: ReportTypeEnum;
   missingHeaders?: (string | null)[];
@@ -35,6 +36,7 @@ interface UploadNewDataProps {
 const UploadNewData = ({
   isCSV,
   isExcel,
+  isValidFileType,
   isValid,
   uploadType,
   missingHeaders = [],
@@ -190,7 +192,13 @@ const UploadNewData = ({
       <div className="w-full sm:max-w-[200px] mt-2">
         <Button
           variant="highlight"
-          disabled={!isValid || disableButton || loading || hasErrors || !isCSV}
+          disabled={
+            !isValid ||
+            disableButton ||
+            loading ||
+            hasErrors ||
+            !isValidFileType
+          }
           loading={loading}
           className="text-primary rounded-none"
           onClick={() => onSubmit(setError, setLoading)}

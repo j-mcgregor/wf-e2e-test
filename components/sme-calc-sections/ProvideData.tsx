@@ -5,7 +5,7 @@ import router from 'next/router';
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 
-import { useCSV } from '../../hooks/useCSV';
+import { useCSV, useManualReportUploadFile } from '../../hooks/useCSV';
 import { useCsvValidators } from '../../hooks/useCsvValidators';
 import { manualUploadValidators } from '../../lib/settings/report-validators';
 import { templateText } from '../../lib/settings/sme-calc.settings';
@@ -25,24 +25,23 @@ const ProvideData = () => {
     setFileSelected(file);
   };
 
-  const { csvData, csvValues, isCSV, isExcel, totalCompanies } =
-    useCSV(fileSelected);
+  const { data, values, isCSV, isExcel, totalCompanies } =
+    useManualReportUploadFile(fileSelected);
 
   const { isValid, errors, missingHeaders, numberOfCompanies } =
     useCsvValidators({
-      csvData,
+      csvData: data,
       validators: manualUploadValidators,
-      csvValues,
+      csvValues: values,
       totalCompanies,
       type: 'REPORT_MANUAL'
     });
-
   const t = useTranslations();
 
   const handleSubmit: SubmitReportType = async (setError, setLoading) => {
-    if (!csvData) return;
+    if (!data) return;
     setLoading(true);
-    const params = makeUploadReportReqBody(csvData, csvValues);
+    const params = makeUploadReportReqBody(data, values);
 
     try {
       const result: ReportsUploadApi = await fetcher(
@@ -95,6 +94,8 @@ const ProvideData = () => {
           onSubmit={handleSubmit}
           isCSV={isCSV}
           isExcel={isExcel}
+          isValidFileType={isCSV || isExcel}
+          // fileType={isCSV ? 'csv' : 'xlsx'}
           isValid={isValid}
           errors={allErrors}
           missingHeaders={missingHeaders}
