@@ -1,3 +1,5 @@
+import * as Excel from 'xlsx';
+
 export const downloadFile = ({
   data,
   fileName,
@@ -35,6 +37,28 @@ export const readFile = (
 
     if (file) {
       reader.readAsText(file);
+    } else {
+      return '';
+    }
+  } else {
+    return '';
+  }
+};
+export const readExcelFile = (
+  file: File | null,
+  setFile: (file: Excel.Sheet) => void
+) => {
+  if (typeof FileReader !== 'undefined') {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var data = e?.target?.result;
+      var workbook = Excel.read(data);
+
+      setFile(workbook);
+    };
+
+    if (file) {
+      reader.readAsArrayBuffer(file);
     } else {
       return '';
     }

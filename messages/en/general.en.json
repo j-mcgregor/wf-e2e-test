@@ -24,8 +24,8 @@
   "all_headers_are_valid": "All headers are valid",
   "has_required_format": "Has Required Format",
   "required_values_are_valid": "All required values are valid",
-  "file_is_valid_csv": "File is a valid CSV",
-  "file_is_invalid_format": "File is invalid, please upload a CSV",
+  "file_is_valid_csv": "File is a valid {type}",
+  "file_is_invalid_format": "File is invalid, please upload a CSV or Excel file",
   "errors": {
     "application_error": "Application error: ",
     "application_error_general_message": "Unfortunately, the application has suffered a critical error. This has been logged and the development team notified.",

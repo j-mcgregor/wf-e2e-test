@@ -18,7 +18,7 @@ interface UploadNewDataProps {
   disableButton?: boolean;
   onSubmit: SubmitReportType;
   nameFileInput?: React.ReactNode;
-  isCSV?: boolean;
+  isValidFileType?: boolean;
   isValid?: boolean;
   uploadType?: ReportTypeEnum;
   missingHeaders?: (string | null)[];
@@ -32,7 +32,7 @@ interface UploadNewDataProps {
 }
 
 const UploadNewData = ({
-  isCSV,
+  isValidFileType,
   isValid,
   uploadType,
   missingHeaders = [],
@@ -92,7 +92,7 @@ const UploadNewData = ({
 
               <div className="overflow-y-auto max-h-48">
                 <div className="flex py-1 items-center">
-                  {isCSV ? (
+                  {isValidFileType ? (
                     <>
                       {tick}
                       <p>{t('file_is_valid_csv')}</p>
@@ -165,7 +165,13 @@ const UploadNewData = ({
       <div className="w-full sm:max-w-[200px] mt-2">
         <Button
           variant="highlight"
-          disabled={!isValid || disableButton || loading || hasErrors || !isCSV}
+          disabled={
+            !isValid ||
+            disableButton ||
+            loading ||
+            hasErrors ||
+            !isValidFileType
+          }
           loading={loading}
           className="text-primary rounded-none"
           onClick={() => onSubmit(setError, setLoading)}
