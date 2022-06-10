@@ -30,6 +30,7 @@ export const useCsvValidators = ({
   const isBatch = type === 'BATCH_AUTO' || type === 'BATCH_MANUAL';
   const isManualBatch = type === 'BATCH_MANUAL';
   const isManualSingle = type === 'REPORT_MANUAL';
+
   let errors: Array<string | boolean> = [];
   if (csvValues?.length === 0) {
     errors.push('CSV has no values');

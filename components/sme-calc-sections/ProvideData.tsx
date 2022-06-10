@@ -95,7 +95,6 @@ const ProvideData = () => {
           isCSV={isCSV}
           isExcel={isExcel}
           isValidFileType={isCSV || isExcel}
-          // fileType={isCSV ? 'csv' : 'xlsx'}
           isValid={isValid}
           errors={allErrors}
           missingHeaders={missingHeaders}
