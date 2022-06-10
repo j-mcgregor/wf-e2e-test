@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable no-console */
 import { CheckIcon, XIcon } from '@heroicons/react/outline';
 import { ReactNode, useState } from 'react';
