@@ -2,6 +2,7 @@ import React, { MutableRefObject, useEffect, useState } from 'react';
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import useCombinedRefs from '../../hooks/useCombinedRefs';
+import useOutsideClick from '../../hooks/useOutsideClick';
 
 type BaseInputProps = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -66,6 +67,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const combinedRef = useCombinedRefs<HTMLInputElement>(innerRef, ref);
 
     const increment = () => {
+      //  The tracker is used to make sure the onChange event is fired when the value is changed
+      const lastValue = combinedRef?.current?.value;
+      // @ts-ignore
+      const tracker = combinedRef?.current?._valueTracker;
+
       const newValue =
         combinedRef?.current?.value === '-'
           ? 1
@@ -74,17 +80,26 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       const isGreaterThanMax = typeof max !== 'undefined' && newValue > max;
 
       if (combinedRef?.current?.value) {
-        if (newValue === 0 || (isGreaterThanMax && max === 0)) {
-          combinedRef.current.value = '-';
-        } else if (isGreaterThanMax) {
+        if (isGreaterThanMax) {
           combinedRef.current.value = max?.toString();
         } else {
           combinedRef.current.value = newValue.toString();
         }
+
+        if (tracker) {
+          tracker.setValue(lastValue);
+        }
+
+        const event = new Event('input', { bubbles: true });
+        combinedRef.current.dispatchEvent(event);
       }
     };
 
     const decrement = () => {
+      //  The tracker is used to make sure the onChange event is fired when the value is changed
+      const lastValue = combinedRef?.current?.value;
+      // @ts-ignore
+      const tracker = combinedRef?.current?._valueTracker;
       const newValue =
         combinedRef?.current?.value === '-'
           ? -1
@@ -93,13 +108,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       const isLessThanMin = typeof min !== 'undefined' && newValue < min;
 
       if (combinedRef?.current?.value) {
-        if (newValue === 0 || (isLessThanMin && min === 0)) {
-          combinedRef.current.value = '-';
-        } else if (isLessThanMin) {
+        if (isLessThanMin) {
           combinedRef.current.value = min?.toString();
         } else {
           combinedRef.current.value = newValue.toString();
         }
+
+        if (tracker) {
+          tracker.setValue(lastValue);
+        }
+
+        const event = new Event('input', { bubbles: true });
+        combinedRef.current.dispatchEvent(event);
       }
     };
 
@@ -113,10 +133,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       }
     };
 
+    useOutsideClick(
+      combinedRef,
+      () => type === 'number' && setToDashIfEmptyOrZero()
+    );
+
     useEffect(() => {
       // Set the value to dash if type is number and value is empty
       setToDashIfEmptyOrZero();
-    }, [combinedRef?.current?.value]);
+    }, []);
 
     return (
       <>
@@ -141,9 +166,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     }
                   }
                 : undefined
-            }
-            onChange={
-              type === 'number' ? () => setToDashIfEmptyOrZero() : undefined
             }
             className={`${
               isError ? onErrorClassName : onFocusClassName
