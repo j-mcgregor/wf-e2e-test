@@ -39,9 +39,9 @@ const CodatStageFour = ({
   const [isWebsiteValid, setIsWebsiteValid] = React.useState(true);
   const wedsiteRef = React.useRef<HTMLInputElement>(null);
 
+  // Using outside click so the regex only gets check when the input is unfocused focused
   useOutsideClick(wedsiteRef, () => {
     const isRegexValid = VALID_WEBSITE.test(website);
-    console.log(isRegexValid);
     if (website !== '' && !isRegexValid) {
       setIsWebsiteValid(false);
     } else {

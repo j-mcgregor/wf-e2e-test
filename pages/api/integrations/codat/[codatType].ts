@@ -49,10 +49,30 @@ const CodatIntegrationsAPI = (
         connectionId,
         parentId,
         periodLength,
-        startMonth
+        startMonth,
+        numberOfDirectors,
+        numberOfSubsidiaries,
+        industrySectorCode
       } = query;
       if (codatType === 'codat') {
-        const baseUrl = `${process.env.WF_AP_ROUTE}/integrations/codat?company_id=${companyId}&connection_id=${connectionId}&parent_id=${parentId}&period_length=${periodLength}`;
+        const noParentParams = [
+          ['number_of_directors', numberOfDirectors],
+          ['number_of_subsidiaries', numberOfSubsidiaries],
+          ['industry_sector_code', industrySectorCode]
+        ]
+          .map(param => {
+            const [key, value] = param;
+            if (value) {
+              return `${key}=${value}`;
+            }
+          })
+          .join('&');
+
+        const baseUrl = `${
+          process.env.WF_AP_ROUTE
+        }/integrations/codat?company_id=${companyId}&connection_id=${connectionId}&period_length=${periodLength}${
+          parentId ? `&parent_id=${parentId}` : `&${noParentParams}`
+        }`;
         return {
           response: await integrationsFetcher({
             url: startMonth ? `${baseUrl}&start_month=${startMonth}` : baseUrl,

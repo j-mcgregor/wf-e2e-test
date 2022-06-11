@@ -35,8 +35,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const [numOfDirectors, setNumOfDirectors] = useState<string>('-');
   const [numOfSubsidiaries, setNumOfSubsidiaries] = useState<string>('-');
 
-  console.log(website);
-
   const [canGenerateReport, setCanGenerateReport] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -84,6 +82,12 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const handleSubmit = async () => {
     setLoading(true);
 
+    const sectorCodeValue = sectorCode !== '0' ? sectorCode : null;
+    const websiteValue = website.length > 1 ? website : null;
+    const numOfDirectorsValue = numOfDirectors !== '-' ? numOfDirectors : null;
+    const numOfSubsidiariesValue =
+      numOfSubsidiaries !== '-' ? numOfSubsidiaries : null;
+
     const res = await fetch(
       `/api/integrations/codat/codat?companyId=${
         selectedCompany?.company_id
@@ -94,7 +98,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       }${
         parentId
           ? `&parentId=${parentId}`
-          : `&sectorCode=${sectorCode}$website=${website}&numOfDirectors=${numOfDirectors}&numOfSubsidiaries=${numOfSubsidiaries}`
+          : `&sectorCode=${sectorCodeValue}$website=${websiteValue}&numOfDirectors=${numOfDirectorsValue}&numOfSubsidiaries=${numOfSubsidiariesValue}`
       }`,
       {
         method: 'POST'
