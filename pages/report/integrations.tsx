@@ -88,6 +88,10 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
     const numOfSubsidiariesValue =
       numOfSubsidiaries !== '-' ? numOfSubsidiaries : null;
 
+    const hasParentIdParams = parentId
+      ? `&parentId=${parentId}`
+      : `&sectorCode=${sectorCodeValue}$website=${websiteValue}&numOfDirectors=${numOfDirectorsValue}&numOfSubsidiaries=${numOfSubsidiariesValue}`;
+
     const res = await fetch(
       `/api/integrations/codat/codat?companyId=${
         selectedCompany?.company_id
@@ -95,11 +99,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
         selectedCompany?.connection_id
       }&periodLength=${monthSample}&startMonth=${yearPeriod}-${
         monthPeriod?.length === 1 ? '0' + monthPeriod : monthPeriod
-      }${
-        parentId
-          ? `&parentId=${parentId}`
-          : `&sectorCode=${sectorCodeValue}$website=${websiteValue}&numOfDirectors=${numOfDirectorsValue}&numOfSubsidiaries=${numOfSubsidiariesValue}`
-      }`,
+      }${hasParentIdParams}`,
       {
         method: 'POST'
       }

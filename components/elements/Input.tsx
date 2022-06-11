@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import React, { MutableRefObject, useEffect, useState } from 'react';
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';

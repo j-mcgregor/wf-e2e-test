@@ -68,11 +68,11 @@ const CodatIntegrationsAPI = (
           })
           .join('&');
 
-        const baseUrl = `${
-          process.env.WF_AP_ROUTE
-        }/integrations/codat?company_id=${companyId}&connection_id=${connectionId}&period_length=${periodLength}${
-          parentId ? `&parent_id=${parentId}` : `&${noParentParams}`
-        }`;
+        const hasParentParams = parentId
+          ? `&parent_id=${parentId}`
+          : `&${noParentParams}`;
+
+        const baseUrl = `${process.env.WF_AP_ROUTE}/integrations/codat?company_id=${companyId}&connection_id=${connectionId}&period_length=${periodLength}${hasParentParams}`;
         return {
           response: await integrationsFetcher({
             url: startMonth ? `${baseUrl}&start_month=${startMonth}` : baseUrl,
