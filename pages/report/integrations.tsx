@@ -30,6 +30,13 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const [monthSample, setMonthSample] = useState<number>(3);
   const [yearPeriod, setYearPeriod] = useState<string | null>(null);
   const [monthPeriod, setMonthPeriod] = useState<string | null>(null);
+  const [sectorCode, setSectorCode] = useState<string>('0');
+  const [website, setWebsite] = useState<string>('');
+  const [numOfDirectors, setNumOfDirectors] = useState<string>('-');
+  const [numOfSubsidiaries, setNumOfSubsidiaries] = useState<string>('-');
+
+  console.log(website);
+
   const [canGenerateReport, setCanGenerateReport] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -56,6 +63,16 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
     }
   }, [selectedCompany, yearPeriod, monthPeriod]);
 
+  React.useEffect(() => {
+    if (stage <= 2) {
+      setCanGenerateReport(false);
+      setSectorCode('0');
+      setWebsite('');
+      setNumOfDirectors('-');
+      setNumOfSubsidiaries('-');
+    }
+  }, [stage]);
+
   const router = useRouter();
 
   const backLink = Array.isArray(router?.query?.from)
@@ -66,6 +83,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
   const handleSubmit = async () => {
     setLoading(true);
+
     const res = await fetch(
       `/api/integrations/codat/codat?companyId=${
         selectedCompany?.company_id
@@ -73,7 +91,11 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
         selectedCompany?.connection_id
       }&periodLength=${monthSample}&startMonth=${yearPeriod}-${
         monthPeriod?.length === 1 ? '0' + monthPeriod : monthPeriod
-      }${parentId ? `&parentId=${parentId}` : ''}`,
+      }${
+        parentId
+          ? `&parentId=${parentId}`
+          : `&sectorCode=${sectorCode}$website=${website}&numOfDirectors=${numOfDirectors}&numOfSubsidiaries=${numOfSubsidiaries}`
+      }`,
       {
         method: 'POST'
       }
@@ -146,6 +168,14 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
             loading={loading}
             enabledClassName={enabledClassName}
             disabledClassName={disabledClassName}
+            numOfDirectors={numOfDirectors}
+            setNumOfDirectors={setNumOfDirectors}
+            numOfSubsidiaries={numOfSubsidiaries}
+            setNumOfSubsidiaries={setNumOfSubsidiaries}
+            sectorCode={sectorCode}
+            setSectorCode={setSectorCode}
+            website={website}
+            setWebsite={setWebsite}
           />
         )}
 

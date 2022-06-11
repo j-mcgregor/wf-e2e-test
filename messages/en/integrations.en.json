@@ -65,5 +65,7 @@
     "36": "Information Services",
     "37": "Public Administration, Education, Health Social Services",
     "38": "Waste Management & Treatment"
-  }
+  },
+  "no_sector_code_warning": "No industry code significantly impacts report accuracy.",
+  "invalid_website_error": "Please enter a valid website."
 }
