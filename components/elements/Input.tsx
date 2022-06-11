@@ -62,7 +62,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       ? 'text'
       : type;
 
-    const innerRef = React.useRef();
+    const innerRef = React.useRef(null);
     const combinedRef = useCombinedRefs<HTMLInputElement>(innerRef, ref);
 
     const increment = () => {
