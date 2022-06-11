@@ -55,7 +55,7 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
   React.useEffect(() => {
     if (selectedCompany && categorisationErrorMessages?.length === 0) {
       setStage(3);
-    } else if (selectedCompany && categorisationErrorMessages?.length > 0) {
+    } else {
       setStage(2);
     }
   }, [selectedCompany, categorisationErrorMessages]);

@@ -144,8 +144,8 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           <CodatStageFour
             stage={stage}
             loading={loading}
-            // enabledClassName={enabledClassName}
-            // disabledClassName={disabledClassName}
+            enabledClassName={enabledClassName}
+            disabledClassName={disabledClassName}
           />
         )}
 
