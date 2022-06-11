@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { MutableRefObject, useEffect, useState } from 'react';
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
+import useCombinedRefs from '../../hooks/useCombinedRefs';
 
 type BaseInputProps = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -20,6 +21,8 @@ interface InputProps extends BaseInputProps {
   select?: boolean;
   options?: { optionValue: string; optionName: string }[];
   showEye?: boolean | { isOpen: boolean };
+  max?: string | number;
+  min?: string | number;
 }
 
 const defaultFocusClasses = 'focus:ring-highlight focus:border-highlight';
@@ -41,6 +44,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       isError,
       labelClassName = defaultLabelClasses,
       showEye,
+      max,
+      min,
       ...props
     }: InputProps,
     ref
@@ -49,7 +54,69 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const [showPassword, setShowPassword] = useState(eyeOpenByDefault);
 
-    const inputType = showEye ? (showPassword ? 'text' : 'password') : type;
+    const inputType = showEye
+      ? showPassword
+        ? 'text'
+        : 'password'
+      : type === 'number' // If the type is number, we need to use text in order to set a dash as zero
+      ? 'text'
+      : type;
+
+    const innerRef = React.useRef();
+    const combinedRef = useCombinedRefs<HTMLInputElement>(innerRef, ref);
+
+    const increment = () => {
+      const newValue =
+        combinedRef?.current?.value === '-'
+          ? 1
+          : Number(combinedRef?.current?.value) + 1;
+
+      const isGreaterThanMax = typeof max !== 'undefined' && newValue > max;
+
+      if (combinedRef?.current?.value) {
+        if (newValue === 0 || (isGreaterThanMax && max === 0)) {
+          combinedRef.current.value = '-';
+        } else if (isGreaterThanMax) {
+          combinedRef.current.value = max?.toString();
+        } else {
+          combinedRef.current.value = newValue.toString();
+        }
+      }
+    };
+
+    const decrement = () => {
+      const newValue =
+        combinedRef?.current?.value === '-'
+          ? -1
+          : Number(combinedRef?.current?.value) - 1;
+
+      const isLessThanMin = typeof min !== 'undefined' && newValue < min;
+
+      if (combinedRef?.current?.value) {
+        if (newValue === 0 || (isLessThanMin && min === 0)) {
+          combinedRef.current.value = '-';
+        } else if (isLessThanMin) {
+          combinedRef.current.value = min?.toString();
+        } else {
+          combinedRef.current.value = newValue.toString();
+        }
+      }
+    };
+
+    const setToDashIfEmptyOrZero = () => {
+      if (
+        type === 'number' &&
+        (combinedRef?.current?.value === '' ||
+          combinedRef?.current?.value === '0')
+      ) {
+        combinedRef.current.value = '-';
+      }
+    };
+
+    useEffect(() => {
+      // Set the value to dash if type is number and value is empty
+      setToDashIfEmptyOrZero();
+    }, [combinedRef?.current?.value]);
 
     return (
       <>
@@ -60,14 +127,29 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className="relative h-9 w-full">
           <input
-            ref={ref}
+            ref={combinedRef}
             type={inputType}
             name={name}
             id={name}
             placeholder={placeholder}
+            onKeyPress={
+              // We need to make sure only numbers can be entered if type is number
+              type === 'number'
+                ? event => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }
+                : undefined
+            }
+            onChange={
+              type === 'number' ? () => setToDashIfEmptyOrZero() : undefined
+            }
             className={`${
               isError ? onErrorClassName : onFocusClassName
-            } ${className} ${showEye && 'pr-9'} peer`}
+            } ${className} ${showEye && 'pr-9'} peer ${
+              type === 'number' && 'pr-12'
+            }`}
             {...props}
           />
           {showEye && (
@@ -90,13 +172,17 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               <div className="h-full overflow-hidden rounded-r">
                 <button
                   type="button"
-                  className="bg-gray-300 w-10 h-1/2 flex justify-center items-center hover:bg-highlight hover:text-white duration-150"
+                  className="bg-gray-300 w-10 h-1/2 flex justify-center items-center hover:bg-highlight hover:text-white duration-150 disabled:opacity-75 disabled:hover:bg-gray-300 disabled:hover:text-secondary"
+                  onClick={increment}
+                  disabled={props.disabled}
                 >
                   <ChevronUpIcon className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
-                  className="bg-gray-300 w-10 h-1/2 flex justify-center items-center hover:bg-highlight hover:text-white duration-150"
+                  className="bg-gray-300 w-10 h-1/2 flex justify-center items-center hover:bg-highlight hover:text-white duration-150 disabled:opacity-75 disabled:hover:bg-gray-300 disabled:hover:text-secondary"
+                  onClick={decrement}
+                  disabled={props.disabled}
                 >
                   <ChevronDownIcon className="h-4 w-4" />
                 </button>
