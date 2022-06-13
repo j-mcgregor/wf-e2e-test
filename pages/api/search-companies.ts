@@ -1,25 +1,12 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { withSentry } from '@sentry/nextjs';
 
+import authenticators from '../../lib/api-handler/authenticators';
+import APIHandler from '../../lib/api-handler/handler';
 import Company from '../../lib/funcs/company';
 import { orbisAvailableSearchCountries } from '../../lib/settings/sme-calc.settings';
-import {
-  COUNTRY_CODE_REQUIRED,
-  INVALID_COUNTRY_CODE,
-  SEARCH_ERROR,
-  UNAUTHORISED
-} from '../../lib/utils/error-codes';
-import { ApiError, ApiResType } from '../../types/global';
 
-import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getToken } from 'next-auth/jwt';
-import APIHandler from '../../lib/api-handler/handler';
-import authenticators from '../../lib/api-handler/authenticators';
-
-type UkCompanyFilter = ReturnType<typeof Company.filterUKCompanyInformation>;
-type EuCompanyFilter = ReturnType<
-  typeof Company.mapEUCompanyDataToResponseFormat
->;
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 const searchCompaniesApi = async (
   request: NextApiRequest,
@@ -37,6 +24,8 @@ const searchCompaniesApi = async (
       const countryCode: string | undefined = query?.country
         ?.toString()
         ?.toLowerCase();
+
+      const { skip, limit } = query;
 
       if (!countryCode) {
         return {
@@ -63,12 +52,16 @@ const searchCompaniesApi = async (
       if (countryCode === 'gb') {
         const searchResults = await Company.searchUKCompaniesHouse(
           process.env.COMPANIES_HOUSE_BASE64_KEY,
-          `companies?q=${searchQuery}`
+          `companies?q=${searchQuery}&start_index=${skip ?? 0}&items_per_page=${
+            limit ?? 20
+          }`
         );
 
         const reducedCompanies = Company.filterUKCompanyInformation(
           searchResults?.data?.items
         );
+
+        console.log('searchResults', searchResults);
 
         return {
           defaultResponse: {
@@ -78,7 +71,10 @@ const searchCompaniesApi = async (
               ? 'SEARCH_COMPANIES_SUCCESS'
               : 'SEARCH_COMPANIES_ERROR',
             message: searchResults.ok ? 'Search successful.' : 'Search failed.',
-            data: reducedCompanies
+            data: {
+              results: reducedCompanies,
+              totalResults: searchResults.data?.total_results
+            }
           }
         };
       } else if (
