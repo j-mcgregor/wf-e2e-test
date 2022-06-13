@@ -61,8 +61,6 @@ const searchCompaniesApi = async (
           searchResults?.data?.items
         );
 
-        console.log('searchResults', searchResults);
-
         return {
           defaultResponse: {
             status: searchResults.ok ? 200 : 404,
