@@ -90,7 +90,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
     const hasParentIdParams = parentId
       ? `&parentId=${parentId}`
-      : `&sectorCode=${sectorCodeValue}$website=${websiteValue}&numOfDirectors=${numOfDirectorsValue}&numOfSubsidiaries=${numOfSubsidiariesValue}`;
+      : `&industrySectorCode=${sectorCodeValue}&website=${websiteValue}&numberOfDirectors=${numOfDirectorsValue}&numberOfSubsidiaries=${numOfSubsidiariesValue}`;
 
     const res = await fetch(
       `/api/integrations/codat/codat?companyId=${
