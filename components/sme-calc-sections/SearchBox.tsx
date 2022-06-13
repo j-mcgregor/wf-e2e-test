@@ -54,7 +54,11 @@ const SearchBox = ({
     companySearch();
   };
 
-  const { data } = useSWR<CompanyType[] & { error?: string; message?: string }>(
+  const { data } = useSWR<{
+    data: CompanyType[];
+    error?: string;
+    message?: string;
+  }>(
     searchValue &&
       searchHasFocus &&
       `/api/search-companies?query=${searchValue}&country=${countryCode}`,
@@ -98,8 +102,10 @@ const SearchBox = ({
           placeholder={`${t('enter_company_name')}`}
           onChange={e => handleChange(e)}
         />
-        {data && data.length > 0 && (
-          <label className="absolute right-5">{data?.length} results</label>
+        {data && data.data.length > 0 && (
+          <label className="absolute right-5">
+            {data?.data.length} results
+          </label>
         )}
       </div>
 
@@ -114,7 +120,7 @@ const SearchBox = ({
                   <LoadingIcon className="mb-1 w-6 h-6" aria-hidden="true" />
                   {loadingText}
                 </>
-              ) : !data || (!searchValue && data?.length === 0) ? (
+              ) : !data || (!searchValue && data?.data.length === 0) ? (
                 // shows if there is no data at all (initial stage)
                 // also shows if there is no text input and the search data has a length of 0
                 <>
@@ -147,9 +153,9 @@ const SearchBox = ({
           )}
 
           {/* Displays the results */}
-          {data && data?.length > 0 && (
+          {data && data?.data.length > 0 && (
             <ul className="px-4 border border-primary rounded overflow-y-scroll pt-4 space-y-4 max-h-[400px] min-h-[120px] absolute w-full z-10 bg-white">
-              {data.map(company => {
+              {data?.data.map(company => {
                 return (
                   <button
                     key={company.company_number}
@@ -165,6 +171,14 @@ const SearchBox = ({
                   </button>
                 );
               })}
+              {data?.data.length === 20 && (
+                <button
+                  type="button"
+                  className="w-full flex justify-center pb-4 font-medium"
+                >
+                  {t('load_more')}
+                </button>
+              )}
             </ul>
           )}
         </div>
