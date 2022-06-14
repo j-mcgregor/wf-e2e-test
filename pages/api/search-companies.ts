@@ -61,20 +61,29 @@ const searchCompaniesApi = async (
           searchResults?.data?.items
         );
 
-        return {
-          defaultResponse: {
-            status: searchResults.ok ? 200 : 404,
-            ok: searchResults.ok || false,
-            code: searchResults.ok
-              ? 'SEARCH_COMPANIES_SUCCESS'
-              : 'SEARCH_COMPANIES_ERROR',
-            message: searchResults.ok ? 'Search successful.' : 'Search failed.',
-            data: {
-              results: reducedCompanies,
-              totalResults: searchResults.data?.total_results
+        if (searchResults.ok) {
+          return {
+            defaultResponse: {
+              status: searchResults.status || 200,
+              ok: true,
+              code: 'SEARCH_COMPANIES_SUCCESS',
+              message: 'Search successful.',
+              data: {
+                results: reducedCompanies,
+                totalResults: searchResults.data?.total_results
+              }
             }
-          }
-        };
+          };
+        } else {
+          return {
+            defaultResponse: {
+              status: searchResults.status || 500,
+              ok: false,
+              code: 'SEARCH_COMPANIES_FAILURE',
+              message: 'Search failed.'
+            }
+          };
+        }
       } else if (
         countryCode &&
         orbisAvailableSearchCountries.includes(countryCode)

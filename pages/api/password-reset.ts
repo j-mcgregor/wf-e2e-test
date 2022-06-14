@@ -6,10 +6,8 @@ import authenticators from '../../lib/api-handler/authenticators';
 import APIHandler from '../../lib/api-handler/handler';
 import { fetchWrapper } from '../../lib/utils/fetchWrapper';
 import { VALID_PASSWORD } from '../../lib/utils/regexes';
-import { StatusCodeConstants } from '../../types/http-status-codes';
 
 import type { NextApiHandler } from 'next';
-const { BAD_REQUEST, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
 const XMLHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
