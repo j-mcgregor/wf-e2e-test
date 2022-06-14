@@ -13,6 +13,16 @@ const XMLHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
 };
 
+const returnMissingQueryResponse = (queryType: string) => {
+  return {
+    defaultResponse: {
+      status: 400,
+      code: `${queryType.replace(' ', '_').toUpperCase()}_REQUIRED`,
+      message: `${queryType.charAt(0).toUpperCase()} is required.`
+    }
+  };
+};
+
 const passwordReset: NextApiHandler = async (request, response) => {
   APIHandler(request, response, {
     config: {
@@ -24,97 +34,46 @@ const passwordReset: NextApiHandler = async (request, response) => {
       }
     },
     GET: async ({ query }) => {
-      try {
-        const { email } = query;
+      const { email } = query;
 
-        if (email && typeof email === 'string') {
-          return {
-            response: await fetchWrapper(
-              `${process.env.WF_AP_ROUTE}/password-recovery/${email}`,
-              {
-                method: 'POST',
-                headers: {
-                  ...XMLHeaders
-                }
+      if (email && typeof email === 'string') {
+        return {
+          response: await fetchWrapper(
+            `${process.env.WF_AP_ROUTE}/password-recovery/${email}`,
+            {
+              method: 'POST',
+              headers: {
+                ...XMLHeaders
               }
-            )
-          };
-        }
-        return {
-          defaultResponse: {
-            status: 400,
-            code: 'EMAIL_REQUIRED',
-            message: 'Email is required.'
-          }
-        };
-      } catch (e) {
-        return {
-          defaultResponse: {
-            status: 500,
-            code: 'PASSWORD_RESET_FAILURE',
-            message: 'Password reset failed.'
-          }
+            }
+          )
         };
       }
+      return returnMissingQueryResponse('email');
     },
     POST: async ({ body }) => {
-      try {
-        const { token, newPassword } = body as {
-          token?: string;
-          newPassword?: string;
-        };
+      const { token, newPassword } = body as {
+        token?: string;
+        newPassword?: string;
+      };
 
-        if (!token) {
-          return {
-            defaultResponse: {
-              status: 400,
-              code: 'TOKEN_REQUIRED',
-              message: 'Token is required.'
-            }
-          };
-        }
-
-        if (!newPassword) {
-          return {
-            defaultResponse: {
-              status: 400,
-              code: 'NEW_PASSWORD_REQUIRED',
-              message: 'New password is required.'
-            }
-          };
-        }
-
-        if (token && newPassword) {
-          if (!VALID_PASSWORD.test(newPassword)) {
-            return {
-              defaultResponse: {
-                status: 422,
-                code: 'INVALID_PASSWORD',
-                message:
-                  'Password must be at least 8 characters long and contain at least one number, one uppercase, one lowercase letter and one special character.'
-              }
-            };
-          }
-
-          return {
-            response: await fetchWrapper(
-              `${process.env.WF_AP_ROUTE}/reset-password/`,
-              {
-                method: 'POST',
-                body: JSON.stringify({ token, new_password: newPassword })
-              }
-            )
-          };
-        }
-      } catch (e) {
-        return {
-          defaultResponse: {
-            status: 500,
-            code: 'PASSWORD_RESET_FAILURE',
-            message: 'Password reset failed.'
-          }
-        };
+      if (!token) {
+        return returnMissingQueryResponse('token');
       }
+
+      if (!newPassword) {
+        return returnMissingQueryResponse('new password');
+      }
+
+      return {
+        response: await fetchWrapper(
+          `${process.env.WF_AP_ROUTE}/reset-password/`,
+          {
+            method: 'POST',
+            body: JSON.stringify({ token, new_password: newPassword })
+          }
+        )
+      };
     }
   });
 };
