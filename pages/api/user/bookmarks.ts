@@ -1,98 +1,120 @@
-/* eslint-disable security/detect-object-injection */
-/* eslint-disable no-case-declarations */
-/* eslint-disable no-console */
 import { withSentry } from '@sentry/nextjs';
-import { getToken } from 'next-auth/jwt';
 
-import User, {
-  BookmarkReport,
-  GetUserBookmarks
-} from '../../../lib/funcs/user';
-import {
-  errorsBySourceType,
-  returnUnauthorised
-} from '../../../lib/utils/error-handling';
-import { makeApiHandlerResponseFailure } from '../../../lib/utils/http-helpers';
-import { StatusCodeConstants } from '../../../types/http-status-codes';
+import authenticators from '../../../lib/api-handler/authenticators';
+import APIHandler from '../../../lib/api-handler/handler';
+import { fetchWrapper } from '../../../lib/utils/fetchWrapper';
 
 import type { NextApiHandler } from 'next';
 
-const { INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED } = StatusCodeConstants;
-
-export interface UserBookmarkApi extends GetUserBookmarks, BookmarkReport {}
-
-const userBookmarkApi: NextApiHandler<UserBookmarkApi> = async (
-  request,
-  response
-) => {
-  const token = await getToken({
-    req: request,
-    secret: `${process.env.NEXTAUTH_SECRET}`
+const userBookmarkApi: NextApiHandler = async (request, response) => {
+  APIHandler(request, response, {
+    config: {
+      sourceType: 'USER_BOOKMARK',
+      authenticate: authenticators.NextAuth
+    },
+    GET: async ({ authentication }) => {
+      return {
+        response: await await fetchWrapper(
+          `${process.env.WF_AP_ROUTE}/users/me/bookmarks`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${authentication?.accessToken}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+      };
+    },
+    DELETE: async ({ query, authentication }) => {
+      return {
+        response: await fetchWrapper(
+          `${process.env.WF_AP_ROUTE}/users/me/bookmarks/${query?.reportId}`,
+          {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${authentication?.accessToken}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+      };
+    }
   });
-
-  // unauthenticated requests
-  if (!token) {
-    return returnUnauthorised(response, {});
-  }
-
-  const { method } = request;
-
-  switch (method) {
-    case 'GET':
-      try {
-        const result = await User.getUserBookmarks(`${token.accessToken}`, {});
-
-        return response.status(result.status).json(result);
-      } catch (err) {
-        return response.status(INTERNAL_SERVER_ERROR).json({
-          ...makeApiHandlerResponseFailure({
-            message: errorsBySourceType.USER[INTERNAL_SERVER_ERROR]
-          }),
-          bookmarks: null
-        });
-      }
-    case 'POST':
-    case 'DELETE':
-      let all_bookmarks;
-
-      try {
-        const result = await User.bookmarkReport(`${token.accessToken}`, {
-          reportId: `${request.query.reportId}`,
-          method
-        });
-
-        // add in all bookmarks on post request
-        if (request.query.return_all) {
-          const user_bookmarks = await User.getUserBookmarks(
-            `${token.accessToken}`,
-            {}
-          );
-          all_bookmarks = user_bookmarks.bookmarks;
-        }
-
-        return response.status(result.status).json({
-          bookmarks: null,
-          ...result,
-          ...(request.query.return_all && { bookmarks: all_bookmarks })
-        });
-      } catch (error) {
-        return response.status(INTERNAL_SERVER_ERROR).json({
-          ...makeApiHandlerResponseFailure({
-            message: errorsBySourceType.USER[INTERNAL_SERVER_ERROR]
-          }),
-          bookmarks: null
-        });
-      }
-
-    default:
-      return response.status(METHOD_NOT_ALLOWED).json({
-        ...makeApiHandlerResponseFailure({
-          message: errorsBySourceType.GENERAL[METHOD_NOT_ALLOWED]
-        }),
-        bookmarks: null
-      });
-  }
 };
+
+// const userBookmarkApi: NextApiHandler<UserBookmarkApi> = async (
+//   request,
+//   response
+// ) => {
+//   const token = await getToken({
+//     req: request,
+//     secret: `${process.env.NEXTAUTH_SECRET}`
+//   });
+
+//   // unauthenticated requests
+//   if (!token) {
+//     return returnUnauthorised(response, {});
+//   }
+
+//   const { method } = request;
+
+//   switch (method) {
+//     case 'GET':
+//       try {
+//         const result = await User.getUserBookmarks(`${token.accessToken}`, {});
+
+//         return response.status(result.status).json(result);
+//       } catch (err) {
+//         return response.status(INTERNAL_SERVER_ERROR).json({
+//           ...makeApiHandlerResponseFailure({
+//             message: errorsBySourceType.USER[INTERNAL_SERVER_ERROR]
+//           }),
+//           bookmarks: null
+//         });
+//       }
+//     case 'POST':
+//     case 'DELETE':
+//       let all_bookmarks;
+
+//       try {
+//         const result = await User.bookmarkReport(`${token.accessToken}`, {
+//           reportId: `${request.query.reportId}`,
+//           method
+//         });
+
+//         // add in all bookmarks on post request
+//         if (request.query.return_all) {
+//           const user_bookmarks = await User.getUserBookmarks(
+//             `${token.accessToken}`,
+//             {}
+//           );
+//           all_bookmarks = user_bookmarks.bookmarks;
+//         }
+
+//         return response.status(result.status).json({
+//           bookmarks: null,
+//           ...result,
+//           ...(request.query.return_all && { bookmarks: all_bookmarks })
+//         });
+//       } catch (error) {
+//         return response.status(INTERNAL_SERVER_ERROR).json({
+//           ...makeApiHandlerResponseFailure({
+//             message: errorsBySourceType.USER[INTERNAL_SERVER_ERROR]
+//           }),
+//           bookmarks: null
+//         });
+//       }
+
+//     default:
+//       return response.status(METHOD_NOT_ALLOWED).json({
+//         ...makeApiHandlerResponseFailure({
+//           message: errorsBySourceType.GENERAL[METHOD_NOT_ALLOWED]
+//         }),
+//         bookmarks: null
+//       });
+//   }
+// };
 
 export default withSentry(userBookmarkApi);
 
