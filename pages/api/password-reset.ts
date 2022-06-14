@@ -2,17 +2,13 @@
 /* eslint-disable security/detect-object-injection */
 import { withSentry } from '@sentry/nextjs';
 
-import User, { ForgotPassword, ResetPassword } from '../../lib/funcs/user';
-import { errorsBySourceType } from '../../lib/utils/error-handling';
-import { makeApiHandlerResponseFailure } from '../../lib/utils/http-helpers';
+import authenticators from '../../lib/api-handler/authenticators';
+import APIHandler from '../../lib/api-handler/handler';
+import { fetchWrapper } from '../../lib/utils/fetchWrapper';
+import { VALID_PASSWORD } from '../../lib/utils/regexes';
 import { StatusCodeConstants } from '../../types/http-status-codes';
 
 import type { NextApiHandler } from 'next';
-import { VALID_PASSWORD } from '../../lib/utils/regexes';
-import APIHandler from '../../lib/api-handler/handler';
-import authenticators from '../../lib/api-handler/authenticators';
-import { fetchWrapper } from '../../lib/utils/fetchWrapper';
-
 const { BAD_REQUEST, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
 const XMLHeaders = {
