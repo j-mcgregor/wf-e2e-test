@@ -150,6 +150,7 @@ Promise<SuccessResponseType<T> | ErrorResponseType | void> => {
         makeResponseObject(
           {
             sourceType,
+            code: `${sourceType.toUpperCase()}_${resStatus}`,
             status: resStatus,
             data: externalResponse ? await getBody(externalResponse) : null,
             requestDetails

@@ -145,6 +145,7 @@ export const makeResponseObject = <T>(
   }: {
     status: number;
     sourceType: string;
+    code: string;
     data: T;
     blob?: Blob;
     requestDetails: ErrorDetailsType;
