@@ -16,6 +16,9 @@ import { generatePassword } from '../../../lib/utils/generatePassword';
 import { PasswordValidation } from '../settings/PasswordValidation';
 import { VALID_PASSWORD } from '../../../lib/utils/regexes';
 import RadioSelector from '../../elements/RadioSelector';
+import ApiFetcher from '../../../lib/utils/api-fetcher';
+import APIHandler from '../../../lib/api-handler/handler';
+import { ResponseType } from '../../../lib/api-handler/api-handler';
 
 interface FormDataType {
   email: string;
@@ -48,14 +51,16 @@ const AddNewUserForm = ({
   const onSubmit: SubmitHandler<FormDataType> = async data => {
     try {
       setSubmitError({ type: '' });
-      const res = await fetch(`/api/organisation/${organisation?.id}/user`, {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
+      const { ok, message, ...props } = await ApiFetcher(
+        `/api/organisation/${organisation?.id}/user`,
+        'POST',
+        data
+      );
 
-      const json = await res.json();
-      if (!json.ok) {
-        setSubmitError({ type: json.message });
+      console.log(props);
+
+      if (!ok) {
+        setSubmitError({ type: message });
       } else {
         onSubmitSuccess();
         setSuccessfulSubmit(true);

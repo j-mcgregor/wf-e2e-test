@@ -135,7 +135,6 @@ const getErrorDetails = (
     }
   };
 };
-
 export const makeResponseObject = <T>(
   {
     status,

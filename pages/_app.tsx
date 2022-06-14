@@ -8,6 +8,8 @@ import { IntlError, NextIntlProvider } from 'next-intl';
 import { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
 import useFullStory from '../hooks/useFullstory';
+import { ToastContainer } from '../components/toast/ToastContainer';
+import 'react-toastify/dist/ReactToastify.css';
 
 // ignore in-browser next/js recoil warnings until its fixed.
 const mutedConsole = memoize(console => ({
@@ -36,6 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </NextIntlProvider>
       </SessionProvider>
+      <ToastContainer />
     </RecoilRoot>
   );
 }

@@ -2,7 +2,7 @@
 import { BookmarkIcon } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactTimeago from 'react-timeago';
 import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
@@ -10,7 +10,9 @@ import useSWR from 'swr';
 import BookmarkCard from '../components/cards/BookmarkCard';
 import Layout from '../components/layout/Layout';
 import Table, { TableHeadersType } from '../components/table/Table';
+import { triggerToast } from '../components/toast/Toast';
 import appState from '../lib/appState';
+import { fetchMockData } from '../lib/mock-data/helpers';
 import fetcher from '../lib/utils/fetcher';
 import { createReportTitle } from '../lib/utils/text-helpers';
 import { ReportSnippetType } from '../types/global';
@@ -25,13 +27,36 @@ const Reports = () => {
   const [skip, setSkip] = useState(0); // initial limit of 10 reports
   const limit = 10;
 
-  const { data, isValidating } = useSWR<UserReportsApi>(
+  const { data, isValidating } = useSWR(
     `/api/user/reports?limit=${limit}&skip=${skip}`,
-    fetcher,
+    fetchMockData,
     {
       revalidateOnFocus: false
     }
   );
+
+  useEffect(() => {
+    if (data) {
+      const actions = [
+        {
+          label: 'View',
+          action: () => console.log('Action triggered')
+        }
+      ];
+
+      const title = t(`${data.errorCode}.title`);
+      const description = t(`${data.errorCode}.description`);
+
+      triggerToast({
+        errorCode: data.errorCode,
+        toastId: data.errorCode,
+        actions,
+        title,
+        description,
+        dismiss: 'corner'
+      });
+    }
+  }, [data]);
 
   const getReportName = (row: { company_name: string; created_at: string }) =>
     createReportTitle(row.company_name || t('unnamed_company'), row.created_at);

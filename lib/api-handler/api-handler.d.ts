@@ -22,22 +22,6 @@ type ErrorCodeKeys = {
   [key: string]: string;
 };
 
-export type MakeErrorOutput = NextApiResponse & {
-  status: HttpStatusCode;
-  sourceType: ErrorCodeType;
-  isError: true;
-  errorCode: ErrorCodeType;
-  message: string;
-  details: {
-    requestUrl: string;
-    requestBody: RequestBodyType;
-    responseBody: object | null;
-    requestHeaders: object | null;
-    requiresAuth?: boolean | null;
-    hadToken?: boolean | null;
-  };
-};
-
 export type RequestBodyType = object | null;
 
 export type MakeErrorInput = {
@@ -96,13 +80,33 @@ type HandlerArgumentsType = {
   authentication: JWT | null;
 };
 
-export type SuccessResponseType<T> = {
+export type SuccessResponseType<T = any> = {
   ok: boolean;
   error: boolean;
   sourceType?: string;
   blob?: Promise<Blob> | null;
   data: T | object | null;
 };
+
+export type MakeErrorOutput = NextApiResponse & {
+  status: HttpStatusCode;
+  sourceType: ErrorCodeType;
+  isError: true;
+  errorCode: ErrorCodeType;
+  message: string;
+  details: {
+    requestUrl: string;
+    requestBody: RequestBodyType;
+    responseBody: object | null;
+    requestHeaders: object | null;
+    requiresAuth?: boolean | null;
+    hadToken?: boolean | null;
+  };
+};
+
 export type ErrorResponseType = MakeErrorOutput;
+
+export type ApiHandlerResponse<T = any> = SuccessResponseType<T> &
+  ErrorResponseType;
 
 type BaseHandlerResponse = null;

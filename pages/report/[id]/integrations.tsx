@@ -165,7 +165,8 @@ export const getStaticProps = ({ locale }: GetStaticPropsContext) => {
         // the desired one based on the `locale` received from Next.js.
         ...require(`../../../messages/${locale}/sme-calculator.${locale}.json`),
         ...require(`../../../messages/${locale}/integrations.${locale}.json`),
-        ...require(`../../../messages/${locale}/general.${locale}.json`)
+        ...require(`../../../messages/${locale}/general.${locale}.json`),
+        ...require(`../../../messages/${locale}/errors.${locale}.json`)
       }
     }
   };

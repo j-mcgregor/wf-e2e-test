@@ -1,9 +1,10 @@
+/* eslint-disable security/detect-object-injection */
 import { CheckIcon, ExclamationIcon, XIcon } from '@heroicons/react/outline';
-import { data } from 'msw/lib/types/context';
 import { useTranslations } from 'next-intl';
-import React from 'react';
+import React, { useEffect } from 'react';
 import useSWR from 'swr';
 
+import { fetchMockData } from '../../../../lib/mock-data/helpers';
 import fetcher from '../../../../lib/utils/fetcher';
 import { convertToDateString } from '../../../../lib/utils/text-helpers';
 import {
@@ -13,6 +14,7 @@ import {
 import CodatCompanySearch from '../../../report-integration/CodatCompanySearch';
 import IntegrationErrorMessages from '../../../report-integration/IntegrationErrorMessages';
 import LoadingIcon from '../../../svgs/LoadingIcon';
+import { triggerToast } from '../../../toast/Toast';
 
 interface ICodatStageTwoProps {
   selectedCompany: CodatCompanyType | null;
@@ -37,8 +39,35 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
 
   const { data, isValidating } = useSWR(
     '/api/integrations/codat/companies',
-    fetcher
+    // fetcher
+    fetchMockData,
+    {
+      revalidateOnFocus: false
+    }
   );
+
+  useEffect(() => {
+    if (data) {
+      const actions = [
+        {
+          label: 'View',
+          action: () => console.log('Action triggered')
+        }
+      ];
+
+      const title = t(`${data.errorCode}.title`);
+      const description = t(`${data.errorCode}.description`);
+
+      triggerToast({
+        errorCode: data.errorCode,
+        toastId: data.errorCode,
+        actions,
+        title,
+        description,
+        dismiss: 'corner'
+      });
+    }
+  }, [data]);
 
   const { data: accountCategorisation } = useSWR(
     selectedCompany &&
