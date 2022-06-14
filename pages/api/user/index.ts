@@ -1,6 +1,3 @@
-/* eslint-disable no-case-declarations */
-/* eslint-disable security/detect-object-injection */
-/* eslint-disable no-console */
 import { withSentry } from '@sentry/nextjs';
 
 import authenticators from '../../../lib/api-handler/authenticators';
@@ -42,8 +39,6 @@ const userIndexApi: NextApiHandler = (request, response) => {
         ...(body?.new_password ? { new_password: body?.new_password } : {}),
         ...(body?.old_password ? { new_password: body?.old_password } : {})
       };
-
-      console.log(user);
 
       return {
         response: await fetchWrapper(`${process.env.WF_AP_ROUTE}/users/me`, {

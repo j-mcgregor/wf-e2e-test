@@ -69,6 +69,11 @@ const SettingsSettings = {
       currency: 'United Kingdom',
       home_page: 'dashboard',
       reporting_country: 'GB'
+    },
+    communication: {
+      batch_report_email: true,
+      service_updates: true,
+      company_updates: false
     }
   },
   supportedLocales,
