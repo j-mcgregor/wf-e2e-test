@@ -37,7 +37,7 @@ const userIndexApi: NextApiHandler = (request, response) => {
         email: body?.email,
         preferences: body?.preferences,
         ...(body?.new_password ? { new_password: body?.new_password } : {}),
-        ...(body?.old_password ? { new_password: body?.old_password } : {})
+        ...(body?.old_password ? { old_password: body?.old_password } : {})
       };
 
       return {
