@@ -38,7 +38,7 @@ export type MakeErrorOutput = NextApiResponse & {
   };
 };
 
-export type RequestBodyType = object | null;
+export type RequestBodyType = Record<string, any> | null;
 
 export type MakeErrorInput = {
   status: HttpStatusCode;

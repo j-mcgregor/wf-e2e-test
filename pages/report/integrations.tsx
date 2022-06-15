@@ -87,26 +87,36 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
     setLoading(true);
     setError(null);
 
-    const sectorCodeValue = sectorCode !== '0' ? sectorCode : null;
-    const websiteValue = website ? website : null;
-    const numOfDirectorsValue = numOfDirectors !== '-' ? numOfDirectors : null;
-    const numOfSubsidiariesValue =
-      numOfSubsidiaries !== '-' ? numOfSubsidiaries : null;
-    const hasParentIdParams = parentId
-      ? `&parentId=${parentId}`
-      : `&industrySectorCode=${sectorCodeValue}&website=${websiteValue}&numberOfDirectors=${numOfDirectorsValue}&numberOfSubsidiaries=${numOfSubsidiariesValue}`;
-    const res = await fetch(
-      `/api/integrations/codat/codat?companyId=${
-        selectedCompany?.company_id
-      }&connectionId=${
-        selectedCompany?.connection_id
-      }&periodLength=${monthSample}&startMonth=${yearPeriod}-${
+    // If there is a parentId, we need to include it in the request
+    // If no ID we need to include the details from stage 4
+    const hasParentIdBody = parentId
+      ? { parentId }
+      : {
+          website,
+          industrySectorCode: sectorCode !== '0' ? sectorCode : null,
+          numberOfDirectors: numOfDirectors !== '-' ? numOfDirectors : null,
+          numberOfSubsidiaries:
+            numOfSubsidiaries !== '-' ? numOfSubsidiaries : null
+        };
+
+    // Default parameters required are companyId, connectionId, periodLength and startMonth
+    const body = {
+      companyId: selectedCompany?.company_id,
+      connectionId: selectedCompany?.connection_id,
+      periodLength: monthSample,
+      startMonth: `${yearPeriod}-${
         monthPeriod?.length === 1 ? '0' + monthPeriod : monthPeriod
-      }${hasParentIdParams}`,
-      {
-        method: 'POST'
-      }
-    );
+      }`,
+      ...hasParentIdBody
+    };
+
+    const res = await fetch(`/api/integrations/codat/codat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
 
     if (res.ok) {
       const { data } = await res.json();

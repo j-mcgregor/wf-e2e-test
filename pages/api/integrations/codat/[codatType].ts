@@ -42,9 +42,20 @@ const CodatIntegrationsAPI = (
           };
       }
     },
-    POST: async ({ query, authentication }) => {
+    POST: async ({ query, body, authentication }) => {
+      if (!body) {
+        return {
+          defaultResponse: {
+            code: 'NO_BODY',
+            status: 400,
+            message: 'No body provided'
+          }
+        };
+      }
+
+      const codatType = `${query.codatType}`;
+
       const {
-        codatType,
         companyId,
         connectionId,
         parentId,
@@ -54,8 +65,11 @@ const CodatIntegrationsAPI = (
         numberOfSubsidiaries,
         industrySectorCode,
         website
-      } = query;
+      } = body;
+
       if (codatType === 'codat') {
+        // Get non-Null parameters used in stage 4
+        // These are all optional, which is why we need to filter them before sending
         const params = [
           ['number_of_directors', numberOfDirectors],
           ['number_of_subsidiaries', numberOfSubsidiaries],
@@ -64,17 +78,21 @@ const CodatIntegrationsAPI = (
         ]
           .map(param => {
             const [key, value] = param;
-            if (value !== 'null') {
+            if (value !== null) {
               return `${key}=${value}`;
             }
           })
           .filter(param => param);
 
+        // If the report was generated within a parent, just include the parent id
+        // Otherwise, include the optional parameters gernerated above
         const hasParentParams = parentId
           ? `&parent_id=${parentId}`
           : params.length > 0
           ? `&${params.join('&')}`
           : '';
+
+        console.log(hasParentParams);
 
         const baseUrl = `${process.env.WF_AP_ROUTE}/integrations/codat?company_id=${companyId}&connection_id=${connectionId}&period_length=${periodLength}${hasParentParams}`;
 
