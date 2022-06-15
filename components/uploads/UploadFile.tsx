@@ -1,7 +1,7 @@
 import { TrashIcon, UploadIcon } from '@heroicons/react/outline';
 import { useRef, useState } from 'react';
 import { useTranslations } from 'use-intl';
-
+import * as Excel from 'xlsx';
 import { TranslateInput } from '../../types/global';
 import Button from '../elements/Button';
 
@@ -13,6 +13,12 @@ interface UploadFileProps {
   setFile: (file: File | null) => void;
   disableRemoveButton?: boolean;
 }
+
+// Excel Files 97-2003 (.xls)
+export const XLS = 'application/vnd.ms-excel';
+// Excel Files 2007+ (.xlsx)
+export const XLSX =
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 const UploadFile = ({
   text,
@@ -38,15 +44,22 @@ const UploadFile = ({
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
+
     const file = e.dataTransfer.items[0].getAsFile();
     setFile(file);
     return setIsDraggedOver(false);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(e?.target?.files?.[0] ? e?.target?.files[0] : null);
   };
 
   // handle the click on the drop area
   const handleClick = () => {
     return inputRef?.current?.click();
   };
+
+  const acceptedFiles = ['.csv', XLS, XLSX];
 
   return (
     <div className="relative group">
@@ -82,10 +95,8 @@ const UploadFile = ({
                 type="file"
                 ref={inputRef}
                 id="file-upload"
-                accept=".csv"
-                onChange={e =>
-                  setFile(e?.target?.files?.[0] ? e?.target?.files[0] : null)
-                }
+                accept={acceptedFiles.join(',')}
+                onChange={e => handleChange(e)}
               />
             )}
 
