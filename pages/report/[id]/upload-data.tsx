@@ -54,7 +54,7 @@ const UploadData = () => {
       );
 
       downloadFile({
-        data: response.csv,
+        data: response.data.csv,
         // eg report-id.csv
         fileName: `report-${id}.csv`,
         fileType: 'text/csv'
@@ -70,11 +70,7 @@ const UploadData = () => {
     setLoading(true);
     const params = makeUploadReportReqBody(csvData, csvValues, `${id}`);
     try {
-      const result: ReportsUploadApi = await fetcher(
-        '/api/reports/upload',
-        'POST',
-        params
-      );
+      const result = await fetcher('/api/reports/upload', 'POST', params);
 
       if (result?.error) {
         Sentry.captureException({
@@ -84,7 +80,7 @@ const UploadData = () => {
         setError({ error: 'REPORT_500', message: result.message });
       }
 
-      if (!result?.reportId) {
+      if (!result?.data?.id) {
         Sentry.captureException({
           error: NO_REPORT_ID,
           message: result.message
@@ -92,10 +88,10 @@ const UploadData = () => {
         setError({ error: 'NO_REPORT_ID', message: result.message });
       }
 
-      if (result?.reportId) {
+      if (result?.data?.id) {
         // update user to get report data
         mutate('/api/user');
-        return router.push(`/report/${result.reportId}`);
+        return router.push(`/report/${result.data.id}`);
       }
     } catch (err) {
       Sentry.captureException(err);

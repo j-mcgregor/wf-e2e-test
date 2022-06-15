@@ -43,11 +43,7 @@ const ProvideData = () => {
     const params = makeUploadReportReqBody(csvData, csvValues);
 
     try {
-      const result: ReportsUploadApi = await fetcher(
-        '/api/reports/upload',
-        'POST',
-        params
-      );
+      const result = await fetcher('/api/reports/upload', 'POST', params);
 
       if (result?.error) {
         Sentry.captureException({
@@ -57,7 +53,7 @@ const ProvideData = () => {
         setError({ error: REPORT_500, message: result.message });
       }
 
-      if (!result?.reportId) {
+      if (!result?.data.id) {
         Sentry.captureException({
           error: NO_REPORT_ID,
           message: result.message
@@ -65,8 +61,8 @@ const ProvideData = () => {
         setError({ error: NO_REPORT_ID, message: result.message });
       }
 
-      if (result?.reportId) {
-        return router.push(`/report/${result.reportId}`);
+      if (result?.data?.id) {
+        return router.push(`/report/${result.data.id}`);
       }
     } catch (err) {
       Sentry.captureException(err);

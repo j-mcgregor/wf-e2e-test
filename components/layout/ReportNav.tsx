@@ -43,6 +43,8 @@ export const handleExport = async (
 
     const fileName = `report-${id}.${format}`;
 
+    console.log(response);
+
     if (isPDF)
       return downloadFile({
         data: response,
@@ -52,7 +54,7 @@ export const handleExport = async (
       });
 
     return downloadFile({
-      data: response.csv,
+      data: response.data.csv,
       // eg report-companyName.csv
       fileName: fileName,
       fileType: 'text/csv'
