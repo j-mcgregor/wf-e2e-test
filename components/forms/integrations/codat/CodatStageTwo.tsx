@@ -3,6 +3,7 @@ import { CheckIcon, ExclamationIcon, XIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import React, { useEffect } from 'react';
 import useSWR from 'swr';
+import { useToast } from '../../../../hooks/useToast';
 
 import { fetchMockData } from '../../../../lib/mock-data/helpers';
 import fetcher from '../../../../lib/utils/fetcher';
@@ -14,7 +15,6 @@ import {
 import CodatCompanySearch from '../../../report-integration/CodatCompanySearch';
 import IntegrationErrorMessages from '../../../report-integration/IntegrationErrorMessages';
 import LoadingIcon from '../../../svgs/LoadingIcon';
-import { triggerToast } from '../../../toast/Toast';
 
 interface ICodatStageTwoProps {
   selectedCompany: CodatCompanyType | null;
@@ -40,17 +40,20 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
   const { data, isValidating } = useSWR(
     '/api/integrations/codat/companies',
     // fetcher
-    fetchMockData,
+    fetchMockData(200, 'USER'),
     {
       revalidateOnFocus: false
     }
   );
+
+  const { triggerToast } = useToast();
 
   useEffect(() => {
     if (data) {
       const actions = [
         {
           label: 'View',
+          // eslint-disable-next-line no-console
           action: () => console.log('Action triggered')
         }
       ];
@@ -59,7 +62,6 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
       const description = t(`${data.errorCode}.description`);
 
       triggerToast({
-        errorCode: data.errorCode,
         toastId: data.errorCode,
         actions,
         title,

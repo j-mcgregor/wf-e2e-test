@@ -10,13 +10,11 @@ import useSWR from 'swr';
 import BookmarkCard from '../components/cards/BookmarkCard';
 import Layout from '../components/layout/Layout';
 import Table, { TableHeadersType } from '../components/table/Table';
-import { triggerToast } from '../components/toast/Toast';
+import { useToast } from '../hooks/useToast';
 import appState from '../lib/appState';
 import { fetchMockData } from '../lib/mock-data/helpers';
-import fetcher from '../lib/utils/fetcher';
 import { createReportTitle } from '../lib/utils/text-helpers';
 import { ReportSnippetType } from '../types/global';
-import { UserReportsApi } from './api/user/reports';
 
 const Reports = () => {
   const { user } = useRecoilValue(appState);
@@ -29,31 +27,36 @@ const Reports = () => {
 
   const { data, isValidating } = useSWR(
     `/api/user/reports?limit=${limit}&skip=${skip}`,
-    fetchMockData,
+    fetchMockData(400, 'REPORTS'),
     {
       revalidateOnFocus: false
     }
   );
+
+  const { triggerToast } = useToast();
 
   useEffect(() => {
     if (data) {
       const actions = [
         {
           label: 'View',
+          // eslint-disable-next-line no-console
           action: () => console.log('Action triggered')
         }
       ];
 
-      const title = t(`${data.errorCode}.title`);
-      const description = t(`${data.errorCode}.description`);
+      const title = t(`${data.status}.title`, { sourceType: data.sourceType });
+      const description = t(`${data.status}.description`, {
+        sourceType: data.sourceType
+      });
 
       triggerToast({
-        errorCode: data.errorCode,
         toastId: data.errorCode,
+        status: data.status,
         actions,
         title,
         description,
-        dismiss: 'corner'
+        dismiss: 'button'
       });
     }
   }, [data]);
@@ -175,7 +178,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // the desired one based on the `locale` received from Next.js.
         ...require(`../messages/${locale}/reports.${locale}.json`),
         ...require(`../messages/${locale}/general.${locale}.json`),
-        ...require(`../messages/${locale}/errors.${locale}.json`)
+        ...require(`../messages/${locale}/errors.${locale}.json`),
+        ...require(`../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };

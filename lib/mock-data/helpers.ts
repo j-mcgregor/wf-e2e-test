@@ -10,25 +10,31 @@ export interface MockApiHandlerReturn {
   ok: boolean;
   message: string;
   sourceType: string;
+  status: number;
+  [x: string]: any;
 }
 
-export const fetchMockData = async (): Promise<MockApiHandlerReturn> => {
-  return new Promise(resolve =>
-    setTimeout(
-      () =>
-        resolve({
-          data: null,
-          errorCode: 'DEFAULT_REQUEST',
-          error: '',
-          isError: true,
-          ok: false,
-          message: '',
-          sourceType: ''
-        }),
-      1000
-    )
-  );
-};
+export const fetchMockData =
+  (status: number, sourceType: string) =>
+  async (): Promise<MockApiHandlerReturn> => {
+    return new Promise(resolve =>
+      setTimeout(
+        () =>
+          resolve({
+            data: null,
+            errorCode: 'DEFAULT_REQUEST',
+            error: '',
+            isError: true,
+            ok: false,
+            message: '',
+            sourceType,
+            status,
+            reports: []
+          }),
+        200
+      )
+    );
+  };
 
 export const getRandomProperty = (): string => {
   const errorKeys = Object.keys(mockErrors);

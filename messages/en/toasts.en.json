@@ -1,0 +1,246 @@
+{
+  "100": {
+    "title": "{sourceType} CONTINUE",
+    "description": "CONTINUE for {sourceType} description"
+  },
+  "101": {
+    "title": "{sourceType} SWITCHING_PROTOCOLS",
+    "description": "SWITCHING_PROTOCOLS for {sourceType} description"
+  },
+  "102": {
+    "title": "{sourceType} PROCESSING",
+    "description": "PROCESSING for {sourceType} description"
+  },
+  "200": {
+    "title": "{sourceType} OK",
+    "description": "OK for {sourceType} description"
+  },
+  "201": {
+    "title": "{sourceType} CREATED",
+    "description": "CREATED for {sourceType} description"
+  },
+  "202": {
+    "title": "{sourceType} ACCEPTED",
+    "description": "ACCEPTED for {sourceType} description"
+  },
+  "203": {
+    "title": "{sourceType} NON_AUTHORITATIVE_INFORMATION",
+    "description": "NON_AUTHORITATIVE_INFORMATION for {sourceType} description"
+  },
+  "204": {
+    "title": "{sourceType} NO_CONTENT",
+    "description": "NO_CONTENT for {sourceType} description"
+  },
+  "205": {
+    "title": "{sourceType} RESET_CONTENT",
+    "description": "RESET_CONTENT for {sourceType} description"
+  },
+  "206": {
+    "title": "{sourceType} PARTIAL_CONTENT",
+    "description": "PARTIAL_CONTENT for {sourceType} description"
+  },
+  "207": {
+    "title": "{sourceType} MULTI_STATUS",
+    "description": "MULTI_STATUS for {sourceType} description"
+  },
+  "208": {
+    "title": "{sourceType} ALREADY_REPORTED",
+    "description": "ALREADY_REPORTED for {sourceType} description"
+  },
+  "226": {
+    "title": "{sourceType} IM_USED",
+    "description": "IM_USED for {sourceType} description"
+  },
+  "300": {
+    "title": "{sourceType} MULTIPLE_CHOICES",
+    "description": "MULTIPLE_CHOICES for {sourceType} description"
+  },
+  "301": {
+    "title": "{sourceType} MOVED_PERMANENTLY",
+    "description": "MOVED_PERMANENTLY for {sourceType} description"
+  },
+  "302": {
+    "title": "{sourceType} FOUND",
+    "description": "FOUND for {sourceType} description"
+  },
+  "303": {
+    "title": "{sourceType} SEE_OTHER",
+    "description": "SEE_OTHER for {sourceType} description"
+  },
+  "304": {
+    "title": "{sourceType} NOT_MODIFIED",
+    "description": "NOT_MODIFIED for {sourceType} description"
+  },
+  "305": {
+    "title": "{sourceType} USE_PROXY",
+    "description": "USE_PROXY for {sourceType} description"
+  },
+  "306": {
+    "title": "{sourceType} SWITCH_PROXY",
+    "description": "SWITCH_PROXY for {sourceType} description"
+  },
+  "307": {
+    "title": "{sourceType} TEMPORARY_REDIRECT",
+    "description": "TEMPORARY_REDIRECT for {sourceType} description"
+  },
+  "308": {
+    "title": "{sourceType} PERMANENT_REDIRECT",
+    "description": "PERMANENT_REDIRECT for {sourceType} description"
+  },
+  "400": {
+    "title": "{sourceType} BAD_REQUEST",
+    "description": "BAD_REQUEST for {sourceType} description"
+  },
+  "401": {
+    "title": "{sourceType} UNAUTHORIZED",
+    "description": "UNAUTHORIZED for {sourceType} description"
+  },
+  "402": {
+    "title": "{sourceType} PAYMENT_REQUIRED",
+    "description": "PAYMENT_REQUIRED for {sourceType} description"
+  },
+  "403": {
+    "title": "{sourceType} FORBIDDEN",
+    "description": "FORBIDDEN for {sourceType} description"
+  },
+  "404": {
+    "title": "{sourceType} NOT_FOUND",
+    "description": "NOT_FOUND for {sourceType} description"
+  },
+  "405": {
+    "title": "{sourceType} METHOD_NOT_ALLOWED",
+    "description": "METHOD_NOT_ALLOWED for {sourceType} description"
+  },
+  "406": {
+    "title": "{sourceType} NOT_ACCEPTABLE",
+    "description": "NOT_ACCEPTABLE for {sourceType} description"
+  },
+  "407": {
+    "title": "{sourceType} PROXY_AUTHENTICATION_REQUIRED",
+    "description": "PROXY_AUTHENTICATION_REQUIRED for {sourceType} description"
+  },
+  "408": {
+    "title": "{sourceType} REQUEST_TIMEOUT",
+    "description": "REQUEST_TIMEOUT for {sourceType} description"
+  },
+  "409": {
+    "title": "{sourceType} CONFLICT",
+    "description": "CONFLICT for {sourceType} description"
+  },
+  "410": {
+    "title": "{sourceType} GONE",
+    "description": "GONE for {sourceType} description"
+  },
+  "411": {
+    "title": "{sourceType} LENGTH_REQUIRED",
+    "description": "LENGTH_REQUIRED for {sourceType} description"
+  },
+  "412": {
+    "title": "{sourceType} PRECONDITION_FAILED",
+    "description": "PRECONDITION_FAILED for {sourceType} description"
+  },
+  "413": {
+    "title": "{sourceType} PAYLOAD_TOO_LARGE",
+    "description": "PAYLOAD_TOO_LARGE for {sourceType} description"
+  },
+  "414": {
+    "title": "{sourceType} URI_TOO_LONG",
+    "description": "URI_TOO_LONG for {sourceType} description"
+  },
+  "415": {
+    "title": "{sourceType} UNSUPPORTED_MEDIA_TYPE",
+    "description": "UNSUPPORTED_MEDIA_TYPE for {sourceType} description"
+  },
+  "416": {
+    "title": "{sourceType} RANGE_NOT_SATISFIABLE",
+    "description": "RANGE_NOT_SATISFIABLE for {sourceType} description"
+  },
+  "417": {
+    "title": "{sourceType} EXPECTATION_FAILED",
+    "description": "EXPECTATION_FAILED for {sourceType} description"
+  },
+  "418": {
+    "title": "{sourceType} I_AM_A_TEAPOT",
+    "description": "I_AM_A_TEAPOT for {sourceType} description"
+  },
+  "421": {
+    "title": "{sourceType} MISDIRECTED_REQUEST",
+    "description": "MISDIRECTED_REQUEST for {sourceType} description"
+  },
+  "422": {
+    "title": "{sourceType} UNPROCESSABLE_ENTITY",
+    "description": "UNPROCESSABLE_ENTITY for {sourceType} description"
+  },
+  "423": {
+    "title": "{sourceType} LOCKED",
+    "description": "LOCKED for {sourceType} description"
+  },
+  "424": {
+    "title": "{sourceType} FAILED_DEPENDENCY",
+    "description": "FAILED_DEPENDENCY for {sourceType} description"
+  },
+  "426": {
+    "title": "{sourceType} UPGRADE_REQUIRED",
+    "description": "UPGRADE_REQUIRED for {sourceType} description"
+  },
+  "428": {
+    "title": "{sourceType} PRECONDITION_REQUIRED",
+    "description": "PRECONDITION_REQUIRED for {sourceType} description"
+  },
+  "429": {
+    "title": "{sourceType} TOO_MANY_REQUESTS",
+    "description": "TOO_MANY_REQUESTS for {sourceType} description"
+  },
+  "431": {
+    "title": "{sourceType} REQUEST_HEADER_FIELDS_TOO_LARGE",
+    "description": "REQUEST_HEADER_FIELDS_TOO_LARGE for {sourceType} description"
+  },
+  "451": {
+    "title": "{sourceType} UNAVAILABLE_FOR_LEGAL_REASONS",
+    "description": "UNAVAILABLE_FOR_LEGAL_REASONS for {sourceType} description"
+  },
+  "500": {
+    "title": "{sourceType} INTERNAL_SERVER_ERROR",
+    "description": "INTERNAL_SERVER_ERROR for {sourceType} description"
+  },
+  "501": {
+    "title": "{sourceType} NOT_IMPLEMENTED",
+    "description": "NOT_IMPLEMENTED for {sourceType} description"
+  },
+  "502": {
+    "title": "{sourceType} BAD_GATEWAY",
+    "description": "BAD_GATEWAY for {sourceType} description"
+  },
+  "503": {
+    "title": "{sourceType} SERVICE_UNAVAILABLE",
+    "description": "SERVICE_UNAVAILABLE for {sourceType} description"
+  },
+  "504": {
+    "title": "{sourceType} GATEWAY_TIMEOUT",
+    "description": "GATEWAY_TIMEOUT for {sourceType} description"
+  },
+  "505": {
+    "title": "{sourceType} HTTP_VERSION_NOT_SUPPORTED",
+    "description": "HTTP_VERSION_NOT_SUPPORTED for {sourceType} description"
+  },
+  "506": {
+    "title": "{sourceType} VARIANT_ALSO_NEGOTIATES",
+    "description": "VARIANT_ALSO_NEGOTIATES for {sourceType} description"
+  },
+  "507": {
+    "title": "{sourceType} INSUFFICIENT_STORAGE",
+    "description": "INSUFFICIENT_STORAGE for {sourceType} description"
+  },
+  "508": {
+    "title": "{sourceType} LOOP_DETECTED",
+    "description": "LOOP_DETECTED for {sourceType} description"
+  },
+  "510": {
+    "title": "{sourceType} NOT_EXTENDED",
+    "description": "NOT_EXTENDED for {sourceType} description"
+  },
+  "511": {
+    "title": "{sourceType} NETWORK_AUTHENTICATION_REQUIRED",
+    "description": "NETWORK_AUTHENTICATION_REQUIRED for {sourceType} description"
+  }
+}

@@ -62,9 +62,5 @@
   "NOTHING_TO_SYNCHRONISE": "Cannot find any company to synchronise.",
   "CREDENTIALS_NOT_FOUND": "Organisation does not have integration credentials.",
   "ORGANISATION_INVALID_CREDENTIALS": "The authorisation header is invalid. Please try again.",
-  "USER_BAD_REQUEST": "The password does not match the required format. Please try again.",
-  "DEFAULT_REQUEST": {
-    "title": "Lorem ipsum title",
-    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum non mollitia reiciendis aspernatur quo nobis! Ullam, corrupti omnis? Temporibus animi blanditiis commodi cum amet recusandae quo quidem incidunt ad fugiat!"
-  }
+  "USER_BAD_REQUEST": "The password does not match the required format. Please try again."
 }
