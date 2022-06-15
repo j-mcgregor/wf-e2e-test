@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
+
 import fetcher from '../lib/utils/fetcher';
-import { BatchReportsIndexApi } from '../pages/api/batch-reports';
-import { BatchReportResponse, BatchSummary } from '../types/batch-reports';
+import { BatchReportResponse } from '../types/batch-reports';
 
 function calculateHoursBetweenDates(begin: Date | string, end: number) {
   const date1 = new Date(begin);

@@ -1,16 +1,8 @@
-/* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';
-import {
-  GetStaticPropsContext,
-  NextApiHandler,
-  NextApiRequest,
-  NextApiResponse,
-  NextPage
-} from 'next';
+import { GetStaticPropsContext, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createRef, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
 
@@ -32,10 +24,8 @@ import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
 import { ISO, ISO_CODE } from '../../lib/utils/constants';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
-import type { SubmitReportType } from '../../types/report';
-import { BatchReportsIndexApi } from '../api/batch-reports';
-import { BatchReportsManualApi } from '../api/batch-reports/manual';
 
+import type { SubmitReportType } from '../../types/report';
 const CreateBatchReport: NextPage = () => {
   const t = useTranslations();
 
