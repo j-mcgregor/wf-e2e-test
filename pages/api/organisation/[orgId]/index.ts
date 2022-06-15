@@ -17,7 +17,10 @@ import {
 } from '../../../../lib/utils/http-helpers';
 import { StatusCodeConstants } from '../../../../types/http-status-codes';
 
-import type { NextApiHandler } from 'next';
+import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import APIHandler from '../../../../lib/api-handler/handler';
+import authenticators from '../../../../lib/api-handler/authenticators';
+import { fetchWrapper } from '../../../../lib/utils/fetchWrapper';
 
 const { NOT_FOUND, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 
@@ -25,6 +28,45 @@ export interface OrganisationIndexApi
   extends GetOrganisation,
     getTotalOrganisationReportsType,
     UpdateOrganisation {}
+
+const OrganisationApi: NextApiHandler = async (
+  request: NextApiRequest,
+  response: NextApiResponse
+) => {
+  APIHandler(request, response, {
+    config: {
+      authenticate: authenticators.NextAuth,
+      sourceType: 'ORGANISATION'
+    },
+    GET: async ({ query, authentication }) => {
+      return {
+        response: await fetchWrapper(
+          `${process.env.WF_AP_ROUTE}/organisations/${query.orgId}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${authentication?.accessToken}`
+            }
+          }
+        )
+      };
+    },
+    PUT: async ({ query, body, authentication }) => {
+      return {
+        response: await fetchWrapper(
+          `${process.env.WF_AP_ROUTE}/organisations/${query.orgId}`,
+          {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${authentication?.accessToken}`
+            },
+            body: JSON.stringify(body)
+          }
+        )
+      };
+    }
+  });
+};
 
 const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
   request,
@@ -121,4 +163,4 @@ const OrganisationAPI: NextApiHandler<OrganisationIndexApi> = async (
   }
 };
 
-export default withSentry(OrganisationAPI);
+export default withSentry(OrganisationApi);
