@@ -16,8 +16,6 @@ import LinkCard from '../cards/LinkCard';
 import UploadNewData from '../uploads/UploadNewData';
 
 import type { SubmitReportType } from '../../types/report';
-import { ReportsUploadApi } from '../../pages/api/reports/upload';
-
 const ProvideData = () => {
   const [fileSelected, setFileSelected] = useState<File | null>(null);
 

@@ -1,14 +1,16 @@
 /* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
+import * as Sentry from '@sentry/nextjs';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import * as Sentry from '@sentry/nextjs';
+import { mutate } from 'swr';
 
 import LinkCard from '../../../components/cards/LinkCard';
 import Button from '../../../components/elements/Button';
 import Layout from '../../../components/layout/Layout';
+import SkeletonLayout from '../../../components/skeletons/SkeletonLayout';
 import UploadNewData from '../../../components/uploads/UploadNewData';
 import { useCSV } from '../../../hooks/useCSV';
 import { useCsvValidators } from '../../../hooks/useCsvValidators';
@@ -18,9 +20,6 @@ import fetcher from '../../../lib/utils/fetcher';
 import { downloadFile } from '../../../lib/utils/file-helpers';
 import { makeUploadReportReqBody } from '../../../lib/utils/report-helpers';
 import { SubmitReportType } from '../../../types/report';
-import { mutate } from 'swr';
-import { ReportsUploadApi } from '../../api/reports/upload';
-import SkeletonLayout from '../../../components/skeletons/SkeletonLayout';
 
 const UploadData = () => {
   const t = useTranslations();

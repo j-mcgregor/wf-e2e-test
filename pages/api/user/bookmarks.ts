@@ -7,6 +7,8 @@ import { fetchWrapper } from '../../../lib/utils/fetchWrapper';
 import type { NextApiHandler } from 'next';
 
 const userBookmarkApi: NextApiHandler = async (request, response) => {
+  const contentType = 'application/json';
+
   APIHandler(request, response, {
     config: {
       sourceType: 'USER_BOOKMARK',
@@ -20,7 +22,7 @@ const userBookmarkApi: NextApiHandler = async (request, response) => {
             method: 'GET',
             headers: {
               Authorization: `Bearer ${authentication?.accessToken}`,
-              'Content-Type': 'application/json'
+              'Content-Type': contentType
             }
           }
         )
@@ -34,7 +36,7 @@ const userBookmarkApi: NextApiHandler = async (request, response) => {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${authentication?.accessToken}`,
-              'Content-Type': 'application/json'
+              'Content-Type': contentType
             }
           }
         )
@@ -48,7 +50,7 @@ const userBookmarkApi: NextApiHandler = async (request, response) => {
             method: 'DELETE',
             headers: {
               Authorization: `Bearer ${authentication?.accessToken}`,
-              'Content-Type': 'application/json'
+              'Content-Type': contentType
             }
           }
         )

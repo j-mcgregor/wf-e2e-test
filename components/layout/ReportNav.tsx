@@ -43,8 +43,6 @@ export const handleExport = async (
 
     const fileName = `report-${id}.${format}`;
 
-    console.log(response);
-
     if (isPDF)
       return downloadFile({
         data: response,

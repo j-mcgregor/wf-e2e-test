@@ -16,13 +16,11 @@ const OrganisationUserReportsApi: NextApiHandler = async (
     GET: async ({ query, authentication }) => {
       const { userId, orgId, skip, limit } = query;
 
+      const end = parseInt(`${skip}`) + parseInt(`${limit}`);
+
       return {
         response: await fetchWrapper(
-          `${
-            process.env.WF_AP_ROUTE
-          }/organisations/${orgId}/users/${userId}/reports?_start=${skip}&_end=${
-            parseInt(`${skip}`) + parseInt(`${limit}`)
-          }`,
+          `${process.env.WF_AP_ROUTE}/organisations/${orgId}/users/${userId}/reports?_start=${skip}&_end=${end}`,
           {
             method: 'GET',
             headers: {

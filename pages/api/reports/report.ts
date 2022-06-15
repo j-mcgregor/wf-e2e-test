@@ -24,8 +24,6 @@ const ReportApi: NextApiHandler = async (
       const exportType = query?.export;
       const reportId = query?.id;
 
-      console.log(reportId);
-
       if (!exportType) {
         return {
           response: await fetchWrapper(

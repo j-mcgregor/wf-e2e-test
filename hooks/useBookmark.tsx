@@ -3,9 +3,9 @@ import * as Sentry from '@sentry/nextjs';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 import { mutate } from 'swr';
+
 import { UserReports, userReports } from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
-import { UserBookmarkApi } from '../pages/api/user/bookmarks';
 import { ReportSnippetType } from '../types/global';
 
 // hook to use bookmarks
@@ -57,7 +57,7 @@ const useBookmark = (
         const method = action === 'REMOVE' ? 'DELETE' : 'POST';
 
         // added return_all so that we can return the bookmarks in the same request
-        const updater: UserBookmarkApi = await fetcher(
+        const updater = await fetcher(
           `/api/user/bookmarks?reportId=${reportId}&return_all=true`,
           method
         );
