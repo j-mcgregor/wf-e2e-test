@@ -88,15 +88,13 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
     setError(null);
 
     const sectorCodeValue = sectorCode !== '0' ? sectorCode : null;
-    const websiteValue = website.length > 1 ? website : null;
+    const websiteValue = website ? website : null;
     const numOfDirectorsValue = numOfDirectors !== '-' ? numOfDirectors : null;
     const numOfSubsidiariesValue =
       numOfSubsidiaries !== '-' ? numOfSubsidiaries : null;
-
     const hasParentIdParams = parentId
       ? `&parentId=${parentId}`
       : `&industrySectorCode=${sectorCodeValue}&website=${websiteValue}&numberOfDirectors=${numOfDirectorsValue}&numberOfSubsidiaries=${numOfSubsidiariesValue}`;
-
     const res = await fetch(
       `/api/integrations/codat/codat?companyId=${
         selectedCompany?.company_id

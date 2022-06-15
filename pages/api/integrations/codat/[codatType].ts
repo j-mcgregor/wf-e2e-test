@@ -52,13 +52,15 @@ const CodatIntegrationsAPI = (
         startMonth,
         numberOfDirectors,
         numberOfSubsidiaries,
-        industrySectorCode
+        industrySectorCode,
+        website
       } = query;
       if (codatType === 'codat') {
         const params = [
           ['number_of_directors', numberOfDirectors],
           ['number_of_subsidiaries', numberOfSubsidiaries],
-          ['industry_sector_code', industrySectorCode]
+          ['industry_sector_code', industrySectorCode],
+          ['website', website]
         ]
           .map(param => {
             const [key, value] = param;
