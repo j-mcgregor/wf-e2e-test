@@ -64,7 +64,6 @@ const PasswordManagement = () => {
       const fetchRes = await fetch(`${config.URL}/api/user`, {
         method: 'PUT',
         body: JSON.stringify({
-          // ...user,
           old_password: currentPassword,
           new_password: newPassword.trim()
         })
