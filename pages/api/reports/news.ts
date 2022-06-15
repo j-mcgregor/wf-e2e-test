@@ -1,25 +1,18 @@
 import { withSentry } from '@sentry/nextjs';
-import { getToken } from 'next-auth/jwt';
 
-import News from '../../../lib/funcs/news';
-import {
-  COMPANY_NAME_REQUIRED,
-  INVALID_REQUEST_TYPE,
-  SEARCH_ERROR
-} from '../../../lib/utils/error-codes';
-import { returnUnauthorised } from '../../../lib/utils/error-handling';
-import { ApiError, ApiResType } from '../../../types/global';
-
-import type { NextApiHandler, NextApiResponse } from 'next';
-import APIHandler from '../../../lib/api-handler/handler';
 import authenticators from '../../../lib/api-handler/authenticators';
+import APIHandler from '../../../lib/api-handler/handler';
 
+import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 /**
  * IS THIS API PAGE NEEDED?
  */
 export interface ReportsNewsApi {}
 
-const NewsApi: NextApiHandler = async (request, response) => {
+const NewsApi: NextApiHandler = async (
+  request: NextApiRequest,
+  response: NextApiResponse
+) => {
   APIHandler(request, response, {
     config: {
       authenticate: authenticators.NextAuth,
