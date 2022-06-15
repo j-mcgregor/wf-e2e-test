@@ -48,7 +48,7 @@
   "name_batched_report": "Name your batched report",
   "no_completed_batch_reports": "No completed Batch Reports",
   "no_batch_reports_in_progress": "No Batch Reports in progress",
-  "max_companies": "Your CSV has {total_companies} companies which is more than the max of {max_companies}",
+  "max_companies": "Your file has {total_companies} companies which is more than the max of {max_companies}",
   "pending": "Pending",
   "processing": "Processing",
   "report_name_required": "A batch report name is required",

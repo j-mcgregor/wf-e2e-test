@@ -37,7 +37,6 @@ interface UploadNewDataProps {
 const UploadNewData = ({
   isCSV,
   isExcel,
-  isValidFileType,
   isValid,
   uploadType,
   missingHeaders = [],
@@ -94,6 +93,10 @@ const UploadNewData = ({
       </>
     );
   }
+
+  const isValidFileType = isCSV || isExcel;
+
+  console.log(!isValid, disableButton, loading, hasErrors, !isValidFileType);
 
   return (
     <div className="bg-white rounded-sm shadow-sm sm:p-8 p-6">
@@ -188,7 +191,6 @@ const UploadNewData = ({
           )}
         </div>
       </div>
-      {console.log('uploadType', uploadType)}
       {uploadType === 'BATCH_AUTO' && fileSelected ? batchAutoOptions : null}
       <div className="w-full sm:max-w-[200px] mt-2">
         <Button

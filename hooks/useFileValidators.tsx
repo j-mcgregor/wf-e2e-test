@@ -14,15 +14,15 @@ const BATCH_MAX_COMPANIES = 1000;
 const MAX_ERRORS = 500;
 
 export const useFileValidators = ({
-  csvData,
+  fileData,
   validators,
-  csvValues,
+  fileValues,
   totalCompanies = 0,
   type
 }: {
-  csvData?: CsvReport | null;
+  fileData?: CsvReport | null;
   validators?: CsvValueValidation[];
-  csvValues: string[][];
+  fileValues: string[][];
   totalCompanies?: number;
   type?: ReportTypeEnum;
 }) => {
@@ -32,14 +32,14 @@ export const useFileValidators = ({
   const isManualSingle = type === 'REPORT_MANUAL';
 
   let errors: Array<string | boolean> = [];
-  if (csvValues?.length === 0) {
-    errors.push('CSV has no values');
+  if (fileValues?.length === 0) {
+    errors.push('File has no values');
   }
 
   const uniqueCompanies = getUniqueStringsFromArray(
     isManualBatch || isManualSingle
-      ? csvData?.details_name
-      : csvData?.company_id
+      ? fileData?.details_name
+      : fileData?.company_id
   );
 
   const tooManyCompaniesBatch = isBatch && totalCompanies > BATCH_MAX_COMPANIES;
@@ -59,7 +59,7 @@ export const useFileValidators = ({
     validators &&
     Object.entries(validators)
       .map(([_index, { header, required }]) => {
-        const isPresent = csvData?.[header as CsvReportUploadHeaders];
+        const isPresent = fileData?.[header as CsvReportUploadHeaders];
         return isPresent ? null : required ? null : header;
       })
       .filter(x => x);
@@ -75,22 +75,22 @@ export const useFileValidators = ({
   }
 
   // if we limit errors to eg 100, we need to be able to break the loop of
-  // csvData entries which isn't possible with Array methods like forEach, map or flatMap
+  // fileData entries which isn't possible with Array methods like forEach, map or flatMap
   // or Object.entries
   // it's more verbose this way but won't keep running if theres thousands of errors
   if (
     !tooManyCompaniesBatch &&
-    csvData &&
+    fileData &&
     validators &&
     errors.length < MAX_ERRORS
   ) {
-    // loop 1: csvData object properties
-    for (const i in csvData) {
+    // loop 1: fileData object properties
+    for (const i in fileData) {
       const key = i as CsvReportUploadHeaders;
 
       // check property exists
-      if (Object.prototype.hasOwnProperty.call(csvData, key)) {
-        const values = csvData[key];
+      if (Object.prototype.hasOwnProperty.call(fileData, key)) {
+        const values = fileData[key];
 
         // find the validators for the header
         const columnHeader = validators.find(item => item.header === key);

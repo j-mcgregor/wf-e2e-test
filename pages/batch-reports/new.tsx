@@ -50,9 +50,9 @@ const CreateBatchReport: NextPage = () => {
   } = useManualReportUploadFile(fileSelected);
 
   const { isValid, errors, missingHeaders } = useFileValidators({
-    csvData: data,
+    fileData: data,
     validators: isAutoOrManual?.validator,
-    csvValues: values,
+    fileValues: values,
     totalCompanies,
     type: isAutoOrManual?.type
   });
@@ -267,7 +267,7 @@ const CreateBatchReport: NextPage = () => {
                 } rounded-none`}
                 variant={!complete ? 'none' : 'highlight'}
                 disabled={!complete}
-                linkTo={`/batch-reports/${results?.id}?demo=true`}
+                linkTo={`/batch-reports/${results?.id}`}
               >
                 <p>{t('view_results')}</p>
               </Button>

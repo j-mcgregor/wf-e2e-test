@@ -38,9 +38,9 @@ const UploadData = () => {
 
   const { isValid, errors, missingHeaders, numberOfCompanies } =
     useFileValidators({
-      csvData: data,
+      fileData: data,
       validators: manualUploadValidators,
-      csvValues: values,
+      fileValues: values,
       type: 'REPORT_MANUAL'
     });
 
