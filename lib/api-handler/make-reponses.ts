@@ -140,6 +140,7 @@ export const makeResponseObject = <T>(
   {
     status,
     sourceType,
+    code,
     data,
     requestDetails
   }: {
@@ -166,7 +167,8 @@ export const makeResponseObject = <T>(
   if (status >= 200 && status < 300) {
     return makeSuccessObject({
       sourceType,
-      data
+      data,
+      code: `${sourceType}_${status}`
     });
   }
 
@@ -177,7 +179,7 @@ export const makeResponseObject = <T>(
     ...BASE_ERROR,
     sourceType,
     // use the custom error if there is one
-    code: BASE_ERROR.code,
+    code: `${sourceType}_${status}`,
     details: requestDetails
   });
 };
@@ -185,6 +187,7 @@ export const makeResponseObject = <T>(
 const makeSuccessObject = <T>(successResponse: {
   sourceType: string;
   data: T;
+  code: string;
 }): SuccessResponseType<T> => {
   return {
     ok: true,
