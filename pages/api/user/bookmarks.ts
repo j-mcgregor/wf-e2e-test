@@ -26,6 +26,20 @@ const userBookmarkApi: NextApiHandler = async (request, response) => {
         )
       };
     },
+    POST: async ({ query, authentication }) => {
+      return {
+        response: await fetchWrapper(
+          `${process.env.WF_AP_ROUTE}/users/me/bookmarks/${query?.reportId}`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${authentication?.accessToken}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+      };
+    },
     DELETE: async ({ query, authentication }) => {
       return {
         response: await fetchWrapper(
