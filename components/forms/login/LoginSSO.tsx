@@ -7,6 +7,7 @@ import useLocalStorage from '../../../hooks/useLocalStorage';
 import { INVALID_SSO_LOGIN } from '../../../lib/utils/error-codes';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
+import GoogleIcon from '../../icons/GoogleIcon';
 import MicrosoftIcon from '../../icons/MicrosoftIcon';
 
 const LoginSSO = () => {
@@ -14,35 +15,47 @@ const LoginSSO = () => {
   const router = useRouter();
   const ssoError = router.query?.error === 'Callback';
 
-  const [ssoIsLoading, setSsoIsLoading] = React.useState(false);
+  const [ssoIsLoading, setSsoIsLoading] = React.useState('none');
   const handleMSALClick = () => {
     // show indicator for loading of SSO auth parameters
-    setSsoIsLoading(true);
+    setSsoIsLoading('msal');
 
     // sign in with the correct provider
     return signIn('msal');
+  };
+
+  const handleGoogleClick = () => {
+    // show indicator for loading of SSO auth parameters
+    setSsoIsLoading('google');
+
+    // sign in with the correct provider
+    return signIn('google');
   };
 
   return (
     <div className="pt-8">
       <p className="text-sm pb-1 ">{t('sign_in_with')}</p>
 
-      <div className="mt-1">
-        {/* <div>
+      <div className="mt-1 flex gap-x-4 ">
+        <div className="w-full">
           <Button
             variant="none"
-            newClassName="w-full inline-flex justify-center py-2 px-4 rounded-md shadow-sm bg-white text-sm font-medium hover:bg-gray-50"
+            onClick={handleGoogleClick}
+            loading={ssoIsLoading === 'google'}
+            disabled={ssoIsLoading === 'google'}
+            newClassName="w-full inline-flex justify-center py-2 px-4 rounded-md shadow-sm bg-white text-sm font-medium hover:bg-gray-50 text-black"
           >
-            <GoogleIcon />
+            {t('google')}
+            <GoogleIcon className="ml-2" />
           </Button>
-        </div> */}
+        </div>
 
-        <div className="mb-2">
+        <div className=" w-full">
           <Button
             onClick={handleMSALClick}
             variant="none"
-            loading={ssoIsLoading}
-            disabled={ssoIsLoading}
+            loading={ssoIsLoading === 'msal'}
+            disabled={ssoIsLoading === 'msal'}
             newClassName="w-full inline-flex justify-center py-2 px-4 rounded-md shadow-sm bg-white text-sm font-medium hover:bg-gray-50 text-black"
           >
             {t('microsoft')}

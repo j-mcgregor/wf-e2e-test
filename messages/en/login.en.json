@@ -10,6 +10,7 @@
   "forgot_password": "Forgot your password?",
   "sign_in": "Sign in",
   "microsoft": "Microsoft",
+  "google": "Google",
   "placeholders": {
     "email": "you@example.com",
     "password": "Password"
