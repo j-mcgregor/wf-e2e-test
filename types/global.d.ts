@@ -62,7 +62,7 @@ export type UserType = {
   full_name?: string | null;
   id: string | number;
   email?: string | null;
-  is_SSO?: boolean;
+  is_sso?: boolean;
   contact_information?: ContactInformation;
   preferences?: {
     defaults?: {
