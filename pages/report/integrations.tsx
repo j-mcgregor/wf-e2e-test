@@ -5,6 +5,7 @@ import {
   GetStaticPropsContext,
   NextPage
 } from 'next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -37,6 +38,9 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
   const [canGenerateReport, setCanGenerateReport] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const t = useTranslations();
 
   React.useEffect(() => {
     if (yearPeriod === null && monthPeriod === null && selectedCompany) {
@@ -81,6 +85,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
   const handleSubmit = async () => {
     setLoading(true);
+    setError(null);
 
     const sectorCodeValue = sectorCode !== '0' ? sectorCode : null;
     const websiteValue = website.length > 1 ? website : null;
@@ -107,11 +112,12 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
     if (res.ok) {
       const { data } = await res.json();
-      setLoading(false);
       router.push(`/report/${data.id}?from=/report/integrations/`);
+    } else {
+      setLoading(false);
+      const json = await res.json();
+      setError(json.code);
     }
-
-    setLoading(false);
   };
 
   const disabledClassName = 'opacity-20';
@@ -183,15 +189,20 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           />
         )}
 
-        <Button
-          variant="highlight"
-          className="max-w-xs"
-          onClick={() => handleSubmit()}
-          disabled={!canGenerateReport}
-          loading={loading}
-        >
-          Generate New Report
-        </Button>
+        <div className="flex items-center gap-4">
+          <div className="max-w-xs grow">
+            <Button
+              variant="highlight"
+              className="max-w-xs"
+              onClick={() => handleSubmit()}
+              disabled={!canGenerateReport}
+              loading={loading}
+            >
+              Generate New Report
+            </Button>
+          </div>
+          {error && <p className="text-red-500">{t(error)}</p>}
+        </div>
       </div>
     </Layout>
   );
