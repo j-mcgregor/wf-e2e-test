@@ -1,7 +1,13 @@
 /* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';
-import { GetStaticPropsContext, NextPage } from 'next';
+import {
+  GetStaticPropsContext,
+  NextApiHandler,
+  NextApiRequest,
+  NextApiResponse,
+  NextPage
+} from 'next';
 import { useRouter } from 'next/router';
 import { createRef, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -106,15 +112,14 @@ const CreateBatchReport: NextPage = () => {
     try {
       // POST '/api/batch-reports' => BatchReportsIndexApi (auto)
       // POST '/api/batch-reports/upload' => BatchReportsManualApi (manual)
-      const result: BatchReportsIndexApi | BatchReportsManualApi =
-        await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
+      const result = await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
 
       if (result.ok) {
-        setResults({ id: result.batchReportId ?? '' });
+        setResults({ id: result?.data?.id ?? '' });
       }
-      if (result.batchReportId) {
+      if (result?.data?.id) {
         // fetch the new batch reports
-        mutate<BatchReportsIndexApi>('/api/batch-reports');
+        mutate('/api/batch-reports');
         // push to batch-reports where in progress reports will show
         return router.push(`/batch-reports`);
       }

@@ -66,7 +66,7 @@ const useBatchReportsHistory = (limit: number, skip: number = 0) => {
   });
 
   // if no user then revalidate onMount to prevent blank page
-  const { data, isValidating } = useSWR<BatchReportsIndexApi>(
+  const { data, isValidating } = useSWR(
     `/api/batch-reports?limit=${limit + skip}&skip=${0}`,
     fetcher,
     {
@@ -75,9 +75,9 @@ const useBatchReportsHistory = (limit: number, skip: number = 0) => {
     }
   );
 
-  const isFetching = isValidating || !data;
+  const isFetching = isValidating || !data?.data;
 
-  const fetchedBatchReports = data?.batchReports || [];
+  const fetchedBatchReports = data?.data || [];
 
   const totalLength =
     batchReports.completedJobs.length +
@@ -85,15 +85,15 @@ const useBatchReportsHistory = (limit: number, skip: number = 0) => {
     batchReports.pendingJobs.length;
 
   useEffect(() => {
-    if (data?.batchReports && !isValidating) {
+    if (data?.data && !isValidating) {
       const failingJobs = fetchedBatchReports.filter(
-        job =>
+        (job: BatchReportResponse) =>
           ((job.created_at !== job.updated_at || job.finished_at) &&
             job.total_reports === job.failed_reports) ||
           calculateHoursBetweenDates(job.created_at, Date.now()) > 24
       );
       const completeJobs = fetchedBatchReports.filter(
-        job =>
+        (job: BatchReportResponse) =>
           job.total_reports !== job.failed_reports &&
           job.total_reports !== null &&
           job.finished_at
