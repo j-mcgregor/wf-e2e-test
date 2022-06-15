@@ -5,16 +5,18 @@ import {
   GetStaticPropsContext,
   NextPage
 } from 'next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import Button from '../../../components/elements/Button';
-import CodatStageOne from '../../../components/forms/integrations/codat/CodatStageOne';
-import CodatStageThree from '../../../components/forms/integrations/codat/CodatStageThree';
-import CodatStageTwo from '../../../components/forms/integrations/codat/CodatStageTwo';
-import Layout from '../../../components/layout/Layout';
-import SkeletonLayout from '../../../components/skeletons/SkeletonLayout';
-import { CodatCompanyType } from '../../../types/report';
+import Button from '../../components/elements/Button';
+import CodatStageFour from '../../components/forms/integrations/codat/CodatStageFour';
+import CodatStageOne from '../../components/forms/integrations/codat/CodatStageOne';
+import CodatStageThree from '../../components/forms/integrations/codat/CodatStageThree';
+import CodatStageTwo from '../../components/forms/integrations/codat/CodatStageTwo';
+import Layout from '../../components/layout/Layout';
+import SkeletonLayout from '../../components/skeletons/SkeletonLayout';
+import { CodatCompanyType } from '../../types/report';
 
 interface ReportIntegrationsPageProps {
   locale: string;
@@ -29,8 +31,16 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const [monthSample, setMonthSample] = useState<number>(3);
   const [yearPeriod, setYearPeriod] = useState<string | null>(null);
   const [monthPeriod, setMonthPeriod] = useState<string | null>(null);
+  const [sectorCode, setSectorCode] = useState<string>('0');
+  const [website, setWebsite] = useState<string>('');
+  const [numOfDirectors, setNumOfDirectors] = useState<string>('-');
+  const [numOfSubsidiaries, setNumOfSubsidiaries] = useState<string>('-');
+
   const [canGenerateReport, setCanGenerateReport] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const t = useTranslations();
 
   React.useEffect(() => {
     if (yearPeriod === null && monthPeriod === null && selectedCompany) {
@@ -55,36 +65,67 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
     }
   }, [selectedCompany, yearPeriod, monthPeriod]);
 
+  React.useEffect(() => {
+    if (stage <= 2) {
+      setCanGenerateReport(false);
+      setSectorCode('0');
+      setWebsite('');
+      setNumOfDirectors('-');
+      setNumOfSubsidiaries('-');
+    }
+  }, [stage]);
+
   const router = useRouter();
 
   const backLink = Array.isArray(router?.query?.from)
     ? router.query.from[0]
     : router?.query?.from;
 
-  const { id } = router?.query;
+  const { parentId } = router?.query;
 
   const handleSubmit = async () => {
     setLoading(true);
-    const res = await fetch(
-      `/api/integrations/codat/codat?companyId=${
-        selectedCompany?.company_id
-      }&connectionId=${
-        selectedCompany?.connection_id
-      }&parentId=${id}&periodLength=${monthSample}&startMonth=${yearPeriod}-${
+    setError(null);
+
+    // If there is a parentId, we need to include it in the request
+    // If no ID we need to include the details from stage 4
+    const hasParentIdBody = parentId
+      ? { parentId }
+      : {
+          website,
+          industrySectorCode: sectorCode !== '0' ? sectorCode : null,
+          numberOfDirectors: numOfDirectors !== '-' ? numOfDirectors : null,
+          numberOfSubsidiaries:
+            numOfSubsidiaries !== '-' ? numOfSubsidiaries : null
+        };
+
+    // Default parameters required are companyId, connectionId, periodLength and startMonth
+    const body = {
+      companyId: selectedCompany?.company_id,
+      connectionId: selectedCompany?.connection_id,
+      periodLength: monthSample,
+      startMonth: `${yearPeriod}-${
         monthPeriod?.length === 1 ? '0' + monthPeriod : monthPeriod
       }`,
-      {
-        method: 'POST'
-      }
-    );
+      ...hasParentIdBody
+    };
+
+    const res = await fetch(`/api/integrations/codat/codat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
 
     if (res.ok) {
       const { data } = await res.json();
+      router.push(`/report/${data.id}?from=/report/integrations/`);
+    } else {
       setLoading(false);
-      router.push(`/report/${data.id}?from=/report/${id}/integrations/`);
+      const json = await res.json();
+      setError(json.code);
     }
-
-    setLoading(false);
   };
 
   const disabledClassName = 'opacity-20';
@@ -139,15 +180,37 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
           locale={locale}
         />
 
-        <Button
-          variant="highlight"
-          className="max-w-xs"
-          onClick={() => handleSubmit()}
-          disabled={!canGenerateReport}
-          loading={loading}
-        >
-          Generate New Report
-        </Button>
+        {!parentId && (
+          <CodatStageFour
+            stage={stage}
+            loading={loading}
+            enabledClassName={enabledClassName}
+            disabledClassName={disabledClassName}
+            numOfDirectors={numOfDirectors}
+            setNumOfDirectors={setNumOfDirectors}
+            numOfSubsidiaries={numOfSubsidiaries}
+            setNumOfSubsidiaries={setNumOfSubsidiaries}
+            sectorCode={sectorCode}
+            setSectorCode={setSectorCode}
+            website={website}
+            setWebsite={setWebsite}
+          />
+        )}
+
+        <div className="flex items-center gap-4">
+          <div className="max-w-xs grow">
+            <Button
+              variant="highlight"
+              className="max-w-xs"
+              onClick={() => handleSubmit()}
+              disabled={!canGenerateReport}
+              loading={loading}
+            >
+              Generate New Report
+            </Button>
+          </div>
+          {error && <p className="text-red-500">{t(error)}</p>}
+        </div>
       </div>
     </Layout>
   );
@@ -163,17 +226,10 @@ export const getStaticProps = ({ locale }: GetStaticPropsContext) => {
         // You can get the messages from anywhere you like, but the recommended
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
-        ...require(`../../../messages/${locale}/sme-calculator.${locale}.json`),
-        ...require(`../../../messages/${locale}/integrations.${locale}.json`),
-        ...require(`../../../messages/${locale}/general.${locale}.json`)
+        ...require(`../../messages/${locale}/sme-calculator.${locale}.json`),
+        ...require(`../../messages/${locale}/integrations.${locale}.json`),
+        ...require(`../../messages/${locale}/general.${locale}.json`)
       }
     }
-  };
-};
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: true
   };
 };

@@ -42,17 +42,58 @@ const CodatIntegrationsAPI = (
           };
       }
     },
-    POST: async ({ query, authentication }) => {
+    POST: async ({ query, body, authentication }) => {
+      if (!body) {
+        return {
+          defaultResponse: {
+            code: 'NO_BODY',
+            status: 400,
+            message: 'No body provided'
+          }
+        };
+      }
+
+      const codatType = `${query.codatType}`;
+
       const {
-        codatType,
         companyId,
         connectionId,
         parentId,
         periodLength,
-        startMonth
-      } = query;
+        startMonth,
+        numberOfDirectors,
+        numberOfSubsidiaries,
+        industrySectorCode,
+        website
+      } = body;
+
       if (codatType === 'codat') {
-        const baseUrl = `${process.env.WF_AP_ROUTE}/integrations/codat?company_id=${companyId}&connection_id=${connectionId}&parent_id=${parentId}&period_length=${periodLength}`;
+        // Get non-Null parameters used in stage 4
+        // These are all optional, which is why we need to filter them before sending
+        const params = [
+          ['number_of_directors', numberOfDirectors],
+          ['number_of_subsidiaries', numberOfSubsidiaries],
+          ['industry_sector_code', industrySectorCode],
+          ['website', website]
+        ]
+          .map(param => {
+            const [key, value] = param;
+            if (value !== null) {
+              return `${key}=${value}`;
+            }
+          })
+          .filter(param => param);
+
+        // If the report was generated within a parent, just include the parent id
+        // Otherwise, include the optional parameters gernerated above
+        const hasParentParams = parentId
+          ? `&parent_id=${parentId}`
+          : params.length > 0
+          ? `&${params.join('&')}`
+          : '';
+
+        const baseUrl = `${process.env.WF_AP_ROUTE}/integrations/codat?company_id=${companyId}&connection_id=${connectionId}&period_length=${periodLength}${hasParentParams}`;
+
         return {
           response: await integrationsFetcher({
             url: startMonth ? `${baseUrl}&start_month=${startMonth}` : baseUrl,
@@ -71,9 +112,15 @@ const CodatIntegrationsAPI = (
       },
       {
         status: 404,
-        code: 'CREDENTIALS_NOT_FOUND',
-        message: 'Organisation does not have integration credentials.',
+        code: 'COUNTRY_CODE_NOT_FOUND',
+        message: 'Country code of the company found in Codat is not supported.',
         hasError: ({ res }) => res?.status === 404
+      },
+      {
+        status: 422,
+        code: 'INVALID_CURRENCY',
+        message: 'Invalid currency.',
+        hasError: ({ res }) => res?.status === 422
       }
     ]
   });
