@@ -20,6 +20,9 @@ import { StatusCodeConstants } from '../../../types/http-status-codes';
 
 import type { NextApiHandler } from 'next';
 import type { BatchManualRequest } from '../../../types/batch-reports';
+import APIHandler from '../../../lib/api-handler/handler';
+import authenticators from '../../../lib/api-handler/authenticators';
+import { fetchWrapper } from '../../../lib/utils/fetchWrapper';
 
 /** @COMPLETE */
 
@@ -28,6 +31,39 @@ const { INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED } = StatusCodeConstants;
 export interface BatchReportsManualApi extends BatchJobReportUpload {
   batchReportId: string | null;
 }
+
+const BatchReportsManualApi: NextApiHandler = async (request, response) => {
+  APIHandler(request, response, {
+    config: {
+      authenticate: authenticators.NextAuth,
+      sourceType: 'BATCH_REPORTS_MANUAL'
+    },
+    POST: async ({ body, authentication }) => {
+      const batchReport: BatchManualRequest = {
+        // they removed the .report_in requirement
+        entities: body?.entities || [],
+        name: body?.name || '',
+        currency: body?.currency || '',
+        /** @deprecated */
+        accounts_type: body?.accounts_type || 1
+      };
+
+      return {
+        response: await fetchWrapper(
+          `${process.env.WF_AP_ROUTE}/jobs/batch/upload`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${authentication?.accessToken}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(batchReport)
+          }
+        )
+      };
+    }
+  });
+};
 
 // Declaring function for readability with Sentry wrapper
 const batchReports: NextApiHandler<BatchReportsManualApi> = async (
@@ -96,4 +132,4 @@ const batchReports: NextApiHandler<BatchReportsManualApi> = async (
   }
 };
 
-export default withSentry(batchReports);
+export default withSentry(BatchReportsManualApi);
