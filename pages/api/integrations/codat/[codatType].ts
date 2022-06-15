@@ -92,8 +92,6 @@ const CodatIntegrationsAPI = (
           ? `&${params.join('&')}`
           : '';
 
-        console.log(hasParentParams);
-
         const baseUrl = `${process.env.WF_AP_ROUTE}/integrations/codat?company_id=${companyId}&connection_id=${connectionId}&period_length=${periodLength}${hasParentParams}`;
 
         return {
