@@ -37,7 +37,7 @@ export const CREATE_ERROR_OF_TYPE = (
     return {
       ...baseError,
       sourceType: type,
-      code: `${type}_${code as BaseErrorCodeEnum}`,
+      code: `${type}_${status}`,
       message: createErrorMessage(baseErrorCode, type)
     };
   }
@@ -47,7 +47,7 @@ export const CREATE_ERROR_OF_TYPE = (
     return {
       status,
       sourceType: type,
-      code: `${type}_${code as BaseErrorCodeEnum}`,
+      code: `${type}_${status}`,
       message: message
     };
   }
@@ -56,6 +56,6 @@ export const CREATE_ERROR_OF_TYPE = (
     ...BASE_ERRORS[`${UNKNOWN_API_ERROR}`],
     status: 500,
     sourceType: type,
-    code: `${type}_${code as BaseErrorCodeEnum}`
+    code: `${type}_${status}`
   };
 };

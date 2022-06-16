@@ -26,7 +26,7 @@ export type MakeErrorOutput = NextApiResponse & {
   status: HttpStatusCode;
   sourceType: ErrorCodeType;
   isError: true;
-  errorCode: ErrorCodeType;
+  code: ErrorCodeType;
   message: string;
   details: {
     requestUrl: string;
@@ -44,7 +44,7 @@ export type MakeErrorInput = {
   status: HttpStatusCode;
   sourceType: ErrorCodeType | string;
   message: string;
-  errorCode: ErrorCodeType;
+  code: ErrorCodeType;
   details: {
     requestUrl: string;
     requestBody: RequestBodyType;
