@@ -7,6 +7,7 @@ import Company from '../../lib/funcs/company';
 import { orbisAvailableSearchCountries } from '../../lib/settings/sme-calc.settings';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { fetchWrapper } from '../../lib/utils/fetchWrapper';
 
 const searchCompaniesApi = async (
   request: NextApiRequest,
@@ -17,7 +18,7 @@ const searchCompaniesApi = async (
       sourceType: 'SEARCH_COMPANIES',
       authenticate: authenticators.NextAuth
     },
-    GET: async ({ query }) => {
+    GET: async ({ query, authentication }) => {
       const searchQuery: string | undefined = query?.query
         ?.toString()
         ?.toLowerCase();
@@ -79,32 +80,16 @@ const searchCompaniesApi = async (
         countryCode &&
         orbisAvailableSearchCountries.includes(countryCode)
       ) {
-        // search orbis for matching companies in the country
-        const searchResults = await Company.SearchOrbisCompanies(
-          process.env.ORBIS_SEARCH_API_KEY,
-          searchQuery,
-          countryCode
-        );
-
-        // filter out those without a BVDID
-        // reduce to a consistent format
-        const reducedCompanies = Company.filterAndReduceEUCompanyInformation(
-          searchResults?.data
-        );
-
-        // map to the required format to return
-        const mappedCompanies = Company.mapEUCompanyDataToResponseFormat(
-          reducedCompanies,
-          countryCode
-        );
-
         return {
-          defaultResponse: {
-            status: 200,
-            code: 'SEARCH_COMPANIES_SUCCESS',
-            message: 'Search successful.',
-            data: mappedCompanies
-          }
+          response: await fetchWrapper(
+            `${process.env.WF_AP_ROUTE}/reports/search-companies?country=${countryCode}&query=${searchQuery}`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${authentication?.accessToken}`
+              }
+            }
+          )
         };
       } else {
         return {
