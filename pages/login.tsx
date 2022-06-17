@@ -38,7 +38,7 @@ const Login = () => {
 
   useEffect(() => {
     if (session && session.user) {
-      const user = session?.user as UserType;
+      const user = session?.user;
       // get their preference for where to land and redirect them
       const userHomePagePref = getRouteFromPage(
         user?.preferences?.defaults?.home_page || ''

@@ -22,7 +22,23 @@ type ErrorCodeKeys = {
   [key: string]: string;
 };
 
-export type RequestBodyType = object | null;
+export type MakeErrorOutput = NextApiResponse & {
+  status: HttpStatusCode;
+  sourceType: ErrorCodeType;
+  isError: true;
+  errorCode: ErrorCodeType;
+  message: string;
+  details: {
+    requestUrl: string;
+    requestBody: RequestBodyType;
+    responseBody: object | null;
+    requestHeaders: object | null;
+    requiresAuth?: boolean | null;
+    hadToken?: boolean | null;
+  };
+};
+
+export type RequestBodyType = Record<string, any> | null;
 
 export type MakeErrorInput = {
   status: HttpStatusCode;

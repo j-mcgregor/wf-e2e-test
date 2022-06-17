@@ -39,7 +39,7 @@ const AddMoreData = ({
     : 'Add Integration';
 
   const integrationLink = isIntegrated
-    ? `/report/${id}/integrations?from=/report/${id}`
+    ? `/report/integrations?&parentId=${id}&from=/report/${id}`
     : `/organisation`;
 
   return (

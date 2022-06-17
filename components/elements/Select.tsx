@@ -22,7 +22,7 @@ interface SelectProps extends BaseSelectProps {
 const defaultFocusClasses = 'focus:ring-highlight focus:border-highlight';
 const defaultErrorClasses = 'focus:ring-red-400 focus:border-red-400';
 const defaultClasses =
-  'appearance-none block w-full px-3 py-2 my-2 rounded-md focus:outline-none placeholder-gray-400 sm:text-sm text-black';
+  'appearance-none block w-full px-3 py-2 my-2 rounded-md focus:outline-none placeholder-gray-400 sm:text-sm text-black h-9';
 const defaultLabelClasses = 'block text-sm font-medium';
 
 const Input = React.forwardRef<HTMLSelectElement, SelectProps>(

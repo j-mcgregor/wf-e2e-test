@@ -42,7 +42,11 @@ Promise<SuccessResponseType<T> | ErrorResponseType | void> => {
   const url = request.url as string;
   const headers = request.headers;
   const body =
-    Object.keys(request.body).length > 0 ? JSON.parse(request.body) : undefined;
+    typeof request.body === 'string' && request.body
+      ? JSON.parse(request.body)
+      : Object.keys(request.body).length > 0
+      ? request.body
+      : undefined;
 
   const { config, customErrors = [] } = options;
   const { authenticate, publicMethods, sourceType } = config;

@@ -55,6 +55,16 @@
   @apply print:max-w-[630px];
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+  /* Firefox */
+}
+
 /* toastify */
 
 .Toastify__toast-body {

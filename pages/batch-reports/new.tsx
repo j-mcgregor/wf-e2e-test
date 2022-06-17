@@ -1,10 +1,10 @@
+/* eslint-disable sonarjs/prefer-immediate-return */
 /* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';
 import { GetStaticPropsContext, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createRef, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
 
@@ -18,17 +18,18 @@ import SelectMenu from '../../components/elements/SelectMenu';
 import Layout from '../../components/layout/Layout';
 import { SimpleValue } from '../../components/sme-calc-sections/AdvancedSearch';
 import UploadNewData from '../../components/uploads/UploadNewData';
-import { useCSV } from '../../hooks/useCSV';
-import { useCsvValidators } from '../../hooks/useCsvValidators';
+import { useManualReportUploadFile } from '../../hooks/useManualReportUploadFile';
+import { useFileValidators } from '../../hooks/useFileValidators';
 import { accountTypes } from '../../lib/settings/report.settings';
 import Settings from '../../lib/settings/settings.settings';
 import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
 import { ISO, ISO_CODE } from '../../lib/utils/constants';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
-import type { SubmitReportType } from '../../types/report';
 import { BatchReportsIndexApi } from '../api/batch-reports';
 import { BatchReportsManualApi } from '../api/batch-reports/manual';
+
+import type { SubmitReportType } from '../../types/report';
 
 const CreateBatchReport: NextPage = () => {
   const t = useTranslations();
@@ -39,21 +40,22 @@ const CreateBatchReport: NextPage = () => {
   const [fileSelectedName, setFileSelectedName] = useState<string>('');
 
   const {
-    csvData,
-    csvValues,
-    fileName,
-    totalCompanies,
+    data,
+    values,
     isCSV,
-    isAutoOrManual
-  } = useCSV(fileSelected);
-
-  const { isValid, errors, missingHeaders } = useCsvValidators(
-    csvData,
-    isAutoOrManual.validator,
-    csvValues,
+    isExcel,
     totalCompanies,
-    isAutoOrManual.type
-  );
+    isAutoOrManual,
+    fileName
+  } = useManualReportUploadFile(fileSelected);
+
+  const { isValid, errors, missingHeaders } = useFileValidators({
+    fileData: data,
+    validators: isAutoOrManual?.validator,
+    fileValues: values,
+    totalCompanies,
+    type: isAutoOrManual?.type
+  });
 
   useEffect(() => {
     if (fileName) {
@@ -83,7 +85,7 @@ const CreateBatchReport: NextPage = () => {
 
   const runReports: SubmitReportType = async (setError, setLoading) => {
     // if input name missing, show error
-    if (!reportName || reportName.length === 0) {
+    if (!reportName || reportName.length === 0 || !data || !isAutoOrManual) {
       setReportNameError(true);
       return false;
     }
@@ -95,8 +97,8 @@ const CreateBatchReport: NextPage = () => {
     // if /jobs/batch           BatchAutoRequest
     // if /jobs/batch/upload    BatchManualRequest
     const reqData = convertCSVToRequestBody({
-      csvData,
-      csvValues,
+      csvData: data,
+      csvValues: values,
       name: reportName,
       uploadType: isAutoOrManual.type,
       accounts_type: Number(accountType.optionValue),
@@ -189,8 +191,9 @@ const CreateBatchReport: NextPage = () => {
           buttonText={!processing ? t('run_batch') : t('running')}
           onSubmit={runReports}
           isCSV={isCSV}
+          isExcel={isExcel}
           isValid={isValid}
-          uploadType={isAutoOrManual.type}
+          uploadType={isAutoOrManual?.type}
           errors={errors}
           missingHeaders={missingHeaders}
           disableButton={complete || processing}
@@ -264,7 +267,7 @@ const CreateBatchReport: NextPage = () => {
                 } rounded-none`}
                 variant={!complete ? 'none' : 'highlight'}
                 disabled={!complete}
-                linkTo={`/batch-reports/${results?.id}?demo=true`}
+                linkTo={`/batch-reports/${results?.id}`}
               >
                 <p>{t('view_results')}</p>
               </Button>
