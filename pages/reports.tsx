@@ -13,6 +13,7 @@ import Table, { TableHeadersType } from '../components/table/Table';
 import { useToast } from '../hooks/useToast';
 import appState from '../lib/appState';
 import { fetchMockData } from '../lib/mock-data/helpers';
+import fetcher from '../lib/utils/fetcher';
 import { createReportTitle } from '../lib/utils/text-helpers';
 import { ReportSnippetType } from '../types/global';
 
@@ -27,7 +28,8 @@ const Reports = () => {
 
   const { data, isValidating } = useSWR(
     `/api/user/reports?limit=${limit}&skip=${skip}`,
-    fetchMockData(400, 'REPORTS'),
+    // fetchMockData(400, 'REPORTS'),
+    fetcher,
     {
       revalidateOnFocus: false
     }
@@ -153,7 +155,7 @@ const Reports = () => {
           <Table
             tableName={t('no_data_recent_reports')}
             headers={ReportTableHeaders}
-            data={data?.data.reports || []}
+            data={data?.data?.reports || []}
             isLoading={isValidating}
             limit={limit}
             total={user?.total_reports}
