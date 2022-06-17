@@ -18,7 +18,6 @@ import { VALID_PASSWORD } from '../../../lib/utils/regexes';
 import RadioSelector from '../../elements/RadioSelector';
 import ApiFetcher from '../../../lib/utils/api-fetcher';
 import APIHandler from '../../../lib/api-handler/handler';
-import { ResponseType } from '../../../lib/api-handler/api-handler';
 
 interface FormDataType {
   email: string;
@@ -57,7 +56,7 @@ const AddNewUserForm = ({
         data
       );
 
-      console.log(props);
+      // console.log(props);
 
       if (!ok) {
         setSubmitError({ type: message });
