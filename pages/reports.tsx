@@ -33,8 +33,6 @@ const Reports = () => {
     }
   );
 
-  console.log(data);
-
   const getReportName = (row: { company_name: string; created_at: string }) =>
     createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
 
