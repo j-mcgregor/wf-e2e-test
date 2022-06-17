@@ -107,7 +107,7 @@ const AlternativeSearchBox = ({
           onChange={e => setInputValue(e.target.value)}
           onFocus={() => setSearchHasFocus(true)}
         />
-        {data && data.data.length > 0 && (
+        {data?.data && data?.data.length > 0 && (
           <label className="absolute right-5 top-2 sm:right-[8.5rem]">
             {data?.data.length} results
           </label>
@@ -135,7 +135,7 @@ const AlternativeSearchBox = ({
                   <LoadingIcon className="mb-1 w-6 h-6" aria-hidden="true" />
                   {loadingText}
                 </>
-              ) : !data || (!searchValue && data?.length === 0) ? (
+              ) : !data?.data || (!searchValue && data?.data.length === 0) ? (
                 // shows if there is no data at all (initial stage)
                 // also shows if there is no text input and the search data has a length of 0
                 <>
