@@ -4,8 +4,6 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useSWR from 'swr';
 import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
-import { UserIndexApi } from '../pages/api/user';
-import { UserType } from '../types/global';
 
 const useUser = (fetch: boolean = true) => {
   const { user } = useRecoilValue(appState);
@@ -14,8 +12,22 @@ const useUser = (fetch: boolean = true) => {
   const { data: sessionUser } = useSession();
 
   // if no user then revalidate onMount to prevent blank page
-  const { data, isValidating } = useSWR<UserIndexApi>(
-    fetch && '/api/user',
+  const { data, isValidating } = useSWR(fetch && '/api/user', fetcher, {
+    revalidateOnMount: !user,
+    revalidateOnFocus: false
+  });
+
+  const { data: reports, isValidating: isValidatingReports } = useSWR(
+    fetch && '/api/user/reports',
+    fetcher,
+    {
+      revalidateOnMount: !user,
+      revalidateOnFocus: false
+    }
+  );
+
+  const { data: bookmarks, isValidating: isValidatingBookmarks } = useSWR(
+    fetch && '/api/user/bookmarks',
     fetcher,
     {
       revalidateOnMount: !user,
@@ -25,10 +37,30 @@ const useUser = (fetch: boolean = true) => {
   const is_sso = sessionUser?.user?.is_sso;
   const isLoading = !data;
   React.useEffect(() => {
+    let user = {};
+
     if (data?.user && !isValidating) {
       setState({ ...appState, user: { ...data?.user, is_sso } });
     }
-  }, [data, sessionUser]);
+
+    if (data?.data && !isValidating) {
+      user = { ...data.data };
+    }
+
+    if (bookmarks?.data && !isValidatingBookmarks) {
+      user = { ...user, bookmarked_reports: bookmarks.data };
+    }
+
+    if (reports?.data && !isValidatingReports) {
+      user = {
+        ...user,
+        reports: reports.data.reports,
+        total: reports.data.total
+      };
+    }
+
+    setState({ ...appState, user: { ...user } });
+  }, [data, bookmarks, reports, sessionUser]);
 
   const isAdmin = user?.organisation_role === 'Admin';
 
@@ -36,9 +68,9 @@ const useUser = (fetch: boolean = true) => {
     user: user ? user : null,
     isAdmin,
     loading: isLoading,
-    isError: data?.is_error,
+    isError: data?.error,
     error: {
-      message: data?.is_error ? data?.message : false,
+      message: data?.error ? data?.message : false,
       status: data?.status
     },
     message: data?.message

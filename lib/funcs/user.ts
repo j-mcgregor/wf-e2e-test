@@ -322,77 +322,6 @@ const getSSOToken = async (
 
 /**
  * ***************************************************
- * RESET PASSWORD
- * ***************************************************
- */
-
-export interface ResetPassword extends HandlerReturn {
-  msg: string | null;
-}
-
-export interface ResetPasswordProps {
-  newPassword: string;
-}
-
-const resetPassword: ApiHandler<ResetPassword, ResetPasswordProps> = async (
-  token: string,
-  { newPassword }
-) => {
-  if (!token) {
-    return {
-      ...makeApiHandlerResponseFailure({ message: 'Missing token' }),
-      msg: null
-    };
-  }
-  if (!newPassword) {
-    return {
-      ...makeApiHandlerResponseFailure({ message: 'Missing new Password' }),
-      msg: null
-    };
-  }
-
-  try {
-    const response = await fetchWrapper(
-      `${process.env.WF_AP_ROUTE}/reset-password/`,
-      {
-        method: 'POST',
-        body: JSON.stringify({ token, new_password: newPassword })
-      }
-    );
-    const result = await response.json();
-    if (response.ok) {
-      return { ...makeApiHandlerResponseSuccess(), msg: result.msg };
-    }
-
-    if (errorsBySourceType.USER[response.status]) {
-      return {
-        ...makeErrorResponse({
-          status: response.status,
-          sourceType: 'USER'
-        }),
-        msg: result.detail
-      };
-    } else {
-      return {
-        ...makeErrorResponse({
-          status: response.status,
-          sourceType: 'USER'
-        }),
-        msg: null,
-        message: 'USER_PROCESSING_ISSUE'
-      };
-    }
-  } catch (error) {
-    return {
-      ...makeApiHandlerResponseFailure(),
-      msg: null,
-      message: 'USER_PROCESSING_ISSUE'
-    };
-  }
-};
-
-/**
- * ***************************************************
  * UPDATE USER
  * ***************************************************
  */
@@ -693,7 +622,6 @@ const User = {
   getFullUser,
   getReportsHistory,
   updateUser,
-  resetPassword,
   forgotPassword,
   getSSOToken,
   giveDefaults,

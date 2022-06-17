@@ -1,5 +1,3 @@
-/* eslint-disable sonarjs/prefer-immediate-return */
-/* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';
 import { GetStaticPropsContext, NextPage } from 'next';
@@ -26,8 +24,6 @@ import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
 import { ISO, ISO_CODE } from '../../lib/utils/constants';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
-import { BatchReportsIndexApi } from '../api/batch-reports';
-import { BatchReportsManualApi } from '../api/batch-reports/manual';
 
 import type { SubmitReportType } from '../../types/report';
 
@@ -108,15 +104,14 @@ const CreateBatchReport: NextPage = () => {
     try {
       // POST '/api/batch-reports' => BatchReportsIndexApi (auto)
       // POST '/api/batch-reports/upload' => BatchReportsManualApi (manual)
-      const result: BatchReportsIndexApi | BatchReportsManualApi =
-        await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
+      const result = await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
 
       if (result.ok) {
-        setResults({ id: result.batchReportId ?? '' });
+        setResults({ id: result?.data?.id ?? '' });
       }
-      if (result.batchReportId) {
+      if (result?.data?.id) {
         // fetch the new batch reports
-        mutate<BatchReportsIndexApi>('/api/batch-reports');
+        mutate('/api/batch-reports');
         // push to batch-reports where in progress reports will show
         return router.push(`/batch-reports`);
       }

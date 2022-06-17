@@ -4,7 +4,7 @@ import {
   SearchIcon
 } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
 import useSWR from 'swr';
 import { useTranslations } from 'use-intl';
 
@@ -31,6 +31,10 @@ const SearchBox = ({
 
   const [searchHasFocus, setSearchHasFocus] = useState(false);
   const [searchValue, setSearchValue] = useState<string | null>('');
+  const [companies, setCompanies] = useState<CompanyType[]>([]);
+  const [totalResults, setTotalResults] = useState<number>(0);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const loadingText = t('loading');
   const searchStartText = t('search_start');
@@ -52,27 +56,49 @@ const SearchBox = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const companySearch = debounce(() => setSearchValue(e.target.value), 1000);
     companySearch();
+    setLoading(true);
   };
 
-  const { data } = useSWR<CompanyType[] & { error?: string; message?: string }>(
-    searchValue &&
-      searchHasFocus &&
-      `/api/search-companies?query=${searchValue}&country=${countryCode}`,
-    fetcher
-  );
+  const handleLoadMoreCompanies = async () => {
+    if (searchValue && searchHasFocus) {
+      const result = await fetch(
+        `/api/search-companies?query=${searchValue}&country=${countryCode}&skip=${companies.length}`
+      );
+      const json = await result.json();
+      setCompanies([...companies, ...json.data.results]);
+    }
+  };
 
   useEffect(() => {
-    if (data?.error) {
-      Sentry.captureException(new Error(data.error), {
-        extra: {
-          data:
-            data.message && isJsonString(data.message)
-              ? JSON.parse(data.message)
-              : data.message
+    const getCompanies = async () => {
+      setError(false);
+      if (searchValue && searchHasFocus) {
+        const result = await fetch(
+          `/api/search-companies?query=${searchValue}&country=${countryCode}&skip=${0}`
+        );
+        const json = await result.json();
+
+        if (json.error) {
+          setError(json.error);
+          setCompanies([]);
+          setLoading(false);
+          return Sentry.captureException(new Error(json.error), {
+            extra: {
+              data:
+                json.message && isJsonString(json.message)
+                  ? JSON.parse(json.message)
+                  : json.message
+            }
+          });
         }
-      });
-    }
-  }, [data]);
+        setCompanies([...json.data.results]);
+        setTotalResults(json.data.totalResults);
+        setLoading(false);
+      }
+    };
+
+    getCompanies();
+  }, [searchValue]);
 
   // handle the closing of the dropdown so that state can be set
   const containerRef = useRef<HTMLDivElement>(null);
@@ -98,8 +124,10 @@ const SearchBox = ({
           placeholder={`${t('enter_company_name')}`}
           onChange={e => handleChange(e)}
         />
-        {data && data.length > 0 && (
-          <label className="absolute right-5">{data?.length} results</label>
+        {companies.length > 0 && (
+          <label className="absolute right-5">
+            showing {companies.length} of {totalResults} results
+          </label>
         )}
       </div>
 
@@ -108,13 +136,14 @@ const SearchBox = ({
         <div className="relative">
           {searchHasFocus && (
             <div className="px-4 border border-primary rounded h-[100px] absolute w-full z-10 bg-white flex flex-col space-x-6 justify-center items-center text-xl">
-              {searchValue && !data ? (
+              {searchValue && loading ? (
                 // shows if there is searchValue but no data (loading)
                 <>
                   <LoadingIcon className="mb-1 w-6 h-6" aria-hidden="true" />
                   {loadingText}
                 </>
-              ) : !data || (!searchValue && data?.length === 0) ? (
+              ) : companies.length === 0 ||
+                (!searchValue && companies.length === 0) ? (
                 // shows if there is no data at all (initial stage)
                 // also shows if there is no text input and the search data has a length of 0
                 <>
@@ -136,7 +165,7 @@ const SearchBox = ({
             </div>
           )}
 
-          {data?.error && (
+          {error && (
             <div className="px-4 border border-primary text-red-600 rounded overflow-y-scroll pt-4 h-[120px] text-center absolute w-full z-10 bg-white">
               <ExclamationCircleIcon className="h-6 w-6 mx-auto" />
               <h4 className="text-2xl ">
@@ -147,9 +176,9 @@ const SearchBox = ({
           )}
 
           {/* Displays the results */}
-          {data && data?.length > 0 && (
-            <ul className="px-4 border border-primary rounded overflow-y-scroll pt-4 space-y-4 max-h-[400px] min-h-[120px] absolute w-full z-10 bg-white">
-              {data.map(company => {
+          {companies.length > 0 && (
+            <ul className="px-4 border border-primary rounded overflow-y-scroll py-4 space-y-4 max-h-[400px] min-h-[120px] absolute w-full z-10 bg-white">
+              {companies.map(company => {
                 return (
                   <button
                     key={company.company_number}
@@ -165,6 +194,15 @@ const SearchBox = ({
                   </button>
                 );
               })}
+              {companies.length < totalResults && (
+                <button
+                  type="button"
+                  className="w-full flex justify-center font-medium"
+                  onClick={handleLoadMoreCompanies}
+                >
+                  {t('load_more')}
+                </button>
+              )}
             </ul>
           )}
         </div>

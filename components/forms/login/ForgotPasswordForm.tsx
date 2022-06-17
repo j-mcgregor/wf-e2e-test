@@ -9,7 +9,6 @@ import {
 } from '../../../lib/utils/error-codes';
 import fetcher from '../../../lib/utils/fetcher';
 import { VALID_EMAIL } from '../../../lib/utils/regexes';
-import { PasswordResetApi } from '../../../pages/api/password-reset';
 import Button from '../../elements/Button';
 import ErrorMessage from '../../elements/ErrorMessage';
 import Input from '../../elements/Input';
@@ -35,9 +34,7 @@ const ForgotPasswordForm = () => {
   const onSubmit = async (data: FormValues) => {
     try {
       // absolute URLs necessary for tests
-      const response: PasswordResetApi = await fetcher(
-        `/api/password-reset?email=${data.email}`
-      );
+      const response = await fetcher(`/api/password-reset?email=${data.email}`);
 
       if (response.ok) {
         return setSubmittedState(true);

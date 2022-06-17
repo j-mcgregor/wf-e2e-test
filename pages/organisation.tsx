@@ -1,26 +1,23 @@
+import { Tab } from '@headlessui/react';
+import { CheckIcon, LightningBoltIcon } from '@heroicons/react/outline';
 import { useTranslations } from 'next-intl';
 import { GetStaticPropsContext } from 'next/types';
 import React, { Fragment } from 'react';
+import ReactTimeago from 'react-timeago';
 import useSWR from 'swr';
 
+import LinkCard from '../components/cards/LinkCard';
 import Button from '../components/elements/Button';
-import Stats from '../components/elements/Stats';
-import Table, { TableHeadersType } from '../components/table/Table';
 import Layout from '../components/layout/Layout';
+import LoadingIcon from '../components/svgs/LoadingIcon';
+import Table, { TableHeadersType } from '../components/table/Table';
 import useOrganisation from '../hooks/useOrganisation';
 import fetcher from '../lib/utils/fetcher';
+import { createReportTitle } from '../lib/utils/text-helpers';
 import {
   OrganisationUser,
   OrganisationUserReport
 } from '../types/organisations';
-import { OrganisationTypeApi } from './api/organisation/[orgId]/[type]';
-import LoadingIcon from '../components/svgs/LoadingIcon';
-import { Tab } from '@headlessui/react';
-import { getTotalOrganisationReportsType } from '../lib/funcs/organisation';
-import ReactTimeago from 'react-timeago';
-import { createReportTitle } from '../lib/utils/text-helpers';
-import { CheckIcon, LightningBoltIcon } from '@heroicons/react/outline';
-import LinkCard from '../components/cards/LinkCard';
 
 const Organisation = () => {
   const t = useTranslations();
@@ -41,10 +38,10 @@ const Organisation = () => {
   const limit = 10;
 
   const {
-    data: result,
+    data: organisationUsers,
     error,
     isValidating
-  } = useSWR<OrganisationTypeApi>(
+  } = useSWR(
     organisation?.id &&
       `/api/organisation/${organisation?.id}/users?limit=${limit}&skip=${skip}`,
     fetcher,
@@ -54,27 +51,26 @@ const Organisation = () => {
     }
   );
 
-  const { data: userReports, isValidating: reportsIsValidating } =
-    useSWR<getTotalOrganisationReportsType>(
-      `/api/organisation/${organisation?.id}?reports=true&skip=${reportsSkip}&limit=${limit}`,
-      fetcher,
-      {
-        revalidateOnFocus: false,
-        revalidateOnMount: true
-      }
-    );
+  const { data: userReports, isValidating: reportsIsValidating } = useSWR(
+    `/api/organisation/${organisation?.id}/all-reports?skip=${reportsSkip}&limit=${limit}`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: true
+    }
+  );
 
   React.useEffect(() => {
-    if (result?.users) {
-      setUsers(result.users);
+    if (organisationUsers?.data?.users) {
+      setUsers(organisationUsers?.data?.users);
     }
-  }, [result]);
+  }, [users, organisation]);
 
   React.useEffect(() => {
-    if (userReports?.organisationUserReports) {
-      setReports(userReports.organisationUserReports);
+    if (userReports?.data?.organisationUserReports) {
+      setReports(userReports.data.organisationUserReports);
     }
-  });
+  }, [userReports, organisation]);
 
   const headerWidth = 'w-1/10 min-w-[88px]';
 
@@ -216,7 +212,7 @@ const Organisation = () => {
                 <div className="max-h-[700px]">
                   <Table
                     tableName={t('users_title')}
-                    total={result?.total || 0}
+                    total={organisationUsers?.data?.total || 0}
                     limit={limit}
                     headers={usersHeaders}
                     data={users}

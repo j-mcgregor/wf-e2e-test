@@ -78,7 +78,7 @@ export const makeErrorObject = ({
       status: baseError.status,
       // use the specific generic message or pass a custom message
       message: errorMessage,
-      code: baseError?.code || code
+      code: `${sourceType}_${status}`
     };
   }
 
@@ -97,12 +97,9 @@ export const makeErrorObject = ({
 // create default errors by type (not status)
 export const defaultErrorOfType = (
   defaultErrorInput: DefaultErrorInput,
-  errorCode: BaseErrorCodeEnum
+  code: BaseErrorCodeEnum
 ): ErrorObjectOutput => {
-  const baseError = CREATE_ERROR_OF_TYPE(
-    defaultErrorInput.sourceType,
-    errorCode
-  );
+  const baseError = CREATE_ERROR_OF_TYPE(defaultErrorInput.sourceType, code);
   const errorDetails = getErrorDetails(defaultErrorInput);
   return makeErrorObject({
     ...baseError,
@@ -139,11 +136,13 @@ export const makeResponseObject = <T>(
   {
     status,
     sourceType,
+    code,
     data,
     requestDetails
   }: {
     status: number;
     sourceType: string;
+    code: string;
     data: T;
     blob?: Blob;
     requestDetails: ErrorDetailsType;
@@ -164,7 +163,8 @@ export const makeResponseObject = <T>(
   if (status >= 200 && status < 300) {
     return makeSuccessObject({
       sourceType,
-      data
+      data,
+      code: `${sourceType}_${status}`
     });
   }
 
@@ -175,7 +175,7 @@ export const makeResponseObject = <T>(
     ...BASE_ERROR,
     sourceType,
     // use the custom error if there is one
-    code: BASE_ERROR.code,
+    code: `${sourceType}_${status}`,
     details: requestDetails
   });
 };
@@ -183,6 +183,7 @@ export const makeResponseObject = <T>(
 const makeSuccessObject = <T>(successResponse: {
   sourceType: string;
   data: T;
+  code: string;
 }): SuccessResponseType<T> => {
   return {
     ok: true,

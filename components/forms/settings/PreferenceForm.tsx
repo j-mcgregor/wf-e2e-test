@@ -34,6 +34,12 @@ const prefDefaults = {
   reporting: preferences.defaults.reporting_country
 };
 
+const communicationDefaults = {
+  batch_report_email: preferences.communication.batch_report_email,
+  service_updates: preferences.communication.service_updates,
+  company_updates: preferences.communication.company_updates
+};
+
 const PreferenceForm = ({
   formClassName,
   formLabelClassName
@@ -82,6 +88,10 @@ const PreferenceForm = ({
               currency: data.currency,
               home_page: data.homePage,
               reporting_country: data.reporting
+            },
+            communication: {
+              ...communicationDefaults,
+              ...user.preferences.communication
             }
           }
         })

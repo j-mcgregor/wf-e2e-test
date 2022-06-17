@@ -13,7 +13,6 @@ import {
   validCountryCodes
 } from '../../lib/settings/sme-calc.settings';
 import fetcher from '../../lib/utils/fetcher';
-import { ReportsReportApi } from '../../pages/api/reports/report';
 import { CompanyType } from '../../types/global';
 import Button from '../elements/Button';
 import ErrorMessage from '../elements/ErrorMessage';
@@ -163,21 +162,21 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     };
 
     try {
-      const createReportRes: ReportsReportApi = await fetcher(
+      const createReportRes = await fetcher(
         '/api/reports/report',
         'POST',
         params
       );
 
-      if (createReportRes?.reportId) {
+      if (createReportRes?.data?.id) {
         // update the global user state to get the new report
         mutate('/api/user');
         // redirect to the report page
 
-        router.push(`/report/${createReportRes.reportId}`);
+        router.push(`/report/${createReportRes.data?.id}`);
       }
 
-      if (!createReportRes?.reportId) {
+      if (!createReportRes?.data?.id) {
         Sentry.captureException(new Error(createReportRes.error), {
           extra: {
             data: {

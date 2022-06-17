@@ -1,19 +1,19 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import { useSession, signOut } from 'next-auth/react';
-
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
 import * as Sentry from '@sentry/react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import config from '../../config';
+import useHubspotChat from '../../hooks/useHubspotChat';
+import useLocalStorage from '../../hooks/useLocalStorage';
+import useUser from '../../hooks/useUser';
+import NewDeploymentNotification from '../cards/NewDeploymentNotification';
+import ErrorSkeleton from '../skeletons/ErrorSkeleton';
 import SkeletonLayout from '../skeletons/SkeletonLayout';
 import Nav from './Nav';
 import Seo from './Seo';
-import useUser from '../../hooks/useUser';
-import ErrorSkeleton from '../skeletons/ErrorSkeleton';
-import useHubspotChat from '../../hooks/useHubspotChat';
-import useLocalStorage from '../../hooks/useLocalStorage';
-import useSessionStorage from '../../hooks/useSessionStorage';
-import NewDeploymentNotification from '../cards/NewDeploymentNotification';
-import config from '../../config';
+
 interface LayoutProps {
   title?: string;
   pageTitle?: string;
@@ -59,7 +59,7 @@ const Layout = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  if (!loading && adminRequired && !isAdmin && user) {
+  if (!loading && adminRequired && !isAdmin && user && status !== 'loading') {
     router.push('/no-access');
     return <SkeletonLayout />;
   }

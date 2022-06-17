@@ -2,72 +2,80 @@
 /* eslint-disable security/detect-object-injection */
 import { withSentry } from '@sentry/nextjs';
 
-import User, { ForgotPassword, ResetPassword } from '../../lib/funcs/user';
-import { errorsBySourceType } from '../../lib/utils/error-handling';
-import { makeApiHandlerResponseFailure } from '../../lib/utils/http-helpers';
-import { StatusCodeConstants } from '../../types/http-status-codes';
-
-import type { NextApiHandler } from 'next';
+import authenticators from '../../lib/api-handler/authenticators';
+import APIHandler from '../../lib/api-handler/handler';
+import { fetchWrapper } from '../../lib/utils/fetchWrapper';
 import { VALID_PASSWORD } from '../../lib/utils/regexes';
 
-const { BAD_REQUEST, METHOD_NOT_ALLOWED } = StatusCodeConstants;
+import type { NextApiHandler } from 'next';
 
-export interface PasswordResetApi extends ForgotPassword, ResetPassword {}
+const XMLHeaders = {
+  'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+};
 
-// Declaring function for readability with Sentry wrapper
-const passwordReset: NextApiHandler<PasswordResetApi> = async (
-  request,
-  response
-) => {
-  const { email } = request.query;
-  const { token, newPassword } = request.body;
-  switch (request.method) {
-    case 'GET':
-      /** @action REQUEST EMAIL TO CHANGE EMAIL ADDRESS  */
+const returnMissingQueryResponse = (queryType: string) => {
+  return {
+    defaultResponse: {
+      status: 400,
+      code: `${queryType.replace(' ', '_').toUpperCase()}_REQUIRED`,
+      message: `${queryType.charAt(0).toUpperCase()} is required.`
+    }
+  };
+};
+
+const passwordReset: NextApiHandler = async (request, response) => {
+  APIHandler(request, response, {
+    config: {
+      sourceType: 'PASSWORD_RESET',
+      authenticate: authenticators.NextAuth,
+      publicMethods: {
+        GET: true,
+        POST: true
+      }
+    },
+    GET: async ({ query }) => {
+      const { email } = query;
+
       if (email && typeof email === 'string') {
-        const result = await User.forgotPassword(email, {});
+        return {
+          response: await fetchWrapper(
+            `${process.env.WF_AP_ROUTE}/password-recovery/${email}`,
+            {
+              method: 'POST',
+              headers: {
+                ...XMLHeaders
+              }
+            }
+          )
+        };
+      }
+      return returnMissingQueryResponse('email');
+    },
+    POST: async ({ body }) => {
+      const { token, newPassword } = body as {
+        token?: string;
+        newPassword?: string;
+      };
 
-        return response.status(result.status).json(result);
+      if (!token) {
+        return returnMissingQueryResponse('token');
       }
 
-      return response.status(BAD_REQUEST).json({
-        ...makeApiHandlerResponseFailure({
-          message: errorsBySourceType.GENERAL[BAD_REQUEST]
-        }),
-        msg: null
-      });
-    case 'POST':
-      if (token && newPassword) {
-        /* @TODO update with new error handling */
-        if (!VALID_PASSWORD.test(newPassword)) {
-          return response.status(BAD_REQUEST).json({
-            ...makeApiHandlerResponseFailure({
-              message: errorsBySourceType.GENERAL[BAD_REQUEST]
-            }),
-            msg: null
-          });
-        }
-        const result: ResetPassword = await User.resetPassword(token, {
-          newPassword
-        });
-
-        return response.status(200).json(result);
+      if (!newPassword) {
+        return returnMissingQueryResponse('new password');
       }
 
-      return response.status(BAD_REQUEST).json({
-        ...makeApiHandlerResponseFailure({
-          message: errorsBySourceType.USER[BAD_REQUEST]
-        }),
-        msg: null
-      });
-    default:
-      return response.status(METHOD_NOT_ALLOWED).json({
-        ...makeApiHandlerResponseFailure({
-          message: errorsBySourceType.GENERAL[METHOD_NOT_ALLOWED]
-        }),
-        msg: null
-      });
-  }
+      return {
+        response: await fetchWrapper(
+          `${process.env.WF_AP_ROUTE}/reset-password/`,
+          {
+            method: 'POST',
+            body: JSON.stringify({ token, new_password: newPassword })
+          }
+        )
+      };
+    }
+  });
 };
 
 export default withSentry(passwordReset);

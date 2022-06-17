@@ -22,13 +22,29 @@ type ErrorCodeKeys = {
   [key: string]: string;
 };
 
+export type MakeErrorOutput = NextApiResponse & {
+  status: HttpStatusCode;
+  sourceType: ErrorCodeType;
+  isError: true;
+  code: ErrorCodeType;
+  message: string;
+  details: {
+    requestUrl: string;
+    requestBody: RequestBodyType;
+    responseBody: object | null;
+    requestHeaders: object | null;
+    requiresAuth?: boolean | null;
+    hadToken?: boolean | null;
+  };
+};
+
 export type RequestBodyType = Record<string, any> | null;
 
 export type MakeErrorInput = {
   status: HttpStatusCode;
   sourceType: ErrorCodeType | string;
   message: string;
-  errorCode: ErrorCodeType;
+  code: ErrorCodeType;
   details: {
     requestUrl: string;
     requestBody: RequestBodyType;
@@ -86,22 +102,6 @@ export type SuccessResponseType<T = any> = {
   sourceType?: string;
   blob?: Promise<Blob> | null;
   data: T | object | null;
-};
-
-export type MakeErrorOutput = NextApiResponse & {
-  status: HttpStatusCode;
-  sourceType: ErrorCodeType;
-  isError: true;
-  errorCode: ErrorCodeType;
-  message: string;
-  details: {
-    requestUrl: string;
-    requestBody: RequestBodyType;
-    responseBody: object | null;
-    requestHeaders: object | null;
-    requiresAuth?: boolean | null;
-    hadToken?: boolean | null;
-  };
 };
 
 export type ErrorResponseType = MakeErrorOutput;

@@ -61,17 +61,13 @@ const PasswordManagement = () => {
     setSuccessMessage('');
     setSubmitError({ type: '', status: null });
     try {
-      const fetchRes = await fetch(
-        `${config.URL}/api/user/password?id=${user.id}`,
-        {
-          method: 'PUT',
-          body: JSON.stringify({
-            ...user,
-            old_password: currentPassword,
-            new_password: newPassword.trim()
-          })
-        }
-      );
+      const fetchRes = await fetch(`${config.URL}/api/user`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          old_password: currentPassword,
+          new_password: newPassword.trim()
+        })
+      });
 
       const json = await fetchRes.json();
 

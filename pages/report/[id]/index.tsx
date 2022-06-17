@@ -15,7 +15,6 @@ import SkeletonLayout from '../../../components/skeletons/SkeletonLayout';
 import SkeletonReport from '../../../components/skeletons/SkeletonReport';
 import useUser from '../../../hooks/useUser';
 import fetcher from '../../../lib/utils/fetcher';
-import { ReportsReportApi } from '../../api/reports/report';
 
 const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const t = useTranslations();
@@ -23,7 +22,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data: result, error } = useSWR<ReportsReportApi>(
+  const { data: result, error } = useSWR(
     id && `/api/reports/report?id=${id}`,
     fetcher
   );
@@ -38,7 +37,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   // will not work for non-admin user currently until the users can access organisation
   const isIntegrated = codat?.data?.auth_header ?? false;
 
-  const data = result?.report;
+  const data = result?.data;
 
   const backLink = Array.isArray(router?.query?.from)
     ? router.query.from[0]
