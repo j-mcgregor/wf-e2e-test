@@ -11,7 +11,7 @@ const CodatIntegrationsAPI = (
 ) => {
   APIHandler(request, response, {
     config: {
-      sourceType: 'INTEGRATIONS',
+      sourceType: 'INTEGRATIONS_CODAT',
       authenticate: authenticators.NextAuth
     },
     GET: async ({ query, authentication }) => {

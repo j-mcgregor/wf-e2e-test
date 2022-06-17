@@ -25,13 +25,15 @@ const Reports = () => {
   const [skip, setSkip] = useState(0); // initial limit of 10 reports
   const limit = 10;
 
-  const { data, isValidating } = useSWR<UserReportsApi>(
+  const { data, isValidating } = useSWR(
     `/api/user/reports?limit=${limit}&skip=${skip}`,
     fetcher,
     {
       revalidateOnFocus: false
     }
   );
+
+  console.log(data);
 
   const getReportName = (row: { company_name: string; created_at: string }) =>
     createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
@@ -124,7 +126,7 @@ const Reports = () => {
           <Table
             tableName={t('no_data_recent_reports')}
             headers={ReportTableHeaders}
-            data={data?.reports || []}
+            data={data?.data.reports || []}
             isLoading={isValidating}
             limit={limit}
             total={user?.total_reports}
