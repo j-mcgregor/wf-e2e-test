@@ -153,7 +153,7 @@ const Reports = () => {
           <Table
             tableName={t('no_data_recent_reports')}
             headers={ReportTableHeaders}
-            data={data?.reports || []}
+            data={data?.data.reports || []}
             isLoading={isValidating}
             limit={limit}
             total={user?.total_reports}

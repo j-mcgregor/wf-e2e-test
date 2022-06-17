@@ -164,7 +164,8 @@ export const makeResponseObject = <T>(
     return makeSuccessObject({
       sourceType,
       data,
-      code: `${sourceType}_${status}`
+      code,
+      status
     });
   }
 
@@ -184,6 +185,7 @@ const makeSuccessObject = <T>(successResponse: {
   sourceType: string;
   data: T;
   code: string;
+  status: number;
 }): SuccessResponseType<T> => {
   return {
     ok: true,
