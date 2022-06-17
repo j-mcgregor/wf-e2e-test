@@ -33,7 +33,7 @@ const Reports = () => {
     }
   );
 
-  const { triggerToast } = useToast();
+  const { triggerToast } = useToast({});
 
   useEffect(() => {
     if (data) {
@@ -57,6 +57,7 @@ const Reports = () => {
         title,
         description,
         dismiss: 'button'
+        // closeButton: true
       });
     }
   }, [data]);

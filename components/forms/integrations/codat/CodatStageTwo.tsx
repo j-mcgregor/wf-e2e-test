@@ -46,7 +46,7 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
     }
   );
 
-  const { triggerToast } = useToast();
+  const { triggerToast } = useToast({});
 
   useEffect(() => {
     if (data) {

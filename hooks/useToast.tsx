@@ -18,9 +18,22 @@ interface TriggerToast {
   title: string;
   description?: string;
   status?: number;
+  closeButton?: boolean;
+  autoClose?: boolean;
 }
 
-export const useToast = () => {
+export const useToast = ({
+  defaultToastOptions
+}: {
+  defaultToastOptions?: ToastOptions;
+}) => {
+  const defaultToastProps: ToastOptions = {
+    closeOnClick: false,
+    draggable: true,
+    bodyClassName: 'flex !items-start text-sm',
+    ...defaultToastOptions
+  };
+
   const triggerToast = ({
     toastId,
     actions,
@@ -28,7 +41,9 @@ export const useToast = () => {
     toastType,
     title,
     description,
-    status
+    status,
+    closeButton,
+    autoClose = true
   }: TriggerToast) => {
     const DEFAULT_AUTO_CLOSE = 4000; // 4s auto close
 
@@ -52,10 +67,10 @@ export const useToast = () => {
         actions={newActions || actions}
       />,
       {
+        ...defaultToastProps,
         toastId,
-        bodyClassName: 'flex !items-start text-sm',
-        closeButton: false,
-        autoClose: dismiss === 'corner' ? DEFAULT_AUTO_CLOSE : false,
+        closeButton: closeButton || dismiss !== 'button',
+        autoClose: autoClose ? DEFAULT_AUTO_CLOSE : false,
         type: toastType || type,
         icon,
         progressClassName
