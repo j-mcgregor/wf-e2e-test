@@ -54,3 +54,9 @@
 .print-width {
   @apply print:max-w-[630px];
 }
+
+/* toastify */
+
+.Toastify__toast-body {
+  align-items: flex-start !important;
+}

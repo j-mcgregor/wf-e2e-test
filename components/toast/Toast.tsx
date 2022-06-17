@@ -19,7 +19,7 @@ export const ToastBody: FC<{
         {actions?.map((a, i) => (
           <button
             className={`py-0.5 ${
-              a.type === 'dismiss' ? 'text-slate-400 ' : 'text-orange-300 '
+              a.type === 'dismiss' ? 'text-slate-400 ' : 'text-orange-300'
             }`}
             onClick={() => a.action()}
             key={`toast-btn-${i}`}
