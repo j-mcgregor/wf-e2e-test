@@ -76,10 +76,7 @@ const searchCompaniesApi = async (
             }
           }
         };
-      } else if (
-        countryCode &&
-        orbisAvailableSearchCountries.includes(countryCode)
-      ) {
+      } else if (countryCode) {
         return {
           response: await fetchWrapper(
             `${process.env.WF_AP_ROUTE}/reports/search-companies?country=${countryCode}&query=${searchQuery}`,

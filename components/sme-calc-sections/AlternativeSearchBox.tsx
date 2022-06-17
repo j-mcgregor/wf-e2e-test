@@ -60,7 +60,7 @@ const AlternativeSearchBox = ({
     }
   };
 
-  const { data } = useSWR<CompanyType[] & { error?: string; message?: string }>(
+  const { data } = useSWR(
     `/api/search-companies?query=${searchValue}&country=${countryCode}`,
     fetcher
   );
@@ -78,12 +78,13 @@ const AlternativeSearchBox = ({
     }
   }, [data]);
 
-  const disableSearch = inputValue.length === 0 || (!!searchValue && !data);
+  const disableSearch =
+    inputValue.length === 0 || (!!searchValue && !data?.data);
 
   // handle the closing of the dropdown so that state can be set
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const isLoading = searchValue && !data;
+  const isLoading = searchValue && !data?.data;
 
   useOutsideClick(containerRef, () => setSearchHasFocus(false));
 
@@ -106,9 +107,9 @@ const AlternativeSearchBox = ({
           onChange={e => setInputValue(e.target.value)}
           onFocus={() => setSearchHasFocus(true)}
         />
-        {data && data.length > 0 && (
+        {data && data.data.length > 0 && (
           <label className="absolute right-5 top-2 sm:right-[8.5rem]">
-            {data?.length} results
+            {data?.data.length} results
           </label>
         )}
 
@@ -165,9 +166,9 @@ const AlternativeSearchBox = ({
           )}
 
           {/* Displays the results */}
-          {data && data?.length > 0 && (
+          {data?.data && data?.data.length > 0 && (
             <ul className="px-4 border border-primary rounded overflow-y-scroll pt-4 space-y-4 max-h-[400px] min-h-[120px] absolute w-full z-10 bg-white">
-              {data.map(company => {
+              {data?.data.map((company: CompanyType) => {
                 return (
                   <button
                     key={company.company_number}

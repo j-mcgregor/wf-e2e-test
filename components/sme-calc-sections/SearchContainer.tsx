@@ -163,7 +163,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     };
 
     try {
-      const createReportRes: ReportsReportApi = await fetcher(
+      const createReportRes = await fetcher(
         '/api/reports/report',
         'POST',
         params
