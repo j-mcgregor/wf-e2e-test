@@ -29,7 +29,7 @@
   "progress": "Progress",
   "estimated_time_to_completion": "Estimated time to completion",
   "view_results": "View results",
-  "upload_your_csv_here_to_begin": "Upload your CSV here to begin.",
+  "upload_your_csv_here_to_begin": "Upload your CSV/Excel file here to begin.",
   "running": "Running...",
   "download_the_results_of_the_batch_reports_in_csv_or_excel_format": "Download the result of the Batch Reports in CSV or Excel format and see a quick overview of all the results below.",
   "download_reports": "Download Reports",
