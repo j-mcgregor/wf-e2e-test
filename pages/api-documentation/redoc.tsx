@@ -9,7 +9,6 @@ import config from '../../config';
 
 const RedocView = () => {
   const t = useTranslations();
-
   return (
     <Layout title="API Documentation" fullWidth>
       <div className="h-10 flex items-center px-5">
