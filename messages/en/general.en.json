@@ -42,5 +42,6 @@
   "is_valid_batch_manual": "Is valid batch manual {format}",
   "multiple_companies_cannot_be_uploaded_here": "Multiple companies cannot be uploaded here",
   "no_access_title": "Access not allowed",
-  "no_access_message": "You are not authorised to view this page."
+  "no_access_message": "You are not authorised to view this page.",
+  "load_more": "Load more"
 }

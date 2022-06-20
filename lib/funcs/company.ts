@@ -62,7 +62,7 @@ const mapEUCompanyDataToResponseFormat = (
 
   return companies.map((company: any) => {
     // was used to remove the * that some id's returned
-    const cleanBVDID = company?.BVDID;
+    const cleanBVDID = company?.company_number;
 
     // check first two characters of the BVDID code against the country code (from query)
     // if so, returns BVDID with first to characters removed
@@ -71,18 +71,11 @@ const mapEUCompanyDataToResponseFormat = (
       cleanBVDID?.slice(0, 2).toLowerCase() === countryCode
         ? cleanBVDID.substring(2)
         : cleanBVDID;
-
-    const addressLine1 = company?.ADDRESS_LINE1 || '';
-    const addressLine2 = company?.ADDRESS_LINE2 || '';
-    const addressLine3 = company?.CITY || '';
-    const addressLine4 = company?.COUNTRY || '';
-    const addressLine5 = company?.POSTCODE || '';
-
     return {
       company_number: BVDID,
       date_of_creation: null, // not available in Orbis API
-      address_snippet: `${addressLine1} ${addressLine2} ${addressLine3} ${addressLine4} ${addressLine5} `,
-      title: company?.NAME
+      address_snippet: company.address_snippet,
+      title: company?.title
     };
   });
 };
