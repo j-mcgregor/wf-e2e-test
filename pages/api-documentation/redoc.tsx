@@ -21,7 +21,10 @@ const RedocView = () => {
           {t('back_to_api_docs')}
         </Button>
       </div>
-      <Iframe src={`${config.API_URL}/redoc`} title="API Documentation" />
+      <Iframe
+        src={`${config.API_URL?.replace(/\/api\/v1/, '')}/redoc`}
+        title="API Documentation"
+      />
     </Layout>
   );
 };
