@@ -2,12 +2,13 @@
 /* eslint-disable no-console */
 import { FC } from 'react';
 import { ToastAction } from '../../hooks/useToast';
+import { RichTranslation } from '../../types/global';
 
 export type ToastType = 'success' | 'info' | 'error' | 'warning';
 
 export const ToastBody: FC<{
-  title: string;
-  description?: string;
+  title: RichTranslation;
+  description?: RichTranslation;
   actions?: ToastAction[];
 }> = ({ title, description, actions }) => {
   console.log('actions', actions);

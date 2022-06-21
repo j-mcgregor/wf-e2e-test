@@ -12,8 +12,8 @@
     "description": "PROCESSING for {sourceType} description"
   },
   "200": {
-    "title": "{sourceType} OK",
-    "description": "OK for {sourceType} description"
+    "title": "<span>{sourceType}</span> success",
+    "description": "<span>{code}</span> was successful"
   },
   "201": {
     "title": "{sourceType} CREATED",

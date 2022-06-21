@@ -5,6 +5,7 @@ import APIHandler from '../../../lib/api-handler/handler';
 import { fetchWrapper } from '../../../lib/utils/fetchWrapper';
 
 import type { NextApiHandler } from 'next';
+
 const BatchReportsIdApi: NextApiHandler = async (request, response) => {
   APIHandler(request, response, {
     config: {

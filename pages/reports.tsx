@@ -35,7 +35,7 @@ const Reports = () => {
     }
   );
 
-  const { triggerToast } = useToast({});
+  const { triggerToast, getTextFromResponse } = useToast({});
 
   useEffect(() => {
     if (data) {
@@ -43,23 +43,47 @@ const Reports = () => {
         {
           label: 'View',
           // eslint-disable-next-line no-console
-          action: () => console.log('Action triggered')
+          action: () => alert('Action triggered')
         }
       ];
 
-      const title = t(`${data.status}.title`, { sourceType: data.sourceType });
-      const description = t(`${data.status}.description`, {
-        sourceType: data.sourceType
-      });
+      const title = t('USER.USER_UPDATED.title');
+      const description = t('USER.USER_UPDATED.description');
 
       triggerToast({
-        toastId: data.errorCode,
-        status: data.status,
-        actions,
         title,
         description,
+        toastId: 'user-updated',
+        toastType: 'success',
+        actions: [
+          {
+            label: 'Boo',
+            action: () => alert('Boo!')
+          }
+        ],
+        dismiss: 'corner'
+      });
+
+      // if no custom message defined
+      // then check if [sourceType][status] is defined
+      // if yes, use that
+      // else fallback to default generic status
+
+      const toastText = getTextFromResponse(data);
+
+      if (!toastText) {
+        return;
+      }
+
+      triggerToast({
+        toastId: data.code,
+        status: data.status,
+        actions,
+        title: toastText?.title,
+        description: toastText?.description,
         dismiss: 'button'
-        // closeButton: true
+        // closeButton: true,
+        // autoClose: false
       });
     }
   }, [data]);
@@ -182,7 +206,9 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         ...require(`../messages/${locale}/reports.${locale}.json`),
         ...require(`../messages/${locale}/general.${locale}.json`),
         ...require(`../messages/${locale}/errors.${locale}.json`),
-        ...require(`../messages/${locale}/toasts.${locale}.json`)
+        ...require(`../messages/${locale}/errors-default.${locale}.json`),
+        ...require(`../messages/${locale}/errors-sourcetype.${locale}.json`),
+        ...require(`../messages/${locale}/toast-custom.${locale}.json`)
       }
     }
   };

@@ -7,10 +7,10 @@ export interface ToastAction {
 export interface ToastData {
   title: string;
   description: string;
-  actions: ToastAction[];
+  actions?: ToastAction[];
 }
 
-type SourceTypes =
+export type SourceTypes =
   | 'USER'
   | 'BATCH_REPORTS_BY_ID'
   | 'BATCH_REPORTS'
@@ -29,12 +29,11 @@ type SourceTypes =
   | 'PASSWORD_RESET'
   | 'SEARCH_COMPANIES';
 
-interface CodeErrors {
+export interface CodeErrors {
   [status: string]: ToastData;
-  DEFAULT: ToastData;
 }
 
-type SourceErrors = Record<SourceTypes, CodeErrors>;
+export type SourceErrors = Record<SourceTypes, CodeErrors>;
 
 const makeCoreSourceTypeErrors = (sourceType: SourceTypes): CodeErrors => {
   return {
@@ -66,12 +65,6 @@ const makeCoreSourceTypeErrors = (sourceType: SourceTypes): CodeErrors => {
     [`${sourceType}_500`]: {
       title: `${sourceType} fetching error`,
       description: `We couldn't fetch ${sourceType}. There was an unrecoverable backend error. Please try again later or contact support if this problem persists`,
-      actions: []
-    },
-    DEFAULT: {
-      title: `Unhandled response for ${sourceType}`,
-      description:
-        'This particular error hasnt been properly handled. Please get in touch.',
       actions: []
     }
   };
@@ -202,13 +195,10 @@ export const ErrorMessages: SourceErrors = {
   }
 };
 
-// questions
-// Do we need to account for every code returned for every API?
-// is it:
-// - [sourceType][statusCode].title eg USER_REPORTS.422.title
-// - [code].title eg USER_REPORTS_422.title
-// --- if so, are trying to keep it dynamic, in which case how?
-// --- if not dynamic, will every error have to be translatable? There would be loads more messages but it would be more configurable
+// - defaults => [status].title (passing in sourceType)
+// - [sourceType][code].title eg USER_REPORTS.USER_REPORTS_422.title
+// - custom that can be passed in to the toast creator
+
 // How are we combining the actions with the error message?
 // Will API responses for toasts only ever be Success (2xx) or Error (4xx-5xx), or do we need to account for others?
 // Are we going by the Swagger API responses at all?

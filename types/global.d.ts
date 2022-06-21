@@ -220,3 +220,8 @@ export declare global {
     hsConversationsSettings: any;
   }
 }
+
+export type RichTranslation =
+  | string
+  | ReactElement<any, string | JSXElementConstructor<any>>
+  | ReactNodeArray;
