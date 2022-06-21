@@ -12,7 +12,6 @@ import { templateText } from '../../lib/settings/sme-calc.settings';
 import { NO_REPORT_ID, REPORT_500 } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
 import { makeUploadReportReqBody } from '../../lib/utils/report-helpers';
-import { ReportsUploadApi } from '../../pages/api/reports/upload';
 import LinkCard from '../cards/LinkCard';
 import UploadNewData from '../uploads/UploadNewData';
 
