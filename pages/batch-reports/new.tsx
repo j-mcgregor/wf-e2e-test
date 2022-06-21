@@ -279,9 +279,8 @@ const CreateBatchReport: NextPage = () => {
         </UploadNewData>
 
         <p className="text-2xl font-semibold my-8">{t('csv_templates')}</p>
-        {/* ================= TODO ================= */}
 
-        <div className="grid grid-cols-4 gap-x-4 my-6">
+        <div className="grid grid-cols-4 gap-4 my-6">
           <LinkCard
             className="max-w-xs"
             icon={<CloudDownloadIcon className="h-8 w-8" />}
@@ -298,14 +297,22 @@ const CreateBatchReport: NextPage = () => {
             description={t('batch_mdi_template_desc')}
             linkTo="/download-templates/wf-mdi-template.csv"
           />
-          {/* <LinkCard
+          <LinkCard
             className="max-w-xs"
             icon={<CloudDownloadIcon className="h-8 w-8" />}
             iconColor="bg-highlight bg-opacity-50"
-            header={t('batch_mdi_example_template')}
-            description={t('batch_mdi_example_template_desc')}
-            linkTo="/download-templates/wf-mdi-example-template.csv"
-          /> */}
+            header={t('batch_mdi_basic_excel_template')}
+            description={t('batch_mdi_basic_excel_template_desc')}
+            linkTo="/download-templates/wf-mdi-excel-template.xlsx"
+          />
+          <LinkCard
+            className="max-w-xs"
+            icon={<CloudDownloadIcon className="h-8 w-8" />}
+            iconColor="bg-highlight bg-opacity-50"
+            header={t('batch_ads_excel_template')}
+            description={t('batch_ads_excel_template_desc')}
+            linkTo="/download-templates/wf-excel-ads-template.xlsx"
+          />
           <LinkCard
             className="max-w-xs"
             icon={<CloudDownloadIcon className="h-8 w-8" />}

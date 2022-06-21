@@ -55,6 +55,10 @@
     "title": "Excel Full Template",
     "body": "An Excel workbook created for easy adding of custom data. Upload to run your report."
   },
+  "excel_template": {
+    "title": "Excel Template",
+    "body": "An Excel sheet with all required headers to create a manual report. Upload to run your report."
+  },
   "excel_financials_template": {
     "title": "Excel Financials Template",
     "body": "An Excel spreadsheet where you can add custom financials to run a report."
