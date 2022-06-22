@@ -182,7 +182,7 @@ export const uploadReportCSVHeaders: {
   period: {
     required: (x: string) => !x && `A value for "period" is required`,
     validator: (x: string) =>
-      !dateIsValid(x) && 'Period must be in a YYYY-MM-DD format',
+      !dateIsValid(x) && 'Period must be in a YYYY-MM-DD or YYYY format',
     formatted: 'Period'
   },
   retained_earnings: {
