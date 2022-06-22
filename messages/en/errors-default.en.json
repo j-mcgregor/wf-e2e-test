@@ -1,246 +1,246 @@
 {
   "100": {
-    "title": "{sourceType} CONTINUE",
-    "description": "CONTINUE for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Continue",
+    "description": "The server has received the request headers and the client should proceed to send the request body."
   },
   "101": {
-    "title": "{sourceType} SWITCHING_PROTOCOLS",
-    "description": "SWITCHING_PROTOCOLS for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Switching protocols",
+    "description": "The requester has asked the server to switch protocols and the server has agreed to do so."
   },
   "102": {
-    "title": "{sourceType} PROCESSING",
-    "description": "PROCESSING for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Processing",
+    "description": "The server has received and is processing the request, but no response is available yet."
   },
   "200": {
     "title": "<span>{sourceType}</span> success",
     "description": "<span>{code}</span> was successful"
   },
   "201": {
-    "title": "{sourceType} CREATED",
-    "description": "CREATED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Created",
+    "description": "The request has been fulfilled, resulting in the creation of a new resource."
   },
   "202": {
-    "title": "{sourceType} ACCEPTED",
-    "description": "ACCEPTED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Accepted",
+    "description": "The request has been accepted for processing, but the processing has not been completed. It might or might not be eventually acted upon, and may be disallowed when processing occurs."
   },
   "203": {
-    "title": "{sourceType} NON_AUTHORITATIVE_INFORMATION",
-    "description": "NON_AUTHORITATIVE_INFORMATION for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Non authoritative information",
+    "description": "The server is a transforming proxy that received a 200 OK from its origin, but is returning a modified version of the origin's response."
   },
   "204": {
-    "title": "{sourceType} NO_CONTENT",
-    "description": "NO_CONTENT for {sourceType} description"
+    "title": "<span>{sourceType}</span>: No content",
+    "description": "The server successfully processed the request and is not returning any content."
   },
   "205": {
-    "title": "{sourceType} RESET_CONTENT",
-    "description": "RESET_CONTENT for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Reset content",
+    "description": "The server successfully processed the request and is not returning any content."
   },
   "206": {
-    "title": "{sourceType} PARTIAL_CONTENT",
-    "description": "PARTIAL_CONTENT for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Partial content",
+    "description": "The server is delivering only part of the resource (byte serving) due to a range header sent by the client. The range header is used by HTTP clients to enable resuming of interrupted downloads,or split a download into multiple simultaneous streams."
   },
   "207": {
-    "title": "{sourceType} MULTI_STATUS",
-    "description": "MULTI_STATUS for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Multi status",
+    "description": "The message body that follows is an XML message and can contain a number of separate response codes, depending on how many sub-requests were made."
   },
   "208": {
-    "title": "{sourceType} ALREADY_REPORTED",
-    "description": "ALREADY_REPORTED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Already reported",
+    "description": "The members of a DAV binding have already been enumerated in a preceding part of the (multistatus) response, and are not being included again."
   },
   "226": {
-    "title": "{sourceType} IM_USED",
-    "description": "IM_USED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Im used",
+    "description": "The server has fulfilled a request for the resource, and the response is a representation of the result of one or more instance-manipulations applied to the current instance."
   },
   "300": {
-    "title": "{sourceType} MULTIPLE_CHOICES",
-    "description": "MULTIPLE_CHOICES for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Multiple choices",
+    "description": "Indicates multiple options for the resource from which the client may choose (via agent-driven content negotiation)."
   },
   "301": {
-    "title": "{sourceType} MOVED_PERMANENTLY",
-    "description": "MOVED_PERMANENTLY for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Moved permanently",
+    "description": "This and all future requests should be directed to the given URI"
   },
   "302": {
-    "title": "{sourceType} FOUND",
-    "description": "FOUND for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Found",
+    "description": "The HTTP/1.0 specification (RFC 1945) required the client to perform a temporary redirect (the original describing phrase was \"Moved Temporarily\"), but popular browsers implemented 302 with the functionality of a 303 See Other. Therefore, HTTP/1.1 added status codes 303 and 307 to distinguish between the two behaviours. However, some Web applications and frameworks use the 302 status code as if it were the 303."
   },
   "303": {
-    "title": "{sourceType} SEE_OTHER",
-    "description": "SEE_OTHER for {sourceType} description"
+    "title": "<span>{sourceType}</span>: See other",
+    "description": "The response to the request can be found under another URI using a GET method."
   },
   "304": {
-    "title": "{sourceType} NOT_MODIFIED",
-    "description": "NOT_MODIFIED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Not modified",
+    "description": "Indicates that the resource has not been modified since the version specified by the request headers If-Modified-Since or If-None-Match."
   },
   "305": {
-    "title": "{sourceType} USE_PROXY",
-    "description": "USE_PROXY for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Use proxy",
+    "description": "The requested resource is available only through a proxy, the address for which is provided in the response."
   },
   "306": {
-    "title": "{sourceType} SWITCH_PROXY",
-    "description": "SWITCH_PROXY for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Switch proxy",
+    "description": "No longer used. Originally meant \"Subsequent requests should use the specified proxy.\""
   },
   "307": {
-    "title": "{sourceType} TEMPORARY_REDIRECT",
-    "description": "TEMPORARY_REDIRECT for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Temporary redirect",
+    "description": "In this case, the request should be repeated with another URI; however, future requests should still use the original URI."
   },
   "308": {
-    "title": "{sourceType} PERMANENT_REDIRECT",
-    "description": "PERMANENT_REDIRECT for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Permanent redirect",
+    "description": "The request and all future requests should be repeated using another URI."
   },
   "400": {
-    "title": "{sourceType} BAD_REQUEST",
-    "description": "BAD_REQUEST for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Bad request",
+    "description": "The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, too large size, invalid request message framing, or deceptive request routing)."
   },
   "401": {
-    "title": "{sourceType} UNAUTHORIZED",
-    "description": "UNAUTHORIZED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Unauthorized",
+    "description": "Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided"
   },
   "402": {
-    "title": "{sourceType} PAYMENT_REQUIRED",
-    "description": "PAYMENT_REQUIRED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Payment required",
+    "description": "Reserved for future use. The original intention was that this code might be used as part of some form of digital cash or micro payment scheme, but that has not happened, and this code is not usually used."
   },
   "403": {
-    "title": "{sourceType} FORBIDDEN",
-    "description": "FORBIDDEN for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Forbidden",
+    "description": "The request was valid, but the server is refusing action. The user might not have the necessary permissions for a resource."
   },
   "404": {
-    "title": "{sourceType} NOT_FOUND",
-    "description": "NOT_FOUND for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Not found",
+    "description": "The requested resource could not be found but may be available in the future. Subsequent requests by the client are permissible."
   },
   "405": {
-    "title": "{sourceType} METHOD_NOT_ALLOWED",
-    "description": "METHOD_NOT_ALLOWED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Method not allowed",
+    "description": "A request method is not supported for the requested resource; for example, a GET request on a form that requires data to be presented via POST, or a PUT request on a read-only resource."
   },
   "406": {
-    "title": "{sourceType} NOT_ACCEPTABLE",
-    "description": "NOT_ACCEPTABLE for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Not acceptable",
+    "description": "The requested resource is capable of generating only content not acceptable according to the Accept headers sent in the request."
   },
   "407": {
-    "title": "{sourceType} PROXY_AUTHENTICATION_REQUIRED",
-    "description": "PROXY_AUTHENTICATION_REQUIRED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Proxy authentication required",
+    "description": "The client must first authenticate itself with the proxy."
   },
   "408": {
-    "title": "{sourceType} REQUEST_TIMEOUT",
-    "description": "REQUEST_TIMEOUT for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Request timeout",
+    "description": "The client did not produce a request within the time that the server was prepared to wait. The client MAY repeat the request without modifications at any later time."
   },
   "409": {
-    "title": "{sourceType} CONFLICT",
-    "description": "CONFLICT for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Conflict",
+    "description": "Indicates that the request could not be processed because of conflict in the request, such as an edit conflict between multiple simultaneous updates."
   },
   "410": {
-    "title": "{sourceType} GONE",
-    "description": "GONE for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Gone",
+    "description": "Indicates that the resource requested is no longer available and will not be available again."
   },
   "411": {
-    "title": "{sourceType} LENGTH_REQUIRED",
-    "description": "LENGTH_REQUIRED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Length required",
+    "description": "The request did not specify the length of its content, which is required by the requested resource."
   },
   "412": {
-    "title": "{sourceType} PRECONDITION_FAILED",
-    "description": "PRECONDITION_FAILED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Precondition failed",
+    "description": "The server does not meet one of the preconditions that the requester put on the request."
   },
   "413": {
-    "title": "{sourceType} PAYLOAD_TOO_LARGE",
-    "description": "PAYLOAD_TOO_LARGE for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Payload too large",
+    "description": "The request is larger than the server is willing or able to process. Previously called \"Request Entity Too Large\"."
   },
   "414": {
-    "title": "{sourceType} URI_TOO_LONG",
-    "description": "URI_TOO_LONG for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Uri too long",
+    "description": "The URI provided was too long for the server to process. Often the result of too much data being encoded as a query-string of a GET request, in which case it should be converted to a POST request. Called \"Request-URI Too Long\" previously."
   },
   "415": {
-    "title": "{sourceType} UNSUPPORTED_MEDIA_TYPE",
-    "description": "UNSUPPORTED_MEDIA_TYPE for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Unsupported media type",
+    "description": "The request entity has a media type which the server or resource does not support."
   },
   "416": {
-    "title": "{sourceType} RANGE_NOT_SATISFIABLE",
-    "description": "RANGE_NOT_SATISFIABLE for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Range not satisfiable",
+    "description": "The client has asked for a portion of the file (byte serving), but the server cannot supply that portion."
   },
   "417": {
-    "title": "{sourceType} EXPECTATION_FAILED",
-    "description": "EXPECTATION_FAILED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Expectation failed",
+    "description": "The server cannot meet the requirements of the Expect request-header field."
   },
   "418": {
-    "title": "{sourceType} I_AM_A_TEAPOT",
-    "description": "I_AM_A_TEAPOT for {sourceType} description"
+    "title": "<span>{sourceType}</span>: I am a teapot",
+    "description": "This HTTP status is used as an Easter egg in some websites, including Google.com."
   },
   "421": {
-    "title": "{sourceType} MISDIRECTED_REQUEST",
-    "description": "MISDIRECTED_REQUEST for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Misdirected request",
+    "description": "The request was directed at a server that is not able to produce a response (for example because a connection reuse)."
   },
   "422": {
-    "title": "{sourceType} UNPROCESSABLE_ENTITY",
-    "description": "UNPROCESSABLE_ENTITY for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Unprocessable entity",
+    "description": "The request was well-formed but was unable to be followed due to semantic errors."
   },
   "423": {
-    "title": "{sourceType} LOCKED",
-    "description": "LOCKED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Locked",
+    "description": "The resource that is being accessed is locked."
   },
   "424": {
-    "title": "{sourceType} FAILED_DEPENDENCY",
-    "description": "FAILED_DEPENDENCY for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Failed dependency",
+    "description": "The request failed due to failure of a previous request (e.g., a PROPPATCH)."
   },
   "426": {
-    "title": "{sourceType} UPGRADE_REQUIRED",
-    "description": "UPGRADE_REQUIRED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Upgrade required",
+    "description": "The client should switch to a different protocol such as TLS/1.0, given in the Upgrade header field."
   },
   "428": {
-    "title": "{sourceType} PRECONDITION_REQUIRED",
-    "description": "PRECONDITION_REQUIRED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Precondition required",
+    "description": "The origin server requires the request to be conditional."
   },
   "429": {
-    "title": "{sourceType} TOO_MANY_REQUESTS",
-    "description": "TOO_MANY_REQUESTS for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Too many requests",
+    "description": "The user has sent too many requests in a given amount of time. Intended for use with rate-limiting schemes."
   },
   "431": {
-    "title": "{sourceType} REQUEST_HEADER_FIELDS_TOO_LARGE",
-    "description": "REQUEST_HEADER_FIELDS_TOO_LARGE for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Request header fields too large",
+    "description": "The server is unwilling to process the request because either an individual header field, or all the header fields collectively, are too large."
   },
   "451": {
-    "title": "{sourceType} UNAVAILABLE_FOR_LEGAL_REASONS",
-    "description": "UNAVAILABLE_FOR_LEGAL_REASONS for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Unavailable for legal reasons",
+    "description": "A server operator has received a legal demand to deny access to a resource or to a set of resources that includes the requested resource. The code 451 was chosen as a reference to the novel Fahrenheit 451."
   },
   "500": {
-    "title": "{sourceType} INTERNAL_SERVER_ERROR",
-    "description": "INTERNAL_SERVER_ERROR for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Internal server error",
+    "description": "A generic error message, given when an unexpected condition was encountered and no more specific message is suitable."
   },
   "501": {
-    "title": "{sourceType} NOT_IMPLEMENTED",
-    "description": "NOT_IMPLEMENTED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Not implemented",
+    "description": "The server either does not recognize the request method, or it lacks the ability to fulfill the request."
   },
   "502": {
-    "title": "{sourceType} BAD_GATEWAY",
-    "description": "BAD_GATEWAY for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Bad gateway",
+    "description": "The server was acting as a gateway or proxy and received an invalid response from the upstream server."
   },
   "503": {
-    "title": "{sourceType} SERVICE_UNAVAILABLE",
-    "description": "SERVICE_UNAVAILABLE for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Service unavailable",
+    "description": "The server is currently unavailable (because it is overloaded or down for maintenance)."
   },
   "504": {
-    "title": "{sourceType} GATEWAY_TIMEOUT",
-    "description": "GATEWAY_TIMEOUT for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Gateway timeout",
+    "description": "The server was acting as a gateway or proxy and did not receive a timely response from the upstream server."
   },
   "505": {
-    "title": "{sourceType} HTTP_VERSION_NOT_SUPPORTED",
-    "description": "HTTP_VERSION_NOT_SUPPORTED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Http version not supported",
+    "description": "The server does not support the HTTP protocol version used in the request."
   },
   "506": {
-    "title": "{sourceType} VARIANT_ALSO_NEGOTIATES",
-    "description": "VARIANT_ALSO_NEGOTIATES for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Variant also negotiates",
+    "description": "Transparent content negotiation for the request results in a circular reference."
   },
   "507": {
-    "title": "{sourceType} INSUFFICIENT_STORAGE",
-    "description": "INSUFFICIENT_STORAGE for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Insufficient storage",
+    "description": "The server is unable to store the representation needed to complete the request."
   },
   "508": {
-    "title": "{sourceType} LOOP_DETECTED",
-    "description": "LOOP_DETECTED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Loop detected",
+    "description": "The server detected an infinite loop while processing the request."
   },
   "510": {
-    "title": "{sourceType} NOT_EXTENDED",
-    "description": "NOT_EXTENDED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Not extended",
+    "description": "Further extensions to the request are required for the server to fulfill it."
   },
   "511": {
-    "title": "{sourceType} NETWORK_AUTHENTICATION_REQUIRED",
-    "description": "NETWORK_AUTHENTICATION_REQUIRED for {sourceType} description"
+    "title": "<span>{sourceType}</span>: Network authentication required",
+    "description": "The request requires network authentication."
   }
 }

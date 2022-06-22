@@ -2,7 +2,7 @@ import apiDocumentation from './api-documentation.en.json';
 import batchedReports from './batch-reports.en.json';
 import errors from './errors.en.json';
 import errorsDefault from './errors-default.en.json';
-import errorsSourceType from './errors-sourcetype.en.json';
+import errorsSourceType from './sourcetype-errors.en.json';
 import forgottenPassword from './forgotten-password.en.json';
 import general from './general.en.json';
 import hints from './hints.en.json';

@@ -18,7 +18,7 @@ import {
 } from '../lib/errors/error-messages';
 import { getToastType } from '../lib/utils/toast-helpers';
 import defaultErrorsJSON from '../messages/en/errors-default.en.json';
-import sourceTypeErrorsJSON from '../messages/en/errors-sourcetype.en.json';
+import sourceTypeErrorsJSON from '../messages/en/sourcetype-errors.en.json';
 import { RichTranslation } from '../types/global';
 
 export interface ToastStyle {

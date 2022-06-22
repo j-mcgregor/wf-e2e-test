@@ -12,7 +12,6 @@ import Layout from '../components/layout/Layout';
 import Table, { TableHeadersType } from '../components/table/Table';
 import { useToast } from '../hooks/useToast';
 import appState from '../lib/appState';
-import { fetchMockData } from '../lib/mock-data/helpers';
 import fetcher from '../lib/utils/fetcher';
 import { createReportTitle } from '../lib/utils/text-helpers';
 import { ReportSnippetType } from '../types/global';
@@ -207,8 +206,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         ...require(`../messages/${locale}/general.${locale}.json`),
         ...require(`../messages/${locale}/errors.${locale}.json`),
         ...require(`../messages/${locale}/errors-default.${locale}.json`),
-        ...require(`../messages/${locale}/errors-sourcetype.${locale}.json`),
-        ...require(`../messages/${locale}/toast-custom.${locale}.json`)
+        ...require(`../messages/${locale}/sourcetype-errors.${locale}.json`),
+        ...require(`../messages/${locale}/sourcetype-messages.${locale}.json`)
       }
     }
   };
