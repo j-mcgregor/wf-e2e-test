@@ -15,7 +15,7 @@ import resetPassword from './reset-password.en.json';
 import settings from './settings.en.json';
 import smeCalculator from './sme-calculator.en.json';
 import smeProspector from './sme-prospector.en.json';
-import toasts from './toast-custom.en.json';
+import sourcetypeMessages from './sourcetype-messages.en.json';
 import uploadData from './upload-data.en.json';
 
 // need to re-export for test-utils.tsx
@@ -39,6 +39,6 @@ export default {
   ...settings,
   ...smeCalculator,
   ...smeProspector,
-  ...toasts,
+  ...sourcetypeMessages,
   ...uploadData
 };
