@@ -22,7 +22,10 @@ const SwaggerView = () => {
           {t('back_to_api_docs')}
         </Button>
       </div>
-      <Iframe src={`${config.API_URL}/docs`} title="API Documentation" />
+      <Iframe
+        src={`${config.API_URL?.replace(/\/api\/v1/, '')}/docs`}
+        title="API Documentation"
+      />
     </Layout>
   );
 };

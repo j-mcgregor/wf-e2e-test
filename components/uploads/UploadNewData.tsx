@@ -96,8 +96,6 @@ const UploadNewData = ({
 
   const isValidFileType = isCSV || isExcel;
 
-  console.log(!isValid, disableButton, loading, hasErrors, !isValidFileType);
-
   return (
     <div className="bg-white rounded-sm shadow-sm sm:p-8 p-6">
       <div className="grid sm:grid-cols-2">

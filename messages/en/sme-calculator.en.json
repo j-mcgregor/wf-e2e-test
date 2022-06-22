@@ -28,7 +28,7 @@
   "drag_and_drop_csv_below": "Drag and drop your altered CSV below.",
   "valid_csv_check": "CSV Validity Check",
   "generate_new_report": "Generate new report",
-  "upload_your_csv": "Upload your CSV",
+  "upload_your_csv": "Upload your CSV or Excel file",
   "or_drag_and_drop_it": "or drag and drop it.",
   "drop_file_to_upload": "Drop File to Upload",
   "registered": "Registered",
@@ -54,6 +54,10 @@
   "excel_full_template": {
     "title": "Excel Full Template",
     "body": "An Excel workbook created for easy adding of custom data. Upload to run your report."
+  },
+  "excel_template": {
+    "title": "Excel Template",
+    "body": "An Excel sheet with all required headers to create a manual report. Upload to run your report."
   },
   "excel_financials_template": {
     "title": "Excel Financials Template",

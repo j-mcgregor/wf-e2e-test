@@ -14,6 +14,7 @@ import type {
   CreateBatchJobResponse
 } from '../../types/batch-reports';
 import { fetchWrapper } from '../utils/fetchWrapper';
+import config from '../../config';
 /**
  * ***************************************************
  * GET ALL BATCH REPORTS
@@ -300,7 +301,7 @@ export const getBatchReportsCsv: ApiHandler<
 > = async (token: string, { batchReportId }) => {
   try {
     const response = await fetchWrapper(
-      `${process.env.NEXT_PUBLIC_WF_AP_ROUTE}/jobs/batch/${batchReportId}/export/full`,
+      `${config.API_URL}/jobs/batch/${batchReportId}/export/full`,
       {
         method: 'GET',
         headers: {
