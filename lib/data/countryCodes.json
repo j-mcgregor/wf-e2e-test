@@ -330,7 +330,7 @@
   {
     "name": "Ghana",
     "code": "GH",
-    "currency_code": "GHC",
+    "currency_code": "GHS",
     "currency": "Cedis",
     "currency_symbol": "¢",
     "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/ghana.png"
@@ -498,6 +498,14 @@
     "currency": "Tenge",
     "currency_symbol": "лв",
     "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/kazakhstan.png"
+  },
+  {
+    "name": "Kenya",
+    "code": "KE",
+    "currency_code": "KES",
+    "currency": "Shilling",
+    "currency_symbol": "K",
+    "flag": ""
   },
 
   {
@@ -914,7 +922,14 @@
     "currency_symbol": "NT$",
     "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/taiwan.png"
   },
-
+  {
+    "name": "Tanzania, United Republic of",
+    "code": "TZ",
+    "currency_code": "TZS",
+    "currency": "Shilling",
+    "currency_symbol": "TSh",
+    "flag": ""
+  },
   {
     "name": "Thailand",
     "code": "TH",
@@ -950,7 +965,14 @@
     "currency_symbol": "$",
     "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/tuvalu.png"
   },
-
+  {
+    "name": "Uganda",
+    "code": "UG",
+    "currency_code": "UGX",
+    "currency": "Shilling",
+    "currency_symbol": "USh",
+    "flag": ""
+  },
   {
     "name": "Ukraine",
     "code": "UA",
@@ -1019,7 +1041,14 @@
     "currency_symbol": "﷼",
     "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/yemen.png"
   },
-
+  {
+    "name": "Zambia",
+    "code": "ZM",
+    "currency_code": "ZMW",
+    "currency": "Kwacha",
+    "currency_symbol": "K",
+    "flag": ""
+  },
   {
     "name": "Zimbabwe",
     "code": "ZW",
