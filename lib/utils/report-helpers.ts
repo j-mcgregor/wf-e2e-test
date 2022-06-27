@@ -412,7 +412,7 @@ export const handleExcel = (
       data &&
       headers?.reduce((acc, header: string, i) => {
         // map csvValues to get the array of values for each header
-        const row = data.map(cell => cell[Number(i)]);
+        const row = data.map(cell => cell[Number(i)].trim());
 
         return {
           ...acc,
@@ -514,7 +514,7 @@ export const handleCSV = (
     csvValues &&
     csvHeaders?.reduce((acc, header: string, i) => {
       // map csvValues to get the array of values for each header
-      const row = filteredValues.map(cell => cell[Number(i)]);
+      const row = filteredValues.map(cell => cell[Number(i)].trim());
 
       return {
         ...acc,
