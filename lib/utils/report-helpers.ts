@@ -18,6 +18,7 @@ import type {
   ReportUploadRequestBody
 } from '../../types/report';
 import { getUniqueStringsFromArray } from './text-helpers';
+import { MAX_ROWS } from './file-helpers';
 
 // adds blank objects to the array to make it the same length as the other arrays
 export const addBlankObjects = (array: any[], lengthRequired: number) => {
@@ -495,9 +496,15 @@ export const handleCSV = (
   // split the rows and then map over to split the cells
   // but if comma is in between [] then ignore
   const csvValues = Array.isArray(contentSplit)
-    ? contentSplit?.slice(1, contentSplit.length).map(value => {
-        return value.split(/(?=[^']),(?!')/g);
-      })
+    ? contentSplit
+        ?.slice(
+          1,
+          // we can only process X many rows
+          contentSplit.length > MAX_ROWS ? MAX_ROWS : contentSplit.length
+        )
+        .map(value => {
+          return value.split(/(?=[^']),(?!')/g);
+        })
     : [];
 
   // Remove empty rows (the download csv process can sometimes add an empty row)
