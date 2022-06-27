@@ -37,11 +37,7 @@ export const useFileValidators = ({
     errors.push('File has no values');
   }
   if (fileValues?.length >= MAX_ROWS) {
-    errors.push(
-      `This file is over ${MAX_ROWS / 1000}K rows long. Rows above ${
-        MAX_ROWS / 1000
-      }K will not be processed`
-    );
+    errors.push(t('too_many_rows', { max_rows: MAX_ROWS / 1000 }));
   }
 
   const uniqueCompanies = getUniqueStringsFromArray(
