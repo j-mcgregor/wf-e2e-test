@@ -16,7 +16,7 @@ const userBookmarkApi: NextApiHandler = async (request, response) => {
     },
     GET: async ({ authentication }) => {
       return {
-        response: await await fetchWrapper(
+        response: await fetchWrapper(
           `${process.env.WF_AP_ROUTE}/users/me/bookmarks`,
           {
             method: 'GET',

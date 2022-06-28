@@ -57,9 +57,9 @@ const useBookmark = (
         const method = action === 'REMOVE' ? 'DELETE' : 'POST';
 
         // added return_all so that we can return the bookmarks in the same request
-        const updater = await fetcher(
-          `/api/user/bookmarks?reportId=${reportId}&return_all=true`,
-          method
+        const updater = await fetch(
+          `/api/user/bookmarks?reportId=${reportId}`,
+          { method }
         );
 
         // if error
@@ -68,18 +68,9 @@ const useBookmark = (
           setIsBookmarked(!isBookMarked);
         }
 
-        if (updater.ok && updater.bookmarks) {
+        if (updater.ok) {
           // if successful revalidate the useUser hook to fetch updated user object
-          mutate('/api/user');
-          // recoil requires that what comes out of state is the same as what goes in,
-          // but that is in efficient and problematic
-          // we're working around it for now
-
-          // @ts-ignore
-          setReportBookmarks(reports => ({
-            ...reports,
-            bookmarkedReports: updater.bookmarks
-          }));
+          mutate('/api/user/bookmarks');
         }
       } catch (err) {
         Sentry.captureException(err);
