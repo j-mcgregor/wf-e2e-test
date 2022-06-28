@@ -1,14 +1,13 @@
 import { withSentry } from '@sentry/nextjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { JWT } from 'next-auth/jwt';
+
 import {
   MethodTypes,
   RequestBodyType
 } from '../../../lib/api-handler/api-handler';
-
 import authenticators from '../../../lib/api-handler/authenticators';
 import APIHandler from '../../../lib/api-handler/handler';
-import { defaultHeaders } from '../../../lib/api-handler/headers';
 import { fetchWrapper } from '../../../lib/utils/fetchWrapper';
 
 export interface IntegrationFetcherOptions {

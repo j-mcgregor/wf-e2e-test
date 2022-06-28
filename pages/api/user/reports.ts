@@ -1,27 +1,10 @@
-/* eslint-disable security/detect-object-injection */
-/* eslint-disable sonarjs/no-small-switch */
-/* eslint-disable no-console */
 import { withSentry } from '@sentry/nextjs';
-import { getToken } from 'next-auth/jwt';
 
-import User, { GetReportsHistory } from '../../../lib/funcs/user';
-import {
-  errorsBySourceType,
-  returnUnauthorised
-} from '../../../lib/utils/error-handling';
-import { makeApiHandlerResponseFailure } from '../../../lib/utils/http-helpers';
-import { StatusCodeConstants } from '../../../types/http-status-codes';
-
-import type { NextApiHandler } from 'next';
-import APIHandler from '../../../lib/api-handler/handler';
 import authenticators from '../../../lib/api-handler/authenticators';
+import APIHandler from '../../../lib/api-handler/handler';
 import { fetchWrapper } from '../../../lib/utils/fetchWrapper';
 
-const { INTERNAL_SERVER_ERROR, METHOD_NOT_ALLOWED } = StatusCodeConstants;
-
-export interface UserReportsApi extends GetReportsHistory {
-  total?: number | null;
-}
+import type { NextApiHandler } from 'next';
 
 const XMLHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
