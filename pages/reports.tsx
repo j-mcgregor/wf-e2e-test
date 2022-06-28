@@ -14,7 +14,6 @@ import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 import { createReportTitle } from '../lib/utils/text-helpers';
 import { ReportSnippetType } from '../types/global';
-import { UserReportsApi } from './api/user/reports';
 
 const Reports = () => {
   const { user } = useRecoilValue(appState);
