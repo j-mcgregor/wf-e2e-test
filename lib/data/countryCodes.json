@@ -774,8 +774,8 @@
   {
     "name": "Romania",
     "code": "RO",
-    "currency_code": "New Leu",
-    "currency": "RON",
+    "currency_code": "RON",
+    "currency": "New Leu",
     "currency_symbol": "lei",
     "flag": "https://www.currencyremitapp.com/wp-content/themes/currencyremitapp/images/countryimages/romania.png"
   },
