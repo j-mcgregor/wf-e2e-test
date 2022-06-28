@@ -1,6 +1,7 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { useTranslations } from 'next-intl';
 
+import { MAX_ROWS } from '../lib/utils/file-helpers';
 import { getUniqueStringsFromArray } from '../lib/utils/text-helpers';
 import { ReportTypeEnum } from '../types/global';
 
@@ -34,6 +35,9 @@ export const useFileValidators = ({
   let errors: Array<string | boolean> = [];
   if (fileValues?.length === 0) {
     errors.push('File has no values');
+  }
+  if (fileValues?.length >= MAX_ROWS) {
+    errors.push(t('TOO_MANY_ROWS', { max_rows: MAX_ROWS / 1000 }));
   }
 
   const uniqueCompanies = getUniqueStringsFromArray(

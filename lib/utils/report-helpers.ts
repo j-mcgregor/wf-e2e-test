@@ -18,6 +18,7 @@ import type {
   ReportUploadRequestBody
 } from '../../types/report';
 import { getUniqueStringsFromArray } from './text-helpers';
+import { MAX_ROWS } from './file-helpers';
 
 // adds blank objects to the array to make it the same length as the other arrays
 export const addBlankObjects = (array: any[], lengthRequired: number) => {
@@ -38,7 +39,8 @@ export const makeUploadReportReqBody = (
 ): ReportUploadRequestBody => {
   // setter functions
   const setNumberValue = (key: CsvReportUploadHeaders, i: number) =>
-    Number(reportObject[key]?.[i] ?? 0);
+    // remove all none number characters
+    Number(reportObject[key]?.[i].replace(/[^\d.]+/gi, '') ?? 0);
 
   const setStringValue = (key: CsvReportUploadHeaders, i: number) =>
     reportObject[key]?.[i]?.toString() ?? '';
@@ -83,7 +85,6 @@ export const makeUploadReportReqBody = (
       };
     }
   );
-
   return {
     parent_id: parent_id || null,
     // MAIN ========================
@@ -412,7 +413,7 @@ export const handleExcel = (
       data &&
       headers?.reduce((acc, header: string, i) => {
         // map csvValues to get the array of values for each header
-        const row = data.map(cell => cell[Number(i)]);
+        const row = data.map(cell => cell[Number(i)].trim());
 
         return {
           ...acc,
@@ -495,9 +496,15 @@ export const handleCSV = (
   // split the rows and then map over to split the cells
   // but if comma is in between [] then ignore
   const csvValues = Array.isArray(contentSplit)
-    ? contentSplit?.slice(1, contentSplit.length).map(value => {
-        return value.split(/(?=[^']),(?!')/g);
-      })
+    ? contentSplit
+        ?.slice(
+          1,
+          // we can only process X many rows
+          contentSplit.length > MAX_ROWS ? MAX_ROWS : contentSplit.length
+        )
+        .map(value => {
+          return value.split(/(?=[^']),(?!')/g);
+        })
     : [];
 
   // Remove empty rows (the download csv process can sometimes add an empty row)
@@ -514,7 +521,7 @@ export const handleCSV = (
     csvValues &&
     csvHeaders?.reduce((acc, header: string, i) => {
       // map csvValues to get the array of values for each header
-      const row = filteredValues.map(cell => cell[Number(i)]);
+      const row = filteredValues.map(cell => cell[Number(i)].trim());
 
       return {
         ...acc,
