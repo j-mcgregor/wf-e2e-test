@@ -39,16 +39,14 @@ const BatchReport = () => {
 
   const { id = '' } = router.query;
 
-  const { data, error } = useSWR<{
-    batchReport: BatchJobGetByIdResponse;
-    is_error: boolean;
-    ok: boolean;
-    status: number;
-  }>(`/api/batch-reports/${id}?skip=${skip}limit=${limit}`, fetcher);
+  const { data, error } = useSWR(
+    `/api/batch-reports/${id}?skip=${skip}limit=${limit}`,
+    fetcher
+  );
 
   useEffect(() => {
-    if (data?.batchReport) {
-      setBatchReport(data.batchReport);
+    if (data?.data) {
+      setBatchReport(data.data);
     }
   }, [data]);
 
