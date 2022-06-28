@@ -65,8 +65,6 @@ const AlternativeSearchBox = ({
     fetcher
   );
 
-  console.log(data);
-
   useEffect(() => {
     if (data?.error) {
       Sentry.captureException(new Error(data.error), {
