@@ -37,7 +37,7 @@ export const useFileValidators = ({
     errors.push('File has no values');
   }
   if (fileValues?.length >= MAX_ROWS) {
-    errors.push(t('too_many_rows', { max_rows: MAX_ROWS / 1000 }));
+    errors.push(t('TOO_MANY_ROWS', { max_rows: MAX_ROWS / 1000 }));
   }
 
   const uniqueCompanies = getUniqueStringsFromArray(
