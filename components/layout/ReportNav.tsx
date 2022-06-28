@@ -9,6 +9,7 @@ import fetcher from '../../lib/utils/fetcher';
 import { downloadFile } from '../../lib/utils/file-helpers';
 import Button from '../elements/Button';
 import SkeletonMenu from '../skeletons/SkeletonMenu';
+import { useSession } from 'next-auth/react';
 
 interface ReportNavProps {
   companyName: string;
@@ -24,39 +25,49 @@ const nonTestingProps = {
 export const handleExport = async (
   format: 'csv' | 'pdf',
   id: string,
-  setDownloading: (value: boolean) => void
+  setDownloading: (value: boolean) => void,
+  token?: string
 ) => {
   if (!id) return null;
-  setDownloading(true);
 
   try {
+    setDownloading(true);
+
     const isPDF = format === 'pdf';
+    if (isPDF) {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_WF_API_ROUTE}/reports/${id}/export/pdf`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
-    const response = await fetcher(
-      `/api/reports/report?id=${id}&export=${isPDF ? 'pdf' : 'csv-full'}`,
-      'GET',
-      null,
-      {
-        'Content-Type': isPDF ? 'application/pdf' : 'application/json'
-      }
-    );
-
-    const fileName = `report-${id}.${format}`;
-
-    if (isPDF)
-      return downloadFile({
-        data: response,
-        // eg report-companyName.csv
-        fileName: fileName,
+      downloadFile({
+        data: await res.blob(),
+        // eg report-id.csv
+        fileName: `batch-report-${id}.pdf`,
         fileType: 'application/pdf'
       });
-
-    return downloadFile({
-      data: response.data.csv,
-      // eg report-companyName.csv
-      fileName: fileName,
-      fileType: 'text/csv'
-    });
+    } else {
+      const response = await fetcher(
+        `/api/reports/report?id=${id}&export=csv-full`,
+        'GET',
+        null,
+        {
+          'Content-Type': 'application/json'
+        }
+      );
+      const fileName = `report-${id}.${format}`;
+      downloadFile({
+        data: response.data.csv,
+        // eg report-companyName.csv
+        fileName: fileName,
+        fileType: 'text/csv'
+      });
+    }
   } catch (error) {
     // TODO remove console.log
     // eslint-disable-next-line no-console
@@ -75,6 +86,7 @@ const ReportNav = ({
   const navItems = useReportNavItems();
   const t = useTranslations();
   const router = useRouter();
+  const { data: session } = useSession();
   const id = router?.query?.id;
   const [activeItem, setActiveItem] = useState<string>('summary');
 
@@ -166,8 +178,11 @@ const ReportNav = ({
           loading={downloadingPdf}
           disabled={downloadingPdf}
           variant="alt"
+          type="button"
           className="w-full"
-          onClick={() => handleExport('pdf', `${id}`, setDownloadingPdf)}
+          onClick={() =>
+            handleExport('pdf', `${id}`, setDownloadingPdf, `${session?.token}`)
+          }
         >
           {t('export_pdf')}
         </Button>
@@ -175,6 +190,7 @@ const ReportNav = ({
           loading={downloadingCsv}
           disabled={downloadingCsv}
           variant="secondary"
+          type="button"
           onClick={() => handleExport('csv', `${id}`, setDownloadingCsv)}
         >
           {t('export_csv')}

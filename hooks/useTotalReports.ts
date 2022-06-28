@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useSWR from 'swr';
+
 import fetcher from '../lib/utils/fetcher';
-import { UserReportsApi } from '../pages/api/user/reports';
 
 // small hook to handle the total reports issues we have currently
 // i.e. it takes forever to return when you have a lot of reports
@@ -11,7 +11,7 @@ const useTotalReports = (fetch: boolean = true) => {
 
   const [total, setTotal] = useState<number | string>(0);
 
-  const { data } = useSWR<UserReportsApi>(
+  const { data } = useSWR(
     fetch && '/api/user/reports?total=true&limit=false&skip=false',
     fetcher,
     {
@@ -21,11 +21,11 @@ const useTotalReports = (fetch: boolean = true) => {
   );
 
   React.useEffect(() => {
-    if (data?.total) {
-      if (data.total === 0) {
+    if (data?.data?.total) {
+      if (data.data.total === 0) {
         setTotal('0');
       }
-      setTotal(data.total);
+      setTotal(data.data.total);
     }
   }, [data]);
 

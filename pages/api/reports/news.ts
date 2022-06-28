@@ -4,10 +4,6 @@ import authenticators from '../../../lib/api-handler/authenticators';
 import APIHandler from '../../../lib/api-handler/handler';
 
 import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-/**
- * IS THIS API PAGE NEEDED?
- */
-export interface ReportsNewsApi {}
 
 const NewsApi: NextApiHandler = async (
   request: NextApiRequest,
