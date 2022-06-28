@@ -65,6 +65,8 @@ const AlternativeSearchBox = ({
     fetcher
   );
 
+  console.log(data);
+
   useEffect(() => {
     if (data?.error) {
       Sentry.captureException(new Error(data.error), {
@@ -106,7 +108,7 @@ const AlternativeSearchBox = ({
           onChange={e => setInputValue(e.target.value)}
           onFocus={() => setSearchHasFocus(true)}
         />
-        {data && data?.data.length > 0 && (
+        {data && data?.data?.length > 0 && (
           <label className="absolute right-5 top-2 sm:right-[8.5rem]">
             {data?.data?.length} results
           </label>
