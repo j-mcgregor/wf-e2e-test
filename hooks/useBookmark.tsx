@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import * as Sentry from '@sentry/nextjs';
+import { useTranslations } from 'next-intl';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 import { mutate } from 'swr';
@@ -7,6 +8,7 @@ import { mutate } from 'swr';
 import { UserReports, userReports } from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 import { ReportSnippetType } from '../types/global';
+import { useToast } from './useToast';
 
 // hook to use bookmarks
 // takes a report object to optimistically add to state whilst waiting for request
@@ -20,9 +22,11 @@ const useBookmark = (
   handleBookmark: (action: 'ADD' | 'REMOVE') => Promise<void>;
   setIsBookmarked: Dispatch<SetStateAction<boolean>>;
 } => {
+  const t = useTranslations();
   const [isBookMarked, setIsBookmarked] = useState<boolean>(false);
   const setReportBookmarks = useSetRecoilState(userReports);
   const { bookmarkedReports } = useRecoilValue<UserReports>(userReports);
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
   const [reportSnippet, setReportSnippet] = useState<
     ReportSnippetType | undefined
@@ -64,13 +68,31 @@ const useBookmark = (
 
         // if error
         if (!updater.ok) {
-          // if fails to save, revert to previous state
           setIsBookmarked(!isBookMarked);
+
+          const json = await updater.json();
+          const toastText = getToastTextFromResponse(json);
+
+          // if fails to save, revert to previous state
+          toastText &&
+            triggerToast({
+              title: toastText.title,
+              description: toastText.description,
+              toastId: 'bookmark-updated-error',
+              toastType: 'error',
+              dismiss: 'corner'
+            });
         }
 
         if (updater.ok) {
           // if successful revalidate the useUser hook to fetch updated user object
           mutate('/api/user/bookmarks');
+
+          triggerToast({
+            title: action === 'REMOVE' ? 'Bookmark removed' : 'Bookmark added',
+            toastId: `bookmark-updated-${method}`,
+            status: updater.status
+          });
         }
       } catch (err) {
         Sentry.captureException(err);

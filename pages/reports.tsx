@@ -2,7 +2,7 @@
 import { BookmarkIcon } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ReactTimeago from 'react-timeago';
 import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
@@ -10,7 +10,6 @@ import useSWR from 'swr';
 import BookmarkCard from '../components/cards/BookmarkCard';
 import Layout from '../components/layout/Layout';
 import Table, { TableHeadersType } from '../components/table/Table';
-import { useToast } from '../hooks/useToast';
 import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 import { createReportTitle } from '../lib/utils/text-helpers';
@@ -33,59 +32,6 @@ const Reports = () => {
       revalidateOnFocus: false
     }
   );
-
-  const { triggerToast, getTextFromResponse } = useToast({});
-
-  useEffect(() => {
-    if (data) {
-      const actions = [
-        {
-          label: 'View',
-          // eslint-disable-next-line no-console
-          action: () => alert('Action triggered')
-        }
-      ];
-
-      const title = t('USER.USER_UPDATED.title');
-      const description = t('USER.USER_UPDATED.description');
-
-      triggerToast({
-        title,
-        description,
-        toastId: 'user-updated',
-        toastType: 'success',
-        actions: [
-          {
-            label: 'Boo',
-            action: () => alert('Boo!')
-          }
-        ],
-        dismiss: 'corner'
-      });
-
-      // if no custom message defined
-      // then check if [sourceType][status] is defined
-      // if yes, use that
-      // else fallback to default generic status
-
-      const toastText = getTextFromResponse(data);
-
-      if (!toastText) {
-        return;
-      }
-
-      triggerToast({
-        toastId: data.code,
-        status: data.status,
-        actions,
-        title: toastText?.title,
-        description: toastText?.description,
-        dismiss: 'button'
-        // closeButton: true,
-        // autoClose: false
-      });
-    }
-  }, [data]);
 
   const getReportName = (row: { company_name: string; created_at: string }) =>
     createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
@@ -206,8 +152,7 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         ...require(`../messages/${locale}/general.${locale}.json`),
         ...require(`../messages/${locale}/errors.${locale}.json`),
         ...require(`../messages/${locale}/errors-default.${locale}.json`),
-        ...require(`../messages/${locale}/sourcetype-errors.${locale}.json`),
-        ...require(`../messages/${locale}/sourcetype-messages.${locale}.json`)
+        ...require(`../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };
