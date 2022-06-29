@@ -39,12 +39,9 @@ const useUser = (fetch: boolean = true) => {
   React.useEffect(() => {
     let user = {};
 
-    if (data?.user && !isValidating) {
-      setState({ ...appState, user: { ...data?.user, is_sso } });
-    }
-
-    if (data?.data && !isValidating) {
-      user = { ...data.data };
+    if (data?.data?.user && !isValidating) {
+      setState({ ...appState, user: { ...data?.data.user, is_sso } });
+      user = { ...data.data.user };
     }
 
     if (bookmarks?.data && !isValidatingBookmarks) {
