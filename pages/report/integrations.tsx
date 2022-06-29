@@ -12,6 +12,9 @@ import CodatStageTwo from '../../components/forms/integrations/codat/CodatStageT
 import Layout from '../../components/layout/Layout';
 import SkeletonLayout from '../../components/skeletons/SkeletonLayout';
 import { CodatCompanyType } from '../../types/report';
+import { useToast } from '../../hooks/useToast';
+import fetcher from '../../lib/utils/fetcher';
+import { fetchMockData } from '../../lib/mock-data/helpers';
 
 interface ReportIntegrationsPageProps {
   locale: string;
@@ -36,6 +39,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   const t = useTranslations();
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
   React.useEffect(() => {
     if (yearPeriod === null && monthPeriod === null && selectedCompany) {
@@ -105,21 +109,52 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       ...hasParentIdBody
     };
 
-    const res = await fetch(`/api/integrations/codat/codat`, {
-      method: 'POST',
-      headers: {
+    const res = await fetcher(
+      `/api/integrations/codat/codat`,
+      'POST',
+      { body },
+      {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    });
+      }
+    );
+
+    // USE FOR TESTING TOASTS
+    // const res = await fetchMockData(
+    //   400,
+    //   'INTEGRATIONS_CODAT',
+    //   'INTEGRATIONS_CODAT_401'
+    // )();
 
     if (res.ok) {
-      const { data } = await res.json();
-      router.push(`/report/${data.id}?from=/report/integrations/`);
+      triggerToast({
+        toastId: res.code,
+        status: res.status,
+        title: t(`${res.sourceType}.${res.code}.title`),
+        description: t(`${res.sourceType}.${res.code}.description`),
+        dismiss: 'corner',
+        actions: [
+          {
+            label: 'Go to integration',
+            action: () =>
+              router.push(`/report/${res?.data.id}?from=/report/integrations/`)
+          }
+        ]
+      });
+
+      router.push(`/report/${res?.data.id}?from=/report/integrations/`);
     } else {
       setLoading(false);
-      const json = await res.json();
-      setError(json.code);
+      setError(res.code);
+
+      const toastText = getToastTextFromResponse(res);
+
+      toastText &&
+        triggerToast({
+          toastId: res.code,
+          status: res.status,
+          title: toastText?.title,
+          description: toastText?.description
+        });
     }
   };
 
@@ -221,10 +256,12 @@ export const getStaticProps = ({ locale }: GetStaticPropsContext) => {
         // You can get the messages from anywhere you like, but the recommended
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
-        ...require(`../../../messages/${locale}/sme-calculator.${locale}.json`),
-        ...require(`../../../messages/${locale}/integrations.${locale}.json`),
-        ...require(`../../../messages/${locale}/general.${locale}.json`),
-        ...require(`../../../messages/${locale}/errors.${locale}.json`)
+        ...require(`../../messages/${locale}/sme-calculator.${locale}.json`),
+        ...require(`../../messages/${locale}/integrations.${locale}.json`),
+        ...require(`../../messages/${locale}/general.${locale}.json`),
+        ...require(`../../messages/${locale}/errors.${locale}.json`),
+        ...require(`../../messages/${locale}/errors-default.${locale}.json`),
+        ...require(`../../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };

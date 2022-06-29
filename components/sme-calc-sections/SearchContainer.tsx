@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
+import { useToast } from '../../hooks/useToast';
 
 import appState from '../../lib/appState';
 import { accountTypes } from '../../lib/settings/report.settings';
@@ -28,6 +29,8 @@ interface SearchContainerProps {
 const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const t = useTranslations();
   const router = useRouter();
+
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
   const currencies: SimpleValue[] = SettingsSettings.supportedCurrencies;
 
@@ -181,8 +184,21 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
       if (createReportRes?.data?.id) {
         // update the global user state to get the new report
         mutate('/api/user');
-        // redirect to the report page
 
+        triggerToast({
+          toastId: 'REPORT_CREATED',
+          title: t('REPORTS.REPORT_CREATED.title'),
+          description: t('REPORTS.REPORT_CREATED.description'),
+          toastType: 'success',
+          actions: [
+            {
+              label: 'Go to report',
+              action: () => router.push(`/report/${createReportRes.data?.id}`)
+            }
+          ]
+        });
+
+        // redirect to the report page
         router.push(`/report/${createReportRes.data?.id}`);
       }
 
@@ -195,6 +211,23 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
             }
           }
         });
+
+        const toastText = getToastTextFromResponse(createReportRes);
+
+        toastText &&
+          triggerToast({
+            toastId: createReportRes.code,
+            status: createReportRes.status,
+            actions: [
+              {
+                label: 'Retry',
+                action: () => handleGenerateReport()
+              }
+            ],
+            title: toastText?.title,
+            description: toastText?.description,
+            dismiss: 'button'
+          });
 
         setError({
           error: createReportRes.is_error,

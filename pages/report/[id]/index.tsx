@@ -126,7 +126,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         ...require(`../../../messages/${locale}/report.${locale}.json`),
         ...require(`../../../messages/${locale}/hints.${locale}.json`),
         ...require(`../../../messages/${locale}/general.${locale}.json`),
-        ...require(`../../../messages/${locale}/errors.${locale}.json`)
+        ...require(`../../../messages/${locale}/errors.${locale}.json`),
+        ...require(`../../../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };

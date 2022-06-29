@@ -20,6 +20,7 @@ import fetcher from '../../../lib/utils/fetcher';
 import { downloadFile } from '../../../lib/utils/file-helpers';
 import { makeUploadReportReqBody } from '../../../lib/utils/report-helpers';
 import { SubmitReportType } from '../../../types/report';
+import { useToast } from '../../../hooks/useToast';
 
 const UploadData = () => {
   const t = useTranslations();
@@ -31,6 +32,8 @@ const UploadData = () => {
   const handleSetSelectedFile = (file: File | null) => {
     setFileSelected(file);
   };
+
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
   const { data, values, isCSV, isExcel } =
     useManualReportUploadFile(fileSelected);
@@ -64,10 +67,36 @@ const UploadData = () => {
         fileName: `report-${id}.csv`,
         fileType: 'text/csv'
       });
-    } catch (error) {
-      // TODO remove console.log
+
+      triggerToast({
+        toastId: response.code,
+        status: response.status,
+        title: t(`REPORTS.REPORT_DOWNLOAD_${response.status} .title`, {
+          fileType: 'CSV'
+        }),
+        description:
+          response.message ||
+          t(`REPORTS.REPORT_DOWNLOAD_${response.status} .description`, {
+            fileType: 'CSV'
+          })
+      });
+    } catch (error: any) {
+      const status = error.status || 500;
       // eslint-disable-next-line no-console
       console.log(error);
+      triggerToast({
+        toastId: 'DOWNLOAD_REPORT_CSV',
+        status,
+        title: t(`REPORTS.REPORT_DOWNLOAD_${status}.title`, {
+          fileType: 'CSV'
+        }),
+        description:
+          error.message ||
+          t(`REPORTS.REPORT_DOWNLOAD_${status}.description`, {
+            fileType: 'CSV'
+          }),
+        toastType: 'error'
+      });
     }
   };
 
@@ -78,11 +107,23 @@ const UploadData = () => {
     try {
       const result = await fetcher('/api/reports/upload', 'POST', params);
 
+      const toastText = getToastTextFromResponse(result);
+
       if (result?.error) {
         Sentry.captureException({
           error: result.error,
           message: result.message
         });
+
+        toastText &&
+          triggerToast({
+            toastId: result.code,
+            status: result.status,
+            title: toastText.title,
+            description: result.message || toastText.description,
+            toastType: 'error'
+          });
+
         setError({ error: 'REPORT_500', message: result.message });
       }
 
@@ -91,12 +132,35 @@ const UploadData = () => {
           error: NO_REPORT_ID,
           message: result.message
         });
+
+        triggerToast({
+          toastId: result.code,
+          status: result.status,
+          title: t('REPORTS.NO_REPORT_ID.title'),
+          description: result.message || t('REPORTS.NO_REPORT_ID.description'),
+          toastType: 'error'
+        });
+
         setError({ error: 'NO_REPORT_ID', message: result.message });
       }
 
       if (result?.data?.id) {
         // update user to get report data
         mutate('/api/user');
+
+        triggerToast({
+          toastId: 'REPORT_CREATED',
+          title: t('REPORTS.REPORT_CREATED.title'),
+          description: t('REPORTS.REPORT_CREATED.description'),
+          toastType: 'success',
+          actions: [
+            {
+              label: 'Go to report',
+              action: () => router.push(`/report/${result.data.id}`)
+            }
+          ]
+        });
+
         return router.push(`/report/${result.data.id}`);
       }
     } catch (err) {
@@ -176,7 +240,9 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         ...require(`../../../messages/${locale}/upload-data.${locale}.json`),
         ...require(`../../../messages/${locale}/hints.${locale}.json`),
         ...require(`../../../messages/${locale}/general.${locale}.json`),
-        ...require(`../../../messages/${locale}/errors.${locale}.json`)
+        ...require(`../../../messages/${locale}/errors.${locale}.json`),
+        ...require(`../../../messages/${locale}/errors-default.${locale}.json`),
+        ...require(`../../../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };
