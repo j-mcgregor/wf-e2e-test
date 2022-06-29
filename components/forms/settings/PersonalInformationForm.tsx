@@ -7,7 +7,9 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { mutate } from 'swr';
 
 import config from '../../../config';
+import { useToast } from '../../../hooks/useToast';
 import appState, { appUser } from '../../../lib/appState';
+import { fetchMockData } from '../../../lib/mock-data/helpers';
 import {
   EMAIL_REQUIRED,
   FULL_NAME_REQUIRED,
@@ -33,6 +35,8 @@ const PersonalInformationForm = ({
   const { user } = useRecoilValue(appState);
   const setCurrentUser = useSetRecoilState(appUser);
   const t = useTranslations();
+
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
   const currentUserValues = {
     fullName: user?.full_name,
@@ -67,8 +71,21 @@ const PersonalInformationForm = ({
 
       const json = await fetchRes.json();
 
+      // const json = await fetchMockData(400, 'USER', 'USER_400')();
+
       if (!json.ok) {
         setSubmitError({ type: json.error });
+
+        const toastText = getToastTextFromResponse(json);
+
+        toastText &&
+          triggerToast({
+            toastId: 'USER_UPDATED_PERSONAL_INFO',
+            title: toastText.title,
+            description: toastText.description,
+            status: json.status
+          });
+
         return reset(currentUserValues);
       }
 
@@ -77,6 +94,16 @@ const PersonalInformationForm = ({
         setCurrentUser({ ...user, ...json.data });
         mutate('/api/user');
         // this might be used to update the session user - might be needed for email updates
+
+        triggerToast({
+          toastId: 'USER_UPDATED_PERSONAL_INFO',
+          title: t(`USER.USER_UPDATED.title`),
+          description: t(`USER.USER_UPDATED.description`, {
+            section: t('personal_information')
+          }),
+          status: json.status
+        });
+
         return await getSession();
       }
     } catch (error) {

@@ -7,6 +7,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { mutate } from 'swr';
 
 import config from '../../../config';
+import { useToast } from '../../../hooks/useToast';
 import appState, { appUser } from '../../../lib/appState';
 import SettingsSettings from '../../../lib/settings/settings.settings';
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
@@ -47,6 +48,7 @@ const PreferenceForm = ({
   const { user } = useRecoilValue(appState);
 
   const t = useTranslations();
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
   const dashboardOptions = React.useMemo(
     () =>
@@ -101,6 +103,17 @@ const PreferenceForm = ({
 
       if (!json.ok) {
         setSubmitError({ type: json.error });
+
+        const toastText = getToastTextFromResponse(json);
+
+        toastText &&
+          triggerToast({
+            toastId: 'USER_UPDATED_PREFERENCES',
+            title: toastText.title,
+            description: toastText.description,
+            status: json.status
+          });
+
         return reset(currentUserValues);
       }
 
@@ -109,6 +122,15 @@ const PreferenceForm = ({
         // mutate the user state to get the new preferences
         // useUser hook is being called here
         mutate('/api/user');
+
+        triggerToast({
+          toastId: 'USER_UPDATED_PREFERENCES',
+          title: t(`USER.USER_UPDATED.title`),
+          description: t(`USER.USER_UPDATED.description`, {
+            section: t('preferences')
+          }),
+          status: json.status
+        });
       }
     } catch (error) {
       Sentry.captureException(error);

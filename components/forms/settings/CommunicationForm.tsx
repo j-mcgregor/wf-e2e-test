@@ -6,6 +6,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { mutate } from 'swr';
 
 import config from '../../../config';
+import { useToast } from '../../../hooks/useToast';
 import appState, { appUser } from '../../../lib/appState';
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 import Button from '../../elements/Button';
@@ -38,6 +39,8 @@ const CommunicationForm = () => {
   const [submitError, setSubmitError] = useState({ type: '' });
   const [successMessage, setSuccessMessage] = useState('');
 
+  const { triggerToast, getToastTextFromResponse } = useToast();
+
   const onSubmit: SubmitHandler<CommunicationFormInput> = async data => {
     try {
       const fetchRes = await fetch(`${config.URL}/api/user?id=${user.id}`, {
@@ -59,12 +62,31 @@ const CommunicationForm = () => {
 
       if (!json.ok) {
         setSubmitError({ type: json.error });
+        const toastText = getToastTextFromResponse(json);
+
+        toastText &&
+          triggerToast({
+            toastId: 'USER_UPDATED_PASSWORD',
+            title: toastText.title,
+            description: toastText.description,
+            status: json.status
+          });
         return reset();
       }
 
       if (json.ok) {
         setSuccessMessage('UPDATED_USER');
+
         mutate('/api/user');
+
+        triggerToast({
+          toastId: 'USER_UPDATED_COMMNICATION',
+          title: t(`USER.USER_UPDATED.title`),
+          description: t(`USER.USER_UPDATED.description`, {
+            section: t('communication')
+          }),
+          status: json.status
+        });
       }
     } catch (error) {
       Sentry.captureException(error);

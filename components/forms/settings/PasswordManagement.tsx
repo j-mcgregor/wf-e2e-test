@@ -8,6 +8,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import config from '../../../config';
+import { useToast } from '../../../hooks/useToast';
 import appState, { appUser } from '../../../lib/appState';
 import {
   CONFIRM_PASSWORD_MATCH,
@@ -50,6 +51,7 @@ const PasswordManagement = () => {
   const [submitError, setSubmitError] = useState({ type: '', status: null });
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
   // @ts-ignore
   const onSubmit: SubmitHandler = async (data: {
@@ -60,6 +62,7 @@ const PasswordManagement = () => {
     const { newPassword, currentPassword } = data;
     setSuccessMessage('');
     setSubmitError({ type: '', status: null });
+
     try {
       const fetchRes = await fetch(`${config.URL}/api/user`, {
         method: 'PUT',
@@ -73,12 +76,32 @@ const PasswordManagement = () => {
 
       if (!json.ok) {
         setSubmitError({ type: json.message, status: json.status });
+        const toastText = getToastTextFromResponse(json);
+
+        toastText &&
+          triggerToast({
+            toastId: 'USER_UPDATED_PASSWORD',
+            title: toastText.title,
+            description: toastText.description,
+            status: json.status
+          });
+
         return reset();
       }
 
       if (json.ok) {
         setCurrentUser({ ...user });
         setSuccessMessage('USER_UPDATED');
+
+        triggerToast({
+          toastId: 'USER_UPDATED_PERSONAL_INFO',
+          title: t(`USER.USER_UPDATED.title`),
+          description: t(`USER.USER_UPDATED.description`, {
+            section: 'Password'
+          }),
+          status: json.status
+        });
+
         return reset();
       }
     } catch (error) {
