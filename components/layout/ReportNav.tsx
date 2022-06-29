@@ -5,11 +5,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-scroll';
 
 import { useReportNavItems } from '../../hooks/useNavigation';
+import { useToast } from '../../hooks/useToast';
 import fetcher from '../../lib/utils/fetcher';
 import { downloadFile } from '../../lib/utils/file-helpers';
 import Button from '../elements/Button';
 import SkeletonMenu from '../skeletons/SkeletonMenu';
 import { useSession } from 'next-auth/react';
+import config from '../../config';
 
 interface ReportNavProps {
   companyName: string;
@@ -26,6 +28,7 @@ export const handleExport = async (
   format: 'csv' | 'pdf',
   id: string,
   setDownloading: (value: boolean) => void,
+  triggerToast: (args: HandleToast) => void,
   token?: string
 ) => {
   if (!id) return null;
@@ -35,8 +38,9 @@ export const handleExport = async (
 
     const isPDF = format === 'pdf';
     if (isPDF) {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_WF_API_ROUTE}/reports/${id}/export/pdf`,
+      // Getting a direct PDF link is easier than passing through the API Handler
+      const response = await fetch(
+        `${config.API_URL}/reports/${id}/export/pdf`,
         {
           method: 'GET',
           headers: {
@@ -46,10 +50,16 @@ export const handleExport = async (
       );
 
       downloadFile({
-        data: await res.blob(),
+        data: await response.blob(),
         // eg report-id.csv
         fileName: `batch-report-${id}.pdf`,
         fileType: 'application/pdf'
+      });
+
+      triggerToast({
+        fileType: 'csv',
+        id: `download-pdf-${id}-${Date.now()}`,
+        status: response.status
       });
     } else {
       const response = await fetcher(
@@ -67,15 +77,32 @@ export const handleExport = async (
         fileName: fileName,
         fileType: 'text/csv'
       });
+
+      triggerToast({
+        fileType: 'csv',
+        id: `download-csv-${id}-${Date.now()}`,
+        status: response.status
+      });
     }
-  } catch (error) {
+  } catch (error: any) {
     // TODO remove console.log
     // eslint-disable-next-line no-console
     console.log(error);
+    return triggerToast({
+      id,
+      status: error.status || 500,
+      fileType: format
+    });
   } finally {
     setDownloading(false);
   }
 };
+
+interface HandleToast {
+  fileType: 'csv' | 'pdf';
+  id: string;
+  status?: number;
+}
 
 const ReportNav = ({
   companyName,
@@ -92,6 +119,23 @@ const ReportNav = ({
 
   const [downloadingCsv, setDownloadingCsv] = useState(false);
   const [downloadingPdf, setDownloadingPdf] = useState(false);
+
+  const { triggerToast } = useToast();
+
+  const handleToast =
+    (fileType: 'csv' | 'pdf') =>
+    ({ id, status }: HandleToast) => {
+      triggerToast({
+        toastId: id,
+        status,
+        title: t(`REPORTS.REPORT_DOWNLOAD_${status}.title`, {
+          fileType: fileType.toUpperCase()
+        }),
+        description: t(`REPORTS.REPORT_DOWNLOAD_${status}.description`, {
+          fileType: fileType.toUpperCase()
+        })
+      });
+    };
 
   if (loading) {
     return (
@@ -181,7 +225,13 @@ const ReportNav = ({
           type="button"
           className="w-full"
           onClick={() =>
-            handleExport('pdf', `${id}`, setDownloadingPdf, `${session?.token}`)
+            handleExport(
+              'pdf',
+              `${id}`,
+              setDownloadingPdf,
+              handleToast('pdf'),
+              `${session?.token}`
+            )
           }
         >
           {t('export_pdf')}
@@ -190,8 +240,9 @@ const ReportNav = ({
           loading={downloadingCsv}
           disabled={downloadingCsv}
           variant="secondary"
-          type="button"
-          onClick={() => handleExport('csv', `${id}`, setDownloadingCsv)}
+          onClick={() =>
+            handleExport('csv', `${id}`, setDownloadingCsv, handleToast('csv'))
+          }
         >
           {t('export_csv')}
         </Button>
