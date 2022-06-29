@@ -71,12 +71,12 @@ const UploadData = () => {
       triggerToast({
         toastId: response.code,
         status: response.status,
-        title: t(`REPORTS.REPORT_DOWNLOAD_${response.status} .title`, {
+        title: t(`REPORTS.REPORT_DOWNLOAD_${response.status}.title`, {
           fileType: 'CSV'
         }),
         description:
           response.message ||
-          t(`REPORTS.REPORT_DOWNLOAD_${response.status} .description`, {
+          t(`REPORTS.REPORT_DOWNLOAD_${response.status}.description`, {
             fileType: 'CSV'
           })
       });
