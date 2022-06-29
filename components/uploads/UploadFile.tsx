@@ -1,7 +1,6 @@
 import { TrashIcon, UploadIcon } from '@heroicons/react/outline';
 import { useRef, useState } from 'react';
 import { useTranslations } from 'use-intl';
-import * as Excel from 'xlsx';
 import { TranslateInput } from '../../types/global';
 import Button from '../elements/Button';
 

@@ -101,8 +101,9 @@ export const uploadReportCSVHeaders: {
   },
   details_company_type: {
     required: (x: string) =>
-      (!x || !validateCompanyType(x)) &&
-      `"details_company_type" must be 'Large', 'Medium' or 'Small'`,
+      x?.trim()?.length > 0 &&
+      !validateCompanyType(x) &&
+      `"details_company_type" must be 'Large', 'Medium' or 'Small' or left blank`,
     formatted: 'Company Type'
   },
   // not required but if there, validated as a website
@@ -182,7 +183,7 @@ export const uploadReportCSVHeaders: {
   period: {
     required: (x: string) => !x && `A value for "period" is required`,
     validator: (x: string) =>
-      !dateIsValid(x) && 'Period must be in a YYYY-MM-DD format',
+      !dateIsValid(x) && 'Period must be in a YYYY-MM-DD or YYYY format',
     formatted: 'Period'
   },
   retained_earnings: {
