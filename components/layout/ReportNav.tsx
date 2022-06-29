@@ -28,7 +28,7 @@ export const handleExport = async (
   format: 'csv' | 'pdf',
   id: string,
   setDownloading: (value: boolean) => void,
-  triggerToast: (args: HandleToast) => void,
+  triggerToast?: (args: HandleToast) => void,
   token?: string
 ) => {
   if (!id) return null;
@@ -56,7 +56,7 @@ export const handleExport = async (
         fileType: 'application/pdf'
       });
 
-      triggerToast({
+      triggerToast?.({
         fileType: 'csv',
         id: `download-pdf-${id}-${Date.now()}`,
         status: response.status
@@ -78,7 +78,7 @@ export const handleExport = async (
         fileType: 'text/csv'
       });
 
-      triggerToast({
+      triggerToast?.({
         fileType: 'csv',
         id: `download-csv-${id}-${Date.now()}`,
         status: response.status
@@ -88,7 +88,7 @@ export const handleExport = async (
     // TODO remove console.log
     // eslint-disable-next-line no-console
     console.log(error);
-    return triggerToast({
+    return triggerToast?.({
       id,
       status: error.status || 500,
       fileType: format

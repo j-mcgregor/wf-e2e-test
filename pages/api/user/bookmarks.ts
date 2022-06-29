@@ -65,8 +65,6 @@ const userBookmarkApi: NextApiHandler = async (request, response) => {
         }
       );
 
-      console.log('res', res); // I can see the response in the terminal here
-
       return {
         // but this response doesn't get passed to the client
         defaultResponse: {
