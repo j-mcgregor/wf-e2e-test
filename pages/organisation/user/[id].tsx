@@ -12,6 +12,7 @@ import Layout from '../../../components/layout/Layout';
 import LoadingIcon from '../../../components/svgs/LoadingIcon';
 import Table, { TableHeadersType } from '../../../components/table/Table';
 import useOrganisation from '../../../hooks/useOrganisation';
+import { useToast } from '../../../hooks/useToast';
 import fetcher from '../../../lib/utils/fetcher';
 import { createReportTitle } from '../../../lib/utils/text-helpers';
 import {
@@ -28,6 +29,8 @@ const OrganisationUserPage = () => {
   const [reports, setReports] = React.useState<OrganisationUserReport[]>([]);
   const { id } = router.query;
   const [skip, setSkip] = React.useState(0);
+
+  const { triggerToast } = useToast();
 
   const limit = 10;
 
@@ -141,6 +144,18 @@ const OrganisationUserPage = () => {
       userMutate(updateUserFn({ is_active: !user?.is_active }), {
         optimisticData,
         rollbackOnError: true
+      }).then(res => {
+        const role = res.data?.is_active === true ? 'active' : 'inactive';
+
+        triggerToast({
+          toastId: `ACTIVE_USER_${res.data?.is_active}`,
+          title: t(`${res?.sourceType}.${res?.code}.title`),
+          description: t(`${res?.sourceType}.${res?.code}.description`, {
+            user: res?.data?.full_name,
+            role
+          }),
+          status: res?.status
+        });
       })
     );
   };
@@ -154,7 +169,24 @@ const OrganisationUserPage = () => {
     return userMutate(
       updateUserFn({ organisation_role: isAdmin ? 'User' : 'Admin' }),
       { optimisticData, rollbackOnError: true }
-    );
+    ).then(res => {
+      const role =
+        res.data?.organisation_role === 'Admin'
+          ? 'an admin'
+          : res.data?.organisation_role === 'User'
+          ? 'a user'
+          : '';
+
+      triggerToast({
+        toastId: `TOGGLE_USER_${res.data?.organisation_role}`,
+        title: t(`${res?.sourceType}.${res?.code}.title`),
+        description: t(`${res?.sourceType}.${res?.code}.description`, {
+          user: res?.data?.full_name,
+          role
+        }),
+        status: res?.status
+      });
+    });
   };
 
   return (
@@ -278,7 +310,9 @@ export async function getServerSideProps({
         ...require(`../../../messages/${locale}/reports.${locale}.json`),
         ...require(`../../../messages/${locale}/organisation.${locale}.json`),
         ...require(`../../../messages/${locale}/general.${locale}.json`),
-        ...require(`../../../messages/${locale}/errors.${locale}.json`)
+        ...require(`../../../messages/${locale}/errors.${locale}.json`),
+        ...require(`../../../messages/${locale}/errors-default.${locale}.json`),
+        ...require(`../../../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };
