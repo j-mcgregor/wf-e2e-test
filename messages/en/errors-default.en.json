@@ -169,7 +169,7 @@
   },
   "422": {
     "title": "<span>{sourceType}</span>: Unprocessable entity",
-    "description": "The request was well-formed but was unable to be followed due to semantic errors."
+    "description": "The request was well-formed but was unable to be followed due to semantic errors, perhaps data required by the backend is missing"
   },
   "423": {
     "title": "<span>{sourceType}</span>: Locked",
