@@ -11,7 +11,6 @@ export const ToastBody: FC<{
   description?: RichTranslation;
   actions?: ToastAction[];
 }> = ({ title, description, actions }) => {
-  console.log('actions', actions);
   return (
     <div className="flex flex-col items-start space-y-2">
       <div className="font-bold">{title}</div>

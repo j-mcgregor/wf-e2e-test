@@ -13,8 +13,8 @@ export interface ToastData {
 export type SourceTypes =
   | 'USER'
   | 'BATCH_REPORTS_BY_ID'
-  | 'BATCH_REPORTS'
-  | 'BATCH_REPORTS_MANUAL'
+  | 'BATCH_AUTO'
+  | 'BATCH_MANUAL'
   | 'INTEGRATIONS'
   | 'INTEGRATIONS_CODAT'
   | 'ORGANISATION_ALL_REPORTS'
@@ -75,13 +75,13 @@ export const ErrorMessages: SourceErrors = {
     // [SOURCE_TYPE_XXX]: {}
     ...makeCoreSourceTypeErrors('BATCH_REPORTS_BY_ID')
   },
-  BATCH_REPORTS_MANUAL: {
+  BATCH_MANUAL: {
     // [SOURCE_TYPE_XXX]: {}
-    ...makeCoreSourceTypeErrors('BATCH_REPORTS_MANUAL')
+    ...makeCoreSourceTypeErrors('BATCH_MANUAL')
   },
-  BATCH_REPORTS: {
+  BATCH_AUTO: {
     // [SOURCE_TYPE_XXX]: {}
-    ...makeCoreSourceTypeErrors('BATCH_REPORTS')
+    ...makeCoreSourceTypeErrors('BATCH_AUTO')
   },
   INTEGRATIONS_CODAT: {
     // [SOURCE_TYPE_XXX]: {}
