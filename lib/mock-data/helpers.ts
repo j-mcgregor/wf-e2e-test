@@ -1,4 +1,5 @@
 import errors from '../../messages/en/errors.en.json';
+import { SourceTypes } from '../errors/error-messages';
 
 const mockErrors: Record<string, string> = errors;
 
@@ -9,7 +10,7 @@ export interface MockApiHandlerReturn {
   isError: boolean;
   ok: boolean;
   message: string;
-  sourceType: string;
+  sourceType: SourceTypes;
   status: number;
   blob?: Blob;
 
@@ -17,14 +18,14 @@ export interface MockApiHandlerReturn {
 }
 
 export const fetchMockData =
-  (status: number, sourceType: string) =>
+  (status: number, sourceType: SourceTypes, code?: string) =>
   async (): Promise<MockApiHandlerReturn> => {
     return new Promise(resolve =>
       setTimeout(
         () =>
           resolve({
             data: null,
-            code: 'DEFAULT_REQUEST',
+            code: code || 'DEFAULT_REQUEST',
             error: '',
             isError: true,
             ok: false,

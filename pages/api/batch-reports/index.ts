@@ -11,7 +11,7 @@ const BatchReportsApi: NextApiHandler = async (request, response) => {
   APIHandler(request, response, {
     config: {
       authenticate: authenticators.NextAuth,
-      sourceType: 'BATCH_REPORTS'
+      sourceType: 'BATCH_AUTO'
     },
     GET: async ({ query, authentication }) => {
       const { limit, skip } = query;

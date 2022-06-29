@@ -5,6 +5,7 @@ import APIHandler from '../../../lib/api-handler/handler';
 import { fetchWrapper } from '../../../lib/utils/fetchWrapper';
 
 import type { NextApiHandler } from 'next';
+import User from '../../../lib/funcs/user';
 
 const XMLHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -19,14 +20,27 @@ const userIndexApi: NextApiHandler = (request, response) => {
     GET: async ({ authentication }) => {
       const Authorization = `Bearer ${authentication?.accessToken}`;
 
+      const res = await fetchWrapper(`${process.env.WF_AP_ROUTE}/users/me`, {
+        method: 'GET',
+        headers: {
+          ...XMLHeaders,
+          Authorization
+        }
+      });
+
+      const user = await res.json();
+
       return {
-        response: await fetchWrapper(`${process.env.WF_AP_ROUTE}/users/me`, {
-          method: 'GET',
-          headers: {
-            ...XMLHeaders,
-            Authorization
+        defaultResponse: {
+          status: res.status,
+          code: `USER_${res.status}`,
+          message: res.status < 300 ? 'Success' : 'Failed',
+          data: {
+            user: {
+              ...User.giveDefaults(user)
+            }
           }
-        })
+        }
       };
     },
     PUT: async ({ body, authentication }) => {

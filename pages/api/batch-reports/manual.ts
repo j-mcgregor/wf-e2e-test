@@ -11,7 +11,7 @@ const BatchReportsManualApi: NextApiHandler = async (request, response) => {
   APIHandler(request, response, {
     config: {
       authenticate: authenticators.NextAuth,
-      sourceType: 'BATCH_REPORTS_MANUAL'
+      sourceType: 'BATCH_MANUAL'
     },
     POST: async ({ body, authentication }) => {
       const batchReport: BatchManualRequest = {

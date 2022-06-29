@@ -29,31 +29,52 @@ const userBookmarkApi: NextApiHandler = async (request, response) => {
       };
     },
     POST: async ({ query, authentication }) => {
-      return {
-        response: await fetchWrapper(
-          `${process.env.WF_AP_ROUTE}/users/me/bookmarks/${query?.reportId}`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${authentication?.accessToken}`,
-              'Content-Type': contentType
-            }
+      const res = await fetchWrapper(
+        `${process.env.WF_AP_ROUTE}/users/me/bookmarks/${query?.reportId}`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${authentication?.accessToken}`,
+            'Content-Type': contentType
           }
-        )
+        }
+      );
+
+      const bookmarks = await res.json();
+
+      return {
+        defaultResponse: {
+          code: `USER_BOOKMARK_${res.status}`,
+          message: res.status < 300 ? 'success' : 'error',
+          status: res.status,
+          data: {
+            bookmarks
+          }
+        }
       };
     },
     DELETE: async ({ query, authentication }) => {
-      return {
-        response: await fetchWrapper(
-          `${process.env.WF_AP_ROUTE}/users/me/bookmarks/${query?.reportId}`,
-          {
-            method: 'DELETE',
-            headers: {
-              Authorization: `Bearer ${authentication?.accessToken}`,
-              'Content-Type': contentType
-            }
+      const res = await fetchWrapper(
+        `${process.env.WF_AP_ROUTE}/users/me/bookmarks/${query?.reportId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${authentication?.accessToken}`,
+            'Content-Type': contentType
           }
-        )
+        }
+      );
+
+      console.log('res', res); // I can see the response in the terminal here
+
+      return {
+        // but this response doesn't get passed to the client
+        defaultResponse: {
+          code: `USER_BOOKMARK_${res.status}`,
+          message: res.status < 300 ? 'success' : 'error',
+          status: res.status,
+          data: {}
+        }
       };
     }
   });
