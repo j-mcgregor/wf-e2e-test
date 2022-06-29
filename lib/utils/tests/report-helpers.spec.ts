@@ -434,7 +434,7 @@ describe('report helpers', () => {
         working_capital: ['1,000', '1,000']
       });
       expect(result?.fileName).toBe('gotham_rogues');
-      expect(result?.fileType).toBe('xlsx');
+      expect(result?.fileType).toBe('excel');
       expect(result?.isCSV).toBe(false);
       expect(result?.isExcel).toBe(true);
       expect(result?.totalCompanies).toBe(1);
@@ -579,7 +579,7 @@ describe('report helpers', () => {
         working_capital: ['1,000', '1,000']
       });
       expect(result?.fileName).toBe('gotham_rogues');
-      expect(result?.fileType).toBe('xlsx');
+      expect(result?.fileType).toBe('excel');
       expect(result?.isCSV).toBe(false);
       expect(result?.isExcel).toBe(true);
       expect(result?.totalCompanies).toBe(1);
@@ -1077,7 +1077,7 @@ describe('report helpers', () => {
         ]
       });
       expect(result?.fileName).toBe('gotham_rogues');
-      expect(result?.fileType).toBe('xlsx');
+      expect(result?.fileType).toBe('excel');
       expect(result?.isCSV).toBe(false);
       expect(result?.isExcel).toBe(true);
       expect(result?.totalCompanies).toBe(4);
@@ -1503,7 +1503,7 @@ describe('report helpers', () => {
         ]
       });
       expect(result?.fileName).toBe('gotham_rogues');
-      expect(result?.fileType).toBe('xlsx');
+      expect(result?.fileType).toBe('excel');
       expect(result?.isCSV).toBe(false);
       expect(result?.isExcel).toBe(true);
       expect(result?.totalCompanies).toBe(6);
