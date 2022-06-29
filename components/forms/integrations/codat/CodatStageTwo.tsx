@@ -39,35 +39,26 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
 
   const { data, isValidating } = useSWR(
     '/api/integrations/codat/companies',
-    // fetcher
-    fetchMockData(200, 'USER'),
+    fetcher,
+    // fetchMockData(429, 'INTEGRATIONS_CODAT', 'INTEGRATIONS_CODAT_429'),
     {
       revalidateOnFocus: false
     }
   );
 
-  const { triggerToast } = useToast({});
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
-  useEffect(() => {
-    if (data) {
-      const actions = [
-        {
-          label: 'View',
-          // eslint-disable-next-line no-console
-          action: () => console.log('Action triggered')
-        }
-      ];
+  React.useEffect(() => {
+    if (data && !data?.ok) {
+      const toastText = getToastTextFromResponse(data);
 
-      const title = t(`${data.errorCode}.title`);
-      const description = t(`${data.errorCode}.description`);
-
-      triggerToast({
-        toastId: data.errorCode,
-        actions,
-        title,
-        description,
-        dismiss: 'corner'
-      });
+      toastText &&
+        triggerToast({
+          title: toastText.title,
+          description: toastText.description,
+          toastId: data.code,
+          status: data.status
+        });
     }
   }, [data]);
 
