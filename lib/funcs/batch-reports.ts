@@ -1,3 +1,4 @@
+import config from '../../config';
 import { ApiHandler, HandlerReturn } from '../../types/http';
 import { errorsBySourceType, makeErrorResponse } from '../utils/error-handling';
 import { fetchWrapper } from '../utils/fetchWrapper';
