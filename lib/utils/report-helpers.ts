@@ -39,8 +39,8 @@ export const makeUploadReportReqBody = (
 ): ReportUploadRequestBody => {
   // setter functions
   const setNumberValue = (key: CsvReportUploadHeaders, i: number) =>
-    // remove all none number characters
-    Number(reportObject[key]?.[i].replace(/[^\d.]+/gi, '') ?? 0);
+    // remove all none number characters except a - sign at the start
+    Number(reportObject[key]?.[i].replace(/(?!^-)[^\d.]+/gi, '') ?? 0);
 
   const setStringValue = (key: CsvReportUploadHeaders, i: number) =>
     reportObject[key]?.[i]?.toString() ?? '';
