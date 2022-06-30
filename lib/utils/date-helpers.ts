@@ -8,11 +8,15 @@ export const getClientRelativeDate = (date: Date | string | number): Date => {
 };
 
 export const dateIsValid = (dateStr: string): boolean => {
-  // Regex for YYYY-MM-DD
-  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  // full regex for what they want to support but don't currently.
+  // const regex = /(^\d{4}-|\/\d{2}-|\/\d{2}$)|(^\d{6}$)|(^\d{2}-\d{2}-\d{4}$)|(^\w{3}-(\d{2}|\d{4})$)/gm;
 
+  // handles 2019-09-12 and 2019
+  const regex = /(^\d{4}-\d{2}-\d{2}$)|(^\d{4}$)/gm;
+
+  const isValid = regex.test(dateStr);
   // Validate the string
-  if (dateStr.match(regex) === null) {
+  if (!isValid) {
     return false;
   }
 

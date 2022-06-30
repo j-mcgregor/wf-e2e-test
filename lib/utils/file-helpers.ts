@@ -45,6 +45,8 @@ export const readFile = (
   }
 };
 
+export const MAX_ROWS = 20000;
+
 export const readExcelFile = (
   file: File | null,
   setFile: (file: Excel.Sheet) => void
@@ -54,7 +56,7 @@ export const readExcelFile = (
 
     reader.onload = function (e) {
       const data = e?.target?.result;
-      const workbook = Excel.read(data);
+      const workbook = Excel.read(data, { sheetRows: MAX_ROWS });
       setFile(workbook);
     };
 
