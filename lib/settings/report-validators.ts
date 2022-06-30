@@ -42,9 +42,9 @@ const isNull = (string: string | number) =>
 
 const validateCompanyType = (company_type: string) => {
   if (
-    company_type === 'Large' ||
-    company_type === 'Medium' ||
-    company_type === 'Small'
+    company_type?.toLowerCase() === 'large' ||
+    company_type?.toLowerCase() === 'medium' ||
+    company_type?.toLowerCase() === 'small'
   ) {
     return true;
   }
@@ -53,9 +53,9 @@ const validateCompanyType = (company_type: string) => {
 
 const validateManagementExperience = (management_experience: string) => {
   if (
-    management_experience === 'High' ||
-    management_experience === 'Medium' ||
-    management_experience === 'Low'
+    management_experience?.toLowerCase() === 'high' ||
+    management_experience?.toLowerCase() === 'medium' ||
+    management_experience?.toLowerCase() === 'low'
   ) {
     return true;
   }
