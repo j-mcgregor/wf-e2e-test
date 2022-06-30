@@ -63,7 +63,7 @@ export const makeUploadReportReqBody = (
       return {
         cash_and_equivalents: setNumberValue('cash_and_equivalents', i),
         creditors: setNumberValue('creditors', i),
-        company_age: setNumberValue('company_age', i),
+        company_age: setNumberValue('company_age', i) || null,
         current_assets: setNumberValue('current_assets', i),
         current_liabilities: setNumberValue('current_liabilities', i),
         debtors: setNumberValue('debtors', i),
@@ -79,9 +79,10 @@ export const makeUploadReportReqBody = (
           setStringValue('management_experience', i) || null,
         net_income: setNumberValue('net_income', i),
         non_current_liabilities: setNumberValue('non_current_liabilities', i),
-        number_of_directors: setNumberValue('number_of_directors', i),
-        number_of_subsidiaries: setNumberValue('number_of_subsidiaries', i),
-        number_of_employees: setNumberValue('number_of_employees', i),
+        number_of_directors: setNumberValue('number_of_directors', i) || null,
+        number_of_subsidiaries:
+          setNumberValue('number_of_subsidiaries', i) || null,
+        number_of_employees: setNumberValue('number_of_employees', i) || null,
         other_non_current_liabilities: setNumberValue(
           'other_non_current_liabilities',
           i

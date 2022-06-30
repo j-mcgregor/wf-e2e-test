@@ -288,7 +288,8 @@ export const uploadReportCSVHeaders: {
     formatted: 'Current liabilities'
   },
   company_age: {
-    required: (x: string) => !x && `A value for "company_age" is required`,
+    required: (x: string) =>
+      !isNull(x) || (!x && `A value for "company_age" is required (or null)`),
     formatted: 'Company Age'
   }
 };
