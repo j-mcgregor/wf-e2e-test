@@ -42,9 +42,9 @@ const isNull = (string: string | number) =>
 
 const validateCompanyType = (company_type: string) => {
   if (
-    company_type === 'Large' ||
+    company_type === 'High' ||
     company_type === 'Medium' ||
-    company_type === 'Small'
+    company_type === 'Low'
   ) {
     return true;
   }
@@ -234,7 +234,7 @@ export const uploadReportCSVHeaders: {
       !isNull(x) &&
       x?.trim()?.length > 0 &&
       !validateCompanyType(x) &&
-      `"management_experience" must be 'Large', 'Medium' or 'Small', left blank or 'Null`,
+      `"management_experience" must be 'Low', 'Medium' or 'High', left blank or 'Null`,
     formatted: 'Management Experience'
   },
   creditors: {
