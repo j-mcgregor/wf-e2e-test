@@ -51,6 +51,17 @@ const validateCompanyType = (company_type: string) => {
   return false;
 };
 
+const validateManagementExperience = (management_experience: string) => {
+  if (
+    management_experience === 'High' ||
+    management_experience === 'Medium' ||
+    management_experience === 'Low'
+  ) {
+    return true;
+  }
+  return false;
+};
+
 /**
  * Used to validate user-uploaded CSV report data
  */
@@ -233,8 +244,8 @@ export const uploadReportCSVHeaders: {
     required: (x: string) =>
       !isNull(x) &&
       x?.trim()?.length > 0 &&
-      !validateCompanyType(x) &&
-      `"management_experience" must be 'Large', 'Medium' or 'Small', left blank or 'Null`,
+      !validateManagementExperience(x) &&
+      `"management_experience" must be 'Low', 'Medium' or 'High', left blank or 'Null`,
     formatted: 'Management Experience'
   },
   creditors: {
