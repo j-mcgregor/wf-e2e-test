@@ -37,6 +37,9 @@ export const convertStringArrayToArrayOfStrings = (
   return { value: splitValues, isValid: true };
 };
 
+const isNull = (string: string | number) =>
+  typeof string === 'string' && string.toLowerCase() === 'null';
+
 const validateCompanyType = (company_type: string) => {
   if (
     company_type === 'Large' ||
@@ -85,8 +88,20 @@ export const uploadReportCSVHeaders: {
    * *********************************
    */
   details_industry_sector_code: {
-    required: (x: string) =>
-      !x && `A value for "details_industry_sector_code" is required`,
+    required: (x: string | number) => {
+      // allow null but no other string
+      if (isNull(x)) {
+        return false;
+      }
+      // if (!x) {
+      //   return `A value for "details_industry_sector_code" is required`;
+      // }
+      // must be a number not a string
+      if (isNaN(Number(x))) {
+        return `"details_industry_sector_code" should be a valid Industry Sector Code`;
+      }
+      return false;
+    },
     formatted: 'Industry Sector Code'
   },
   details_name: {
@@ -96,14 +111,15 @@ export const uploadReportCSVHeaders: {
   },
   details_nace_code: {
     required: (x: string) =>
-      !x && `A value for "details_nace_code" is required`,
+      !x && `A value for "details_nace_code" is required (null is allowed)`,
     formatted: 'NACE Code'
   },
   details_company_type: {
     required: (x: string) =>
+      !isNull(x) &&
       x?.trim()?.length > 0 &&
       !validateCompanyType(x) &&
-      `"details_company_type" must be 'Large', 'Medium' or 'Small' or left blank`,
+      `"details_company_type" must be 'Large', 'Medium' or 'Small', left blank or 'null`,
     formatted: 'Company Type'
   },
   // not required but if there, validated as a website
@@ -214,7 +230,11 @@ export const uploadReportCSVHeaders: {
     formatted: 'Working Capital'
   },
   management_experience: {
-    required: false,
+    required: (x: string) =>
+      !isNull(x) &&
+      x?.trim()?.length > 0 &&
+      !validateCompanyType(x) &&
+      `"management_experience" must be 'Large', 'Medium' or 'Small', left blank or 'Null`,
     formatted: 'Management Experience'
   },
   creditors: {

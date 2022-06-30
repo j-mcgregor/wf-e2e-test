@@ -299,7 +299,7 @@ export interface ReportUploadFinancialRequestBody {
   inventory: number;
   loans: number;
   long_term_debt: number;
-  management_experience: string; // High | Medium | Low
+  management_experience: string | null; // High | Medium | Low | null
   net_income: number;
   non_current_liabilities: number;
   number_of_directors: number;
@@ -318,11 +318,11 @@ export interface ReportUploadFinancialRequestBody {
 }
 
 export interface ReportUploadDetailsRequestBody {
-  nace_code: number;
-  industry_sector_code: IndustrySectorCodes;
+  nace_code: number | null;
+  industry_sector_code: IndustrySectorCodes | null;
   name: string;
   website: string;
-  company_type: string; // Large | Medium | Small
+  company_type: string | null; // Large | Medium | Small | null
 }
 
 /**
