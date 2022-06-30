@@ -42,9 +42,20 @@ const isNull = (string: string | number) =>
 
 const validateCompanyType = (company_type: string) => {
   if (
-    company_type === 'High' ||
+    company_type === 'Large' ||
     company_type === 'Medium' ||
-    company_type === 'Low'
+    company_type === 'Small'
+  ) {
+    return true;
+  }
+  return false;
+};
+
+const validateManagementExperience = (management_experience: string) => {
+  if (
+    management_experience === 'High' ||
+    management_experience === 'Medium' ||
+    management_experience === 'Low'
   ) {
     return true;
   }
@@ -233,7 +244,7 @@ export const uploadReportCSVHeaders: {
     required: (x: string) =>
       !isNull(x) &&
       x?.trim()?.length > 0 &&
-      !validateCompanyType(x) &&
+      !validateManagementExperience(x) &&
       `"management_experience" must be 'Low', 'Medium' or 'High', left blank or 'Null`,
     formatted: 'Management Experience'
   },
