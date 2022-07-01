@@ -1,20 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable sonarjs/prefer-immediate-return */
 import countryCodes from '../../lib/data/countryCodes.json';
+import { CsvReportUploadHeaders, CsvValueValidation } from '../../types/report';
+import { dateIsValid } from '../utils/date-helpers';
 
 import type { BatchAutoUploadHeaders } from '../../types/batch-reports';
 import type { CSVValidationHeaderProps } from '../../types/global';
-import {
-  CsvReportUploadHeaders,
-  CsvValueValidation,
-  IndustrySectorCodes
-} from '../../types/report';
-import { dateIsValid } from '../utils/date-helpers';
-
-export const industrySectorCodes: IndustrySectorCodes[] = [
-  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
-  29, 30, 31, 32, 33, 34, 35, 36, 37, 38
-];
 
 /**
  * @param strArr "['Active','Inactive']"
@@ -107,7 +98,7 @@ export const uploadReportCSVHeaders: {
   details_industry_sector_code: {
     required: (x: string | number) => {
       // allow "" or "null" but no other string
-      if (x === '' || isNull(x)) {
+      if (x.toString().trim() === '' || isNull(x)) {
         return false;
       }
       // if (!x) {
@@ -119,7 +110,7 @@ export const uploadReportCSVHeaders: {
       }
 
       // @ts-ignore
-      if (!industrySectorCodes.includes(Number(x))) {
+      if (Number(x) < 10 || Number(x) > 38) {
         return `"details_industry_sector_code" must be valid Industry Sector Code [10-38]`;
       }
       return false;
@@ -133,7 +124,7 @@ export const uploadReportCSVHeaders: {
   },
   details_nace_code: {
     required: (x: string) => {
-      if (x === '' || isNull(x)) {
+      if (x.trim() === '' || isNull(x)) {
         return false;
       }
 
