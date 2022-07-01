@@ -30,8 +30,10 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
 
   const { user, isAdmin } = useUser();
 
+  // a useIntegration hook that was fed off the user.organisation_id would be userful
   const { data: codat } = useSWR(
-    `/api/integrations/codat-credentials?orgId=${user?.organisation_id}`,
+    user?.organisation_id &&
+      `/api/integrations/codat-credentials?orgId=${user?.organisation_id}`,
     fetcher
   );
 

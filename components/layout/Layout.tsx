@@ -1,8 +1,8 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as Sentry from '@sentry/react';
 import SkeletonLayout from '../skeletons/SkeletonLayout';
 import Nav from './Nav';
@@ -14,6 +14,7 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 import useSessionStorage from '../../hooks/useSessionStorage';
 import NewDeploymentNotification from '../cards/NewDeploymentNotification';
 import config from '../../config';
+import useOrganisation from '../../hooks/useOrganisation';
 interface LayoutProps {
   title?: string;
   pageTitle?: string;
@@ -47,6 +48,10 @@ const Layout = ({
   // renamed for consistency
   const { data: session, status } = useSession();
   const { user, isAdmin, loading, error, isError } = useUser(!noAuthRequired);
+
+  // would be added here to provide details to the app globally
+  // useOrganisation(!noAuthRequired)
+
   const { HubspotScript } = useHubspotChat('4623266', true, user);
   const [, setHomePage] = useLocalStorage<string>('wf_home_page', '');
 
