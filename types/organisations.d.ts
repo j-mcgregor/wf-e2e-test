@@ -3,6 +3,7 @@ export interface OrganisationType {
   max_users?: number;
   send_user_limit_email?: boolean;
   id?: string;
+  features: OrganisationFeature[];
   quota?: {
     enable_quota?: boolean;
     quota_limit?: number;
@@ -15,6 +16,37 @@ export interface OrganisationType {
     assigned_customer_email?: string;
   };
 }
+
+export type OrganisationFeatureKeys =
+  | 'REPORT_GEO_LOCATION'
+  | 'REPORT_FAVICON'
+  | 'REPORT_DIRECTORS'
+  | 'REPORT_EXECUTIVES'
+  | 'REPORT_PARENTS'
+  | 'REPORT_RISK_METRICS'
+  | 'REPORT_RELABILITY_INDEX'
+  | 'REPORT_MACROECONOMICS'
+  | 'REPORT_BENCHMARKS'
+  | 'REPORT_FINANCIALS'
+  | 'REPORT_FINANCIAL_RATIOS'
+  | 'REPORT_SUBSIDIARIES'
+  | 'REPORT_SHAREHOLDERS'
+  | 'REPORT_LEGAL_EVENTS'
+  | 'REPORT_RISK_OUTLOOK'
+  | 'REPORT_NEWS'
+  | 'REPORT_ESG'
+  | 'REPORT_CODAT';
+export interface OrganisationFeature {
+  name: OrganisationFeatureKeys;
+  description: null;
+  meta: {};
+}
+
+export type OrganisationFeaturesObject =
+  | Record<OrganisationFeatureKeys, OrganisationFeature>
+  | {
+      [key: string]: OrganisationFeature;
+    };
 
 export interface OrganisationUser {
   email: string;

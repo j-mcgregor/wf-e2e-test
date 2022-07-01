@@ -5,10 +5,9 @@ import useSWR from 'swr';
 import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 import { UserIndexApi } from '../pages/api/user';
-import { UserType } from '../types/global';
 
 const useUser = (fetch: boolean = true) => {
-  const { user } = useRecoilValue(appState);
+  const { user, organisation } = useRecoilValue(appState);
   const setState = useSetRecoilState(appState);
 
   const { data: sessionUser } = useSession();
@@ -26,7 +25,7 @@ const useUser = (fetch: boolean = true) => {
   const isLoading = !data;
   React.useEffect(() => {
     if (data?.user && !isValidating) {
-      setState({ ...appState, user: { ...data?.user, is_sso } });
+      setState({ organisation, user: { ...data?.user, is_sso } });
     }
   }, [data, sessionUser]);
 

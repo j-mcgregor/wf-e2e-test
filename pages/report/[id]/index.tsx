@@ -13,6 +13,7 @@ import Report from '../../../components/report-sections/Report';
 import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
 import SkeletonLayout from '../../../components/skeletons/SkeletonLayout';
 import SkeletonReport from '../../../components/skeletons/SkeletonReport';
+import useOrganisation from '../../../hooks/useOrganisation';
 import useUser from '../../../hooks/useUser';
 import fetcher from '../../../lib/utils/fetcher';
 import { ReportsReportApi } from '../../api/reports/report';
@@ -31,7 +32,8 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const { user, isAdmin } = useUser();
 
   const { data: codat } = useSWR(
-    `/api/integrations/codat-credentials?orgId=${user?.organisation_id}`,
+    user?.organisation_id &&
+      `/api/integrations/codat-credentials?orgId=${user?.organisation_id}`,
     fetcher
   );
 
