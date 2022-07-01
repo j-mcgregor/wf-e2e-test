@@ -130,7 +130,7 @@ export const uploadReportCSVHeaders: {
       !isNull(x) &&
       x?.trim()?.length > 0 &&
       !validateCompanyType(x) &&
-      `"details_company_type" must be 'Large', 'Medium' or 'Small', left blank or 'null`,
+      `"details_company_type" must be 'Large', 'Medium' or 'Small', left blank or 'null'`,
     formatted: 'Company Type'
   },
   // not required but if there, validated as a website
@@ -245,7 +245,7 @@ export const uploadReportCSVHeaders: {
       !isNull(x) &&
       x?.trim()?.length > 0 &&
       !validateManagementExperience(x) &&
-      `"management_experience" must be 'Low', 'Medium' or 'High', left blank or 'Null`,
+      `"management_experience" must be 'Low', 'Medium' or 'High', left blank or 'null'`,
     formatted: 'Management Experience'
   },
   creditors: {
@@ -288,8 +288,13 @@ export const uploadReportCSVHeaders: {
     formatted: 'Current liabilities'
   },
   company_age: {
-    required: (x: string) =>
-      !isNull(x) || (!x && `A value for "company_age" is required (or null)`),
+    required: (x: string) => {
+      return (
+        !isNull(x) &&
+        !x.trim() &&
+        `A value for "company_age" is required (or null)`
+      );
+    },
     formatted: 'Company Age'
   }
 };
