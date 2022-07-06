@@ -13,7 +13,7 @@ export const ToastBody: FC<{
 }> = ({ title, description, actions }) => {
   return (
     <div className="flex flex-col items-start space-y-2">
-      <div className="font-bold">{title}</div>
+      <div className="font-bold text-black">{title}</div>
       <div>{description}</div>
       <div className="flex gap-x-2">
         {actions?.map((a, i) => (
