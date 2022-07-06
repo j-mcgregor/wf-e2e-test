@@ -12,22 +12,25 @@ export const ToastBody: FC<{
   actions?: ToastAction[];
 }> = ({ title, description, actions }) => {
   return (
-    <div className="flex flex-col items-start space-y-2">
-      <div className="font-bold text-black">{title}</div>
-      <div>{description}</div>
-      <div className="flex gap-x-2">
-        {actions?.map((a, i) => (
-          <button
-            className={`py-0.5 ${
-              a.type === 'dismiss' ? 'text-slate-400 ' : 'text-orange-300'
-            }`}
-            onClick={() => a.action()}
-            key={`toast-btn-${i}`}
-          >
-            {a.label}
-          </button>
-        ))}
-      </div>
+    <div className="flex flex-col items-start">
+      <h6 className="font-bold text-black mb-0.5">{title}</h6>
+      <p className="text-xs leading-normal ">{description}</p>
+
+      {actions && actions.length > 0 && (
+        <div className="flex gap-x-2 mt-2">
+          {actions?.map((a, i) => (
+            <button
+              className={`py-0.5 ${
+                a.type === 'dismiss' ? 'text-slate-400 ' : 'text-orange-300'
+              }`}
+              onClick={() => a.action()}
+              key={`toast-btn-${i}`}
+            >
+              {a.label}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
