@@ -25,7 +25,6 @@ interface CommunicationFormInput {
 
 const CommunicationForm = () => {
   const { user } = useRecoilValue(appState);
-  const setCurrentUser = useSetRecoilState(appUser);
 
   const t = useTranslations();
 
@@ -35,9 +34,6 @@ const CommunicationForm = () => {
     });
 
   const { isDirty, isSubmitting } = formState;
-
-  const [submitError, setSubmitError] = useState({ type: '' });
-  const [successMessage, setSuccessMessage] = useState('');
 
   const { triggerToast, getToastTextFromResponse } = useToast();
 
@@ -61,12 +57,10 @@ const CommunicationForm = () => {
       const json = await fetchRes.json();
 
       if (!json.ok) {
-        setSubmitError({ type: json.error });
         const toastText = getToastTextFromResponse(json);
 
         toastText &&
           triggerToast({
-            toastId: 'USER_UPDATED_PASSWORD',
             title: toastText.title,
             description: toastText.description,
             status: json.status
@@ -75,12 +69,9 @@ const CommunicationForm = () => {
       }
 
       if (json.ok) {
-        setSuccessMessage('UPDATED_USER');
-
         mutate('/api/user');
 
         triggerToast({
-          toastId: 'USER_UPDATED_COMMNICATION',
           title: t(`USER.USER_UPDATED.title`),
           description: t(`USER.USER_UPDATED.description`, {
             section: t('communication')
@@ -153,16 +144,6 @@ const CommunicationForm = () => {
             </fieldset>
           </div>
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">
-            {submitError.type === GENERIC_API_ERROR && (
-              <ErrorMessage className="text-left" text={t(GENERIC_API_ERROR)} />
-            )}
-            {successMessage === 'USER_UPDATED' && (
-              <SuccessMessage
-                text={t(
-                  'forms.communication-form.update_communication_preference'
-                )}
-              />
-            )}
             <Button
               disabled={!isDirty || isSubmitting}
               loading={isSubmitting}

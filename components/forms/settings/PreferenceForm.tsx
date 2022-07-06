@@ -71,8 +71,6 @@ const PreferenceForm = ({
 
   // form state
   const { isDirty, isValid, isSubmitting } = formState;
-  const [submitError, setSubmitError] = useState({ type: '' });
-  const [successMessage, setSuccessMessage] = useState<string>('');
 
   // @ts-ignore
   const onSubmit: SubmitHandler<PreferenceFormInput> = async (
@@ -102,13 +100,10 @@ const PreferenceForm = ({
       const json = await fetchRes.json();
 
       if (!json.ok) {
-        setSubmitError({ type: json.error });
-
         const toastText = getToastTextFromResponse(json);
 
         toastText &&
           triggerToast({
-            toastId: 'USER_UPDATED_PREFERENCES',
             title: toastText.title,
             description: toastText.description,
             status: json.status
@@ -118,13 +113,11 @@ const PreferenceForm = ({
       }
 
       if (json.ok) {
-        setSuccessMessage('USER_UPDATED');
         // mutate the user state to get the new preferences
         // useUser hook is being called here
         mutate('/api/user');
 
         triggerToast({
-          toastId: 'USER_UPDATED_PREFERENCES',
           title: t(`USER.USER_UPDATED.title`),
           description: t(`USER.USER_UPDATED.description`, {
             section: t('preferences')
@@ -232,17 +225,6 @@ const PreferenceForm = ({
           </div>
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
             <div className="flex">
-              {submitError.type === GENERIC_API_ERROR && (
-                <ErrorMessage
-                  className="w-1/2 text-left"
-                  text={t(GENERIC_API_ERROR)}
-                />
-              )}
-              {successMessage === 'USER_UPDATED' && (
-                <SuccessMessage
-                  text={t('forms.preference.update_preferences')}
-                />
-              )}
               <Button
                 onClick={() =>
                   reset(prefDefaults, {
