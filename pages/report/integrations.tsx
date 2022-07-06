@@ -98,6 +98,8 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
             numOfSubsidiaries !== '-' ? numOfSubsidiaries : null
         };
 
+    console.log(hasParentIdBody);
+
     // Default parameters required are companyId, connectionId, periodLength and startMonth
     const body = {
       companyId: selectedCompany?.company_id,
@@ -109,14 +111,9 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       ...hasParentIdBody
     };
 
-    const res = await fetcher(
-      `/api/integrations/codat/codat`,
-      'POST',
-      { body },
-      {
-        'Content-Type': 'application/json'
-      }
-    );
+    const res = await fetcher(`/api/integrations/codat/codat`, 'POST', body, {
+      'Content-Type': 'application/json'
+    });
 
     // USE FOR TESTING TOASTS
     // const res = await fetchMockData(
