@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 import { toast, ToastOptions } from 'react-toastify';
 
-import { ToastBody } from '../components/toast/Toast';
+import { ToastBody, ToastLayout } from '../components/toast/Toast';
 import { SourceTypes } from '../lib/api-handler/api-handler';
 import { SourceErrors, ToastData } from '../lib/errors/error-messages';
 import { getToastType } from '../lib/utils/toast-helpers';
@@ -34,7 +34,7 @@ export const defaultErrors: Record<string, ToastData> = defaultErrorsJSON;
 export const toastMessages: SourceErrors = toastsJSON;
 
 export interface TriggerToast {
-  toastId: string;
+  toastId?: string;
   actions?: ToastAction[];
   dismiss?: 'corner' | 'button';
   toastType?: ToastOptions['type'];
@@ -70,7 +70,7 @@ export const useToast = (defaultToastOptions?: ToastOptions) => {
     status: number;
   }) => {
     // check if custom [sourceType][code] exists
-    if (toastMessages[sourceType][code]) {
+    if (toastMessages?.[sourceType]?.[code]) {
       const tTitle = t(`${sourceType}.${code}.title`);
       const tDescription = t(`${sourceType}.${code}.description`);
 
@@ -179,30 +179,47 @@ export const useToast = (defaultToastOptions?: ToastOptions) => {
    * you can't do with a regular download
    */
 
+  const makeLink = async (href: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (!href) {
+          reject();
+        }
+
+        const link = document.createElement('a');
+        link.href = href;
+        link.target = '_blank';
+        link.download = href.substring(href.lastIndexOf('/') + 1);
+        link.click();
+
+        resolve();
+      }, 1000);
+    });
+  };
+
   const handleDownload = ({
     href,
-    toastId,
     title,
     description
   }: {
     href: string;
-    toastId: string;
     title: RichTranslation;
     description: RichTranslation;
   }) => {
-    const link = document.createElement('a');
-    link.href = href;
-    link.target = '_blank';
-    link.download = href.substring(href.lastIndexOf('/') + 1);
-    link.click();
-
-    triggerToast({
-      toastId,
-      status: 200,
-      title,
-      description
+    toast.promise(() => makeLink(href), {
+      pending: 'Download started',
+      success: {
+        render: <ToastLayout title={title} description={description} />,
+        type: 'info',
+        icon: toastStyle.info.icon
+      },
+      error: {
+        render: <ToastLayout title={title} description={description} />,
+        type: 'error',
+        icon: toastStyle.error.icon
+      }
     });
   };
 
-  return { triggerToast, getToastTextFromResponse, handleDownload };
+  return { triggerToast, getToastTextFromResponse, handleDownload, toastStyle };
 };

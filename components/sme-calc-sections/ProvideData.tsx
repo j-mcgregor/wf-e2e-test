@@ -162,7 +162,6 @@ const ProvideData = () => {
                 onClick={() =>
                   handleDownload({
                     href: template.templateLink,
-                    toastId: `API_COLLECTION_${template.templateLink}`,
                     title: t(`TEMPLATE.TEMPLATE_DOWNLOAD_200.title`),
                     description: t(
                       `TEMPLATE.TEMPLATE_DOWNLOAD_200.description`,
