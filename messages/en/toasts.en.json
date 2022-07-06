@@ -8,6 +8,10 @@
       "title": "Not authorised to access BATCH_REPORTS_BY_ID",
       "description": "You don't permission to access BATCH_REPORTS_BY_ID. Please contact your admin"
     },
+    "BATCH_REPORTS_BY_ID_403": {
+      "title": "Forbidden to access BATCH_REPORTS_BY_ID",
+      "description": "You don't permission to access BATCH_REPORTS_BY_ID. Please contact your admin"
+    },
     "BATCH_REPORTS_BY_ID_404": {
       "title": "BATCH_REPORTS_BY_ID not found",
       "description": "We could not find BATCH_REPORTS_BY_ID. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
@@ -35,7 +39,7 @@
       "description": "Please check the request and try again."
     },
     "BATCH_MANUAL_401": {
-      "title": "Not authorised to access BATCH_REPORTS_MANUAL",
+      "title": "Forbidden to access BATCH_REPORTS_MANUAL",
       "description": "You don't permission to access BATCH_REPORTS_MANUAL. Please contact your admin"
     },
     "BATCH_MANUAL_404": {
@@ -66,6 +70,10 @@
     },
     "BATCH_AUTO_401": {
       "title": "Not authorised to access BATCH_AUTO",
+      "description": "You don't permission to access BATCH_AUTO. Please contact your admin"
+    },
+    "BATCH_AUTO_403": {
+      "title": "Forbidden to access BATCH_AUTO",
       "description": "You don't permission to access BATCH_AUTO. Please contact your admin"
     },
     "BATCH_AUTO_404": {
@@ -115,7 +123,11 @@
       "description": "Please check the request and try again."
     },
     "INTEGRATIONS_CODAT_401": {
-      "title": "Not authorised to access INTEGRATIONS_CODAT",
+      "title": "Forbidden to access INTEGRATIONS_CODAT",
+      "description": "You don't permission to access INTEGRATIONS_CODAT. Please contact your admin"
+    },
+    "INTEGRATIONS_CODAT_403": {
+      "title": "Forbidden to access INTEGRATIONS_CODAT",
       "description": "You don't permission to access INTEGRATIONS_CODAT. Please contact your admin"
     },
     "INTEGRATIONS_CODAT_404": {
@@ -144,6 +156,10 @@
       "title": "Not authorised to access INTEGRATIONS",
       "description": "You don't permission to access INTEGRATIONS. Please contact your admin"
     },
+    "INTEGRATIONS_403": {
+      "title": "Forbidden to access INTEGRATIONS",
+      "description": "You don't permission to access INTEGRATIONS. Please contact your admin"
+    },
     "INTEGRATIONS_404": {
       "title": "INTEGRATIONS not found",
       "description": "We could not find INTEGRATIONS. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
@@ -168,6 +184,10 @@
     },
     "ORGANISATION_ALL_REPORTS_401": {
       "title": "Not authorised to access ORGANISATION_ALL_REPORTS",
+      "description": "You don't permission to access ORGANISATION_ALL_REPORTS. Please contact your admin"
+    },
+    "ORGANISATION_ALL_REPORTS_403": {
+      "title": "Forbidden to access ORGANISATION_ALL_REPORTS",
       "description": "You don't permission to access ORGANISATION_ALL_REPORTS. Please contact your admin"
     },
     "ORGANISATION_ALL_REPORTS_404": {
@@ -204,6 +224,10 @@
       "title": "Not authorised to access ORGANISATION_USER",
       "description": "You don't permission to access ORGANISATION_USER. Please contact your admin"
     },
+    "ORGANISATION_USER_403": {
+      "title": "Forbidden to access ORGANISATION_USER",
+      "description": "You don't permission to access ORGANISATION_USER. Please contact your admin"
+    },
     "ORGANISATION_USER_404": {
       "title": "ORGANISATION_USER not found",
       "description": "We could not find ORGANISATION_USER. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
@@ -228,6 +252,10 @@
     },
     "ORGANISATION_USERS_401": {
       "title": "Not authorised to access ORGANISATION_USERS",
+      "description": "You don't permission to access ORGANISATION_USERS. Please contact your admin"
+    },
+    "ORGANISATION_USERS_403": {
+      "title": "Forbidden to access ORGANISATION_USERS",
       "description": "You don't permission to access ORGANISATION_USERS. Please contact your admin"
     },
     "ORGANISATION_USERS_404": {
@@ -256,6 +284,10 @@
       "title": "Not authorised to access ORGANISATION",
       "description": "You don't permission to access ORGANISATION. Please contact your admin"
     },
+    "ORGANISATION_403": {
+      "title": "Forbidden to access ORGANISATION",
+      "description": "You don't permission to access ORGANISATION. Please contact your admin"
+    },
     "ORGANISATION_404": {
       "title": "ORGANISATION not found",
       "description": "We could not find ORGANISATION. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
@@ -280,6 +312,10 @@
     },
     "PASSWORD_RESET_401": {
       "title": "Not authorised to access PASSWORD_RESET",
+      "description": "You don't permission to access PASSWORD_RESET. Please contact your admin"
+    },
+    "PASSWORD_RESET_403": {
+      "title": "Forbidden to access PASSWORD_RESET",
       "description": "You don't permission to access PASSWORD_RESET. Please contact your admin"
     },
     "PASSWORD_RESET_404": {
@@ -308,6 +344,10 @@
       "title": "Not authorised to access REPORTS_NEWS",
       "description": "You don't permission to access REPORTS_NEWS. Please contact your admin"
     },
+    "REPORTS_NEWS_403": {
+      "title": "Forbidden to access REPORTS_NEWS",
+      "description": "You don't permission to access REPORTS_NEWS. Please contact your admin"
+    },
     "REPORTS_NEWS_404": {
       "title": "REPORTS_NEWS not found",
       "description": "We could not find REPORTS_NEWS. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
@@ -332,6 +372,10 @@
     },
     "REPORTS_UPLOAD_401": {
       "title": "Not authorised to access Reports upload",
+      "description": "You don't permission to access Reports upload. Please contact your admin"
+    },
+    "REPORTS_UPLOAD_403": {
+      "title": "Forbidden to access Reports upload",
       "description": "You don't permission to access Reports upload. Please contact your admin"
     },
     "REPORTS_UPLOAD_404": {
@@ -384,6 +428,10 @@
       "title": "Not authorised to access Reports",
       "description": "You don't permission to access Reports. Please contact your admin"
     },
+    "REPORTS_403": {
+      "title": "Forbidden to access Reports",
+      "description": "You don't permission to access Reports. Please contact your admin"
+    },
     "REPORTS_404": {
       "title": "Not found",
       "description": "We could not find either the report or the company. Please check the report ID or company ID and try again."
@@ -408,6 +456,10 @@
     },
     "SEARCH_COMPANIES_401": {
       "title": "Not authorised to access SEARCH_COMPANIES",
+      "description": "You don't permission to access SEARCH_COMPANIES. Please contact your admin"
+    },
+    "SEARCH_COMPANIES_403": {
+      "title": "Forbidden to access SEARCH_COMPANIES",
       "description": "You don't permission to access SEARCH_COMPANIES. Please contact your admin"
     },
     "SEARCH_COMPANIES_404": {
@@ -456,6 +508,10 @@
       "title": "Not authorised to access USER_BOOKMARK",
       "description": "You don't permission to access USER_BOOKMARK. Please contact your admin"
     },
+    "USER_BOOKMARK_403": {
+      "title": "Forbidden to access USER_BOOKMARK",
+      "description": "You don't permission to access USER_BOOKMARK. Please contact your admin"
+    },
     "USER_BOOKMARK_404": {
       "title": "USER_BOOKMARK not found",
       "description": "We could not find USER_BOOKMARK. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
@@ -486,6 +542,10 @@
       "title": "Not authorised to access USER_REPORTS",
       "description": "You don't permission to access USER_REPORTS. Please contact your admin"
     },
+    "USER_REPORTS_403": {
+      "title": "Forbidden to access USER_REPORTS",
+      "description": "You don't permission to access USER_REPORTS. Please contact your admin"
+    },
     "USER_REPORTS_404": {
       "title": "USER_REPORTS not found",
       "description": "We could not find USER_REPORTS. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
@@ -514,6 +574,10 @@
     },
     "USER_401": {
       "title": "User not authorised",
+      "description": "Your account isn't authorised to complete that action. If you believe you should have access please re-authenticate by logging in again."
+    },
+    "USER_403": {
+      "title": "Forbidden attempt to access user.",
       "description": "Your account isn't authorised to complete that action. If you believe you should have access please re-authenticate by logging in again."
     },
     "USER_404": {

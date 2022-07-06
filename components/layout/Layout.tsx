@@ -53,13 +53,11 @@ const Layout = ({
   // useOrganisation(!noAuthRequired)
 
   const { HubspotScript } = useHubspotChat('4623266', true, user);
-  const [, setHomePage] = useLocalStorage<string>('wf_home_page', '');
 
   React.useEffect(() => {
     if (user) {
       // set sentry to identify user
       Sentry.setUser({ email: user.email || '' });
-      setHomePage(user?.preferences?.defaults?.home_page);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);

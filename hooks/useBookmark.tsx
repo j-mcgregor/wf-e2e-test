@@ -6,7 +6,6 @@ import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 import { mutate } from 'swr';
 
 import { UserReports, userReports } from '../lib/appState';
-import fetcher from '../lib/utils/fetcher';
 import { ReportSnippetType } from '../types/global';
 import { useToast } from './useToast';
 
@@ -19,12 +18,14 @@ const useBookmark = (
   reportSummary?: ReportSnippetType
 ): {
   isBookMarked: boolean;
-  handleBookmark: (action: 'ADD' | 'REMOVE') => Promise<void>;
+  handleBookmark: (
+    action: 'ADD' | 'REMOVE',
+    reportTitle: string
+  ) => Promise<void>;
   setIsBookmarked: Dispatch<SetStateAction<boolean>>;
 } => {
   const t = useTranslations();
   const [isBookMarked, setIsBookmarked] = useState<boolean>(false);
-  const setReportBookmarks = useSetRecoilState(userReports);
   const { bookmarkedReports } = useRecoilValue<UserReports>(userReports);
   const { triggerToast, getToastTextFromResponse } = useToast();
 
@@ -51,14 +52,26 @@ const useBookmark = (
   }, [bookmarkedReports]);
 
   const handleBookmark = useRecoilCallback(
-    () => async (action: 'ADD' | 'REMOVE') => {
+    () => async (action: 'ADD' | 'REMOVE', reportTitle?: string) => {
       try {
+        const isRemove = action === 'REMOVE';
+
+        // trigger a toast optimistically
+        triggerToast({
+          title: isRemove ? 'Bookmark removed' : 'Bookmark added',
+          description: isRemove
+            ? `Your ${reportTitle ?? ''} report was removed from bookmarks`
+            : `Your ${reportTitle ?? ''} report was added to bookmarks`,
+          toastId: `bookmark-updated-${action}`,
+          status: 200
+        });
+
         // optimistically update bookmark state
         // this is in reports
         setIsBookmarked(!isBookMarked);
 
         // turn and action into an API method
-        const method = action === 'REMOVE' ? 'DELETE' : 'POST';
+        const method = isRemove ? 'DELETE' : 'POST';
 
         // added return_all so that we can return the bookmarks in the same request
         const updater = await fetch(
@@ -87,12 +100,6 @@ const useBookmark = (
         if (updater.ok) {
           // if successful revalidate the useUser hook to fetch updated user object
           mutate('/api/user/bookmarks');
-
-          triggerToast({
-            title: action === 'REMOVE' ? 'Bookmark removed' : 'Bookmark added',
-            toastId: `bookmark-updated-${method}`,
-            status: updater.status
-          });
         }
       } catch (err) {
         Sentry.captureException(err);

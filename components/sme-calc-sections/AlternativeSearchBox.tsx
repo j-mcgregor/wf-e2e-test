@@ -66,8 +66,8 @@ const AlternativeSearchBox = ({
   );
 
   useEffect(() => {
-    if (data?.error) {
-      Sentry.captureException(new Error(data.error), {
+    if (data?.isError) {
+      Sentry.captureException(new Error(data.code), {
         extra: {
           data:
             data.message && isJsonString(data.message)

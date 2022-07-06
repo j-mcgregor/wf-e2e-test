@@ -76,7 +76,7 @@ const useOrganisation = (fetch = true) => {
     mutateOrg,
     mutateUsers,
     loading: isLoading,
-    error: data?.error,
+    error: data?.isError,
     message: data?.message
   };
 };

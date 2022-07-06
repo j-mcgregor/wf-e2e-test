@@ -11,10 +11,10 @@ export const ToastLayout: FC<{
   title: RichTranslation;
   description?: RichTranslation;
 }> = ({ title, description, children }) => (
-  <div className="flex flex-col items-start space-y-2">
-    <div className="font-bold text-sm">{title}</div>
-    <div className="text-sm">{description}</div>
-    <div className="flex gap-x-2">{children}</div>
+  <div className="flex flex-col items-start">
+    <h6 className="font-bold text-black mb-0.5">{title}</h6>
+    <p className="text-xs leading-normal ">{description}</p>
+    {children && <div className="flex gap-x-2 mt-2">{children}</div>}
   </div>
 );
 

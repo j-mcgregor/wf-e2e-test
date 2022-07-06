@@ -6,7 +6,6 @@ const mockErrors: Record<string, string> = errors;
 export interface MockApiHandlerReturn {
   data: any;
   code: string;
-  error: string;
   isError: boolean;
   ok: boolean;
   message: string;
@@ -26,7 +25,6 @@ export const fetchMockData =
           resolve({
             data: null,
             code: code || 'DEFAULT_REQUEST',
-            error: '',
             isError: true,
             ok: false,
             message: '',

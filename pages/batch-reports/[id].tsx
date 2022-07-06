@@ -212,7 +212,8 @@ export const getServerSideProps = ({ locale }: GetServerSidePropsContext) => {
         ...require(`../../messages/${locale}/batch-reports.${locale}.json`),
         ...require(`../../messages/${locale}/hints.${locale}.json`),
         ...require(`../../messages/${locale}/general.${locale}.json`),
-        ...require(`../../messages/${locale}/errors.${locale}.json`)
+        ...require(`../../messages/${locale}/errors.${locale}.json`),
+        ...require(`../../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };

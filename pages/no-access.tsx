@@ -73,7 +73,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
         ...require(`../messages/${locale}/index.${locale}.json`),
-        ...require(`../messages/${locale}/general.${locale}.json`)
+        ...require(`../messages/${locale}/general.${locale}.json`),
+        ...require(`../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };
