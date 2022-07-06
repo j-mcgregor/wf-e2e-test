@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { useSession } from 'next-auth/react';
 import React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -12,12 +13,16 @@ const useUser = (fetch: boolean = true) => {
   const { data: sessionUser } = useSession();
 
   // if no user then revalidate onMount to prevent blank page
-  const { data, isValidating } = useSWR(fetch && '/api/user', fetcher, {
-    revalidateOnMount: !user,
-    revalidateOnFocus: false
-  });
+  const { data: userRequest, isValidating } = useSWR(
+    fetch && '/api/user',
+    fetcher,
+    {
+      revalidateOnMount: !user,
+      revalidateOnFocus: false
+    }
+  );
 
-  const { data: reports, isValidating: isValidatingReports } = useSWR(
+  const { data: reportRequest, isValidating: isValidatingReports } = useSWR(
     fetch && '/api/user/reports',
     fetcher,
     {
@@ -26,42 +31,45 @@ const useUser = (fetch: boolean = true) => {
     }
   );
 
-  const { data: bookmarks, isValidating: isValidatingBookmarks } = useSWR(
-    fetch && '/api/user/bookmarks',
-    fetcher,
-    {
+  const { data: bookmarksRequest, isValidating: isValidatingBookmarks } =
+    useSWR(fetch && '/api/user/bookmarks', fetcher, {
       revalidateOnMount: !user,
       revalidateOnFocus: false
-    }
-  );
-  const is_sso = sessionUser?.user?.is_sso;
-  const isLoading = !data;
-  React.useEffect(() => {
-    let user = {};
+    });
 
-    if (data?.data?.user && !isValidating) {
+  // handling the loading states
+  const isLoadingUser = !userRequest && isValidating;
+  const isLoadingReports = !reportRequest && isValidatingReports;
+  const isLoadingBookmarks = !bookmarksRequest && isValidatingBookmarks;
+  const isLoading = isLoadingUser || isLoadingReports || isLoadingBookmarks;
+
+  const is_sso = sessionUser?.user?.is_sso;
+
+  React.useEffect(() => {
+    let newUser = { ...userRequest?.data?.user, is_sso };
+
+    if (userRequest?.data?.user && !isValidating) {
       setState({
         ...appState,
         organisation,
-        user: { ...data?.data.user, is_sso }
+        user: { ...userRequest?.data.user, is_sso }
       });
-      user = { ...data.data.user };
     }
 
-    if (bookmarks?.data && !isValidatingBookmarks) {
-      user = { ...user, bookmarked_reports: bookmarks.data };
+    if (bookmarksRequest?.data && !isValidatingBookmarks) {
+      newUser = { ...newUser, bookmarked_reports: bookmarksRequest.data };
+      setState({ ...appState, organisation, user: { ...user, ...newUser } });
     }
 
-    if (reports?.data && !isValidatingReports) {
-      user = {
-        ...user,
-        reports: reports.data.reports,
-        total: reports.data.total
+    if (reportRequest?.data && !isValidatingReports) {
+      newUser = {
+        ...newUser,
+        reports: reportRequest.data.reports,
+        total: reportRequest.data.total
       };
+      setState({ ...appState, organisation, user: { ...user, ...newUser } });
     }
-
-    setState({ ...appState, organisation, user: { ...user } });
-  }, [data, bookmarks, reports, sessionUser]);
+  }, [userRequest, bookmarksRequest, reportRequest, sessionUser]);
 
   const isAdmin = user?.organisation_role === 'Admin';
 
@@ -69,12 +77,12 @@ const useUser = (fetch: boolean = true) => {
     user: user ? user : null,
     isAdmin,
     loading: isLoading,
-    isError: data?.error,
+    isError: userRequest?.error,
     error: {
-      message: data?.error ? data?.message : false,
-      status: data?.status
+      message: userRequest?.error ? userRequest?.message : false,
+      status: userRequest?.status
     },
-    message: data?.message
+    message: userRequest?.message
   };
 };
 
