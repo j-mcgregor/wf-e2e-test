@@ -1,5 +1,7 @@
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import appState from '../../../lib/appState';
 import CTACard from '../highlights/CTACard';
 
 const AddMoreData = ({
@@ -13,6 +15,10 @@ const AddMoreData = ({
 }) => {
   const t = useTranslations();
 
+  // features could be used here down the line for fine tuning text
+  // const { organisation } = useRecoilValue(appState)
+  // const features = organisation?.features
+
   // until feature specification is created we are making this simpler
   // const integrationText = isIntegrated
   //   ? t('use_integration_unlock_private_apis')
@@ -22,6 +28,8 @@ const AddMoreData = ({
 
   const integrationText = isIntegrated
     ? t('use_integration_unlock_private_apis')
+    : isAdmin
+    ? t('enable_integrations_through_organisation')
     : t.rich('enable_integrations_through_support', {
         a: children => (
           <a
@@ -32,7 +40,6 @@ const AddMoreData = ({
           </a>
         )
       });
-  //   : t('no_access_request_integration_to_be_enabled');
 
   const integrationButtonText = isIntegrated
     ? 'Import Data'

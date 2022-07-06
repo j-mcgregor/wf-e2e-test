@@ -22,7 +22,6 @@ import ShareHolderList from './corporate-governance/ShareHolderList';
 import ESGCard from './esg-assessment/ESGCard';
 import ESGContainer from './esg-assessment/ESGContainer';
 import FinancialTrends from './financial-trends/FinancialTrends';
-import CTACard from './highlights/CTACard';
 import DataReliability from './highlights/DataReliability';
 import FinancialAccounts from './highlights/FinancialAccounts';
 import ReliabilityIndex from './highlights/ReliabilityIndex';

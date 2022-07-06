@@ -285,7 +285,7 @@ export type CsvReportUploadHeaders =
   | 'working_capital';
 
 export interface ReportUploadFinancialRequestBody {
-  company_age: number;
+  company_age: number | null;
   cash_and_equivalents: number;
   creditors: number;
   current_assets: number;
@@ -299,12 +299,12 @@ export interface ReportUploadFinancialRequestBody {
   inventory: number;
   loans: number;
   long_term_debt: number;
-  management_experience: string; // High | Medium | Low
+  management_experience: string | null; // High | Medium | Low | null
   net_income: number;
   non_current_liabilities: number;
-  number_of_directors: number;
-  number_of_subsidiaries: number;
-  number_of_employees: number;
+  number_of_directors: number | null;
+  number_of_subsidiaries: number | null;
+  number_of_employees: number | null;
   other_non_current_liabilities: number;
   period: string; // in yyyy-mm-dd format
   retained_earnings: number;
@@ -318,11 +318,11 @@ export interface ReportUploadFinancialRequestBody {
 }
 
 export interface ReportUploadDetailsRequestBody {
-  nace_code: number;
-  industry_sector_code: IndustrySectorCodes;
+  nace_code: number | null;
+  industry_sector_code: IndustrySectorCodes | null;
   name: string;
   website: string;
-  company_type: string; // Large | Medium | Small
+  company_type: string | null; // Large | Medium | Small | null
 }
 
 /**

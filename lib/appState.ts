@@ -10,7 +10,8 @@ import { ReportSnippetType, UserType } from '../types/global';
 const appState = atom<any>({
   key: 'appState',
   default: {
-    user: null
+    user: null,
+    organisation: null
   }
 });
 
@@ -21,6 +22,16 @@ export const appUser = selector<UserType>({
   },
   set: ({ set }, newUser) => {
     return set(appState, { user: newUser });
+  }
+});
+
+export const appOrganisation = selector<UserType>({
+  key: 'appOrganisation',
+  get: ({ get }) => {
+    return get(appState).organisation;
+  },
+  set: ({ set }, newOrganisation) => {
+    return set(appState, { organisation: newOrganisation });
   }
 });
 

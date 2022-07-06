@@ -21,7 +21,7 @@ import {
 
 const Organisation = () => {
   const t = useTranslations();
-  const { organisation, message } = useOrganisation();
+  const { organisation, features } = useOrganisation();
   const [skip, setSkip] = React.useState(0);
   const [users, setUsers] = React.useState<OrganisationUser[]>([]);
   const [reportsSkip, setReportsSkip] = React.useState(0);
@@ -256,7 +256,7 @@ const Organisation = () => {
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
-        {isIntegrated ? (
+        {features?.REPORT_CODAT ? (
           <div className="mt-12 flex flex-col gap-5 mb-24">
             <h2 className="text-2xl font-semibold">
               {t('intergrations_title')}

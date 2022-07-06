@@ -6,7 +6,7 @@ import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 
 const useUser = (fetch: boolean = true) => {
-  const { user } = useRecoilValue(appState);
+  const { user, organisation } = useRecoilValue(appState);
   const setState = useSetRecoilState(appState);
 
   const { data: sessionUser } = useSession();
@@ -40,7 +40,11 @@ const useUser = (fetch: boolean = true) => {
     let user = {};
 
     if (data?.data?.user && !isValidating) {
-      setState({ ...appState, user: { ...data?.data.user, is_sso } });
+      setState({
+        ...appState,
+        organisation,
+        user: { ...data?.data.user, is_sso }
+      });
       user = { ...data.data.user };
     }
 
@@ -56,7 +60,7 @@ const useUser = (fetch: boolean = true) => {
       };
     }
 
-    setState({ ...appState, user: { ...user } });
+    setState({ ...appState, organisation, user: { ...user } });
   }, [data, bookmarks, reports, sessionUser]);
 
   const isAdmin = user?.organisation_role === 'Admin';

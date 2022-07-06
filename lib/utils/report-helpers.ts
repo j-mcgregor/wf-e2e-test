@@ -38,19 +38,32 @@ export const makeUploadReportReqBody = (
   parent_id?: string
 ): ReportUploadRequestBody => {
   // setter functions
-  const setNumberValue = (key: CsvReportUploadHeaders, i: number) =>
-    // remove all none number characters
-    Number(reportObject[key]?.[i].replace(/[^\d.]+/gi, '') ?? 0);
+  const setNumberValue = (key: CsvReportUploadHeaders, i: number) => {
+    const number = Number(reportObject[key]?.[i] ?? 0);
+    if (isNaN(number)) {
+      // filter for non-numeric values
+      return Number(
+        reportObject[key]?.[i].replace(/(?!^-)[^\de+\-eE.]+/gi, '')
+      );
+    }
+    return number;
+  };
+  // remove all none number characters except a - sign at the start
 
-  const setStringValue = (key: CsvReportUploadHeaders, i: number) =>
-    reportObject[key]?.[i]?.toString() ?? '';
+  const setStringValue = (key: CsvReportUploadHeaders, i: number) => {
+    const string = reportObject[key]?.[i] ?? '';
+    if (string.toLowerCase() === 'null') {
+      return '';
+    }
+    return string;
+  };
 
   const financials: ReportUploadFinancialRequestBody[] = csvValues.map(
     (_, i) => {
       return {
         cash_and_equivalents: setNumberValue('cash_and_equivalents', i),
         creditors: setNumberValue('creditors', i),
-        company_age: setNumberValue('company_age', i),
+        company_age: setNumberValue('company_age', i) || null,
         current_assets: setNumberValue('current_assets', i),
         current_liabilities: setNumberValue('current_liabilities', i),
         debtors: setNumberValue('debtors', i),
@@ -63,12 +76,13 @@ export const makeUploadReportReqBody = (
         loans: setNumberValue('loans', i),
         long_term_debt: setNumberValue('long_term_debt', i),
         management_experience:
-          setStringValue('management_experience', i) || 'Medium',
+          setStringValue('management_experience', i) || null,
         net_income: setNumberValue('net_income', i),
         non_current_liabilities: setNumberValue('non_current_liabilities', i),
-        number_of_directors: setNumberValue('number_of_directors', i),
-        number_of_subsidiaries: setNumberValue('number_of_subsidiaries', i),
-        number_of_employees: setNumberValue('number_of_employees', i),
+        number_of_directors: setNumberValue('number_of_directors', i) || null,
+        number_of_subsidiaries:
+          setNumberValue('number_of_subsidiaries', i) || null,
+        number_of_employees: setNumberValue('number_of_employees', i) || null,
         other_non_current_liabilities: setNumberValue(
           'other_non_current_liabilities',
           i
@@ -94,13 +108,14 @@ export const makeUploadReportReqBody = (
     // DETAILS =====================
     details: {
       name: setStringValue('details_name', 0),
-      nace_code: setNumberValue('details_nace_code', 0),
-      industry_sector_code: setNumberValue(
-        'details_industry_sector_code',
-        0
-      ) as IndustrySectorCodes,
+      nace_code: setNumberValue('details_nace_code', 0) || null,
+      industry_sector_code:
+        (setNumberValue(
+          'details_industry_sector_code',
+          0
+        ) as IndustrySectorCodes) || null,
       website: setStringValue('details_website', 0),
-      company_type: setStringValue('details_company_type', 0)
+      company_type: setStringValue('details_company_type', 0) || null
     },
     // FINANCIALS ==================
     // multiple years per report are mapped here
