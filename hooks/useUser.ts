@@ -4,7 +4,9 @@ import React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useSWR from 'swr';
 import appState from '../lib/appState';
+import { fetchMockData } from '../lib/mock-data/helpers';
 import fetcher from '../lib/utils/fetcher';
+import useSWRWithToasts from './useSWRWithToasts';
 
 const useUser = (fetch: boolean = true) => {
   const { user, organisation } = useRecoilValue(appState);
@@ -13,27 +15,30 @@ const useUser = (fetch: boolean = true) => {
   const { data: sessionUser } = useSession();
 
   // if no user then revalidate onMount to prevent blank page
-  const { data: userRequest, isValidating } = useSWR(
+  const { data: userRequest, isValidating } = useSWRWithToasts(
     fetch && '/api/user',
     fetcher,
+    // fetchMockData(403, 'USER', 'USER_403'),
     {
-      revalidateOnMount: !user,
+      revalidateOnMount: !user?.id,
       revalidateOnFocus: false
     }
   );
 
-  const { data: reportRequest, isValidating: isValidatingReports } = useSWR(
-    fetch && '/api/user/reports',
-    fetcher,
-    {
-      revalidateOnMount: !user,
-      revalidateOnFocus: false
-    }
-  );
+  const { data: reportRequest, isValidating: isValidatingReports } =
+    useSWRWithToasts(
+      fetch && '/api/user/reports',
+      fetcher,
+      // fetchMockData(500, 'USER_REPORTS', 'USER_REPORTS_500'),
+      {
+        revalidateOnMount: !user?.id,
+        revalidateOnFocus: false
+      }
+    );
 
   const { data: bookmarksRequest, isValidating: isValidatingBookmarks } =
-    useSWR(fetch && '/api/user/bookmarks', fetcher, {
-      revalidateOnMount: !user,
+    useSWRWithToasts(fetch && '/api/user/bookmarks', fetcher, {
+      revalidateOnMount: !user?.id,
       revalidateOnFocus: false
     });
 
@@ -46,40 +51,31 @@ const useUser = (fetch: boolean = true) => {
   const is_sso = sessionUser?.user?.is_sso;
 
   React.useEffect(() => {
-    let newUser = { ...userRequest?.data?.user, is_sso };
-
-    if (userRequest?.data?.user && !isValidating) {
-      setState({
-        ...appState,
-        organisation,
-        user: { ...userRequest?.data.user, is_sso }
-      });
-    }
-
-    if (bookmarksRequest?.data && !isValidatingBookmarks) {
-      newUser = { ...newUser, bookmarked_reports: bookmarksRequest.data };
-      setState({ ...appState, organisation, user: { ...user, ...newUser } });
-    }
-
-    if (reportRequest?.data && !isValidatingReports) {
-      newUser = {
-        ...newUser,
-        reports: reportRequest.data.reports,
-        total: reportRequest.data.total
-      };
-      setState({ ...appState, organisation, user: { ...user, ...newUser } });
-    }
-  }, [userRequest, bookmarksRequest, reportRequest, sessionUser]);
+    setState({
+      ...appState,
+      organisation,
+      user: {
+        ...user,
+        ...{
+          ...userRequest?.data?.user,
+          is_sso,
+          reports: reportRequest?.data?.reports,
+          total: reportRequest?.data?.total,
+          bookmarked_reports: bookmarksRequest?.data
+        }
+      }
+    });
+  }, [userRequest, reportRequest, bookmarksRequest]);
 
   const isAdmin = user?.organisation_role === 'Admin';
 
   return {
-    user: user ? user : null,
+    user: user?.id ? user : null,
     isAdmin,
     loading: isLoading,
-    isError: userRequest?.error,
+    isError: userRequest?.isError,
     error: {
-      message: userRequest?.error ? userRequest?.message : false,
+      message: userRequest?.isError ? userRequest?.message : false,
       status: userRequest?.status
     },
     message: userRequest?.message
