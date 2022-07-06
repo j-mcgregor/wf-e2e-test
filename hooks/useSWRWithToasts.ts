@@ -17,13 +17,14 @@ const useSWRWithToasts = (
 
   if (data?.isError) {
     const toastText = getToastTextFromResponse(data);
-    triggerToast({
-      toastId: data.code,
-      title: toastText?.title,
-      description: toastText?.description,
-      status: data.status,
-      ...toastOptions
-    });
+    toastText &&
+      triggerToast({
+        toastId: data.code,
+        title: toastText?.title,
+        description: toastText?.description,
+        status: data.status,
+        ...toastOptions
+      });
   }
 
   const isLoading = !data && isValidating;
