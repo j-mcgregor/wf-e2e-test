@@ -37,7 +37,7 @@ export const defaultErrors: Record<string, ToastData> = defaultErrorsJSON;
 export const toastMessages: SourceErrors = toastsJSON;
 
 export interface TriggerToast {
-  toastId: string;
+  toastId?: string;
   actions?: ToastAction[];
   dismiss?: 'corner' | 'button';
   toastType?: ToastOptions['type'];
