@@ -476,7 +476,7 @@
   "USER_REPORTS": {
     "USER_REPORTS_200": {
       "title": "Successfully fetched User Reports",
-      "description": "Lorem ipsum User reports"
+      "description": "Your reports were successfully fetched."
     },
     "USER_REPORTS_400": {
       "title": "Something went wrong when processing USER_REPORTS",
