@@ -64,10 +64,29 @@ export type UnauthenticatedMethodsType = {
   PATCH?: boolean;
 };
 
+export type SourceTypes =
+  | 'USER'
+  | 'BATCH_REPORTS_BY_ID'
+  | 'BATCH_AUTO'
+  | 'BATCH_MANUAL'
+  | 'INTEGRATIONS'
+  | 'INTEGRATIONS_CODAT'
+  | 'ORGANISATION_ALL_REPORTS'
+  | 'ORGANISATION'
+  | 'ORGANISATION_USER'
+  | 'ORGANISATION_USERS'
+  | 'REPORTS_NEWS'
+  | 'REPORTS'
+  | 'REPORTS_UPLOAD'
+  | 'USER_BOOKMARK'
+  | 'USER_REPORTS'
+  | 'PASSWORD_RESET'
+  | 'SEARCH_COMPANIES';
+
 type APIHandlerOptionsType = {
   authenticate: (req: NextApiRequest) => Promise<JWT | null>;
   publicMethods?: UnauthenticatedMethodsType;
-  sourceType: string;
+  sourceType: SourceTypes;
 };
 
 export type MakeHttpResponse = <T = any>(

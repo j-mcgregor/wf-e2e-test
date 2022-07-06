@@ -11,11 +11,8 @@ import { ReactNode } from 'react';
 import { toast, ToastOptions } from 'react-toastify';
 
 import { ToastBody } from '../components/toast/Toast';
-import {
-  SourceErrors,
-  SourceTypes,
-  ToastData
-} from '../lib/errors/error-messages';
+import { SourceTypes } from '../lib/api-handler/api-handler';
+import { SourceErrors, ToastData } from '../lib/errors/error-messages';
 import { getToastType } from '../lib/utils/toast-helpers';
 import defaultErrorsJSON from '../messages/en/errors-default.en.json';
 import toastsJSON from '../messages/en/toasts.en.json';

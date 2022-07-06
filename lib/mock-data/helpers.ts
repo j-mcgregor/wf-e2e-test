@@ -1,5 +1,5 @@
 import errors from '../../messages/en/errors.en.json';
-import { SourceTypes } from '../errors/error-messages';
+import { SourceTypes } from '../api-handler/api-handler';
 
 const mockErrors: Record<string, string> = errors;
 

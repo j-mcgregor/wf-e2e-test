@@ -1,3 +1,5 @@
+import { SourceTypes } from '../api-handler/api-handler';
+
 export interface ToastAction {
   label: string;
   action: Function;
@@ -9,25 +11,6 @@ export interface ToastData {
   description: string;
   actions?: ToastAction[];
 }
-
-export type SourceTypes =
-  | 'USER'
-  | 'BATCH_REPORTS_BY_ID'
-  | 'BATCH_AUTO'
-  | 'BATCH_MANUAL'
-  | 'INTEGRATIONS'
-  | 'INTEGRATIONS_CODAT'
-  | 'ORGANISATION_ALL_REPORTS'
-  | 'ORGANISATION'
-  | 'ORGANISATION_USER'
-  | 'ORGANISATION_USERS'
-  | 'REPORTS_NEWS'
-  | 'REPORTS'
-  | 'REPORTS_UPLOAD'
-  | 'USER_BOOKMARK'
-  | 'USER_REPORTS'
-  | 'PASSWORD_RESET'
-  | 'SEARCH_COMPANIES';
 
 export interface CodeErrors {
   [status: string]: ToastData;
