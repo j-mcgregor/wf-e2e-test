@@ -396,6 +396,10 @@
     }
   },
   "REPORTS": {
+    "GENERATING_REPORT": {
+      "title": "Generating report",
+      "description": "This may take a minute or two"
+    },
     "REPORT_CREATED": {
       "title": "Report successfully created",
       "description": "You should be redirect to the newly generated report. If you aren't, please click the link below"

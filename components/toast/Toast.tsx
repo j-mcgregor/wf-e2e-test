@@ -27,7 +27,7 @@ export const ToastBody: FC<{
     <ToastLayout title={title} description={description}>
       {actions?.map((a, i) => (
         <button
-          className={`py-0.5 ${
+          className={`py-0.5 text-sm ${
             a.type === 'dismiss' ? 'text-slate-400 ' : 'text-orange-300'
           }`}
           onClick={() => a.action()}

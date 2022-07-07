@@ -9,6 +9,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 import { toast, ToastOptions } from 'react-toastify';
+import LoadingIcon from '../components/svgs/LoadingIcon';
 
 import { ToastBody, ToastLayout } from '../components/toast/Toast';
 import { SourceTypes } from '../lib/api-handler/api-handler';
@@ -123,6 +124,10 @@ export const useToast = (defaultToastOptions?: ToastOptions) => {
     warning: {
       progressClassName: 'bg-yellow-600',
       icon: <ExclamationIcon className="!text-yellow-600" />
+    },
+    loading: {
+      progressClassName: 'bg-gray-600',
+      icon: <LoadingIcon className="h-6 w-6 text-gray-600" />
     },
     default: {
       progressClassName: '',

@@ -1,11 +1,13 @@
 import * as Sentry from '@sentry/nextjs';
 import { useRouter } from 'next/router';
+import React from 'react';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
-import { useToast } from '../../hooks/useToast';
 
+import { useToast } from '../../hooks/useToast';
 import appState from '../../lib/appState';
 import { accountTypes } from '../../lib/settings/report.settings';
 import SettingsSettings from '../../lib/settings/settings.settings';
@@ -17,6 +19,7 @@ import fetcher from '../../lib/utils/fetcher';
 import { CompanyType } from '../../types/global';
 import Button from '../elements/Button';
 import ErrorMessage from '../elements/ErrorMessage';
+import { ToastBody } from '../toast/Toast';
 import AdvancedSearch, { SimpleValue } from './AdvancedSearch';
 import AlternativeSearchBox from './AlternativeSearchBox';
 import BasicSearch from './BasicSearch';
@@ -30,7 +33,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const t = useTranslations();
   const router = useRouter();
 
-  const { triggerToast, getToastTextFromResponse } = useToast();
+  const { getToastTextFromResponse, toastStyle } = useToast();
 
   const currencies: SimpleValue[] = SettingsSettings.supportedCurrencies;
 
@@ -144,8 +147,22 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     setSelectedCurrency(currencies[Number(currency)]);
   };
 
+  const toastId = React.useRef<ReturnType<typeof toast.loading> | null>(null);
+
   const handleGenerateReport = async (): Promise<void> => {
     setLoading(true);
+
+    toastId.current = toast(
+      <ToastBody
+        title={t('REPORTS.GENERATING_REPORT.title')}
+        description={t('REPORTS.GENERATING_REPORT.description')}
+      />,
+      {
+        autoClose: false,
+        closeButton: true,
+        icon: toastStyle.loading.icon
+      }
+    );
 
     const countryCode = selectedCountry?.optionValue;
     const companyId = selectedCompany?.company_number;
@@ -185,17 +202,24 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         // update the global user state to get the new report
         mutate('/api/user');
 
-        triggerToast({
-          toastId: 'REPORT_CREATED',
-          title: t('REPORTS.REPORT_CREATED.title'),
-          description: t('REPORTS.REPORT_CREATED.description'),
-          toastType: 'success',
-          actions: [
-            {
-              label: 'Go to report',
-              action: () => router.push(`/report/${createReportRes.data?.id}`)
-            }
-          ]
+        toast.update(toastId.current, {
+          render: (
+            <ToastBody
+              title={t('REPORTS.REPORT_CREATED.title')}
+              description={t('REPORTS.REPORT_CREATED.description')}
+              actions={[
+                {
+                  label: 'Go to report',
+                  action: () =>
+                    router.push(`/report/${createReportRes.data?.id}`)
+                }
+              ]}
+            />
+          ),
+          type: 'success',
+          icon: toastStyle.success.icon,
+          closeButton: true,
+          autoClose: 7000
         });
 
         // redirect to the report page
@@ -215,18 +239,27 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         const toastText = getToastTextFromResponse(createReportRes);
 
         toastText &&
-          triggerToast({
-            toastId: createReportRes.code,
-            status: createReportRes.status,
-            actions: [
-              {
-                label: 'Retry',
-                action: () => handleGenerateReport()
-              }
-            ],
-            title: toastText?.title,
-            description: toastText?.description,
-            dismiss: 'button'
+          toast.update(toastId.current, {
+            render: (
+              <ToastBody
+                title={toastText?.title}
+                description={toastText?.description}
+                actions={[
+                  {
+                    label: 'Retry',
+                    action: () => {
+                      toast.dismiss('REPORT_CREATED');
+
+                      setTimeout(() => handleGenerateReport(), 2000);
+                    }
+                  }
+                ]}
+              />
+            ),
+            type: 'error',
+            icon: toastStyle.error.icon,
+            autoClose: 7000,
+            closeButton: true
           });
 
         setError({
