@@ -65,6 +65,7 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
       className={`flex flex-col gap-6 ${
         stage >= 2 && !loading ? enabledClassName : disabledClassName
       }`}
+      data-testid="codat-stage-2"
     >
       <h1 className="text-3xl font-semibold mt-12">
         {t('integration_stage_2')}

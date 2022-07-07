@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import 'isomorphic-fetch';
+import 'whatwg-fetch';
 import { cache } from 'swr';
 
 import { server } from './__mocks__/service-worker/server';
