@@ -99,9 +99,6 @@ describe('CodatStageTwo', () => {
     expect(screen.getByTestId(codatStage2)).toHaveClass('superman');
     expect(screen.getAllByText(/Justice League/i).length).toBe(2);
     expect(screen.getByText(/123/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/december 2021 - january 2022/i)
-    ).toBeInTheDocument();
     expect(screen.getByText(/2 results/i)).toBeInTheDocument();
 
     // const input = screen.getByRole('textbox');
@@ -167,9 +164,6 @@ describe('CodatStageTwo', () => {
     expect(screen.getByTestId(codatStage2)).toHaveClass('superman');
     expect(screen.getAllByText(/Justice League/i).length).toBe(2);
     expect(screen.getByText(/123/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/december 2021 \- january 2022/i)
-    ).toBeInTheDocument();
     expect(screen.queryByText(/2 results/i)).toBeNull();
 
     // const input = screen.getByRole('textbox');
