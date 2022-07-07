@@ -12,6 +12,7 @@ import Layout from '../components/layout/Layout';
 import LoadingIcon from '../components/svgs/LoadingIcon';
 import Table, { TableHeadersType } from '../components/table/Table';
 import useOrganisation from '../hooks/useOrganisation';
+import { ApiHandlerResponse } from '../lib/api-handler/api-handler';
 import fetcher from '../lib/utils/fetcher';
 import { createReportTitle } from '../lib/utils/text-helpers';
 import {
@@ -41,7 +42,7 @@ const Organisation = () => {
     data: organisationUsers,
     error,
     isValidating
-  } = useSWR(
+  } = useSWR<ApiHandlerResponse<{ users: OrganisationUser[]; total: number }>>(
     organisation?.id &&
       `/api/organisation/${organisation?.id}/users?limit=${limit}&skip=${skip}`,
     fetcher,
@@ -51,7 +52,9 @@ const Organisation = () => {
     }
   );
 
-  const { data: userReports, isValidating: reportsIsValidating } = useSWR(
+  const { data: userReports, isValidating: reportsIsValidating } = useSWR<
+    ApiHandlerResponse<{ organisationUserReports: OrganisationUserReport[] }>
+  >(
     `/api/organisation/${organisation?.id}/all-reports?skip=${reportsSkip}&limit=${limit}`,
     fetcher,
     {
@@ -237,7 +240,7 @@ const Organisation = () => {
 
                 <div className="max-h-[700px]">
                   <Table
-                    tableName={t('users_title')}
+                    tableName={t('reports_title')}
                     total={
                       parseInt(`${organisation?.totalOrganisationReports}`) || 0
                     }
