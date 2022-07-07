@@ -2,6 +2,7 @@
 import * as Sentry from '@sentry/nextjs';
 
 import config from '../../config';
+import { defaultHeaders } from '../api-handler/headers';
 
 const fetcher = async (
   relativeUrl: string,
@@ -20,6 +21,7 @@ const fetcher = async (
           : 'application/json';
       const res = await fetch(`${config.URL}${relativeUrl}`, {
         headers: {
+          ...defaultHeaders,
           'Content-Type': contentType
         }
       });
@@ -39,7 +41,7 @@ const fetcher = async (
       method: method,
       body: data && JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json',
+        ...defaultHeaders,
         ...headers
       }
     });

@@ -145,13 +145,23 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const handleGenerateReport = async (): Promise<void> => {
     setLoading(true);
 
+    const countryCode = selectedCountry?.optionValue;
+    const companyId = selectedCompany?.company_number;
+
+    // if the company id comes back from orbis often has the country code attached to the start of it.
+    // so we need to remove it if it matches the country code they are searching in
+    // if it doesn't it might be a country specific code to indicate something else and we need to keep it
+    const cleanCompanyId =
+      companyId?.slice(0, 2)?.toLowerCase() === countryCode?.toLowerCase()
+        ? companyId?.substring(2)
+        : companyId;
+
     const params = {
       iso_code: selectedCountry?.optionValue,
-      company_id: selectedCompany?.company_number || regSearchValue,
+      company_id: cleanCompanyId || regSearchValue,
       currency: selectedCurrency?.code,
       accounts_type: Number(selectedAccountType?.optionValue) || 1
     };
-
     const sentryExtraInfo = {
       data: {
         body: {
@@ -163,7 +173,7 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     };
 
     try {
-      const createReportRes: ReportsReportApi = await fetcher(
+      const createReportRes = await fetcher(
         '/api/reports/report',
         'POST',
         params

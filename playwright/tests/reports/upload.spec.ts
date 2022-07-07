@@ -30,7 +30,7 @@ test('User can upload additional report data by CSV', async ({ browser }) => {
   // WHEN I SELECT A VALID CSV FILE TO UPLOAD
   const [fileChooser] = await Promise.all([
     page.waitForEvent('filechooser'),
-    page.locator('label:has-text("Upload your CSV")').click()
+    page.locator('label:has-text("Upload your CSV or Excel file")').click()
   ]);
   await fileChooser.setFiles(`./__mocks__/csv/sme-calculator/${testCSVFile}`);
 

@@ -23,7 +23,7 @@ test('User can create a manual SINGLE report by CSV', async ({ browser }) => {
   // AND I CLICK THE UPLOAD CSV SELECT
   const [fileChooser] = await Promise.all([
     page.waitForEvent('filechooser'),
-    page.locator('text=Upload your CSV').click()
+    page.locator('text=Upload your CSV or Excel file').click()
   ]);
 
   // AND I SELECT A CSV FILE TO UPLOAD

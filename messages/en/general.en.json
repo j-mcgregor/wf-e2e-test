@@ -25,6 +25,7 @@
   "has_required_format": "Has Required Format",
   "required_values_are_valid": "All required values are valid",
   "file_is_valid_csv": "File is a valid CSV",
+  "file_is_valid_xls": "File is a valid Excel format",
   "file_is_invalid_format": "File is invalid, please upload a CSV",
   "errors": {
     "application_error": "Application error: ",
@@ -37,9 +38,10 @@
     },
     "see_console": "Please open the console and enable errors for more information."
   },
-  "is_valid_batch_auto": "Is valid batch auto CSV",
-  "is_valid_batch_manual": "Is valid batch manual CSV",
+  "is_valid_batch_auto": "Is valid batch auto {format}",
+  "is_valid_batch_manual": "Is valid batch manual {format}",
   "multiple_companies_cannot_be_uploaded_here": "Multiple companies cannot be uploaded here",
   "no_access_title": "Access not allowed",
-  "no_access_message": "You are not authorised to view this page."
+  "no_access_message": "You are not authorised to view this page.",
+  "load_more": "Load more"
 }

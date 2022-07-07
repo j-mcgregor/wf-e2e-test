@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import LoginContainer from '../components/containers/LoginContainer';
 import ResetPasswordForm from '../components/forms/login/ResetPasswordForm';
 import Layout from '../components/layout/Layout';
+import config from '../config';
 
 const PasswordReset = ({
   token,
@@ -39,7 +40,8 @@ export async function getServerSideProps({
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
         // eslint-disable-next-line security/detect-non-literal-require
-        ...require(`../messages/${locale}/reset-password.${locale}.json`)
+        ...require(`../messages/${locale}/reset-password.${locale}.json`),
+        ...require(`../messages/${locale}/errors.${locale}.json`)
       }
     }
   };

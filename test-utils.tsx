@@ -32,9 +32,9 @@ const makeMockSession = (): ReturnType<typeof useSession> => {
   return {
     data: {
       user: {
-        name: 'John Doe',
+        full_name: 'John Doe',
         email: 'test@test.com',
-        image: ''
+        id: '1'
       },
       expires: '2021-10-09T09:00:41.059Z'
     },

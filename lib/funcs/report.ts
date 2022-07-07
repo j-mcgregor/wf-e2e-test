@@ -1,6 +1,7 @@
 import { ApiHandler, HandlerReturn } from '../../types/http';
 import { ReportDataProps } from '../../types/report';
 import { errorsBySourceType, makeErrorResponse } from '../utils/error-handling';
+import { fetchWrapper } from '../utils/fetchWrapper';
 import {
   makeApiHandlerResponseFailure,
   makeApiHandlerResponseSuccess
@@ -25,7 +26,7 @@ const getExistingReport: ApiHandler<
   GetExistingReportProps
 > = async (token: string, { reportId }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/reports/${reportId}`,
       {
         method: 'GET',
@@ -83,7 +84,7 @@ const getReportShortCsv: ApiHandler<
   GetReportCsvShortProps
 > = async (token: string, { reportId }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/reports/${reportId}/export/csv`,
       {
         method: 'GET',
@@ -139,7 +140,7 @@ const getReportFullCsv: ApiHandler<
   GetReportCsvFullProps
 > = async (token: string, { reportId }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/reports/${reportId}/export/full`,
       {
         method: 'GET',
@@ -203,7 +204,7 @@ const createReport: ApiHandler<CreateReport, CreateReportProps> = async (
   { report }
 ) => {
   try {
-    const response = await fetch(`${process.env.WF_AP_ROUTE}/reports`, {
+    const response = await fetchWrapper(`${process.env.WF_AP_ROUTE}/reports`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -265,14 +266,17 @@ const uploadReport: ApiHandler<UploadReport, UploadReportProps> = async (
   { report }
 ) => {
   try {
-    const response = await fetch(`${process.env.WF_AP_ROUTE}/reports/upload`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(report)
-    });
+    const response = await fetchWrapper(
+      `${process.env.WF_AP_ROUTE}/reports/upload`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(report)
+      }
+    );
 
     if (response.ok) {
       const report = await response.json();

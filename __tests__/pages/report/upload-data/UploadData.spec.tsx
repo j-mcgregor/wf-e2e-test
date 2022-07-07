@@ -111,7 +111,7 @@ xdescribe('UploadData', () => {
 
       render(<UploadData />, undefined, allMessages);
       const input = screen.getByLabelText(
-        /Upload your CSV/i
+        /Upload your CSV or Excel file/i
       ) as HTMLInputElement;
 
       act(() => {
@@ -167,7 +167,7 @@ xdescribe('UploadData', () => {
 
       render(<UploadData />, undefined, allMessages);
       const input = screen.getByLabelText(
-        /Upload your CSV/i
+        /Upload your CSV or Excel file/i
       ) as HTMLInputElement;
 
       userEvent.upload(input, file);

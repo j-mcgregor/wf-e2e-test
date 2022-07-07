@@ -1,12 +1,11 @@
-import { UserType } from '../../types/global';
 import { ApiHandler, HandlerReturn } from '../../types/http';
 import {
   OrganisationType,
   OrganisationUser,
-  OrganisationUserReport,
-  OrganisationUserSchema
+  OrganisationUserReport
 } from '../../types/organisations';
 import { errorsBySourceType, makeErrorResponse } from '../utils/error-handling';
+import { fetchWrapper } from '../utils/fetchWrapper';
 import {
   makeApiHandlerResponseFailure,
   makeApiHandlerResponseSuccess
@@ -39,26 +38,24 @@ const getOrganisation: ApiHandler<
   GetOrganisationProps
 > = async (token, { orgId }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/organisations/${orgId}`,
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': contentType
+          Authorization: `Bearer ${token}`
         }
       }
     );
 
     if (response.ok) {
       const organisation: OrganisationType = await response.json();
-      const totalReports = await fetch(
+      const totalReports = await fetchWrapper(
         `${process.env.WF_AP_ROUTE}/organisations/${orgId}/reports?limit=1`,
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': contentType
+            Authorization: `Bearer ${token}`
           }
         }
       );
@@ -129,15 +126,14 @@ const getOrganisationReports: ApiHandler<
   GetOrganisationReportsProps
 > = async (token, { orgId, limit, skip }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/organisations/${orgId}/reports?_end=${
         skip + limit
       }&_start=${skip}&_sort=created_at&_order=desc`,
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': contentType
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -197,13 +193,12 @@ const updateOrganisation: ApiHandler<
   UpdateOrganisationProps
 > = async (token, { orgId, body }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/organisations/${orgId}`,
       {
         method: 'PUT',
         headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': contentType
+          Authorization: `Bearer ${token}`
         },
         body
       }
@@ -264,7 +259,7 @@ const getOrganisationUsers: ApiHandler<
   GetOrganisationUsersProps
 > = async (token, { orgId, limit, skip }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${
         process.env.WF_AP_ROUTE
       }/organisations/${orgId}/users?_start=${skip}&_end=${
@@ -273,8 +268,7 @@ const getOrganisationUsers: ApiHandler<
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': contentType
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -348,13 +342,12 @@ const postOrganisationUser: ApiHandler<
   PostOrganisationUserProps
 > = async (token, { orgId, body }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/organisations/${orgId}/users`,
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': contentType
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           ...JSON.parse(body),
@@ -436,18 +429,20 @@ const getOrganisationUserAndReports: ApiHandler<
   GetOrganisationUserAndReportsProps
 > = async (token, { orgId, userId, limit = 7, skip = 0, reports = false }) => {
   try {
-    const response = await fetch(`${process.env.WF_AP_ROUTE}/users/${userId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': contentType
+    const response = await fetchWrapper(
+      `${process.env.WF_AP_ROUTE}/users/${userId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
 
     if (response.ok) {
       const user: OrganisationUser = await response.json();
       if (reports) {
-        const reportsResponse = await fetch(
+        const reportsResponse = await fetchWrapper(
           `${
             process.env.WF_AP_ROUTE
           }/organisations/${orgId}/users/${userId}/reports?_start=${skip}&_end=${
@@ -456,8 +451,7 @@ const getOrganisationUserAndReports: ApiHandler<
           {
             method: 'GET',
             headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': contentType
+              Authorization: `Bearer ${token}`
             }
           }
         );
@@ -527,13 +521,12 @@ const patchOrganisationUser: ApiHandler<
   PatchOrganisationUserProps
 > = async (token, { orgId, userId, body }) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/organisations/${orgId}/users/${userId}`,
       {
         method: 'PATCH',
         headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': contentType
+          Authorization: `Bearer ${token}`
         },
         body
       }

@@ -1,4 +1,4 @@
-const useUserHomePageRedirect = (route: string) => {
+const getRouteFromPage = (route: string) => {
   switch (route) {
     case 'reports':
       return '/reports';
@@ -10,5 +10,7 @@ const useUserHomePageRedirect = (route: string) => {
       return '/';
   }
 };
+
+const useUserHomePageRedirect = { getRouteFromPage };
 
 export default useUserHomePageRedirect;

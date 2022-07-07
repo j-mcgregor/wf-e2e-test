@@ -42,7 +42,7 @@ test.describe('Batch report', () => {
     // WHEN I SELECT A VALID CSV FILE TO UPLOAD
     const [fileChooser] = await Promise.all([
       page.waitForEvent('filechooser'),
-      page.locator('label:has-text("Upload your CSV")').click()
+      page.locator('label:has-text("Upload your CSV or Excel file")').click()
     ]);
     await fileChooser.setFiles(`./__mocks__/csv/batch/manual/${testCSVFile}`);
 

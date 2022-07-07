@@ -14,6 +14,7 @@ import {
   GENERIC_API_ERROR,
   NEW_PASSWORD_REQUIRED,
   PASSWORD_REQUIREMENTS,
+  USER_BAD_REQUEST,
   USER_NOT_AUTHORISED
 } from '../../../lib/utils/error-codes';
 import { generatePassword } from '../../../lib/utils/generatePassword';
@@ -46,7 +47,7 @@ const PasswordManagement = () => {
     setValue
   } = useForm<PasswordFormInput>();
   const { isDirty, errors, isSubmitting } = formState;
-  const [submitError, setSubmitError] = useState({ type: '' });
+  const [submitError, setSubmitError] = useState({ type: '', status: null });
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -57,6 +58,8 @@ const PasswordManagement = () => {
     confirmPassword: string;
   }) => {
     const { newPassword, currentPassword } = data;
+    setSuccessMessage('');
+    setSubmitError({ type: '', status: null });
     try {
       const fetchRes = await fetch(
         `${config.URL}/api/user/password?id=${user.id}`,
@@ -73,7 +76,7 @@ const PasswordManagement = () => {
       const json = await fetchRes.json();
 
       if (!json.ok) {
-        setSubmitError({ type: json.message });
+        setSubmitError({ type: json.message, status: json.status });
         return reset();
       }
 
@@ -187,6 +190,9 @@ const PasswordManagement = () => {
           </div>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">
+          {submitError.type === USER_BAD_REQUEST && (
+            <ErrorMessage className="text-left" text={t(USER_BAD_REQUEST)} />
+          )}
           {submitError.type === GENERIC_API_ERROR && (
             <ErrorMessage className="text-left" text={t(GENERIC_API_ERROR)} />
           )}

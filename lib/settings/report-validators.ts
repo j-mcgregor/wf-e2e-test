@@ -1,13 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable sonarjs/prefer-immediate-return */
 import countryCodes from '../../lib/data/countryCodes.json';
+import { CsvReportUploadHeaders, CsvValueValidation } from '../../types/report';
+import { dateIsValid } from '../utils/date-helpers';
 
 import type { BatchAutoUploadHeaders } from '../../types/batch-reports';
 import type { CSVValidationHeaderProps } from '../../types/global';
-import type {
-  CsvReportUploadHeaders,
-  CsvValueValidation
-} from '../../types/report';
 
 /**
  * @param strArr "['Active','Inactive']"
@@ -34,6 +32,31 @@ export const convertStringArrayToArrayOfStrings = (
   const splitValues = valuesFromString.split(',');
 
   return { value: splitValues, isValid: true };
+};
+
+const isNull = (string: string | number) =>
+  typeof string === 'string' && string.toLowerCase() === 'null';
+
+const validateCompanyType = (company_type: string) => {
+  if (
+    company_type?.toLowerCase() === 'large' ||
+    company_type?.toLowerCase() === 'medium' ||
+    company_type?.toLowerCase() === 'small'
+  ) {
+    return true;
+  }
+  return false;
+};
+
+const validateManagementExperience = (management_experience: string) => {
+  if (
+    management_experience?.toLowerCase() === 'high' ||
+    management_experience?.toLowerCase() === 'medium' ||
+    management_experience?.toLowerCase() === 'low'
+  ) {
+    return true;
+  }
+  return false;
 };
 
 /**
@@ -73,8 +96,25 @@ export const uploadReportCSVHeaders: {
    * *********************************
    */
   details_industry_sector_code: {
-    required: (x: string) =>
-      !x && `A value for "details_industry_sector_code" is required`,
+    required: (x: string | number) => {
+      // allow "" or "null" but no other string
+      if (x.toString().trim() === '' || isNull(x)) {
+        return false;
+      }
+      // if (!x) {
+      //   return `A value for "details_industry_sector_code" is required`;
+      // }
+      // must be a number not a string
+      if (isNaN(Number(x))) {
+        return `"details_industry_sector_code" should be a valid Industry Sector Code (null is allowed)`;
+      }
+
+      // @ts-ignore
+      if (Number(x) < 10 || Number(x) > 38) {
+        return `"details_industry_sector_code" must be valid Industry Sector Code [10-38]`;
+      }
+      return false;
+    },
     formatted: 'Industry Sector Code'
   },
   details_name: {
@@ -83,9 +123,24 @@ export const uploadReportCSVHeaders: {
     formatted: 'Company Name'
   },
   details_nace_code: {
-    required: (x: string) =>
-      !x && `A value for "details_nace_code" is required`,
+    required: (x: string) => {
+      if (x.trim() === '' || isNull(x)) {
+        return false;
+      }
+
+      return (
+        !x && `A value for "details_nace_code" is required (null is allowed)`
+      );
+    },
     formatted: 'NACE Code'
+  },
+  details_company_type: {
+    required: (x: string) =>
+      !isNull(x) &&
+      x?.trim()?.length > 0 &&
+      !validateCompanyType(x) &&
+      `"details_company_type" must be 'Large', 'Medium' or 'Small', left blank or 'null'`,
+    formatted: 'Company Type'
   },
   // not required but if there, validated as a website
   details_website: {
@@ -104,19 +159,19 @@ export const uploadReportCSVHeaders: {
       return false;
     }
   },
-  details_number_of_directors: {
-    required: false,
-    formatted: 'Details number of directors'
-  },
-  details_number_of_subsidiaries: {
-    required: false,
-    formatted: 'Details number of subsidiaries'
-  },
   /**
    * *********************************
    * FINANCIALS
    * *********************************
    */
+  number_of_directors: {
+    required: false,
+    formatted: 'Number of directors'
+  },
+  number_of_subsidiaries: {
+    required: false,
+    formatted: 'Number of subsidiaries'
+  },
   net_income: {
     required: false,
     formatted: 'Net Income'
@@ -164,8 +219,7 @@ export const uploadReportCSVHeaders: {
   period: {
     required: (x: string) => !x && `A value for "period" is required`,
     validator: (x: string) =>
-      Number(x).toString().length !== 4 &&
-      'Period must be a year with 4 digits',
+      !dateIsValid(x) && 'Period must be in a YYYY-MM-DD or YYYY format',
     formatted: 'Period'
   },
   retained_earnings: {
@@ -196,7 +250,11 @@ export const uploadReportCSVHeaders: {
     formatted: 'Working Capital'
   },
   management_experience: {
-    required: false,
+    required: (x: string) =>
+      !isNull(x) &&
+      x?.trim()?.length > 0 &&
+      !validateManagementExperience(x) &&
+      `"management_experience" must be 'Low', 'Medium' or 'High', left blank or 'null'`,
     formatted: 'Management Experience'
   },
   creditors: {
@@ -237,6 +295,16 @@ export const uploadReportCSVHeaders: {
     required: (x: string) =>
       !x && `A value for "current_liabilities" is required`,
     formatted: 'Current liabilities'
+  },
+  company_age: {
+    required: (x: string) => {
+      return (
+        !isNull(x) &&
+        !x.trim() &&
+        `A value for "company_age" is required (or null)`
+      );
+    },
+    formatted: 'Company Age'
   }
 };
 

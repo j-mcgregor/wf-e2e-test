@@ -11,6 +11,7 @@ import SecondaryLayout from '../../../components/layout/SecondaryLayout';
 import TabletReportNav from '../../../components/layout/TabletReportNav';
 import Report from '../../../components/report-sections/Report';
 import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
+import SkeletonLayout from '../../../components/skeletons/SkeletonLayout';
 import SkeletonReport from '../../../components/skeletons/SkeletonReport';
 import useUser from '../../../hooks/useUser';
 import fetcher from '../../../lib/utils/fetcher';
@@ -29,8 +30,10 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
 
   const { user, isAdmin } = useUser();
 
+  // a useIntegration hook that was fed off the user.organisation_id would be userful
   const { data: codat } = useSWR(
-    `/api/integrations/codat-credentials?orgId=${user?.organisation_id}`,
+    user?.organisation_id &&
+      `/api/integrations/codat-credentials?orgId=${user?.organisation_id}`,
     fetcher
   );
 
@@ -48,6 +51,12 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     : '';
 
   const isError = error || result?.is_error || data?.error;
+
+  // handle language error messages during fallback
+  if (router.isFallback) {
+    return <SkeletonLayout />;
+  }
+
   return (
     <Layout
       title={`${

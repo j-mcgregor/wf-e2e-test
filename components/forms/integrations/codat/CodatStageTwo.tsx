@@ -43,7 +43,10 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
   const { data: accountCategorisation } = useSWR(
     selectedCompany &&
       `/api/integrations/codat/account-categorisation?companyId=${selectedCompany?.company_id}&connectionId=${selectedCompany?.connection_id}`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false
+    }
   );
 
   const categorisationErrorMessages: CodatIntegrationErrorType[] =
@@ -52,7 +55,7 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
   React.useEffect(() => {
     if (selectedCompany && categorisationErrorMessages?.length === 0) {
       setStage(3);
-    } else if (selectedCompany && categorisationErrorMessages?.length > 0) {
+    } else {
       setStage(2);
     }
   }, [selectedCompany, categorisationErrorMessages]);
@@ -80,7 +83,7 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
             </span>
           )}
         </h2>
-        {!data?.isError && !isValidating && (
+        {!data?.isError && (!isValidating || data?.ok) && (
           <CodatCompanySearch
             disabled={stage < 2 || loading}
             searchFunction={() => null}
@@ -113,11 +116,23 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
                 <XIcon className="h-6 w-6" />
               </button>
             </div>
-            {!categorisationErrorMessages && (
+            {!categorisationErrorMessages && !accountCategorisation?.isError && (
               <div className="flex items-center gap-4 mt-4">
                 <LoadingIcon className="h-4 w-4 text-highlight" />
                 <p>
                   {t.rich('integration_validating_company', {
+                    b: company_name => <b>{company_name}</b>,
+                    company_name: selectedCompany.company_name
+                  })}
+                </p>
+              </div>
+            )}
+
+            {accountCategorisation?.isError && (
+              <div className="flex items-center gap-4 mt-4">
+                <XIcon className="h-6 w-6 text-red-500" />
+                <p>
+                  {t.rich('error_validating_company', {
                     b: company_name => <b>{company_name}</b>,
                     company_name: selectedCompany.company_name
                   })}

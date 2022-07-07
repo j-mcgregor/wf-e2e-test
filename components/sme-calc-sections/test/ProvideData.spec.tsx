@@ -34,7 +34,7 @@ describe.skip('ProvideData', () => {
 
     render(<ProvideData />, undefined, allMessages);
 
-    const input = screen.getByLabelText(/upload your csv/i);
+    const input = screen.getByLabelText(/upload your csv or excel file/i);
     userEvent.upload(input, file);
     // screen.logTestingPlaygroundURL();
 

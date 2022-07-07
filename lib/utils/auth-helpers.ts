@@ -1,12 +1,13 @@
 import config from '../../config';
+import { fetchWrapper } from './fetchWrapper';
 
 const invalidateAuthToken = async (token: string) => {
-  const res = await fetch(
-    `${config.API_URL}/api/v1/oauth2/token/invalidate/${token}`,
+  const res = await fetchWrapper(
+    `${config.API_URL}/oauth2/token/invalidate/${token}`,
     {
       method: 'GET',
       headers: {
-        AUthorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     }
   );

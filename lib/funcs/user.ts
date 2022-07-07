@@ -4,6 +4,7 @@ import { UserType, ReportSnippetType } from '../../types/global';
 import { ApiHandler, HandlerReturn } from '../../types/http';
 import { GENERIC_API_ERROR, INTERNAL_SERVER_ERROR } from '../utils/error-codes';
 import { errorsBySourceType, makeErrorResponse } from '../utils/error-handling';
+import { fetchWrapper } from '../utils/fetchWrapper';
 import {
   makeApiHandlerResponseFailure,
   makeApiHandlerResponseSuccess
@@ -11,9 +12,6 @@ import {
 
 export const XMLHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-};
-const JSONHeaders = {
-  'Content-Type': 'application/json'
 };
 
 /**
@@ -24,17 +22,20 @@ const JSONHeaders = {
 
 const authenticate = async (email: string, password: string) => {
   try {
-    const res = await fetch(`${process.env.WF_AP_ROUTE}/login/access-token`, {
-      method: 'POST',
-      headers: {
-        ...XMLHeaders
-      },
-      body: new URLSearchParams({
-        username: email,
-        password: password,
-        grant_type: 'password'
-      })
-    });
+    const res = await fetchWrapper(
+      `${process.env.WF_AP_ROUTE}/login/access-token`,
+      {
+        method: 'POST',
+        headers: {
+          ...XMLHeaders
+        },
+        body: new URLSearchParams({
+          username: email,
+          password: password,
+          grant_type: 'password'
+        })
+      }
+    );
     if (res.ok) {
       const json = await res.json();
       return { token: json.access_token };
@@ -66,7 +67,7 @@ const getFullUser: ApiHandler<GetFullUser> = async token => {
   try {
     // run all user requests in parallel
     const [response, userReports, userBookmarks] = await Promise.all([
-      fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
+      fetchWrapper(`${process.env.WF_AP_ROUTE}/users/me`, {
         method: 'GET',
         headers: {
           ...XMLHeaders,
@@ -147,7 +148,7 @@ const getUser: ApiHandler<GetUser> = async (token: string) => {
   try {
     // run all user requests in parallel
     const [response] = await Promise.all([
-      fetch(`${process.env.WF_AP_ROUTE}/users/me`, {
+      fetchWrapper(`${process.env.WF_AP_ROUTE}/users/me`, {
         method: 'GET',
         headers: {
           ...XMLHeaders,
@@ -240,7 +241,7 @@ const forgotPassword: ApiHandler<ForgotPassword> = async (email: string) => {
   }
 
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/password-recovery/${email}`,
       {
         method: 'POST',
@@ -292,21 +293,25 @@ const forgotPassword: ApiHandler<ForgotPassword> = async (email: string) => {
  */
 
 const getSSOToken = async (
-  token: string
+  token: string,
+  client: 'google' | 'microsoft'
 ): Promise<{ access_token?: string; ok?: boolean }> => {
   if (!token) {
     return { ok: false };
   }
 
-  const res = await fetch(`${process.env.WF_AP_ROUTE}/login/single-signon`, {
-    method: 'POST',
-    headers: {
-      ...XMLHeaders
-    },
-    body: new URLSearchParams({
-      sso_token: token
-    })
-  });
+  const res = await fetchWrapper(
+    `${process.env.WF_AP_ROUTE}/login/single-signon/${client}`,
+    {
+      method: 'POST',
+      headers: {
+        ...XMLHeaders
+      },
+      body: new URLSearchParams({
+        sso_token: token
+      })
+    }
+  );
 
   if (res.ok) {
     const { access_token } = await res.json();
@@ -347,13 +352,13 @@ const resetPassword: ApiHandler<ResetPassword, ResetPasswordProps> = async (
   }
 
   try {
-    const response = await fetch(`${process.env.WF_AP_ROUTE}/reset-password/`, {
-      method: 'POST',
-      headers: {
-        ...JSONHeaders
-      },
-      body: JSON.stringify({ token, new_password: newPassword })
-    });
+    const response = await fetchWrapper(
+      `${process.env.WF_AP_ROUTE}/reset-password/`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ token, new_password: newPassword })
+      }
+    );
     const result = await response.json();
     if (response.ok) {
       return { ...makeApiHandlerResponseSuccess(), msg: result.msg };
@@ -405,16 +410,13 @@ const updateUser: ApiHandler<UpdateUser, UpdateUserProps> = async (
   { user }
 ) => {
   try {
-    const params = {
+    const response = await fetchWrapper(`${process.env.WF_AP_ROUTE}/users/me`, {
       method: 'PUT',
       headers: {
-        ...JSONHeaders,
         Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(user)
-    };
-
-    const response = await fetch(`${process.env.WF_AP_ROUTE}/users/me`, params);
+    });
 
     if (response.ok) {
       const user: UserType = await response.json();
@@ -469,19 +471,18 @@ const getReportsHistory: ApiHandler<
   GetReportsHistory,
   GetReportsHistoryProps
 > = async (token: string, { limit = 10, skip = 0 }) => {
-  const params = {
-    method: 'GET',
-    headers: {
-      ...XMLHeaders,
-      Authorization: `Bearer ${token}`
-    }
-  };
   const limitAndSkipString = limit ? `?limit=${limit}&skip=${skip}` : '';
 
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/users/me/history/reports${limitAndSkipString}`,
-      params
+      {
+        method: 'GET',
+        headers: {
+          ...XMLHeaders,
+          Authorization: `Bearer ${token}`
+        }
+      }
     );
 
     if (response.ok) {
@@ -537,7 +538,7 @@ const bookmarkReport: ApiHandler<BookmarkReport, BookmarkReportProps> = async (
   { reportId, method = 'POST' }
 ) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/users/me/bookmarks/${reportId}`,
       {
         method,
@@ -591,7 +592,7 @@ const getUserBookmarks: ApiHandler<GetUserBookmarks> = async (
   token: string
 ) => {
   try {
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/users/me/bookmarks`,
       {
         method: 'GET',
@@ -657,18 +658,14 @@ const updatePassword: ApiHandler<UpdatePassword, UpdatePasswordProps> = async (
   { user }
 ) => {
   try {
-    const params = {
-      method: 'PUT',
-      headers: {
-        ...JSONHeaders,
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(user)
-    };
-
-    const response = await fetch(
+    const response = await fetchWrapper(
       `${process.env.WF_AP_ROUTE}/users/password`,
-      params
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
     );
 
     if (response.ok) {

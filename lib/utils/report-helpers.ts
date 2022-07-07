@@ -1,18 +1,24 @@
-/* eslint-disable security/detect-object-injection */
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable sonarjs/prefer-immediate-return */
 import {
   autoBatchUploadValidators,
   manualUploadValidators
 } from '../settings/report-validators';
+import * as Excel from 'xlsx';
 
 import type { UploadReportType } from '../../types/global';
 import type {
   CsvReport,
   CsvReportUploadHeaders,
   ESG_SectorKeys,
+  FileContentType,
   IndustrySectorCodes,
-  ReportUploadFinancialRequestBody
+  ReportHandlerReturn,
+  ReportUploadFinancialRequestBody,
+  ReportUploadRequestBody
 } from '../../types/report';
+import { getUniqueStringsFromArray } from './text-helpers';
+import { MAX_ROWS } from './file-helpers';
 
 // adds blank objects to the array to make it the same length as the other arrays
 export const addBlankObjects = (array: any[], lengthRequired: number) => {
@@ -30,19 +36,34 @@ export const makeUploadReportReqBody = (
   reportObject: CsvReport,
   csvValues: string[][],
   parent_id?: string
-) => {
+): ReportUploadRequestBody => {
   // setter functions
-  const setNumberValue = (key: CsvReportUploadHeaders, i: number) =>
-    Number(reportObject[key]?.[i] ?? 0);
+  const setNumberValue = (key: CsvReportUploadHeaders, i: number) => {
+    const number = Number(reportObject[key]?.[i] ?? 0);
+    if (isNaN(number)) {
+      // filter for non-numeric values
+      return Number(
+        reportObject[key]?.[i].replace(/(?!^-)[^\de+\-eE.]+/gi, '')
+      );
+    }
+    return number;
+  };
+  // remove all none number characters except a - sign at the start
 
-  const setStringValue = (key: CsvReportUploadHeaders, i: number) =>
-    reportObject[key]?.[i]?.toString() ?? '';
+  const setStringValue = (key: CsvReportUploadHeaders, i: number) => {
+    const string = reportObject[key]?.[i] ?? '';
+    if (string.toLowerCase() === 'null') {
+      return '';
+    }
+    return string;
+  };
 
   const financials: ReportUploadFinancialRequestBody[] = csvValues.map(
     (_, i) => {
       return {
         cash_and_equivalents: setNumberValue('cash_and_equivalents', i),
         creditors: setNumberValue('creditors', i),
+        company_age: setNumberValue('company_age', i) || null,
         current_assets: setNumberValue('current_assets', i),
         current_liabilities: setNumberValue('current_liabilities', i),
         debtors: setNumberValue('debtors', i),
@@ -55,10 +76,13 @@ export const makeUploadReportReqBody = (
         loans: setNumberValue('loans', i),
         long_term_debt: setNumberValue('long_term_debt', i),
         management_experience:
-          setStringValue('management_experience', i) || 'Medium',
+          setStringValue('management_experience', i) || null,
         net_income: setNumberValue('net_income', i),
         non_current_liabilities: setNumberValue('non_current_liabilities', i),
-        number_of_employees: setNumberValue('number_of_employees', i),
+        number_of_directors: setNumberValue('number_of_directors', i) || null,
+        number_of_subsidiaries:
+          setNumberValue('number_of_subsidiaries', i) || null,
+        number_of_employees: setNumberValue('number_of_employees', i) || null,
         other_non_current_liabilities: setNumberValue(
           'other_non_current_liabilities',
           i
@@ -76,6 +100,7 @@ export const makeUploadReportReqBody = (
     }
   );
   return {
+    parent_id: parent_id || null,
     // MAIN ========================
     iso_code: setStringValue('iso_code', 0),
     company_id: setStringValue('company_id', 0),
@@ -83,24 +108,18 @@ export const makeUploadReportReqBody = (
     // DETAILS =====================
     details: {
       name: setStringValue('details_name', 0),
-      nace_code: setNumberValue('details_nace_code', 0),
-      industry_sector_code: setNumberValue(
-        'details_industry_sector_code',
-        0
-      ) as IndustrySectorCodes,
-      number_of_directors: setNumberValue('details_number_of_directors', 0),
-      number_of_subsidiaries: setNumberValue(
-        'details_number_of_subsidiaries',
-        0
-      ),
-      // NOTE: req.body expects string[] but below will only set single value string[]
-      // TODO setArrayValue
-      website: setStringValue('details_website', 0)
+      nace_code: setNumberValue('details_nace_code', 0) || null,
+      industry_sector_code:
+        (setNumberValue(
+          'details_industry_sector_code',
+          0
+        ) as IndustrySectorCodes) || null,
+      website: setStringValue('details_website', 0),
+      company_type: setStringValue('details_company_type', 0) || null
     },
     // FINANCIALS ==================
     // multiple years per report are mapped here
-    financials,
-    parent_id: parent_id || null
+    financials
   };
 };
 
@@ -365,4 +384,194 @@ export const ESG_SECTORS: Record<ESG_SectorKeys, string> = {
   Wine_and_Spirits: 'Wine and spirits',
   Wireless: 'Wireless',
   Writing_and_Editing: 'Writing and editing'
+};
+
+export const handleExcel = (
+  file: Excel.Sheet | null,
+  fileName?: string
+): ReportHandlerReturn | null => {
+  if (file?.Sheets) {
+    const firstSheetName = file?.SheetNames?.[0];
+
+    if (!firstSheetName) return null;
+
+    const firstSheet = file?.Sheets[firstSheetName];
+
+    // pass headers: 1 to access the headers
+    // format returned is [[headers], [data], [data]] // similar to CSV
+    const firstSheetJson = Excel.utils.sheet_to_json(firstSheet, {
+      header: 1,
+      raw: false,
+      defval: '',
+      blankrows: false
+    }) as [Array<CsvReportUploadHeaders>, ...Array<string[]>];
+
+    // first row is headers
+    // eg [ "currency", "iso_code" ...]
+    const headers = firstSheetJson?.[0];
+
+    // eg [ [ "GBP", "1234" ], [ "GBP", "1234" ] ... ]
+    const data =
+      firstSheetJson?.slice(1, firstSheetJson.length) || ([] as string[]);
+
+    // Remove empty rows (the download csv process can sometimes add an empty row)
+    const filteredValues = data.filter(row => {
+      // if some cells are truthy || all cells are not empty
+      if (row.every((cell: string) => !cell)) {
+        return;
+      }
+      return row;
+    });
+
+    // create object from headers / values
+    const csvData =
+      data &&
+      headers?.reduce((acc, header: string, i) => {
+        // map csvValues to get the array of values for each header
+        const row = data.map(cell => cell[Number(i)].trim());
+
+        return {
+          ...acc,
+          [header]: row
+        };
+      }, {} as CsvReport);
+
+    if (!csvData) return null;
+
+    const isAutoOrManual = isBatchAutoOrManual(csvData);
+
+    let totalCompanies: string[] = [];
+
+    switch (isAutoOrManual.type) {
+      case 'BATCH_AUTO':
+        totalCompanies = getUniqueStringsFromArray(csvData?.company_id).filter(
+          Boolean
+        );
+        break;
+      case 'BATCH_MANUAL':
+        totalCompanies = getUniqueStringsFromArray(
+          csvData?.details_name
+        ).filter(Boolean);
+        break;
+    }
+
+    return {
+      data: csvData || [],
+      values: filteredValues,
+      fileName: fileName || '',
+      fileType: 'xlsx',
+      isCSV: false,
+      isExcel: true,
+      isAutoOrManual,
+      totalRows: data?.length || 0,
+      totalCompanies: totalCompanies?.length || 0
+    };
+  }
+  return null;
+};
+
+export const handleCSV = (
+  file: FileContentType,
+  fileName?: string
+): ReportHandlerReturn => {
+  // get headers & values as array from content
+  // convert csv content to string & remove carriage returns ('\r')
+  const csvString = file?.toString().replace(/[\r]/g, '');
+
+  // split out the rows from the csv string
+  const contentSplit = csvString?.split('\n');
+
+  const trailingCommaRegEx = new RegExp(/,\s*$/);
+  const doubleTrailingCommaRegEx = new RegExp(/,,\s*$/);
+
+  // when exporting from .xlsx, rows can sometimes have a single trailing comma
+  // in the header row, this throws the auto vs batch calulation later
+  // in data rows it can lead to issues. A double comma is indicative
+  // of an empty value, but a single comma implies the next column
+
+  const processCommas = (safe: string) => {
+    const hasTrailingComma = trailingCommaRegEx.test(safe);
+    const hasDoubleTrailingComma = doubleTrailingCommaRegEx.test(safe);
+
+    if (hasTrailingComma && !hasDoubleTrailingComma) {
+      safe = safe.replace(trailingCommaRegEx, '');
+    }
+
+    return safe;
+  };
+
+  // create a safe array
+  const safeContent = (Array.isArray(contentSplit) ? contentSplit : []).map(
+    processCommas
+  );
+
+  // get the first row of headers from the string
+  const csvHeaders = safeContent?.[0]?.split(',') || [];
+
+  // split the rows and then map over to split the cells
+  // but if comma is in between [] then ignore
+  const csvValues = Array.isArray(contentSplit)
+    ? contentSplit
+        ?.slice(
+          1,
+          // we can only process X many rows
+          contentSplit.length > MAX_ROWS ? MAX_ROWS : contentSplit.length
+        )
+        .map(value => {
+          return value.split(/(?=[^']),(?!')/g);
+        })
+    : [];
+
+  // Remove empty rows (the download csv process can sometimes add an empty row)
+  const filteredValues = csvValues.filter(row => {
+    // if some cells are truthy || all cells are not empty
+    if (row.every(cell => !cell)) {
+      return;
+    }
+    return row;
+  });
+
+  // create object from headers / values
+  const csvData =
+    csvValues &&
+    csvHeaders?.reduce((acc, header: string, i) => {
+      // map csvValues to get the array of values for each header
+      const row = filteredValues.map(cell => cell[Number(i)].trim());
+
+      return {
+        ...acc,
+        [header]: row
+      };
+    }, {} as CsvReport);
+
+  // handle excels bullshit
+  // const isCSV = csvFileTypes.includes(`${fileContent?.type}`) || false;
+  const isAutoOrManual = isBatchAutoOrManual(csvData);
+
+  let totalCompanies: string[] = [];
+
+  switch (isAutoOrManual.type) {
+    case 'BATCH_AUTO':
+      totalCompanies = getUniqueStringsFromArray(csvData?.company_id).filter(
+        Boolean
+      );
+      break;
+    case 'BATCH_MANUAL':
+      totalCompanies = getUniqueStringsFromArray(csvData?.details_name).filter(
+        Boolean
+      );
+      break;
+  }
+
+  return {
+    data: csvData,
+    values: filteredValues,
+    fileName: fileName || '',
+    fileType: 'csv',
+    isCSV: true,
+    isExcel: false,
+    isAutoOrManual,
+    totalRows: csvValues?.length || 0,
+    totalCompanies: totalCompanies?.length || 0
+  };
 };
