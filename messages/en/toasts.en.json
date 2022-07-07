@@ -399,6 +399,10 @@
     "REPORTS_500": {
       "title": "Reports fetching error",
       "description": "We couldn't fetch Reports. There was an unrecoverable backend error. Please try again later or contact support if this problem persists"
+    },
+    "REPORTS_504": {
+      "title": "Reports fetching error",
+      "description": "We couldn't fetch Reports. The request took too long to complete. Please try again later or contact support if this problem persists"
     }
   },
   "SEARCH_COMPANIES": {
