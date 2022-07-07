@@ -96,6 +96,8 @@ const ReportApi: NextApiHandler = async (
       // }
     },
     POST: async ({ body, authentication }) => {
+      /** Note to self: how do we differentiate, for the purpose of messages, between GET a report and POST report */
+      /** Both could have the same status and sourceType (eg REPORTS_404) but would need different messages */
       return {
         response: await fetchWrapper(`${process.env.WF_AP_ROUTE}/reports`, {
           method: 'POST',
