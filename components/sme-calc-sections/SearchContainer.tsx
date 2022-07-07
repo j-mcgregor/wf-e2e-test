@@ -181,6 +181,12 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         params
       );
 
+      // const createReportRes = await fetchMockData(
+      //   404,
+      //   'REPORTS',
+      //   'REPORTS_COMPANY_NOT_FOUND'
+      // )();
+
       if (createReportRes?.data?.id) {
         // update the global user state to get the new report
         mutate('/api/user');

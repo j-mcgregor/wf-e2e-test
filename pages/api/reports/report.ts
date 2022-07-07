@@ -106,7 +106,16 @@ const ReportApi: NextApiHandler = async (
           body: JSON.stringify(body)
         })
       };
-    }
+    },
+    customErrors: [
+      {
+        code: 'REPORTS_COMPANY_NOT_FOUND',
+        message: 'Company Not Found',
+        status: 404,
+        hasError: ({ req, res }) =>
+          req?.method === 'POST' && res?.status === 404
+      }
+    ]
   });
 };
 

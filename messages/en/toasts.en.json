@@ -376,6 +376,10 @@
       "title": "Something went wrong",
       "description": "Your {fileType} failed to download. Please check your network and try again. If the problem persists please get in touch."
     },
+    "REPORTS_COMPANY_NOT_FOUND": {
+      "title": "Company not found",
+      "description": "We could not find the company you were looking for. Please check the details entered. If the problem persists please contact support"
+    },
     "REPORTS_400": {
       "title": "Something went wrong when processing Reports",
       "description": "Please check the request and try again."
