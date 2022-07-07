@@ -1,13 +1,20 @@
 import React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useSWR from 'swr';
+import {
+  ApiHandlerResponse,
+  ErrorResponseType,
+  SuccessResponseType
+} from '../lib/api-handler/api-handler';
 
 import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 
 import {
   OrganisationFeaturesObject,
-  OrganisationType
+  OrganisationType,
+  OrganisationUser,
+  OrganisationUserReport
 } from '../types/organisations';
 
 // interface OrganisationHookObject {
@@ -26,28 +33,25 @@ const useOrganisation = (fetch = true) => {
 
   const orgId = user?.organisation_id || null;
 
-  const { data: organisationReportsRequest, mutate: mutateOrg } = useSWR(
-    fetch && orgId && `/api/organisation/${orgId}/total-reports`,
-    fetcher,
-    {
-      revalidateOnMount: true
-    }
-  );
-
-  const { data: orgDetails, isValidating } = useSWR<{
-    error: boolean;
-    data: OrganisationType;
-  }>(fetch && orgId && `/api/organisation/${orgId}`, fetcher, {
+  const { data: orgDetails, isValidating } = useSWR<
+    ApiHandlerResponse<OrganisationType>
+  >(fetch && orgId && `/api/organisation/${orgId}`, fetcher, {
     revalidateOnMount: true
   });
 
-  const { data: orgTotalUsersRequest, mutate: mutateUsers } = useSWR(
-    fetch && orgId && `/api/organisation/${orgId}/users?limit=1`,
-    fetcher,
-    {
-      revalidateOnMount: true
-    }
-  );
+  const { data: organisationReportsRequest, mutate: mutateOrg } = useSWR<
+    ApiHandlerResponse<{
+      totalOrganisationReports: number;
+    }>
+  >(fetch && orgId && `/api/organisation/${orgId}/total-reports`, fetcher, {
+    revalidateOnMount: true
+  });
+
+  const { data: orgTotalUsersRequest, mutate: mutateUsers } = useSWR<
+    ApiHandlerResponse<{ users: OrganisationUser[]; total: number }>
+  >(fetch && orgId && `/api/organisation/${orgId}/users?limit=1`, fetcher, {
+    revalidateOnMount: true
+  });
 
   const organisation = {
     name: user?.organisation_name,
@@ -74,9 +78,9 @@ const useOrganisation = (fetch = true) => {
   const isLoading = !orgTotalUsersRequest;
 
   const error = [
-    orgTotalUsersRequest?.error,
-    organisationReportsRequest?.error,
-    orgDetails?.error
+    orgTotalUsersRequest?.isError,
+    organisationReportsRequest?.isError,
+    orgDetails?.isError
   ].some(isError => isError);
 
   return {
