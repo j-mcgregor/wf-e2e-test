@@ -2,7 +2,7 @@
 import { BookmarkIcon } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactTimeago from 'react-timeago';
 import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
@@ -14,9 +14,12 @@ import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 import { createReportTitle } from '../lib/utils/text-helpers';
 import { ReportSnippetType } from '../types/global';
+import { useToast } from '../hooks/useToast';
+import { fetchMockData } from '../lib/mock-data/helpers';
 
 const Reports = () => {
   const { user } = useRecoilValue(appState);
+  const { triggerToast, getToastTextFromResponse } = useToast();
   const t = useTranslations();
   const bookmarkedReports = user?.bookmarked_reports;
 
@@ -24,7 +27,7 @@ const Reports = () => {
   const [skip, setSkip] = useState(0); // initial limit of 10 reports
   const limit = 10;
 
-  const { data, isValidating } = useSWR(
+  const { data: reportsRequest, isValidating } = useSWR(
     `/api/user/reports?limit=${limit}&skip=${skip}`,
     // fetchMockData(400, 'REPORTS'),
     fetcher,
@@ -32,6 +35,28 @@ const Reports = () => {
       revalidateOnFocus: false
     }
   );
+
+  useEffect(() => {
+    if (reportsRequest?.ok) {
+      const toastText = getToastTextFromResponse(reportsRequest);
+      toastText &&
+        triggerToast({
+          toastId: `REPORTS_FETCH_SUCCESS_${reportsRequest?.data?.id}`,
+          title: toastText.title,
+          description: toastText.description,
+          status: reportsRequest.status
+        });
+    } else if (reportsRequest && !reportsRequest?.ok) {
+      const toastText = getToastTextFromResponse(reportsRequest);
+      toastText &&
+        triggerToast({
+          toastId: `REPORTS_FETCH_ERROR_${reportsRequest?.data?.id}`,
+          title: toastText.title,
+          description: toastText.description,
+          status: reportsRequest.status
+        });
+    }
+  }, [reportsRequest]);
 
   const getReportName = (row: { company_name: string; created_at: string }) =>
     createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
@@ -124,7 +149,7 @@ const Reports = () => {
           <Table
             tableName={t('no_data_recent_reports')}
             headers={ReportTableHeaders}
-            data={data?.data?.reports || []}
+            data={reportsRequest?.data?.reports || []}
             isLoading={isValidating}
             limit={limit}
             total={user?.total_reports}

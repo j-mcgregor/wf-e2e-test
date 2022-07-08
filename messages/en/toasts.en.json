@@ -424,6 +424,10 @@
       "title": "Something went wrong",
       "description": "Your {fileType} failed to download. Please check your network and try again. If the problem persists please get in touch."
     },
+    "REPORTS_COMPANY_NOT_FOUND": {
+      "title": "Company not found",
+      "description": "We could not find the company you were looking for. Please check the details entered. If the problem persists please contact support"
+    },
     "REPORTS_400": {
       "title": "Something went wrong when processing Reports",
       "description": "Please check the request and try again."
@@ -451,6 +455,10 @@
     "REPORTS_500": {
       "title": "Reports fetching error",
       "description": "We couldn't fetch Reports. There was an unrecoverable backend error. Please try again later or contact support if this problem persists"
+    },
+    "REPORTS_504": {
+      "title": "Reports fetching error",
+      "description": "We couldn't fetch Reports. The request took too long to complete. Please try again later or contact support if this problem persists"
     }
   },
   "SEARCH_COMPANIES": {
@@ -536,7 +544,7 @@
   "USER_REPORTS": {
     "USER_REPORTS_200": {
       "title": "Successfully fetched User Reports",
-      "description": "Lorem ipsum User reports"
+      "description": "Your reports were successfully fetched."
     },
     "USER_REPORTS_400": {
       "title": "Something went wrong when processing USER_REPORTS",

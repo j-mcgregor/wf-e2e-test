@@ -9,6 +9,7 @@ import { useTranslations } from 'use-intl';
 
 import { useToast } from '../../hooks/useToast';
 import appState from '../../lib/appState';
+import { fetchMockData } from '../../lib/mock-data/helpers';
 import { accountTypes } from '../../lib/settings/report.settings';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import {
@@ -54,7 +55,6 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   };
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({ error: false, message: '' });
 
   const [regSearchValue, setRegSearchValue] = useState<string | null>();
 
@@ -198,6 +198,12 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         params
       );
 
+      // const createReportRes = await fetchMockData(
+      //   404,
+      //   'REPORTS',
+      //   'REPORTS_COMPANY_NOT_FOUND'
+      // )();
+
       if (createReportRes?.data?.id) {
         // update the global user state to get the new report
         mutate('/api/user');
@@ -262,10 +268,6 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
             closeButton: true
           });
 
-        setError({
-          error: createReportRes.is_error,
-          message: createReportRes.message
-        });
         setLoading(false);
       }
     } catch (err) {
@@ -323,18 +325,6 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
             selectedAccountType={selectedAccountType}
             handleSelectCurrency={handleSelectCurrency}
           />
-        )}
-
-        {(error.error || error.message) && (
-          <div className="py-4 px-2 border-2 rounded-md border-red-400 bg-red-50 my-2">
-            {error.error && (
-              <ErrorMessage
-                className="font-bold mt-2"
-                text={`${t('ERROR_TITLE')}`}
-              />
-            )}
-            {error.message && <ErrorMessage text={`${t(error.message)}`} />}
-          </div>
         )}
 
         <div className="flex sm:flex-row flex-col items-center my-6">
