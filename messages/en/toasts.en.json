@@ -108,7 +108,7 @@
     },
     "INVALID_CURRENCY": {
       "title": "Invalid currency",
-      "description": "Please ensure the currency is a correst ISO standard."
+      "description": "Please ensure the currency is a correct ISO standard."
     },
     "TYPE_NOT_FOUND": {
       "title": "Integration type not found",

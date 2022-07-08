@@ -36,7 +36,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
   const [canGenerateReport, setCanGenerateReport] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const t = useTranslations();
   const { triggerToast, getToastTextFromResponse } = useToast();
@@ -84,7 +83,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
   const handleSubmit = async () => {
     setLoading(true);
-    setError(null);
 
     // If there is a parentId, we need to include it in the request
     // If no ID we need to include the details from stage 4
@@ -109,20 +107,15 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       ...hasParentIdBody
     };
 
-    const res = await fetcher(
-      `/api/integrations/codat/codat`,
-      'POST',
-      { body },
-      {
-        'Content-Type': 'application/json'
-      }
-    );
+    const res = await fetcher(`/api/integrations/codat/codat`, 'POST', body, {
+      'Content-Type': 'application/json'
+    });
 
     // USE FOR TESTING TOASTS
     // const res = await fetchMockData(
-    //   400,
+    //   422,
     //   'INTEGRATIONS_CODAT',
-    //   'INTEGRATIONS_CODAT_401'
+    //   'INTEGRATIONS_CODAT_422'
     // )();
 
     if (res.ok) {
@@ -144,7 +137,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       router.push(`/report/${res?.data.id}?from=/report/integrations/`);
     } else {
       setLoading(false);
-      setError(res.code);
 
       const toastText = getToastTextFromResponse(res);
 
@@ -239,7 +231,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
               Generate New Report
             </Button>
           </div>
-          {error && <p className="text-red-500">{t(error)}</p>}
         </div>
       </div>
     </Layout>
