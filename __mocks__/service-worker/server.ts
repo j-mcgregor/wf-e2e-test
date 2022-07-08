@@ -10,7 +10,7 @@ export const mockServerGet = (url: string, status: number, response: any) => {
       return res(ctx.delay(500), ctx.status(status), ctx.json(response));
     })
   );
-}
+};
 
 export const mockServerPost = (url: string, status: number, response: any) => {
   server.use(
@@ -18,4 +18,4 @@ export const mockServerPost = (url: string, status: number, response: any) => {
       return res(ctx.status(status), ctx.json(response));
     })
   );
-}
+};

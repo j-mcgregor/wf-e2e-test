@@ -24,6 +24,7 @@ const CodatStageOne: React.FC<ICodatStageOneProps> = ({
       className={`${
         loading ? disabledClassName : enabledClassName
       } flex flex-col gap-6`}
+      data-testid="codat-stage-1"
     >
       <h1 className="text-3xl font-semibold">{t('integration_stage_1')}</h1>
       <p>{t('integration_stage_1_description')}</p>
@@ -31,6 +32,7 @@ const CodatStageOne: React.FC<ICodatStageOneProps> = ({
         <button
           type="button"
           onClick={() => setStage(2)}
+          disabled={loading}
           className={`${
             stage > 1 && !loading
               ? 'border-2 border-highlight-2 shadow-inner hover:shadow-none'

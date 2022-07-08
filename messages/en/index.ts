@@ -6,7 +6,11 @@ import forgottenPassword from './forgotten-password.en.json';
 import general from './general.en.json';
 import hints from './hints.en.json';
 import index from './index.en.json';
+import industries from './industries.en.json';
+import integrations from './integrations.en.json';
 import login from './login.en.json';
+import logout from './logout.en.json';
+import organisation from './organisation.en.json';
 import passwordManagement from './password-management.en.json';
 import report from './report.en.json';
 import reports from './reports.en.json';
@@ -29,7 +33,10 @@ export default {
   ...general,
   ...hints,
   ...index,
+  ...industries,
+  ...integrations,
   ...login,
+  ...logout,
   ...passwordManagement,
   ...report,
   ...reports,
@@ -38,5 +45,6 @@ export default {
   ...smeCalculator,
   ...smeProspector,
   ...toasts,
-  ...uploadData
+  ...uploadData,
+  ...organisation
 };
