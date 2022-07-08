@@ -117,10 +117,10 @@ type HandlerArgumentsType = {
 
 export type SuccessResponseType<T = any> = {
   ok: boolean;
-  error: boolean;
+  isError: boolean;
   sourceType?: string;
   blob?: Promise<Blob> | null;
-  data: T | object | null;
+  data: T | null;
 };
 
 export type ErrorResponseType = MakeErrorOutput;

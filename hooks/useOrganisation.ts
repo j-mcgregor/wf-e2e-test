@@ -1,13 +1,20 @@
 import React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useSWR from 'swr';
+import {
+  ApiHandlerResponse,
+  ErrorResponseType,
+  SuccessResponseType
+} from '../lib/api-handler/api-handler';
 
 import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 
 import {
   OrganisationFeaturesObject,
-  OrganisationType
+  OrganisationType,
+  OrganisationUser,
+  OrganisationUserReport
 } from '../types/organisations';
 
 // interface OrganisationHookObject {
@@ -26,34 +33,34 @@ const useOrganisation = (fetch = true) => {
 
   const orgId = user?.organisation_id || null;
 
-  const { data: reports, mutate: mutateOrg } = useSWR(
-    fetch && orgId && `/api/organisation/${orgId}/total-reports`,
-    fetcher,
-    {
-      revalidateOnMount: true
-    }
-  );
-
-  const { data: orgDetails, isValidating } = useSWR<{
-    data: { organisation: OrganisationType };
-  }>(fetch && orgId && `/api/organisation/${orgId}`, fetcher, {
+  const { data: orgDetails, isValidating } = useSWR<
+    ApiHandlerResponse<OrganisationType>
+  >(fetch && orgId && `/api/organisation/${orgId}`, fetcher, {
     revalidateOnMount: true
   });
 
-  const { data, mutate: mutateUsers } = useSWR(
-    fetch && orgId && `/api/organisation/${orgId}/users?limit=1`,
-    fetcher,
-    {
-      revalidateOnMount: true
-    }
-  );
+  const { data: organisationReportsRequest, mutate: mutateOrg } = useSWR<
+    ApiHandlerResponse<{
+      totalOrganisationReports: number;
+    }>
+  >(fetch && orgId && `/api/organisation/${orgId}/total-reports`, fetcher, {
+    revalidateOnMount: true
+  });
+
+  const { data: orgTotalUsersRequest, mutate: mutateUsers } = useSWR<
+    ApiHandlerResponse<{ users: OrganisationUser[]; total: number }>
+  >(fetch && orgId && `/api/organisation/${orgId}/users?limit=1`, fetcher, {
+    revalidateOnMount: true
+  });
 
   const organisation = {
     name: user?.organisation_name,
     id: user?.organisation_id,
-    totalUsers: (data && data?.data?.total) || 0,
-    totalOrganisationReports: reports?.data?.totalOrganisationReports,
-    ...(orgDetails && orgDetails?.data?.organisation)
+    totalUsers:
+      (orgTotalUsersRequest && orgTotalUsersRequest?.data?.total) || 0,
+    totalOrganisationReports:
+      organisationReportsRequest?.data?.totalOrganisationReports,
+    ...(orgDetails && orgDetails?.data)
   };
 
   const features: OrganisationFeaturesObject =
@@ -63,12 +70,18 @@ const useOrganisation = (fetch = true) => {
     }, {} as OrganisationFeaturesObject) || {};
 
   React.useEffect(() => {
-    if (orgDetails?.data.organisation?.id && !isValidating) {
+    if (orgDetails?.data?.id && !isValidating) {
       setState({ user, organisation });
     }
-  }, [data, orgDetails]);
+  }, [orgTotalUsersRequest, orgDetails]);
 
-  const isLoading = !data;
+  const isLoading = !orgTotalUsersRequest;
+
+  const error = [
+    orgTotalUsersRequest?.isError,
+    organisationReportsRequest?.isError,
+    orgDetails?.isError
+  ].some(isError => isError);
 
   return {
     organisation,
@@ -76,8 +89,8 @@ const useOrganisation = (fetch = true) => {
     mutateOrg,
     mutateUsers,
     loading: isLoading,
-    error: data?.isError,
-    message: data?.message
+    error: orgDetails?.isError,
+    message: orgDetails?.message
   };
 };
 
