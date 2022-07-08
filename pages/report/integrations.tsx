@@ -12,9 +12,9 @@ import CodatStageTwo from '../../components/forms/integrations/codat/CodatStageT
 import Layout from '../../components/layout/Layout';
 import SkeletonLayout from '../../components/skeletons/SkeletonLayout';
 import { CodatCompanyType } from '../../types/report';
-import { useToast } from '../../hooks/useToast';
 import fetcher from '../../lib/utils/fetcher';
 import { fetchMockData } from '../../lib/mock-data/helpers';
+import { useToast } from '../../hooks/useToast';
 
 interface ReportIntegrationsPageProps {
   locale: string;
@@ -113,9 +113,9 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
     // USE FOR TESTING TOASTS
     // const res = await fetchMockData(
-    //   422,
+    //   500,
     //   'INTEGRATIONS_CODAT',
-    //   'INTEGRATIONS_CODAT_422'
+    //   'INTEGRATIONS_CODAT_500'
     // )();
 
     if (res.ok) {
@@ -225,7 +225,7 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
               variant="highlight"
               className="max-w-xs"
               onClick={() => handleSubmit()}
-              disabled={!canGenerateReport}
+              disabled={!canGenerateReport || loading}
               loading={loading}
             >
               Generate New Report
