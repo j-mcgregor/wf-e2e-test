@@ -154,7 +154,9 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
 
     toastId.current = toast(
       <ToastBody
-        title={t('REPORTS.GENERATING_REPORT.title')}
+        title={t.rich('REPORTS.GENERATING_REPORT.title', {
+          company: selectedCompany?.title || 'company'
+        })}
         description={t('REPORTS.GENERATING_REPORT.description')}
       />,
       {
