@@ -16,10 +16,10 @@ import { createReportTitle } from '../lib/utils/text-helpers';
 import { ReportSnippetType } from '../types/global';
 import { useToast } from '../hooks/useToast';
 import { fetchMockData } from '../lib/mock-data/helpers';
+import useSWRWithToasts from '../hooks/useSWRWithToasts';
 
 const Reports = () => {
   const { user } = useRecoilValue(appState);
-  const { triggerToast, getToastTextFromResponse } = useToast();
   const t = useTranslations();
   const bookmarkedReports = user?.bookmarked_reports;
 
@@ -27,36 +27,16 @@ const Reports = () => {
   const [skip, setSkip] = useState(0); // initial limit of 10 reports
   const limit = 10;
 
-  const { data: reportsRequest, isValidating } = useSWR(
+  const { data: reportsRequest, isValidating } = useSWRWithToasts<{
+    reports: ReportSnippetType[];
+  }>(
     `/api/user/reports?limit=${limit}&skip=${skip}`,
-    // fetchMockData(400, 'REPORTS'),
+    // fetchMockData(403, 'REPORTS'),
     fetcher,
     {
       revalidateOnFocus: false
     }
   );
-
-  useEffect(() => {
-    if (reportsRequest?.ok) {
-      const toastText = getToastTextFromResponse(reportsRequest);
-      toastText &&
-        triggerToast({
-          toastId: `REPORTS_FETCH_SUCCESS_${reportsRequest?.data?.id}`,
-          title: toastText.title,
-          description: toastText.description,
-          status: reportsRequest.status
-        });
-    } else if (reportsRequest && !reportsRequest?.ok) {
-      const toastText = getToastTextFromResponse(reportsRequest);
-      toastText &&
-        triggerToast({
-          toastId: `REPORTS_FETCH_ERROR_${reportsRequest?.data?.id}`,
-          title: toastText.title,
-          description: toastText.description,
-          status: reportsRequest.status
-        });
-    }
-  }, [reportsRequest]);
 
   const getReportName = (row: { company_name: string; created_at: string }) =>
     createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
