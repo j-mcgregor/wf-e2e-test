@@ -205,25 +205,33 @@ export const useToast = (defaultToastOptions?: ToastOptions) => {
   const handleDownload = ({
     href,
     title,
-    description
+    description,
+    toastId
   }: {
     href: string;
     title: RichTranslation;
     description: RichTranslation;
+    toastId?: RichTranslation;
   }) => {
-    toast.promise(() => makeLink(href), {
-      pending: 'Download started',
-      success: {
-        render: <ToastLayout title={title} description={description} />,
-        type: 'info',
-        icon: toastStyle.info.icon
+    toast.promise(
+      () => makeLink(href),
+      {
+        pending: 'Download started',
+        success: {
+          render: <ToastLayout title={title} description={description} />,
+          type: 'info',
+          icon: toastStyle.info.icon
+        },
+        error: {
+          render: <ToastLayout title={title} description={description} />,
+          type: 'error',
+          icon: toastStyle.error.icon
+        }
       },
-      error: {
-        render: <ToastLayout title={title} description={description} />,
-        type: 'error',
-        icon: toastStyle.error.icon
+      {
+        toastId: toastId?.toString()
       }
-    });
+    );
   };
 
   return { triggerToast, getToastTextFromResponse, handleDownload, toastStyle };
