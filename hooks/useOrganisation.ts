@@ -34,36 +34,55 @@ const useOrganisation = (fetch = true) => {
 
   const orgId = user?.organisation_id || null;
 
-  const { data: orgDetails, isValidating } = useSWRWithToasts<OrganisationType>(
-    fetch && orgId && `/api/organisation/${orgId}`,
-    fetcher,
-    {
-      revalidateOnMount: true
-    }
-  );
+  const { data: orgDetailsRequest, isValidating: orgDetailsRequestValidating } =
+    useSWRWithToasts<OrganisationType>(
+      fetch && orgId && `/api/organisation/${orgId}`,
+      fetcher,
+      {
+        revalidateOnMount: true
+      }
+    );
 
-  const { data: organisationReportsRequest, mutate: mutateOrg } =
-    useSWRWithToasts<{
-      totalOrganisationReports: number;
-    }>(fetch && orgId && `/api/organisation/${orgId}/total-reports`, fetcher, {
-      revalidateOnMount: true
-    });
+  const {
+    data: orgReportsRequest,
+    isValidating: orgReportsRequestValidating,
+    mutate: mutateOrg
+  } = useSWRWithToasts<{
+    totalOrganisationReports: number;
+  }>(fetch && orgId && `/api/organisation/${orgId}/total-reports`, fetcher, {
+    revalidateOnMount: true
+  });
 
-  const { data: orgTotalUsersRequest, mutate: mutateUsers } = useSWRWithToasts<{
+  const {
+    data: orgTotalUsersRequest,
+    isValidating: orgTotalUsersRequestValidating,
+    mutate: mutateUsers
+  } = useSWRWithToasts<{
     users: OrganisationUser[];
     total: number;
   }>(fetch && orgId && `/api/organisation/${orgId}/users?limit=1`, fetcher, {
     revalidateOnMount: true
   });
 
+  const orgDetailsRequestLoading =
+    !orgDetailsRequest && orgDetailsRequestValidating;
+  const orgReportsRequestLoading =
+    !orgReportsRequest && orgReportsRequestValidating;
+  const orgTotalUsersRequestLoading =
+    !orgTotalUsersRequest && orgTotalUsersRequestValidating;
+
+  const isLoading =
+    orgDetailsRequestLoading ||
+    orgReportsRequestLoading ||
+    orgTotalUsersRequestLoading;
+
   const organisation = {
     name: user?.organisation_name,
     id: user?.organisation_id,
     totalUsers:
       (orgTotalUsersRequest && orgTotalUsersRequest?.data?.total) || 0,
-    totalOrganisationReports:
-      organisationReportsRequest?.data?.totalOrganisationReports,
-    ...(orgDetails && orgDetails?.data)
+    totalOrganisationReports: orgReportsRequest?.data?.totalOrganisationReports,
+    ...(orgDetailsRequest && orgDetailsRequest?.data)
   };
 
   const features: OrganisationFeaturesObject =
@@ -73,18 +92,10 @@ const useOrganisation = (fetch = true) => {
     }, {} as OrganisationFeaturesObject) || {};
 
   React.useEffect(() => {
-    if (orgDetails?.data?.id && !isValidating) {
+    if (orgDetailsRequest?.data?.id && !orgDetailsRequestLoading) {
       setState({ user, organisation });
     }
-  }, [orgTotalUsersRequest, orgDetails]);
-
-  const isLoading = !orgTotalUsersRequest;
-
-  const error = [
-    orgTotalUsersRequest?.isError,
-    organisationReportsRequest?.isError,
-    orgDetails?.isError
-  ].some(isError => isError);
+  }, [orgTotalUsersRequest, orgDetailsRequest]);
 
   return {
     organisation,
@@ -92,8 +103,8 @@ const useOrganisation = (fetch = true) => {
     mutateOrg,
     mutateUsers,
     loading: isLoading,
-    error: orgDetails?.isError,
-    message: orgDetails?.message
+    error: orgDetailsRequest?.isError,
+    message: orgDetailsRequest?.message
   };
 };
 
