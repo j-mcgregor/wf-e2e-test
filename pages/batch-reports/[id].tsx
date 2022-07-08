@@ -14,6 +14,7 @@ import ErrorSkeleton from '../../components/skeletons/ErrorSkeleton';
 import SkeletonReport from '../../components/skeletons/SkeletonReport';
 import LoadingIcon from '../../components/svgs/LoadingIcon';
 import Table, { TableHeadersType } from '../../components/table/Table';
+import useSWRWithToasts from '../../hooks/useSWRWithToasts';
 import {
   GetBatchReportCsvFull,
   getBatchReportsCsv
@@ -23,10 +24,8 @@ import fetcher from '../../lib/utils/fetcher';
 import { downloadFile } from '../../lib/utils/file-helpers';
 import { createReportTitle } from '../../lib/utils/text-helpers';
 
-import type {
-  BatchJobGetByIdResponse,
-  GetBatchSummary
-} from '../../types/batch-reports';
+import type { GetBatchSummary } from '../../types/batch-reports';
+
 const BatchReport = () => {
   const { data: session } = useSession();
   const t = useTranslations();
@@ -39,16 +38,17 @@ const BatchReport = () => {
 
   const { id = '' } = router.query;
 
-  const { data, error } = useSWR(
+  const { data: batchReportRequest, error } = useSWRWithToasts<GetBatchSummary>(
     `/api/batch-reports/${id}?skip=${skip}limit=${limit}`,
-    fetcher
+    fetcher,
+    {}
   );
 
   useEffect(() => {
-    if (data?.data) {
-      setBatchReport(data.data);
+    if (batchReportRequest?.data) {
+      setBatchReport(batchReportRequest.data);
     }
-  }, [data]);
+  }, [batchReportRequest]);
 
   const getReportName = (row: { company_name: string; created_at: string }) =>
     createReportTitle(row.company_name || t('unnamed_company'), row.created_at);
@@ -122,11 +122,11 @@ const BatchReport = () => {
     <Layout title="Batched Report">
       {!batchReport ? (
         <SkeletonReport />
-      ) : error || data?.is_error ? (
+      ) : error || batchReportRequest?.isError ? (
         <ErrorSkeleton
           header={`${t(REPORT_FETCHING_ERROR)}`}
           message={error.message}
-          code={data?.status}
+          code={batchReportRequest?.status}
         />
       ) : (
         <div className="text-primary">

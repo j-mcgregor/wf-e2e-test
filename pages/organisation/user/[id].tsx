@@ -12,9 +12,11 @@ import Layout from '../../../components/layout/Layout';
 import LoadingIcon from '../../../components/svgs/LoadingIcon';
 import Table, { TableHeadersType } from '../../../components/table/Table';
 import useOrganisation from '../../../hooks/useOrganisation';
+import useSWRWithToasts from '../../../hooks/useSWRWithToasts';
 import { useToast } from '../../../hooks/useToast';
 import fetcher from '../../../lib/utils/fetcher';
 import { createReportTitle } from '../../../lib/utils/text-helpers';
+import { ReportSnippetType } from '../../../types/global';
 import {
   OrganisationUser,
   OrganisationUserReport
@@ -91,7 +93,7 @@ const OrganisationUserPage = () => {
     data: userReports,
     isValidating,
     mutate
-  } = useSWR(
+  } = useSWRWithToasts<OrganisationUserReport[]>(
     `/api/organisation/${organisation?.id}/user-reports?userId=${id}&skip=${skip}&limit=${limit}`,
     fetcher,
     {
@@ -161,24 +163,26 @@ const OrganisationUserPage = () => {
   };
 
   const toggleAdminUser = () => {
-    const optimisticData = organisationUser?.data &&
-      user && {
-        ...organisationUser?.data,
-        user: { ...user, organisation_role: isAdmin ? 'User' : 'Admin' }
-      };
+    const optimisticData = {
+      data: organisationUser?.data &&
+        user && {
+          ...organisationUser?.data,
+          user: { ...user, organisation_role: isAdmin ? 'User' : 'Admin' }
+        }
+    };
     return userMutate(
       updateUserFn({ organisation_role: isAdmin ? 'User' : 'Admin' }),
       { optimisticData, rollbackOnError: true }
     ).then(res => {
       const role =
-        res.data?.organisation_role === 'Admin'
+        res?.data?.organisation_role === 'Admin'
           ? 'an admin'
-          : res.data?.organisation_role === 'User'
+          : res?.data?.organisation_role === 'User'
           ? 'a user'
           : '';
 
       triggerToast({
-        toastId: `TOGGLE_USER_${res.data?.organisation_role}`,
+        toastId: `TOGGLE_USER_${res?.data?.organisation_role}`,
         title: t(`${res?.sourceType}.${res?.code}.title`),
         description: t(`${res?.sourceType}.${res?.code}.description`, {
           user: res?.data?.full_name,
