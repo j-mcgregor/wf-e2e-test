@@ -207,6 +207,8 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
       if (createReportRes?.data?.id) {
         // update the global user state to get the new report
         mutate('/api/user');
+        mutate('/api/reports');
+        mutate('/api/user/reports');
 
         toast.update(toastId.current, {
           render: (
@@ -227,9 +229,10 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
           closeButton: true,
           autoClose: 7000
         });
-
         // redirect to the report page
-        router.push(`/report/${createReportRes.data?.id}`);
+        if (window?.location?.pathname === '/sme-calculator') {
+          router.push(`/report/${createReportRes.data?.id}`);
+        }
       }
 
       if (!createReportRes?.data?.id) {
