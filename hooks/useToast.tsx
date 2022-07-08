@@ -12,7 +12,7 @@ import { toast, ToastOptions } from 'react-toastify';
 import LoadingIcon from '../components/svgs/LoadingIcon';
 
 import { ToastBody, ToastLayout } from '../components/toast/Toast';
-import { SourceTypes } from '../lib/api-handler/api-handler';
+import { ErrorCodeType, SourceTypes } from '../lib/api-handler/api-handler';
 import { SourceErrors, ToastData } from '../lib/errors/error-messages';
 import { getToastType } from '../lib/utils/toast-helpers';
 import defaultErrorsJSON from '../messages/en/errors-default.en.json';
@@ -33,6 +33,12 @@ export interface ToastAction {
 export const defaultErrors: Record<string, ToastData> = defaultErrorsJSON;
 
 export const toastMessages: SourceErrors = toastsJSON;
+
+export interface ToastTextFromResponseProps {
+  code: string;
+  sourceType: SourceTypes;
+  status: number;
+}
 
 export interface TriggerToast {
   toastId?: string;
@@ -65,11 +71,7 @@ export const useToast = (defaultToastOptions?: ToastOptions) => {
     sourceType,
     code,
     status
-  }: {
-    code: string;
-    sourceType: SourceTypes;
-    status: number;
-  }) => {
+  }: ToastTextFromResponseProps) => {
     // check if custom [sourceType][code] exists
     if (toastMessages?.[sourceType]?.[code]) {
       const tTitle = t(`${sourceType}.${code}.title`);

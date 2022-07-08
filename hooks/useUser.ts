@@ -2,10 +2,10 @@
 import { useSession } from 'next-auth/react';
 import React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import useSWR from 'swr';
-import appState from '../lib/appState';
+import appState, { UserReports } from '../lib/appState';
 import { fetchMockData } from '../lib/mock-data/helpers';
 import fetcher from '../lib/utils/fetcher';
+import { ReportSnippetType, UserType } from '../types/global';
 import useSWRWithToasts from './useSWRWithToasts';
 
 const useUser = (fetch: boolean = true) => {
@@ -15,7 +15,9 @@ const useUser = (fetch: boolean = true) => {
   const { data: sessionUser } = useSession();
 
   // if no user then revalidate onMount to prevent blank page
-  const { data: userRequest, isValidating } = useSWRWithToasts(
+  const { data: userRequest, isValidating } = useSWRWithToasts<{
+    user: UserType;
+  }>(
     fetch && '/api/user',
     fetcher,
     // fetchMockData(403, 'USER', 'USER_403'),
@@ -26,7 +28,7 @@ const useUser = (fetch: boolean = true) => {
   );
 
   const { data: reportRequest, isValidating: isValidatingReports } =
-    useSWRWithToasts(
+    useSWRWithToasts<{ reports: UserReports; total: number }>(
       fetch && '/api/user/reports',
       fetcher,
       // fetchMockData(500, 'USER_REPORTS', 'USER_REPORTS_500'),
@@ -37,10 +39,14 @@ const useUser = (fetch: boolean = true) => {
     );
 
   const { data: bookmarksRequest, isValidating: isValidatingBookmarks } =
-    useSWRWithToasts(fetch && '/api/user/bookmarks', fetcher, {
-      revalidateOnMount: !user?.id,
-      revalidateOnFocus: false
-    });
+    useSWRWithToasts<ReportSnippetType[]>(
+      fetch && '/api/user/bookmarks',
+      fetcher,
+      {
+        revalidateOnMount: !user?.id,
+        revalidateOnFocus: false
+      }
+    );
 
   // handling the loading states
   const isLoadingUser = !userRequest && isValidating;

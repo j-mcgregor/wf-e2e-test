@@ -68,7 +68,7 @@ const ApiFetcher = async <T = any>(
     return {
       ok: false,
       data: null,
-      error: true,
+      isError: true,
       message: error
     } as ApiHandlerResponse;
   }

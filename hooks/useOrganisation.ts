@@ -16,6 +16,7 @@ import {
   OrganisationUser,
   OrganisationUserReport
 } from '../types/organisations';
+import useSWRWithToasts from './useSWRWithToasts';
 
 // interface OrganisationHookObject {
 //   name?: string;
@@ -33,23 +34,25 @@ const useOrganisation = (fetch = true) => {
 
   const orgId = user?.organisation_id || null;
 
-  const { data: orgDetails, isValidating } = useSWR<
-    ApiHandlerResponse<OrganisationType>
-  >(fetch && orgId && `/api/organisation/${orgId}`, fetcher, {
-    revalidateOnMount: true
-  });
+  const { data: orgDetails, isValidating } = useSWRWithToasts<OrganisationType>(
+    fetch && orgId && `/api/organisation/${orgId}`,
+    fetcher,
+    {
+      revalidateOnMount: true
+    }
+  );
 
-  const { data: organisationReportsRequest, mutate: mutateOrg } = useSWR<
-    ApiHandlerResponse<{
+  const { data: organisationReportsRequest, mutate: mutateOrg } =
+    useSWRWithToasts<{
       totalOrganisationReports: number;
-    }>
-  >(fetch && orgId && `/api/organisation/${orgId}/total-reports`, fetcher, {
-    revalidateOnMount: true
-  });
+    }>(fetch && orgId && `/api/organisation/${orgId}/total-reports`, fetcher, {
+      revalidateOnMount: true
+    });
 
-  const { data: orgTotalUsersRequest, mutate: mutateUsers } = useSWR<
-    ApiHandlerResponse<{ users: OrganisationUser[]; total: number }>
-  >(fetch && orgId && `/api/organisation/${orgId}/users?limit=1`, fetcher, {
+  const { data: orgTotalUsersRequest, mutate: mutateUsers } = useSWRWithToasts<{
+    users: OrganisationUser[];
+    total: number;
+  }>(fetch && orgId && `/api/organisation/${orgId}/users?limit=1`, fetcher, {
     revalidateOnMount: true
   });
 

@@ -189,7 +189,7 @@ const makeSuccessObject = <T>(successResponse: {
 }): SuccessResponseType<T> => {
   return {
     ok: true,
-    error: false,
+    isError: false,
     ...successResponse
   };
 };
