@@ -92,7 +92,9 @@ const PersonalInformationForm = ({
         triggerToast({
           title: t(`USER.USER_UPDATED.title`),
           description: t(`USER.USER_UPDATED.description`, {
-            section: t('personal_information')
+            section: `${t('personal_information').toLowerCase()} ${t(
+              'details'
+            )}`
           }),
           status: json.status
         });

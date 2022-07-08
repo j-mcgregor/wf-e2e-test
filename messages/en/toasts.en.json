@@ -577,8 +577,8 @@
   },
   "USER": {
     "USER_UPDATED": {
-      "title": "Settings updated!",
-      "description": "{section} updated successfully."
+      "title": "Settings saved",
+      "description": "Your {section} were updated successfully."
     },
     "USER_400": {
       "title": "Password validation error",

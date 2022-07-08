@@ -74,7 +74,9 @@ const CommunicationForm = () => {
         triggerToast({
           title: t(`USER.USER_UPDATED.title`),
           description: t(`USER.USER_UPDATED.description`, {
-            section: t('communication')
+            section: `${t('communication').toLowerCase()}  ${t(
+              'preferences'
+            ).toLowerCase()}`
           }),
           status: json.status
         });
