@@ -2,7 +2,7 @@
 import { BookmarkIcon } from '@heroicons/react/outline';
 import { GetStaticPropsContext } from 'next';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactTimeago from 'react-timeago';
 import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
@@ -14,7 +14,9 @@ import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
 import { createReportTitle } from '../lib/utils/text-helpers';
 import { ReportSnippetType } from '../types/global';
-import { UserReportsApi } from './api/user/reports';
+import { useToast } from '../hooks/useToast';
+import { fetchMockData } from '../lib/mock-data/helpers';
+import useSWRWithToasts from '../hooks/useSWRWithToasts';
 
 const Reports = () => {
   const { user } = useRecoilValue(appState);
@@ -25,8 +27,11 @@ const Reports = () => {
   const [skip, setSkip] = useState(0); // initial limit of 10 reports
   const limit = 10;
 
-  const { data, isValidating } = useSWR<UserReportsApi>(
+  const { data: reportsRequest, isValidating } = useSWRWithToasts<{
+    reports: ReportSnippetType[];
+  }>(
     `/api/user/reports?limit=${limit}&skip=${skip}`,
+    // fetchMockData(403, 'REPORTS'),
     fetcher,
     {
       revalidateOnFocus: false
@@ -124,7 +129,7 @@ const Reports = () => {
           <Table
             tableName={t('no_data_recent_reports')}
             headers={ReportTableHeaders}
-            data={data?.reports || []}
+            data={reportsRequest?.data?.reports || []}
             isLoading={isValidating}
             limit={limit}
             total={user?.total_reports}
@@ -150,7 +155,9 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // the desired one based on the `locale` received from Next.js.
         ...require(`../messages/${locale}/reports.${locale}.json`),
         ...require(`../messages/${locale}/general.${locale}.json`),
-        ...require(`../messages/${locale}/errors.${locale}.json`)
+        ...require(`../messages/${locale}/errors.${locale}.json`),
+        ...require(`../messages/${locale}/errors-default.${locale}.json`),
+        ...require(`../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };

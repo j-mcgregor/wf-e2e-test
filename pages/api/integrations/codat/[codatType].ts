@@ -11,7 +11,7 @@ const CodatIntegrationsAPI = (
 ) => {
   APIHandler(request, response, {
     config: {
-      sourceType: 'INTEGRATIONS',
+      sourceType: 'INTEGRATIONS_CODAT',
       authenticate: authenticators.NextAuth
     },
     GET: async ({ query, authentication }) => {
@@ -78,7 +78,7 @@ const CodatIntegrationsAPI = (
         ]
           .map(param => {
             const [key, value] = param;
-            if (value !== null) {
+            if (value !== null && value !== undefined && value !== '') {
               return `${key}=${value}`;
             }
           })
@@ -106,19 +106,19 @@ const CodatIntegrationsAPI = (
     customErrors: [
       {
         status: 406,
-        code: 'NOTHING_TO_SYNCHRONISE',
+        code: 'INTEGRATIONS_CODAT_406',
         message: 'Cannot find any company to synchronise.',
         hasError: ({ res }) => res?.status === 406
       },
       {
         status: 404,
-        code: 'COUNTRY_CODE_NOT_FOUND',
+        code: 'INTEGRATIONS_CODAT_404',
         message: 'Country code of the company found in Codat is not supported.',
         hasError: ({ res }) => res?.status === 404
       },
       {
         status: 422,
-        code: 'INVALID_CURRENCY',
+        code: 'INTEGRATIONS_CODAT_422',
         message: 'Invalid currency.',
         hasError: ({ res }) => res?.status === 422
       }

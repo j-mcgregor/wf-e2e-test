@@ -58,7 +58,7 @@ const ResetPasswordForm = ({ token, isValid }: FormProps) => {
       });
       const body = await res.json();
 
-      if (body.is_error) {
+      if (body.isError) {
         if (body.error === 'Invalid token') {
           return setSubmitError({ type: 'INVALID_TOKEN' });
         }

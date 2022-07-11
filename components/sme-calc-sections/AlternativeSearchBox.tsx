@@ -66,8 +66,8 @@ const AlternativeSearchBox = ({
   );
 
   useEffect(() => {
-    if (data?.error) {
-      Sentry.captureException(new Error(data.error), {
+    if (data?.isError) {
+      Sentry.captureException(new Error(data.code), {
         extra: {
           data:
             data.message && isJsonString(data.message)
@@ -107,9 +107,9 @@ const AlternativeSearchBox = ({
           onChange={e => setInputValue(e.target.value)}
           onFocus={() => setSearchHasFocus(true)}
         />
-        {data?.data && data?.data.length > 0 && (
+        {data && data?.data?.length > 0 && (
           <label className="absolute right-5 top-2 sm:right-[8.5rem]">
-            {data?.data.length} results
+            {data?.data?.length} results
           </label>
         )}
 
@@ -135,7 +135,7 @@ const AlternativeSearchBox = ({
                   <LoadingIcon className="mb-1 w-6 h-6" aria-hidden="true" />
                   {loadingText}
                 </>
-              ) : !data?.data || (!searchValue && data?.data.length === 0) ? (
+              ) : !data || (!searchValue && data?.data?.length === 0) ? (
                 // shows if there is no data at all (initial stage)
                 // also shows if there is no text input and the search data has a length of 0
                 <>
@@ -166,9 +166,9 @@ const AlternativeSearchBox = ({
           )}
 
           {/* Displays the results */}
-          {data?.data && data?.data.length > 0 && (
+          {data && data?.data?.length > 0 && (
             <ul className="px-4 border border-primary rounded overflow-y-scroll pt-4 space-y-4 max-h-[400px] min-h-[120px] absolute w-full z-10 bg-white">
-              {data?.data.map((company: CompanyType) => {
+              {data?.data?.map((company: CompanyType) => {
                 return (
                   <button
                     key={company.company_number}

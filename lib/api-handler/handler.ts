@@ -134,7 +134,7 @@ Promise<SuccessResponseType<T> | ErrorResponseType | void> => {
       if (!externalResponse && !customError) {
         return response.status(resStatus).json(
           makeErrorObject({
-            code: 'NO_RESPONSE_RETURNED',
+            code: 'NO_RESPONSE_RETURNED_500',
             message: 'No response returned from handler',
             status: 500,
             sourceType,
@@ -150,6 +150,7 @@ Promise<SuccessResponseType<T> | ErrorResponseType | void> => {
         makeResponseObject(
           {
             sourceType,
+            code: `${sourceType.toUpperCase()}_${resStatus}`,
             status: resStatus,
             data: externalResponse ? await getBody(externalResponse) : null,
             requestDetails

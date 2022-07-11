@@ -2,7 +2,7 @@
 import { CloudDownloadIcon } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';
 import router from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'use-intl';
 
 import { useManualReportUploadFile } from '../../hooks/useManualReportUploadFile';
@@ -12,11 +12,11 @@ import { templateText } from '../../lib/settings/sme-calc.settings';
 import { NO_REPORT_ID, REPORT_500 } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
 import { makeUploadReportReqBody } from '../../lib/utils/report-helpers';
-import { ReportsUploadApi } from '../../pages/api/reports/upload';
 import LinkCard from '../cards/LinkCard';
 import UploadNewData from '../uploads/UploadNewData';
 
 import type { SubmitReportType } from '../../types/report';
+import { useToast } from '../../hooks/useToast';
 const ProvideData = () => {
   const [fileSelected, setFileSelected] = useState<File | null>(null);
 
@@ -24,7 +24,7 @@ const ProvideData = () => {
     setFileSelected(file);
   };
 
-  const { data, values, isCSV, isExcel, totalCompanies } =
+  const { data, values, isCSV, isExcel, totalCompanies, fileType } =
     useManualReportUploadFile(fileSelected);
 
   const { isValid, errors, missingHeaders, numberOfCompanies } =
@@ -37,36 +37,82 @@ const ProvideData = () => {
     });
   const t = useTranslations();
 
+  const { triggerToast, getToastTextFromResponse, handleDownload } = useToast();
+
+  useEffect(() => {
+    // disable for now; even valid csv triggers this toast since a rapid rerender
+    // will briefly show errors.length as 1 and isValid to false
+    // need to fix
+    if (fileSelected && (errors.length > 0 || !isValid)) {
+      // triggerToast({
+      //   toastId: 'REPORT_UPLOAD_ERROR',
+      //   title: t('REPORTS.REPORT_UPLOAD_ERROR.title', { fileType }),
+      //   description: t('REPORTS.REPORT_UPLOAD_ERROR.description', { fileType }),
+      //   toastType: 'error'
+      // });
+    }
+  }, [errors, isValid, fileSelected, fileType]);
+
   const handleSubmit: SubmitReportType = async (setError, setLoading) => {
     if (!data) return;
     setLoading(true);
     const params = makeUploadReportReqBody(data, values);
 
     try {
-      const result: ReportsUploadApi = await fetcher(
-        '/api/reports/upload',
-        'POST',
-        params
-      );
+      const result = await fetcher('/api/reports/upload', 'POST', params);
+
+      const toastText = getToastTextFromResponse(result);
 
       if (result?.error) {
         Sentry.captureException({
           error: result.error,
           message: result.message
         });
+
+        toastText &&
+          triggerToast({
+            toastId: result.code,
+            status: result.status,
+            title: toastText.title,
+            description: result.message || toastText.description,
+            toastType: 'error'
+          });
+
         setError({ error: REPORT_500, message: result.message });
       }
 
-      if (!result?.reportId) {
+      if (!result?.data.id) {
         Sentry.captureException({
           error: NO_REPORT_ID,
           message: result.message
         });
+
+        triggerToast({
+          toastId: result.code,
+          status: result.status,
+          title: t('REPORTS.NO_REPORT_ID.title'),
+          description: result.message || t('REPORTS.NO_REPORT_ID.description'),
+          toastType: 'error'
+        });
+
         setError({ error: NO_REPORT_ID, message: result.message });
       }
 
-      if (result?.reportId) {
-        return router.push(`/report/${result.reportId}`);
+      if (result?.data?.id) {
+        triggerToast({
+          toastId: 'REPORT_CREATED',
+          title: t('REPORTS.REPORT_CREATED.title'),
+          description: t('REPORTS.REPORT_CREATED.description'),
+          toastType: 'success',
+          actions: [
+            {
+              label: 'Go to report',
+              action: () => router.push(`/report/${result.data?.id}`)
+            }
+          ]
+        });
+
+        return router.push(`/report/${result.data.id}`);
       }
     } catch (err) {
       Sentry.captureException(err);
@@ -113,7 +159,19 @@ const ProvideData = () => {
                 iconColor={template.backgroundColor}
                 header={t(`${template.title}.title`)}
                 description={t(`${template.title}.body`)}
-                linkTo={template.templateLink}
+                onClick={() =>
+                  handleDownload({
+                    href: template.templateLink,
+                    title: t(`TEMPLATE.TEMPLATE_DOWNLOAD_200.title`),
+                    description: t(
+                      `TEMPLATE.TEMPLATE_DOWNLOAD_200.description`,
+                      {
+                        type: t(`${template.title}.title`)
+                      }
+                    )
+                  })
+                }
+                className="text-left"
                 key={i}
               />
             );

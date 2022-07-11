@@ -19,6 +19,7 @@ const fetcher = async (
         headers && headers['Content-Type']
           ? headers['Content-Type']
           : 'application/json';
+
       const res = await fetch(`${config.URL}${relativeUrl}`, {
         headers: {
           ...defaultHeaders,
@@ -33,6 +34,7 @@ const fetcher = async (
       //     return res.text();
       //   default:
       //   }
+
       if (contentType === 'application/pdf') return res.blob();
       return res.json();
     }
@@ -45,6 +47,7 @@ const fetcher = async (
         ...headers
       }
     });
+
     return res.json();
   } catch (error) {
     // capture error on sentry

@@ -1,5 +1,3 @@
-/* eslint-disable sonarjs/prefer-immediate-return */
-/* eslint-disable security/detect-non-literal-require */
 import { ArrowLeftIcon, CloudDownloadIcon } from '@heroicons/react/outline';
 import * as Sentry from '@sentry/nextjs';
 import { GetStaticPropsContext, NextPage } from 'next';
@@ -18,19 +16,17 @@ import SelectMenu from '../../components/elements/SelectMenu';
 import Layout from '../../components/layout/Layout';
 import { SimpleValue } from '../../components/sme-calc-sections/AdvancedSearch';
 import UploadNewData from '../../components/uploads/UploadNewData';
-import { useManualReportUploadFile } from '../../hooks/useManualReportUploadFile';
 import { useFileValidators } from '../../hooks/useFileValidators';
+import { useManualReportUploadFile } from '../../hooks/useManualReportUploadFile';
+import { useToast } from '../../hooks/useToast';
 import { accountTypes } from '../../lib/settings/report.settings';
 import Settings from '../../lib/settings/settings.settings';
 import { convertCSVToRequestBody } from '../../lib/utils/batch-report-helpers';
 import { ISO, ISO_CODE } from '../../lib/utils/constants';
 import { BATCH_REPORT_FETCHING_ERROR } from '../../lib/utils/error-codes';
 import fetcher from '../../lib/utils/fetcher';
-import { BatchReportsIndexApi } from '../api/batch-reports';
-import { BatchReportsManualApi } from '../api/batch-reports/manual';
 
 import type { SubmitReportType } from '../../types/report';
-
 const CreateBatchReport: NextPage = () => {
   const t = useTranslations();
 
@@ -38,6 +34,19 @@ const CreateBatchReport: NextPage = () => {
 
   const [fileSelected, setFileSelected] = useState<File | null>(null);
   const [fileSelectedName, setFileSelectedName] = useState<string>('');
+
+  const { triggerToast, getToastTextFromResponse, handleDownload } = useToast();
+
+  const handleLinkDownload = (href: string, title: string) => {
+    return handleDownload({
+      href,
+      toastId: `BATCH_TEMPLATES_${t(title)}`,
+      title: t(`TEMPLATE.TEMPLATE_DOWNLOAD_200.title`),
+      description: t(`TEMPLATE.TEMPLATE_DOWNLOAD_200.description`, {
+        type: t(title)
+      })
+    });
+  };
 
   const {
     data,
@@ -108,15 +117,30 @@ const CreateBatchReport: NextPage = () => {
     try {
       // POST '/api/batch-reports' => BatchReportsIndexApi (auto)
       // POST '/api/batch-reports/upload' => BatchReportsManualApi (manual)
-      const result: BatchReportsIndexApi | BatchReportsManualApi =
-        await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
+      const result = await fetcher(isAutoOrManual.apiUrl, 'POST', reqData);
 
       if (result.ok) {
-        setResults({ id: result.batchReportId ?? '' });
+        setResults({ id: result?.data?.id ?? '' });
       }
-      if (result.batchReportId) {
+      if (result?.data?.id) {
         // fetch the new batch reports
-        mutate<BatchReportsIndexApi>('/api/batch-reports');
+        mutate('/api/batch-reports');
+
+        triggerToast({
+          toastId: 'REPORT_CREATED',
+          title: t(`${result.sourceType}.${result.sourceType}_CREATED.title`),
+          description: t(
+            `${result.sourceType}.${result.sourceType}_CREATED.description`
+          ),
+          toastType: 'success',
+          actions: [
+            {
+              label: 'Go to batch reports',
+              action: () => router.push(`/batch-reports`)
+            }
+          ]
+        });
+
         // push to batch-reports where in progress reports will show
         return router.push(`/batch-reports`);
       }
@@ -129,6 +153,23 @@ const CreateBatchReport: NextPage = () => {
         setComplete(false);
         setLoading(false);
         setProcessing(false);
+
+        const toastText = getToastTextFromResponse(result);
+
+        toastText &&
+          triggerToast({
+            toastId: result.code,
+            status: result.status,
+            actions: [
+              {
+                label: 'Retry',
+                action: () => runReports(setError, setLoading)
+              }
+            ],
+            title: toastText?.title,
+            description: toastText?.description,
+            dismiss: 'button'
+          });
       }
     } catch (err) {
       setError({
@@ -282,44 +323,69 @@ const CreateBatchReport: NextPage = () => {
 
         <div className="grid grid-cols-4 gap-4 my-6">
           <LinkCard
-            className="max-w-xs"
+            className="max-w-xs text-left"
             icon={<CloudDownloadIcon className="h-8 w-8" />}
             iconColor="bg-highlight bg-opacity-50"
             header={t('batch_ads_template')}
             description={t('batch_ads_template_desc')}
-            linkTo="/download-templates/wf-ads-template.csv"
+            onClick={() =>
+              handleLinkDownload(
+                '/download-templates/wf-ads-template.csv',
+                'batch_ads_template'
+              )
+            }
           />
           <LinkCard
-            className="max-w-xs"
+            className="max-w-xs text-left"
             icon={<CloudDownloadIcon className="h-8 w-8" />}
             iconColor="bg-highlight bg-opacity-50"
             header={t('batch_mdi_template')}
             description={t('batch_mdi_template_desc')}
-            linkTo="/download-templates/wf-mdi-template.csv"
+            onClick={() =>
+              handleLinkDownload(
+                '/download-templates/wf-mdi-template.csv',
+                'batch_mdi_template'
+              )
+            }
           />
           <LinkCard
-            className="max-w-xs"
+            className="max-w-xs text-left"
             icon={<CloudDownloadIcon className="h-8 w-8" />}
             iconColor="bg-highlight bg-opacity-50"
             header={t('batch_mdi_basic_excel_template')}
             description={t('batch_mdi_basic_excel_template_desc')}
-            linkTo="/download-templates/wf-mdi-excel-template.xlsx"
+            onClick={() =>
+              handleLinkDownload(
+                '/download-templates/wf-mdi-excel-template.xlsx',
+                'batch_mdi_basic_excel_template'
+              )
+            }
           />
           <LinkCard
-            className="max-w-xs"
+            className="max-w-xs text-left"
             icon={<CloudDownloadIcon className="h-8 w-8" />}
             iconColor="bg-highlight bg-opacity-50"
             header={t('batch_ads_excel_template')}
             description={t('batch_ads_excel_template_desc')}
-            linkTo="/download-templates/wf-excel-ads-template.xlsx"
+            onClick={() =>
+              handleLinkDownload(
+                '/download-templates/wf-excel-ads-template.xlsx',
+                'batch_ads_excel_template'
+              )
+            }
           />
           <LinkCard
-            className="max-w-xs"
+            className="max-w-xs text-left"
             icon={<CloudDownloadIcon className="h-8 w-8" />}
             iconColor="bg-highlight-3 bg-opacity-50"
             header={t('batch_mdi_excel_template')}
             description={t('batch_mdi_excel_template_desc')}
-            linkTo="/download-templates/Sunrise_Client_Input_Sheet_v1.01.xlsm"
+            onClick={() =>
+              handleLinkDownload(
+                '/download-templates/Sunrise_Client_Input_Sheet_v1.01.xlsm',
+                'batch_mdi_excel_template'
+              )
+            }
           />
         </div>
       </div>
@@ -339,6 +405,7 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         ...require(`../../messages/${locale}/general.${locale}.json`),
         ...require(`../../messages/${locale}/upload-data.${locale}.json`),
         ...require(`../../messages/${locale}/errors.${locale}.json`),
+        ...require(`../../messages/${locale}/toasts.${locale}.json`),
         ...require(`../../messages/${locale}/batch-reports.${locale}.json`)
       }
     }

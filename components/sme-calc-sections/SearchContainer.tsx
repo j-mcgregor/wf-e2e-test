@@ -1,11 +1,15 @@
 import * as Sentry from '@sentry/nextjs';
 import { useRouter } from 'next/router';
+import React from 'react';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import { mutate } from 'swr';
 import { useTranslations } from 'use-intl';
 
+import { useToast } from '../../hooks/useToast';
 import appState from '../../lib/appState';
+import { fetchMockData } from '../../lib/mock-data/helpers';
 import { accountTypes } from '../../lib/settings/report.settings';
 import SettingsSettings from '../../lib/settings/settings.settings';
 import {
@@ -13,10 +17,10 @@ import {
   validCountryCodes
 } from '../../lib/settings/sme-calc.settings';
 import fetcher from '../../lib/utils/fetcher';
-import { ReportsReportApi } from '../../pages/api/reports/report';
 import { CompanyType } from '../../types/global';
 import Button from '../elements/Button';
 import ErrorMessage from '../elements/ErrorMessage';
+import { ToastBody } from '../toast/Toast';
 import AdvancedSearch, { SimpleValue } from './AdvancedSearch';
 import AlternativeSearchBox from './AlternativeSearchBox';
 import BasicSearch from './BasicSearch';
@@ -29,6 +33,8 @@ interface SearchContainerProps {
 const SearchContainer = ({ disabled }: SearchContainerProps) => {
   const t = useTranslations();
   const router = useRouter();
+
+  const { getToastTextFromResponse, toastStyle } = useToast();
 
   const currencies: SimpleValue[] = SettingsSettings.supportedCurrencies;
 
@@ -49,7 +55,6 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
   };
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({ error: false, message: '' });
 
   const [regSearchValue, setRegSearchValue] = useState<string | null>();
 
@@ -142,8 +147,24 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
     setSelectedCurrency(currencies[Number(currency)]);
   };
 
+  const toastId = React.useRef<ReturnType<typeof toast.loading> | null>(null);
+
   const handleGenerateReport = async (): Promise<void> => {
     setLoading(true);
+
+    toastId.current = toast(
+      <ToastBody
+        title={t.rich('REPORTS.GENERATING_REPORT.title', {
+          company: selectedCompany?.title || 'company'
+        })}
+        description={t('REPORTS.GENERATING_REPORT.description')}
+      />,
+      {
+        autoClose: false,
+        closeButton: true,
+        icon: toastStyle.loading.icon
+      }
+    );
 
     const countryCode = selectedCountry?.optionValue;
     const companyId = selectedCompany?.company_number;
@@ -179,15 +200,44 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
         params
       );
 
-      if (createReportRes?.reportId) {
+      // const createReportRes = await fetchMockData(
+      //   404,
+      //   'REPORTS',
+      //   'REPORTS_COMPANY_NOT_FOUND'
+      // )();
+
+      if (createReportRes?.data?.id) {
         // update the global user state to get the new report
         mutate('/api/user');
-        // redirect to the report page
+        mutate('/api/reports');
+        mutate('/api/user/reports');
 
-        router.push(`/report/${createReportRes.reportId}`);
+        toast.update(toastId.current, {
+          render: (
+            <ToastBody
+              title={t('REPORTS.REPORT_CREATED.title')}
+              description={t('REPORTS.REPORT_CREATED.description')}
+              actions={[
+                {
+                  label: 'Go to report',
+                  action: () =>
+                    router.push(`/report/${createReportRes.data?.id}`)
+                }
+              ]}
+            />
+          ),
+          type: 'success',
+          icon: toastStyle.success.icon,
+          closeButton: true,
+          autoClose: 7000
+        });
+        // redirect to the report page
+        if (window?.location?.pathname === '/sme-calculator') {
+          router.push(`/report/${createReportRes.data?.id}`);
+        }
       }
 
-      if (!createReportRes?.reportId) {
+      if (!createReportRes?.data?.id) {
         Sentry.captureException(new Error(createReportRes.error), {
           extra: {
             data: {
@@ -197,10 +247,32 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
           }
         });
 
-        setError({
-          error: createReportRes.is_error,
-          message: createReportRes.message
-        });
+        const toastText = getToastTextFromResponse(createReportRes);
+
+        toastText &&
+          toast.update(toastId.current, {
+            render: (
+              <ToastBody
+                title={toastText?.title}
+                description={toastText?.description}
+                actions={[
+                  {
+                    label: 'Retry',
+                    action: () => {
+                      toast.dismiss('REPORT_CREATED');
+
+                      setTimeout(() => handleGenerateReport(), 2000);
+                    }
+                  }
+                ]}
+              />
+            ),
+            type: 'error',
+            icon: toastStyle.error.icon,
+            autoClose: 7000,
+            closeButton: true
+          });
+
         setLoading(false);
       }
     } catch (err) {
@@ -258,18 +330,6 @@ const SearchContainer = ({ disabled }: SearchContainerProps) => {
             selectedAccountType={selectedAccountType}
             handleSelectCurrency={handleSelectCurrency}
           />
-        )}
-
-        {(error.error || error.message) && (
-          <div className="py-4 px-2 border-2 rounded-md border-red-400 bg-red-50 my-2">
-            {error.error && (
-              <ErrorMessage
-                className="font-bold mt-2"
-                text={`${t('ERROR_TITLE')}`}
-              />
-            )}
-            {error.message && <ErrorMessage text={`${t(error.message)}`} />}
-          </div>
         )}
 
         <div className="flex sm:flex-row flex-col items-center my-6">

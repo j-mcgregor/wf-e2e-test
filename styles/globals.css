@@ -64,3 +64,9 @@ input[type='number'] {
   -moz-appearance: textfield;
   /* Firefox */
 }
+
+/* toastify */
+
+.Toastify__toast-body {
+  align-items: flex-start !important;
+}

@@ -1,12 +1,22 @@
 import React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useSWR from 'swr';
+import {
+  ApiHandlerResponse,
+  ErrorResponseType,
+  SuccessResponseType
+} from '../lib/api-handler/api-handler';
 
 import appState from '../lib/appState';
 import fetcher from '../lib/utils/fetcher';
-import { OrganisationIndexApi } from '../pages/api/organisation/[orgId]';
-import { OrganisationTypeApi } from '../pages/api/organisation/[orgId]/[type]';
-import { OrganisationFeaturesObject } from '../types/organisations';
+
+import {
+  OrganisationFeaturesObject,
+  OrganisationType,
+  OrganisationUser,
+  OrganisationUserReport
+} from '../types/organisations';
+import useSWRWithToasts from './useSWRWithToasts';
 
 // interface OrganisationHookObject {
 //   name?: string;
@@ -24,36 +34,55 @@ const useOrganisation = (fetch = true) => {
 
   const orgId = user?.organisation_id || null;
 
-  const { data: reports, mutate: mutateOrg } = useSWR<OrganisationIndexApi>(
-    fetch && orgId && `/api/organisation/${orgId}?reports=true&limit=1`,
-    fetcher,
-    {
-      revalidateOnMount: true
-    }
-  );
+  const { data: orgDetailsRequest, isValidating: orgDetailsRequestValidating } =
+    useSWRWithToasts<OrganisationType>(
+      fetch && orgId && `/api/organisation/${orgId}`,
+      fetcher,
+      {
+        revalidateOnMount: true
+      }
+    );
 
-  const { data: orgDetails, isValidating } = useSWR<OrganisationIndexApi>(
-    fetch && orgId && `/api/organisation/${orgId}`,
-    fetcher,
-    {
-      revalidateOnMount: true
-    }
-  );
+  const {
+    data: orgReportsRequest,
+    isValidating: orgReportsRequestValidating,
+    mutate: mutateOrg
+  } = useSWRWithToasts<{
+    totalOrganisationReports: number;
+  }>(fetch && orgId && `/api/organisation/${orgId}/total-reports`, fetcher, {
+    revalidateOnMount: true
+  });
 
-  const { data, mutate: mutateUsers } = useSWR<OrganisationTypeApi>(
-    fetch && orgId && `/api/organisation/${orgId}/users?limit=1`,
-    fetcher,
-    {
-      revalidateOnMount: true
-    }
-  );
+  const {
+    data: orgTotalUsersRequest,
+    isValidating: orgTotalUsersRequestValidating,
+    mutate: mutateUsers
+  } = useSWRWithToasts<{
+    users: OrganisationUser[];
+    total: number;
+  }>(fetch && orgId && `/api/organisation/${orgId}/users?limit=1`, fetcher, {
+    revalidateOnMount: true
+  });
+
+  const orgDetailsRequestLoading =
+    !orgDetailsRequest && orgDetailsRequestValidating;
+  const orgReportsRequestLoading =
+    !orgReportsRequest && orgReportsRequestValidating;
+  const orgTotalUsersRequestLoading =
+    !orgTotalUsersRequest && orgTotalUsersRequestValidating;
+
+  const isLoading =
+    orgDetailsRequestLoading ||
+    orgReportsRequestLoading ||
+    orgTotalUsersRequestLoading;
 
   const organisation = {
     name: user?.organisation_name,
     id: user?.organisation_id,
-    totalUsers: (data && data?.total) || 0,
-    totalOrganisationReports: reports?.totalOrganisationReports,
-    ...(orgDetails && orgDetails?.organisation)
+    totalUsers:
+      (orgTotalUsersRequest && orgTotalUsersRequest?.data?.total) || 0,
+    totalOrganisationReports: orgReportsRequest?.data?.totalOrganisationReports,
+    ...(orgDetailsRequest && orgDetailsRequest?.data)
   };
 
   const features: OrganisationFeaturesObject =
@@ -63,12 +92,10 @@ const useOrganisation = (fetch = true) => {
     }, {} as OrganisationFeaturesObject) || {};
 
   React.useEffect(() => {
-    if (orgDetails?.organisation?.id && !isValidating) {
+    if (orgDetailsRequest?.data?.id && !orgDetailsRequestLoading) {
       setState({ user, organisation });
     }
-  }, [data, orgDetails]);
-
-  const isLoading = !data;
+  }, [orgTotalUsersRequest, orgDetailsRequest]);
 
   return {
     organisation,
@@ -76,8 +103,8 @@ const useOrganisation = (fetch = true) => {
     mutateOrg,
     mutateUsers,
     loading: isLoading,
-    error: data?.error,
-    message: data?.message
+    error: orgDetailsRequest?.isError,
+    message: orgDetailsRequest?.message
   };
 };
 

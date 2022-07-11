@@ -1,0 +1,628 @@
+{
+  "BATCH_REPORTS_BY_ID": {
+    "BATCH_REPORTS_BY_ID_400": {
+      "title": "Issue fetching batch report",
+      "description": "Something went wrong trying to fetch this batch report. Please check the request and try again."
+    },
+    "BATCH_REPORTS_BY_ID_401": {
+      "title": "Not authorised to access batch report",
+      "description": "You don't permission to access this batch report. Please try re-authenticating."
+    },
+    "BATCH_REPORTS_BY_ID_403": {
+      "title": "Forbidden to access batch report",
+      "description": "You don't permission to access this batch report. Please try re-authenticating."
+    },
+    "BATCH_REPORTS_BY_ID_404": {
+      "title": "Batch report not found",
+      "description": "We could not find this batch report. If you are sure this should exist, please contact support."
+    },
+    "BATCH_REPORTS_BY_ID_422": {
+      "title": "Unprocessable entity for batch report",
+      "description": "Please check the request and try again. If problem persists please contact support."
+    },
+    "BATCH_REPORTS_BY_ID_429": {
+      "title": "Too many requests for batch report",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "BATCH_REPORTS_BY_ID_500": {
+      "title": "Batch reports fetching error",
+      "description": "We couldn't process this batch report. There was an unrecoverable backend error. Please try again later or contact support if this problem persists"
+    }
+  },
+  "BATCH_MANUAL": {
+    "BATCH_MANUAL_CREATED": {
+      "title": "Batch report successfully created",
+      "description": "You should be redirected to the batch reports page. If you aren't, please click the link below."
+    },
+    "BATCH_MANUAL_400": {
+      "title": "Something went wrong when processing your batch report",
+      "description": "Please check the request, and the structure of your input file and try again."
+    },
+    "BATCH_MANUAL_401": {
+      "title": "Not authorised access create a batch report",
+      "description": "You don't permission to create a batch report. Please try re-authenticating and try again. If the problem persists please contact support."
+    },
+    "BATCH_MANUAL_403": {
+      "title": "Forbidden to access create a batch report",
+      "description": "You don't permission to create a batch report. Please try re-authenticating and try again. If the problem persists please contact support."
+    },
+    "BATCH_MANUAL_404": {
+      "title": "Batch report not found",
+      "description": "We could not find a batch report with that ID. If you are sure this should exist please contact support."
+    },
+    "BATCH_MANUAL_422": {
+      "title": "Unprocessable entity when creating a batch report",
+      "description": "Please check the request and try again, or contact support if the problem persists."
+    },
+    "BATCH_MANUAL_429": {
+      "title": "Too many requests to batch reports",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "BATCH_MANUAL_500": {
+      "title": "Batch reports error",
+      "description": "We couldn't fetch this batch report. There was an unrecoverable backend error. Please try again later or contact support if this problem persists."
+    }
+  },
+  "BATCH_AUTO": {
+    "BATCH_AUTO_CREATED": {
+      "title": "Batch report successfully created",
+      "description": "You should be redirected to the batch reports page. If you aren't, please click the link below."
+    },
+    "BATCH_AUTO_400": {
+      "title": "Something went wrong when processing this batch report",
+      "description": "Please check the input file and try again. If the problem persists please contact support."
+    },
+    "BATCH_AUTO_401": {
+      "title": "Not authorised to create a batch report",
+      "description": "You don't permission to create a batch report. Please try re-authenticating and try again. If the problem persists please contact support."
+    },
+    "BATCH_AUTO_403": {
+      "title": "Forbidden to create a batch report",
+      "description": "You don't permission to create a batch report. Please contact your admin or support if the problem persists."
+    },
+    "BATCH_AUTO_404": {
+      "title": "Batch report not found",
+      "description": "We could not find this batch report. If you are sure this should exist please contact support."
+    },
+    "BATCH_AUTO_422": {
+      "title": "Unprocessable entity for Batch Reports",
+      "description": "Please check the request and try again, or contact support. Required fields for a batch report are ISO code, company ID, currency & accounts type"
+    },
+    "BATCH_AUTO_429": {
+      "title": "Too many requests to batch reports",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "BATCH_AUTO_500": {
+      "title": "Batch reports error",
+      "description": "We couldn't process this batch report. There was an unrecoverable backend error. Please try again later or contact support if this problem persists."
+    }
+  },
+  "INTEGRATIONS_CODAT": {
+    "NO_BODY": {
+      "title": "No body",
+      "description": "This request is missing a body. Please check the request and try again."
+    },
+    "NOTHING_TO_SYNCHRONISE": {
+      "title": "Nothing to synchronise",
+      "description": "Cannot find any company to synchronise."
+    },
+    "COUNTRY_CODE_NOT_FOUND": {
+      "title": "Country code not found",
+      "description": "Country code of the company found in Codat is not supported."
+    },
+    "INVALID_CURRENCY": {
+      "title": "Invalid currency",
+      "description": "Please ensure the currency is a correct ISO standard."
+    },
+    "TYPE_NOT_FOUND": {
+      "title": "Integration type not found",
+      "description": "We couldn't find an integration source of that type."
+    },
+    "INTEGRATIONS_CODAT_200": {
+      "title": "Integration successful",
+      "description": "Your integration was a success. You should now be able to see it on the main report page."
+    },
+    "INTEGRATIONS_CODAT_400": {
+      "title": "Something went wrong when processing your Codat Integration.",
+      "description": "Please check what you entered and try again."
+    },
+    "INTEGRATIONS_CODAT_401": {
+      "title": "Forbidden to access Codat Integration",
+      "description": "You don't have permission to access Codat Integrations. Please contact your admin."
+    },
+    "INTEGRATIONS_CODAT_403": {
+      "title": "Forbidden to access Codat Integration",
+      "description": "You don't have permission to access Codat Integrations. Please contact your admin."
+    },
+    "INTEGRATIONS_CODAT_404": {
+      "title": "Codat Integration not found",
+      "description": "We could not find a Codat Integration. If you are sure this should exist, please contact support."
+    },
+    "INTEGRATIONS_CODAT_422": {
+      "title": "Unprocessable entity for Codat Integration",
+      "description": "Please check the request and make sure you entered everything correctly before trying again. Contact support if the problem persists."
+    },
+    "INTEGRATIONS_CODAT_429": {
+      "title": "Too many requests to Codat Integration",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "INTEGRATIONS_CODAT_500": {
+      "title": "Codat Integration error",
+      "description": "We couldn't process your Codat integrations request for this report. There was an unrecoverable backend error. Please try again later or contact support if this problem persists."
+    }
+  },
+  "INTEGRATIONS": {
+    "INTEGRATIONS_400": {
+      "title": "Something went wrong when processing this integration",
+      "description": "Please check the request and try again."
+    },
+    "INTEGRATIONS_401": {
+      "title": "Not authorised to access this integration",
+      "description": "You don't have permission to access this integration. Please contact your admin."
+    },
+    "INTEGRATIONS_403": {
+      "title": "Forbidden to access this integration",
+      "description": "You don't have permission to access this integration. Please contact your admin."
+    },
+    "INTEGRATIONS_404": {
+      "title": "Integration not found",
+      "description": "We could not find this integration. If you are sure this should exist please contact support."
+    },
+    "INTEGRATIONS_422": {
+      "title": "Unprocessable entity for this integration",
+      "description": "Please check the request and try again, or contact support."
+    },
+    "INTEGRATIONS_429": {
+      "title": "Too many requests to this integration",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "INTEGRATIONS_500": {
+      "title": "INTEGRATIONS fetching error",
+      "description": "We couldn't fetch this integration. There was an unrecoverable backend error. Please try again later or contact support if this problem persists."
+    }
+  },
+  "ORGANISATION_ALL_REPORTS": {
+    "ORGANISATION_ALL_REPORTS_400": {
+      "title": "Issue processing this organisations reports request",
+      "description": "Please check the request and try again."
+    },
+    "ORGANISATION_ALL_REPORTS_401": {
+      "title": "Not authorised to access this organisations reports",
+      "description": "You don't permission to access this organisations reports. Please contact your admin."
+    },
+    "ORGANISATION_ALL_REPORTS_403": {
+      "title": "Forbidden to access this organisations reports",
+      "description": "You don't permission to access this organisations reports. Please contact your admin."
+    },
+    "ORGANISATION_ALL_REPORTS_404": {
+      "title": "ORGANISATION_ALL_REPORTS not found",
+      "description": "We could not find this organisations reports. If you are sure this should exist please contact support."
+    },
+    "ORGANISATION_ALL_REPORTS_422": {
+      "title": "Unprocessable entity for this organisations reports",
+      "description": "Please check the request and try again, or contact support."
+    },
+    "ORGANISATION_ALL_REPORTS_429": {
+      "title": "Too many requests to this organisations reports",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "ORGANISATION_ALL_REPORTS_500": {
+      "title": "Organisation report fetching error",
+      "description": "We couldn't fetch this organisations reports. There was an unrecoverable backend error. Please try again later or contact support if this problem persists"
+    }
+  },
+  "ORGANISATION_USER": {
+    "ORGANISATION_USER_200": {
+      "title": "Success",
+      "description": "{user} is now {role}"
+    },
+    "USER_CREATED_SUCCESS": {
+      "title": "Success!",
+      "description": "{role} {email} has been created. You can edit this user in the organisation panel."
+    },
+    "ORGANISATION_USER_400": {
+      "title": "Something went wrong when processing organisation user",
+      "description": "Please check the request and try again."
+    },
+    "ORGANISATION_USER_401": {
+      "title": "Not authorised to access organisation user",
+      "description": "You don't permission to access organisation user. Please contact your admin"
+    },
+    "ORGANISATION_USER_403": {
+      "title": "Forbidden to access organisation user",
+      "description": "You don't permission to access organisation user. Please contact your admin"
+    },
+    "ORGANISATION_USER_404": {
+      "title": "Organisation user not found",
+      "description": "We could not find organisation user. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
+    },
+    "ORGANISATION_USER_422": {
+      "title": "Unprocessable entity for organisation user",
+      "description": "Please check the request and try again, or contact support."
+    },
+    "ORGANISATION_USER_429": {
+      "title": "Too many requests to organisation user",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "ORGANISATION_USER_500": {
+      "title": "Organisation user fetching error",
+      "description": "We couldn't process this request on an organisation user. There was an unrecoverable backend error. Please try again later or contact support if this problem persists"
+    }
+  },
+  "ORGANISATION_USERS": {
+    "ORGANISATION_USERS_400": {
+      "title": "Something went wrong when processing organisation users",
+      "description": "Please check the request and try again."
+    },
+    "ORGANISATION_USERS_401": {
+      "title": "Not authorised to access organisation users",
+      "description": "You don't permission to access organisation users. Please contact your admin"
+    },
+    "ORGANISATION_USERS_403": {
+      "title": "Forbidden to access organisation users",
+      "description": "You don't permission to access organisation users. Please contact your admin"
+    },
+    "ORGANISATION_USERS_404": {
+      "title": "Organisation users not found",
+      "description": "We could not find organisation users. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
+    },
+    "ORGANISATION_USERS_422": {
+      "title": "Unprocessable entity for organisation users",
+      "description": "Please check the request and try again, or contact support."
+    },
+    "ORGANISATION_USERS_429": {
+      "title": "Too many requests to organisation users",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "ORGANISATION_USERS_500": {
+      "title": "Organisation users fetching error",
+      "description": "We couldn't fetch organisation users. There was an unrecoverable backend error. Please try again later or contact support if this problem persists"
+    }
+  },
+  "ORGANISATION": {
+    "ORGANISATION_400": {
+      "title": "Something went wrong when processing this organisation",
+      "description": "Please check the request and try again."
+    },
+    "ORGANISATION_401": {
+      "title": "Not authorised to access this organisation",
+      "description": "You don't permission to access this organisation. Please contact your admin"
+    },
+    "ORGANISATION_403": {
+      "title": "Forbidden to access this organisation",
+      "description": "You don't permission to access this organisation. Please contact your admin"
+    },
+    "ORGANISATION_404": {
+      "title": "Organisation not found",
+      "description": "We could not find this organisation. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
+    },
+    "ORGANISATION_422": {
+      "title": "Unprocessable entity for this organisation",
+      "description": "Please check the request and try again, or contact support."
+    },
+    "ORGANISATION_429": {
+      "title": "Too many requests to this organisation",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "ORGANISATION_500": {
+      "title": "Organisation fetching error",
+      "description": "We couldn't process the request on this organisation. There was an unrecoverable backend error. Please try again later or contact support if this problem persists"
+    }
+  },
+  "PASSWORD_RESET": {
+    "PASSWORD_RESET_400": {
+      "title": "Something went wrong when processing PASSWORD_RESET",
+      "description": "Please check the request and try again."
+    },
+    "PASSWORD_RESET_401": {
+      "title": "Not authorised to access PASSWORD_RESET",
+      "description": "You don't permission to access PASSWORD_RESET. Please contact your admin"
+    },
+    "PASSWORD_RESET_403": {
+      "title": "Forbidden to access PASSWORD_RESET",
+      "description": "You don't permission to access PASSWORD_RESET. Please contact your admin"
+    },
+    "PASSWORD_RESET_404": {
+      "title": "PASSWORD_RESET not found",
+      "description": "We could not find PASSWORD_RESET. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
+    },
+    "PASSWORD_RESET_422": {
+      "title": "Unprocessable entity for PASSWORD_RESET",
+      "description": "Please check the request and try again, or contact support."
+    },
+    "PASSWORD_RESET_429": {
+      "title": "Too many requests to PASSWORD_RESET",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "PASSWORD_RESET_500": {
+      "title": "PASSWORD_RESET fetching error",
+      "description": "We couldn't fetch PASSWORD_RESET. There was an unrecoverable backend error. Please try again later or contact support if this problem persists"
+    }
+  },
+  "REPORTS_NEWS": {
+    "REPORTS_NEWS_400": {
+      "title": "Something went wrong when processing report news",
+      "description": "Please check the request and try again."
+    },
+    "REPORTS_NEWS_401": {
+      "title": "Not authorised to access report news",
+      "description": "You don't permission to access report news. Please contact your admin"
+    },
+    "REPORTS_NEWS_403": {
+      "title": "Forbidden to access report news",
+      "description": "You don't permission to access report news. Please contact your admin"
+    },
+    "REPORTS_NEWS_404": {
+      "title": "Report news not found",
+      "description": "We could not find report news. If you are sure this should exist, please login and out and try again. If problem persists please contact support"
+    },
+    "REPORTS_NEWS_422": {
+      "title": "Unprocessable entity for report news",
+      "description": "Please check the request and try again, or contact support."
+    },
+    "REPORTS_NEWS_429": {
+      "title": "Too many requests to report news",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "REPORTS_NEWS_500": {
+      "title": "Report news fetching error",
+      "description": "We couldn't fetch report news. There was an unrecoverable backend error. Please try again later or contact support if this problem persists"
+    }
+  },
+  "REPORTS_UPLOAD": {
+    "REPORTS_UPLOAD_400": {
+      "title": "Something went wrong when processing your uploaded report.",
+      "description": "Please check the input file and try again. If the problem persists, please contact support."
+    },
+    "REPORTS_UPLOAD_401": {
+      "title": "Forbidden to access to upload a report",
+      "description": "You don't permission to access reports upload. Please contact your admin."
+    },
+    "REPORTS_UPLOAD_403": {
+      "title": "Forbidden to access to upload a report",
+      "description": "You don't permission to access reports upload. Please contact your admin."
+    },
+    "REPORTS_UPLOAD_404": {
+      "title": "Reports upload not found",
+      "description": "We could not find the uploaded report. If you are sure this should exist, please login and out and try again. If problem persists please contact support."
+    },
+    "REPORTS_UPLOAD_422": {
+      "title": "Unprocessable entity when uploading a report",
+      "description": "Please check the request and try again, or contact support."
+    },
+    "REPORTS_UPLOAD_429": {
+      "title": "Too many requests to reports upload",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "REPORTS_UPLOAD_500": {
+      "title": "Reports upload fetching error",
+      "description": "We couldn't process the request to upload a report. There was an unrecoverable backend error. Please try again later or contact support if this problem persists."
+    }
+  },
+  "REPORTS": {
+    "GENERATING_REPORT": {
+      "title": "Generating report on {company}",
+      "description": "This may take a up to a minute."
+    },
+    "REPORT_CREATED": {
+      "title": "Report successfully created",
+      "description": "You should be redirect to the newly generated report. If you aren't, please click the link below."
+    },
+    "REPORT_UPLOAD_ERROR": {
+      "title": "Bad {fileType} file",
+      "description": "The {fileType} file you're trying to upload has bad data. Please fix the errors and try again."
+    },
+    "NO_REPORT_ID": {
+      "title": "Response missing ID",
+      "description": "Something likely went wrong with the server. Please check your request and try again."
+    },
+    "REPORT_DOWNLOAD_200": {
+      "title": "Report {fileType} downloaded",
+      "description": "The {fileType} for this report was successfully downloaded and is available in your downloads folder."
+    },
+    "REPORT_DOWNLOAD_404": {
+      "title": "Download format not recognised",
+      "description": "Only PDF and CSV download formats are supported. Please check your request and try again."
+    },
+    "REPORT_DOWNLOAD_500": {
+      "title": "Something went wrong",
+      "description": "Your {fileType} failed to download. Please check your network and try again. If the problem persists please get in touch."
+    },
+    "REPORTS_COMPANY_NOT_FOUND": {
+      "title": "Company not found",
+      "description": "We could not find the company you were looking for. Please check the details entered. If the problem persists please contact support."
+    },
+    "REPORTS_400": {
+      "title": "Something went wrong when processing Reports",
+      "description": "Please check the request and try again."
+    },
+    "REPORTS_401": {
+      "title": "Not authorised to access this report",
+      "description": "You don't permission to access this report. Please contact your admin, or re-authenticate and try again. Should the problem persist please contact support."
+    },
+    "REPORTS_403": {
+      "title": "Forbidden to access this report",
+      "description": "You don't have permission to access this report. Please contact your admin."
+    },
+    "REPORTS_404": {
+      "title": "Report not found",
+      "description": "We could not find either the report or the company. Please check the report ID or company ID and try again."
+    },
+    "REPORTS_422": {
+      "title": "Unable to process request",
+      "description": "Please check the request and try again, or contact support. Required fields for a batch report are ISO code, company ID, currency & accounts type."
+    },
+    "REPORTS_429": {
+      "title": "Too many requests to report",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "REPORTS_500": {
+      "title": "Reports fetching error",
+      "description": "We couldn't fetch report. There was an unrecoverable backend error. Please try again later or contact support if this problem persists."
+    },
+    "REPORTS_504": {
+      "title": "Reports fetching error",
+      "description": "We couldn't fetch report. The request took too long to complete. Please try again later or contact support if this problem persists."
+    }
+  },
+  "SEARCH_COMPANIES": {
+    "SEARCH_COMPANIES_400": {
+      "title": "Something went wrong when trying to search companies",
+      "description": "Please check the request and try again."
+    },
+    "SEARCH_COMPANIES_401": {
+      "title": "Not authorised to search companies",
+      "description": "You don't permission to search companies. Please contact your admin."
+    },
+    "SEARCH_COMPANIES_403": {
+      "title": "Forbidden to search companies",
+      "description": "You don't permission to search companies. Please contact your admin."
+    },
+    "SEARCH_COMPANIES_404": {
+      "title": "We could not find any companies",
+      "description": "We could not find any companies. If you are sure they should exist, please login and out and try again. If problem persists please contact support"
+    },
+    "SEARCH_COMPANIES_422": {
+      "title": "Unprocessable entity when searching companies",
+      "description": "Please check the input and try again, or contact support if the problem persists."
+    },
+    "SEARCH_COMPANIES_429": {
+      "title": "Too many requests searching companies",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "SEARCH_COMPANIES_500": {
+      "title": "We couldn't complete the request to search companies",
+      "description": "There was an issue searching companies. This was an unrecoverable backend error. Please try again later or contact support if this problem persists."
+    },
+    "COUNTRY_CODE_REQUIRED": {
+      "title": "Country code required",
+      "description": "A value for County Code is missing. Please add one and try again"
+    },
+    "SEARCH_COMPANIES_FAILURE": {
+      "title": "Search companies failure",
+      "description": ""
+    },
+    "SEARCH_COMPANIES_SUCCESS": {
+      "title": "Search companies success",
+      "description": ""
+    },
+    "INVALID_COUNTRY_CODE": {
+      "title": "Invalid country code",
+      "description": "Please provide a valid ISO based country code."
+    }
+  },
+  "USER_BOOKMARK": {
+    "USER_BOOKMARK_SUCCESS": {
+      "title": "Bookmark {isBookMarked}",
+      "description": "This report can now be found under your bookmarked reports."
+    },
+    "USER_BOOKMARK_400": {
+      "title": "Something went wrong when processing your bookmarks",
+      "description": "Please check the request and try again."
+    },
+    "USER_BOOKMARK_401": {
+      "title": "Not authorised to access these bookmarks",
+      "description": "You don't permission to access your bookmarks. Please login and out and try again. If the problem persists please contact support."
+    },
+    "USER_BOOKMARK_403": {
+      "title": "Forbidden to access these bookmarks",
+      "description": "You don't permission to access your bookmarks. Please login and out and try again. If the problem persists please contact support."
+    },
+    "USER_BOOKMARK_404": {
+      "title": "We couldn't find your bookmarks",
+      "description": "We could not find your bookmarks. If you are sure this should exist, please login and out and try again. If problem persists please contact support."
+    },
+    "USER_BOOKMARK_422": {
+      "title": "Unprocessable entity for user bookmarks",
+      "description": "Please check the request and try again, or contact support."
+    },
+    "USER_BOOKMARK_429": {
+      "title": "Too many requests to user bookmarks endpoint",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "USER_BOOKMARK_500": {
+      "title": "USER_BOOKMARK fetching error",
+      "description": "We couldn't fetch user bookmarks. There was an unrecoverable backend error. Please try again later or contact support if this problem persists"
+    }
+  },
+  "USER_REPORTS": {
+    "USER_REPORTS_200": {
+      "title": "Successfully fetched User Reports",
+      "description": "Your reports were successfully fetched."
+    },
+    "USER_REPORTS_400": {
+      "title": "Something went wrong when processing your reports",
+      "description": "Please check the request and try again. If the problem persists please contact support."
+    },
+    "USER_REPORTS_401": {
+      "title": "Not authorised to access your reports",
+      "description": "You don't permission to access your reports. Please contact your admin or re-authenticate and try again. If the problem persists please contact support."
+    },
+    "USER_REPORTS_403": {
+      "title": "Forbidden to access your reports",
+      "description": "You don't permission to access your reports. Please contact your admin or re-authenticate and try again. If the problem persists please contact support."
+    },
+    "USER_REPORTS_404": {
+      "title": "User reports not found",
+      "description": "We could not find your reports. If you are sure this should exist, please login and out and try again. If problem persists please contact support."
+    },
+    "USER_REPORTS_422": {
+      "title": "Unprocessable entity for your reports",
+      "description": "Please check the request and try again, or contact support."
+    },
+    "USER_REPORTS_429": {
+      "title": "Too many requests to your reports",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "USER_REPORTS_500": {
+      "title": "User reports fetching error",
+      "description": "We couldn't fetch your reports. There was an unrecoverable backend error. Please try again later or contact support if this problem persists."
+    }
+  },
+  "USER": {
+    "USER_UPDATED": {
+      "title": "Settings saved",
+      "description": "Your {section} were updated successfully."
+    },
+    "USER_400": {
+      "title": "Password validation error",
+      "description": "The password you have provided does not match the required password validation."
+    },
+    "USER_401": {
+      "title": "User not authorised",
+      "description": "Your account isn't authorised to complete that action. If you believe you should have access please re-authenticate by logging in again."
+    },
+    "USER_403": {
+      "title": "Forbidden attempt to access user.",
+      "description": "Your account isn't authorised to complete that action. If you believe you should have access please re-authenticate by logging in again."
+    },
+    "USER_404": {
+      "title": "User not found",
+      "description": "We could not find your account please login again."
+    },
+    "USER_422": {
+      "title": "User validation error",
+      "description": "There was an issue with the data stored on your user account. Please try again later or contact support if this problem persists."
+    },
+    "USER_429": {
+      "title": "Too many requests to users",
+      "description": "You have sent too many requests recently, please wait a few minutes and try again. If problem persists please contact support."
+    },
+    "USER_500": {
+      "title": "User fetching error",
+      "description": "We could not find your account please login again."
+    }
+  },
+  "DOCUMENTATION": {
+    "ENV_COLLECTION_DOWNLOAD_200": {
+      "title": "Download successful",
+      "description": "The {type} file should now be available in the downloads folder."
+    }
+  },
+  "TEMPLATE": {
+    "TEMPLATE_DOWNLOAD_200": {
+      "title": "Template downloaded",
+      "description": "The {type} file should now be available in the downloads folder."
+    }
+  }
+}

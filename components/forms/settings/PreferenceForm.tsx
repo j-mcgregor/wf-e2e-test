@@ -7,6 +7,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { mutate } from 'swr';
 
 import config from '../../../config';
+import { useToast } from '../../../hooks/useToast';
 import appState, { appUser } from '../../../lib/appState';
 import SettingsSettings from '../../../lib/settings/settings.settings';
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
@@ -34,6 +35,12 @@ const prefDefaults = {
   reporting: preferences.defaults.reporting_country
 };
 
+const communicationDefaults = {
+  batch_report_email: preferences.communication.batch_report_email,
+  service_updates: preferences.communication.service_updates,
+  company_updates: preferences.communication.company_updates
+};
+
 const PreferenceForm = ({
   formClassName,
   formLabelClassName
@@ -41,6 +48,7 @@ const PreferenceForm = ({
   const { user } = useRecoilValue(appState);
 
   const t = useTranslations();
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
   const dashboardOptions = React.useMemo(
     () =>
@@ -63,8 +71,6 @@ const PreferenceForm = ({
 
   // form state
   const { isDirty, isValid, isSubmitting } = formState;
-  const [submitError, setSubmitError] = useState({ type: '' });
-  const [successMessage, setSuccessMessage] = useState<string>('');
 
   // @ts-ignore
   const onSubmit: SubmitHandler<PreferenceFormInput> = async (
@@ -82,6 +88,10 @@ const PreferenceForm = ({
               currency: data.currency,
               home_page: data.homePage,
               reporting_country: data.reporting
+            },
+            communication: {
+              ...communicationDefaults,
+              ...user.preferences.communication
             }
           }
         })
@@ -90,15 +100,30 @@ const PreferenceForm = ({
       const json = await fetchRes.json();
 
       if (!json.ok) {
-        setSubmitError({ type: json.error });
+        const toastText = getToastTextFromResponse(json);
+
+        toastText &&
+          triggerToast({
+            title: toastText.title,
+            description: toastText.description,
+            status: json.status
+          });
+
         return reset(currentUserValues);
       }
 
       if (json.ok) {
-        setSuccessMessage('USER_UPDATED');
         // mutate the user state to get the new preferences
         // useUser hook is being called here
         mutate('/api/user');
+
+        triggerToast({
+          title: t(`USER.USER_UPDATED.title`),
+          description: t(`USER.USER_UPDATED.description`, {
+            section: t('preferences').toLowerCase()
+          }),
+          status: json.status
+        });
       }
     } catch (error) {
       Sentry.captureException(error);
@@ -200,17 +225,6 @@ const PreferenceForm = ({
           </div>
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
             <div className="flex">
-              {submitError.type === GENERIC_API_ERROR && (
-                <ErrorMessage
-                  className="w-1/2 text-left"
-                  text={t(GENERIC_API_ERROR)}
-                />
-              )}
-              {successMessage === 'USER_UPDATED' && (
-                <SuccessMessage
-                  text={t('forms.preference.update_preferences')}
-                />
-              )}
               <Button
                 onClick={() =>
                   reset(prefDefaults, {

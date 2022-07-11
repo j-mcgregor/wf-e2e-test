@@ -7,7 +7,9 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { mutate } from 'swr';
 
 import config from '../../../config';
+import { useToast } from '../../../hooks/useToast';
 import appState, { appUser } from '../../../lib/appState';
+import { fetchMockData } from '../../../lib/mock-data/helpers';
 import {
   EMAIL_REQUIRED,
   FULL_NAME_REQUIRED,
@@ -34,6 +36,8 @@ const PersonalInformationForm = ({
   const setCurrentUser = useSetRecoilState(appUser);
   const t = useTranslations();
 
+  const { triggerToast, getToastTextFromResponse } = useToast();
+
   const currentUserValues = {
     fullName: user?.full_name,
     email: user?.email
@@ -46,8 +50,6 @@ const PersonalInformationForm = ({
     });
 
   const { isDirty, errors, isSubmitting } = formState;
-  const [submitError, setSubmitError] = useState({ type: '' });
-  const [successMessage, setSuccessMessage] = useState<string>('');
 
   useEffect(() => {
     reset(currentUserValues);
@@ -67,16 +69,36 @@ const PersonalInformationForm = ({
 
       const json = await fetchRes.json();
 
+      // const json = await fetchMockData(400, 'USER', 'USER_400')();
+
       if (!json.ok) {
-        setSubmitError({ type: json.error });
+        const toastText = getToastTextFromResponse(json);
+
+        toastText &&
+          triggerToast({
+            title: toastText.title,
+            description: toastText.description,
+            status: json.status
+          });
+
         return reset(currentUserValues);
       }
 
       if (json.ok) {
-        setSuccessMessage('USER_UPDATED');
         setCurrentUser({ ...user, ...json.data });
         mutate('/api/user');
         // this might be used to update the session user - might be needed for email updates
+
+        triggerToast({
+          title: t(`USER.USER_UPDATED.title`),
+          description: t(`USER.USER_UPDATED.description`, {
+            section: `${t('personal_information').toLowerCase()} ${t(
+              'details'
+            )}`
+          }),
+          status: json.status
+        });
+
         return await getSession();
       }
     } catch (error) {
@@ -104,7 +126,7 @@ const PersonalInformationForm = ({
             <div className="grid grid-cols-6 gap-6">
               <div className="col-span-6 sm:col-span-3">
                 <Input
-                  {...register('fullName')}
+                  {...register('fullName', { required: true })}
                   label={t('forms.personal.name')}
                   className={formClassName}
                 />
@@ -115,7 +137,10 @@ const PersonalInformationForm = ({
 
               <div className="col-span-6 sm:col-span-4">
                 <Input
-                  {...register('email', { pattern: VALID_EMAIL })}
+                  {...register('email', {
+                    pattern: VALID_EMAIL,
+                    required: true
+                  })}
                   type="email"
                   disabled={true}
                   label={t('forms.personal.email_address')}
@@ -129,12 +154,6 @@ const PersonalInformationForm = ({
           </div>
 
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">
-            {submitError.type === GENERIC_API_ERROR && (
-              <ErrorMessage text={t(GENERIC_API_ERROR)} />
-            )}
-            {successMessage === 'USER_UPDATED' && (
-              <SuccessMessage text={t('forms.personal.update_name')} />
-            )}
             <Button
               disabled={!isDirty || isSubmitting}
               loading={isSubmitting}

@@ -10,7 +10,7 @@ const DEFAULT_ERROR_MESSAGES: ErrorMessageObjectType = {
       type
     )}request on is not authorised. Please provide correct authentication.`,
   NOT_FOUND: (type: string = '') =>
-    `The requested ${renderType(type)}resource for could not be found.`,
+    `The requested ${renderType(type)}resource could not be found.`,
   METHOD_NOT_ALLOWED: (type: string = '') =>
     `The requested method ${'on ' + renderType(type)} is not allowed.`,
   VALIDATION_ERROR: (type: string = '') =>

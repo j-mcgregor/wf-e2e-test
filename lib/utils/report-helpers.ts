@@ -459,7 +459,7 @@ export const handleExcel = (
       data: csvData || [],
       values: filteredValues,
       fileName: fileName || '',
-      fileType: 'xlsx',
+      fileType: 'excel',
       isCSV: false,
       isExcel: true,
       isAutoOrManual,

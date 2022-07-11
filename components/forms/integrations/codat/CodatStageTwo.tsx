@@ -1,9 +1,11 @@
+/* eslint-disable security/detect-object-injection */
 import { CheckIcon, ExclamationIcon, XIcon } from '@heroicons/react/outline';
-import { data } from 'msw/lib/types/context';
 import { useTranslations } from 'next-intl';
-import React from 'react';
+import React, { useEffect } from 'react';
 import useSWR from 'swr';
+import { useToast } from '../../../../hooks/useToast';
 
+import { fetchMockData } from '../../../../lib/mock-data/helpers';
 import fetcher from '../../../../lib/utils/fetcher';
 import { convertToDateString } from '../../../../lib/utils/text-helpers';
 import {
@@ -37,8 +39,28 @@ const CodatStageTwo: React.FC<ICodatStageTwoProps> = ({
 
   const { data, isValidating } = useSWR(
     '/api/integrations/codat/companies',
-    fetcher
+    fetcher,
+    // fetchMockData(429, 'INTEGRATIONS_CODAT', 'INTEGRATIONS_CODAT_429'),
+    {
+      revalidateOnFocus: false
+    }
   );
+
+  const { triggerToast, getToastTextFromResponse } = useToast();
+
+  React.useEffect(() => {
+    if (data && !data?.ok) {
+      const toastText = getToastTextFromResponse(data);
+
+      toastText &&
+        triggerToast({
+          title: toastText.title,
+          description: toastText.description,
+          toastId: data.code,
+          status: data.status
+        });
+    }
+  }, [data]);
 
   const { data: accountCategorisation } = useSWR(
     selectedCompany &&

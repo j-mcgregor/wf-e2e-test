@@ -37,7 +37,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // the desired one based on the `locale` received from Next.js.
         ...require(`../messages/${locale}/sme-calculator.${locale}.json`),
         ...require(`../messages/${locale}/general.${locale}.json`),
-        ...require(`../messages/${locale}/errors.${locale}.json`)
+        ...require(`../messages/${locale}/errors.${locale}.json`),
+        ...require(`../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };

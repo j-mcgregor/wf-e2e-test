@@ -1,10 +1,5 @@
 import { ArrowLeftIcon } from '@heroicons/react/outline';
-import {
-  GetServerSidePropsContext,
-  GetStaticPathsContext,
-  GetStaticPropsContext,
-  NextPage
-} from 'next';
+import { GetStaticPropsContext, NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -17,6 +12,9 @@ import CodatStageTwo from '../../components/forms/integrations/codat/CodatStageT
 import Layout from '../../components/layout/Layout';
 import SkeletonLayout from '../../components/skeletons/SkeletonLayout';
 import { CodatCompanyType } from '../../types/report';
+import fetcher from '../../lib/utils/fetcher';
+import { fetchMockData } from '../../lib/mock-data/helpers';
+import { useToast } from '../../hooks/useToast';
 
 interface ReportIntegrationsPageProps {
   locale: string;
@@ -38,9 +36,9 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
   const [canGenerateReport, setCanGenerateReport] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const t = useTranslations();
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
   React.useEffect(() => {
     if (yearPeriod === null && monthPeriod === null && selectedCompany) {
@@ -85,7 +83,6 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
 
   const handleSubmit = async () => {
     setLoading(true);
-    setError(null);
 
     // If there is a parentId, we need to include it in the request
     // If no ID we need to include the details from stage 4
@@ -110,21 +107,46 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
       ...hasParentIdBody
     };
 
-    const res = await fetch(`/api/integrations/codat/codat`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
+    const res = await fetcher(`/api/integrations/codat/codat`, 'POST', body, {
+      'Content-Type': 'application/json'
     });
 
+    // USE FOR TESTING TOASTS
+    // const res = await fetchMockData(
+    //   500,
+    //   'INTEGRATIONS_CODAT',
+    //   'INTEGRATIONS_CODAT_500'
+    // )();
+
     if (res.ok) {
-      const { data } = await res.json();
-      router.push(`/report/${data.id}?from=/report/integrations/`);
+      triggerToast({
+        toastId: res.code,
+        status: res.status,
+        title: t(`${res.sourceType}.${res.code}.title`),
+        description: t(`${res.sourceType}.${res.code}.description`),
+        dismiss: 'corner',
+        actions: [
+          {
+            label: 'Go to integration',
+            action: () =>
+              router.push(`/report/${res?.data.id}?from=/report/integrations/`)
+          }
+        ]
+      });
+
+      router.push(`/report/${res?.data.id}?from=/report/integrations/`);
     } else {
       setLoading(false);
-      const json = await res.json();
-      setError(json.code);
+
+      const toastText = getToastTextFromResponse(res);
+
+      toastText &&
+        triggerToast({
+          toastId: res.code,
+          status: res.status,
+          title: toastText?.title,
+          description: toastText?.description
+        });
     }
   };
 
@@ -203,13 +225,12 @@ const ReportIntegrations: NextPage<ReportIntegrationsPageProps> = ({
               variant="highlight"
               className="max-w-xs"
               onClick={() => handleSubmit()}
-              disabled={!canGenerateReport}
+              disabled={!canGenerateReport || loading}
               loading={loading}
             >
               Generate New Report
             </Button>
           </div>
-          {error && <p className="text-red-500">{t(error)}</p>}
         </div>
       </div>
     </Layout>
@@ -228,7 +249,10 @@ export const getStaticProps = ({ locale }: GetStaticPropsContext) => {
         // the desired one based on the `locale` received from Next.js.
         ...require(`../../messages/${locale}/sme-calculator.${locale}.json`),
         ...require(`../../messages/${locale}/integrations.${locale}.json`),
-        ...require(`../../messages/${locale}/general.${locale}.json`)
+        ...require(`../../messages/${locale}/general.${locale}.json`),
+        ...require(`../../messages/${locale}/errors.${locale}.json`),
+        ...require(`../../messages/${locale}/errors-default.${locale}.json`),
+        ...require(`../../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };

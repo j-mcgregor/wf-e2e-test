@@ -6,6 +6,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { mutate } from 'swr';
 
 import config from '../../../config';
+import { useToast } from '../../../hooks/useToast';
 import appState, { appUser } from '../../../lib/appState';
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
 import Button from '../../elements/Button';
@@ -24,7 +25,6 @@ interface CommunicationFormInput {
 
 const CommunicationForm = () => {
   const { user } = useRecoilValue(appState);
-  const setCurrentUser = useSetRecoilState(appUser);
 
   const t = useTranslations();
 
@@ -35,8 +35,7 @@ const CommunicationForm = () => {
 
   const { isDirty, isSubmitting } = formState;
 
-  const [submitError, setSubmitError] = useState({ type: '' });
-  const [successMessage, setSuccessMessage] = useState('');
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
   const onSubmit: SubmitHandler<CommunicationFormInput> = async data => {
     try {
@@ -58,13 +57,29 @@ const CommunicationForm = () => {
       const json = await fetchRes.json();
 
       if (!json.ok) {
-        setSubmitError({ type: json.error });
+        const toastText = getToastTextFromResponse(json);
+
+        toastText &&
+          triggerToast({
+            title: toastText.title,
+            description: toastText.description,
+            status: json.status
+          });
         return reset();
       }
 
       if (json.ok) {
-        setSuccessMessage('UPDATED_USER');
         mutate('/api/user');
+
+        triggerToast({
+          title: t(`USER.USER_UPDATED.title`),
+          description: t(`USER.USER_UPDATED.description`, {
+            section: `${t('communication').toLowerCase()}  ${t(
+              'preferences'
+            ).toLowerCase()}`
+          }),
+          status: json.status
+        });
       }
     } catch (error) {
       Sentry.captureException(error);
@@ -131,16 +146,6 @@ const CommunicationForm = () => {
             </fieldset>
           </div>
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">
-            {submitError.type === GENERIC_API_ERROR && (
-              <ErrorMessage className="text-left" text={t(GENERIC_API_ERROR)} />
-            )}
-            {successMessage === 'USER_UPDATED' && (
-              <SuccessMessage
-                text={t(
-                  'forms.communication-form.update_communication_preference'
-                )}
-              />
-            )}
             <Button
               disabled={!isDirty || isSubmitting}
               loading={isSubmitting}

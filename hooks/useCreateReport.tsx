@@ -7,7 +7,6 @@ import { mutate } from 'swr';
 import countryCodes from '../lib/data/countryCodes.json';
 import OrbisValidIsoCodes from '../lib/data/orbisValidIsoCountries.json';
 import fetcher from '../lib/utils/fetcher';
-import { ReportsReportApi } from '../pages/api/reports/report';
 
 interface UseCreateReportProps {
   iso_code: string | null;
@@ -48,21 +47,22 @@ export const useCreateReport = ({
         setLoading(true);
         setDisabled(true);
 
-        const createReportRes: ReportsReportApi = await fetcher(
-          '/api/reports/report',
-          'POST',
-          { company_id, iso_code, currency: currencySymbol, accounts_type: 1 }
-        );
+        const createReportRes = await fetcher('/api/reports/report', 'POST', {
+          company_id,
+          iso_code,
+          currency: currencySymbol,
+          accounts_type: 1
+        });
 
-        if (createReportRes?.reportId) {
+        if (createReportRes?.data?.id) {
           // update the global user state to get the new report
           mutate('/api/user');
           setLoading(false);
 
-          setReportId(createReportRes?.reportId);
+          setReportId(createReportRes.data.id);
         }
 
-        if (!createReportRes?.reportId) {
+        if (!createReportRes?.data?.id) {
           setLoading(false);
           setDisabled(false);
           setIsError(createReportRes.is_error);

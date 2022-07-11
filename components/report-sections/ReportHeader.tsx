@@ -86,7 +86,9 @@ const ReportHeader = ({
           variant="none"
           newClassName="border-none self-start ml-auto mr-2 sm:mr-0 sm:ml-4 print:hidden"
           id="bookmark-button"
-          onClick={() => handleBookmark(isBookMarked ? 'REMOVE' : 'ADD')}
+          onClick={() =>
+            handleBookmark(isBookMarked ? 'REMOVE' : 'ADD', company)
+          }
         >
           <BookmarkIcon
             className={`w-10 ${isBookMarked ? 'fill-current' : ''}`}

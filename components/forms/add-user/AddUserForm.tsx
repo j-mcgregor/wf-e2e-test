@@ -1,21 +1,23 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import { CheckIcon } from '@heroicons/react/outline';
+import * as Sentry from '@sentry/nextjs';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import useOrganisation from '../../../hooks/useOrganisation';
-import * as Sentry from '@sentry/nextjs';
 
-import Button from '../../elements/Button';
-import Input from '../../elements/Input';
-import ErrorMessage from '../../elements/ErrorMessage';
+import useOrganisation from '../../../hooks/useOrganisation';
+import { useToast } from '../../../hooks/useToast';
 import { GENERIC_API_ERROR } from '../../../lib/utils/error-codes';
-import ErrorSkeleton from '../../skeletons/ErrorSkeleton';
-import { CheckIcon } from '@heroicons/react/outline';
+import fetcher from '../../../lib/utils/fetcher';
 import { generatePassword } from '../../../lib/utils/generatePassword';
-import { PasswordValidation } from '../settings/PasswordValidation';
 import { VALID_PASSWORD } from '../../../lib/utils/regexes';
+import Button from '../../elements/Button';
+import ErrorMessage from '../../elements/ErrorMessage';
+import Input from '../../elements/Input';
 import RadioSelector from '../../elements/RadioSelector';
+import ErrorSkeleton from '../../skeletons/ErrorSkeleton';
+import { PasswordValidation } from '../settings/PasswordValidation';
 
 interface FormDataType {
   email: string;
@@ -35,6 +37,8 @@ const AddNewUserForm = ({
   const [successfulSubmit, setSuccessfulSubmit] = React.useState(false);
   const t = useTranslations();
 
+  const { triggerToast, getToastTextFromResponse } = useToast();
+
   const { organisation } = useOrganisation();
   const {
     register,
@@ -48,17 +52,40 @@ const AddNewUserForm = ({
   const onSubmit: SubmitHandler<FormDataType> = async data => {
     try {
       setSubmitError({ type: '' });
-      const res = await fetch(`/api/organisation/${organisation?.id}/user`, {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
+      const response = await fetcher(
+        `/api/organisation/${organisation?.id}/user`,
+        'POST',
+        data
+      );
 
-      const json = await res.json();
-      if (!json.ok) {
-        setSubmitError({ type: json.message });
+      if (!response.ok) {
+        const toastText = getToastTextFromResponse(response);
+        setSubmitError({ type: response.message });
+
+        toastText &&
+          triggerToast({
+            toastId: `NEW_USER_ERROR_${response.data?.id}`,
+            title: toastText.title,
+            description: toastText.description,
+            status: response.status
+          });
       } else {
         onSubmitSuccess();
         setSuccessfulSubmit(true);
+
+        triggerToast({
+          toastId: `NEW_USER_CREATED_${response.data?.id}`,
+          title: t.rich('ORGANISATION_USER.USER_CREATED_SUCCESS.title'),
+          description: t.rich(
+            'ORGANISATION_USER.USER_CREATED_SUCCESS.description',
+            {
+              role: data.organisation_role,
+              email: data.email
+            }
+          ),
+          status: response.status
+        });
+
         return reset();
       }
     } catch (error) {
@@ -158,7 +185,6 @@ const AddNewUserForm = ({
                 <div className="flex w-64 my-2 h-9 mb-28">
                   <RadioSelector
                     {...register('organisation_role', { required: true })}
-                    name="role"
                     options={[
                       { label: 'user', value: 'User' },
                       { label: 'admin', value: 'Admin' }

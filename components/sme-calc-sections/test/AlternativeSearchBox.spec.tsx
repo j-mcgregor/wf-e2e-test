@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-non-literal-regexp */
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as nextRouter from 'next/router';
 

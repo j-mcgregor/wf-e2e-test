@@ -27,7 +27,7 @@ const PaginationButton = ({
       hoverClassName
         ? hoverClassName
         : 'hover:bg-highlight hover:bg-opacity-30 hover:text-highlight'
-    } flex text-center justify-center items-center h-full w-8 cursor-pointer px-1`}
+    } flex text-center justify-center items-center h-full min-w-[40px] cursor-pointer px-1`}
     onClick={onClick}
   >
     {children}

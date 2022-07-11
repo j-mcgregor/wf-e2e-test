@@ -675,7 +675,7 @@ export interface ReportHandlerReturn {
   data: CsvReport | null;
   values: string[][];
   fileName: string;
-  fileType: 'xlsx' | 'csv' | null;
+  fileType: 'excel' | 'csv' | null;
   isCSV: boolean;
   isExcel: boolean;
   isAutoOrManual: UploadReportType | null;

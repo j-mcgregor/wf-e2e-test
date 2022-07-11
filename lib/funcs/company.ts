@@ -100,7 +100,7 @@ const searchUKCompaniesHouse = async (
 
     if (res.ok) {
       const results = await res.json();
-      return { ok: true, data: results };
+      return { ok: true, status: res.status, data: results };
     }
 
     if (!res.ok) {

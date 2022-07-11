@@ -79,14 +79,12 @@ enum HttpStatusCode {
   MULTI_STATUS = 207,
 
   /**
-   * The members of a DAV binding have already been enumerated in a preceding part of the (multistatus) response,
-   * and are not being included again.
+   * The members of a DAV binding have already been enumerated in a preceding part of the (multistatus) response, and are not being included again.
    */
   ALREADY_REPORTED = 208,
 
   /**
-   * The server has fulfilled a request for the resource,
-   * and the response is a representation of the result of one or more instance-manipulations applied to the current instance.
+   * The server has fulfilled a request for the resource, and the response is a representation of the result of one or more instance-manipulations applied to the current instance.
    */
   IM_USED = 226,
 
@@ -104,11 +102,7 @@ enum HttpStatusCode {
 
   /**
    * This is an example of industry practice contradicting the standard.
-   * The HTTP/1.0 specification (RFC 1945) required the client to perform a temporary redirect
-   * (the original describing phrase was "Moved Temporarily"), but popular browsers implemented 302
-   * with the functionality of a 303 See Other. Therefore, HTTP/1.1 added status codes 303 and 307
-   * to distinguish between the two behaviours. However, some Web applications and frameworks
-   * use the 302 status code as if it were the 303.
+   * The HTTP/1.0 specification (RFC 1945) required the client to perform a temporary redirect (the original describing phrase was "Moved Temporarily"), but popular browsers implemented 302 with the functionality of a 303 See Other. Therefore, HTTP/1.1 added status codes 303 and 307 to distinguish between the two behaviours. However, some Web applications and frameworks use the 302 status code as if it were the 303.
    */
   FOUND = 302,
 
@@ -168,27 +162,23 @@ enum HttpStatusCode {
   UNAUTHORIZED = 401,
 
   /**
-   * Reserved for future use. The original intention was that this code might be used as part of some form of digital
-   * cash or micro payment scheme, but that has not happened, and this code is not usually used.
+   * Reserved for future use. The original intention was that this code might be used as part of some form of digital cash or micro payment scheme, but that has not happened, and this code is not usually used.
    * Google Developers API uses this status if a particular developer has exceeded the daily limit on requests.
    */
   PAYMENT_REQUIRED = 402,
 
   /**
-   * The request was valid, but the server is refusing action.
-   * The user might not have the necessary permissions for a resource.
+   * The request was valid, but the server is refusing action. The user might not have the necessary permissions for a resource.
    */
   FORBIDDEN = 403,
 
   /**
-   * The requested resource could not be found but may be available in the future.
-   * Subsequent requests by the client are permissible.
+   * The requested resource could not be found but may be available in the future. Subsequent requests by the client are permissible.
    */
   NOT_FOUND = 404,
 
   /**
-   * A request method is not supported for the requested resource;
-   * for example, a GET request on a form that requires data to be presented via POST, or a PUT request on a read-only resource.
+   * A request method is not supported for the requested resource; for example, a GET request on a form that requires data to be presented via POST, or a PUT request on a read-only resource.
    */
   METHOD_NOT_ALLOWED = 405,
 
@@ -210,8 +200,7 @@ enum HttpStatusCode {
   REQUEST_TIMEOUT = 408,
 
   /**
-   * Indicates that the request could not be processed because of conflict in the request,
-   * such as an edit conflict between multiple simultaneous updates.
+   * Indicates that the request could not be processed because of conflict in the request, such as an edit conflict between multiple simultaneous updates.
    */
   CONFLICT = 409,
 
@@ -240,9 +229,7 @@ enum HttpStatusCode {
   PAYLOAD_TOO_LARGE = 413,
 
   /**
-   * The URI provided was too long for the server to process. Often the result of too much data being encoded as a query-string of a GET request,
-   * in which case it should be converted to a POST request.
-   * Called "Request-URI Too Long" previously.
+   * The URI provided was too long for the server to process. Often the result of too much data being encoded as a query-string of a GET request, in which case it should be converted to a POST request. Called "Request-URI Too Long" previously.
    */
   URI_TOO_LONG = 414,
 
@@ -316,8 +303,7 @@ enum HttpStatusCode {
   REQUEST_HEADER_FIELDS_TOO_LARGE = 431,
 
   /**
-   * A server operator has received a legal demand to deny access to a resource or to a set of resources
-   * that includes the requested resource. The code 451 was chosen as a reference to the novel Fahrenheit 451.
+   * A server operator has received a legal demand to deny access to a resource or to a set of resources that includes the requested resource. The code 451 was chosen as a reference to the novel Fahrenheit 451.
    */
   UNAVAILABLE_FOR_LEGAL_REASONS = 451,
 

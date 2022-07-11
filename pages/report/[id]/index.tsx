@@ -13,19 +13,21 @@ import Report from '../../../components/report-sections/Report';
 import ErrorSkeleton from '../../../components/skeletons/ErrorSkeleton';
 import SkeletonLayout from '../../../components/skeletons/SkeletonLayout';
 import SkeletonReport from '../../../components/skeletons/SkeletonReport';
+import useSWRWithToasts from '../../../hooks/useSWRWithToasts';
 import useUser from '../../../hooks/useUser';
 import fetcher from '../../../lib/utils/fetcher';
-import { ReportsReportApi } from '../../api/reports/report';
+import { ReportDataProps } from '../../../types/report';
 
 const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   const t = useTranslations();
 
   const router = useRouter();
-  const { id } = router.query;
+  const { id = '' } = router.query;
 
-  const { data: result, error } = useSWR<ReportsReportApi>(
+  const { data: result, error } = useSWRWithToasts<ReportDataProps>(
     id && `/api/reports/report?id=${id}`,
-    fetcher
+    fetcher,
+    {}
   );
 
   const { user, isAdmin } = useUser();
@@ -40,7 +42,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
   // will not work for non-admin user currently until the users can access organisation
   const isIntegrated = codat?.data?.auth_header ?? false;
 
-  const data = result?.report;
+  const data = result?.data;
 
   const backLink = Array.isArray(router?.query?.from)
     ? router.query.from[0]
@@ -50,7 +52,7 @@ const ReportTemplate = ({ isTesting = false }: { isTesting?: boolean }) => {
     ? data?.details?.company_name || data?.details?.name || 'Unnamed Company'
     : '';
 
-  const isError = error || result?.is_error || data?.error;
+  const isError = error || result?.isError || data?.error;
 
   // handle language error messages during fallback
   if (router.isFallback) {
@@ -129,7 +131,8 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         ...require(`../../../messages/${locale}/report.${locale}.json`),
         ...require(`../../../messages/${locale}/hints.${locale}.json`),
         ...require(`../../../messages/${locale}/general.${locale}.json`),
-        ...require(`../../../messages/${locale}/errors.${locale}.json`)
+        ...require(`../../../messages/${locale}/errors.${locale}.json`),
+        ...require(`../../../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };

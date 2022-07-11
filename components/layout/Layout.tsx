@@ -1,20 +1,20 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import { useSession } from 'next-auth/react';
 
-import { useRouter } from 'next/router';
 import React from 'react';
 import * as Sentry from '@sentry/react';
-import SkeletonLayout from '../skeletons/SkeletonLayout';
-import Nav from './Nav';
-import Seo from './Seo';
-import useUser from '../../hooks/useUser';
-import ErrorSkeleton from '../skeletons/ErrorSkeleton';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+
 import useHubspotChat from '../../hooks/useHubspotChat';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import useSessionStorage from '../../hooks/useSessionStorage';
+import useUser from '../../hooks/useUser';
 import NewDeploymentNotification from '../cards/NewDeploymentNotification';
 import config from '../../config';
-import useOrganisation from '../../hooks/useOrganisation';
+import SkeletonLayout from '../skeletons/SkeletonLayout';
+import ErrorSkeleton from '../skeletons/ErrorSkeleton';
+import Seo from './Seo';
+import Nav from './Nav';
+// import useOrganisation from '../../hooks/useOrganisation';
 interface LayoutProps {
   title?: string;
   pageTitle?: string;
@@ -53,18 +53,16 @@ const Layout = ({
   // useOrganisation(!noAuthRequired)
 
   const { HubspotScript } = useHubspotChat('4623266', true, user);
-  const [, setHomePage] = useLocalStorage<string>('wf_home_page', '');
 
   React.useEffect(() => {
     if (user) {
       // set sentry to identify user
       Sentry.setUser({ email: user.email || '' });
-      setHomePage(user?.preferences?.defaults?.home_page);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  if (!loading && adminRequired && !isAdmin && user) {
+  if (!loading && adminRequired && !isAdmin && user && status !== 'loading') {
     router.push('/no-access');
     return <SkeletonLayout />;
   }

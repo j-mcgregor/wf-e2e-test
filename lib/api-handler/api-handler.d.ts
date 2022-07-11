@@ -26,7 +26,7 @@ export type MakeErrorOutput = NextApiResponse & {
   status: HttpStatusCode;
   sourceType: ErrorCodeType;
   isError: true;
-  errorCode: ErrorCodeType;
+  code: ErrorCodeType;
   message: string;
   details: {
     requestUrl: string;
@@ -44,7 +44,7 @@ export type MakeErrorInput = {
   status: HttpStatusCode;
   sourceType: ErrorCodeType | string;
   message: string;
-  errorCode: ErrorCodeType;
+  code: ErrorCodeType;
   details: {
     requestUrl: string;
     requestBody: RequestBodyType;
@@ -64,10 +64,29 @@ export type UnauthenticatedMethodsType = {
   PATCH?: boolean;
 };
 
+export type SourceTypes =
+  | 'USER'
+  | 'BATCH_REPORTS_BY_ID'
+  | 'BATCH_AUTO'
+  | 'BATCH_MANUAL'
+  | 'INTEGRATIONS'
+  | 'INTEGRATIONS_CODAT'
+  | 'ORGANISATION_ALL_REPORTS'
+  | 'ORGANISATION'
+  | 'ORGANISATION_USER'
+  | 'ORGANISATION_USERS'
+  | 'REPORTS_NEWS'
+  | 'REPORTS'
+  | 'REPORTS_UPLOAD'
+  | 'USER_BOOKMARK'
+  | 'USER_REPORTS'
+  | 'PASSWORD_RESET'
+  | 'SEARCH_COMPANIES';
+
 type APIHandlerOptionsType = {
   authenticate: (req: NextApiRequest) => Promise<JWT | null>;
   publicMethods?: UnauthenticatedMethodsType;
-  sourceType: string;
+  sourceType: SourceTypes;
 };
 
 export type MakeHttpResponse = <T = any>(
@@ -96,13 +115,17 @@ type HandlerArgumentsType = {
   authentication: JWT | null;
 };
 
-export type SuccessResponseType<T> = {
+export type SuccessResponseType<T = any> = {
   ok: boolean;
-  error: boolean;
+  isError: boolean;
   sourceType?: string;
   blob?: Promise<Blob> | null;
-  data: T | object | null;
+  data: T | null;
 };
+
 export type ErrorResponseType = MakeErrorOutput;
+
+export type ApiHandlerResponse<T = any> = SuccessResponseType<T> &
+  ErrorResponseType;
 
 type BaseHandlerResponse = null;

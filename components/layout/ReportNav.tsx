@@ -5,10 +5,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-scroll';
 
 import { useReportNavItems } from '../../hooks/useNavigation';
+import { useToast } from '../../hooks/useToast';
 import fetcher from '../../lib/utils/fetcher';
 import { downloadFile } from '../../lib/utils/file-helpers';
 import Button from '../elements/Button';
 import SkeletonMenu from '../skeletons/SkeletonMenu';
+import config from '../../config';
+import { toast } from 'react-toastify';
+import { ToastLayout } from '../toast/Toast';
 
 interface ReportNavProps {
   companyName: string;
@@ -24,43 +28,60 @@ const nonTestingProps = {
 export const handleExport = async (
   format: 'csv' | 'pdf',
   id: string,
-  setDownloading: (value: boolean) => void
+  setDownloading: (value: boolean) => void,
+  token?: string
 ) => {
   if (!id) return null;
-  setDownloading(true);
 
   try {
+    setDownloading(true);
+
     const isPDF = format === 'pdf';
 
-    const response = await fetcher(
-      `/api/reports/report?id=${id}&export=${isPDF ? 'pdf' : 'csv-full'}`,
-      'GET',
-      null,
-      {
-        'Content-Type': isPDF ? 'application/pdf' : 'application/json'
-      }
-    );
+    if (isPDF) {
+      // Getting a direct PDF link is easier than passing through the API Handler
+      const response = await fetch(
+        `${config.API_URL}/reports/${id}/export/pdf`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
-    const fileName = `report-${id}.${format}`;
-
-    if (isPDF)
-      return downloadFile({
-        data: response,
-        // eg report-companyName.csv
-        fileName: fileName,
+      downloadFile({
+        data: await response.blob(),
+        // eg report-id.csv
+        fileName: `batch-report-${id}.pdf`,
         fileType: 'application/pdf'
       });
+      return response;
+    } else {
+      const response = await fetcher(
+        `/api/reports/report?id=${id}&export=csv-full`,
+        'GET',
+        null,
+        {
+          'Content-Type': 'application/json'
+        }
+      );
+      const fileName = `report-${id}.${format}`;
 
-    return downloadFile({
-      data: response.csv,
-      // eg report-companyName.csv
-      fileName: fileName,
-      fileType: 'text/csv'
-    });
-  } catch (error) {
+      downloadFile({
+        data: response.data.csv,
+        // eg report-companyName.csv
+        fileName: fileName,
+        fileType: 'text/csv'
+      });
+
+      return response;
+    }
+  } catch (error: any) {
     // TODO remove console.log
     // eslint-disable-next-line no-console
     console.log(error);
+    return new Promise((_, reject) => reject({ status: error.status || 500 }));
   } finally {
     setDownloading(false);
   }
@@ -80,6 +101,22 @@ const ReportNav = ({
 
   const [downloadingCsv, setDownloadingCsv] = useState(false);
   const [downloadingPdf, setDownloadingPdf] = useState(false);
+
+  const { toastStyle } = useToast();
+
+  const handleDownloadToast = (fileType: 'CSV' | 'PDF', statusCode: number) => {
+    const status = statusCode || 500;
+    return (
+      <ToastLayout
+        title={t(`REPORTS.REPORT_DOWNLOAD_${status}.title`, {
+          fileType
+        })}
+        description={t(`REPORTS.REPORT_DOWNLOAD_${status}.description`, {
+          fileType
+        })}
+      />
+    );
+  };
 
   if (loading) {
     return (
@@ -166,8 +203,23 @@ const ReportNav = ({
           loading={downloadingPdf}
           disabled={downloadingPdf}
           variant="alt"
+          type="button"
           className="w-full"
-          onClick={() => handleExport('pdf', `${id}`, setDownloadingPdf)}
+          onClick={() =>
+            toast.promise(handleExport('pdf', `${id}`, setDownloadingPdf), {
+              pending: 'Download started',
+              success: {
+                render: ({ data }) => handleDownloadToast('PDF', data.status),
+                type: 'info',
+                icon: toastStyle.info.icon
+              },
+              error: {
+                render: ({ data }) => handleDownloadToast('PDF', data.status),
+                type: 'error',
+                icon: toastStyle.error.icon
+              }
+            })
+          }
         >
           {t('export_pdf')}
         </Button>
@@ -175,7 +227,21 @@ const ReportNav = ({
           loading={downloadingCsv}
           disabled={downloadingCsv}
           variant="secondary"
-          onClick={() => handleExport('csv', `${id}`, setDownloadingCsv)}
+          onClick={() => {
+            toast.promise(handleExport('csv', `${id}`, setDownloadingCsv), {
+              pending: 'Download started',
+              success: {
+                render: ({ data }) => handleDownloadToast('CSV', data.status),
+                type: 'info',
+                icon: toastStyle.info.icon
+              },
+              error: {
+                render: ({ data }) => handleDownloadToast('CSV', data.status),
+                type: 'error',
+                icon: toastStyle.error.icon
+              }
+            });
+          }}
         >
           {t('export_csv')}
         </Button>

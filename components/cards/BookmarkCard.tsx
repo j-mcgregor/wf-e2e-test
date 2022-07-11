@@ -66,7 +66,9 @@ const BookmarkCard = ({
             onMouseLeave={() => setDisableLink(false)}
             className="absolute top-0 right-0  h-12 w-12 flex justify-center items-center z-50 "
           >
-            <BookmarkDropdown deleteBookmark={() => handleBookmark('REMOVE')} />
+            <BookmarkDropdown
+              deleteBookmark={() => handleBookmark('REMOVE', companyName)}
+            />
           </div>
         </div>
         <div className="flex flex-col">

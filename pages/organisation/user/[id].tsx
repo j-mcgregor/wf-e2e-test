@@ -3,24 +3,24 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
 import React from 'react';
-import useSWR, { mutate } from 'swr';
-import ReactTimeAgo from 'react-timeago';
+import ReactTimeago from 'react-timeago';
+import useSWR from 'swr';
 
 import Button from '../../../components/elements/Button';
-import Table, { TableHeadersType } from '../../../components/table/Table';
-import Layout from '../../../components/layout/Layout';
-import useOrganisation from '../../../hooks/useOrganisation';
-import fetcher from '../../../lib/utils/fetcher';
-import { OrganisationTypeApi } from '../../api/organisation/[orgId]/[type]';
-import { createReportTitle } from '../../../lib/utils/text-helpers';
-import LoadingIcon from '../../../components/svgs/LoadingIcon';
 import ToggleUserAccessButton from '../../../components/elements/ToggleUserAccessButton';
-
+import Layout from '../../../components/layout/Layout';
+import LoadingIcon from '../../../components/svgs/LoadingIcon';
+import Table, { TableHeadersType } from '../../../components/table/Table';
+import useOrganisation from '../../../hooks/useOrganisation';
+import useSWRWithToasts from '../../../hooks/useSWRWithToasts';
+import { useToast } from '../../../hooks/useToast';
+import fetcher from '../../../lib/utils/fetcher';
+import { createReportTitle } from '../../../lib/utils/text-helpers';
+import { ReportSnippetType } from '../../../types/global';
 import {
   OrganisationUser,
   OrganisationUserReport
 } from '../../../types/organisations';
-import ReactTimeago from 'react-timeago';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const OrganisationUserPage = () => {
@@ -31,6 +31,8 @@ const OrganisationUserPage = () => {
   const [reports, setReports] = React.useState<OrganisationUserReport[]>([]);
   const { id } = router.query;
   const [skip, setSkip] = React.useState(0);
+
+  const { triggerToast } = useToast();
 
   const limit = 10;
 
@@ -75,10 +77,23 @@ const OrganisationUserPage = () => {
   ];
 
   const {
-    data: result,
+    data: organisationUser,
+    isValidating: userIsValidating,
+    mutate: userMutate
+  } = useSWR(
+    `/api/organisation/${organisation?.id}/user?userId=${id}`,
+    fetcher,
+    {
+      revalidateOnMount: true,
+      revalidateOnFocus: false
+    }
+  );
+
+  const {
+    data: userReports,
     isValidating,
     mutate
-  } = useSWR<OrganisationTypeApi>(
+  } = useSWRWithToasts<OrganisationUserReport[]>(
     `/api/organisation/${organisation?.id}/user-reports?userId=${id}&skip=${skip}&limit=${limit}`,
     fetcher,
     {
@@ -88,15 +103,16 @@ const OrganisationUserPage = () => {
   );
 
   React.useEffect(() => {
-    if (result?.user) {
-      // sometimes the endpoint doesn't return the user.total_reports value
-      // this makes it flash in the UI, merging data is a shitty, but working fix for now.
-      setUser({ ...user, ...result.user });
+    if (organisationUser?.data) {
+      setUser({ ...user, ...organisationUser?.data });
     }
-    if (result?.userReports) {
-      setReports(result.userReports);
+  }, [organisationUser]);
+
+  React.useEffect(() => {
+    if (userReports?.data) {
+      setReports(userReports.data);
     }
-  }, [result]);
+  }, [userReports]);
 
   const {
     full_name: fullName,
@@ -120,27 +136,61 @@ const OrganisationUserPage = () => {
   };
 
   const toggleActiveUser = () => {
-    const optimisticData = result &&
-      user && { ...result, user: { ...user, is_active: !user?.is_active } };
+    const optimisticData = organisationUser?.data &&
+      user && {
+        ...organisationUser?.data,
+        user: { ...user, is_active: !user?.is_active }
+      };
     return (
       user &&
-      mutate(updateUserFn({ is_active: !user?.is_active }), {
+      userMutate(updateUserFn({ is_active: !user?.is_active }), {
         optimisticData,
         rollbackOnError: true
+      }).then(res => {
+        const role = res.data?.is_active === true ? 'active' : 'inactive';
+
+        triggerToast({
+          toastId: `ACTIVE_USER_${res.data?.is_active}`,
+          title: t(`${res?.sourceType}.${res?.code}.title`),
+          description: t(`${res?.sourceType}.${res?.code}.description`, {
+            user: res?.data?.full_name,
+            role
+          }),
+          status: res?.status
+        });
       })
     );
   };
 
   const toggleAdminUser = () => {
-    const optimisticData = result &&
-      user && {
-        ...result,
-        user: { ...user, organisation_role: isAdmin ? 'User' : 'Admin' }
-      };
-    return mutate(
+    const optimisticData = {
+      data: organisationUser?.data &&
+        user && {
+          ...organisationUser?.data,
+          user: { ...user, organisation_role: isAdmin ? 'User' : 'Admin' }
+        }
+    };
+    return userMutate(
       updateUserFn({ organisation_role: isAdmin ? 'User' : 'Admin' }),
       { optimisticData, rollbackOnError: true }
-    );
+    ).then(res => {
+      const role =
+        res?.data?.organisation_role === 'Admin'
+          ? 'an admin'
+          : res?.data?.organisation_role === 'User'
+          ? 'a user'
+          : '';
+
+      triggerToast({
+        toastId: `TOGGLE_USER_${res?.data?.organisation_role}`,
+        title: t(`${res?.sourceType}.${res?.code}.title`),
+        description: t(`${res?.sourceType}.${res?.code}.description`, {
+          user: res?.data?.full_name,
+          role
+        }),
+        status: res?.status
+      });
+    });
   };
 
   return (
@@ -155,7 +205,7 @@ const OrganisationUserPage = () => {
           {t('back_to_organisation')}
         </Button>
       </div>
-      <div className="max-w-lg text-primary min-w-full space-y-12 mb-40">
+      <div className="max-w-lg text-primary min-w-full space-y-12 pb-40">
         <div className="max-w-lg space-y-4 ">
           <h1 className="text-3xl font-semibold">
             {t('organisation_user_overview')}
@@ -264,7 +314,9 @@ export async function getServerSideProps({
         ...require(`../../../messages/${locale}/reports.${locale}.json`),
         ...require(`../../../messages/${locale}/organisation.${locale}.json`),
         ...require(`../../../messages/${locale}/general.${locale}.json`),
-        ...require(`../../../messages/${locale}/errors.${locale}.json`)
+        ...require(`../../../messages/${locale}/errors.${locale}.json`),
+        ...require(`../../../messages/${locale}/errors-default.${locale}.json`),
+        ...require(`../../../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };

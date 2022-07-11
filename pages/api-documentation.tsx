@@ -16,9 +16,16 @@ import {
 // Components
 import LinkCard from '../components/cards/LinkCard';
 import Layout from '../components/layout/Layout';
+import { useToast } from '../hooks/useToast';
 
 const APIDocumentation = () => {
   const t = useTranslations();
+  const { handleDownload } = useToast();
+
+  /**
+   * Switched from <LinkCard href={href} download /> to this function
+   * purely so toasts can be implemented. Easy to put back if unwanted
+   */
 
   return (
     <Layout title="API Documentation">
@@ -53,15 +60,26 @@ const APIDocumentation = () => {
             {documentCards.map(({ header, description, href }) => (
               <LinkCard
                 key={header}
-                className="md:mx-auto"
+                className="md:mx-auto text-left"
                 icon={
                   <CloudDownloadIcon className='className="h-6 w-6 text-black' />
                 }
                 iconColor="bg-highlight opacity-75"
                 header={t(header)}
                 description={t(description)}
-                linkTo={href}
-                download
+                onClick={() =>
+                  handleDownload({
+                    href,
+                    toastId: `API_COLLECTION_${t(header)}`,
+                    title: t(`DOCUMENTATION.ENV_COLLECTION_DOWNLOAD_200.title`),
+                    description: t(
+                      `DOCUMENTATION.ENV_COLLECTION_DOWNLOAD_200.description`,
+                      {
+                        type: t(header)
+                      }
+                    )
+                  })
+                }
               />
             ))}
           </div>
@@ -81,7 +99,9 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         // pattern is to put them in JSON files separated by language and read
         // the desired one based on the `locale` received from Next.js.
         ...require(`../messages/${locale}/api-documentation.${locale}.json`),
-        ...require(`../messages/${locale}/general.${locale}.json`)
+        ...require(`../messages/${locale}/general.${locale}.json`),
+        ...require(`../messages/${locale}/errors-default.${locale}.json`),
+        ...require(`../messages/${locale}/toasts.${locale}.json`)
       }
     }
   };

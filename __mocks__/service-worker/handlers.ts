@@ -24,7 +24,13 @@ export const handlers = [
           address_snippet: address_snippet.replace('{id}', i)
         }));
     }
-    return res(ctx.delay(500), ctx.status(200), ctx.json(data));
+    return res(
+      ctx.delay(500),
+      ctx.status(200),
+      ctx.json({
+        data
+      })
+    );
   }),
   rest.get('http://localhost:3000/api/reports/report', (req, res, ctx) => {
     const query = req.url.searchParams;

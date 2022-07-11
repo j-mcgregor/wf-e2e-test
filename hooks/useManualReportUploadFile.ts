@@ -69,7 +69,7 @@ export const useManualReportUploadFile = (
     data: null,
     values: [],
     fileName: '',
-    fileType: null,
+    fileType,
     isCSV: false,
     isExcel: false,
     isAutoOrManual: null,

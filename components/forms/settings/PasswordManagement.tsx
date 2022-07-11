@@ -8,6 +8,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import config from '../../../config';
+import { useToast } from '../../../hooks/useToast';
 import appState, { appUser } from '../../../lib/appState';
 import {
   CONFIRM_PASSWORD_MATCH,
@@ -47,9 +48,8 @@ const PasswordManagement = () => {
     setValue
   } = useForm<PasswordFormInput>();
   const { isDirty, errors, isSubmitting } = formState;
-  const [submitError, setSubmitError] = useState({ type: '', status: null });
   const [showPassword, setShowPassword] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
+  const { triggerToast, getToastTextFromResponse } = useToast();
 
   // @ts-ignore
   const onSubmit: SubmitHandler = async (data: {
@@ -58,31 +58,42 @@ const PasswordManagement = () => {
     confirmPassword: string;
   }) => {
     const { newPassword, currentPassword } = data;
-    setSuccessMessage('');
-    setSubmitError({ type: '', status: null });
+
     try {
-      const fetchRes = await fetch(
-        `${config.URL}/api/user/password?id=${user.id}`,
-        {
-          method: 'PUT',
-          body: JSON.stringify({
-            ...user,
-            old_password: currentPassword,
-            new_password: newPassword.trim()
-          })
-        }
-      );
+      const fetchRes = await fetch(`${config.URL}/api/user`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          old_password: currentPassword,
+          new_password: newPassword.trim()
+        })
+      });
 
       const json = await fetchRes.json();
 
       if (!json.ok) {
-        setSubmitError({ type: json.message, status: json.status });
+        const toastText = getToastTextFromResponse(json);
+
+        toastText &&
+          triggerToast({
+            title: toastText.title,
+            description: toastText.description,
+            status: json.status
+          });
+
         return reset();
       }
 
       if (json.ok) {
         setCurrentUser({ ...user });
-        setSuccessMessage('USER_UPDATED');
+
+        triggerToast({
+          title: t(`USER.USER_UPDATED.title`),
+          description: t(`USER.USER_UPDATED.description`, {
+            section: 'Password'
+          }),
+          status: json.status
+        });
+
         return reset();
       }
     } catch (error) {
@@ -190,23 +201,6 @@ const PasswordManagement = () => {
           </div>
         </div>
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex items-center">
-          {submitError.type === USER_BAD_REQUEST && (
-            <ErrorMessage className="text-left" text={t(USER_BAD_REQUEST)} />
-          )}
-          {submitError.type === GENERIC_API_ERROR && (
-            <ErrorMessage className="text-left" text={t(GENERIC_API_ERROR)} />
-          )}
-          {submitError.type === USER_NOT_AUTHORISED && (
-            <ErrorMessage
-              className="text-left"
-              text={t(`forms.password-management.incorrect_password`)}
-            />
-          )}
-          {successMessage === 'USER_UPDATED' && (
-            <SuccessMessage
-              text={t(`forms.password-management.updated_password`)}
-            />
-          )}
           <Button
             disabled={!isDirty}
             type="submit"
