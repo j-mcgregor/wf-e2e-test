@@ -13,6 +13,8 @@ import SkeletonMenu from '../skeletons/SkeletonMenu';
 import config from '../../config';
 import { toast } from 'react-toastify';
 import { ToastLayout } from '../toast/Toast';
+import { useSession } from 'next-auth/react';
+import { data } from 'msw/lib/types/context';
 
 interface ReportNavProps {
   companyName: string;
@@ -96,6 +98,7 @@ const ReportNav = ({
   const navItems = useReportNavItems();
   const t = useTranslations();
   const router = useRouter();
+  const session = useSession();
   const id = router?.query?.id;
   const [activeItem, setActiveItem] = useState<string>('summary');
 
@@ -205,21 +208,29 @@ const ReportNav = ({
           variant="alt"
           type="button"
           className="w-full"
-          onClick={() =>
-            toast.promise(handleExport('pdf', `${id}`, setDownloadingPdf), {
-              pending: 'Download started',
-              success: {
-                render: ({ data }) => handleDownloadToast('PDF', data.status),
-                type: 'info',
-                icon: toastStyle.info.icon
-              },
-              error: {
-                render: ({ data }) => handleDownloadToast('PDF', data.status),
-                type: 'error',
-                icon: toastStyle.error.icon
+          onClick={() => {
+            return toast.promise(
+              handleExport(
+                'pdf',
+                `${id}`,
+                setDownloadingPdf,
+                session?.data?.token as string | undefined
+              ),
+              {
+                pending: 'Report PDF Download started',
+                success: {
+                  render: ({ data }) => handleDownloadToast('PDF', data.status),
+                  type: 'info',
+                  icon: toastStyle.info.icon
+                },
+                error: {
+                  render: ({ data }) => handleDownloadToast('PDF', data.status),
+                  type: 'error',
+                  icon: toastStyle.error.icon
+                }
               }
-            })
-          }
+            );
+          }}
         >
           {t('export_pdf')}
         </Button>

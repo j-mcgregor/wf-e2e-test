@@ -420,6 +420,14 @@
       "title": "Report {fileType} downloaded",
       "description": "The {fileType} for this report was successfully downloaded and is available in your downloads folder."
     },
+    "REPORT_DOWNLOAD_401": {
+      "title": "Download format not recognised",
+      "description": "You are not authorised to download this document. If you believe you should have access please login and out before trying again. If the the problem persists please contact support."
+    },
+    "REPORT_DOWNLOAD_403": {
+      "title": "Download not authorised",
+      "description": "You are not authorised to download this document. If you believe you should have access please login and out before trying again. If the the problem persists please contact support."
+    },
     "REPORT_DOWNLOAD_404": {
       "title": "Download format not recognised",
       "description": "Only PDF and CSV download formats are supported. Please check your request and try again."

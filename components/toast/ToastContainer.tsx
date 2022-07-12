@@ -11,6 +11,7 @@ export const ToastContainer = (props: ToastContainerProps) => (
     draggable={false}
     position="top-right"
     autoClose={8000}
+    className="!top-14 xl:!top-[1em]"
     hideProgressBar={false}
     newestOnTop={false}
     closeOnClick

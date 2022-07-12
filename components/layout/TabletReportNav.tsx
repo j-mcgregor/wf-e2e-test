@@ -8,6 +8,11 @@ import DownloadDoc from '../icons/DownloadDoc';
 import DownloadFolder from '../icons/DownloadFolder';
 import { useRouter } from 'next/router';
 import { handleExport } from './ReportNav';
+import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
+import { ToastLayout } from '../toast/Toast';
+import { useTranslations } from 'next-intl';
+import { useToast } from '../../hooks/useToast';
 
 interface ReportNavProps {
   companyName: string;
@@ -28,7 +33,11 @@ const TabletReportNav = ({
 }: ReportNavProps) => {
   const navItems = useReportNavItems();
   const router = useRouter();
+  const session = useSession();
   const id = router?.query?.id;
+
+  const t = useTranslations();
+  const { toastStyle } = useToast();
 
   const [downloadingCsv, setDownloadingCsv] = useState(false);
   const [downloadingPdf, setDownloadingPdf] = useState(false);
@@ -42,6 +51,20 @@ const TabletReportNav = ({
         ?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [activeItem]);
+
+  const handleDownloadToast = (fileType: 'CSV' | 'PDF', statusCode: number) => {
+    const status = statusCode || 500;
+    return (
+      <ToastLayout
+        title={t(`REPORTS.REPORT_DOWNLOAD_${status}.title`, {
+          fileType
+        })}
+        description={t(`REPORTS.REPORT_DOWNLOAD_${status}.description`, {
+          fileType
+        })}
+      />
+    );
+  };
 
   if (loading) {
     return (
@@ -114,7 +137,29 @@ const TabletReportNav = ({
           disabled={downloadingPdf}
           variant="alt"
           className="w-full rounded-none flex items-center"
-          onClick={() => handleExport('pdf', `${id}`, setDownloadingPdf)}
+          onClick={() => {
+            return toast.promise(
+              handleExport(
+                'pdf',
+                `${id}`,
+                setDownloadingPdf,
+                session?.data?.token as string | undefined
+              ),
+              {
+                pending: 'Report PDF Download started',
+                success: {
+                  render: ({ data }) => handleDownloadToast('PDF', data.status),
+                  type: 'info',
+                  icon: toastStyle.info.icon
+                },
+                error: {
+                  render: ({ data }) => handleDownloadToast('PDF', data.status),
+                  type: 'error',
+                  icon: toastStyle.error.icon
+                }
+              }
+            );
+          }}
         >
           <DownloadDoc />
         </Button>
