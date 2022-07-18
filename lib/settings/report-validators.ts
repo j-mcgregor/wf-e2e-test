@@ -3,7 +3,7 @@
 import countryCodes from '../../lib/data/countryCodes.json';
 import { CsvReportUploadHeaders, CsvValueValidation } from '../../types/report';
 import { dateIsValid } from '../utils/date-helpers';
-
+import WfIsoCodes from '../../lib/data/iso_code_wf_api.json';
 import type { BatchAutoUploadHeaders } from '../../types/batch-reports';
 import type { CSVValidationHeaderProps } from '../../types/global';
 
@@ -80,10 +80,10 @@ export const uploadReportCSVHeaders: {
   },
   iso_code: {
     required: (x: string) => !x && `A value for "iso_code" is required`,
-    validator: (x: string) =>
-      countryCodes.find(country => country.code === x)
-        ? false
-        : `"${x}" is not a valid ISO code`,
+    validator: (x: string) => {
+      const codes = WfIsoCodes as { [key: string]: string };
+      return codes?.[x] ? false : `"${x}" is not a valid ISO code`;
+    },
     formatted: 'ISO Code'
   },
   company_id: {
@@ -297,13 +297,7 @@ export const uploadReportCSVHeaders: {
     formatted: 'Current liabilities'
   },
   company_age: {
-    required: (x: string) => {
-      return (
-        !isNull(x) &&
-        !x.trim() &&
-        `A value for "company_age" is required (or null)`
-      );
-    },
+    required: false,
     formatted: 'Company Age'
   }
 };

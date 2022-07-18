@@ -382,7 +382,7 @@ const CreateBatchReport: NextPage = () => {
             description={t('batch_mdi_excel_template_desc')}
             onClick={() =>
               handleLinkDownload(
-                '/download-templates/Sunrise_Client_Input_Sheet_v1.01.xlsm',
+                '/download-templates/Sunrise_Client_Input_Sheet_v1.02.xlsm',
                 'batch_mdi_excel_template'
               )
             }
