@@ -1,6 +1,6 @@
 name: Release
 on:
-  # since pushing to main / staging branch is disabled, the only push should come from a pull request
+  # since pushing to main / prerelease branch is disabled, the only push should come from a pull request
   push:
     branches: [main, prerelease]
 jobs:
