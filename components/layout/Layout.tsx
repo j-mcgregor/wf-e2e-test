@@ -79,7 +79,8 @@ const Layout = ({
   return (
     <div>
       {!config.IS_TEST && <NewDeploymentNotification />}
-      <HubspotScript />
+      {config.IS_LIVE_PROD && <HubspotScript />}
+
       <Seo title={title} description={description} path={path} />
       <div className="h-screen bg-bg overflow-hidden flex ">
         {!noNav && user && <Nav path={path} isAdmin={isAdmin} />}

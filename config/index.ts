@@ -36,6 +36,9 @@ const config = {
   API_URL: process.env.NEXT_PUBLIC_WF_API_ROUTE,
   URL,
   IS_TEST: process.env.NODE_ENV === 'test',
+  IS_LIVE_PROD:
+    process.env.NODE_ENV === 'production' &&
+    process.env.VERCEL_ENV === 'production',
   WF_ENV
 };
 
