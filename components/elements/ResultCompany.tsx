@@ -5,7 +5,7 @@ import { kebabCase } from 'lodash';
 
 type ResultCompanyProps = {
   clearSelection?: () => void;
-  index: number;
+  index?: number;
 } & CompanyType;
 
 const ResultCompany = ({

@@ -11,7 +11,7 @@ if (!env.VERCEL_ENV) {
 const config: PlaywrightTestConfig = {
   workers: 1,
   testMatch: 'test.list.ts', // location of tests
-  // globalSetup: require.resolve('./playwright/global-setup'),
+  globalSetup: require.resolve('./playwright/global-setup'),
   outputDir: './playwright/test-results',
   maxFailures: env.CI ? 1 : undefined,
   use: {
