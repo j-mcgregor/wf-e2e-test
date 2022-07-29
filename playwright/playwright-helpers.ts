@@ -81,7 +81,7 @@ export class WiserfundingE2E {
   }
 
   async closeCookieBanner() {
-    this.acceptCookie.click();
+    this.acceptCookie?.click();
   }
 
   async navigateTo(to: 'single') {
