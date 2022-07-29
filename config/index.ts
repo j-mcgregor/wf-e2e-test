@@ -29,6 +29,7 @@ if (process.env.NODE_ENV === 'production') {
   URL = 'http://localhost:3000';
 }
 const config = {
+  CI: process.env.CI,
   NODE_ENV: process.env.NODE_ENV,
   VERCEL_ENV: process.env.VERCEL_ENV,
   NEXT_PUBLIC_VERCEL_URL: process.env.NEXT_PUBLIC_VERCEL_URL,

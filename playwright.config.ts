@@ -9,9 +9,11 @@ if (!env.VERCEL_ENV) {
 }
 
 const config: PlaywrightTestConfig = {
-  testDir: './playwright', // location of tests
-  globalSetup: require.resolve('./playwright/global-setup'),
+  workers: 1,
+  testMatch: 'test.list.ts', // location of tests
+  // globalSetup: require.resolve('./playwright/global-setup'),
   outputDir: './playwright/test-results',
+  maxFailures: env.CI ? 1 : undefined,
   use: {
     headless: true,
     baseURL: env.URL,

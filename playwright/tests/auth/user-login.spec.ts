@@ -3,7 +3,7 @@ import { test, expect, chromium } from '@playwright/test';
 
 // FEATURE: USER LOGS IN
 // SCENARIO: USER GOES TO LOGIN PAGE, ENTERS VALID CREDENTIALS, SIGNS IN AND IS TAKEN TO DASHBOARD
-test('User can log-in', async ({ browser }) => {
+test.skip('User can log-in', async ({ browser }) => {
   const context = await browser.newContext({
     storageState: './playwright/not-auth.json'
   });

@@ -178,7 +178,7 @@ const SearchBox = ({
           {/* Displays the results */}
           {companies.length > 0 && (
             <ul className="px-4 border border-primary rounded overflow-y-scroll py-4 space-y-4 max-h-[400px] min-h-[120px] absolute w-full z-10 bg-white">
-              {companies.map(company => {
+              {companies.map((company, i) => {
                 return (
                   <button
                     key={company.company_number}
@@ -190,6 +190,7 @@ const SearchBox = ({
                       company_id={company.company_number}
                       registered_address={company.address_snippet}
                       registration_date={company.date_of_creation}
+                      index={i}
                     />
                   </button>
                 );

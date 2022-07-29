@@ -93,7 +93,10 @@ const Reports = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 leading-4">
+        <div
+          id="bookmark-container"
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 leading-4"
+        >
           {bookmarkedReports &&
             bookmarkedReports.map((report: ReportSnippetType) => {
               return (

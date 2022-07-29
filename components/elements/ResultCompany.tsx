@@ -1,9 +1,11 @@
 import React from 'react';
 import { CompanyType } from '../../types/global';
 import { XIcon } from '@heroicons/react/outline';
+import { kebabCase } from 'lodash';
 
 type ResultCompanyProps = {
   clearSelection?: () => void;
+  index: number;
 } & CompanyType;
 
 const ResultCompany = ({
@@ -11,13 +13,15 @@ const ResultCompany = ({
   registered_address,
   registration_date,
   company_id,
-  clearSelection
+  clearSelection,
+  index
 }: ResultCompanyProps) => {
   return (
     <div
       className={`text-left bg-bg flex w-full px-6 py-3 justify-between relative ${
         clearSelection && 'pr-12'
       } items-center`}
+      id={`result-${kebabCase(name)}-${index}`}
     >
       <div>
         <p className="font-bold">{name}</p>

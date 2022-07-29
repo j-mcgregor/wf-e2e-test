@@ -168,7 +168,7 @@ const AlternativeSearchBox = ({
           {/* Displays the results */}
           {data && data?.data?.length > 0 && (
             <ul className="px-4 border border-primary rounded overflow-y-scroll pt-4 space-y-4 max-h-[400px] min-h-[120px] absolute w-full z-10 bg-white">
-              {data?.data?.map((company: CompanyType) => {
+              {data?.data?.map((company: CompanyType, i: number) => {
                 return (
                   <button
                     key={company.company_number}
@@ -179,6 +179,7 @@ const AlternativeSearchBox = ({
                       name={company.title}
                       company_id={company.company_number}
                       registered_address={company.address_snippet}
+                      index={i}
                     />
                   </button>
                 );

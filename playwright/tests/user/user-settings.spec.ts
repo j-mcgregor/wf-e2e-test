@@ -4,10 +4,11 @@ import { test, expect } from '@playwright/test';
 test.describe('User Settings Tests', async () => {
   // SCENARIO: USER NAVIGATES TO SETTINGS AND CHANGES THEIR NAME
   // FEATURE: USER CAN CHANGE THEIR NAME
-  test('User can change their user name', async ({ browser }) => {
+  test.skip('User can change their user name', async ({ browser }) => {
     const context = await browser.newContext({
       storageState: './playwright/auth.json'
     });
+
     const page = await context.newPage();
 
     // GIVEN I AM ON THE HOME PAGE
@@ -57,7 +58,7 @@ test.describe('User Settings Tests', async () => {
 
   // SCENARIO: USER NAVIGATES TO SETTINGS AND CHANGES THEIR PASSWORD
   // FEATURE: USER CAN CHANGE THEIR PASSWORD
-  test('User can change their password', async ({ browser }) => {
+  test.skip('User can change their password', async ({ browser }) => {
     const context = await browser.newContext({
       storageState: './playwright/auth.json'
     });
@@ -124,7 +125,7 @@ test.describe('User Settings Tests', async () => {
 
   // SCENARIO: USER NAVIGATES TO THE SETTINGS PAGE AND CHANGES THEIR PREFERENCES
   // FEATURE: USER CAN CHANGE THEIR PREFERENCES
-  test('User can change their preferences', async ({ browser }) => {
+  test.skip('User can change their preferences', async ({ browser }) => {
     const context = await browser.newContext({
       storageState: './playwright/auth.json'
     });
@@ -186,7 +187,7 @@ test.describe('User Settings Tests', async () => {
 
   // SCENARIO: USER NAVIGATES TO SETTINGS AND UPDATES THEIR NOTIFICATIONS
   // FEATURE: USER CAN CHANGE THEIR NOTIFICATIONS
-  test('User can update their notifications', async ({ browser }) => {
+  test.skip('User can update their notifications', async ({ browser }) => {
     const context = await browser.newContext({
       storageState: './playwright/auth.json'
     });

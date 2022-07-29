@@ -15,10 +15,11 @@ const TableRow = ({
 }: ITableRowProps) => {
   return (
     <tr
+      title="table-row"
       className={
         newClassName
           ? newClassName
-          : `${className} min-w-full bg-white font-semibold hover:bg-gray-50 group h-[48px]`
+          : `${className} min-w-full bg-white font-semibold hover:bg-gray-50 group h-[48px] active-row`
       }
     >
       {children}

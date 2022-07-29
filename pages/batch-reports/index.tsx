@@ -99,7 +99,10 @@ const BatchReports: NextPage = () => {
           title={`${t('completed_batch_reports')} (${completedJobs.length})`}
           collapsed={false}
         >
-          <div className="grid md:grid-cols-4 grid-cols-2 gap-3 mb-8">
+          <div
+            className="grid md:grid-cols-4 grid-cols-2 gap-3 mb-8"
+            id="completed-batch-reports"
+          >
             {user &&
               completedJobs?.map((report, index) => {
                 return (

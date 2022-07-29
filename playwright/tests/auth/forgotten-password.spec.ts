@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 // SCENARIO: USER IS ON LOGIN PAGE, CLICKS 'FORGOT PASSWORD' BUTTON AND IS DIRECTED TO FORGOT PASSWORD PAGE
 // FEATURE: USER CAN CHANGE THEIR PASSWORD
-test('User can navigate to forgotten password', async ({ browser }) => {
+test.skip('User can navigate to forgotten password', async ({ browser }) => {
   const context = await browser.newContext({
     storageState: './playwright/not-auth.json'
   });

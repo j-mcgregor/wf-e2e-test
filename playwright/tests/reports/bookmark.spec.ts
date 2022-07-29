@@ -1,37 +1,93 @@
 import { test, expect } from '@playwright/test';
+import { WiserfundingE2E } from '../../playwright-helpers';
 
-test.describe('Bookmark Report', async () => {
+test.describe.serial('Bookmark Report', async () => {
   // SCENARIO: USER NAVIGATES TO NEWLY CREATED REPORT, BOOKMARKS IT, NAVIGATES TO 'REPORTS' TO CHECK IT WAS SUCCESSFULLY BOOKMARKED
   // FEATURE: USER CAN BOOKMARK A REPORT
-  test('User can bookmark a new report', async ({ browser }) => {
-    const context = await browser.newContext({
-      storageState: './playwright/auth.json'
-    });
-    const page = await context.newPage();
+  test('User can add a bookmark to a report', async ({ browser }) => {
+    test.setTimeout(120000);
 
-    // GIVEN I AM ON THE MOST RECENT REPORT PAGE
-    await page.goto('/');
-    await page.locator('#Recent\\ Reports tbody tr:nth-child(1)').click();
-    await page.waitForNavigation();
+    const page = await WiserfundingE2E.createPage(browser);
+    const WF = new WiserfundingE2E(page);
 
-    // save the reportId from the URL
-    const url = new URL(page.url());
-    const reportId = url.pathname.split('/').reverse()[0];
+    // GIVEN I AM ON REPORTS
+    await WF.goto('/reports');
+    // accept cookies banner
+    await WF.closeCookieBanner();
 
-    // AND I CLICK THE 'BOOKMARK' ICON
-    await page.locator('#bookmark-button').click();
+    await expect(page).toHaveURL('/reports');
 
-    // AND I NAVIGATE TO RECENT REPORTS
-    await Promise.all([
-      page.waitForNavigation(),
-      page.locator('text=Reports >> nth=0').click()
-    ]);
+    // CHECK BOOKMARKED REPORTS & ASSERT REPORT ISN'T THERE
+    await expect(
+      WF.bookmarkContainer.locator(`text=${WF.bookmarkReportName}`)
+    ).not.toBeVisible();
 
-    await page.pause();
+    // CREATE REPORT
+    await WF.quickCreateADS(WF.bookmarkReportName);
+    await page.waitForTimeout(10000);
 
-    const bookmark = page.locator(`#bookmark-card-${reportId}`);
+    await WF.bookmarkBtn.click();
+    await expect(page.locator('text=Bookmark added')).toBeVisible();
 
-    // THEN I SHOULD SEE A BOOKMARK CARD FOR THE REPORT I JUST BOOKMARKED
-    await expect(bookmark).toBeVisible();
+    // ASSERT REPORT IS NOW BOOKMARKED
+    await WF.goto('/reports');
+
+    // TO BE CONTINUED WHEN THE BACKENDD IS DONE
+    // await expect(
+    //   page
+    //     .locator('#bookmark-container')
+    //     .locator(`text=${WF.bookmarkReportName}`)
+    // ).toBeVisible();
+  });
+  // FEATURE: USER CAN BOOKMARK A REPORT
+  test('User can remove a bookmark from a report', async ({ browser }) => {
+    test.setTimeout(120000);
+
+    const page = await WiserfundingE2E.createPage(browser);
+    const WF = new WiserfundingE2E(page);
+
+    // GIVEN I AM ON REPORTS
+    await WF.goto('/reports');
+    // accept cookies banner
+    await WF.closeCookieBanner();
+
+    await expect(page).toHaveURL('/reports');
+
+    // IF BOOKMARK IS NOT THERE (IT SHOULD BE THERE) GO AND CREATE IT
+    if (
+      !(await WF.bookmarkContainer
+        .locator(`text=${WF.bookmarkReportName}`)
+        .isVisible())
+    ) {
+      await WF.quickCreateADS(WF.bookmarkReportName);
+      await page.waitForTimeout(10000);
+
+      await WF.bookmarkBtn.click();
+      await expect(page.locator('text=Bookmark added')).toBeVisible();
+      await WF.goto('/reports');
+    }
+
+    await expect(
+      WF.bookmarkContainer.locator(`text=${WF.bookmarkReportName}`).last()
+    ).toBeVisible();
+
+    await WF.bookmarkContainer
+      .locator(`text=${WF.bookmarkReportName}`)
+      .last()
+      .click();
+
+    await WF.waitForNavigation();
+    await page.waitForTimeout(10000);
+
+    await WF.bookmarkBtn.click();
+    await expect(page.locator('text=Bookmark removed')).toBeVisible();
+    await WF.goto('/reports');
+
+    // TO BE CONTINUED WHEN THE BACKENDD IS DONE
+    // await expect(
+    //   page
+    //     .locator('#bookmark-container')
+    //     .locator(`text=${WF.bookmarkReportName}`).last()
+    // ).toBeVisible();
   });
 });
