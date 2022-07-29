@@ -32,6 +32,7 @@ export class WiserfundingE2E {
   readonly showMoreBtn: Locator;
   readonly bookmarkBtn: Locator;
   readonly bookmarkContainer: Locator;
+  readonly uploadCsvLabel: Locator;
   readonly testCSVFile = 'master.csv';
   readonly batchAutoName = `batch-auto-${Date.now()}`;
   readonly batchManualName = `batch-manual-${Date.now()}`;
@@ -68,6 +69,9 @@ export class WiserfundingE2E {
     this.batchFilenameInput = page.locator('input[name="filename"]');
     this.runBatchBtn = page.locator('button:has-text("Run Batch")');
     this.showMoreBtn = page.locator('text="Show more"');
+    this.uploadCsvLabel = page.locator(
+      'label:has-text("Upload your CSV/Excel file")'
+    );
   }
 
   async goto(endpoint = '/') {
@@ -121,9 +125,7 @@ export class WiserfundingE2E {
   async uploadFile(filePath: string) {
     const [fileChooser] = await Promise.all([
       this.page.waitForEvent('filechooser'),
-      this.page.click('label:has-text("Upload your CSV/Excel file")', {
-        delay: 500
-      })
+      this.page.locator('label:has-text("Upload your CSV/Excel file")').click()
     ]);
     await fileChooser.setFiles(filePath);
   }

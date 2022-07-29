@@ -30,6 +30,9 @@ test.describe('Batch auto', async () => {
 
     await expect(page).toHaveURL('batch-reports/new');
 
+    await expect(WF.uploadCsvLabel).toBeVisible();
+    await expect(WF.batchFilenameInput).toBeVisible();
+
     // WHEN I FILL THE FORM AND SUBMIT
     await WF.batchFilenameInput.fill(WF.batchAutoName);
     await WF.uploadFile(WF.batchAutoFilepath);
