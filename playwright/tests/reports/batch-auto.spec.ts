@@ -5,7 +5,7 @@ import { WiserfundingE2E } from '../../playwright-helpers';
 test.describe('Batch auto', async () => {
   // SCENARIO: USER NAVIGATES TO THE SINGLE SME-CALC PAGE, INPUTS A COMPANY SEARCH AND GENERATES A REPORT
   // FEATURE: USER GENERATES A SINGLE REPORT
-  test.only('User can view, create and export multiple reports (batch auto)', async ({
+  test('User can view, create and export multiple reports (batch auto)', async ({
     browser
   }) => {
     test.setTimeout(120000);
@@ -26,9 +26,13 @@ test.describe('Batch auto', async () => {
     await expect(WF.batchCompletedTitle).toBeVisible();
 
     // AND I GO TO CREATE A NEW BATCH REPORT
-    await WF.batchCreateBtn.click();
+    await Promise.all([
+      // It is important to call waitForNavigation before click to set up waiting.
+      WF.waitForNavigation(),
+      // Clicking the link will indirectly cause a navigation.
+      WF.batchCreateBtn.click()
+    ]);
 
-    await WF.waitForNavigation();
     await expect(page).toHaveURL('batch-reports/new');
 
     await expect(WF.uploadCsvLabel).toBeVisible();
@@ -42,10 +46,14 @@ test.describe('Batch auto', async () => {
     await expect(page.locator(`text=${WF.testCSVFile}`)).toBeVisible();
     await expect(page.locator(`text="Is valid batch auto CSV"`)).toBeVisible();
 
-    await WF.runBatchBtn.click();
-
     // I SHOULD BE TKEN BACK TO THE BATCH REPORTS PAGE
-    await WF.waitForNavigation();
+    await Promise.all([
+      // It is important to call waitForNavigation before click to set up waiting.
+      WF.waitForNavigation(),
+      // Clicking the link will indirectly cause a navigation.
+      WF.runBatchBtn.click()
+    ]);
+
     await expect(page).toHaveURL('batch-reports');
 
     await page.waitForSelector(`a:has-text("${WF.batchAutoName}")`);
@@ -63,9 +71,12 @@ test.describe('Batch auto', async () => {
     ).toBeVisible({ timeout: 20000 });
 
     // THEN WHEN I CLICK THE REPORT
-    await page.locator(`a:has-text("${WF.batchAutoName}")`).click();
-
-    await WF.waitForNavigation();
+    await Promise.all([
+      // It is important to call waitForNavigation before click to set up waiting.
+      WF.waitForNavigation(),
+      // Clicking the link will indirectly cause a navigation.
+      page.locator(`a:has-text("${WF.batchAutoName}")`).click()
+    ]);
 
     await expect(page.locator('text=Multiple Companies')).toBeVisible();
     await expect(
@@ -81,9 +92,13 @@ test.describe('Batch auto', async () => {
     expect(downloadCsv).toBeTruthy();
 
     // FINALLY I CAN VIEW AN INDIVIDUAL REPORT AND EXPORT TO CSV AND PDF
-    await page.locator('.active-row').first().click();
+    await Promise.all([
+      // It is important to call waitForNavigation before click to set up waiting.
+      WF.waitForNavigation(),
+      // Clicking the link will indirectly cause a navigation.
+      page.locator('.active-row').first().click()
+    ]);
 
-    await WF.waitForNavigation();
     expect(page.url().includes('from=/batch-reports')).toBe(true);
 
     await expect(

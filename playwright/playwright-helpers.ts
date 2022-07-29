@@ -81,7 +81,9 @@ export class WiserfundingE2E {
   }
 
   async closeCookieBanner() {
-    this.acceptCookie?.click();
+    if (await this.acceptCookie.isVisible()) {
+      await this.acceptCookie.click();
+    }
   }
 
   async navigateTo(to: 'single') {
@@ -183,7 +185,9 @@ export class WiserfundingE2E {
     await page.context().storageState({ path: storageState as string });
 
     // accept cookies banner
-    await page.locator('text=Accept').click();
+    if (await page.locator('text=Accept').isVisible()) {
+      await page.locator('text=Accept').click();
+    }
 
     await browser.close();
   }

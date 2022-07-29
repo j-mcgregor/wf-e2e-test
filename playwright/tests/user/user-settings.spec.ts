@@ -15,7 +15,9 @@ test.describe('User Settings Tests', async () => {
     await page.goto('/');
 
     // accept cookies banner
-    await page.locator('text=Accept').click();
+    if (await page.locator('text=Accept').isVisible()) {
+      await page.locator('text=Accept').click();
+    }
 
     // GIVEN I CLICK ON SETTINGS BUTTON
     await page.locator('a:has-text("Settings")').click();
@@ -71,7 +73,9 @@ test.describe('User Settings Tests', async () => {
     await page.goto('/');
 
     // accept cookies banner
-    await page.locator('text=Accept').click();
+    if (await page.locator('text=Accept').isVisible()) {
+      await page.locator('text=Accept').click();
+    }
 
     // GIVEN I CLICK ON SETTINGS BUTTON
     await page.locator('a:has-text("Settings")').click();
@@ -135,7 +139,9 @@ test.describe('User Settings Tests', async () => {
     await page.goto('/');
 
     // accept cookies banner
-    await page.locator('text=Accept').click();
+    if (await page.locator('text=Accept').isVisible()) {
+      await page.locator('text=Accept').click();
+    }
 
     // GIVEN I CLICK ON SETTINGS BUTTON
     await page.locator('a:has-text("Settings")').click();
@@ -196,7 +202,9 @@ test.describe('User Settings Tests', async () => {
     // GIVEN I AM ON THE HOME PAGE
     await page.goto('/');
     // accept cookies banner
-    await page.locator('text=Accept').click();
+    if (await page.locator('text=Accept').isVisible()) {
+      await page.locator('text=Accept').click();
+    }
 
     // GIVEN I CLICK ON SETTINGS BUTTON
     await page.locator('a:has-text("Settings")').click();
