@@ -125,7 +125,7 @@ export class WiserfundingE2E {
   async uploadFile(filePath: string) {
     const [fileChooser] = await Promise.all([
       this.page.waitForEvent('filechooser'),
-      this.page.locator('label:has-text("Upload your CSV/Excel file")').click()
+      this.uploadCsvLabel.click()
     ]);
     await fileChooser.setFiles(filePath);
   }
