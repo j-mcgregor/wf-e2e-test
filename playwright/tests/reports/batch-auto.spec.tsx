@@ -28,6 +28,7 @@ test.describe('Batch auto', async () => {
     // AND I GO TO CREATE A NEW BATCH REPORT
     await WF.batchCreateBtn.click();
 
+    await WF.waitForNavigation();
     await expect(page).toHaveURL('batch-reports/new');
 
     await expect(WF.uploadCsvLabel).toBeVisible();
