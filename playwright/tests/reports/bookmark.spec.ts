@@ -76,7 +76,6 @@ test.describe.serial('Bookmark Report', async () => {
       .last()
       .click();
 
-    await WF.waitForNavigation();
     await page.waitForTimeout(10000);
 
     await WF.bookmarkBtn.click();
