@@ -16,18 +16,18 @@ const config: PlaywrightTestConfig = {
   maxFailures: env.CI ? 1 : undefined,
   use: {
     headless: true,
-    baseURL: env.URL,
+    baseURL: 'https://wiserfunding-platform-77dzyfyg1-wiserfunding.vercel.app', // env.URL,
     viewport: { width: 1400, height: 980 },
     browserName: 'chromium',
     screenshot: 'only-on-failure',
     // Tell all tests to load signed-in state from 'storageState.json'.
     storageState: './playwright/auth.json'
-  },
-  ...(!env.VERCEL_ENV && {
-    webServer: {
-      port: 3000,
-      command: 'yarn dev'
-    }
-  })
+  }
+  // ...(!env.VERCEL_ENV && {
+  //   webServer: {
+  //     port: 3000,
+  //     command: 'yarn dev'
+  //   }
+  // })
 };
 export default config;
