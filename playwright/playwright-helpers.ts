@@ -61,8 +61,10 @@ export class WiserfundingE2E {
     this.bookmarkBtn = page.locator('#bookmark-button');
     this.bookmarkContainer = page.locator('#bookmark-container');
     // batch
-    this.batchCreateTitle = page.locator('p:has-text("Create a Batch Report")');
-    this.batchCreateBtn = page.locator('a:has-text("Create a Batch Report")');
+    this.batchCreateTitle = page.locator(
+      'p:has-text("Create a new Batch Report")'
+    );
+    this.batchCreateBtn = page.locator('p:has-text("Create a Batch Report")');
     this.batchInProgressTitle = page.locator('text=In Progress Batch Reports');
     this.batchCompletedTitle = page.locator('text=Completed Batch Reports');
     this.batchFailedTitle = page.locator('text=Failed Batch Reports');

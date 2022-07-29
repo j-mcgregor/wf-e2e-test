@@ -5,7 +5,7 @@ import { WiserfundingE2E } from '../../playwright-helpers';
 test.describe('Batch auto', async () => {
   // SCENARIO: USER NAVIGATES TO THE SINGLE SME-CALC PAGE, INPUTS A COMPANY SEARCH AND GENERATES A REPORT
   // FEATURE: USER GENERATES A SINGLE REPORT
-  test('User can view, create and export multiple reports (batch auto)', async ({
+  test.only('User can view, create and export multiple reports (batch auto)', async ({
     browser
   }) => {
     test.setTimeout(120000);
@@ -36,6 +36,7 @@ test.describe('Batch auto', async () => {
 
     // WHEN I FILL THE FORM AND SUBMIT
     await WF.batchFilenameInput.fill(WF.batchAutoName);
+    await page.pause();
     await WF.uploadFile(WF.batchAutoFilepath);
 
     await expect(page.locator(`text=${WF.testCSVFile}`)).toBeVisible();
