@@ -7,8 +7,6 @@ jobs:
       - image: mcr.microsoft.com/playwright:v1.24.2-focal
     environment:
       NODE_ENV: development
-      SENTRY_AUTH_TOKEN: dc1bf2f353af4940b7f4dac15ebceff45e607dd8e20c469bb0e1f4d2416b5e64
-      SENTRY_ORG: wiserfunding-yq
     working_directory: ~/repo
     steps:
       - checkout
