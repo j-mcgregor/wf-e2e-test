@@ -10,8 +10,6 @@ jobs:
     working_directory: ~/wiserfunding
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
       - restore_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn
