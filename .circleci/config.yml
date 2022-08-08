@@ -19,6 +19,7 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run: yarn
+      - run: npx playwright install
       - save_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
