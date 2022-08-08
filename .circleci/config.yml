@@ -18,8 +18,14 @@ jobs:
           install-yarn: true
       - restore_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
-      - run: npx playwright install chromium
-      - run: yarn
+      - run:
+          name: Install dependencies
+          command: npx playwright install-deps
+      - run:
+          name: Setup
+          command: |
+            yarn install
+            npxplaywright install
       - save_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
