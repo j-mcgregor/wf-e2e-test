@@ -19,18 +19,18 @@ jobs:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
-      - run:
+      - node/run:
           name: Lint
-          command: yarn lint
-      # - run:
-      #     name: Build
-      #     command: yarn build
-      - run:
+          yarn-run: lint
+      - node/run:
+          name: Build
+          yarn-run: build
+      - node/run:
           name: Test
-          command: yarn test
-      - run:
+          yarn-run: test
+      - node/run:
           name: E2E
-          command: yarn playwright
+          yarn-run: playwright
 
 workflows:
   build-and-test:
