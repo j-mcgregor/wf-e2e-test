@@ -2,12 +2,16 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.1
 jobs:
-  build-and-test:
+  end-to-end:
     docker:
       - image: mcr.microsoft.com/playwright:v1.24.2-focal
     environment:
       NODE_ENV: development
-    working_directory: ~/repo
+      VERCEL_URL: https://alpha.wiserfunding.com/login
+      PLAYWRIGHT_LOGIN_USERNAME: jack@antler.digital
+      PLAYWRIGHT_LOGIN_PASSWORD: Password1!
+
+    working_directory: ~/wiserfunding
     steps:
       - checkout
       - node/install:
@@ -20,20 +24,10 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          name: Lint
-          command: yarn lint
-      - run:
-          name: Build
-          command: yarn build
-      # - run:
-      #     name: Test
-      #     command: yarn test
-      - run:
           name: E2E
           command: yarn playwright
 
 workflows:
-  build-and-test:
+  end-to-end:
     jobs:
-      - build-and-test:
-          context: SonarCloud
+      - end-to-end
