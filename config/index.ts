@@ -28,6 +28,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   URL = 'http://localhost:3000';
 }
+
 const config = {
   CI: process.env.CI,
   NODE_ENV: process.env.NODE_ENV,
