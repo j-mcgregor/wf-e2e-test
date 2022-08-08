@@ -25,7 +25,7 @@ jobs:
           name: Setup
           command: |
             yarn install
-            npxplaywright install
+            npx playwright install
       - save_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
