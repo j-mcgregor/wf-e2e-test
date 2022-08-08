@@ -25,3 +25,9 @@ jobs:
           path: coverage
       - store_artifacts:
           path: coverage
+
+workflows:
+  build-and-test:
+    jobs:
+      - build-and-test:
+          context: SonarCloud
