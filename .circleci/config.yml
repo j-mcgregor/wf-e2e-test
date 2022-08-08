@@ -1,36 +1,39 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.0.2
+  node: circleci/node@5.0.1
+jobs:
+  build-and-test:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.24.2-focal
+    environment:
+      NODE_ENV: development
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run: yarn
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Lint
+          command: yarn lint
+      # - run:
+      #     name: Build
+      #     command: yarn build
+      - run:
+          name: Test
+          command: yarn test
+      - run:
+          name: E2E
+          command: yarn playwright
 
 workflows:
-  run-npm-command:
+  build-and-test:
     jobs:
-      build-and-test:
-        docker:
-          - image: mcr.microsoft.com/playwright:v1.24.2-focal
-        environment:
-          NODE_ENV: development
-        working_directory: ~/repo
-        steps:
-          - checkout
-          - node/install:
-              install-yarn: true
-          - restore_cache:
-              key: dependency-cache-{{ checksum "yarn.lock" }}
-          - run: yarn
-          - save_cache:
-              key: dependency-cache-{{ checksum "yarn.lock" }}
-              paths:
-                - ./node_modules
-          - node/run:
-              name: Lint
-              yarn-run: lint
-          - node/run:
-              name: Build
-              yarn-run: build
-          - node/run:
-              name: Test
-              yarn-run: test
-          - node/run:
-              name: E2E
-              yarn-run: playwright
+      - build-and-test:
+          context: SonarCloud
