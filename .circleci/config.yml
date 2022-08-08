@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@5.0.2
 
 workflows:
-  build-and-test:
+  run-npm-command:
     jobs:
       build-and-test:
         docker:
