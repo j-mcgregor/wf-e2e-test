@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  yarn: itinerisltd/yarn@2.1.1
+  yarn: 'itinerisltd/yarn:1.22'
 jobs:
   build-and-test:
     docker:
