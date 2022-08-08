@@ -1,13 +1,13 @@
 version: 2.1
 orbs:
-  node: circleci/node@4.9.0
+  yarn: itinerisltd/yarn@2.1.1
 jobs:
   build-and-test:
     docker:
       - image: mcr.microsoft.com/playwright:v1.24.2-focal
     environment:
       NODE_ENV: development
-    working_directory: ~/repo
+    working_directory: ~/wiserfunding
     steps:
       - checkout
       - node/install:
